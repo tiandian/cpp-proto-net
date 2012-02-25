@@ -1,0 +1,276 @@
+﻿<UserControl x:Class="QuickArbitrage.Main.Views.RunningPortfolioPool"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ig="http://schemas.infragistics.com/xaml"
+             xmlns:igDP="http://infragistics.com/DataPresenter"
+             xmlns:igWindows="http://infragistics.com/Windows"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:local="clr-namespace:QuickArbitrage.Main.Views"
+             xmlns:conv="clr-namespace:QuickArbitrage.Main.Converters"
+             xmlns:ctrl="clr-namespace:QuickArbitrage.Main.Controls"
+             xmlns:enum="clr-namespace:QuickArbitrage.Common.Enums;assembly=QuickArbitrage.Common"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="800" Loaded="UserControl_Loaded" MinHeight="200" >
+    <UserControl.Resources>
+        <local:RunningPortfoliosViewModel x:Key="portfolios" />
+    </UserControl.Resources>
+    <Border BorderBrush="Gray" BorderThickness="5" >
+        <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <DockPanel.Resources>
+                    <local:TradingTypeOptions x:Key="tradingTypeOptions"/>
+                </DockPanel.Resources>
+                <ctrl:TabSelector DockPanel.Dock="Top" DataSource="{StaticResource tradingTypeOptions}" SelectedIndex="1"
+                                  x:Name="tabTradingType" TabSelectionChanged="tabTradingType_SelectionChanged">
+                    <ctrl:TabSelector.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4"/>
+                        </DataTemplate>
+                    </ctrl:TabSelector.ItemTemplate>
+                </ctrl:TabSelector>
+                
+            </DockPanel>
+            <igDP:XamDataGrid Name="xamDG_RunningPool" DataSource="{StaticResource portfolios}" AutoFit="True"
+                              GroupByAreaLocation="None">
+                <igDP:XamDataGrid.Resources>
+                    <conv:SideTextConverter x:Key="sideTextConverter" />
+                    <conv:TradingTypeTextConverter x:Key="runningTypeTextConverter" />
+
+                    <local:RunningTypeItems x:Key="runningTypeItems" />
+
+                    <!-- HeaderLabelArea style -->
+                    <Style x:Key="shrinkHeaderLabelArea" TargetType="igDP:HeaderLabelArea">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="igDP:HeaderLabelArea">
+                                    <Grid Height="24">
+                                        <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}"/>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    
+                    <Style x:Key="myDataRecordCellArea" TargetType="{x:Type igDP:DataRecordCellArea}">
+                        
+                    </Style>
+
+                    <!-- Runnint type -->
+                    <Style x:Key="runningTypeColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                    <TextBlock DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock.Text>
+                                            <Binding Path="Record.DataItem.RunningType"
+                                                        RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                                        Converter="{StaticResource runningTypeTextConverter}"
+                                                        />
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <!-- Code and Name column style -->
+                    <Style x:Key="codeColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                    <ItemsControl ItemsSource="{Binding Record.DataItem.Equities, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Text="{Binding Code}"/>
+                                                    <TextBlock Grid.Column="1"  Text="{Binding Name}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    
+                    <!-- Last column style -->
+                    <Style x:Key="lastColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                    <ItemsControl ItemsSource="{Binding Record.DataItem.Equities, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Text="{Binding Last}" TextAlignment="Right"/>
+                                                    <TextBlock Grid.Column="1"  Text="{Binding Change}" TextAlignment="Right" Margin="2,0"/>
+                                                    <TextBlock Grid.Column="2"  Text="{Binding PercentChg, StringFormat=P2}" TextAlignment="Right"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <!-- Position column style -->
+                    <Style x:Key="positionColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                    <ItemsControl ItemsSource="{Binding Record.DataItem.Equities, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Grid.Column="0"  Text="{Binding Side, Converter={StaticResource sideTextConverter}}" />
+                                                    <TextBlock Grid.Column="1"  Text="{Binding Quantity}" TextAlignment="Right" Margin="2,0"/>
+                                                    <TextBlock Grid.Column="2"  Text="{Binding Cost}" TextAlignment="Right" Margin="2,0"/>
+                                                    <TextBlock Grid.Column="3"  Text="{Binding Gain}" TextAlignment="Right"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                    
+                    <!-- Operation column style -->
+                    <Style x:Key="operationColStyle" TargetType="{x:Type igDP:CellValuePresenter}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                    <Border Height="50" Margin="4, 4, 0, 4" BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 3">
+                                        <DockPanel>
+                                            <ctrl:TabSelector DataSource="{StaticResource runningTypeItems}" DockPanel.Dock="Left">
+                                                <ctrl:TabSelector.SelectedItem>
+                                                    <Binding Path="Record.DataItem.RunningType"
+                                                         RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                                         Mode="TwoWay"
+                                                         />
+                                                </ctrl:TabSelector.SelectedItem>
+                                                <ctrl:TabSelector.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Name="txt" Text="Man" Margin="2,0"/>
+                                                        <DataTemplate.Triggers>
+                                                            <DataTrigger Binding="{Binding }" Value="Auto">
+                                                                <Setter TargetName="txt" Property="Text" Value="Auto" />
+                                                            </DataTrigger>
+                                                        </DataTemplate.Triggers>
+                                                    </DataTemplate>
+                                                </ctrl:TabSelector.ItemTemplate>
+                                            </ctrl:TabSelector>
+                                            <ctrl:OperationPanel RunningType="{Binding Record.DataItem.RunningType, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                        </DockPanel>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="editColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                    <Border Margin="0, 4, 4, 4" BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 3">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Button Grid.Row="0" Margin="0,5" Tag="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}">编辑</Button>
+                                            <Button Grid.Row="1" Margin="0,5" Tag="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}">删除</Button>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </igDP:XamDataGrid.Resources>
+                <igDP:XamDataGrid.FieldLayouts>
+                    <igDP:FieldLayout>
+                        
+                        <igDP:Field Name="RunningType" Label="运行方式" Row="0" Column="0">
+                            <igDP:Field.Settings>
+                                <igDP:FieldSettings CellValuePresenterStyle="{StaticResource runningTypeColStyle}"/>
+                            </igDP:Field.Settings>
+                        </igDP:Field>
+
+                        <igDP:UnboundField Name="Code" Label="代码 | 名称" Row="0" Column="1">
+                            <igDP:UnboundField.Settings>
+                                <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource codeColStyle}"/>
+                            </igDP:UnboundField.Settings>
+                        </igDP:UnboundField>
+
+                        <igDP:UnboundField Name="Last" Label="最新 | 涨跌 | 涨幅" Row="0" Column="2">
+                            <igDP:UnboundField.Settings>
+                                <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource lastColStyle}"/>
+                            </igDP:UnboundField.Settings>
+                        </igDP:UnboundField>
+
+                        <igDP:Field Name="Diff" Label="差价" Row="0" Column="3"/>
+
+                        <igDP:UnboundField Name="Position" Label="持仓 （多空 | 数量 | 成本 | 盈利）" Row="0" Column="4">
+                            <igDP:UnboundField.Settings>
+                                <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource positionColStyle}"/>
+                            </igDP:UnboundField.Settings>
+                        </igDP:UnboundField>
+
+                        <igDP:Field Name="Balance" Label="组合盈利" Row="0" Column="5"/>
+
+                        <igDP:UnboundField Name="Opertaion" Label="操作" Row="1"  Column="0" ColumnSpan="6">
+                            <igDP:UnboundField.Settings>
+                                <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource operationColStyle}" LabelHeight="0">
+                                    <igDP:FieldSettings.LabelPresenterStyle>
+                                        <Style TargetType="igDP:LabelPresenter">
+                                            <Setter Property="Visibility" Value="Hidden"></Setter>
+                                        </Style>
+                                    </igDP:FieldSettings.LabelPresenterStyle>
+                                </igDP:FieldSettings>
+                            </igDP:UnboundField.Settings>
+                        </igDP:UnboundField>
+                        
+                        <igDP:UnboundField Row="0" Column="6" RowSpan="2">
+                            <igDP:UnboundField.Settings>
+                                <igDP:FieldSettings CellValuePresenterStyle="{StaticResource editColStyle}"/>
+                            </igDP:UnboundField.Settings>
+                        </igDP:UnboundField>
+                        
+                        <igDP:FieldLayout.RecordFilters>
+                            <igDP:RecordFilter FieldName="RunningType" x:Name="dgFilter">
+                                <igWindows:ComparisonCondition Operator="Equals" Value="Auto" />
+                            </igDP:RecordFilter>
+                        </igDP:FieldLayout.RecordFilters>
+                    </igDP:FieldLayout>
+                </igDP:XamDataGrid.FieldLayouts>
+                <igDP:XamDataGrid.FieldSettings>
+                    <igDP:FieldSettings AllowEdit="False" Width="Auto"/>
+                </igDP:XamDataGrid.FieldSettings>
+                <igDP:XamDataGrid.FieldLayoutSettings>
+                    <igDP:FieldLayoutSettings  AutoGenerateFields="False" AutoArrangeCells="Never" RecordSelectorLocation="None"
+                                               HeaderLabelAreaStyle="{StaticResource shrinkHeaderLabelArea}"
+                                               DataRecordCellAreaStyle="{StaticResource myDataRecordCellArea}"
+                                               />
+                </igDP:XamDataGrid.FieldLayoutSettings>
+            </igDP:XamDataGrid>
+        </DockPanel>
+    </Border>
+</UserControl>
