@@ -50,6 +50,18 @@ namespace QuickArbitrage.Main.Views
         {
  
         }
+
+        private void EditPortfolioButtonClicked(object sender, RoutedEventArgs e)
+        {
+            QuickArbitrage.Connection.TransferTest.StreamFileTest.WriteCustomer("e:\\cus.bin");
+        }
+
+        private void DeletePortfolioButtonClicked(object sender, RoutedEventArgs e)
+        {
+            QuickArbitrage.Connection.TransferTest.Customer customer =
+                QuickArbitrage.Connection.TransferTest.StreamFileTest.ReadCustomer("e:\\cpp.bin");
+
+        }
     }
 
     class TradingTypeOptionItem
