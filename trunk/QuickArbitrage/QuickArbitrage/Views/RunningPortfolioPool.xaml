@@ -39,6 +39,13 @@
                     <conv:TradingTypeTextConverter x:Key="runningTypeTextConverter" />
 
                     <local:RunningTypeItems x:Key="runningTypeItems" />
+                    
+                    <Style x:Key="editBtnStyle" TargetType="Button">
+                        <EventSetter Event="Click" Handler="EditPortfolioButtonClicked"/>
+                    </Style>
+                    <Style x:Key="delBtnStyle" TargetType="Button">
+                        <EventSetter Event="Click" Handler="DeletePortfolioButtonClicked"/>
+                    </Style>
 
                     <!-- HeaderLabelArea style -->
                     <Style x:Key="shrinkHeaderLabelArea" TargetType="igDP:HeaderLabelArea">
@@ -62,7 +69,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
-                                    <TextBlock DockPanel.Dock="Bottom" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <TextBlock.Text>
                                             <Binding Path="Record.DataItem.RunningType"
                                                         RelativeSource="{RelativeSource Mode=TemplatedParent}"
@@ -186,6 +193,7 @@
                         </Setter>
                     </Style>
 
+                    <!-- Edit column style -->
                     <Style x:Key="editColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
                         <Setter Property="Template">
                             <Setter.Value>
@@ -196,8 +204,10 @@
                                                 <RowDefinition />
                                                 <RowDefinition />
                                             </Grid.RowDefinitions>
-                                            <Button Grid.Row="0" Margin="0,5" Tag="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}">编辑</Button>
-                                            <Button Grid.Row="1" Margin="0,5" Tag="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}">删除</Button>
+                                            <Button Grid.Row="0" Margin="0,5" Tag="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                    Style="{StaticResource editBtnStyle}">编辑</Button>
+                                            <Button Grid.Row="1" Margin="0,5" Tag="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                    Style="{StaticResource delBtnStyle}">删除</Button>
                                         </Grid>
                                     </Border>
                                 </ControlTemplate>

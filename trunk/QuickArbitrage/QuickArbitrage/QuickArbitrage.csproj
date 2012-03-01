@@ -37,12 +37,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="InfragisticsWPF4.Controls.Editors.XamMaskedInput.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
-    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="InfragisticsWPF4.Controls.Grids.XamGrid.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamMenu.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="InfragisticsWPF4.DataManager.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
       <Private>True</Private>
     </Reference>
