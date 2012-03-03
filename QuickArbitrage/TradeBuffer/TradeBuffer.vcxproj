@@ -39,6 +39,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Configuration)\Hosting\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -49,14 +50,17 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Dev\boost_1_49_0;D:\Dev\protobuf-2.4.1\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\ThostTraderApi;D:\Dev\boost_1_49_0;D:\Dev\protobuf-2.4.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\Dev\boost_1_49_0\stage\lib;D:\Dev\protobuf-2.4.1\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libboost_thread-vc100-mt-gd-1_49.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy .\ThostTraderApi\thostMduserapi.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -66,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Dev\boost_1_49_0;D:\Dev\protobuf-2.4.1\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\ThostTraderApi;D:\Dev\boost_1_49_0;D:\Dev\protobuf-2.4.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -74,22 +78,47 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>D:\Dev\boost_1_49_0\stage\lib;D:\Dev\protobuf-2.4.1\lib\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libboost_thread-vc100-mt-gd-1_49.lib;libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy .\ThostTraderApi\thostMduserapi.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ClientBase.h" />
+    <ClInclude Include="ConnectionManager.h" />
+    <ClInclude Include="ConsoleClient.h" />
+    <ClInclude Include="LogManager.h" />
+    <ClInclude Include="MarketAgent.h" />
+    <ClInclude Include="MktDataResponse.h" />
+    <ClInclude Include="OrderManager.h" />
+    <ClInclude Include="QuoteAggregator.h" />
+    <ClInclude Include="QuoteListener.h" />
+    <ClInclude Include="RemoteClient.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TradeAgent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ClientBase.cpp" />
+    <ClCompile Include="ConnectionManager.cpp" />
+    <ClCompile Include="ConsoleClient.cpp" />
+    <ClCompile Include="LogManager.cpp" />
+    <ClCompile Include="MarketAgent.cpp" />
+    <ClCompile Include="MktDataResponse.cpp" />
+    <ClCompile Include="OrderManager.cpp" />
+    <ClCompile Include="QuoteAggregator.cpp" />
+    <ClCompile Include="QuoteListener.cpp" />
+    <ClCompile Include="RemoteClient.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TradeBuffer.cpp" />
+    <ClCompile Include="TradeAgent.cpp" />
+    <ClCompile Include="TradeBufferMain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
