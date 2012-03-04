@@ -16,5 +16,6 @@ public:
 
 private:
 	
+	bool m_isEnabled;
 };
 
