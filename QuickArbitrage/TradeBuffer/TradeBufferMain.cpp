@@ -4,17 +4,25 @@
 
 
 #include "stdafx.h"
+#include "Configuration.h"
 #include "LogManager.h"
 #include "ConnectionManager.h"
+
 #include <boost/circular_buffer.hpp>
+
+
 
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
 
+CConfiguration config;
 CLogManager	logger;
 CConnectionManager g_connMgr;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	if(!config.Load(argc, argv))
+		return 1;
+
 	logger.Init();
 
 	logger.Trace("trace message");

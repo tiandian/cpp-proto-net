@@ -59,7 +59,8 @@
       <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy .\ThostTraderApi\thostMduserapi.dll $(OutDir)</Command>
+      <Command>copy /y .\ThostTraderApi\thostMduserapi.dll $(OutDir)
+copy /y .\TradeBuffer.cfg $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -86,12 +87,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="TradeBuffer.cfg" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientBase.h" />
+    <ClInclude Include="Configuration.h" />
     <ClInclude Include="ConnectionManager.h" />
     <ClInclude Include="ConsoleClient.h" />
     <ClInclude Include="LogManager.h" />
+    <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="MarketAgent.h" />
     <ClInclude Include="MktDataResponse.h" />
     <ClInclude Include="OrderManager.h" />
@@ -104,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientBase.cpp" />
+    <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConnectionManager.cpp" />
     <ClCompile Include="ConsoleClient.cpp" />
     <ClCompile Include="LogManager.cpp" />
