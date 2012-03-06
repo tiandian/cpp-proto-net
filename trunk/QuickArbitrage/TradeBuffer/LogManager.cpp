@@ -84,7 +84,7 @@ void CLogManager::Init()
 	}
 }
 
-void CLogManager::Trace( char* text )
+void CLogManager::Trace( const char* text )
 {
 	if(m_isEnabled)
 	{
@@ -92,7 +92,12 @@ void CLogManager::Trace( char* text )
 	}
 }
 
-void CLogManager::Debug( char* text )
+void CLogManager::Trace( std::string& text)
+{
+	Trace(text.c_str());
+}
+
+void CLogManager::Debug( const char* text )
 {
 	if(m_isEnabled)
 	{
@@ -100,7 +105,12 @@ void CLogManager::Debug( char* text )
 	}
 }
 
-void CLogManager::Info( char* text )
+void CLogManager::Debug( std::string& text)
+{
+	Debug(text.c_str());
+}
+
+void CLogManager::Info( const char* text )
 {
 	if(m_isEnabled)
 	{
@@ -108,7 +118,12 @@ void CLogManager::Info( char* text )
 	}
 }
 
-void CLogManager::Warning( char* text )
+void CLogManager::Info( std::string& text)
+{
+	Info(text.c_str());
+}
+
+void CLogManager::Warning( const char* text )
 {
 	if(m_isEnabled)
 	{
@@ -116,7 +131,12 @@ void CLogManager::Warning( char* text )
 	}
 }
 
-void CLogManager::Error( char* text )
+void CLogManager::Warning( std::string& text)
+{
+	Warning(text.c_str());
+}
+
+void CLogManager::Error( const char* text )
 {
 	if(m_isEnabled)
 	{
@@ -124,10 +144,20 @@ void CLogManager::Error( char* text )
 	}
 }
 
-void CLogManager::Fatal( char* text )
+void CLogManager::Error( std::string& text)
+{
+	Error(text.c_str());
+}
+
+void CLogManager::Fatal( const char* text )
 {
 	if(m_isEnabled)
 	{
 		BOOST_LOG_SEV(slg, fatal) << text;
 	}
+}
+
+void CLogManager::Fatal( std::string& text)
+{
+	Fatal(text.c_str());
 }
