@@ -8,6 +8,7 @@
 #include <boost/smart_ptr.hpp>
 #include <boost/circular_buffer.hpp>
 #include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
 
 #define SYMBOL_MAX_LENGTH 10
 
@@ -170,7 +171,7 @@ bool CMarketAgent::SubscribeQuotes( QuoteListener* pQuoteListener )
 	vector<string>& regSymbols = pQuoteListener->GetSymbols();
 	for(vector<string>::iterator iter = regSymbols.begin(); iter != regSymbols.end(); ++iter)
 	{
-		string s = *iter;
+		string& s = *iter;
 		// see if the symbol already registered
 		SymbolListenerMap::iterator mapIter = m_mapSymbolListeners.find(s);
 		if(mapIter == m_mapSymbolListeners.end())
@@ -197,9 +198,72 @@ bool CMarketAgent::SubscribeQuotes( QuoteListener* pQuoteListener )
 }
 
 
-bool CMarketAgent::ChangeQuotes( QuoteListener* pQuoteListener )
+bool CMarketAgent::ChangeQuotes( QuoteListener* pQuoteListener, vector<string>& changeSymbols )
 {
+	boost::uuids::uuid& token = pQuoteListener->GetUuid();
 
+	QuoteListenerMap::iterator foundIter = m_mapQuoteListeners.find(token);
+	if(foundIter != m_mapQuoteListeners.end())
+	{
+		// found this token
+		vector<string>& origSymbols = (foundIter->second)->GetSymbols();
+
+		// Find out newly added symbols in newSymbols but not in origSymbols
+		vector<string> added(changeSymbols.size());
+		vector<string>::iterator addedIter = set_difference(changeSymbols.begin(), changeSymbols.end(),
+															origSymbols.begin(), origSymbols.end(),
+															added.begin());
+		added.shrink_to_fit();
+
+		for (vector<string>::iterator adIt = added.begin(); adIt != added.end(); ++adIt)
+		{
+			string& s = *adIt;
+			// see if the symbol already registered
+			SymbolListenerMap::iterator mapIter = m_mapSymbolListeners.find(s);
+			if(mapIter == m_mapSymbolListeners.end())
+			{
+				// not registered yet, need to create a new vector for token;
+				TokenSet tokenSet;
+				tokenSet.insert(token);
+				m_mapSymbolListeners.insert(pair<std::string, TokenSet>(s, tokenSet));
+			}
+			else
+			{
+				// already registered, just add the token to existing token vector
+				(mapIter->second).insert(token);
+			}
+		}
+
+		// Find out those in origSymbols but not in newSymbols, remove them
+		vector<string> toRemoved(origSymbols.size());
+		vector<string>::iterator removedIter = set_difference(origSymbols.begin(), origSymbols.end(),
+																changeSymbols.begin(), changeSymbols.end(),
+																toRemoved.begin());
+		toRemoved.shrink_to_fit();
+
+		for (vector<string>::iterator delIt = toRemoved.begin(); delIt != toRemoved.end(); ++delIt)
+		{
+			string& s = *delIt;
+			SymbolListenerMap::iterator foundSymbol = m_mapSymbolListeners.find(s);
+			if(foundSymbol != m_mapSymbolListeners.end())
+			{
+				TokenSet& tokens = foundSymbol->second;
+				tokens.erase(token);
+
+				if(tokens.size() == 0)
+				{
+					// if there is no token for the symbol, erase this from map
+					m_mapSymbolListeners.erase(foundSymbol);
+				}
+			}
+		}
+
+		// The last, update to changed symbols set
+		(foundIter->second)->SetSymbols(changeSymbols);
+
+		// Finally, update to server
+		bool sumbit = SubmitToServer();
+	}
 
 	return true;
 }
@@ -228,19 +292,20 @@ void CMarketAgent::UnsubscribeQuotes( boost::uuids::uuid& token )
 				}
 			}
 		}
-
+		// erase this quote listener
 		m_mapQuoteListeners.erase(foundIter);
 
 		bool sumbit = SubmitToServer();
 	}
 }
 
-bool CMarketAgent::SubscribeQuotes( std::set<std::string>& subcribeSet )
+// Really subscribe symbols on market
+bool CMarketAgent::SubmitSubscribes( std::vector<std::string>& subcribeArr )
 {
 	bool retVal = false;
 
 	// know symbols's count
-	int symbCount = subcribeSet.size();
+	int symbCount = subcribeArr.size();
 
 	if(symbCount > 0)
 	{
@@ -252,8 +317,8 @@ bool CMarketAgent::SubscribeQuotes( std::set<std::string>& subcribeSet )
 
 		// loop set for copying each symbol to array
 		int idx = 0;
-		for (set<string>::iterator iter = subcribeSet.begin(); 
-			iter !=subcribeSet.end(); ++iter, ++idx)
+		for (vector<string>::iterator iter = subcribeArr.begin(); 
+			iter != subcribeArr.end(); ++iter, ++idx)
 		{
 			symbols[idx] = new char[SYMBOL_MAX_LENGTH];
 			strcpy(symbols[idx], iter->c_str());
@@ -292,12 +357,13 @@ bool CMarketAgent::SubscribeQuotes( std::set<std::string>& subcribeSet )
 	return retVal;
 }
 
-bool CMarketAgent::UnsubscribeQuotes( std::set<std::string>& unsubcribeSet )
+// Really unsubscribe symbols on market
+bool CMarketAgent::SubmitUnsubscribes( std::vector<std::string>& unsubcribeArr )
 {
 	bool retVal = false;
 
 	// know symbols's count
-	int symbCount = unsubcribeSet.size();
+	int symbCount = unsubcribeArr.size();
 
 	if(symbCount > 0)
 	{
@@ -309,8 +375,8 @@ bool CMarketAgent::UnsubscribeQuotes( std::set<std::string>& unsubcribeSet )
 
 		// loop set for copying each symbol to array
 		int idx = 0;
-		for (set<string>::iterator iter = unsubcribeSet.begin(); 
-			iter !=unsubcribeSet.end(); ++iter, ++idx)
+		for (vector<string>::iterator iter = unsubcribeArr.begin(); 
+			iter !=unsubcribeArr.end(); ++iter, ++idx)
 		{
 			symbols[idx] = new char[SYMBOL_MAX_LENGTH];
 			strcpy(symbols[idx], iter->c_str());
@@ -320,23 +386,23 @@ bool CMarketAgent::UnsubscribeQuotes( std::set<std::string>& unsubcribeSet )
 		try	
 		{
 			logger.Trace(info.str());
-			// 'REALLY' submit symbols to server side
-			int iResult = m_pUserApi->SubscribeMarketData(symbols, symbCount);
+			// 'REALLY' unsubscribe symbols to server side
+			int iResult = m_pUserApi->UnSubscribeMarketData(symbols, symbCount);
 
 			if(iResult == 0)
 			{
 				retVal = true;
-				logger.Info("Subscribe quotes successfully.");
+				logger.Info("Unsubscribe quotes successfully.");
 			}
 			else
 			{
 				retVal = false;
-				logger.Error("Failed to subscribe quotes");
+				logger.Error("Failed to unsubscribe quotes");
 			}
 		}
 		catch(...)
 		{
-			logger.Error("Unknown error happent while subscribe market data for quoting");
+			logger.Error("Unknown error happent while Unsubscribe quoting");
 		}
 
 		for(int i = 0; i < symbCount; ++i)
@@ -358,76 +424,14 @@ bool CMarketAgent::SubmitToServer()
 {
 	bool retVal = false;
 
-	// update m_subscribingSymbols to latest
-	bool needSubmit = GetSubscribingSymbols();
+	// update m_subscribingSymbols to latest and get subscribe array and unsubscribe array
+	vector<string> subscribeArr, unsubscribeArr;
+	bool needSubmit = GetUpdateSymbolSet(subscribeArr, unsubscribeArr);
 	if(needSubmit)
 	{
-		stringstream info(std::stringstream::out);
-		info <<	"Subscribe quote for symbols as following " << endl;
+		bool succ = SubmitSubscribes(subscribeArr);
 
-		// know symbols's count
-		int symbCount = m_subscribingSymbols.size();
-
-		if(symbCount > 0)
-		{
-			// new string array
-			char** symbols = new char*[symbCount];
-
-			// loop set for copying each symbol to array
-			int idx = 0;
-			for (set<string>::iterator iter = m_subscribingSymbols.begin(); 
-				iter !=m_subscribingSymbols.end(); ++iter, ++idx)
-			{
-				symbols[idx] = new char[SYMBOL_MAX_LENGTH];
-				strcpy(symbols[idx], iter->c_str());
-				info << iter->c_str() << " ";
-			}
-
-			try	
-			{
-				logger.Trace(info.str());
-				// 'REALLY' submit symbols to server side
-				int iResult = m_pUserApi->SubscribeMarketData(symbols, symbCount);
-
-				if(iResult == 0)
-				{
-					retVal = true;
-					logger.Info("Subscribe quotes successfully.");
-				}
-				else
-				{
-					retVal = false;
-					logger.Error("Failed to subscribe quotes");
-				}
-			}
-			catch(...)
-			{
-				logger.Error("Unknown error happent while subscribe market data for quoting");
-			}
-
-			for(int i = 0; i < symbCount; ++i)
-			{
-				delete[] symbols[i];
-			}
-			delete[] symbols; 
-		}
-		else
-		{
-			// no symbols at all, just unsubcribe quotes
-			// 'REALLY' submit symbols to server side
-			int iResult = m_pUserApi->UnSubscribeMarketData();
-
-			if(iResult == 0)
-			{
-				retVal = true;
-				logger.Info("Subscribe quotes successfully.");
-			}
-			else
-			{
-				retVal = false;
-				logger.Error("Failed to subscribe quotes");
-			}
-		}
+		succ = SubmitUnsubscribes(unsubscribeArr);
 	}
 	else
 	{
@@ -438,7 +442,7 @@ bool CMarketAgent::SubmitToServer()
 	return retVal;
 }
 
-bool CMarketAgent::GetSubscribingSymbols()
+bool CMarketAgent::GetUpdateSymbolSet(std::vector<std::string>& subscribeArr, std::vector<std::string>& unsubscribeArr)
 {
 	bool needSubmit = true;
 
@@ -449,13 +453,21 @@ bool CMarketAgent::GetSubscribingSymbols()
 		currentSymbols.insert(iter->first);
 	}
 	
-	// assign vector size with larger between new one and old one
-	int biggerSize = max(currentSymbols.size(), m_subscribingSymbols.size());
-	vector<string> diff(biggerSize);
-	vector<string>::iterator iterDiff = set_symmetric_difference(currentSymbols.begin(), currentSymbols.end(),
+	// the largest possible size of subscribe array will be currentSymbols' size
+	subscribeArr.resize(currentSymbols.size());
+	vector<string>::iterator subscribeDiff = set_difference(currentSymbols.begin(), currentSymbols.end(),
 															m_subscribingSymbols.begin(), m_subscribingSymbols.end(),
-															diff.begin());
-	if(iterDiff == diff.begin())
+															subscribeArr.begin());
+	subscribeArr.shrink_to_fit();
+
+	// the same thing with unsubscribeArr and m_subscribingSymbols which is last time of subscribing symbols
+	unsubscribeArr.resize(m_subscribingSymbols.size());
+	vector<string>::iterator unsubDiff = set_difference(m_subscribingSymbols.begin(), m_subscribingSymbols.end(),
+														currentSymbols.begin(), currentSymbols.end(),
+														unsubscribeArr.begin());
+	unsubscribeArr.shrink_to_fit();
+
+	if(subscribeArr.size() == 0 && unsubscribeArr.size() == 0)
 	{
 		// no difference at all, don't need to submit to server
 		needSubmit = false;

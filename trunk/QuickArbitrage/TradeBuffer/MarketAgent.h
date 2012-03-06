@@ -20,7 +20,7 @@ public:
 	void Logout( const char* brokerID, const char* userID );
 
 	bool SubscribeQuotes(QuoteListener* pQuoteListener);
-	bool ChangeQuotes(QuoteListener* pQuoteListener);
+	bool ChangeQuotes(QuoteListener* pQuoteListener, std::vector<std::string>& changeSymbols );
 	void UnsubscribeQuotes(boost::uuids::uuid& token);
 
 private:
@@ -28,11 +28,11 @@ private:
 
 	int RequestIDIncrement();
 
-	bool GetSubscribingSymbols();
+	bool GetUpdateSymbolSet(std::vector<std::string>& subscribeArr, std::vector<std::string>& unsubscribeArr);
 	bool SubmitToServer();
 
-	bool SubscribeQuotes(std::set<std::string>& subcribeSet);
-	bool UnsubscribeQuotes(std::set<std::string>& unsubcribeSet);
+	bool SubmitSubscribes(std::vector<std::string>& subscribeArr);
+	bool SubmitUnsubscribes(std::vector<std::string>& unsubscribeArr);
 
 	CThostFtdcMdApi* m_pUserApi;
 	CMktDataResponse m_mktResponse;
