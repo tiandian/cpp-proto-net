@@ -3,6 +3,6 @@ class ClientBase
 {
 public:
 	ClientBase(void);
-	~ClientBase(void);
+	virtual ~ClientBase(void);
 };
 

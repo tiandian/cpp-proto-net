@@ -25,9 +25,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MktDataResponse.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ConnectionManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -64,12 +61,12 @@
     <ClInclude Include="LogSeverityLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MarketAgentCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MktDataResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConnectionManager.cpp">
@@ -106,6 +103,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MarketAgentCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
