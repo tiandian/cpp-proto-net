@@ -97,7 +97,7 @@ copy /y .\TradeBuffer.cfg $(OutDir)</Command>
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="MarketAgent.h" />
-    <ClInclude Include="MktDataResponse.h" />
+    <ClInclude Include="MarketAgentCallback.h" />
     <ClInclude Include="OrderManager.h" />
     <ClInclude Include="QuoteAggregator.h" />
     <ClInclude Include="QuoteListener.h" />
@@ -113,7 +113,7 @@ copy /y .\TradeBuffer.cfg $(OutDir)</Command>
     <ClCompile Include="ConsoleClient.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MarketAgent.cpp" />
-    <ClCompile Include="MktDataResponse.cpp" />
+    <ClCompile Include="MarketAgentCallback.cpp" />
     <ClCompile Include="OrderManager.cpp" />
     <ClCompile Include="QuoteAggregator.cpp" />
     <ClCompile Include="QuoteListener.cpp" />

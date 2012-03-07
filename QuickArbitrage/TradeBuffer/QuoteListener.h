@@ -9,7 +9,7 @@ class QuoteListener
 {
 protected:
 	QuoteListener(void);
-	~QuoteListener(void);
+	virtual ~QuoteListener(void);
 
 public:
 	boost::uuids::uuid& GetUuid(){ return m_token; }
