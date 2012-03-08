@@ -1,4 +1,7 @@
 #pragma once
+
+#include "protobuf_gen/quote.pb.h"
+
 class CMarketAgentCallback
 {
 public:
@@ -9,6 +12,6 @@ public:
 
 	virtual void OnUnsubscribeCompleted() = 0;
 
-	virtual void OnQuoteReceived() = 0;
+	virtual void OnQuoteReceived(CTP::Quote* pQuote) = 0;
 };
 

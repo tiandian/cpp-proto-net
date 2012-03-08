@@ -6,11 +6,8 @@
 #include <sstream>
 #include <algorithm>
 #include <boost/smart_ptr.hpp>
-#include <boost/circular_buffer.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
-
-#define SYMBOL_MAX_LENGTH 10
 
 using namespace std;
 
@@ -18,13 +15,15 @@ extern CConfiguration config;
 extern CLogManager	logger;
 
 CQuoteAggregator::CQuoteAggregator(void):
-	m_pMarketAgent(NULL)
+	m_pMarketAgent(NULL), m_pBufferRunner(NULL)
 {
+	m_pBufferRunner = new CBufferRunner<CTP::Quote*>(boost::bind(&CQuoteAggregator::DispatchQuotes, this, _1));
 }
-
 
 CQuoteAggregator::~CQuoteAggregator(void)
 {
+	if(m_pBufferRunner != NULL)
+		delete m_pBufferRunner;
 }
 
 bool CQuoteAggregator::SubscribeQuotes( QuoteListener* pQuoteListener )
@@ -38,35 +37,39 @@ bool CQuoteAggregator::SubscribeQuotes( QuoteListener* pQuoteListener )
 
 	pQuoteListener->SetUuid(token);
 
-	// add it to listener map
-	m_mapQuoteListeners.insert( pair<boost::uuids::uuid, QuoteListener*>(token, pQuoteListener));
-
-	// know which symbols to subscribe
-	vector<string>& regSymbols = pQuoteListener->GetSymbols();
-	for(vector<string>::iterator iter = regSymbols.begin(); iter != regSymbols.end(); ++iter)
 	{
-		string& s = *iter;
-		// see if the symbol already registered
-		SymbolListenerMap::iterator mapIter = m_mapSymbolListeners.find(s);
-		if(mapIter == m_mapSymbolListeners.end())
-		{
-			// not registered yet, need to create a new vector for token;
-			TokenSet tokenSet;
-			tokenSet.insert(token);
-			m_mapSymbolListeners.insert(pair<std::string, TokenSet>(s, tokenSet));
-		}
-		else
-		{
-			// already registered, just add the token to existing token vector
-			(mapIter->second).insert(token);
-		}
+		 WriteLock w_lock(m_lock);
+
+		 // add it to listener map
+		 m_mapQuoteListeners.insert( pair<boost::uuids::uuid, QuoteListener*>(token, pQuoteListener));
+
+		 // know which symbols to subscribe
+		 vector<string>& regSymbols = pQuoteListener->GetSymbols();
+		 for(vector<string>::iterator iter = regSymbols.begin(); iter != regSymbols.end(); ++iter)
+		 {
+			 string& s = *iter;
+			 // see if the symbol already registered
+			 SymbolListenerMap::iterator mapIter = m_mapSymbolListeners.find(s);
+			 if(mapIter == m_mapSymbolListeners.end())
+			 {
+				 // not registered yet, need to create a new vector for token;
+				 TokenSet tokenSet;
+				 tokenSet.insert(token);
+				 m_mapSymbolListeners.insert(pair<std::string, TokenSet>(s, tokenSet));
+			 }
+			 else
+			 {
+				 // already registered, just add the token to existing token vector
+				 (mapIter->second).insert(token);
+			 }
+		 }
+
+		 stringstream info(stringstream::out);
+		 info << "A new quote listener subscribing with uuid(' " << token << ")'";
+		 logger.Trace(info.str());
+
+		 bool sumbit = SubmitToServer();
 	}
-
-	stringstream info(stringstream::out);
-	info << "A new quote listener subscribing with uuid(' " << token << ")'";
-	logger.Trace(info.str());
-
-	bool sumbit = SubmitToServer();
 
 	return true;
 }
@@ -77,67 +80,71 @@ bool CQuoteAggregator::ChangeQuotes( QuoteListener* pQuoteListener, std::vector<
 
 	boost::uuids::uuid& token = pQuoteListener->GetUuid();
 
-	QuoteListenerMap::iterator foundIter = m_mapQuoteListeners.find(token);
-	if(foundIter != m_mapQuoteListeners.end())
 	{
-		// found this token
-		vector<string>& origSymbols = (foundIter->second)->GetSymbols();
+		WriteLock w_lock(m_lock);
 
-		// Find out newly added symbols in newSymbols but not in origSymbols
-		vector<string> added(changeSymbols.size());
-		vector<string>::iterator addedIter = set_difference(changeSymbols.begin(), changeSymbols.end(),
-			origSymbols.begin(), origSymbols.end(),
-			added.begin());
-		added.shrink_to_fit();
-
-		for (vector<string>::iterator adIt = added.begin(); adIt != added.end(); ++adIt)
+		QuoteListenerMap::iterator foundIter = m_mapQuoteListeners.find(token);
+		if(foundIter != m_mapQuoteListeners.end())
 		{
-			string& s = *adIt;
-			// see if the symbol already registered
-			SymbolListenerMap::iterator mapIter = m_mapSymbolListeners.find(s);
-			if(mapIter == m_mapSymbolListeners.end())
-			{
-				// not registered yet, need to create a new vector for token;
-				TokenSet tokenSet;
-				tokenSet.insert(token);
-				m_mapSymbolListeners.insert(pair<std::string, TokenSet>(s, tokenSet));
-			}
-			else
-			{
-				// already registered, just add the token to existing token vector
-				(mapIter->second).insert(token);
-			}
-		}
+			// found this token
+			vector<string>& origSymbols = (foundIter->second)->GetSymbols();
 
-		// Find out those in origSymbols but not in newSymbols, remove them
-		vector<string> toRemoved(origSymbols.size());
-		vector<string>::iterator removedIter = set_difference(origSymbols.begin(), origSymbols.end(),
-			changeSymbols.begin(), changeSymbols.end(),
-			toRemoved.begin());
-		toRemoved.shrink_to_fit();
+			// Find out newly added symbols in newSymbols but not in origSymbols
+			vector<string> added(changeSymbols.size());
+			vector<string>::iterator addedIter = set_difference(changeSymbols.begin(), changeSymbols.end(),
+				origSymbols.begin(), origSymbols.end(),
+				added.begin());
+			added.shrink_to_fit();
 
-		for (vector<string>::iterator delIt = toRemoved.begin(); delIt != toRemoved.end(); ++delIt)
-		{
-			string& s = *delIt;
-			SymbolListenerMap::iterator foundSymbol = m_mapSymbolListeners.find(s);
-			if(foundSymbol != m_mapSymbolListeners.end())
+			for (vector<string>::iterator adIt = added.begin(); adIt != added.end(); ++adIt)
 			{
-				TokenSet& tokens = foundSymbol->second;
-				tokens.erase(token);
-
-				if(tokens.size() == 0)
+				string& s = *adIt;
+				// see if the symbol already registered
+				SymbolListenerMap::iterator mapIter = m_mapSymbolListeners.find(s);
+				if(mapIter == m_mapSymbolListeners.end())
 				{
-					// if there is no token for the symbol, erase this from map
-					m_mapSymbolListeners.erase(foundSymbol);
+					// not registered yet, need to create a new vector for token;
+					TokenSet tokenSet;
+					tokenSet.insert(token);
+					m_mapSymbolListeners.insert(pair<std::string, TokenSet>(s, tokenSet));
+				}
+				else
+				{
+					// already registered, just add the token to existing token vector
+					(mapIter->second).insert(token);
 				}
 			}
+
+			// Find out those in origSymbols but not in newSymbols, remove them
+			vector<string> toRemoved(origSymbols.size());
+			vector<string>::iterator removedIter = set_difference(origSymbols.begin(), origSymbols.end(),
+				changeSymbols.begin(), changeSymbols.end(),
+				toRemoved.begin());
+			toRemoved.shrink_to_fit();
+
+			for (vector<string>::iterator delIt = toRemoved.begin(); delIt != toRemoved.end(); ++delIt)
+			{
+				string& s = *delIt;
+				SymbolListenerMap::iterator foundSymbol = m_mapSymbolListeners.find(s);
+				if(foundSymbol != m_mapSymbolListeners.end())
+				{
+					TokenSet& tokens = foundSymbol->second;
+					tokens.erase(token);
+
+					if(tokens.size() == 0)
+					{
+						// if there is no token for the symbol, erase this from map
+						m_mapSymbolListeners.erase(foundSymbol);
+					}
+				}
+			}
+
+			// The last, update to changed symbols set
+			(foundIter->second)->SetSymbols(changeSymbols);
+
+			// Finally, update to server
+			bool sumbit = SubmitToServer();
 		}
-
-		// The last, update to changed symbols set
-		(foundIter->second)->SetSymbols(changeSymbols);
-
-		// Finally, update to server
-		bool sumbit = SubmitToServer();
 	}
 
 	return true;
@@ -145,6 +152,8 @@ bool CQuoteAggregator::ChangeQuotes( QuoteListener* pQuoteListener, std::vector<
 
 void CQuoteAggregator::UnsubscribeQuotes( boost::uuids::uuid& token )
 {
+	WriteLock w_lock(m_lock);
+
 	QuoteListenerMap::iterator foundIter = m_mapQuoteListeners.find(token);
 	if(foundIter != m_mapQuoteListeners.end())
 	{
@@ -187,17 +196,19 @@ bool CQuoteAggregator::GetUpdateSymbolSet( std::vector<std::string>& subscribeAr
 
 	// the largest possible size of subscribe array will be currentSymbols' size
 	subscribeArr.resize(currentSymbols.size());
-	vector<string>::iterator subscribeDiff = set_difference(currentSymbols.begin(), currentSymbols.end(),
+	vector<string>::iterator subscribeDiffIter = set_difference(currentSymbols.begin(), currentSymbols.end(),
 		m_subscribingSymbols.begin(), m_subscribingSymbols.end(),
 		subscribeArr.begin());
-	subscribeArr.shrink_to_fit();
+	int subDiffCount = subscribeDiffIter - subscribeArr.begin();
+	subscribeArr.resize(subDiffCount);
 
 	// the same thing with unsubscribeArr and m_subscribingSymbols which is last time of subscribing symbols
 	unsubscribeArr.resize(m_subscribingSymbols.size());
-	vector<string>::iterator unsubDiff = set_difference(m_subscribingSymbols.begin(), m_subscribingSymbols.end(),
+	vector<string>::iterator unsubDiffIter = set_difference(m_subscribingSymbols.begin(), m_subscribingSymbols.end(),
 		currentSymbols.begin(), currentSymbols.end(),
 		unsubscribeArr.begin());
-	unsubscribeArr.shrink_to_fit();
+	int unSubDiffCount = unsubDiffIter - unsubscribeArr.begin();
+	unsubscribeArr.resize(unSubDiffCount);
 
 	if(subscribeArr.size() == 0 && unsubscribeArr.size() == 0)
 	{
@@ -235,9 +246,15 @@ bool CQuoteAggregator::SubmitToServer()
 	return retVal;
 }
 
-void CQuoteAggregator::DispatchQuotes()
-{
 
+void CQuoteAggregator::OnQuoteReceived(CTP::Quote* pQuote)
+{
+	m_pBufferRunner->Enqueue(pQuote);
+}
+
+void CQuoteAggregator::DispatchQuotes(CTP::Quote* pQuote)
+{
+	ReadLock r_lock(m_lock);
 }
 
 void CQuoteAggregator::Initialize( CMarketAgent* pAgent )
@@ -258,7 +275,3 @@ void CQuoteAggregator::OnUnsubscribeCompleted()
 
 }
 
-void CQuoteAggregator::OnQuoteReceived()
-{
-
-}
