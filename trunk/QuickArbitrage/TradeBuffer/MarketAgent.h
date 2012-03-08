@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <string>
+#include <boost/thread.hpp>
 
 class CMarketAgent : public CThostFtdcMdSpi
 {
@@ -14,6 +15,7 @@ public:
 	~CMarketAgent(void);
 
 	bool Connect();
+	void Disconnect();
 	bool Login(const char* brokerID, const char* userID, const char* password);
 	void Logout( const char* brokerID, const char* userID );
 
@@ -66,5 +68,9 @@ private:
 	
 	// «Î«Û±‡∫≈
 	int m_iRequestID;
+
+	boost::condition_variable m_condConnectDone;
+	boost::mutex m_mutex;
+	boost::thread m_thQuoting;
 };
 
