@@ -31,6 +31,7 @@ bool CConfiguration::Load( int argc, _TCHAR* argv[] )
 		generic.add_options()
 			("version,v", "print version string")
 			("help,h", "produce help message")
+			("ctrl", po::value<string>(&m_controlType)->default_value(CONSOLE), "how to manipulate this program, command or remote")
 			("config,c", po::value<string>(&configFile)->default_value("TradeBuffer.cfg"),
 			"path of a file of a configuration.")
 			;
@@ -138,6 +139,11 @@ const char* CConfiguration::GetInvestorID()
 const char* CConfiguration::GetPassword()
 {
 	return m_password.c_str();
+}
+
+const char* CConfiguration::GetControlType()
+{
+	return m_controlType.c_str();
 }
 
 

@@ -23,7 +23,10 @@ CQuoteAggregator::CQuoteAggregator(void):
 CQuoteAggregator::~CQuoteAggregator(void)
 {
 	if(m_pBufferRunner != NULL)
+	{
+		m_pBufferRunner->Stop();
 		delete m_pBufferRunner;
+	}
 }
 
 bool CQuoteAggregator::SubscribeQuotes( QuoteListener* pQuoteListener )
@@ -306,6 +309,10 @@ void CQuoteAggregator::Initialize( CMarketAgent* pAgent )
 	
 	// Register callback
 	m_pMarketAgent->SetCallbackHanlder(this);
+
+	m_pBufferRunner->Start();
+
+	logger.Info("Quote aggregator initialized.");
 }
 
 void CQuoteAggregator::OnSubscribeCompleted()

@@ -4,6 +4,9 @@
 
 #include "LogSeverityLevel.h"
 
+#define CONSOLE "console"
+#define REMOTE "remote"
+
 class CConfiguration
 {
 public:
@@ -20,6 +23,7 @@ public:
 	const char* GetBrokerID();
 	const char* GetInvestorID();
 	const char* GetPassword();
+	const char* GetControlType();
 
 private:
 	// Logging
@@ -33,5 +37,6 @@ private:
 	std::string m_investorID;
 	std::string m_password;
 
+	std::string m_controlType;
 };
 
