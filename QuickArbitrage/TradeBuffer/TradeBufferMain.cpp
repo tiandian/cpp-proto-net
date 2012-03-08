@@ -8,10 +8,13 @@
 #include "MarketAgent.h"
 #include "QuoteAggregator.h"
 #include "OrderManager.h"
+#include "ConsoleClient.h"
 
 #include <iostream>
 #include <string>
 #include <boost/thread/locks.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/foreach.hpp>
 #include <google/protobuf/stubs/common.h>
 
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
@@ -30,7 +33,9 @@ COrderManager g_orderMgr;
 //////////////////////////////////////////////////////////////////////////
 
 void PrintHelp();
-void Cleanup(); 
+void Cleanup();
+void ConsoleExecuteSubscribe(CConsoleClient* pConsole, string& cmd);
+void ConsoleExecuteUnSubscribe(CConsoleClient* pConsole);
 
 boost::condition_variable _condExit;
 boost::mutex _mut;
@@ -65,12 +70,16 @@ int _tmain(int argc, _TCHAR* argv[])
 	
 	if(ctrl_type == CONSOLE)
 	{
+		CConsoleClient consoleClient;
+
 		bool exit = false;
 		while(!exit)
 		{
 			string command;
 			cout << ">";
-			cin >> command;
+			std::getline(cin, command);
+			//cin >> command;
+			boost::to_lower(command);
 			if(command == "q" || command == "quit")
 			{
 				exit = true;
@@ -79,6 +88,18 @@ int _tmain(int argc, _TCHAR* argv[])
 			else if(command == "h" || command == "help")
 			{
 				PrintHelp();
+			}
+			else if(boost::istarts_with(command, "subscribe"))
+			{
+				ConsoleExecuteSubscribe(&consoleClient, command);
+			}
+			else if(boost::istarts_with(command, "unsub"))
+			{
+				ConsoleExecuteUnSubscribe(&consoleClient);
+			}
+			else if(boost::istarts_with(command, "unsuball"))
+			{
+				ConsoleExecuteUnSubscribe(&consoleClient);
 			}
 			else
 			{
@@ -104,7 +125,11 @@ void ExitProgramFromRemote()
 
 void PrintHelp()
 {
-	cout << "here is help" << endl;
+	cout << "Allowed commands are following" << endl;
+	cout << "	q or quit" << endl;
+	cout << "	subscribe [symbol] ..." << endl;
+	cout << "	unsub" << endl;
+
 }
 
 void Cleanup()
@@ -112,4 +137,37 @@ void Cleanup()
 	cout << "do some clean up before quit" << endl;
 	g_marketAgent.Logout(config.GetBrokerID(), config.GetInvestorID());
 	g_marketAgent.Disconnect();
+}
+
+void OutputSubcribedSymbol(CConsoleClient* pConsole)
+{
+	vector<string>& symbols = pConsole->GetSymbols();
+	BOOST_FOREACH(string s, symbols)
+	{
+		cout << s << ", ";
+	}
+	cout << endl;
+}
+
+void ConsoleExecuteSubscribe(CConsoleClient* pConsole, string& cmd)
+{
+	typedef vector< string > split_vector_type;
+
+	split_vector_type splitVec; 
+	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
+
+	if(splitVec.size() > 1)
+	{
+		splitVec.erase(splitVec.begin()); // remove the first;
+		pConsole->Subscribe( splitVec );
+	}
+	else
+	{
+		OutputSubcribedSymbol(pConsole);
+	}
+}
+
+void ConsoleExecuteUnSubscribe(CConsoleClient* pConsole)
+{
+	pConsole->UnSubscribe();
 }

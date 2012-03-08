@@ -293,6 +293,17 @@ bool CMarketAgent::SubscribesQuotes( std::vector<std::string>& subscribeArr )
 
 void CMarketAgent::OnRspSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	if(pRspInfo->ErrorID == 0)
+	{
+		logger.Trace("Subscribing quotes succeeded.");
+	}
+	else
+	{
+		string warn = "Subscribe failed due to ";
+		warn.append(pRspInfo->ErrorMsg);
+		logger.Warning(warn);
+	}
+
 	if(m_pCallback != NULL)
 	{
 		m_pCallback->OnSubscribeCompleted();
@@ -359,6 +370,17 @@ bool CMarketAgent::UnSubscribesQuotes( std::vector<std::string>& unSubscribeArr 
 
 void CMarketAgent::OnRspUnSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	if(pRspInfo->ErrorID == 0)
+	{
+		logger.Trace("UnSubscribing succeeded.");
+	}
+	else
+	{
+		string warn = "UnSubscribe failed due to ";
+		warn.append(pRspInfo->ErrorMsg);
+		logger.Warning(warn);
+	}
+
 	if(m_pCallback != NULL)
 	{
 		m_pCallback->OnUnsubscribeCompleted();

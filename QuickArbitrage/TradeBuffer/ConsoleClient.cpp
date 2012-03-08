@@ -1,12 +1,25 @@
 #include "StdAfx.h"
 #include "ConsoleClient.h"
+#include "LogManager.h"
 
+extern CLogManager logger;
 
-ConsoleClient::ConsoleClient(void)
+CConsoleClient::CConsoleClient(void):
+	m_streamOut(std::stringstream::out)
 {
 }
 
 
-ConsoleClient::~ConsoleClient(void)
+CConsoleClient::~CConsoleClient(void)
 {
+}
+
+void CConsoleClient::ProcessQuote( CTP::Quote* pQuote )
+{
+	m_streamOut.str("");
+	m_streamOut << pQuote->symbol() << ", ";
+	m_streamOut << pQuote->last() << ", ";
+	m_streamOut << pQuote->update_time() << endl;
+
+	logger.Info(m_streamOut.str());
 }
