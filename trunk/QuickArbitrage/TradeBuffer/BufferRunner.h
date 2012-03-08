@@ -18,7 +18,7 @@ public:
 
 	void Start()
 	{
-		//boost::thread th(boost::bind(&CBufferRunner::Dequeue, this));
+		m_isRunning = true;
 		m_thread = boost::thread(boost::bind(&CBufferRunner::Dequeue, this));
 	}
 
@@ -39,6 +39,7 @@ public:
 	}
 
 private:
+
 	void Dequeue()
 	{
 		while(m_isRunning)
@@ -56,6 +57,8 @@ private:
 			m_cbQuotes.pop_front();
 		}  
 	}
+
+
 
 	boost::condition_variable m_cond;
 	boost::mutex m_mutex;

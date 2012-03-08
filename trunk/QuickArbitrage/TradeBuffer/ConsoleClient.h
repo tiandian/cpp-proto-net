@@ -1,10 +1,19 @@
 #pragma once
 #include "clientbase.h"
-class ConsoleClient :
+
+#include <sstream>
+
+class CConsoleClient :
 	public ClientBase
 {
 public:
-	ConsoleClient(void);
-	~ConsoleClient(void);
+	CConsoleClient(void);
+	~CConsoleClient(void);
+
+protected:
+	virtual void ProcessQuote(CTP::Quote* pQuote);
+
+private:
+	std::stringstream m_streamOut;
 };
 

@@ -160,9 +160,10 @@ void CQuoteAggregator::UnsubscribeQuotes( boost::uuids::uuid& token )
 	QuoteListenerMap::iterator foundIter = m_mapQuoteListeners.find(token);
 	if(foundIter != m_mapQuoteListeners.end())
 	{
+		QuoteListener* pListener = (foundIter->second);
 		// found this token
-		vector<string>& symbols = (foundIter->second)->GetSymbols();
-		boost::uuids::uuid token = (foundIter->second)->GetUuid();
+		vector<string>& symbols = pListener->GetSymbols();
+		boost::uuids::uuid token = pListener->GetUuid();
 
 		for(vector<string>::iterator it = symbols.begin(); it != symbols.end(); ++it)
 		{
@@ -183,6 +184,9 @@ void CQuoteAggregator::UnsubscribeQuotes( boost::uuids::uuid& token )
 		m_mapQuoteListeners.erase(foundIter);
 
 		bool sumbit = SubmitToServer();
+
+		pListener->GetSymbols().clear();
+		pListener->SetUuid(boost::uuids::nil_uuid());
 	}
 }
 
