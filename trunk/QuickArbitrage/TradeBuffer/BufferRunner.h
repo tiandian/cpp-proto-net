@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Util/CallBack.h"
-
 #include <boost/thread.hpp>
 #include <boost/circular_buffer.hpp>
 

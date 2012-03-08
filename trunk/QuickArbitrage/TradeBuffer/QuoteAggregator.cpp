@@ -254,7 +254,50 @@ void CQuoteAggregator::OnQuoteReceived(CTP::Quote* pQuote)
 
 void CQuoteAggregator::DispatchQuotes(CTP::Quote* pQuote)
 {
-	ReadLock r_lock(m_lock);
+	try{
+		ReadLock r_lock(m_lock);
+
+		const string& symbol = pQuote->symbol();
+
+		// see if we subscribe this symbol
+		SymbolListenerMap::iterator foundIter = m_mapSymbolListeners.find(symbol);
+		if(foundIter != m_mapSymbolListeners.end())
+		{
+			// yes, we're looking forward to it
+			TokenSet& tokens = foundIter->second;
+			// see how many listeners are waiting for this quote
+			for (TokenSet::iterator tokenIt = tokens.begin(); tokenIt != tokens.end(); ++tokenIt)
+			{
+				// get the uuid(token)
+				const boost::uuids::uuid& tk = *tokenIt;
+
+				// find the quote listener pointer from map
+				QuoteListenerMap::iterator listenerIter = m_mapQuoteListeners.find(tk);
+				if(listenerIter != m_mapQuoteListeners.end())
+				{
+					// find it, just invoke
+					(listenerIter->second)->OnQuoteRecevied(pQuote);
+				}
+			}
+		}
+		else
+		{
+			// received a symbol we didn't subscribe, this should not happen frequently
+			string debugTxt = "unexpected quote for " + symbol;
+			logger.Debug(debugTxt);
+		}
+	}
+	catch(std::exception& e)
+	{
+		stringstream ss(stringstream::out);
+		ss << "Encounter error while dispatching quote('" << pQuote->symbol() << "')" << " detail is following" << endl;
+		ss << e.what();
+		logger.Error(ss.str());
+	}
+	catch(...)
+	{
+		logger.Error("Encouter an unknown error while dispatching quote");
+	}
 }
 
 void CQuoteAggregator::Initialize( CMarketAgent* pAgent )

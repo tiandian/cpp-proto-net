@@ -1,5 +1,7 @@
 #pragma once
 
+#include "protobuf_gen/quote.pb.h"
+
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -18,7 +20,7 @@ public:
 	std::vector<std::string>& GetSymbols(){ return m_symbols; }
 	void SetSymbols(std::vector<std::string>& reg_symbols);
 	
-	virtual void OnQuoteRecevied() = 0;
+	virtual void OnQuoteRecevied(CTP::Quote* pQuote) = 0;
 
 protected:
 	boost::uuids::uuid m_token;

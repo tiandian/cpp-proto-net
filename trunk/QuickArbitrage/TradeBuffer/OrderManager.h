@@ -8,6 +8,6 @@ public:
 	COrderManager(void);
 	~COrderManager(void);
 
-	virtual void OnQuoteRecevied();
+	virtual void OnQuoteRecevied(CTP::Quote* pQuote);
 };
 
