@@ -5,7 +5,7 @@
 #include <fstream>
 #include <boost/program_options.hpp>
 
-#define APP_VERSION "0.1.304"
+#define APP_VERSION "0.2.308"
 
 namespace po = boost::program_options;
 using namespace std;
