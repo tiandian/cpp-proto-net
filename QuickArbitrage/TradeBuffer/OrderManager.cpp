@@ -11,7 +11,7 @@ COrderManager::~COrderManager(void)
 {
 }
 
-void COrderManager::OnQuoteRecevied()
+void COrderManager::OnQuoteRecevied(CTP::Quote* pQuote)
 {
 
 }
