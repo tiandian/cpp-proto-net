@@ -1,0 +1,133 @@
+package CTP;
+
+message Quote {
+	// 合约代码
+	required string symbol = 1;
+
+	// 交易日
+	required string trading_day = 2;
+	
+	// 交易所代码
+	required string exchange_id = 3;
+
+	// 合约在交易所的代码
+	required string exchange_symbol_id =4;
+
+	// 最新价
+	required double last = 5;
+
+	// 上次结算价
+	required double prev_settlement_price = 6;
+
+	// 昨收盘
+	required double prev_close = 7;
+
+	// 昨持仓量
+	required double prev_open_interest = 8;
+
+	// 今开盘
+	required double open = 9;
+
+	// 最高价
+	required double high = 10;
+
+	// 最低价
+	required double low = 11;
+
+	// 数量
+	required int32 volume = 12;
+
+	// 成交金额
+	required double turnover = 13;
+
+	// 持仓量
+	required double open_interest = 14;
+
+	// 今收盘
+	required double close = 15;
+
+	// 本次结算价
+	required double settlement_price = 16;
+
+	// 涨停板价
+	required double upper_limit_price = 17;
+
+	// 跌停板价
+	required double lower_limit_price = 18;
+
+	// 昨虚实度
+	required double prev_delta = 19;
+
+	// 今虚实度
+	required double curr_delta = 20;
+
+	// 最后修改时间
+	required string update_time = 21;
+
+	// 最后修改毫秒
+	required int32 update_millisec = 22;
+
+	// 申买价一
+	required double bid = 23;
+
+	// 申买量一
+	required int32 bid_size = 24;
+
+	// 申卖价一
+	required double ask = 25;
+
+	// 申卖量一
+	required int32 ask_size = 26;
+
+	// 申买价二
+	required double bid_2 = 27;
+
+	// 申买量二
+	required int32 bid_size_2 = 28;
+
+	// 申卖价二
+	required double ask_2 = 29;
+
+	// 申卖量二
+	required int32 ask_size_2 = 30;
+
+	// 申买价三
+	required double bid_3 = 31;
+
+	// 申买量三
+	required int32 bid_size_3 = 32;
+
+	// 申卖价三
+	required double ask_3 = 33;
+
+	// 申卖量三
+	required int32 ask_size_3 = 34;
+
+	// 申买价四
+	required double bid_4 = 35;
+
+	// 申买量四
+	required int32 bid_size_4 = 36;
+
+	// 申卖价四
+	required double ask_4 = 37;
+
+	// 申卖量四
+	required int32 ask_size_4 = 38;
+
+	// 申买价五
+	required double bid_5 = 39;
+
+	// 申买量五
+	required int32 bid_size_5 = 40;
+
+	// 申卖价五
+	required double ask_5 = 41;
+
+	// 申卖量五
+	required int32 ask_size_5 = 42;
+
+	// 当日均价
+	required double average_price = 43;
+}
+

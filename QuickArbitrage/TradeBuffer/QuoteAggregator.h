@@ -3,11 +3,15 @@
 #include "QuoteListener.h"
 #include "MarketAgent.h"
 #include "MarketAgentCallback.h"
+#include "BufferRunner.h"
 
 #include <map>
 #include <set>
-#include <boost/uuid/uuid.hpp>
 #include <vector>
+#include <boost/uuid/uuid.hpp>
+#include <boost/circular_buffer.hpp>
+#include <boost/thread/locks.hpp> 
+
 
 class CQuoteAggregator : public CMarketAgentCallback
 {
@@ -23,10 +27,10 @@ public:
 
 	virtual void OnSubscribeCompleted();
 	virtual void OnUnsubscribeCompleted();
-	virtual void OnQuoteReceived();
+	virtual void OnQuoteReceived(CTP::Quote* pQuote);
 
 private:
-	void DispatchQuotes();
+	void DispatchQuotes(CTP::Quote* pQuote);
 
 	bool GetUpdateSymbolSet(std::vector<std::string>& subscribeArr, std::vector<std::string>& unsubscribeArr);
 	bool SubmitToServer();
@@ -40,5 +44,13 @@ private:
 	SymbolListenerMap m_mapSymbolListeners;
 
 	std::set<std::string> m_subscribingSymbols;
+
+	CBufferRunner<CTP::Quote*>* m_pBufferRunner;
+
+	typedef boost::shared_mutex Lock; 
+	typedef boost::unique_lock< boost::shared_mutex > WriteLock; 
+	typedef boost::shared_lock< boost::shared_mutex >  ReadLock; 
+
+	Lock m_lock;
 };
 

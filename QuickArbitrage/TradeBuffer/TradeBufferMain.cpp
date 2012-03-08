@@ -6,6 +6,7 @@
 #include "LogManager.h"
 #include "ConnectionManager.h"
 #include "MarketAgent.h"
+#include <google/protobuf/stubs/common.h>
 
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
 
@@ -20,6 +21,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		return 1;
 
 	logger.Init();
+
+	GOOGLE_PROTOBUF_VERIFY_VERSION;
 
 	logger.Trace("trace message");
 	logger.Debug("Debug message");
