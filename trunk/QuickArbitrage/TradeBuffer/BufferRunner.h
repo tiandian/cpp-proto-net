@@ -3,6 +3,8 @@
 #include <boost/thread.hpp>
 #include <boost/circular_buffer.hpp>
 
+#define BUFFER_DEFAULT_CAPACITY 128
+
 template < typename T >
 class CBufferRunner
 {
@@ -10,10 +12,15 @@ public:
 	CBufferRunner(boost::function<void(T)> callback):
 	  m_jobCallback(callback), m_isRunning(false), m_hasStuff(false)
 	{
-		m_cbQuotes.set_capacity(128);
+		SetCapacity(BUFFER_DEFAULT_CAPACITY);
 	}
 	~CBufferRunner(void)
 	{
+	}
+
+	void SetCapacity(int capacity)
+	{
+		m_cbQuotes.set_capacity(capacity);
 	}
 
 	void Start()
@@ -67,7 +74,7 @@ private:
 
 	boost::circular_buffer< T > m_cbQuotes;
 
-	boost::function<void(T)> m_jobCallback;
+	boost::function<void(T&)> m_jobCallback;
 	boost::thread m_thread;
 };
 

@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <boost/smart_ptr.hpp>
 #include <boost/uuid/uuid.hpp>
 
 class QuoteListener
@@ -20,7 +21,7 @@ public:
 	std::vector<std::string>& GetSymbols(){ return m_symbols; }
 	void SetSymbols(std::vector<std::string>& reg_symbols);
 	
-	virtual void OnQuoteRecevied(CTP::Quote* pQuote) = 0;
+	virtual void OnQuoteRecevied(boost::shared_ptr<CTP::Quote>& pQuote) = 0;
 
 protected:
 	boost::uuids::uuid m_token;

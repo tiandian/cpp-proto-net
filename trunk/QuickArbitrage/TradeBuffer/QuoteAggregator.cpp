@@ -5,7 +5,6 @@
 
 #include <sstream>
 #include <algorithm>
-#include <boost/smart_ptr.hpp>
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
@@ -17,7 +16,8 @@ extern CLogManager	logger;
 CQuoteAggregator::CQuoteAggregator(void):
 	m_pMarketAgent(NULL), m_pBufferRunner(NULL)
 {
-	m_pBufferRunner = new CBufferRunner<CTP::Quote*>(boost::bind(&CQuoteAggregator::DispatchQuotes, this, _1));
+	m_pBufferRunner = new CBufferRunner< boost::shared_ptr< CTP::Quote> >(
+							boost::bind(&CQuoteAggregator::DispatchQuotes, this, _1));
 }
 
 CQuoteAggregator::~CQuoteAggregator(void)
@@ -92,12 +92,15 @@ bool CQuoteAggregator::ChangeQuotes( QuoteListener* pQuoteListener, std::vector<
 			// found this token
 			vector<string>& origSymbols = (foundIter->second)->GetSymbols();
 
+			set<string> changeSet(changeSymbols.begin(), changeSymbols.end());
+			set<string> origSet(origSymbols.begin(),origSymbols.end());
+
 			// Find out newly added symbols in newSymbols but not in origSymbols
 			vector<string> added(changeSymbols.size());
-			vector<string>::iterator addedIter = set_difference(changeSymbols.begin(), changeSymbols.end(),
-				origSymbols.begin(), origSymbols.end(),
+			vector<string>::iterator addedIter = set_difference(changeSet.begin(), changeSet.end(),
+				origSet.begin(), origSet.end(),
 				added.begin());
-			added.shrink_to_fit();
+			added.resize(addedIter - added.begin());
 
 			for (vector<string>::iterator adIt = added.begin(); adIt != added.end(); ++adIt)
 			{
@@ -120,10 +123,10 @@ bool CQuoteAggregator::ChangeQuotes( QuoteListener* pQuoteListener, std::vector<
 
 			// Find out those in origSymbols but not in newSymbols, remove them
 			vector<string> toRemoved(origSymbols.size());
-			vector<string>::iterator removedIter = set_difference(origSymbols.begin(), origSymbols.end(),
-				changeSymbols.begin(), changeSymbols.end(),
+			vector<string>::iterator removedIter = set_difference(origSet.begin(), origSet.end(),
+				changeSet.begin(), changeSet.end(),
 				toRemoved.begin());
-			toRemoved.shrink_to_fit();
+			toRemoved.resize(removedIter - toRemoved.begin());
 
 			for (vector<string>::iterator delIt = toRemoved.begin(); delIt != toRemoved.end(); ++delIt)
 			{
@@ -256,15 +259,16 @@ bool CQuoteAggregator::SubmitToServer()
 
 void CQuoteAggregator::OnQuoteReceived(CTP::Quote* pQuote)
 {
-	m_pBufferRunner->Enqueue(pQuote);
+	// wrap row pointer in shared pointer and manage the memory
+	m_pBufferRunner->Enqueue(boost::shared_ptr<CTP::Quote>(pQuote));
 }
 
-void CQuoteAggregator::DispatchQuotes(CTP::Quote* pQuote)
+void CQuoteAggregator::DispatchQuotes(boost::shared_ptr<CTP::Quote>& pQuote)
 {
 	try{
 		ReadLock r_lock(m_lock);
 
-		const string& symbol = pQuote->symbol();
+		const string& symbol = (*pQuote).symbol();
 
 		// see if we subscribe this symbol
 		SymbolListenerMap::iterator foundIter = m_mapSymbolListeners.find(symbol);
@@ -297,7 +301,7 @@ void CQuoteAggregator::DispatchQuotes(CTP::Quote* pQuote)
 	catch(std::exception& e)
 	{
 		stringstream ss(stringstream::out);
-		ss << "Encounter error while dispatching quote('" << pQuote->symbol() << "')" << " detail is following" << endl;
+		ss << "Encounter error while dispatching quote('" << (*pQuote).symbol() << "')" << " detail is following" << endl;
 		ss << e.what();
 		logger.Error(ss.str());
 	}

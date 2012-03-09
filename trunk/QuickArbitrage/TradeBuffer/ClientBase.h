@@ -18,14 +18,14 @@ public:
 	void Subscribe(vector<string>& symbols);
 	void UnSubscribe();
 
-	void OnQuoteRecevied(CTP::Quote* pQuote);
-
-	void _internalProcessQuote(CTP::Quote* pQuote);
+	void OnQuoteRecevied(boost::shared_ptr<CTP::Quote>& pQuote);
 
 protected:
-	virtual void ProcessQuote(CTP::Quote* pQuote) = 0;
+	virtual void ProcessQuote(boost::shared_ptr<CTP::Quote>& pQuote) = 0;
 
 private:
-	CBufferRunner<CTP::Quote*>* m_pbfRunner;
+	void _internalProcessQuote(boost::shared_ptr<CTP::Quote>& pQuote);
+
+	CBufferRunner< boost::shared_ptr<CTP::Quote> >* m_pbfRunner;
 };
 

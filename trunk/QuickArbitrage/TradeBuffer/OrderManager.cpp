@@ -13,7 +13,7 @@ COrderManager::~COrderManager(void)
 {
 }
 
-void COrderManager::OnQuoteRecevied(CTP::Quote* pQuote)
+void COrderManager::OnQuoteRecevied(boost::shared_ptr<CTP::Quote>& pQuote)
 {
 
 }

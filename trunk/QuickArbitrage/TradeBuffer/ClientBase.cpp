@@ -7,7 +7,7 @@ extern CQuoteAggregator g_quoteAggregator;
 ClientBase::ClientBase(void):
 	m_pbfRunner(NULL)
 {
-	m_pbfRunner = new CBufferRunner<CTP::Quote*>(boost::bind(&ClientBase::_internalProcessQuote, this, _1));
+	m_pbfRunner = new CBufferRunner< boost::shared_ptr<CTP::Quote> >(boost::bind(&ClientBase::_internalProcessQuote, this, _1));
 	m_pbfRunner->Start();
 }
 
@@ -21,7 +21,7 @@ ClientBase::~ClientBase(void)
 	}
 }
 
-void ClientBase::OnQuoteRecevied( CTP::Quote* pQuote )
+void ClientBase::OnQuoteRecevied( boost::shared_ptr<CTP::Quote>& pQuote )
 {
 	m_pbfRunner->Enqueue(pQuote);
 }
@@ -47,7 +47,7 @@ void ClientBase::UnSubscribe()
 	g_quoteAggregator.UnsubscribeQuotes(GetUuid());
 }
 
-void ClientBase::_internalProcessQuote( CTP::Quote* pQuote )
+void ClientBase::_internalProcessQuote( boost::shared_ptr<CTP::Quote>& pQuote )
 {
 	ProcessQuote(pQuote);
 }
