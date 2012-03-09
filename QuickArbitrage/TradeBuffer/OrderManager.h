@@ -10,6 +10,6 @@ public:
 
 	void Initialize();
 
-	virtual void OnQuoteRecevied(CTP::Quote* pQuote);
+	virtual void OnQuoteRecevied(boost::shared_ptr<CTP::Quote>& pQuote);
 };
 

@@ -8,6 +8,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <boost/smart_ptr.hpp>
 #include <boost/uuid/uuid.hpp>
 #include <boost/circular_buffer.hpp>
 #include <boost/thread/locks.hpp> 
@@ -30,7 +31,7 @@ public:
 	virtual void OnQuoteReceived(CTP::Quote* pQuote);
 
 private:
-	void DispatchQuotes(CTP::Quote* pQuote);
+	void DispatchQuotes(boost::shared_ptr<CTP::Quote>& pQuote);
 
 	bool GetUpdateSymbolSet(std::vector<std::string>& subscribeArr, std::vector<std::string>& unsubscribeArr);
 	bool SubmitToServer();
@@ -45,7 +46,7 @@ private:
 
 	std::set<std::string> m_subscribingSymbols;
 
-	CBufferRunner<CTP::Quote*>* m_pBufferRunner;
+	CBufferRunner< boost::shared_ptr<CTP::Quote> >* m_pBufferRunner;
 
 	typedef boost::shared_mutex Lock; 
 	typedef boost::unique_lock< boost::shared_mutex > WriteLock; 

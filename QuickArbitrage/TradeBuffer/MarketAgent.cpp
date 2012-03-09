@@ -268,12 +268,12 @@ bool CMarketAgent::SubscribesQuotes( std::vector<std::string>& subscribeArr )
 			if(iResult == 0)
 			{
 				retVal = true;
-				logger.Info("Subscribe quotes successfully.");
+				logger.Info("Subscribe quotes to server sent.");
 			}
 			else
 			{
 				retVal = false;
-				logger.Error("Failed to subscribe quotes");
+				logger.Error("Failed to send subscribe quotes");
 			}
 		}
 		catch(...)
@@ -293,15 +293,19 @@ bool CMarketAgent::SubscribesQuotes( std::vector<std::string>& subscribeArr )
 
 void CMarketAgent::OnRspSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	stringstream txt(stringstream::out); 
+	txt << "Subscribe '" << pSpecificInstrument->InstrumentID;
+
 	if(pRspInfo->ErrorID == 0)
 	{
-		logger.Trace("Subscribing quotes succeeded.");
+		txt << "' SUCCEEDED.";
+		logger.Info(txt.str());
 	}
 	else
 	{
-		string warn = "Subscribe failed due to ";
-		warn.append(pRspInfo->ErrorMsg);
-		logger.Warning(warn);
+		txt << "' FAILED due to ";
+		txt << pRspInfo->ErrorMsg;
+		logger.Warning(txt.str());
 	}
 
 	if(m_pCallback != NULL)
@@ -345,12 +349,12 @@ bool CMarketAgent::UnSubscribesQuotes( std::vector<std::string>& unSubscribeArr 
 			if(iResult == 0)
 			{
 				retVal = true;
-				logger.Info("Unsubscribe quotes successfully.");
+				logger.Info("Unsubscribe quotes sent.");
 			}
 			else
 			{
 				retVal = false;
-				logger.Error("Failed to unsubscribe quotes");
+				logger.Error("Failed to send unsubscribe quotes");
 			}
 		}
 		catch(...)
@@ -370,15 +374,18 @@ bool CMarketAgent::UnSubscribesQuotes( std::vector<std::string>& unSubscribeArr 
 
 void CMarketAgent::OnRspUnSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	stringstream txt(stringstream::out); 
+	txt << "UnSubscribe '" << pSpecificInstrument->InstrumentID;
 	if(pRspInfo->ErrorID == 0)
 	{
-		logger.Trace("UnSubscribing succeeded.");
+		txt << "' succeeded.";
+		logger.Trace(txt.str());
 	}
 	else
 	{
-		string warn = "UnSubscribe failed due to ";
-		warn.append(pRspInfo->ErrorMsg);
-		logger.Warning(warn);
+		txt << "' failed due to ";
+		txt << pRspInfo->ErrorMsg;
+		logger.Warning(txt.str());
 	}
 
 	if(m_pCallback != NULL)
