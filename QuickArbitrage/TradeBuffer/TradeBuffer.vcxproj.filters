@@ -23,6 +23,15 @@
     <None Include="..\Entity\quote.proto">
       <Filter>protos</Filter>
     </None>
+    <None Include="..\Entity\heartbeat.proto">
+      <Filter>protos</Filter>
+    </None>
+    <None Include="..\Entity\subscribe.proto">
+      <Filter>protos</Filter>
+    </None>
+    <None Include="..\Entity\login.proto">
+      <Filter>protos</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -74,6 +83,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BufferRunner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

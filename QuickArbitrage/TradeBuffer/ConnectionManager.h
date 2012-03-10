@@ -1,10 +1,22 @@
 #pragma once
+
+#include "server.h"
+
+#include <boost/smart_ptr.hpp>
+
 class CConnectionManager
 {
 public:
 	CConnectionManager(void);
 	~CConnectionManager(void);
 
-	void Listen(int nPort);
+	void Listen(unsigned int nPort);
+
+private:
+
+	void OnClientAccepted(connection_ptr conn);
+	
+	boost::shared_ptr<server> m_server;
+
 };
 

@@ -1,0 +1,13 @@
+pacakge MSG;
+
+message Heartbeat {
+	
+	required string session = 1;
+
+}
+
+message HeartbeatAck {
+
+	required string server_time = 1;
+	
+}

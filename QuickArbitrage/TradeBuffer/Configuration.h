@@ -24,6 +24,7 @@ public:
 	const char* GetInvestorID();
 	const char* GetPassword();
 	const char* GetControlType();
+	unsigned short GetPort();
 
 private:
 	// Logging
@@ -36,6 +37,9 @@ private:
 	std::string m_brokerID;
 	std::string m_investorID;
 	std::string m_password;
+
+	// Connection
+	unsigned short m_port;
 
 	std::string m_controlType;
 };

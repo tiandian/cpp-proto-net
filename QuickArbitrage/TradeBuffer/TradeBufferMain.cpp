@@ -67,6 +67,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	g_quoteAggregator.Initialize(&g_marketAgent);
 	g_orderMgr.Initialize();
+
+	g_connMgr.Listen(config.GetPort());
 	
 	if(ctrl_type == CONSOLE)
 	{
