@@ -11,6 +11,7 @@ public:
 	~CConnectionManager(void);
 
 	void Listen(unsigned int nPort);
+	void Stop();
 
 private:
 

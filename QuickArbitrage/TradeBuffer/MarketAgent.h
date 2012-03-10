@@ -66,6 +66,7 @@ private:
 
 	CMarketAgentCallback* m_pCallback;
 	
+	bool m_bIsConnected;
 	// «Î«Û±‡∫≈
 	int m_iRequestID;
 

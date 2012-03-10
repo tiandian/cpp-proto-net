@@ -26,6 +26,12 @@ void CConnectionManager::Listen( unsigned int nPort )
 	logger.Info(info.str());
 }
 
+void CConnectionManager::Stop()
+{
+	m_server->stop();
+	m_server.reset();
+}
+
 void CConnectionManager::OnClientAccepted( connection_ptr conn )
 {
 

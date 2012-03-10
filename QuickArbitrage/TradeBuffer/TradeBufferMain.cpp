@@ -54,6 +54,8 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	logger.Init();
 
+	g_connMgr.Listen(config.GetPort());
+
 	GOOGLE_PROTOBUF_VERIFY_VERSION;
 	
 	if(!g_marketAgent.Connect())
@@ -67,8 +69,6 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	g_quoteAggregator.Initialize(&g_marketAgent);
 	g_orderMgr.Initialize();
-
-	g_connMgr.Listen(config.GetPort());
 	
 	if(ctrl_type == CONSOLE)
 	{
@@ -116,7 +116,6 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 
 	Cleanup();
-
 	return 0;
 }
 
@@ -136,9 +135,9 @@ void PrintHelp()
 
 void Cleanup()
 {
-	cout << "do some clean up before quit" << endl;
 	g_marketAgent.Logout(config.GetBrokerID(), config.GetInvestorID());
 	g_marketAgent.Disconnect();
+	g_connMgr.Stop();
 }
 
 void OutputSubcribedSymbol(CConsoleClient* pConsole)
