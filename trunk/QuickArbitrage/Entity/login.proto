@@ -1,0 +1,16 @@
+pacakge MSG;
+
+message ReqLogin {
+	
+	required string client = 1;
+	required string ip = 2
+	required string username = 3;
+	required string password = 4;
+
+}
+
+message RspLogin {
+
+	required bool succ = 1;
+	required string session = 2;
+}

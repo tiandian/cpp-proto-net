@@ -86,7 +86,10 @@ copy /y .\TradeBuffer.cfg $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\Entity\heartbeat.proto" />
+    <None Include="..\Entity\login.proto" />
     <None Include="..\Entity\quote.proto" />
+    <None Include="..\Entity\subscribe.proto" />
     <None Include="ReadMe.txt" />
     <None Include="TradeBuffer.cfg" />
   </ItemGroup>
@@ -94,17 +97,20 @@ copy /y .\TradeBuffer.cfg $(OutDir)</Command>
     <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="ClientBase.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="connection.h" />
     <ClInclude Include="ConnectionManager.h" />
     <ClInclude Include="ConsoleClient.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="MarketAgent.h" />
     <ClInclude Include="MarketAgentCallback.h" />
+    <ClInclude Include="MsgType.h" />
     <ClInclude Include="OrderManager.h" />
     <ClInclude Include="protobuf_gen\quote.pb.h" />
     <ClInclude Include="QuoteAggregator.h" />
     <ClInclude Include="QuoteListener.h" />
     <ClInclude Include="RemoteClient.h" />
+    <ClInclude Include="server.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />

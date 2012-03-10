@@ -1,0 +1,23 @@
+pacakge MSG;
+
+message ReqSubscribe {
+
+	repeated string symbols = 1 [packed=true];
+
+}
+
+message RspSubscribe {
+	
+	required bool succ = 1;
+}
+
+message ReqUnsubscribe {
+
+	repeated string symbols = 1 [packed=true];
+
+}
+
+message RspUnsubscribe {
+	
+	required bool succ = 1;
+}

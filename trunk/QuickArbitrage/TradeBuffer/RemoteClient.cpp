@@ -2,7 +2,8 @@
 #include "RemoteClient.h"
 
 
-RemoteClient::RemoteClient(void)
+RemoteClient::RemoteClient(connection_ptr conn)
+	: m_conn(conn)
 {
 }
 

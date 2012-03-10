@@ -62,11 +62,16 @@ bool CConfiguration::Load( int argc, _TCHAR* argv[] )
 			"password corresponding to account")
 			;
 
+		po::options_description conn("Connection");
+		conn.add_options()
+			("port", po::value<unsigned short>(&m_port)->default_value(18168),
+			"listening port");
+
 		po::options_description cmdline_options;
-		cmdline_options.add(generic).add(logging).add(quote);
+		cmdline_options.add(generic).add(logging).add(quote).add(conn);
 
 		po::options_description config_file_options;
-		config_file_options.add(logging).add(quote);
+		config_file_options.add(logging).add(quote).add(conn);
 
 		po::variables_map vm;        
 		po::store(po::parse_command_line(argc, argv, cmdline_options), vm);
@@ -144,6 +149,11 @@ const char* CConfiguration::GetPassword()
 const char* CConfiguration::GetControlType()
 {
 	return m_controlType.c_str();
+}
+
+unsigned short CConfiguration::GetPort()
+{
+	return m_port;
 }
 
 
