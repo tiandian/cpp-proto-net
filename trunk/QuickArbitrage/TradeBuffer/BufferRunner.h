@@ -36,6 +36,7 @@ public:
 			boost::lock_guard<boost::mutex> lock(m_mutex);
 			m_cond.notify_all();
 		}
+		m_thread.join();
 	}
 
 	void Enqueue(T stuff)
@@ -56,6 +57,9 @@ private:
 			{
 				m_cond.wait(lock);         
 			}
+
+			if(! m_isRunning)
+				return;
 
 			T& stuff = m_cbQuotes.front();
 

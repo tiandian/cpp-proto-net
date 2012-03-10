@@ -23,6 +23,18 @@ public:
 		m_acceptCallback = handler;
 	}
 
+	void stop()
+	{
+		if(p_acceptor_ != NULL)
+		{
+			boost::asio::io_service& io_srv = p_acceptor_->get_io_service();
+			//p_acceptor_->close();
+			p_acceptor_.reset();
+			io_srv.stop();
+			io_service_thread.join();
+		}
+	}
+
 private:
 
 	void io_service_run_proc(unsigned short port)
@@ -62,7 +74,11 @@ private:
 			{}
 		}
 
-		async_wait_client();
+		// if acceptor is closed, don't need to wait any more
+		if(e.value() != 995)
+		{
+			async_wait_client();
+		}
 	}
 
 	// The acceptor object used to accept incoming socket connections.

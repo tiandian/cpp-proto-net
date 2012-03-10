@@ -10,6 +10,7 @@
 
 #define SYMBOL_MAX_LENGTH 10
 #define CONNECT_TIMEOUT_MINUTE 1
+#define DISCONNECT_TIMEOUT_SECOND 5
 
 using namespace std;
 
@@ -19,6 +20,7 @@ extern CLogManager	logger;
 CMarketAgent::CMarketAgent(void):
 	m_pUserApi(NULL),
 	m_pCallback(NULL),
+	m_bIsConnected(false),
 	m_iRequestID(0)
 {
 }
@@ -59,6 +61,8 @@ bool CMarketAgent::Connect()
 				logger.Warning("Connecting time out");
 				return false;
 			}
+
+			m_bIsConnected = true;
 		}
 		return true;
 	}
@@ -84,11 +88,32 @@ void CMarketAgent::OnFrontConnected()
 void CMarketAgent::Disconnect()
 {
 	if(m_pUserApi != NULL)
+	{
 		m_pUserApi->Release();
+
+		{
+			boost::unique_lock<boost::mutex> lock(m_mutex);
+
+			if(m_bIsConnected)
+			{
+				if(!m_condConnectDone.timed_wait(lock, boost::posix_time::seconds(DISCONNECT_TIMEOUT_SECOND)))
+				{
+					logger.Warning("Disconnecting time out");
+				}
+			}
+
+			m_bIsConnected = false;
+		}
+	}
 }
 
 void CMarketAgent::OnFrontDisconnected( int nReason )
 {
+	boost::lock_guard<boost::mutex> lock(m_mutex);
+
+	if(!m_bIsConnected)
+		return;	// disconnect already time out 
+
 	if(nReason == 0)
 	{
 		logger.Info("Market normaly disconnected.");
@@ -117,6 +142,9 @@ void CMarketAgent::OnFrontDisconnected( int nReason )
 		reasonTxt.append(" (will reconnect automatically).");
 		logger.Warning(reasonTxt);
 	}
+
+	m_bIsConnected = false;
+	m_condConnectDone.notify_all();
 }
 
 void CMarketAgent::OnHeartBeatWarning( int nTimeLapse )
@@ -144,7 +172,8 @@ bool CMarketAgent::Login( const char* brokerID, const char* userID, const char* 
 		strcpy(req.BrokerID, brokerID);
 		strcpy(req.UserID, userID);
 		strcpy(req.Password, password);
-		iResult = m_pUserApi->ReqUserLogin(&req, RequestIDIncrement());
+		if(m_pUserApi != NULL)
+			iResult = m_pUserApi->ReqUserLogin(&req, RequestIDIncrement());
 	}
 	catch (...)
 	{
@@ -197,7 +226,8 @@ void CMarketAgent::Logout( const char* brokerID, const char* userID )
 		strcpy(req.BrokerID, brokerID);
 		strcpy(req.UserID, userID);
 
-		nResult = m_pUserApi->ReqUserLogout(&req, RequestIDIncrement());
+		if(m_pUserApi != NULL)
+			nResult = m_pUserApi->ReqUserLogout(&req, RequestIDIncrement());
 
 		if(nResult == 0)
 		{
