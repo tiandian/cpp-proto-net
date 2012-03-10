@@ -27,11 +27,11 @@ public:
 	{
 		if(p_acceptor_ != NULL)
 		{
-			boost::asio::io_service& io_srv = p_acceptor_->get_io_service();
 			//p_acceptor_->close();
 			p_acceptor_.reset();
-			io_srv.stop();
+			p_io_service_->stop();
 			io_service_thread.join();
+			p_io_service_.reset();
 		}
 	}
 
@@ -39,17 +39,25 @@ private:
 
 	void io_service_run_proc(unsigned short port)
 	{ 
-		boost::asio::io_service io_service;
+		p_io_service_ = boost::shared_ptr<boost::asio::io_service>(new boost::asio::io_service);
 
 		boost::asio::ip::tcp::acceptor* pAcceptor = new boost::asio::ip::tcp::acceptor(
-														io_service, 
+														*p_io_service_, 
 														boost::asio::ip::tcp::endpoint(
 															boost::asio::ip::tcp::v4(), port));
 		p_acceptor_ = boost::shared_ptr<boost::asio::ip::tcp::acceptor>(pAcceptor);
 
 		async_wait_client();
 
-		io_service.run(); 
+		try
+		{
+			p_io_service_->run(); 
+		}
+		catch (std::exception& e)
+		{
+			std::cout << e.what();
+		}
+		
 	}
 
 	void async_wait_client()
@@ -83,7 +91,7 @@ private:
 
 	// The acceptor object used to accept incoming socket connections.
 	boost::shared_ptr<boost::asio::ip::tcp::acceptor> p_acceptor_;
-	
+	boost::shared_ptr<boost::asio::io_service> p_io_service_;
 	boost::thread io_service_thread;
 
 	AcceptHandler m_acceptCallback;
