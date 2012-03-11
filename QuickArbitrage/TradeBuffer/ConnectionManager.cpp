@@ -4,6 +4,10 @@
 
 #include <sstream>
 #include <boost/bind.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 
 extern CLogManager	logger;
 
@@ -34,6 +38,12 @@ void CConnectionManager::Stop()
 
 void CConnectionManager::OnClientAccepted( connection_ptr conn )
 {
-
+	boost::uuids::random_generator gen;
+	boost::uuids::uuid uuid_ = gen();
+	std:string sessionId = boost::uuids::to_string(uuid_);
+	
+	RemoteClientPtr client(new RemoteClient(sessionId, conn));
+	m_clientMap.insert(std::make_pair(sessionId, client));
+	client->GetReady();
 }
 

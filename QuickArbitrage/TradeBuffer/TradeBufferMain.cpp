@@ -59,8 +59,10 @@ int _tmain(int argc, _TCHAR* argv[])
 	GOOGLE_PROTOBUF_VERIFY_VERSION;
 	
 	if(!g_marketAgent.Connect())
+	{
+		Cleanup();
 		return 1;
-
+	}
 	if(!g_marketAgent.Login(config.GetBrokerID(), config.GetInvestorID(), config.GetPassword()))
 	{
 		Cleanup();
