@@ -43,5 +43,7 @@ private:
 	std::string m_sessionId;
 	boost::mutex m_mutex;
 	boost::condition_variable m_condSocketInUse;
+
+	std::string m_data;
 };
 
