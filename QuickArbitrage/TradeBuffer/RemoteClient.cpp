@@ -38,8 +38,8 @@ void RemoteClient::ProcessQuote( boost::shared_ptr<CTP::Quote>& pQuote )
 
 void RemoteClient::WriteCompleted()
 { 
-	boost::lock_guard<boost::mutex> lock(m_mutex);
-	logger.Info("Send hahahaha");
+	/*boost::lock_guard<boost::mutex> lock(m_mutex);
+	logger.Info("Send hahahaha");*/
 	m_condSocketInUse.notify_one();
 }
 
@@ -52,12 +52,13 @@ void RemoteClient::ReadCompleted(MSG_TYPE msg, std::string& out_data)
 void RemoteClient::GetReady()
 {
 	{
-		boost::unique_lock< boost::mutex > lock(m_mutex);
+		m_data = "hahahaha";
+		//boost::unique_lock< boost::mutex > lock(m_mutex);
 		//m_conn->async_read(boost::bind(&RemoteClient::ReadCompleted, this, _1, _2));
-		m_conn->async_write(QUOTE, std::string("hahahaha"), boost::bind(&RemoteClient::handle_write, this,
+		m_conn->async_write(QUOTE, m_data, boost::bind(&RemoteClient::handle_write, this,
 									boost::asio::placeholders::error, m_conn));
-		m_condSocketInUse.wait(lock);
-		logger.Info("Send hahahaha");
+		//m_condSocketInUse.wait(lock);
+		//logger.Info("Send hahahaha");
 	}
 }
 

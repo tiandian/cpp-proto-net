@@ -32,8 +32,12 @@ void CConnectionManager::Listen( unsigned int nPort )
 
 void CConnectionManager::Stop()
 {
-	m_server->stop();
+	// close all client first
+	m_clientMap.clear();
+
+	// destory server
 	m_server.reset();
+	logger.Info("Stop quoting service.");
 }
 
 void CConnectionManager::OnClientAccepted( connection_ptr conn )
