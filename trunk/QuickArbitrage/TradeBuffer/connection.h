@@ -90,9 +90,11 @@ public:
 		}
 		else
 		{
+			int nType = 0;
 			// Determine the length of the serialized data.
 			std::istringstream is(std::string(inbound_header_, header_length));
-			is >> std::hex >> *msg_type;
+			is >> std::hex >> nType;
+			*msg_type = static_cast<MSG_TYPE>(nType);
 
 			std::size_t inbound_data_size = 0;
 			if (!(is >> std::hex >> inbound_data_size))

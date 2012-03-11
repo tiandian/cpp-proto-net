@@ -81,12 +81,16 @@ bool CMarketAgent::Connect()
 
 void CMarketAgent::OnFrontConnected()
 {
+	boost::lock_guard<boost::mutex> lock(m_mutex);
 	logger.Info("Market connected");
 	m_condConnectDone.notify_all();
 }
 
 void CMarketAgent::Disconnect()
 {
+	if(!m_bIsConnected)
+		return;
+
 	if(m_pUserApi != NULL)
 	{
 		m_pUserApi->Release();
@@ -218,6 +222,9 @@ void CMarketAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, C
 void CMarketAgent::Logout( const char* brokerID, const char* userID )
 {
 	logger.Trace("Logging out");
+
+	if(!m_bIsConnected)
+		return;
 
 	int nResult = -1;
 	try{

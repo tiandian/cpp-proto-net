@@ -1,8 +1,13 @@
 #pragma once
 
 #include "server.h"
+#include "RemoteClient.h"
 
+#include <string>
+#include <map>
 #include <boost/smart_ptr.hpp>
+
+typedef boost::shared_ptr<RemoteClient> RemoteClientPtr;
 
 class CConnectionManager
 {
@@ -19,5 +24,6 @@ private:
 	
 	boost::shared_ptr<server> m_server;
 
+	std::map<std::string, RemoteClientPtr> m_clientMap;
 };
 
