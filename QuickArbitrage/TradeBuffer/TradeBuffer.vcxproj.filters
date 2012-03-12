@@ -94,6 +94,15 @@
     <ClInclude Include="server.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="protobuf_gen\login.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf_gen\heartbeat.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="protobuf_gen\subscribe.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -139,6 +148,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="protobuf_gen\quote.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf_gen\heartbeat.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf_gen\login.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf_gen\subscribe.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
