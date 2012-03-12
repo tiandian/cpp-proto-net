@@ -44,7 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Contract\IAccountClient.cs" />
     <Compile Include="Contract\ILog.cs" />
+    <Compile Include="Contract\IQuoteClient.cs" />
+    <Compile Include="Contract\ITradeClient.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Enums\TradeAction.cs" />
     <Compile Include="Enums\TradingType.cs" />
