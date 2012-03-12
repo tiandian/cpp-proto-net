@@ -1,4 +1,4 @@
-pacakge MSG;
+package MSG;
 
 message Heartbeat {
 	

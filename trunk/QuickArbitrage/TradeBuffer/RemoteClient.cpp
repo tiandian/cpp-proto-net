@@ -34,23 +34,31 @@ void RemoteClient::ProcessQuote( boost::shared_ptr<CTP::Quote>& pQuote )
 void RemoteClient::WriteCompleted(const boost::system::error_code& e, std::size_t bytes_transferred)
 { 
 	logger.Trace("Write completed");
-
-	if(m_isContinuousReading)
-		BeginRead();
 }
 
 void RemoteClient::OnDataReceived(const boost::system::error_code& e, MSG_TYPE msg, std::string& data)
 {
-	switch (msg)
-	{	
-		case REQ_LOGIN:
-		break;
-		case REQ_SUBSCRIBE:
-		break;
-		case REQ_UNSUBSCRIBE:
-		break;
-
+	if(e)
+	{
+		logger.Trace(e.message());
 	}
+	else
+	{
+		switch (msg)
+		{	
+		case REQ_LOGIN:
+			break;
+		case REQ_SUBSCRIBE:
+			break;
+		case REQ_UNSUBSCRIBE:
+			break;
+
+		}
+	}
+
+	if(m_isContinuousReading)
+		BeginRead();
+
 }
 
 void RemoteClient::GetReady()

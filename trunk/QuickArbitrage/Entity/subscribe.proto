@@ -1,8 +1,8 @@
-pacakge MSG;
+package MSG;
 
 message ReqSubscribe {
 
-	repeated string symbols = 1 [packed=true];
+	repeated string symbols = 1 ;
 
 }
 
@@ -13,7 +13,7 @@ message RspSubscribe {
 
 message ReqUnsubscribe {
 
-	repeated string symbols = 1 [packed=true];
+	repeated string symbols = 1 ;
 
 }
 

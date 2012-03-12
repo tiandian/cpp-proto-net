@@ -1,9 +1,9 @@
-pacakge MSG;
+package MSG;
 
 message ReqLogin {
 	
 	required string client = 1;
-	required string ip = 2
+	required string ip = 2;
 	required string username = 3;
 	required string password = 4;
 
