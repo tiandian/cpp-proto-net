@@ -4,6 +4,7 @@
 #include "connection.h"
 
 #include <string>
+#include <vector>
 #include <boost/thread/locks.hpp>
 
 class RemoteClient :
@@ -18,32 +19,29 @@ public:
 	void GetReady();
 
 protected:
+
 	void ProcessQuote(boost::shared_ptr<CTP::Quote>& pQuote);
 
-	/// Handle completion of a read operation.
-	void handle_read(const boost::system::error_code& e)
-	{
+	void WriteCompleted(const boost::system::error_code& e, std::size_t bytes_transferred);
 
-	}
+	void OnDataReceived(const boost::system::error_code& e, MSG_TYPE msg, std::string& data);
 
-	/// Handle completion of a write operation.
-	void handle_write(const boost::system::error_code& e, connection_ptr conn)
-	{
-		// Nothing to do. The socket will be closed automatically when the last
-		// reference to the connection object goes away.
-		WriteCompleted();
-	}
+	void BeginRead();
 
+	void BeginWrite(MSG_TYPE msg, std::string& data);
 
-	void WriteCompleted();
-	void ReadCompleted(MSG_TYPE msg, std::string& out_data);
+	// business associated
+	void OnLogin(std::string& username, std::string& password);
+
+	void OnSubscribe(const std::vector<std::string>& symbols);
+
+	void OnUnSubscribe(const std::vector<std::string>& symbols);
 
 private:
+
 	connection_ptr m_conn;
 	std::string m_sessionId;
-	boost::mutex m_mutex;
-	boost::condition_variable m_condSocketInUse;
 
-	std::string m_data;
+	bool m_isContinuousReading;
 };
 

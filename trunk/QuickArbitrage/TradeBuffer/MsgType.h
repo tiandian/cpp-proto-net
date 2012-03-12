@@ -2,6 +2,8 @@
 
 typedef enum _MsgType
 {
+	UNKNOWN,
+
 	// System
 	SYS_HEARTBEAT,
 	SYS_HEARTBEAT_ACK,

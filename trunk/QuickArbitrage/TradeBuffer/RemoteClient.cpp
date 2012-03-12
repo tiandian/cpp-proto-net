@@ -14,7 +14,7 @@ MSG_TYPE MakeTransmitPacket(boost::shared_ptr<CTP::Quote>& pQuote, std::string* 
 }
 
 RemoteClient::RemoteClient(std::string& sessionId, connection_ptr conn)
-	: m_conn(conn)
+	: m_conn(conn), m_isContinuousReading(false)
 {
 	m_sessionId = sessionId;
 }
@@ -28,38 +28,61 @@ void RemoteClient::ProcessQuote( boost::shared_ptr<CTP::Quote>& pQuote )
 {
 	std::string data;
 	MSG_TYPE msg = MakeTransmitPacket(pQuote, &data);
-
-	{
-		boost::unique_lock< boost::mutex > lock(m_mutex);
-		m_conn->async_write(msg, data, boost::bind(&RemoteClient::WriteCompleted, this));
-		m_condSocketInUse.wait(lock);
-	}
+	BeginWrite(msg, data);	// may block some time before the last sent done.
 }
 
-void RemoteClient::WriteCompleted()
+void RemoteClient::WriteCompleted(const boost::system::error_code& e, std::size_t bytes_transferred)
 { 
-	/*boost::lock_guard<boost::mutex> lock(m_mutex);
-	logger.Info("Send hahahaha");*/
-	m_condSocketInUse.notify_one();
+	logger.Trace("Write completed");
+
+	if(m_isContinuousReading)
+		BeginRead();
 }
 
-void RemoteClient::ReadCompleted(MSG_TYPE msg, std::string& out_data)
+void RemoteClient::OnDataReceived(const boost::system::error_code& e, MSG_TYPE msg, std::string& data)
 {
-	boost::lock_guard<boost::mutex> lock(m_mutex);
-	m_condSocketInUse.notify_one();
+	switch (msg)
+	{	
+		case REQ_LOGIN:
+		break;
+		case REQ_SUBSCRIBE:
+		break;
+		case REQ_UNSUBSCRIBE:
+		break;
+
+	}
 }
 
 void RemoteClient::GetReady()
 {
-	{
-		m_data = "hahahaha";
-		//boost::unique_lock< boost::mutex > lock(m_mutex);
-		//m_conn->async_read(boost::bind(&RemoteClient::ReadCompleted, this, _1, _2));
-		m_conn->async_write(QUOTE, m_data, boost::bind(&RemoteClient::handle_write, this,
-									boost::asio::placeholders::error, m_conn));
-		//m_condSocketInUse.wait(lock);
-		//logger.Info("Send hahahaha");
-	}
+	m_isContinuousReading = true;
+	BeginRead();
+}
+
+// Actually continuous reading
+void RemoteClient::BeginRead()
+{
+	m_conn->async_read(boost::bind(&RemoteClient::OnDataReceived, this, _1, _2, _3));
+}
+
+void RemoteClient::BeginWrite(MSG_TYPE msg, std::string& data)
+{
+	m_conn->async_write(msg, data, boost::bind(&RemoteClient::WriteCompleted, this, _1, _2));
+}
+
+void RemoteClient::OnLogin( std::string& username, std::string& password )
+{
+
+}
+
+void RemoteClient::OnSubscribe( const std::vector<std::string>& symbols )
+{
+
+}
+
+void RemoteClient::OnUnSubscribe( const std::vector<std::string>& symbols )
+{
+
 }
 
 
