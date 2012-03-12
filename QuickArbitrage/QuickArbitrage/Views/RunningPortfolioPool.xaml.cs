@@ -17,6 +17,7 @@ using QuickArbitrage.Common.Enums;
 using System.ComponentModel;
 using System.Windows.Threading;
 using Infragistics.Windows.Controls;
+using QuickArbitrage.Common.Contract;
 
 namespace QuickArbitrage.Main.Views
 {
@@ -54,8 +55,20 @@ namespace QuickArbitrage.Main.Views
         private void EditPortfolioButtonClicked(object sender, RoutedEventArgs e)
         {
             //QuickArbitrage.Connection.TransferTest.StreamFileTest.WriteCustomer("e:\\cus.bin");
-            QuickArbitrage.Connection.ConnectionBase conn = new QuickArbitrage.Connection.ConnectionBase();
-            conn.Connect();
+            IAccountClient client = QuickArbitrage.Connection.ClientFactory.Instance.GetAccountClient();
+            client.Login("haha", "pwd", new LoginCallback(
+                                            (succ, msg) => {
+
+                                                if (succ)
+                                                {
+                                                    MessageBox.Show("Login Succeeded");
+                                                }
+                                                else
+                                                {
+                                                    MessageBox.Show("Login Failed");
+                                                }
+
+                                            }));
         }
 
         private void DeletePortfolioButtonClicked(object sender, RoutedEventArgs e)
