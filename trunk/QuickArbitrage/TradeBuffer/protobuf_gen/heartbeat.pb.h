@@ -25,7 +25,7 @@
 #include <google/protobuf/generated_message_reflection.h>
 // @@protoc_insertion_point(includes)
 
-namespace MSG {
+namespace protoc {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_heartbeat_2eproto();
@@ -102,7 +102,7 @@ class Heartbeat : public ::google::protobuf::Message {
   inline ::std::string* mutable_session();
   inline ::std::string* release_session();
   
-  // @@protoc_insertion_point(class_scope:MSG.Heartbeat)
+  // @@protoc_insertion_point(class_scope:protoc.Heartbeat)
  private:
   inline void set_has_session();
   inline void clear_has_session();
@@ -188,7 +188,7 @@ class HeartbeatAck : public ::google::protobuf::Message {
   inline ::std::string* mutable_server_time();
   inline ::std::string* release_server_time();
   
-  // @@protoc_insertion_point(class_scope:MSG.HeartbeatAck)
+  // @@protoc_insertion_point(class_scope:protoc.HeartbeatAck)
  private:
   inline void set_has_server_time();
   inline void clear_has_server_time();
@@ -337,7 +337,7 @@ inline ::std::string* HeartbeatAck::release_server_time() {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace MSG
+}  // namespace protoc
 
 #ifndef SWIG
 namespace google {
