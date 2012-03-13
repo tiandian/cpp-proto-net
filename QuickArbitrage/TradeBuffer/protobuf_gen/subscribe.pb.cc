@@ -14,7 +14,7 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
-namespace MSG {
+namespace protoc {
 
 namespace {
 
@@ -142,10 +142,10 @@ void protobuf_AddDesc_subscribe_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\017subscribe.proto\022\003MSG\"\037\n\014ReqSubscribe\022\017"
-    "\n\007symbols\030\001 \003(\t\"\034\n\014RspSubscribe\022\014\n\004succ\030"
-    "\001 \002(\010\"!\n\016ReqUnsubscribe\022\017\n\007symbols\030\001 \003(\t"
-    "\"\036\n\016RspUnsubscribe\022\014\n\004succ\030\001 \002(\010", 152);
+    "\n\017subscribe.proto\022\006protoc\"\037\n\014ReqSubscrib"
+    "e\022\017\n\007symbols\030\001 \003(\t\"\034\n\014RspSubscribe\022\014\n\004su"
+    "cc\030\001 \002(\010\"!\n\016ReqUnsubscribe\022\017\n\007symbols\030\001 "
+    "\003(\t\"\036\n\016RspUnsubscribe\022\014\n\004succ\030\001 \002(\010", 155);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "subscribe.proto", &protobuf_RegisterTypes);
   ReqSubscribe::default_instance_ = new ReqSubscribe();
@@ -999,6 +999,6 @@ void RspUnsubscribe::Swap(RspUnsubscribe* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace MSG
+}  // namespace protoc
 
 // @@protoc_insertion_point(global_scope)

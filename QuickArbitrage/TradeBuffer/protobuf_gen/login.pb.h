@@ -25,7 +25,7 @@
 #include <google/protobuf/generated_message_reflection.h>
 // @@protoc_insertion_point(includes)
 
-namespace MSG {
+namespace protoc {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_login_2eproto();
@@ -135,7 +135,7 @@ class ReqLogin : public ::google::protobuf::Message {
   inline ::std::string* mutable_password();
   inline ::std::string* release_password();
   
-  // @@protoc_insertion_point(class_scope:MSG.ReqLogin)
+  // @@protoc_insertion_point(class_scope:protoc.ReqLogin)
  private:
   inline void set_has_client();
   inline void clear_has_client();
@@ -237,7 +237,7 @@ class RspLogin : public ::google::protobuf::Message {
   inline ::std::string* mutable_session();
   inline ::std::string* release_session();
   
-  // @@protoc_insertion_point(class_scope:MSG.RspLogin)
+  // @@protoc_insertion_point(class_scope:protoc.RspLogin)
  private:
   inline void set_has_succ();
   inline void clear_has_succ();
@@ -585,7 +585,7 @@ inline ::std::string* RspLogin::release_session() {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace MSG
+}  // namespace protoc
 
 #ifndef SWIG
 namespace google {

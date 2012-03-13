@@ -5,7 +5,10 @@
 
 #include <string>
 #include <vector>
+#include <boost/bind.hpp>
 #include <boost/thread/locks.hpp>
+
+class CConnectionManager;
 
 class RemoteClient :
 	public ClientBase
@@ -16,7 +19,11 @@ public:
 
 	std::string& GetSessionID() { return m_sessionId; }
 
-	void GetReady();
+	void GetReady(CConnectionManager* pConnMgr);
+
+	const std::string& GetIPAddress() { return m_ipAddr; }
+
+	void Close() { m_conn->close(); }
 
 protected:
 
@@ -31,7 +38,7 @@ protected:
 	void BeginWrite(MSG_TYPE msg, std::string& data);
 
 	// business associated
-	void OnLogin(std::string& username, std::string& password);
+	void OnLogin(const std::string& username, const std::string& password);
 
 	void OnSubscribe(const std::vector<std::string>& symbols);
 
@@ -39,9 +46,14 @@ protected:
 
 private:
 
+	void OnSocketError(const boost::system::error_code& e);
+
 	connection_ptr m_conn;
 	std::string m_sessionId;
+	std::string m_ipAddr;
 
 	bool m_isContinuousReading;
+
+	CConnectionManager* m_pConnMgr;
 };
 

@@ -48,6 +48,52 @@ void CConnectionManager::OnClientAccepted( connection_ptr conn )
 	
 	RemoteClientPtr client(new RemoteClient(sessionId, conn));
 	m_clientMap.insert(std::make_pair(sessionId, client));
-	client->GetReady();
+	client->GetReady(this);
+}
+
+void CConnectionManager::HandleError( const std::string sessionId, const boost::system::error_code& e )
+{
+	if(e)
+	{
+		// log error
+		std::ostringstream oss;
+		std::map<std::string, RemoteClientPtr>::iterator foundClnt = m_clientMap.find(sessionId);
+		if(foundClnt != m_clientMap.end())
+		{
+			oss << "Client (ip:" << (foundClnt->second)->GetIPAddress() << ", sid:" << sessionId <<") encounter error:";
+			oss << e.message();
+		}
+		else
+		{
+			oss << "Error happent to the not existing client : " << e.message();
+		}
+		logger.Warning(oss.str());
+
+		// handle error
+		int eVal = e.value();
+
+		// client close the connection
+		if(eVal == 10054)
+		{
+			// close myself
+			(foundClnt->second)->Close();
+			// remove from map storage
+			m_clientMap.erase(foundClnt);
+		}
+	}
+}
+
+void CConnectionManager::ListClients()
+{
+	std::ostringstream info;
+	int idx = 1;
+	for (std::map<std::string, RemoteClientPtr>::iterator iter = m_clientMap.begin();
+		iter != m_clientMap.end(); ++iter, ++idx)
+	{
+		info << std::endl;
+		info << std::setw(4) << idx << std::setw(20) << (iter->second)->GetIPAddress();
+		info << "   " << (iter->second)->GetSessionID();
+	}
+	logger.Info(info.str());
 }
 

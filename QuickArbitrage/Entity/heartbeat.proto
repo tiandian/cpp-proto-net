@@ -1,4 +1,4 @@
-package MSG;
+package protoc;
 
 message Heartbeat {
 	

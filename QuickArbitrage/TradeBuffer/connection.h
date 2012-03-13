@@ -27,6 +27,11 @@ public:
 		return socket_;
 	}
 
+	void close()
+	{
+		socket_.close();
+	}
+
 	/// Asynchronously write a data structure to the socket.
 	template <typename Handler>
 	void async_write(MSG_TYPE msg_type, std::string& data, Handler handler)
@@ -44,8 +49,10 @@ public:
 			const boost::system::error_code&, std::size_t bytes_transferred, boost::tuple<Handler>)
 			= &connection::handle_write<Handler>;
 
+		outbound_data_.swap(data);
+
 		// Serialize the data first so we know how large it is.
-		if(data.size() == 0)
+		if(outbound_data_.size() == 0)
 		{
 			// Something went wrong, inform the caller.
 			boost::system::error_code error(boost::asio::error::no_data);
@@ -57,7 +64,7 @@ public:
 		std::ostringstream header_stream;
 		header_stream << std::hex 
 			<< std::setw(msg_type_length) << msg_type
-			 << std::setw(data_size_length) << data.size();
+			 << std::setw(data_size_length) << outbound_data_.size();
 		if (!header_stream || header_stream.str().size() != header_length)
 		{
 			// Something went wrong, inform the caller.
@@ -71,7 +78,7 @@ public:
 		// both the header and the data in a single write operation.
 		std::vector<boost::asio::const_buffer> buffers;
 		buffers.push_back(boost::asio::buffer(outbound_header_));
-		buffers.push_back(boost::asio::buffer(data));
+		buffers.push_back(boost::asio::buffer(outbound_data_));
 
 		boost::asio::async_write(socket_, buffers, 
 			boost::bind(f, this, _1, _2, boost::make_tuple(handler)));

@@ -77,7 +77,7 @@ namespace QuickArbitrage.Connection
                 return;
             }
 
-            string sHeader = string.Format("{0,4:X}{1,8:X}", msgType, data.Length);
+            string sHeader = string.Format("{0,4:X}{1,8:X}", (int)msgType, data.Length);
             byte[] headerbytes = System.Text.ASCIIEncoding.ASCII.GetBytes(sHeader);
             System.Diagnostics.Debug.Assert(headerbytes.Length == HeaderBytesLength);
             
@@ -132,10 +132,10 @@ namespace QuickArbitrage.Connection
                     
                     // get message type
                     string t = System.Text.ASCIIEncoding.ASCII.GetString(_inbound_header, 0, 4);
-                    _inbound_msg_type = (MsgType)Convert.ToInt32(t, 16);
+                    _inbound_msg_type = (MsgType)Convert.ToInt32(t.Trim(), 16);
                     // get payload size
                     string size = System.Text.ASCIIEncoding.ASCII.GetString(_inbound_header, 4, 8);
-                    int data_size = Convert.ToInt32(t, 16);
+                    int data_size = Convert.ToInt32(size.Trim(), 16);
                     // create buffer for receive payload data
                     _inbound_data = new byte[data_size];
 

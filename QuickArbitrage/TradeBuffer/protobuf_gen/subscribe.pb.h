@@ -25,7 +25,7 @@
 #include <google/protobuf/generated_message_reflection.h>
 // @@protoc_insertion_point(includes)
 
-namespace MSG {
+namespace protoc {
 
 // Internal implementation detail -- do not call these.
 void  protobuf_AddDesc_subscribe_2eproto();
@@ -109,7 +109,7 @@ class ReqSubscribe : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& symbols() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_symbols();
   
-  // @@protoc_insertion_point(class_scope:MSG.ReqSubscribe)
+  // @@protoc_insertion_point(class_scope:protoc.ReqSubscribe)
  private:
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -189,7 +189,7 @@ class RspSubscribe : public ::google::protobuf::Message {
   inline bool succ() const;
   inline void set_succ(bool value);
   
-  // @@protoc_insertion_point(class_scope:MSG.RspSubscribe)
+  // @@protoc_insertion_point(class_scope:protoc.RspSubscribe)
  private:
   inline void set_has_succ();
   inline void clear_has_succ();
@@ -280,7 +280,7 @@ class ReqUnsubscribe : public ::google::protobuf::Message {
   inline const ::google::protobuf::RepeatedPtrField< ::std::string>& symbols() const;
   inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_symbols();
   
-  // @@protoc_insertion_point(class_scope:MSG.ReqUnsubscribe)
+  // @@protoc_insertion_point(class_scope:protoc.ReqUnsubscribe)
  private:
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
@@ -360,7 +360,7 @@ class RspUnsubscribe : public ::google::protobuf::Message {
   inline bool succ() const;
   inline void set_succ(bool value);
   
-  // @@protoc_insertion_point(class_scope:MSG.RspUnsubscribe)
+  // @@protoc_insertion_point(class_scope:protoc.RspUnsubscribe)
  private:
   inline void set_has_succ();
   inline void clear_has_succ();
@@ -533,7 +533,7 @@ inline void RspUnsubscribe::set_succ(bool value) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace MSG
+}  // namespace protoc
 
 #ifndef SWIG
 namespace google {

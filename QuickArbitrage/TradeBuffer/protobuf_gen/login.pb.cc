@@ -14,7 +14,7 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
-namespace MSG {
+namespace protoc {
 
 namespace {
 
@@ -102,10 +102,10 @@ void protobuf_AddDesc_login_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\013login.proto\022\003MSG\"J\n\010ReqLogin\022\016\n\006client"
-    "\030\001 \002(\t\022\n\n\002ip\030\002 \002(\t\022\020\n\010username\030\003 \002(\t\022\020\n\010"
-    "password\030\004 \002(\t\")\n\010RspLogin\022\014\n\004succ\030\001 \002(\010"
-    "\022\017\n\007session\030\002 \002(\t", 137);
+    "\n\013login.proto\022\006protoc\"J\n\010ReqLogin\022\016\n\006cli"
+    "ent\030\001 \002(\t\022\n\n\002ip\030\002 \002(\t\022\020\n\010username\030\003 \002(\t\022"
+    "\020\n\010password\030\004 \002(\t\")\n\010RspLogin\022\014\n\004succ\030\001 "
+    "\002(\010\022\017\n\007session\030\002 \002(\t", 140);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "login.proto", &protobuf_RegisterTypes);
   ReqLogin::default_instance_ = new ReqLogin();
@@ -784,6 +784,6 @@ void RspLogin::Swap(RspLogin* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace MSG
+}  // namespace protoc
 
 // @@protoc_insertion_point(global_scope)

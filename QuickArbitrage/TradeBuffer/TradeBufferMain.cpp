@@ -105,6 +105,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				ConsoleExecuteUnSubscribe(&consoleClient);
 			}
+			else if(command == "list")
+			{
+				g_connMgr.ListClients();
+			}
 			else
 			{
 				cout << "Unknown command '" << command << "', please type 'h' or 'help' for help" << endl;
@@ -132,6 +136,7 @@ void PrintHelp()
 	cout << "	q or quit" << endl;
 	cout << "	subscribe [symbol] ..." << endl;
 	cout << "	unsub" << endl;
+	cout << "   list" << endl;
 
 }
 

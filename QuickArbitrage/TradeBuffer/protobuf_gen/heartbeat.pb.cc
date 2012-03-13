@@ -14,7 +14,7 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 
-namespace MSG {
+namespace protoc {
 
 namespace {
 
@@ -98,9 +98,9 @@ void protobuf_AddDesc_heartbeat_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\017heartbeat.proto\022\003MSG\"\034\n\tHeartbeat\022\017\n\007s"
-    "ession\030\001 \002(\t\"#\n\014HeartbeatAck\022\023\n\013server_t"
-    "ime\030\001 \002(\t", 89);
+    "\n\017heartbeat.proto\022\006protoc\"\034\n\tHeartbeat\022\017"
+    "\n\007session\030\001 \002(\t\"#\n\014HeartbeatAck\022\023\n\013serve"
+    "r_time\030\001 \002(\t", 92);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "heartbeat.proto", &protobuf_RegisterTypes);
   Heartbeat::default_instance_ = new Heartbeat();
@@ -570,6 +570,6 @@ void HeartbeatAck::Swap(HeartbeatAck* other) {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace MSG
+}  // namespace protoc
 
 // @@protoc_insertion_point(global_scope)
