@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using ProtoBuf;
 using QuickArbitrage.Connection.DataEntity;
+using QuickArbitrage.Common.Contract;
 
 namespace QuickArbitrage.Connection
 {
@@ -42,10 +43,13 @@ namespace QuickArbitrage.Connection
                     OnLoginResponse(Deserialize<RspLogin>(data));
                     break;
                 case MsgType.RSP_SUBSCRIBE:
+                    OnSubscribeResponse(Deserialize<RspSubscribe>(data));
                     break;
                 case MsgType.RSP_UNSUBSCRIBE:
+                    OnUnSubscribeResponse(Deserialize<RspUnsubscribe>(data));
                     break;
                 case MsgType.QUOTE:
+                    HandleReceviedQuote(Deserialize<Quote>(data));
                     break;
                 default:
                     break;

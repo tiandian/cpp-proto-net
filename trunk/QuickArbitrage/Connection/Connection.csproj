@@ -52,6 +52,7 @@
     <Compile Include="ConnectionBase.cs" />
     <Compile Include="DataEntity\Login.cs" />
     <Compile Include="DataEntity\MsgType.cs" />
+    <Compile Include="DataEntity\Subscribe.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransferTest\Customer.cs" />
     <Compile Include="TransferTest\StreamFileTest.cs" />
