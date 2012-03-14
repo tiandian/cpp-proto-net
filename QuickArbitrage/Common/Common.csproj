@@ -35,6 +35,9 @@
     <Reference Include="log4net">
       <HintPath>..\Lib\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\Lib\protobuf-net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +51,7 @@
     <Compile Include="Contract\ILog.cs" />
     <Compile Include="Contract\IQuoteClient.cs" />
     <Compile Include="Contract\ITradeClient.cs" />
+    <Compile Include="DataEntity\Quote.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Enums\TradeAction.cs" />
     <Compile Include="Enums\TradingType.cs" />
@@ -57,9 +61,7 @@
     <Compile Include="LogManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataEntity\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
