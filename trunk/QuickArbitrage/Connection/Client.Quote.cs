@@ -13,6 +13,9 @@ namespace QuickArbitrage.Connection
     {
         public void Subscribe(IEnumerable<string> symbols)
         {
+            if (!IsConnected)
+                throw new InvalidOperationException("Cannot subscribe quote until login");
+
             ReqSubscribe reqSub = new ReqSubscribe();
             reqSub.Symbols.AddRange(symbols);
             byte[] data = Serialize(reqSub);
@@ -32,6 +35,9 @@ namespace QuickArbitrage.Connection
 
         public void Unsubscribe(IEnumerable<string> symbols)
         {
+            if (!IsConnected)
+                throw new InvalidOperationException("Cannot unsubscribe quote until login");
+
             ReqUnsubscribe reqUnSub = new ReqUnsubscribe();
             reqUnSub.Symbols.AddRange(symbols);
             byte[] data = Serialize(reqUnSub);

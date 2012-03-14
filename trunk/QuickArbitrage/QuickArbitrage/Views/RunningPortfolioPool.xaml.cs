@@ -56,7 +56,7 @@ namespace QuickArbitrage.Main.Views
         {
             //QuickArbitrage.Connection.TransferTest.StreamFileTest.WriteCustomer("e:\\cus.bin");
             IAccountClient client = QuickArbitrage.Connection.ClientFactory.Instance.GetAccountClient();
-            client.Login("haha", "pwd", new LoginCallback(
+            client.Login("xixihaha", "thisispwd", new LoginCallback(
                                             (succ, msg) => {
 
                                                 if (succ)
@@ -75,7 +75,15 @@ namespace QuickArbitrage.Main.Views
         {
 //             QuickArbitrage.Connection.TransferTest.Customer customer =
 //                 QuickArbitrage.Connection.TransferTest.StreamFileTest.ReadCustomer("e:\\cpp.bin");
+            IQuoteClient quoteClient = QuickArbitrage.Connection.ClientFactory.Instance.GetQuoteClient();
+            quoteClient.OnQuoteReceived += new EventHandler<OnQuoteReceivedEventArgs>(quoteClient_OnQuoteReceived);
+            quoteClient.Subscribe(new string[] { "cu1206", "cu1207" });
+        }
 
+        void quoteClient_OnQuoteReceived(object sender, OnQuoteReceivedEventArgs e)
+        {
+            string qInfo = string.Format("{0}, {1}, {2}", e.Symbol, e.Quote.last, e.Quote.update_time);
+            System.Diagnostics.Trace.WriteLine(qInfo);
         }
     }
 

@@ -44,7 +44,8 @@ void ClientBase::Subscribe( vector<string>& symbols )
 
 void ClientBase::UnSubscribe()
 {
-	g_quoteAggregator.UnsubscribeQuotes(GetUuid());
+	if(!(GetUuid().is_nil()))
+		g_quoteAggregator.UnsubscribeQuotes(GetUuid());
 }
 
 void ClientBase::_internalProcessQuote( boost::shared_ptr<CTP::Quote>& pQuote )

@@ -23,7 +23,11 @@ public:
 
 	const std::string& GetIPAddress() { return m_ipAddr; }
 
-	void Close() { m_conn->close(); }
+	void Close() 
+	{
+		UnSubscribe(); // Unsubscribe quote from market
+		m_conn->close(); 
+	}
 
 protected:
 
@@ -40,9 +44,9 @@ protected:
 	// business associated
 	void OnLogin(const std::string& username, const std::string& password);
 
-	void OnSubscribe(const std::vector<std::string>& symbols);
+	void OnSubscribe(std::vector<std::string>& symbols);
 
-	void OnUnSubscribe(const std::vector<std::string>& symbols);
+	void OnUnSubscribe(std::vector<std::string>& symbols);
 
 private:
 

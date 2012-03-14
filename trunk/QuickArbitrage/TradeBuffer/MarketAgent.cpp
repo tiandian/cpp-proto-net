@@ -449,7 +449,7 @@ void CMarketAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthM
 		quote->set_last(pDepthMarketData->LastPrice);
 		quote->set_prev_settlement_price(pDepthMarketData->PreSettlementPrice);
 		quote->set_prev_close(pDepthMarketData->PreClosePrice);
-		quote->set_open_interest(pDepthMarketData->PreOpenInterest);
+		quote->set_prev_open_interest(pDepthMarketData->PreOpenInterest);
 		quote->set_open(pDepthMarketData->OpenPrice);
 		quote->set_high(pDepthMarketData->HighestPrice);
 		quote->set_low(pDepthMarketData->LowestPrice);
