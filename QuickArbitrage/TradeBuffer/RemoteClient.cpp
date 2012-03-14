@@ -3,7 +3,10 @@
 #include "LogManager.h"
 #include "ConnectionManager.h"
 #include "protobuf_gen/login.pb.h"
+#include "protobuf_gen/subscribe.pb.h"
 
+#include <set>
+#include <algorithm>
 #include <boost/bind.hpp>
 #include <boost/tuple/tuple.hpp>
 
@@ -60,14 +63,34 @@ void RemoteClient::OnDataReceived(const boost::system::error_code& e, MSG_TYPE m
 			}
 			break;
 		case REQ_SUBSCRIBE:
+			{
+				protoc::ReqSubscribe reqSub;
+				reqSub.ParseFromString(data);
+				
+				std::vector<std::string> vecSymbols;
+				vecSymbols.resize(reqSub.symbols().size());
+				std::copy(reqSub.symbols().begin(), reqSub.symbols().end(), vecSymbols.begin());
+				
+				OnSubscribe(vecSymbols);
+			}
 			break;
 		case REQ_UNSUBSCRIBE:
+			{
+				protoc::ReqUnsubscribe reqUnSub;
+				reqUnSub.ParseFromString(data);
+
+				std::vector<std::string> vecSymbols;
+				vecSymbols.resize(reqUnSub.symbols().size());
+				std::copy(reqUnSub.symbols().begin(), reqUnSub.symbols().end(), vecSymbols.begin());
+
+				OnUnSubscribe(vecSymbols);
+			}
 			break;
 
 		}
 
-		//if(m_isContinuousReading)
-		//	BeginRead();
+		if(m_isContinuousReading)
+			BeginRead();
 	}
 }
 
@@ -114,14 +137,63 @@ void RemoteClient::OnLogin( const std::string& username, const std::string& pass
 	BeginWrite(RSP_LOGIN, rsp_data);
 }
 
-void RemoteClient::OnSubscribe( const std::vector<std::string>& symbols )
+void RemoteClient::OnSubscribe( std::vector<std::string>& symbols )
 {
+	protoc::RspSubscribe rspSub;
 
+	try{
+		Subscribe(symbols);
+		rspSub.set_succ(true);
+	}
+	catch(...)
+	{
+		rspSub.set_succ(false);
+	}
+
+	std::string rsp_data;
+	bool succ = rspSub.SerializeToString(&rsp_data);
+	assert(succ == true);
+	BeginWrite(RSP_SUBSCRIBE, rsp_data);
 }
 
-void RemoteClient::OnUnSubscribe( const std::vector<std::string>& symbols )
+void RemoteClient::OnUnSubscribe( std::vector<std::string>& symbols )
 {
+	protoc::RspUnsubscribe rspUnsub;
 
+	try{
+		rspUnsub.set_succ(true);
+
+		if(symbols.size() == 0)
+		{
+			UnSubscribe();
+		}
+		else
+		{
+			std::set<std::string> UnsubSet(symbols.begin(), symbols.end());
+			std::vector<std::string>& currentSymbols = GetSymbols();
+			std::set<std::string> OrigSet(currentSymbols.begin(), currentSymbols.end());
+
+			std::vector<std::string> ChangeToSymbols;
+			ChangeToSymbols.resize(currentSymbols.size());
+			std::vector<std::string>::iterator lastIter = std::set_difference(OrigSet.begin(), OrigSet.end(), 
+													UnsubSet.begin(), UnsubSet.end(), ChangeToSymbols.begin());
+			ChangeToSymbols.resize(lastIter - ChangeToSymbols.begin());
+			if(ChangeToSymbols.size() < currentSymbols.size())
+			{
+				// subscring symbols is indeed changed
+				Subscribe(ChangeToSymbols);
+			}
+		}
+	}
+	catch(...)
+	{
+		rspUnsub.set_succ(false);
+	}
+	
+	std::string rsp_data;
+	bool succ = rspUnsub.SerializeToString(&rsp_data);
+	assert(succ == true);
+	BeginWrite(RSP_UNSUBSCRIBE, rsp_data);
 }
 
 void RemoteClient::OnSocketError( const boost::system::error_code& e )

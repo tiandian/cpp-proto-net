@@ -12,5 +12,7 @@ namespace QuickArbitrage.Common.Contract
         void Login(string username, string password, LoginCallback callback);
 
         void Logout();
+
+        bool IsConnected { get; }
     }
 }

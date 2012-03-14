@@ -12,9 +12,12 @@ namespace QuickArbitrage.Connection
     partial class Client : ConnectionBase, IAccountClient
     {
         private LoginCallback _loginResultCallback;
+
+        public bool IsConnected { get; private set; }
          
         public void Login(string username, string password, LoginCallback callback)
         {
+            IsConnected = false;
             _loginResultCallback = callback;
 
             ConnectDoneCallback connectComplete = delegate(bool succ, string msg)
@@ -61,6 +64,8 @@ namespace QuickArbitrage.Connection
 
         private void OnLoginResponse(RspLogin response)
         {
+            IsConnected = response.succ;
+
             if (_loginResultCallback != null)
                 _loginResultCallback(response.succ, response.session);
         }
