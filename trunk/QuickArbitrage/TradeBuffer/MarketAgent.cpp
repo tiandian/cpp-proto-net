@@ -44,7 +44,7 @@ bool CMarketAgent::Connect()
 {
 	try{
 		// 初始化UserApi
-		m_pUserApi = CThostFtdcMdApi::CreateFtdcMdApi();			// 创建UserApi
+		m_pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(".\\Md\\");			// 创建UserApi
 		m_pUserApi->RegisterSpi(this);						// 注册事件类
 
 		std::stringstream ss(std::stringstream::out);
@@ -93,6 +93,7 @@ void CMarketAgent::Disconnect()
 
 	if(m_pUserApi != NULL)
 	{
+		m_pUserApi->RegisterSpi(NULL);
 		m_pUserApi->Release();
 
 		{
