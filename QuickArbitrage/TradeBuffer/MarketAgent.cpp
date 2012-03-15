@@ -93,7 +93,7 @@ void CMarketAgent::Disconnect()
 
 	if(m_pUserApi != NULL)
 	{
-		m_pUserApi->RegisterSpi(NULL);
+		//m_pUserApi->RegisterSpi(NULL);
 		m_pUserApi->Release();
 
 		{

@@ -7,7 +7,7 @@ extern CQuoteAggregator g_quoteAggregator;
 ClientBase::ClientBase(void):
 	m_pbfRunner(NULL)
 {
-	m_pbfRunner = new CBufferRunner< boost::shared_ptr<CTP::Quote> >(boost::bind(&ClientBase::_internalProcessQuote, this, _1));
+	m_pbfRunner = new CBufferRunner< boost::shared_ptr<MsgPack> >(boost::bind(&ClientBase::ProcessMsgPack, this, _1));
 	m_pbfRunner->Start();
 }
 
@@ -23,7 +23,11 @@ ClientBase::~ClientBase(void)
 
 void ClientBase::OnQuoteRecevied( boost::shared_ptr<CTP::Quote>& pQuote )
 {
-	m_pbfRunner->Enqueue(pQuote);
+	// place in buffer runner with QuotePack wrapping
+	/*boost::shared_ptr<MsgPack> pack(new MsgPackT<CTP::Quote>(QUOTE, pQuote));
+	m_pbfRunner->Enqueue(pack);*/
+
+	EnqueueMessage(QUOTE, pQuote);
 }
 
 void ClientBase::Subscribe( vector<string>& symbols )
@@ -48,7 +52,41 @@ void ClientBase::UnSubscribe()
 		g_quoteAggregator.UnsubscribeQuotes(GetUuid());
 }
 
-void ClientBase::_internalProcessQuote( boost::shared_ptr<CTP::Quote>& pQuote )
+void ClientBase::ProcessMsgPack( boost::shared_ptr<MsgPack>& pPack )
 {
-	ProcessQuote(pQuote);
+	MSG_TYPE msgType = pPack->GetType();
+	if(msgType == QUOTE)
+	{
+		void* p_msg = pPack->GetMsg();
+		CTP::Quote* pQuote = static_cast<CTP::Quote*>(p_msg);
+		ProcessQuote(pQuote);
+	}
+	else
+	{
+		ProcessMessage(msgType, pPack->GetMsg());
+	}
+	/*switch (msgType)
+	{
+	case QUOTE:
+	{
+
+	}
+	break;
+	case RSP_LOGIN:
+	{
+	void* p_msg = pPack->GetMsg();
+	CTP::Quote* pQuote = static_cast<CTP::Quote*>(p_msg);
+	}
+	break;
+	}*/
 }
+
+//void ClientBase::ProcessQuote( CTP::Quote* pQuote )
+//{
+//	//std::string data;
+//	//pQuote->SerializeToString(&data);
+//	//BeginWrite(QUOTE, data);	
+//	
+//	// may block some time before the last sent done.
+//	BeginSendMessage(QUOTE, pQuote);
+//}

@@ -39,10 +39,13 @@ public:
 		m_thread.join();
 	}
 
-	void Enqueue(T stuff)
+	void Enqueue(T stuff, bool front = false)
 	{
 		boost::lock_guard<boost::mutex> lock(m_mutex);
-		m_cbQuotes.push_back(stuff);
+		if(front)
+			m_cbQuotes.push_front(stuff);
+		else
+			m_cbQuotes.push_back(stuff);
 		m_cond.notify_all();
 	}
 
