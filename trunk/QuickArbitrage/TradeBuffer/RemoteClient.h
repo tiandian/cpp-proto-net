@@ -2,6 +2,7 @@
 
 #include "clientbase.h"
 #include "connection.h"
+#include "OrderProcessor.h"
 
 #include <string>
 #include <vector>
@@ -31,7 +32,12 @@ public:
 
 protected:
 
-	void ProcessQuote(boost::shared_ptr<CTP::Quote>& pQuote);
+	virtual void ProcessMessage(MSG_TYPE type, void* pData);
+
+	virtual void ProcessQuote(CTP::Quote* pQuote)
+	{
+		BeginSendMessage(QUOTE, pQuote);
+	}
 
 	void WriteCompleted(const boost::system::error_code& e, std::size_t bytes_transferred);
 
@@ -40,6 +46,14 @@ protected:
 	void BeginRead();
 
 	void BeginWrite(MSG_TYPE msg, std::string& data);
+
+	template<typename T>
+	void BeginSendMessage(MSG_TYPE type, T* pT)
+	{
+		std::string data;
+		pT->SerializeToString(&data);
+		BeginWrite(type, data);
+	}
 
 	// business associated
 	void OnLogin(const std::string& username, const std::string& password);
@@ -59,5 +73,7 @@ private:
 	bool m_isContinuousReading;
 
 	CConnectionManager* m_pConnMgr;
+
+	COrderProcessor m_orderProcessor;
 };
 

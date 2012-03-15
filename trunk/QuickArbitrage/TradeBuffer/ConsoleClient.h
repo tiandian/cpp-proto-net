@@ -11,7 +11,7 @@ public:
 	~CConsoleClient(void);
 
 protected:
-	virtual void ProcessQuote(boost::shared_ptr<CTP::Quote>& pQuote);
+	virtual void ProcessQuote(CTP::Quote* pQuote);
 
 private:
 	std::stringstream m_streamOut;

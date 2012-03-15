@@ -15,7 +15,7 @@ extern CLogManager logger;
 #define QUALIFIED_USER "xixihaha"
 #define QUALIFIED_PWD "thisispwd"
 
-MSG_TYPE MakeTransmitPacket(boost::shared_ptr<CTP::Quote>& pQuote, std::string* data)
+MSG_TYPE MakeTransmitPacket(CTP::Quote* pQuote, std::string* data)
 {
 	pQuote->SerializeToString(data);
 	return QUOTE;
@@ -31,13 +31,6 @@ RemoteClient::RemoteClient(std::string& sessionId, connection_ptr conn)
 
 RemoteClient::~RemoteClient(void)
 {
-}
-
-void RemoteClient::ProcessQuote( boost::shared_ptr<CTP::Quote>& pQuote )
-{
-	std::string data;
-	MSG_TYPE msg = MakeTransmitPacket(pQuote, &data);
-	BeginWrite(msg, data);	// may block some time before the last sent done.
 }
 
 void RemoteClient::WriteCompleted(const boost::system::error_code& e, std::size_t bytes_transferred)
@@ -118,23 +111,26 @@ void RemoteClient::OnLogin( const std::string& username, const std::string& pass
 	oss << "Client request login with username('" << username << "') and password('" << password << "')";
 	logger.Info(oss.str());
 
-	protoc::RspLogin rsp;
+	boost::shared_ptr<protoc::RspLogin> rsp(new protoc::RspLogin());
 	if(username == QUALIFIED_USER && password == QUALIFIED_PWD)
 	{
 		// approve login
-		rsp.set_succ(true);
-		rsp.set_session(m_sessionId);
+		rsp->set_succ(true);
+		rsp->set_session(m_sessionId);
 	}
 	else
 	{
 		// refuse
-		rsp.set_succ(false);
-		rsp.set_session(m_sessionId);
+		rsp->set_succ(false);
+		rsp->set_session(m_sessionId);
 	}
-	std::string rsp_data;
-	bool succ = rsp.SerializeToString(&rsp_data);
-	assert(succ == true);
-	BeginWrite(RSP_LOGIN, rsp_data);
+
+	EnqueueMessage(RSP_LOGIN, rsp);
+
+	//std::string rsp_data;
+	//bool succ = rsp.SerializeToString(&rsp_data);
+	//assert(succ == true);
+	//BeginWrite(RSP_LOGIN, rsp_data);
 }
 
 void RemoteClient::OnSubscribe( std::vector<std::string>& symbols )
@@ -199,6 +195,31 @@ void RemoteClient::OnUnSubscribe( std::vector<std::string>& symbols )
 void RemoteClient::OnSocketError( const boost::system::error_code& e )
 {
 	m_conn->socket().get_io_service().post(boost::bind(&CConnectionManager::HandleError, m_pConnMgr, m_sessionId, e));
+}
+
+void RemoteClient::ProcessMessage( MSG_TYPE type, void* pData )
+{
+	switch(type)
+	{
+	case RSP_LOGIN:
+		{
+			protoc::RspLogin* pLogin = static_cast<protoc::RspLogin*>(pData);
+			BeginSendMessage(type, pLogin);
+		}
+		break;
+	case RSP_SUBSCRIBE:
+		{
+			protoc::RspSubscribe* pSub = static_cast<protoc::RspSubscribe*>(pData);
+			BeginSendMessage(type, pSub);
+		}
+		break;
+	case RSP_UNSUBSCRIBE:
+		{
+			protoc::RspUnsubscribe* pUnSub = static_cast<protoc::RspUnsubscribe*>(pData);
+			BeginSendMessage(type, pUnSub);
+		}
+		break;
+	}
 }
 
 

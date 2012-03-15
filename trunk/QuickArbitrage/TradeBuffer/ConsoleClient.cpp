@@ -14,7 +14,7 @@ CConsoleClient::~CConsoleClient(void)
 {
 }
 
-void CConsoleClient::ProcessQuote( boost::shared_ptr<CTP::Quote>& pQuote )
+void CConsoleClient::ProcessQuote( CTP::Quote* pQuote )
 {
 	m_streamOut.str("");
 	m_streamOut << pQuote->symbol() << ", ";
