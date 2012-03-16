@@ -2,6 +2,7 @@
 #include "RemoteClient.h"
 #include "LogManager.h"
 #include "ConnectionManager.h"
+#include "OrderManager.h"
 #include "protobuf_gen/login.pb.h"
 #include "protobuf_gen/subscribe.pb.h"
 
@@ -11,18 +12,13 @@
 #include <boost/tuple/tuple.hpp>
 
 extern CLogManager logger;
+extern COrderManager g_orderMgr;
 
 #define QUALIFIED_USER "xixihaha"
 #define QUALIFIED_PWD "thisispwd"
 
-MSG_TYPE MakeTransmitPacket(CTP::Quote* pQuote, std::string* data)
-{
-	pQuote->SerializeToString(data);
-	return QUOTE;
-}
-
 RemoteClient::RemoteClient(std::string& sessionId, connection_ptr conn)
-	: m_conn(conn), m_isContinuousReading(false), m_pConnMgr(NULL)
+	: m_conn(conn), m_isContinuousReading(false), m_pConnMgr(NULL),m_tradeLoggedin(false)
 {
 	m_sessionId = sessionId;
 	m_ipAddr = m_conn->socket().remote_endpoint().address().to_string();
@@ -111,8 +107,19 @@ void RemoteClient::OnLogin( const std::string& username, const std::string& pass
 	oss << "Client request login with username('" << username << "') and password('" << password << "')";
 	logger.Info(oss.str());
 
+	m_brokerId = "0240";
+	m_userId = username;
+	g_orderMgr.Register(this, m_brokerId, m_userId, const_cast<std::string&>(password));
+}
+
+
+void RemoteClient::OnRegisterResult( bool succ, std::string& errMsg )
+{
 	boost::shared_ptr<protoc::RspLogin> rsp(new protoc::RspLogin());
-	if(username == QUALIFIED_USER && password == QUALIFIED_PWD)
+	
+	m_tradeLoggedin = succ;
+
+	if(succ)
 	{
 		// approve login
 		rsp->set_succ(true);
@@ -126,38 +133,30 @@ void RemoteClient::OnLogin( const std::string& username, const std::string& pass
 	}
 
 	EnqueueMessage(RSP_LOGIN, rsp);
-
-	//std::string rsp_data;
-	//bool succ = rsp.SerializeToString(&rsp_data);
-	//assert(succ == true);
-	//BeginWrite(RSP_LOGIN, rsp_data);
 }
 
 void RemoteClient::OnSubscribe( std::vector<std::string>& symbols )
 {
-	protoc::RspSubscribe rspSub;
+	boost::shared_ptr<protoc::RspSubscribe> rspSub(new protoc::RspSubscribe());
 
 	try{
 		Subscribe(symbols);
-		rspSub.set_succ(true);
+		rspSub->set_succ(true);
 	}
 	catch(...)
 	{
-		rspSub.set_succ(false);
+		rspSub->set_succ(false);
 	}
-
-	std::string rsp_data;
-	bool succ = rspSub.SerializeToString(&rsp_data);
-	assert(succ == true);
-	BeginWrite(RSP_SUBSCRIBE, rsp_data);
+	
+	EnqueueMessage(RSP_SUBSCRIBE, rspSub);
 }
 
 void RemoteClient::OnUnSubscribe( std::vector<std::string>& symbols )
 {
-	protoc::RspUnsubscribe rspUnsub;
+	boost::shared_ptr<protoc::RspUnsubscribe> rspUnsub(new protoc::RspUnsubscribe());
 
 	try{
-		rspUnsub.set_succ(true);
+		rspUnsub->set_succ(true);
 
 		if(symbols.size() == 0)
 		{
@@ -183,13 +182,10 @@ void RemoteClient::OnUnSubscribe( std::vector<std::string>& symbols )
 	}
 	catch(...)
 	{
-		rspUnsub.set_succ(false);
+		rspUnsub->set_succ(false);
 	}
 	
-	std::string rsp_data;
-	bool succ = rspUnsub.SerializeToString(&rsp_data);
-	assert(succ == true);
-	BeginWrite(RSP_UNSUBSCRIBE, rsp_data);
+	EnqueueMessage(RSP_UNSUBSCRIBE, rspUnsub);
 }
 
 void RemoteClient::OnSocketError( const boost::system::error_code& e )
@@ -221,5 +217,16 @@ void RemoteClient::ProcessMessage( MSG_TYPE type, void* pData )
 		break;
 	}
 }
+
+void RemoteClient::Close()
+{
+	UnSubscribe(); // Unsubscribe quote from market
+
+	if(m_tradeLoggedin)
+		g_orderMgr.Unregister(m_brokerId, m_userId);
+
+	m_conn->close();
+}
+
 
 

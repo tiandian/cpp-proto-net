@@ -17,7 +17,6 @@
 #include <boost/foreach.hpp>
 #include <google/protobuf/stubs/common.h>
 
-#pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
 
 using namespace std;
 

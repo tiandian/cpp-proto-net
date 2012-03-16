@@ -8,6 +8,8 @@
 #include <algorithm>
 #include <boost/smart_ptr.hpp>
 
+#pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
+
 #define SYMBOL_MAX_LENGTH 10
 #define CONNECT_TIMEOUT_MINUTE 1
 #define DISCONNECT_TIMEOUT_SECOND 5
@@ -104,10 +106,9 @@ void CMarketAgent::Disconnect()
 				if(!m_condConnectDone.timed_wait(lock, boost::posix_time::seconds(DISCONNECT_TIMEOUT_SECOND)))
 				{
 					logger.Warning("Disconnecting time out");
+					m_bIsConnected = false;
 				}
 			}
-
-			m_bIsConnected = false;
 		}
 	}
 }
@@ -198,8 +199,8 @@ void CMarketAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, C
 	if(pRspInfo->ErrorID == 0)
 	{
 		// login succeeded
-		ss << "Login succeeded." << endl;
-		ss << "Trading day: " << pRspUserLogin->TradingDay << endl;
+		ss << "Login quote succeeded." << endl;
+		/*ss << "Trading day: " << pRspUserLogin->TradingDay << endl;
 		ss << "Login Time: " << pRspUserLogin->LoginTime << endl;
 		ss << "Broker ID: " << pRspUserLogin->BrokerID << endl;
 		ss << "User ID: " << pRspUserLogin->UserID << endl;
@@ -210,12 +211,12 @@ void CMarketAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, C
 		ss << "SHFE time: " << pRspUserLogin->SHFETime << endl;
 		ss << "DCE time: " << pRspUserLogin->DCETime << endl;
 		ss << "CZCE time: " << pRspUserLogin->CZCETime << endl;
-		ss << "FFEX time: " << pRspUserLogin->FFEXTime << endl;
+		ss << "FFEX time: " << pRspUserLogin->FFEXTime << endl;*/
 	}
 	else
 	{
 		// login failed
-		ss << "Login failed due to " << pRspInfo->ErrorMsg << endl;
+		ss << "Login quote failed due to " << pRspInfo->ErrorMsg << endl;
 	}
 	logger.Info(ss.str());
 }

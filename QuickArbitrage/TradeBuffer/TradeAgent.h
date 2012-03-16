@@ -1,17 +1,26 @@
 #pragma once
 
 #include "ThostFtdcTraderApi.h"
-#include "TradeAgentCallback.h"
 
+#include <string>
+#include <boost/thread.hpp>
+#include <boost/tuple/tuple.hpp>
+
+class COrderManager;
 
 class CTradeAgent : public CThostFtdcTraderSpi
 {
 public:
-	CTradeAgent(void);
+	CTradeAgent(COrderManager* pOrderMgr);
 	~CTradeAgent(void);
 
+	void Login(std::string& brokerId, std::string& userId, std::string& password);
+	void Logout();
 
-	void SetCallbackHanlder(CTradeAgentCallback* pCallback){ m_pCallback = pCallback; }
+	boost::tuple<std::string&, std::string&> GetCurrentUserInfo()
+	{
+		return boost::make_tuple(boost::ref(m_brokerId), boost::ref(m_userId));
+	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
@@ -22,6 +31,9 @@ public:
 	///登录请求响应
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,	CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
+	///登出请求响应
+	virtual void OnRspUserLogout(CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+	
 	///投资者结算结果确认响应
 	virtual void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
@@ -58,8 +70,22 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 
 private:
+	int RequestIDIncrement(){ return ++m_iRequestID; }
 
-	CTradeAgentCallback* m_pCallback;
+	CThostFtdcTraderApi* m_pUserApi;
+	boost::thread m_thTrading;
 
+	std::string m_brokerId;
+	std::string m_userId;
+	std::string m_password;
+
+	bool m_isConnected;
+	// 请求编号
+	int m_iRequestID;
+
+	COrderManager* m_pOrderMgr;
+
+	boost::mutex m_mutex;
+	boost::condition_variable m_condLogout;
 };
 

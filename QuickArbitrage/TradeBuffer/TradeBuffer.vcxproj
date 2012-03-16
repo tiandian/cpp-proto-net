@@ -60,7 +60,10 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /y .\ThostTraderApi\thostMduserapi.dll $(OutDir)
-copy /y .\TradeBuffer.cfg $(OutDir)</Command>
+copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)
+copy /y .\TradeBuffer.cfg $(OutDir)
+if not exist $(OutDir)Md md $(OutDir)Md
+if not exist $(OutDir)Td md $(OutDir)Td</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,7 +85,11 @@ copy /y .\TradeBuffer.cfg $(OutDir)</Command>
       <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy .\ThostTraderApi\thostMduserapi.dll $(OutDir)</Command>
+      <Command>copy /y .\ThostTraderApi\thostMduserapi.dll $(OutDir)
+copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)
+copy /y .\TradeBuffer.cfg $(OutDir)
+if not exist $(OutDir)Md md $(OutDir)Md
+if not exist $(OutDir)Td md $(OutDir)Td</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -107,7 +114,6 @@ copy /y .\TradeBuffer.cfg $(OutDir)</Command>
     <ClInclude Include="MsgPack.h" />
     <ClInclude Include="MsgType.h" />
     <ClInclude Include="OrderManager.h" />
-    <ClInclude Include="OrderProcessor.h" />
     <ClInclude Include="protobuf_gen\heartbeat.pb.h" />
     <ClInclude Include="protobuf_gen\login.pb.h" />
     <ClInclude Include="protobuf_gen\quote.pb.h" />
@@ -119,7 +125,6 @@ copy /y .\TradeBuffer.cfg $(OutDir)</Command>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
-    <ClInclude Include="TradeAgentCallback.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientBase.cpp" />
@@ -130,7 +135,6 @@ copy /y .\TradeBuffer.cfg $(OutDir)</Command>
     <ClCompile Include="MarketAgent.cpp" />
     <ClCompile Include="MarketAgentCallback.cpp" />
     <ClCompile Include="OrderManager.cpp" />
-    <ClCompile Include="OrderProcessor.cpp" />
     <ClCompile Include="protobuf_gen\heartbeat.pb.cc" />
     <ClCompile Include="protobuf_gen\login.pb.cc" />
     <ClCompile Include="protobuf_gen\quote.pb.cc" />
