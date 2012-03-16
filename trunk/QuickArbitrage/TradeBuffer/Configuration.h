@@ -23,6 +23,7 @@ public:
 	const char* GetBrokerID();
 	const char* GetInvestorID();
 	const char* GetPassword();
+	const char* GetTradeAddr();
 	const char* GetControlType();
 	unsigned short GetPort();
 
@@ -37,6 +38,9 @@ private:
 	std::string m_brokerID;
 	std::string m_investorID;
 	std::string m_password;
+
+	// Trade
+	std::string m_tradeAddress;
 
 	// Connection
 	unsigned short m_port;

@@ -2,7 +2,6 @@
 
 #include "clientbase.h"
 #include "connection.h"
-#include "OrderProcessor.h"
 
 #include <string>
 #include <vector>
@@ -24,11 +23,9 @@ public:
 
 	const std::string& GetIPAddress() { return m_ipAddr; }
 
-	void Close() 
-	{
-		UnSubscribe(); // Unsubscribe quote from market
-		m_conn->close(); 
-	}
+	void Close();
+
+	void OnRegisterResult(bool succ, std::string& errMsg);
 
 protected:
 
@@ -62,6 +59,9 @@ protected:
 
 	void OnUnSubscribe(std::vector<std::string>& symbols);
 
+	std::string& GetBrokerId(){return m_brokerId;}
+	std::string& GetUserId(){return m_userId;}
+
 private:
 
 	void OnSocketError(const boost::system::error_code& e);
@@ -70,10 +70,13 @@ private:
 	std::string m_sessionId;
 	std::string m_ipAddr;
 
+	std::string m_brokerId;
+	std::string m_userId;
+	bool m_tradeLoggedin;
+
 	bool m_isContinuousReading;
 
 	CConnectionManager* m_pConnMgr;
 
-	COrderProcessor m_orderProcessor;
 };
 

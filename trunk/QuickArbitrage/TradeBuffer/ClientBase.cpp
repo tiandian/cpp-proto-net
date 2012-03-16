@@ -65,28 +65,4 @@ void ClientBase::ProcessMsgPack( boost::shared_ptr<MsgPack>& pPack )
 	{
 		ProcessMessage(msgType, pPack->GetMsg());
 	}
-	/*switch (msgType)
-	{
-	case QUOTE:
-	{
-
-	}
-	break;
-	case RSP_LOGIN:
-	{
-	void* p_msg = pPack->GetMsg();
-	CTP::Quote* pQuote = static_cast<CTP::Quote*>(p_msg);
-	}
-	break;
-	}*/
 }
-
-//void ClientBase::ProcessQuote( CTP::Quote* pQuote )
-//{
-//	//std::string data;
-//	//pQuote->SerializeToString(&data);
-//	//BeginWrite(QUOTE, data);	
-//	
-//	// may block some time before the last sent done.
-//	BeginSendMessage(QUOTE, pQuote);
-//}
