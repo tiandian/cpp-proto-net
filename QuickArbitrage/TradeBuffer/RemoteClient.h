@@ -59,9 +59,6 @@ protected:
 
 	void OnUnSubscribe(std::vector<std::string>& symbols);
 
-	std::string& GetBrokerId(){return m_brokerId;}
-	std::string& GetUserId(){return m_userId;}
-
 private:
 
 	void OnSocketError(const boost::system::error_code& e);
@@ -69,10 +66,6 @@ private:
 	connection_ptr m_conn;
 	std::string m_sessionId;
 	std::string m_ipAddr;
-
-	std::string m_brokerId;
-	std::string m_userId;
-	bool m_tradeLoggedin;
 
 	bool m_isContinuousReading;
 

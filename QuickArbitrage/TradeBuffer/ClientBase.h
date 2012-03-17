@@ -19,7 +19,15 @@ public:
 	void Subscribe(vector<string>& symbols);
 	void UnSubscribe();
 
+	virtual bool Login(const std::string& brokerId, const std::string& userId, const std::string& password);
+	virtual void Logout();
+
 	void OnQuoteRecevied(boost::shared_ptr<CTP::Quote>& pQuote);
+
+	virtual void OnRegisterResult(bool succ, std::string& errMsg)
+	{
+		m_tradeLoggedin = succ;
+	}
 
 protected:
 	
@@ -33,6 +41,15 @@ protected:
 	virtual void ProcessMessage(MSG_TYPE type, void* pData){}
 
 	virtual void ProcessQuote(CTP::Quote* pQuote){}
+
+protected:
+
+	std::string& GetBrokerId(){return m_brokerId;}
+	std::string& GetUserId(){return m_userId;}
+
+	std::string m_brokerId;
+	std::string m_userId;
+	bool m_tradeLoggedin;
 
 private:
 	void ProcessMsgPack(boost::shared_ptr<MsgPack>& pPack);
