@@ -14,12 +14,12 @@ public:
 	CTradeAgent(COrderManager* pOrderMgr);
 	~CTradeAgent(void);
 
-	void Login(std::string& brokerId, std::string& userId, std::string& password);
+	void Login(const std::string& brokerId, const std::string& userId, const std::string& password);
 	void Logout();
 
-	boost::tuple<std::string&, std::string&> GetCurrentUserInfo()
+	boost::tuple<std::string&, std::string&, std::string&> GetCurrentUserInfo()
 	{
-		return boost::make_tuple(boost::ref(m_brokerId), boost::ref(m_userId));
+		return boost::make_tuple(boost::ref(m_brokerId), boost::ref(m_userId), boost::ref(m_password));
 	}
 
 	//////////////////////////////////////////////////////////////////////////

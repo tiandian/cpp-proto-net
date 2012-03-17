@@ -38,7 +38,7 @@ void TradingThreadFunc(CThostFtdcTraderApi* pUserApi, const char* address)
 	pUserApi->Join();
 }
 
-void CTradeAgent::Login( std::string& brokerId, std::string& userId, std::string& password )
+void CTradeAgent::Login( const std::string& brokerId, const std::string& userId, const std::string& password )
 {
 	try{
 		// ≥ı ºªØUserApi

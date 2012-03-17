@@ -1,11 +1,13 @@
 #include "StdAfx.h"
 #include "ClientBase.h"
 #include "QuoteAggregator.h"
+#include "OrderManager.h"
 
 extern CQuoteAggregator g_quoteAggregator;
+extern COrderManager g_orderMgr;
 
 ClientBase::ClientBase(void):
-	m_pbfRunner(NULL)
+	m_pbfRunner(NULL), m_tradeLoggedin(false)
 {
 	m_pbfRunner = new CBufferRunner< boost::shared_ptr<MsgPack> >(boost::bind(&ClientBase::ProcessMsgPack, this, _1));
 	m_pbfRunner->Start();
@@ -64,5 +66,21 @@ void ClientBase::ProcessMsgPack( boost::shared_ptr<MsgPack>& pPack )
 	else
 	{
 		ProcessMessage(msgType, pPack->GetMsg());
+	}
+}
+
+bool ClientBase::Login( const std::string& brokerId, const std::string& userId, const std::string& password )
+{
+	m_brokerId = brokerId;
+	m_userId = userId;
+	return g_orderMgr.Register(this, m_brokerId, m_userId, const_cast<std::string&>(password));
+}
+
+void ClientBase::Logout()
+{
+	if(m_tradeLoggedin)
+	{
+		g_orderMgr.Unregister(m_brokerId, m_userId);
+		m_tradeLoggedin = false;
 	}
 }

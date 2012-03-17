@@ -2,7 +2,6 @@
 #include "RemoteClient.h"
 #include "LogManager.h"
 #include "ConnectionManager.h"
-#include "OrderManager.h"
 #include "protobuf_gen/login.pb.h"
 #include "protobuf_gen/subscribe.pb.h"
 
@@ -12,13 +11,13 @@
 #include <boost/tuple/tuple.hpp>
 
 extern CLogManager logger;
-extern COrderManager g_orderMgr;
+
 
 #define QUALIFIED_USER "xixihaha"
 #define QUALIFIED_PWD "thisispwd"
 
 RemoteClient::RemoteClient(std::string& sessionId, connection_ptr conn)
-	: m_conn(conn), m_isContinuousReading(false), m_pConnMgr(NULL),m_tradeLoggedin(false)
+	: m_conn(conn), m_isContinuousReading(false), m_pConnMgr(NULL)
 {
 	m_sessionId = sessionId;
 	m_ipAddr = m_conn->socket().remote_endpoint().address().to_string();
@@ -107,17 +106,14 @@ void RemoteClient::OnLogin( const std::string& username, const std::string& pass
 	oss << "Client request login with username('" << username << "') and password('" << password << "')";
 	logger.Info(oss.str());
 
-	m_brokerId = "0240";
-	m_userId = username;
-	g_orderMgr.Register(this, m_brokerId, m_userId, const_cast<std::string&>(password));
+	Login(std::string("0240"), username, password);
 }
-
 
 void RemoteClient::OnRegisterResult( bool succ, std::string& errMsg )
 {
+	ClientBase::OnRegisterResult(succ, errMsg);
+
 	boost::shared_ptr<protoc::RspLogin> rsp(new protoc::RspLogin());
-	
-	m_tradeLoggedin = succ;
 
 	if(succ)
 	{
@@ -222,8 +218,7 @@ void RemoteClient::Close()
 {
 	UnSubscribe(); // Unsubscribe quote from market
 
-	if(m_tradeLoggedin)
-		g_orderMgr.Unregister(m_brokerId, m_userId);
+	Logout();
 
 	m_conn->close();
 }

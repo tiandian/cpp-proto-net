@@ -15,8 +15,11 @@ public:
 
 	void Initialize();
 
-	void Register(RemoteClient* pClient, std::string& brokerId, std::string& userId, std::string& password);
+	bool Register(ClientBase* pClient, const std::string& brokerId, const std::string& userId, const std::string& password);
 	void Unregister(std::string& brokerId, std::string& userId);
+
+	ClientBase* GetCurrentClient(){ return m_pClient; }
+	void SetCurrentClient(ClientBase* pClient) { m_pClient = pClient; }
 
 	void Subscribe(std::vector<std::string>& symbols);
 	void UnSubscribe();
@@ -30,7 +33,11 @@ public:
 	void OnRspUserLogin(bool succ, std::string& msg)
 	{
 		if(m_pClient != NULL)
+		{
 			m_pClient->OnRegisterResult(succ, msg);
+		}
+
+		if(!succ) SetCurrentClient(NULL);
 	}
 
 	///投资者结算结果确认响应
@@ -62,6 +69,7 @@ private:
 
 	CTradeAgent	m_tradeAgent;
 	
-	RemoteClient* m_pClient;
+	ClientBase* m_pClient;
+
 };
 

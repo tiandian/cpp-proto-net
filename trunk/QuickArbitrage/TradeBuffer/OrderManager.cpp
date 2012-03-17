@@ -50,15 +50,34 @@ void COrderManager::UnSubscribe()
 		g_quoteAggregator.UnsubscribeQuotes(GetUuid());
 }
 
-void COrderManager::Register( RemoteClient* pClient, std::string& brokerId, std::string& userId, std::string& password )
+bool COrderManager::Register( ClientBase* pClient, const std::string& brokerId, const std::string& userId, const std::string& password )
 {
-	m_pClient = pClient;
-	m_tradeAgent.Login(brokerId, userId, password);
+	if(m_pClient == NULL)
+	{
+		SetCurrentClient(pClient);
+		m_tradeAgent.Login(brokerId, userId, password);
+	}
+	else
+	{
+		boost::tuple<std::string&, std::string&, std::string&> ret = m_tradeAgent.GetCurrentUserInfo();
+		if(brokerId == boost::get<0>(ret) && userId == boost::get<1>(ret) && password == boost::get<2>(ret))
+		{
+			SetCurrentClient(pClient);
+			OnRspUserLogin(true, std::string(""));
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	
+	return true;
 }
 
 void COrderManager::Unregister( std::string& brokerId, std::string& userId )
 {
-	boost::tuple<std::string&, std::string&> ret = m_tradeAgent.GetCurrentUserInfo();
+	boost::tuple<std::string&, std::string&, std::string&> ret = m_tradeAgent.GetCurrentUserInfo();
 	if(brokerId == boost::get<0>(ret) && userId == boost::get<1>(ret))
 	{
 		m_tradeAgent.Logout();

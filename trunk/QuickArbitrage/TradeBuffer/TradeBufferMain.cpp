@@ -35,6 +35,8 @@ void PrintHelp();
 void Cleanup();
 void ConsoleExecuteSubscribe(CConsoleClient* pConsole, string& cmd);
 void ConsoleExecuteUnSubscribe(CConsoleClient* pConsole);
+void ConsoleExecuteLogin(CConsoleClient& console, string& cmd);
+void ConsoleExecuteLogout(CConsoleClient& console);
 
 boost::condition_variable _condExit;
 boost::mutex _mut;
@@ -103,6 +105,14 @@ int _tmain(int argc, _TCHAR* argv[])
 			else if(boost::istarts_with(command, "unsuball"))
 			{
 				ConsoleExecuteUnSubscribe(&consoleClient);
+			}
+			else if(boost::istarts_with(command, "login"))
+			{
+				ConsoleExecuteLogin(consoleClient, command);
+			}
+			else if(command == "logout")
+			{
+				ConsoleExecuteLogout(consoleClient);
 			}
 			else if(command == "list")
 			{
@@ -177,4 +187,32 @@ void ConsoleExecuteSubscribe(CConsoleClient* pConsole, string& cmd)
 void ConsoleExecuteUnSubscribe(CConsoleClient* pConsole)
 {
 	pConsole->UnSubscribe();
+}
+
+void ConsoleExecuteLogin(CConsoleClient& console, string& cmd)
+{
+	typedef vector< string > split_vector_type;
+
+	split_vector_type splitVec; 
+	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
+
+	if(splitVec.size() == 3)
+	{
+		string& uid = splitVec[1];
+		string& pwd = splitVec[2];
+		string brokerId = "0240";
+		bool succ = console.Login(brokerId, uid, pwd);
+
+		cout << "Console client logged in successfully." << endl;
+	}
+	else
+	{
+		cout << "Invalid login arguments. [e.g. login [account] [password]]" << endl;
+		cout << "account could be 0240050002 - 0240050009, password could be 888888" << endl;
+	}
+}
+
+void ConsoleExecuteLogout(CConsoleClient& console)
+{
+	console.Logout();
 }
