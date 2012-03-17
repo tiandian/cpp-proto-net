@@ -24,6 +24,11 @@ public:
 	void Subscribe(std::vector<std::string>& symbols);
 	void UnSubscribe();
 
+	void Buy()
+	{
+		m_tradeAgent.Buy();
+	}
+
 	virtual void OnQuoteRecevied(boost::shared_ptr<CTP::Quote>& pQuote);
 
 	//////////////////////////////////////////////////////////////////////////

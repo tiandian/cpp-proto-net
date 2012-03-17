@@ -75,3 +75,8 @@ void CConsoleClient::Logout()
 		m_tradeLoggedin = false;
 	}
 }
+
+void CConsoleClient::Buy()
+{
+	g_orderMgr.Buy();
+}
