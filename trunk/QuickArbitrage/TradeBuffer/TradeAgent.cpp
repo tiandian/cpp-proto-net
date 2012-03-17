@@ -9,11 +9,27 @@
 #pragma comment(lib, "./ThostTraderApi/thosttraderapi.lib")
 
 #define LOGOUT_TIMEOUT_SECOND 5
+#define WAIT_SECONDS_FOR_FLOWCONTROL 1
 
 extern CConfiguration config;
 extern CLogManager	logger;
 
 using namespace std;
+
+// 流控判断
+bool IsFlowControl(int iResult)
+{
+	return ((iResult == -2) || (iResult == -3));
+}
+
+bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
+{
+	// 如果ErrorID != 0, 说明收到了错误的响应
+	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
+	if (bResult)
+		cerr << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
+	return bResult;
+}
 
 CTradeAgent::CTradeAgent(COrderManager* pOrderMgr):
 	m_isConnected(false),
@@ -102,6 +118,13 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 	{
 		m_isConnected = true;
 
+		// 保存会话参数
+		FRONT_ID = pRspUserLogin->FrontID;
+		SESSION_ID = pRspUserLogin->SessionID;
+		int iNextOrderRef = atoi(pRspUserLogin->MaxOrderRef);
+		iNextOrderRef++;
+		sprintf(ORDER_REF, "%d", iNextOrderRef);
+
 		// login succeeded
 		ss << "Login succeeded." << endl;
 		ss << "Trading day: " << pRspUserLogin->TradingDay << endl;
@@ -116,17 +139,50 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		ss << "DCE time: " << pRspUserLogin->DCETime << endl;
 		ss << "CZCE time: " << pRspUserLogin->CZCETime << endl;
 		ss << "FFEX time: " << pRspUserLogin->FFEXTime << endl;
+
+		ReqSettlementInfoConfirm();
 	}
 	else
 	{
 		// login failed
 		errorMsg = pRspInfo->ErrorMsg;
 		ss << "Login failed due to " << pRspInfo->ErrorMsg << endl;
+
+		m_pOrderMgr->OnRspUserLogin(m_isConnected, errorMsg);
 	}
 
-	m_pOrderMgr->OnRspUserLogin(m_isConnected, errorMsg);
-
 	logger.Info(ss.str());
+}
+
+void CTradeAgent::ReqSettlementInfoConfirm()
+{
+	CThostFtdcSettlementInfoConfirmField req;
+	memset(&req, 0, sizeof(req));
+	strcpy(req.BrokerID, m_brokerId.c_str());
+	strcpy(req.InvestorID, m_userId.c_str());
+	int iResult = m_pUserApi->ReqSettlementInfoConfirm(&req, RequestIDIncrement());
+
+	ostringstream debugSS;
+	debugSS << "--->>> 请求投资者结算结果确认: " << iResult << ((iResult == 0) ? ", 成功" : ", 失败");
+	logger.Info(debugSS.str());
+}
+
+void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	string errorMsg;
+	if (bIsLast)
+	{
+		if(!IsErrorRspInfo(pRspInfo))
+		{
+			// Settlement confirm succeeded, then notify login success
+			m_pOrderMgr->OnRspUserLogin(true, errorMsg);
+		}
+		else
+		{
+			errorMsg = pRspInfo->ErrorMsg;
+			m_pOrderMgr->OnRspUserLogin(false, errorMsg);
+		}
+	}
 }
 
 void CTradeAgent::Logout()
@@ -204,12 +260,6 @@ void CTradeAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThos
 	logger.Info(ss.str());
 }
 
-
-void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
-}
-
 void CTradeAgent::OnRspQryInstrument( CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 
@@ -217,7 +267,12 @@ void CTradeAgent::OnRspQryInstrument( CThostFtdcInstrumentField *pInstrument, CT
 
 void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-
+	cerr << "--->>> " << "OnRspQryTradingAccount" << endl;
+	if (bIsLast && !IsErrorRspInfo(pRspInfo))
+	{
+		///请求查询投资者持仓
+		//ReqQryInvestorPosition();
+	}
 }
 
 void CTradeAgent::OnRspQryInvestorPosition( CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
@@ -227,12 +282,14 @@ void CTradeAgent::OnRspQryInvestorPosition( CThostFtdcInvestorPositionField *pIn
 
 void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-
+	cerr << "--->>> " << "OnRspOrderInsert" << endl;
+	IsErrorRspInfo(pRspInfo);
 }
 
 void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-
+	cerr << "--->>> " << "OnRspOrderAction" << endl;
+	IsErrorRspInfo(pRspInfo);
 }
 
 void CTradeAgent::OnRspError( CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
@@ -282,12 +339,114 @@ void CTradeAgent::OnHeartBeatWarning( int nTimeLapse )
 
 void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 {
-
+	cerr << "--->>> " << "OnRtnOrder"  << endl;
+	if (IsMyOrder(pOrder))
+	{
+		/*if (IsTradingOrder(pOrder))
+		ReqOrderAction(pOrder);
+		else if (pOrder->OrderStatus == THOST_FTDC_OST_Canceled)
+		cout << "--->>> 撤单成功" << endl;*/
+	}
 }
 
 void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 {
+	cerr << "--->>> " << "OnRtnTrade"  << endl;
+}
 
+void CTradeAgent::Buy()
+{
+	CThostFtdcInputOrderField req;
+	memset(&req, 0, sizeof(req));
+	///经纪公司代码
+	strcpy(req.BrokerID, m_brokerId.c_str());
+	///投资者代码
+	strcpy(req.InvestorID, m_userId.c_str());
+	///合约代码
+	strcpy(req.InstrumentID, "cu1206");
+	///报单引用
+	strcpy(req.OrderRef, ORDER_REF);
+	///用户代码
+	//	TThostFtdcUserIDType	UserID;
+	///报单价格条件: 限价
+	req.OrderPriceType = THOST_FTDC_OPT_LimitPrice;
+	///买卖方向: 
+	req.Direction = THOST_FTDC_D_Buy;
+	///组合开平标志: 开仓
+	req.CombOffsetFlag[0] = THOST_FTDC_OF_Open;
+	///组合投机套保标志
+	req.CombHedgeFlag[0] = THOST_FTDC_HF_Speculation;
+	///价格
+	req.LimitPrice = 61000;
+	///数量: 1
+	req.VolumeTotalOriginal = 1;
+	///有效期类型: 当日有效
+	req.TimeCondition = THOST_FTDC_TC_GFD;
+	///GTD日期
+	//	TThostFtdcDateType	GTDDate;
+	///成交量类型: 任何数量
+	req.VolumeCondition = THOST_FTDC_VC_AV;
+	///最小成交量: 1
+	req.MinVolume = 1;
+	///触发条件: 立即
+	req.ContingentCondition = THOST_FTDC_CC_Immediately;
+	///止损价
+	//	TThostFtdcPriceType	StopPrice;
+	///强平原因: 非强平
+	req.ForceCloseReason = THOST_FTDC_FCC_NotForceClose;
+	///自动挂起标志: 否
+	req.IsAutoSuspend = 0;
+	///业务单元
+	//	TThostFtdcBusinessUnitType	BusinessUnit;
+	///请求编号
+	//	TThostFtdcRequestIDType	RequestID;
+	///用户强评标志: 否
+	req.UserForceClose = 0;
+
+	int iResult = m_pUserApi->ReqOrderInsert(&req, RequestIDIncrement());
+	cerr << "--->>> 报单录入请求: " << iResult << ((iResult == 0) ? ", 成功" : ", 失败") << endl;
+}
+
+void CTradeAgent::QueryAccount()
+{
+	if(m_isConnected)
+	{
+		logger.Warning("Didn't log in trading front!!!");
+		return;
+	}
+
+	CThostFtdcQryTradingAccountField req;
+	memset(&req, 0, sizeof(req));
+	strcpy(req.BrokerID, m_brokerId.c_str());
+	strcpy(req.InvestorID, m_userId.c_str());
+	while (true)
+	{
+		int iResult = m_pUserApi->ReqQryTradingAccount(&req, RequestIDIncrement());
+		if (!IsFlowControl(iResult))
+		{
+			cerr << "--->>> 请求查询资金账户: "  << iResult << ((iResult == 0) ? ", 成功" : ", 失败") << endl;
+			break;
+		}
+		else
+		{
+			cerr << "--->>> 请求查询资金账户: "  << iResult << ", 受到流控" << endl;
+			boost::this_thread::sleep(boost::posix_time::seconds(WAIT_SECONDS_FOR_FLOWCONTROL));
+		}
+	} // while
+}
+
+bool CTradeAgent::IsMyOrder(CThostFtdcOrderField *pOrder)
+{
+	return ((pOrder->FrontID == FRONT_ID) &&
+		(pOrder->SessionID == SESSION_ID) &&
+		(strcmp(pOrder->OrderRef, ORDER_REF) == 0));
+}
+
+bool CTradeAgent::IsTradingOrder(CThostFtdcOrderField *pOrder)
+{
+	return ((pOrder->OrderStatus != THOST_FTDC_OST_PartTradedNotQueueing) &&
+		(pOrder->OrderStatus != THOST_FTDC_OST_Canceled) &&
+		(pOrder->OrderStatus != THOST_FTDC_OST_AllTraded));
 }
 
 

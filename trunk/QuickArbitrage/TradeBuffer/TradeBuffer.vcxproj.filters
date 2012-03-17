@@ -32,6 +32,9 @@
     <None Include="..\Entity\login.proto">
       <Filter>protos</Filter>
     </None>
+    <None Include="..\Entity\trade.proto">
+      <Filter>protos</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -106,6 +109,9 @@
     <ClInclude Include="MsgPack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="protobuf_gen\trade.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -160,6 +166,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="protobuf_gen\subscribe.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="protobuf_gen\trade.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

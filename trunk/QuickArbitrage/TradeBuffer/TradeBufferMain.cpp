@@ -37,6 +37,7 @@ void ConsoleExecuteSubscribe(CConsoleClient* pConsole, string& cmd);
 void ConsoleExecuteUnSubscribe(CConsoleClient* pConsole);
 void ConsoleExecuteLogin(CConsoleClient& console, string& cmd);
 void ConsoleExecuteLogout(CConsoleClient& console);
+void ConsoleExecuteBuy(CConsoleClient& console, string& cmd);
 
 boost::condition_variable _condExit;
 boost::mutex _mut;
@@ -113,6 +114,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			else if(command == "logout")
 			{
 				ConsoleExecuteLogout(consoleClient);
+			}
+			else if(boost::istarts_with(command, "buy"))
+			{
+				ConsoleExecuteBuy(consoleClient, command);
 			}
 			else if(command == "list")
 			{
@@ -215,4 +220,9 @@ void ConsoleExecuteLogin(CConsoleClient& console, string& cmd)
 void ConsoleExecuteLogout(CConsoleClient& console)
 {
 	console.Logout();
+}
+
+void ConsoleExecuteBuy(CConsoleClient& console, string& cmd)
+{
+	console.Buy();
 }

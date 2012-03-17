@@ -15,6 +15,8 @@ public:
 
 	void OnRegisterResult(bool succ, std::string& errMsg);
 
+	void Buy();
+
 protected:
 	virtual void ProcessQuote(CTP::Quote* pQuote);
 

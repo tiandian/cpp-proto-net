@@ -22,6 +22,10 @@ public:
 		return boost::make_tuple(boost::ref(m_brokerId), boost::ref(m_userId), boost::ref(m_password));
 	}
 
+	void Buy();
+
+	void QueryAccount();
+
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
 
@@ -71,6 +75,9 @@ public:
 
 private:
 	int RequestIDIncrement(){ return ++m_iRequestID; }
+	bool IsMyOrder(CThostFtdcOrderField *pOrder);
+	bool IsTradingOrder(CThostFtdcOrderField *pOrder);
+	void ReqSettlementInfoConfirm();
 
 	CThostFtdcTraderApi* m_pUserApi;
 	boost::thread m_thTrading;
@@ -87,5 +94,10 @@ private:
 
 	boost::mutex m_mutex;
 	boost::condition_variable m_condLogout;
+
+	// 会话参数
+	TThostFtdcFrontIDType	FRONT_ID;	//前置编号
+	TThostFtdcSessionIDType	SESSION_ID;	//会话编号
+	TThostFtdcOrderRefType	ORDER_REF;	//报单引用
 };
 

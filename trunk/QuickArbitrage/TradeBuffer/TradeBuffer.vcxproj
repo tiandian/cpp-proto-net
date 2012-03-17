@@ -97,6 +97,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <None Include="..\Entity\login.proto" />
     <None Include="..\Entity\quote.proto" />
     <None Include="..\Entity\subscribe.proto" />
+    <None Include="..\Entity\trade.proto" />
     <None Include="ReadMe.txt" />
     <None Include="TradeBuffer.cfg" />
   </ItemGroup>
@@ -118,6 +119,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="protobuf_gen\login.pb.h" />
     <ClInclude Include="protobuf_gen\quote.pb.h" />
     <ClInclude Include="protobuf_gen\subscribe.pb.h" />
+    <ClInclude Include="protobuf_gen\trade.pb.h" />
     <ClInclude Include="QuoteAggregator.h" />
     <ClInclude Include="QuoteListener.h" />
     <ClInclude Include="RemoteClient.h" />
@@ -139,6 +141,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClCompile Include="protobuf_gen\login.pb.cc" />
     <ClCompile Include="protobuf_gen\quote.pb.cc" />
     <ClCompile Include="protobuf_gen\subscribe.pb.cc" />
+    <ClCompile Include="protobuf_gen\trade.pb.cc" />
     <ClCompile Include="QuoteAggregator.cpp" />
     <ClCompile Include="QuoteListener.cpp" />
     <ClCompile Include="RemoteClient.cpp" />
