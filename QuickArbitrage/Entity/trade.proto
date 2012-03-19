@@ -1,5 +1,7 @@
 package protoc;
 
+///资金账户
+// CThostFtdcTradingAccountField
 message AccountInfo {
 
 	///经纪公司代码
@@ -65,6 +67,22 @@ message AccountInfo {
 
 }
 
+///TFtdcPosiDirectionType是一个持仓多空方向类型
+enum PosiDirectionType {
+	NET = 49;
+    LONG = 50;
+    SHORT = 51;
+}
+
+///TFtdcHedgeFlagType是一个投机套保标志类型
+enum HedgeFlagType {
+	SPECULATION = 49;
+	ARBITRAGE = 50;
+	HEDGE = 51;
+}
+
+///投资者持仓
+// CThostFtdcInvestorPositionField
 message PositionInfo {
 
 	///合约代码
@@ -74,9 +92,9 @@ message PositionInfo {
 	///投资者代码
 	required string	InvestorID = 3;
 	///持仓多空方向
-	required string	PosiDirection = 4;
+	required PosiDirectionType	PosiDirection = 4;
 	///投机套保标志
-	required string	HedgeFlag = 5;
+	required HedgeFlagType	HedgeFlag = 5;
 	///持仓日期
 	required string	PositionDate = 6;
 	///上日持仓
@@ -149,3 +167,370 @@ message PositionInfo {
 	required double	MarginRateByVolume = 40;
 
 }
+
+///TFtdcOrderPriceTypeType是一个报单价格条件类型
+enum OrderPriceTypeType
+{
+	///任意价
+	ANY_PRICE = 49;
+	///限价
+	LIMIT_PRICE = 50;
+	///最优价
+	BEST_PRICE = 51;
+	///最新价
+	LAST_PRICE = 52;
+	///最新价浮动上浮1个ticks
+	LAST_PRICE_PLUS_ONE_TICKS = 53;
+	///最新价浮动上浮2个ticks
+	LAST_PRICE_PLUS_TWO_TICKS = 54;
+	///最新价浮动上浮3个ticks
+	LAST_PRICE_PLUS_THREE_TICKS = 55;
+	///卖一价
+	ASK_PRICE1 = 56;
+	///卖一价浮动上浮1个ticks
+	ASK_PRICE1_PLUS_ONE_TICKS = 57;
+	///卖一价浮动上浮2个ticks
+	ASK_PRICE1_PLUS_TWO_TICKS = 65;
+	///卖一价浮动上浮3个ticks
+	ASK_PRICE1_PLUS_THREE_TICKS = 66;
+	///买一价
+	BID_PRICE1 = 67;
+	///买一价浮动上浮1个ticks
+	BID_PRICE1_PLUS_ONE_TICKS = 68;
+	///买一价浮动上浮2个ticks
+	BID_PRICE1_PLUS_TWO_TICKS = 69;
+	///买一价浮动上浮3个ticks
+	BID_PRICE1_PLUS_THREE_TICKS = 70;
+}
+
+///TFtdcDirectionType是一个买卖方向类型
+enum TradeDirectionType
+{
+	///买
+	BUY = 48;
+	///卖
+	SELL = 49;
+}
+
+///TFtdcTimeConditionType是一个有效期类型类型
+enum TimeConditionType
+{
+	///立即完成，否则撤销
+	TC_IOC = 49;
+	///本节有效
+	TC_GFS = 50;
+	///当日有效
+	TC_GFD = 51;
+	///指定日期前有效
+	TC_GTD = 52;
+	///撤销前有效
+	TC_GTC = 53;
+	///集合竞价有效
+	TC_GFA = 54;
+}
+
+///TFtdcVolumeConditionType是一个成交量类型类型
+enum VolumeConditionType
+{
+	///任何数量
+	VC_AV = 49;
+	///最小数量
+	VC_MV = 50;
+	///全部数量
+	VC_CV = 51;
+}
+
+///TFtdcContingentConditionType是一个触发条件类型
+enum ContingentConditionType
+{
+	///立即
+	IMMEDIATELY = 49;
+	///止损
+	TOUCH = 50;
+	///止赢
+	TOUCH_PROFIT = 51;
+	///预埋单
+	PARKED_ORDER = 52;
+	///最新价大于条件价
+	LAST_PRICE_GREATER_THAN_STOP_PRICE = 53;
+	///最新价大于等于条件价
+	LAST_PRICE_GREATER_EQUAL_STOP_PRICE = 54;
+	///最新价小于条件价
+	LAST_PRICE_LESSER_THAN_STOP_PRICE = 55;
+	///最新价小于等于条件价
+	LAST_PRICE_LESSER_EQUAL_STOP_PRICE = 56;
+	///卖一价大于条件价
+	ASK_PRICE_GREATER_THAN_STOP_PRICE = 57;
+	///卖一价大于等于条件价
+	ASK_PRICE_GREATER_EQUAL_STOP_PRICE = 65;
+	///卖一价小于条件价
+	ASK_PRICE_LESSER_THAN_STOP_PRICE = 66;
+	///卖一价小于等于条件价
+	ASK_PRICE_LESSER_EQUAL_STOP_PRICE = 67;
+	///买一价大于条件价
+	BID_PRICE_GREATER_THAN_STOP_PRICE = 68;
+	///买一价大于等于条件价
+	BID_PRICE_GREATER_EQUAL_STOP_PRICE = 69;
+	///买一价小于条件价
+	BID_PRICE_LESSER_THAN_STOP_PRICE = 70;
+	///买一价小于等于条件价
+	BID_PRICE_LESSER_EQUAL_STOP_PRICE = 71;
+}
+
+///TFtdcForceCloseReasonType是一个强平原因类型
+enum ForceCloseReasonType
+{
+	///非强平
+	NOT_FORCE_CLOSE = 48;
+	///资金不足
+	LACK_DEPOSIT = 49;
+	///客户超仓
+	CLIENT_OVER_POSITION_LIMIT = 50;
+	///会员超仓
+	MEMBER_OVER_POSITION_LIMIT = 51;
+	///持仓非整数倍
+	NOT_MULTIPLE = 52;
+	///违规
+	VIOLATION = 53;
+	///其它
+	FCC_OTHER = 54;
+	///自然人临近交割
+	PERSON_DELIV = 55;
+}
+
+///输入报单
+// CThostFtdcInputOrderField
+message InputOrder
+{
+	///经纪公司代码
+	required string	BrokerID = 1;
+	///投资者代码
+	required string	InvestorID = 2;
+	///合约代码
+	required string	InstrumentID = 3;
+	///报单引用
+	required string	OrderRef = 4;
+	///用户代码
+	required string	UserID = 5;
+	///报单价格条件
+	required OrderPriceTypeType	OrderPriceType = 6;
+	///买卖方向
+	required TradeDirectionType	Direction = 7;
+	///组合开平标志
+	required string	CombOffsetFlag = 8;
+	///组合投机套保标志
+	required string	CombHedgeFlag = 9;
+	///价格
+	required double	LimitPrice = 10;
+	///数量
+	required int32	VolumeTotalOriginal = 11;
+	///有效期类型
+	required TimeConditionType	TimeCondition = 12;
+	///GTD日期
+	required string	GTDDate = 13;
+	///成交量类型
+	required VolumeConditionType	VolumeCondition = 14;
+	///最小成交量
+	required int32	MinVolume = 15;
+	///触发条件
+	required ContingentConditionType	ContingentCondition = 16;
+	///止损价
+	required double	StopPrice = 17;
+	///强平原因
+	required ForceCloseReasonType	ForceCloseReason = 18;
+	///自动挂起标志
+	required bool	IsAutoSuspend = 19;
+	///业务单元
+	required string	BusinessUnit = 20;
+	///请求编号
+	required int32	RequestID = 21;
+	///用户强评标志
+	required bool	UserForceClose = 22;
+};
+
+///TFtdcOrderSubmitStatusType是一个报单提交状态类型
+enum OrderSubmitStatusType
+{
+	///已经提交
+	INSERT_SUBMITTED = 48;
+	///撤单已经提交
+	CANCEL_SUBMITTED = 49;
+	///修改已经提交
+	MODIFY_SUBMITTED = 50;
+	///已经接受
+	ACCEPTED = 51;
+	///报单已经被拒绝
+	INSERT_REJECTED = 52;
+	///撤单已经被拒绝
+	CANCEL_REJECTED = 53;
+	///改单已经被拒绝
+	MODIFY_REJECTED = 54;
+}
+
+///TFtdcOrderSourceType是一个报单来源类型
+enum OrderSourceType
+{
+	///来自参与者
+	PARTICIPANT = 48;
+	///来自管理员
+	ADMINISTRATOR = 49;
+}
+
+///TFtdcOrderStatusType是一个报单状态类型
+enum OrderStatusType
+{
+	///全部成交
+	ALL_TRADED = 48;
+	///部分成交还在队列中
+	PART_TRADED_QUEUEING = 49;
+	///部分成交不在队列中
+	PART_TRADED_NOT_QUEUEING = 50;
+	///未成交还在队列中
+	NO_TRADE_QUEUEING = 51;
+	///未成交不在队列中
+	NO_TRADE_NOT_QUEUEING = 52;
+	///撤单
+	ORDER_CANCELED = 53;
+	///未知
+	STATUS_UNKNOWN = 97;
+	///尚未触发
+	ORDER_NOT_TOUCHED = 98;
+	///已触发
+	ORDER_TOUCHED = 99;
+}
+
+///TFtdcOrderTypeType是一个报单类型类型
+enum OrderTypeType
+{
+	///正常
+	NORMAL_ORDER = 48;
+	///报价衍生
+	DERIVE_FROM_QUOTE = 49;
+	///组合衍生
+	DERIVE_FROM_COMBINATION = 50;
+	///组合报单
+	COMBINATION = 51;
+	///条件单
+	CONDITIONAL_ORDER = 52;
+	///互换单
+	SWAP_ORDER = 53;
+}
+
+///报单
+// CThostFtdcOrderField
+message Order
+{
+	///经纪公司代码
+	required string	BrokerID = 1;
+	///投资者代码
+	required string	InvestorID = 2;
+	///合约代码
+	required string	InstrumentID = 3;
+	///报单引用
+	required string	OrderRef = 4;
+	///用户代码
+	required string	UserID = 5;
+	///报单价格条件
+	required OrderPriceTypeType	OrderPriceType = 6;
+	///买卖方向
+	required TradeDirectionType	Direction = 7;
+	///组合开平标志
+	required string	CombOffsetFlag = 8;
+	///组合投机套保标志
+	required string	CombHedgeFlag = 9;
+	///价格
+	required double	LimitPrice = 10;
+	///数量
+	required int32	VolumeTotalOriginal = 11;
+	///有效期类型
+	required TimeConditionType	TimeCondition = 12;
+	///GTD日期
+	required string	GTDDate = 13;
+	///成交量类型
+	required VolumeConditionType	VolumeCondition = 14;
+	///最小成交量
+	required int32	MinVolume = 15;
+	///触发条件
+	required ContingentConditionType	ContingentCondition = 16;
+	///止损价
+	required double	StopPrice = 17;
+	///强平原因
+	required ForceCloseReasonType	ForceCloseReason = 18;
+	///自动挂起标志
+	required bool	IsAutoSuspend = 19;
+	///业务单元
+	required string	BusinessUnit = 20;
+	///请求编号
+	required int32	RequestID = 21;
+	// Above fields are same as InputOrder's
+	////////////////////////////////////////////////////////////////////
+
+	///本地报单编号
+	required string	OrderLocalID = 22;
+	///交易所代码
+	required string	ExchangeID = 23;
+	///会员代码
+	required string	ParticipantID = 24;
+	///客户代码
+	required string	ClientID = 25;
+	///合约在交易所的代码
+	required string	ExchangeInstID = 26;
+	///交易所交易员代码
+	required string	TraderID = 27;
+	///安装编号
+	required int32	InstallID = 28;
+	///报单提交状态
+	required OrderSubmitStatusType	OrderSubmitStatus = 29;
+	///报单提示序号
+	required int32	NotifySequence = 30;
+	///交易日
+	required string	TradingDay = 31;
+	///结算编号
+	required int32	SettlementID = 32;
+	///报单编号
+	required string	OrderSysID = 33;
+	///报单来源
+	required OrderSourceType	OrderSource = 34;
+	///报单状态
+	required OrderStatusType	OrderStatus = 35;
+	///报单类型
+	required OrderTypeType	OrderType = 36;
+	///今成交数量
+	required int32	VolumeTraded = 37;
+	///剩余数量
+	required int32	VolumeTotal = 38;
+	///报单日期
+	required string	InsertDate = 39;
+	///委托时间
+	required string	InsertTime = 40;
+	///激活时间
+	required string	ActiveTime = 41;
+	///挂起时间
+	required string	SuspendTime = 42;
+	///最后修改时间
+	required string	UpdateTime = 43;
+	///撤销时间
+	required string	CancelTime = 44;
+	///最后修改交易所交易员代码
+	required string	ActiveTraderID = 45;
+	///结算会员编号
+	required string	ClearingPartID = 46;
+	///序号
+	required int32	SequenceNo = 47;
+	///前置编号
+	required int32	FrontID = 48;
+	///会话编号
+	required int32	SessionID = 49;
+	///用户端产品信息
+	required string	UserProductInfo = 50;
+	///状态信息
+	required string	StatusMsg = 51;
+	///用户强评标志
+	required bool	UserForceClose = 52;
+	///操作用户代码
+	required string	ActiveUserID = 53;
+	///经纪公司报单编号
+	required int32	BrokerOrderSeq = 54;
+	///相关报单
+	required string	RelativeOrderSysID = 55;
+};
