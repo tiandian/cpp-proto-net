@@ -34,7 +34,380 @@ void protobuf_ShutdownFile_trade_2eproto();
 
 class AccountInfo;
 class PositionInfo;
+class InputOrder;
+class Order;
+class Trade;
 
+enum PosiDirectionType {
+  NET = 49,
+  LONG = 50,
+  SHORT = 51
+};
+bool PosiDirectionType_IsValid(int value);
+const PosiDirectionType PosiDirectionType_MIN = NET;
+const PosiDirectionType PosiDirectionType_MAX = SHORT;
+const int PosiDirectionType_ARRAYSIZE = PosiDirectionType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PosiDirectionType_descriptor();
+inline const ::std::string& PosiDirectionType_Name(PosiDirectionType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PosiDirectionType_descriptor(), value);
+}
+inline bool PosiDirectionType_Parse(
+    const ::std::string& name, PosiDirectionType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PosiDirectionType>(
+    PosiDirectionType_descriptor(), name, value);
+}
+enum HedgeFlagType {
+  SPECULATION = 49,
+  ARBITRAGE = 50,
+  HEDGE = 51
+};
+bool HedgeFlagType_IsValid(int value);
+const HedgeFlagType HedgeFlagType_MIN = SPECULATION;
+const HedgeFlagType HedgeFlagType_MAX = HEDGE;
+const int HedgeFlagType_ARRAYSIZE = HedgeFlagType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* HedgeFlagType_descriptor();
+inline const ::std::string& HedgeFlagType_Name(HedgeFlagType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    HedgeFlagType_descriptor(), value);
+}
+inline bool HedgeFlagType_Parse(
+    const ::std::string& name, HedgeFlagType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<HedgeFlagType>(
+    HedgeFlagType_descriptor(), name, value);
+}
+enum OrderPriceTypeType {
+  ANY_PRICE = 49,
+  LIMIT_PRICE = 50,
+  BEST_PRICE = 51,
+  LAST_PRICE = 52,
+  LAST_PRICE_PLUS_ONE_TICKS = 53,
+  LAST_PRICE_PLUS_TWO_TICKS = 54,
+  LAST_PRICE_PLUS_THREE_TICKS = 55,
+  ASK_PRICE1 = 56,
+  ASK_PRICE1_PLUS_ONE_TICKS = 57,
+  ASK_PRICE1_PLUS_TWO_TICKS = 65,
+  ASK_PRICE1_PLUS_THREE_TICKS = 66,
+  BID_PRICE1 = 67,
+  BID_PRICE1_PLUS_ONE_TICKS = 68,
+  BID_PRICE1_PLUS_TWO_TICKS = 69,
+  BID_PRICE1_PLUS_THREE_TICKS = 70
+};
+bool OrderPriceTypeType_IsValid(int value);
+const OrderPriceTypeType OrderPriceTypeType_MIN = ANY_PRICE;
+const OrderPriceTypeType OrderPriceTypeType_MAX = BID_PRICE1_PLUS_THREE_TICKS;
+const int OrderPriceTypeType_ARRAYSIZE = OrderPriceTypeType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* OrderPriceTypeType_descriptor();
+inline const ::std::string& OrderPriceTypeType_Name(OrderPriceTypeType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    OrderPriceTypeType_descriptor(), value);
+}
+inline bool OrderPriceTypeType_Parse(
+    const ::std::string& name, OrderPriceTypeType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<OrderPriceTypeType>(
+    OrderPriceTypeType_descriptor(), name, value);
+}
+enum TradeDirectionType {
+  BUY = 48,
+  SELL = 49
+};
+bool TradeDirectionType_IsValid(int value);
+const TradeDirectionType TradeDirectionType_MIN = BUY;
+const TradeDirectionType TradeDirectionType_MAX = SELL;
+const int TradeDirectionType_ARRAYSIZE = TradeDirectionType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TradeDirectionType_descriptor();
+inline const ::std::string& TradeDirectionType_Name(TradeDirectionType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TradeDirectionType_descriptor(), value);
+}
+inline bool TradeDirectionType_Parse(
+    const ::std::string& name, TradeDirectionType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TradeDirectionType>(
+    TradeDirectionType_descriptor(), name, value);
+}
+enum TimeConditionType {
+  TC_IOC = 49,
+  TC_GFS = 50,
+  TC_GFD = 51,
+  TC_GTD = 52,
+  TC_GTC = 53,
+  TC_GFA = 54
+};
+bool TimeConditionType_IsValid(int value);
+const TimeConditionType TimeConditionType_MIN = TC_IOC;
+const TimeConditionType TimeConditionType_MAX = TC_GFA;
+const int TimeConditionType_ARRAYSIZE = TimeConditionType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TimeConditionType_descriptor();
+inline const ::std::string& TimeConditionType_Name(TimeConditionType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TimeConditionType_descriptor(), value);
+}
+inline bool TimeConditionType_Parse(
+    const ::std::string& name, TimeConditionType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TimeConditionType>(
+    TimeConditionType_descriptor(), name, value);
+}
+enum VolumeConditionType {
+  VC_AV = 49,
+  VC_MV = 50,
+  VC_CV = 51
+};
+bool VolumeConditionType_IsValid(int value);
+const VolumeConditionType VolumeConditionType_MIN = VC_AV;
+const VolumeConditionType VolumeConditionType_MAX = VC_CV;
+const int VolumeConditionType_ARRAYSIZE = VolumeConditionType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* VolumeConditionType_descriptor();
+inline const ::std::string& VolumeConditionType_Name(VolumeConditionType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    VolumeConditionType_descriptor(), value);
+}
+inline bool VolumeConditionType_Parse(
+    const ::std::string& name, VolumeConditionType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<VolumeConditionType>(
+    VolumeConditionType_descriptor(), name, value);
+}
+enum ContingentConditionType {
+  IMMEDIATELY = 49,
+  TOUCH = 50,
+  TOUCH_PROFIT = 51,
+  PARKED_ORDER = 52,
+  LAST_PRICE_GREATER_THAN_STOP_PRICE = 53,
+  LAST_PRICE_GREATER_EQUAL_STOP_PRICE = 54,
+  LAST_PRICE_LESSER_THAN_STOP_PRICE = 55,
+  LAST_PRICE_LESSER_EQUAL_STOP_PRICE = 56,
+  ASK_PRICE_GREATER_THAN_STOP_PRICE = 57,
+  ASK_PRICE_GREATER_EQUAL_STOP_PRICE = 65,
+  ASK_PRICE_LESSER_THAN_STOP_PRICE = 66,
+  ASK_PRICE_LESSER_EQUAL_STOP_PRICE = 67,
+  BID_PRICE_GREATER_THAN_STOP_PRICE = 68,
+  BID_PRICE_GREATER_EQUAL_STOP_PRICE = 69,
+  BID_PRICE_LESSER_THAN_STOP_PRICE = 70,
+  BID_PRICE_LESSER_EQUAL_STOP_PRICE = 71
+};
+bool ContingentConditionType_IsValid(int value);
+const ContingentConditionType ContingentConditionType_MIN = IMMEDIATELY;
+const ContingentConditionType ContingentConditionType_MAX = BID_PRICE_LESSER_EQUAL_STOP_PRICE;
+const int ContingentConditionType_ARRAYSIZE = ContingentConditionType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ContingentConditionType_descriptor();
+inline const ::std::string& ContingentConditionType_Name(ContingentConditionType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ContingentConditionType_descriptor(), value);
+}
+inline bool ContingentConditionType_Parse(
+    const ::std::string& name, ContingentConditionType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ContingentConditionType>(
+    ContingentConditionType_descriptor(), name, value);
+}
+enum ForceCloseReasonType {
+  NOT_FORCE_CLOSE = 48,
+  LACK_DEPOSIT = 49,
+  CLIENT_OVER_POSITION_LIMIT = 50,
+  MEMBER_OVER_POSITION_LIMIT = 51,
+  NOT_MULTIPLE = 52,
+  VIOLATION = 53,
+  FCC_OTHER = 54,
+  PERSON_DELIV = 55
+};
+bool ForceCloseReasonType_IsValid(int value);
+const ForceCloseReasonType ForceCloseReasonType_MIN = NOT_FORCE_CLOSE;
+const ForceCloseReasonType ForceCloseReasonType_MAX = PERSON_DELIV;
+const int ForceCloseReasonType_ARRAYSIZE = ForceCloseReasonType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ForceCloseReasonType_descriptor();
+inline const ::std::string& ForceCloseReasonType_Name(ForceCloseReasonType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ForceCloseReasonType_descriptor(), value);
+}
+inline bool ForceCloseReasonType_Parse(
+    const ::std::string& name, ForceCloseReasonType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ForceCloseReasonType>(
+    ForceCloseReasonType_descriptor(), name, value);
+}
+enum OrderSubmitStatusType {
+  INSERT_SUBMITTED = 48,
+  CANCEL_SUBMITTED = 49,
+  MODIFY_SUBMITTED = 50,
+  ACCEPTED = 51,
+  INSERT_REJECTED = 52,
+  CANCEL_REJECTED = 53,
+  MODIFY_REJECTED = 54
+};
+bool OrderSubmitStatusType_IsValid(int value);
+const OrderSubmitStatusType OrderSubmitStatusType_MIN = INSERT_SUBMITTED;
+const OrderSubmitStatusType OrderSubmitStatusType_MAX = MODIFY_REJECTED;
+const int OrderSubmitStatusType_ARRAYSIZE = OrderSubmitStatusType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* OrderSubmitStatusType_descriptor();
+inline const ::std::string& OrderSubmitStatusType_Name(OrderSubmitStatusType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    OrderSubmitStatusType_descriptor(), value);
+}
+inline bool OrderSubmitStatusType_Parse(
+    const ::std::string& name, OrderSubmitStatusType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<OrderSubmitStatusType>(
+    OrderSubmitStatusType_descriptor(), name, value);
+}
+enum OrderSourceType {
+  PARTICIPANT = 48,
+  ADMINISTRATOR = 49
+};
+bool OrderSourceType_IsValid(int value);
+const OrderSourceType OrderSourceType_MIN = PARTICIPANT;
+const OrderSourceType OrderSourceType_MAX = ADMINISTRATOR;
+const int OrderSourceType_ARRAYSIZE = OrderSourceType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* OrderSourceType_descriptor();
+inline const ::std::string& OrderSourceType_Name(OrderSourceType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    OrderSourceType_descriptor(), value);
+}
+inline bool OrderSourceType_Parse(
+    const ::std::string& name, OrderSourceType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<OrderSourceType>(
+    OrderSourceType_descriptor(), name, value);
+}
+enum OrderStatusType {
+  ALL_TRADED = 48,
+  PART_TRADED_QUEUEING = 49,
+  PART_TRADED_NOT_QUEUEING = 50,
+  NO_TRADE_QUEUEING = 51,
+  NO_TRADE_NOT_QUEUEING = 52,
+  ORDER_CANCELED = 53,
+  STATUS_UNKNOWN = 97,
+  ORDER_NOT_TOUCHED = 98,
+  ORDER_TOUCHED = 99
+};
+bool OrderStatusType_IsValid(int value);
+const OrderStatusType OrderStatusType_MIN = ALL_TRADED;
+const OrderStatusType OrderStatusType_MAX = ORDER_TOUCHED;
+const int OrderStatusType_ARRAYSIZE = OrderStatusType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* OrderStatusType_descriptor();
+inline const ::std::string& OrderStatusType_Name(OrderStatusType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    OrderStatusType_descriptor(), value);
+}
+inline bool OrderStatusType_Parse(
+    const ::std::string& name, OrderStatusType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<OrderStatusType>(
+    OrderStatusType_descriptor(), name, value);
+}
+enum OrderTypeType {
+  NORMAL_ORDER = 48,
+  DERIVE_FROM_QUOTE = 49,
+  DERIVE_FROM_COMBINATION = 50,
+  COMBINATION = 51,
+  CONDITIONAL_ORDER = 52,
+  SWAP_ORDER = 53
+};
+bool OrderTypeType_IsValid(int value);
+const OrderTypeType OrderTypeType_MIN = NORMAL_ORDER;
+const OrderTypeType OrderTypeType_MAX = SWAP_ORDER;
+const int OrderTypeType_ARRAYSIZE = OrderTypeType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* OrderTypeType_descriptor();
+inline const ::std::string& OrderTypeType_Name(OrderTypeType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    OrderTypeType_descriptor(), value);
+}
+inline bool OrderTypeType_Parse(
+    const ::std::string& name, OrderTypeType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<OrderTypeType>(
+    OrderTypeType_descriptor(), name, value);
+}
+enum TradingRoleType {
+  ER_BROKER = 49,
+  ER_HOST = 50,
+  ER_MAKER = 51
+};
+bool TradingRoleType_IsValid(int value);
+const TradingRoleType TradingRoleType_MIN = ER_BROKER;
+const TradingRoleType TradingRoleType_MAX = ER_MAKER;
+const int TradingRoleType_ARRAYSIZE = TradingRoleType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TradingRoleType_descriptor();
+inline const ::std::string& TradingRoleType_Name(TradingRoleType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TradingRoleType_descriptor(), value);
+}
+inline bool TradingRoleType_Parse(
+    const ::std::string& name, TradingRoleType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TradingRoleType>(
+    TradingRoleType_descriptor(), name, value);
+}
+enum OffsetFlagType {
+  OF_OPEN = 48,
+  OF_CLOSE = 49,
+  OF_FORCE_CLOSE = 50,
+  OF_CLOSE_TODAY = 51,
+  OF_CLOSE_YESTERDAY = 52,
+  OF_FORCE_OFF = 53,
+  OF_LOCAL_FORCE_CLOSE = 54
+};
+bool OffsetFlagType_IsValid(int value);
+const OffsetFlagType OffsetFlagType_MIN = OF_OPEN;
+const OffsetFlagType OffsetFlagType_MAX = OF_LOCAL_FORCE_CLOSE;
+const int OffsetFlagType_ARRAYSIZE = OffsetFlagType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* OffsetFlagType_descriptor();
+inline const ::std::string& OffsetFlagType_Name(OffsetFlagType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    OffsetFlagType_descriptor(), value);
+}
+inline bool OffsetFlagType_Parse(
+    const ::std::string& name, OffsetFlagType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<OffsetFlagType>(
+    OffsetFlagType_descriptor(), name, value);
+}
+enum TradeTypeType {
+  TRDT_COMMON = 48,
+  TRDT_OPTIONS_EXECUTION = 49,
+  TRDT_OTC = 50,
+  TRDT_EFP_DERIVED = 51,
+  TRDT_COMBINATION_DERIVED = 52
+};
+bool TradeTypeType_IsValid(int value);
+const TradeTypeType TradeTypeType_MIN = TRDT_COMMON;
+const TradeTypeType TradeTypeType_MAX = TRDT_COMBINATION_DERIVED;
+const int TradeTypeType_ARRAYSIZE = TradeTypeType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* TradeTypeType_descriptor();
+inline const ::std::string& TradeTypeType_Name(TradeTypeType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    TradeTypeType_descriptor(), value);
+}
+inline bool TradeTypeType_Parse(
+    const ::std::string& name, TradeTypeType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<TradeTypeType>(
+    TradeTypeType_descriptor(), name, value);
+}
+enum PriceSourceType {
+  PSRC_LAST_PRICE = 48,
+  PSRC_BUY = 49,
+  PSRC_SELL = 50
+};
+bool PriceSourceType_IsValid(int value);
+const PriceSourceType PriceSourceType_MIN = PSRC_LAST_PRICE;
+const PriceSourceType PriceSourceType_MAX = PSRC_SELL;
+const int PriceSourceType_ARRAYSIZE = PriceSourceType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PriceSourceType_descriptor();
+inline const ::std::string& PriceSourceType_Name(PriceSourceType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PriceSourceType_descriptor(), value);
+}
+inline bool PriceSourceType_Parse(
+    const ::std::string& name, PriceSourceType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PriceSourceType>(
+    PriceSourceType_descriptor(), name, value);
+}
 // ===================================================================
 
 class AccountInfo : public ::google::protobuf::Message {
@@ -508,27 +881,19 @@ class PositionInfo : public ::google::protobuf::Message {
   inline ::std::string* mutable_investorid();
   inline ::std::string* release_investorid();
   
-  // required string PosiDirection = 4;
+  // required .protoc.PosiDirectionType PosiDirection = 4;
   inline bool has_posidirection() const;
   inline void clear_posidirection();
   static const int kPosiDirectionFieldNumber = 4;
-  inline const ::std::string& posidirection() const;
-  inline void set_posidirection(const ::std::string& value);
-  inline void set_posidirection(const char* value);
-  inline void set_posidirection(const char* value, size_t size);
-  inline ::std::string* mutable_posidirection();
-  inline ::std::string* release_posidirection();
+  inline protoc::PosiDirectionType posidirection() const;
+  inline void set_posidirection(protoc::PosiDirectionType value);
   
-  // required string HedgeFlag = 5;
+  // required .protoc.HedgeFlagType HedgeFlag = 5;
   inline bool has_hedgeflag() const;
   inline void clear_hedgeflag();
   static const int kHedgeFlagFieldNumber = 5;
-  inline const ::std::string& hedgeflag() const;
-  inline void set_hedgeflag(const ::std::string& value);
-  inline void set_hedgeflag(const char* value);
-  inline void set_hedgeflag(const char* value, size_t size);
-  inline ::std::string* mutable_hedgeflag();
-  inline ::std::string* release_hedgeflag();
+  inline protoc::HedgeFlagType hedgeflag() const;
+  inline void set_hedgeflag(protoc::HedgeFlagType value);
   
   // required string PositionDate = 6;
   inline bool has_positiondate() const;
@@ -871,8 +1236,8 @@ class PositionInfo : public ::google::protobuf::Message {
   ::std::string* instrumentid_;
   ::std::string* brokerid_;
   ::std::string* investorid_;
-  ::std::string* posidirection_;
-  ::std::string* hedgeflag_;
+  int posidirection_;
+  int hedgeflag_;
   ::std::string* positiondate_;
   ::google::protobuf::int32 ydposition_;
   ::google::protobuf::int32 position_;
@@ -918,6 +1283,1506 @@ class PositionInfo : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static PositionInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class InputOrder : public ::google::protobuf::Message {
+ public:
+  InputOrder();
+  virtual ~InputOrder();
+  
+  InputOrder(const InputOrder& from);
+  
+  inline InputOrder& operator=(const InputOrder& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const InputOrder& default_instance();
+  
+  void Swap(InputOrder* other);
+  
+  // implements Message ----------------------------------------------
+  
+  InputOrder* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const InputOrder& from);
+  void MergeFrom(const InputOrder& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string BrokerID = 1;
+  inline bool has_brokerid() const;
+  inline void clear_brokerid();
+  static const int kBrokerIDFieldNumber = 1;
+  inline const ::std::string& brokerid() const;
+  inline void set_brokerid(const ::std::string& value);
+  inline void set_brokerid(const char* value);
+  inline void set_brokerid(const char* value, size_t size);
+  inline ::std::string* mutable_brokerid();
+  inline ::std::string* release_brokerid();
+  
+  // required string InvestorID = 2;
+  inline bool has_investorid() const;
+  inline void clear_investorid();
+  static const int kInvestorIDFieldNumber = 2;
+  inline const ::std::string& investorid() const;
+  inline void set_investorid(const ::std::string& value);
+  inline void set_investorid(const char* value);
+  inline void set_investorid(const char* value, size_t size);
+  inline ::std::string* mutable_investorid();
+  inline ::std::string* release_investorid();
+  
+  // required string InstrumentID = 3;
+  inline bool has_instrumentid() const;
+  inline void clear_instrumentid();
+  static const int kInstrumentIDFieldNumber = 3;
+  inline const ::std::string& instrumentid() const;
+  inline void set_instrumentid(const ::std::string& value);
+  inline void set_instrumentid(const char* value);
+  inline void set_instrumentid(const char* value, size_t size);
+  inline ::std::string* mutable_instrumentid();
+  inline ::std::string* release_instrumentid();
+  
+  // required string OrderRef = 4;
+  inline bool has_orderref() const;
+  inline void clear_orderref();
+  static const int kOrderRefFieldNumber = 4;
+  inline const ::std::string& orderref() const;
+  inline void set_orderref(const ::std::string& value);
+  inline void set_orderref(const char* value);
+  inline void set_orderref(const char* value, size_t size);
+  inline ::std::string* mutable_orderref();
+  inline ::std::string* release_orderref();
+  
+  // required string UserID = 5;
+  inline bool has_userid() const;
+  inline void clear_userid();
+  static const int kUserIDFieldNumber = 5;
+  inline const ::std::string& userid() const;
+  inline void set_userid(const ::std::string& value);
+  inline void set_userid(const char* value);
+  inline void set_userid(const char* value, size_t size);
+  inline ::std::string* mutable_userid();
+  inline ::std::string* release_userid();
+  
+  // required .protoc.OrderPriceTypeType OrderPriceType = 6;
+  inline bool has_orderpricetype() const;
+  inline void clear_orderpricetype();
+  static const int kOrderPriceTypeFieldNumber = 6;
+  inline protoc::OrderPriceTypeType orderpricetype() const;
+  inline void set_orderpricetype(protoc::OrderPriceTypeType value);
+  
+  // required .protoc.TradeDirectionType Direction = 7;
+  inline bool has_direction() const;
+  inline void clear_direction();
+  static const int kDirectionFieldNumber = 7;
+  inline protoc::TradeDirectionType direction() const;
+  inline void set_direction(protoc::TradeDirectionType value);
+  
+  // required string CombOffsetFlag = 8;
+  inline bool has_comboffsetflag() const;
+  inline void clear_comboffsetflag();
+  static const int kCombOffsetFlagFieldNumber = 8;
+  inline const ::std::string& comboffsetflag() const;
+  inline void set_comboffsetflag(const ::std::string& value);
+  inline void set_comboffsetflag(const char* value);
+  inline void set_comboffsetflag(const char* value, size_t size);
+  inline ::std::string* mutable_comboffsetflag();
+  inline ::std::string* release_comboffsetflag();
+  
+  // required string CombHedgeFlag = 9;
+  inline bool has_combhedgeflag() const;
+  inline void clear_combhedgeflag();
+  static const int kCombHedgeFlagFieldNumber = 9;
+  inline const ::std::string& combhedgeflag() const;
+  inline void set_combhedgeflag(const ::std::string& value);
+  inline void set_combhedgeflag(const char* value);
+  inline void set_combhedgeflag(const char* value, size_t size);
+  inline ::std::string* mutable_combhedgeflag();
+  inline ::std::string* release_combhedgeflag();
+  
+  // required double LimitPrice = 10;
+  inline bool has_limitprice() const;
+  inline void clear_limitprice();
+  static const int kLimitPriceFieldNumber = 10;
+  inline double limitprice() const;
+  inline void set_limitprice(double value);
+  
+  // required int32 VolumeTotalOriginal = 11;
+  inline bool has_volumetotaloriginal() const;
+  inline void clear_volumetotaloriginal();
+  static const int kVolumeTotalOriginalFieldNumber = 11;
+  inline ::google::protobuf::int32 volumetotaloriginal() const;
+  inline void set_volumetotaloriginal(::google::protobuf::int32 value);
+  
+  // required .protoc.TimeConditionType TimeCondition = 12;
+  inline bool has_timecondition() const;
+  inline void clear_timecondition();
+  static const int kTimeConditionFieldNumber = 12;
+  inline protoc::TimeConditionType timecondition() const;
+  inline void set_timecondition(protoc::TimeConditionType value);
+  
+  // required string GTDDate = 13;
+  inline bool has_gtddate() const;
+  inline void clear_gtddate();
+  static const int kGTDDateFieldNumber = 13;
+  inline const ::std::string& gtddate() const;
+  inline void set_gtddate(const ::std::string& value);
+  inline void set_gtddate(const char* value);
+  inline void set_gtddate(const char* value, size_t size);
+  inline ::std::string* mutable_gtddate();
+  inline ::std::string* release_gtddate();
+  
+  // required .protoc.VolumeConditionType VolumeCondition = 14;
+  inline bool has_volumecondition() const;
+  inline void clear_volumecondition();
+  static const int kVolumeConditionFieldNumber = 14;
+  inline protoc::VolumeConditionType volumecondition() const;
+  inline void set_volumecondition(protoc::VolumeConditionType value);
+  
+  // required int32 MinVolume = 15;
+  inline bool has_minvolume() const;
+  inline void clear_minvolume();
+  static const int kMinVolumeFieldNumber = 15;
+  inline ::google::protobuf::int32 minvolume() const;
+  inline void set_minvolume(::google::protobuf::int32 value);
+  
+  // required .protoc.ContingentConditionType ContingentCondition = 16;
+  inline bool has_contingentcondition() const;
+  inline void clear_contingentcondition();
+  static const int kContingentConditionFieldNumber = 16;
+  inline protoc::ContingentConditionType contingentcondition() const;
+  inline void set_contingentcondition(protoc::ContingentConditionType value);
+  
+  // required double StopPrice = 17;
+  inline bool has_stopprice() const;
+  inline void clear_stopprice();
+  static const int kStopPriceFieldNumber = 17;
+  inline double stopprice() const;
+  inline void set_stopprice(double value);
+  
+  // required .protoc.ForceCloseReasonType ForceCloseReason = 18;
+  inline bool has_forceclosereason() const;
+  inline void clear_forceclosereason();
+  static const int kForceCloseReasonFieldNumber = 18;
+  inline protoc::ForceCloseReasonType forceclosereason() const;
+  inline void set_forceclosereason(protoc::ForceCloseReasonType value);
+  
+  // required bool IsAutoSuspend = 19;
+  inline bool has_isautosuspend() const;
+  inline void clear_isautosuspend();
+  static const int kIsAutoSuspendFieldNumber = 19;
+  inline bool isautosuspend() const;
+  inline void set_isautosuspend(bool value);
+  
+  // required string BusinessUnit = 20;
+  inline bool has_businessunit() const;
+  inline void clear_businessunit();
+  static const int kBusinessUnitFieldNumber = 20;
+  inline const ::std::string& businessunit() const;
+  inline void set_businessunit(const ::std::string& value);
+  inline void set_businessunit(const char* value);
+  inline void set_businessunit(const char* value, size_t size);
+  inline ::std::string* mutable_businessunit();
+  inline ::std::string* release_businessunit();
+  
+  // required int32 RequestID = 21;
+  inline bool has_requestid() const;
+  inline void clear_requestid();
+  static const int kRequestIDFieldNumber = 21;
+  inline ::google::protobuf::int32 requestid() const;
+  inline void set_requestid(::google::protobuf::int32 value);
+  
+  // required bool UserForceClose = 22;
+  inline bool has_userforceclose() const;
+  inline void clear_userforceclose();
+  static const int kUserForceCloseFieldNumber = 22;
+  inline bool userforceclose() const;
+  inline void set_userforceclose(bool value);
+  
+  // @@protoc_insertion_point(class_scope:protoc.InputOrder)
+ private:
+  inline void set_has_brokerid();
+  inline void clear_has_brokerid();
+  inline void set_has_investorid();
+  inline void clear_has_investorid();
+  inline void set_has_instrumentid();
+  inline void clear_has_instrumentid();
+  inline void set_has_orderref();
+  inline void clear_has_orderref();
+  inline void set_has_userid();
+  inline void clear_has_userid();
+  inline void set_has_orderpricetype();
+  inline void clear_has_orderpricetype();
+  inline void set_has_direction();
+  inline void clear_has_direction();
+  inline void set_has_comboffsetflag();
+  inline void clear_has_comboffsetflag();
+  inline void set_has_combhedgeflag();
+  inline void clear_has_combhedgeflag();
+  inline void set_has_limitprice();
+  inline void clear_has_limitprice();
+  inline void set_has_volumetotaloriginal();
+  inline void clear_has_volumetotaloriginal();
+  inline void set_has_timecondition();
+  inline void clear_has_timecondition();
+  inline void set_has_gtddate();
+  inline void clear_has_gtddate();
+  inline void set_has_volumecondition();
+  inline void clear_has_volumecondition();
+  inline void set_has_minvolume();
+  inline void clear_has_minvolume();
+  inline void set_has_contingentcondition();
+  inline void clear_has_contingentcondition();
+  inline void set_has_stopprice();
+  inline void clear_has_stopprice();
+  inline void set_has_forceclosereason();
+  inline void clear_has_forceclosereason();
+  inline void set_has_isautosuspend();
+  inline void clear_has_isautosuspend();
+  inline void set_has_businessunit();
+  inline void clear_has_businessunit();
+  inline void set_has_requestid();
+  inline void clear_has_requestid();
+  inline void set_has_userforceclose();
+  inline void clear_has_userforceclose();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* brokerid_;
+  ::std::string* investorid_;
+  ::std::string* instrumentid_;
+  ::std::string* orderref_;
+  ::std::string* userid_;
+  int orderpricetype_;
+  int direction_;
+  ::std::string* comboffsetflag_;
+  ::std::string* combhedgeflag_;
+  double limitprice_;
+  ::google::protobuf::int32 volumetotaloriginal_;
+  int timecondition_;
+  ::std::string* gtddate_;
+  int volumecondition_;
+  ::google::protobuf::int32 minvolume_;
+  double stopprice_;
+  int contingentcondition_;
+  int forceclosereason_;
+  ::std::string* businessunit_;
+  bool isautosuspend_;
+  bool userforceclose_;
+  ::google::protobuf::int32 requestid_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(22 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_trade_2eproto();
+  friend void protobuf_AssignDesc_trade_2eproto();
+  friend void protobuf_ShutdownFile_trade_2eproto();
+  
+  void InitAsDefaultInstance();
+  static InputOrder* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Order : public ::google::protobuf::Message {
+ public:
+  Order();
+  virtual ~Order();
+  
+  Order(const Order& from);
+  
+  inline Order& operator=(const Order& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Order& default_instance();
+  
+  void Swap(Order* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Order* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Order& from);
+  void MergeFrom(const Order& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string BrokerID = 1;
+  inline bool has_brokerid() const;
+  inline void clear_brokerid();
+  static const int kBrokerIDFieldNumber = 1;
+  inline const ::std::string& brokerid() const;
+  inline void set_brokerid(const ::std::string& value);
+  inline void set_brokerid(const char* value);
+  inline void set_brokerid(const char* value, size_t size);
+  inline ::std::string* mutable_brokerid();
+  inline ::std::string* release_brokerid();
+  
+  // required string InvestorID = 2;
+  inline bool has_investorid() const;
+  inline void clear_investorid();
+  static const int kInvestorIDFieldNumber = 2;
+  inline const ::std::string& investorid() const;
+  inline void set_investorid(const ::std::string& value);
+  inline void set_investorid(const char* value);
+  inline void set_investorid(const char* value, size_t size);
+  inline ::std::string* mutable_investorid();
+  inline ::std::string* release_investorid();
+  
+  // required string InstrumentID = 3;
+  inline bool has_instrumentid() const;
+  inline void clear_instrumentid();
+  static const int kInstrumentIDFieldNumber = 3;
+  inline const ::std::string& instrumentid() const;
+  inline void set_instrumentid(const ::std::string& value);
+  inline void set_instrumentid(const char* value);
+  inline void set_instrumentid(const char* value, size_t size);
+  inline ::std::string* mutable_instrumentid();
+  inline ::std::string* release_instrumentid();
+  
+  // required string OrderRef = 4;
+  inline bool has_orderref() const;
+  inline void clear_orderref();
+  static const int kOrderRefFieldNumber = 4;
+  inline const ::std::string& orderref() const;
+  inline void set_orderref(const ::std::string& value);
+  inline void set_orderref(const char* value);
+  inline void set_orderref(const char* value, size_t size);
+  inline ::std::string* mutable_orderref();
+  inline ::std::string* release_orderref();
+  
+  // required string UserID = 5;
+  inline bool has_userid() const;
+  inline void clear_userid();
+  static const int kUserIDFieldNumber = 5;
+  inline const ::std::string& userid() const;
+  inline void set_userid(const ::std::string& value);
+  inline void set_userid(const char* value);
+  inline void set_userid(const char* value, size_t size);
+  inline ::std::string* mutable_userid();
+  inline ::std::string* release_userid();
+  
+  // required .protoc.OrderPriceTypeType OrderPriceType = 6;
+  inline bool has_orderpricetype() const;
+  inline void clear_orderpricetype();
+  static const int kOrderPriceTypeFieldNumber = 6;
+  inline protoc::OrderPriceTypeType orderpricetype() const;
+  inline void set_orderpricetype(protoc::OrderPriceTypeType value);
+  
+  // required .protoc.TradeDirectionType Direction = 7;
+  inline bool has_direction() const;
+  inline void clear_direction();
+  static const int kDirectionFieldNumber = 7;
+  inline protoc::TradeDirectionType direction() const;
+  inline void set_direction(protoc::TradeDirectionType value);
+  
+  // required string CombOffsetFlag = 8;
+  inline bool has_comboffsetflag() const;
+  inline void clear_comboffsetflag();
+  static const int kCombOffsetFlagFieldNumber = 8;
+  inline const ::std::string& comboffsetflag() const;
+  inline void set_comboffsetflag(const ::std::string& value);
+  inline void set_comboffsetflag(const char* value);
+  inline void set_comboffsetflag(const char* value, size_t size);
+  inline ::std::string* mutable_comboffsetflag();
+  inline ::std::string* release_comboffsetflag();
+  
+  // required string CombHedgeFlag = 9;
+  inline bool has_combhedgeflag() const;
+  inline void clear_combhedgeflag();
+  static const int kCombHedgeFlagFieldNumber = 9;
+  inline const ::std::string& combhedgeflag() const;
+  inline void set_combhedgeflag(const ::std::string& value);
+  inline void set_combhedgeflag(const char* value);
+  inline void set_combhedgeflag(const char* value, size_t size);
+  inline ::std::string* mutable_combhedgeflag();
+  inline ::std::string* release_combhedgeflag();
+  
+  // required double LimitPrice = 10;
+  inline bool has_limitprice() const;
+  inline void clear_limitprice();
+  static const int kLimitPriceFieldNumber = 10;
+  inline double limitprice() const;
+  inline void set_limitprice(double value);
+  
+  // required int32 VolumeTotalOriginal = 11;
+  inline bool has_volumetotaloriginal() const;
+  inline void clear_volumetotaloriginal();
+  static const int kVolumeTotalOriginalFieldNumber = 11;
+  inline ::google::protobuf::int32 volumetotaloriginal() const;
+  inline void set_volumetotaloriginal(::google::protobuf::int32 value);
+  
+  // required .protoc.TimeConditionType TimeCondition = 12;
+  inline bool has_timecondition() const;
+  inline void clear_timecondition();
+  static const int kTimeConditionFieldNumber = 12;
+  inline protoc::TimeConditionType timecondition() const;
+  inline void set_timecondition(protoc::TimeConditionType value);
+  
+  // required string GTDDate = 13;
+  inline bool has_gtddate() const;
+  inline void clear_gtddate();
+  static const int kGTDDateFieldNumber = 13;
+  inline const ::std::string& gtddate() const;
+  inline void set_gtddate(const ::std::string& value);
+  inline void set_gtddate(const char* value);
+  inline void set_gtddate(const char* value, size_t size);
+  inline ::std::string* mutable_gtddate();
+  inline ::std::string* release_gtddate();
+  
+  // required .protoc.VolumeConditionType VolumeCondition = 14;
+  inline bool has_volumecondition() const;
+  inline void clear_volumecondition();
+  static const int kVolumeConditionFieldNumber = 14;
+  inline protoc::VolumeConditionType volumecondition() const;
+  inline void set_volumecondition(protoc::VolumeConditionType value);
+  
+  // required int32 MinVolume = 15;
+  inline bool has_minvolume() const;
+  inline void clear_minvolume();
+  static const int kMinVolumeFieldNumber = 15;
+  inline ::google::protobuf::int32 minvolume() const;
+  inline void set_minvolume(::google::protobuf::int32 value);
+  
+  // required .protoc.ContingentConditionType ContingentCondition = 16;
+  inline bool has_contingentcondition() const;
+  inline void clear_contingentcondition();
+  static const int kContingentConditionFieldNumber = 16;
+  inline protoc::ContingentConditionType contingentcondition() const;
+  inline void set_contingentcondition(protoc::ContingentConditionType value);
+  
+  // required double StopPrice = 17;
+  inline bool has_stopprice() const;
+  inline void clear_stopprice();
+  static const int kStopPriceFieldNumber = 17;
+  inline double stopprice() const;
+  inline void set_stopprice(double value);
+  
+  // required .protoc.ForceCloseReasonType ForceCloseReason = 18;
+  inline bool has_forceclosereason() const;
+  inline void clear_forceclosereason();
+  static const int kForceCloseReasonFieldNumber = 18;
+  inline protoc::ForceCloseReasonType forceclosereason() const;
+  inline void set_forceclosereason(protoc::ForceCloseReasonType value);
+  
+  // required bool IsAutoSuspend = 19;
+  inline bool has_isautosuspend() const;
+  inline void clear_isautosuspend();
+  static const int kIsAutoSuspendFieldNumber = 19;
+  inline bool isautosuspend() const;
+  inline void set_isautosuspend(bool value);
+  
+  // required string BusinessUnit = 20;
+  inline bool has_businessunit() const;
+  inline void clear_businessunit();
+  static const int kBusinessUnitFieldNumber = 20;
+  inline const ::std::string& businessunit() const;
+  inline void set_businessunit(const ::std::string& value);
+  inline void set_businessunit(const char* value);
+  inline void set_businessunit(const char* value, size_t size);
+  inline ::std::string* mutable_businessunit();
+  inline ::std::string* release_businessunit();
+  
+  // required int32 RequestID = 21;
+  inline bool has_requestid() const;
+  inline void clear_requestid();
+  static const int kRequestIDFieldNumber = 21;
+  inline ::google::protobuf::int32 requestid() const;
+  inline void set_requestid(::google::protobuf::int32 value);
+  
+  // required string OrderLocalID = 22;
+  inline bool has_orderlocalid() const;
+  inline void clear_orderlocalid();
+  static const int kOrderLocalIDFieldNumber = 22;
+  inline const ::std::string& orderlocalid() const;
+  inline void set_orderlocalid(const ::std::string& value);
+  inline void set_orderlocalid(const char* value);
+  inline void set_orderlocalid(const char* value, size_t size);
+  inline ::std::string* mutable_orderlocalid();
+  inline ::std::string* release_orderlocalid();
+  
+  // required string ExchangeID = 23;
+  inline bool has_exchangeid() const;
+  inline void clear_exchangeid();
+  static const int kExchangeIDFieldNumber = 23;
+  inline const ::std::string& exchangeid() const;
+  inline void set_exchangeid(const ::std::string& value);
+  inline void set_exchangeid(const char* value);
+  inline void set_exchangeid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeid();
+  inline ::std::string* release_exchangeid();
+  
+  // required string ParticipantID = 24;
+  inline bool has_participantid() const;
+  inline void clear_participantid();
+  static const int kParticipantIDFieldNumber = 24;
+  inline const ::std::string& participantid() const;
+  inline void set_participantid(const ::std::string& value);
+  inline void set_participantid(const char* value);
+  inline void set_participantid(const char* value, size_t size);
+  inline ::std::string* mutable_participantid();
+  inline ::std::string* release_participantid();
+  
+  // required string ClientID = 25;
+  inline bool has_clientid() const;
+  inline void clear_clientid();
+  static const int kClientIDFieldNumber = 25;
+  inline const ::std::string& clientid() const;
+  inline void set_clientid(const ::std::string& value);
+  inline void set_clientid(const char* value);
+  inline void set_clientid(const char* value, size_t size);
+  inline ::std::string* mutable_clientid();
+  inline ::std::string* release_clientid();
+  
+  // required string ExchangeInstID = 26;
+  inline bool has_exchangeinstid() const;
+  inline void clear_exchangeinstid();
+  static const int kExchangeInstIDFieldNumber = 26;
+  inline const ::std::string& exchangeinstid() const;
+  inline void set_exchangeinstid(const ::std::string& value);
+  inline void set_exchangeinstid(const char* value);
+  inline void set_exchangeinstid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeinstid();
+  inline ::std::string* release_exchangeinstid();
+  
+  // required string TraderID = 27;
+  inline bool has_traderid() const;
+  inline void clear_traderid();
+  static const int kTraderIDFieldNumber = 27;
+  inline const ::std::string& traderid() const;
+  inline void set_traderid(const ::std::string& value);
+  inline void set_traderid(const char* value);
+  inline void set_traderid(const char* value, size_t size);
+  inline ::std::string* mutable_traderid();
+  inline ::std::string* release_traderid();
+  
+  // required int32 InstallID = 28;
+  inline bool has_installid() const;
+  inline void clear_installid();
+  static const int kInstallIDFieldNumber = 28;
+  inline ::google::protobuf::int32 installid() const;
+  inline void set_installid(::google::protobuf::int32 value);
+  
+  // required .protoc.OrderSubmitStatusType OrderSubmitStatus = 29;
+  inline bool has_ordersubmitstatus() const;
+  inline void clear_ordersubmitstatus();
+  static const int kOrderSubmitStatusFieldNumber = 29;
+  inline protoc::OrderSubmitStatusType ordersubmitstatus() const;
+  inline void set_ordersubmitstatus(protoc::OrderSubmitStatusType value);
+  
+  // required int32 NotifySequence = 30;
+  inline bool has_notifysequence() const;
+  inline void clear_notifysequence();
+  static const int kNotifySequenceFieldNumber = 30;
+  inline ::google::protobuf::int32 notifysequence() const;
+  inline void set_notifysequence(::google::protobuf::int32 value);
+  
+  // required string TradingDay = 31;
+  inline bool has_tradingday() const;
+  inline void clear_tradingday();
+  static const int kTradingDayFieldNumber = 31;
+  inline const ::std::string& tradingday() const;
+  inline void set_tradingday(const ::std::string& value);
+  inline void set_tradingday(const char* value);
+  inline void set_tradingday(const char* value, size_t size);
+  inline ::std::string* mutable_tradingday();
+  inline ::std::string* release_tradingday();
+  
+  // required int32 SettlementID = 32;
+  inline bool has_settlementid() const;
+  inline void clear_settlementid();
+  static const int kSettlementIDFieldNumber = 32;
+  inline ::google::protobuf::int32 settlementid() const;
+  inline void set_settlementid(::google::protobuf::int32 value);
+  
+  // required string OrderSysID = 33;
+  inline bool has_ordersysid() const;
+  inline void clear_ordersysid();
+  static const int kOrderSysIDFieldNumber = 33;
+  inline const ::std::string& ordersysid() const;
+  inline void set_ordersysid(const ::std::string& value);
+  inline void set_ordersysid(const char* value);
+  inline void set_ordersysid(const char* value, size_t size);
+  inline ::std::string* mutable_ordersysid();
+  inline ::std::string* release_ordersysid();
+  
+  // required .protoc.OrderSourceType OrderSource = 34;
+  inline bool has_ordersource() const;
+  inline void clear_ordersource();
+  static const int kOrderSourceFieldNumber = 34;
+  inline protoc::OrderSourceType ordersource() const;
+  inline void set_ordersource(protoc::OrderSourceType value);
+  
+  // required .protoc.OrderStatusType OrderStatus = 35;
+  inline bool has_orderstatus() const;
+  inline void clear_orderstatus();
+  static const int kOrderStatusFieldNumber = 35;
+  inline protoc::OrderStatusType orderstatus() const;
+  inline void set_orderstatus(protoc::OrderStatusType value);
+  
+  // required .protoc.OrderTypeType OrderType = 36;
+  inline bool has_ordertype() const;
+  inline void clear_ordertype();
+  static const int kOrderTypeFieldNumber = 36;
+  inline protoc::OrderTypeType ordertype() const;
+  inline void set_ordertype(protoc::OrderTypeType value);
+  
+  // required int32 VolumeTraded = 37;
+  inline bool has_volumetraded() const;
+  inline void clear_volumetraded();
+  static const int kVolumeTradedFieldNumber = 37;
+  inline ::google::protobuf::int32 volumetraded() const;
+  inline void set_volumetraded(::google::protobuf::int32 value);
+  
+  // required int32 VolumeTotal = 38;
+  inline bool has_volumetotal() const;
+  inline void clear_volumetotal();
+  static const int kVolumeTotalFieldNumber = 38;
+  inline ::google::protobuf::int32 volumetotal() const;
+  inline void set_volumetotal(::google::protobuf::int32 value);
+  
+  // required string InsertDate = 39;
+  inline bool has_insertdate() const;
+  inline void clear_insertdate();
+  static const int kInsertDateFieldNumber = 39;
+  inline const ::std::string& insertdate() const;
+  inline void set_insertdate(const ::std::string& value);
+  inline void set_insertdate(const char* value);
+  inline void set_insertdate(const char* value, size_t size);
+  inline ::std::string* mutable_insertdate();
+  inline ::std::string* release_insertdate();
+  
+  // required string InsertTime = 40;
+  inline bool has_inserttime() const;
+  inline void clear_inserttime();
+  static const int kInsertTimeFieldNumber = 40;
+  inline const ::std::string& inserttime() const;
+  inline void set_inserttime(const ::std::string& value);
+  inline void set_inserttime(const char* value);
+  inline void set_inserttime(const char* value, size_t size);
+  inline ::std::string* mutable_inserttime();
+  inline ::std::string* release_inserttime();
+  
+  // required string ActiveTime = 41;
+  inline bool has_activetime() const;
+  inline void clear_activetime();
+  static const int kActiveTimeFieldNumber = 41;
+  inline const ::std::string& activetime() const;
+  inline void set_activetime(const ::std::string& value);
+  inline void set_activetime(const char* value);
+  inline void set_activetime(const char* value, size_t size);
+  inline ::std::string* mutable_activetime();
+  inline ::std::string* release_activetime();
+  
+  // required string SuspendTime = 42;
+  inline bool has_suspendtime() const;
+  inline void clear_suspendtime();
+  static const int kSuspendTimeFieldNumber = 42;
+  inline const ::std::string& suspendtime() const;
+  inline void set_suspendtime(const ::std::string& value);
+  inline void set_suspendtime(const char* value);
+  inline void set_suspendtime(const char* value, size_t size);
+  inline ::std::string* mutable_suspendtime();
+  inline ::std::string* release_suspendtime();
+  
+  // required string UpdateTime = 43;
+  inline bool has_updatetime() const;
+  inline void clear_updatetime();
+  static const int kUpdateTimeFieldNumber = 43;
+  inline const ::std::string& updatetime() const;
+  inline void set_updatetime(const ::std::string& value);
+  inline void set_updatetime(const char* value);
+  inline void set_updatetime(const char* value, size_t size);
+  inline ::std::string* mutable_updatetime();
+  inline ::std::string* release_updatetime();
+  
+  // required string CancelTime = 44;
+  inline bool has_canceltime() const;
+  inline void clear_canceltime();
+  static const int kCancelTimeFieldNumber = 44;
+  inline const ::std::string& canceltime() const;
+  inline void set_canceltime(const ::std::string& value);
+  inline void set_canceltime(const char* value);
+  inline void set_canceltime(const char* value, size_t size);
+  inline ::std::string* mutable_canceltime();
+  inline ::std::string* release_canceltime();
+  
+  // required string ActiveTraderID = 45;
+  inline bool has_activetraderid() const;
+  inline void clear_activetraderid();
+  static const int kActiveTraderIDFieldNumber = 45;
+  inline const ::std::string& activetraderid() const;
+  inline void set_activetraderid(const ::std::string& value);
+  inline void set_activetraderid(const char* value);
+  inline void set_activetraderid(const char* value, size_t size);
+  inline ::std::string* mutable_activetraderid();
+  inline ::std::string* release_activetraderid();
+  
+  // required string ClearingPartID = 46;
+  inline bool has_clearingpartid() const;
+  inline void clear_clearingpartid();
+  static const int kClearingPartIDFieldNumber = 46;
+  inline const ::std::string& clearingpartid() const;
+  inline void set_clearingpartid(const ::std::string& value);
+  inline void set_clearingpartid(const char* value);
+  inline void set_clearingpartid(const char* value, size_t size);
+  inline ::std::string* mutable_clearingpartid();
+  inline ::std::string* release_clearingpartid();
+  
+  // required int32 SequenceNo = 47;
+  inline bool has_sequenceno() const;
+  inline void clear_sequenceno();
+  static const int kSequenceNoFieldNumber = 47;
+  inline ::google::protobuf::int32 sequenceno() const;
+  inline void set_sequenceno(::google::protobuf::int32 value);
+  
+  // required int32 FrontID = 48;
+  inline bool has_frontid() const;
+  inline void clear_frontid();
+  static const int kFrontIDFieldNumber = 48;
+  inline ::google::protobuf::int32 frontid() const;
+  inline void set_frontid(::google::protobuf::int32 value);
+  
+  // required int32 SessionID = 49;
+  inline bool has_sessionid() const;
+  inline void clear_sessionid();
+  static const int kSessionIDFieldNumber = 49;
+  inline ::google::protobuf::int32 sessionid() const;
+  inline void set_sessionid(::google::protobuf::int32 value);
+  
+  // required string UserProductInfo = 50;
+  inline bool has_userproductinfo() const;
+  inline void clear_userproductinfo();
+  static const int kUserProductInfoFieldNumber = 50;
+  inline const ::std::string& userproductinfo() const;
+  inline void set_userproductinfo(const ::std::string& value);
+  inline void set_userproductinfo(const char* value);
+  inline void set_userproductinfo(const char* value, size_t size);
+  inline ::std::string* mutable_userproductinfo();
+  inline ::std::string* release_userproductinfo();
+  
+  // required string StatusMsg = 51;
+  inline bool has_statusmsg() const;
+  inline void clear_statusmsg();
+  static const int kStatusMsgFieldNumber = 51;
+  inline const ::std::string& statusmsg() const;
+  inline void set_statusmsg(const ::std::string& value);
+  inline void set_statusmsg(const char* value);
+  inline void set_statusmsg(const char* value, size_t size);
+  inline ::std::string* mutable_statusmsg();
+  inline ::std::string* release_statusmsg();
+  
+  // required bool UserForceClose = 52;
+  inline bool has_userforceclose() const;
+  inline void clear_userforceclose();
+  static const int kUserForceCloseFieldNumber = 52;
+  inline bool userforceclose() const;
+  inline void set_userforceclose(bool value);
+  
+  // required string ActiveUserID = 53;
+  inline bool has_activeuserid() const;
+  inline void clear_activeuserid();
+  static const int kActiveUserIDFieldNumber = 53;
+  inline const ::std::string& activeuserid() const;
+  inline void set_activeuserid(const ::std::string& value);
+  inline void set_activeuserid(const char* value);
+  inline void set_activeuserid(const char* value, size_t size);
+  inline ::std::string* mutable_activeuserid();
+  inline ::std::string* release_activeuserid();
+  
+  // required int32 BrokerOrderSeq = 54;
+  inline bool has_brokerorderseq() const;
+  inline void clear_brokerorderseq();
+  static const int kBrokerOrderSeqFieldNumber = 54;
+  inline ::google::protobuf::int32 brokerorderseq() const;
+  inline void set_brokerorderseq(::google::protobuf::int32 value);
+  
+  // required string RelativeOrderSysID = 55;
+  inline bool has_relativeordersysid() const;
+  inline void clear_relativeordersysid();
+  static const int kRelativeOrderSysIDFieldNumber = 55;
+  inline const ::std::string& relativeordersysid() const;
+  inline void set_relativeordersysid(const ::std::string& value);
+  inline void set_relativeordersysid(const char* value);
+  inline void set_relativeordersysid(const char* value, size_t size);
+  inline ::std::string* mutable_relativeordersysid();
+  inline ::std::string* release_relativeordersysid();
+  
+  // @@protoc_insertion_point(class_scope:protoc.Order)
+ private:
+  inline void set_has_brokerid();
+  inline void clear_has_brokerid();
+  inline void set_has_investorid();
+  inline void clear_has_investorid();
+  inline void set_has_instrumentid();
+  inline void clear_has_instrumentid();
+  inline void set_has_orderref();
+  inline void clear_has_orderref();
+  inline void set_has_userid();
+  inline void clear_has_userid();
+  inline void set_has_orderpricetype();
+  inline void clear_has_orderpricetype();
+  inline void set_has_direction();
+  inline void clear_has_direction();
+  inline void set_has_comboffsetflag();
+  inline void clear_has_comboffsetflag();
+  inline void set_has_combhedgeflag();
+  inline void clear_has_combhedgeflag();
+  inline void set_has_limitprice();
+  inline void clear_has_limitprice();
+  inline void set_has_volumetotaloriginal();
+  inline void clear_has_volumetotaloriginal();
+  inline void set_has_timecondition();
+  inline void clear_has_timecondition();
+  inline void set_has_gtddate();
+  inline void clear_has_gtddate();
+  inline void set_has_volumecondition();
+  inline void clear_has_volumecondition();
+  inline void set_has_minvolume();
+  inline void clear_has_minvolume();
+  inline void set_has_contingentcondition();
+  inline void clear_has_contingentcondition();
+  inline void set_has_stopprice();
+  inline void clear_has_stopprice();
+  inline void set_has_forceclosereason();
+  inline void clear_has_forceclosereason();
+  inline void set_has_isautosuspend();
+  inline void clear_has_isautosuspend();
+  inline void set_has_businessunit();
+  inline void clear_has_businessunit();
+  inline void set_has_requestid();
+  inline void clear_has_requestid();
+  inline void set_has_orderlocalid();
+  inline void clear_has_orderlocalid();
+  inline void set_has_exchangeid();
+  inline void clear_has_exchangeid();
+  inline void set_has_participantid();
+  inline void clear_has_participantid();
+  inline void set_has_clientid();
+  inline void clear_has_clientid();
+  inline void set_has_exchangeinstid();
+  inline void clear_has_exchangeinstid();
+  inline void set_has_traderid();
+  inline void clear_has_traderid();
+  inline void set_has_installid();
+  inline void clear_has_installid();
+  inline void set_has_ordersubmitstatus();
+  inline void clear_has_ordersubmitstatus();
+  inline void set_has_notifysequence();
+  inline void clear_has_notifysequence();
+  inline void set_has_tradingday();
+  inline void clear_has_tradingday();
+  inline void set_has_settlementid();
+  inline void clear_has_settlementid();
+  inline void set_has_ordersysid();
+  inline void clear_has_ordersysid();
+  inline void set_has_ordersource();
+  inline void clear_has_ordersource();
+  inline void set_has_orderstatus();
+  inline void clear_has_orderstatus();
+  inline void set_has_ordertype();
+  inline void clear_has_ordertype();
+  inline void set_has_volumetraded();
+  inline void clear_has_volumetraded();
+  inline void set_has_volumetotal();
+  inline void clear_has_volumetotal();
+  inline void set_has_insertdate();
+  inline void clear_has_insertdate();
+  inline void set_has_inserttime();
+  inline void clear_has_inserttime();
+  inline void set_has_activetime();
+  inline void clear_has_activetime();
+  inline void set_has_suspendtime();
+  inline void clear_has_suspendtime();
+  inline void set_has_updatetime();
+  inline void clear_has_updatetime();
+  inline void set_has_canceltime();
+  inline void clear_has_canceltime();
+  inline void set_has_activetraderid();
+  inline void clear_has_activetraderid();
+  inline void set_has_clearingpartid();
+  inline void clear_has_clearingpartid();
+  inline void set_has_sequenceno();
+  inline void clear_has_sequenceno();
+  inline void set_has_frontid();
+  inline void clear_has_frontid();
+  inline void set_has_sessionid();
+  inline void clear_has_sessionid();
+  inline void set_has_userproductinfo();
+  inline void clear_has_userproductinfo();
+  inline void set_has_statusmsg();
+  inline void clear_has_statusmsg();
+  inline void set_has_userforceclose();
+  inline void clear_has_userforceclose();
+  inline void set_has_activeuserid();
+  inline void clear_has_activeuserid();
+  inline void set_has_brokerorderseq();
+  inline void clear_has_brokerorderseq();
+  inline void set_has_relativeordersysid();
+  inline void clear_has_relativeordersysid();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* brokerid_;
+  ::std::string* investorid_;
+  ::std::string* instrumentid_;
+  ::std::string* orderref_;
+  ::std::string* userid_;
+  int orderpricetype_;
+  int direction_;
+  ::std::string* comboffsetflag_;
+  ::std::string* combhedgeflag_;
+  double limitprice_;
+  ::google::protobuf::int32 volumetotaloriginal_;
+  int timecondition_;
+  ::std::string* gtddate_;
+  int volumecondition_;
+  ::google::protobuf::int32 minvolume_;
+  double stopprice_;
+  int contingentcondition_;
+  int forceclosereason_;
+  ::std::string* businessunit_;
+  ::std::string* orderlocalid_;
+  ::std::string* exchangeid_;
+  ::std::string* participantid_;
+  ::google::protobuf::int32 requestid_;
+  ::google::protobuf::int32 installid_;
+  ::std::string* clientid_;
+  ::std::string* exchangeinstid_;
+  ::std::string* traderid_;
+  int ordersubmitstatus_;
+  ::google::protobuf::int32 notifysequence_;
+  ::std::string* tradingday_;
+  ::google::protobuf::int32 settlementid_;
+  int ordersource_;
+  ::std::string* ordersysid_;
+  int orderstatus_;
+  bool isautosuspend_;
+  bool userforceclose_;
+  int ordertype_;
+  ::google::protobuf::int32 volumetraded_;
+  ::std::string* insertdate_;
+  ::std::string* inserttime_;
+  ::std::string* activetime_;
+  ::std::string* suspendtime_;
+  ::google::protobuf::int32 volumetotal_;
+  ::google::protobuf::int32 sequenceno_;
+  ::std::string* updatetime_;
+  ::std::string* canceltime_;
+  ::std::string* activetraderid_;
+  ::std::string* clearingpartid_;
+  ::google::protobuf::int32 frontid_;
+  ::google::protobuf::int32 sessionid_;
+  ::std::string* userproductinfo_;
+  ::std::string* statusmsg_;
+  ::std::string* activeuserid_;
+  ::std::string* relativeordersysid_;
+  ::google::protobuf::int32 brokerorderseq_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(55 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_trade_2eproto();
+  friend void protobuf_AssignDesc_trade_2eproto();
+  friend void protobuf_ShutdownFile_trade_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Order* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Trade : public ::google::protobuf::Message {
+ public:
+  Trade();
+  virtual ~Trade();
+  
+  Trade(const Trade& from);
+  
+  inline Trade& operator=(const Trade& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Trade& default_instance();
+  
+  void Swap(Trade* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Trade* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Trade& from);
+  void MergeFrom(const Trade& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string BrokerID = 1;
+  inline bool has_brokerid() const;
+  inline void clear_brokerid();
+  static const int kBrokerIDFieldNumber = 1;
+  inline const ::std::string& brokerid() const;
+  inline void set_brokerid(const ::std::string& value);
+  inline void set_brokerid(const char* value);
+  inline void set_brokerid(const char* value, size_t size);
+  inline ::std::string* mutable_brokerid();
+  inline ::std::string* release_brokerid();
+  
+  // required string InvestorID = 2;
+  inline bool has_investorid() const;
+  inline void clear_investorid();
+  static const int kInvestorIDFieldNumber = 2;
+  inline const ::std::string& investorid() const;
+  inline void set_investorid(const ::std::string& value);
+  inline void set_investorid(const char* value);
+  inline void set_investorid(const char* value, size_t size);
+  inline ::std::string* mutable_investorid();
+  inline ::std::string* release_investorid();
+  
+  // required string InstrumentID = 3;
+  inline bool has_instrumentid() const;
+  inline void clear_instrumentid();
+  static const int kInstrumentIDFieldNumber = 3;
+  inline const ::std::string& instrumentid() const;
+  inline void set_instrumentid(const ::std::string& value);
+  inline void set_instrumentid(const char* value);
+  inline void set_instrumentid(const char* value, size_t size);
+  inline ::std::string* mutable_instrumentid();
+  inline ::std::string* release_instrumentid();
+  
+  // required string OrderRef = 4;
+  inline bool has_orderref() const;
+  inline void clear_orderref();
+  static const int kOrderRefFieldNumber = 4;
+  inline const ::std::string& orderref() const;
+  inline void set_orderref(const ::std::string& value);
+  inline void set_orderref(const char* value);
+  inline void set_orderref(const char* value, size_t size);
+  inline ::std::string* mutable_orderref();
+  inline ::std::string* release_orderref();
+  
+  // required string UserID = 5;
+  inline bool has_userid() const;
+  inline void clear_userid();
+  static const int kUserIDFieldNumber = 5;
+  inline const ::std::string& userid() const;
+  inline void set_userid(const ::std::string& value);
+  inline void set_userid(const char* value);
+  inline void set_userid(const char* value, size_t size);
+  inline ::std::string* mutable_userid();
+  inline ::std::string* release_userid();
+  
+  // required string ExchangeID = 6;
+  inline bool has_exchangeid() const;
+  inline void clear_exchangeid();
+  static const int kExchangeIDFieldNumber = 6;
+  inline const ::std::string& exchangeid() const;
+  inline void set_exchangeid(const ::std::string& value);
+  inline void set_exchangeid(const char* value);
+  inline void set_exchangeid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeid();
+  inline ::std::string* release_exchangeid();
+  
+  // required string TradeID = 7;
+  inline bool has_tradeid() const;
+  inline void clear_tradeid();
+  static const int kTradeIDFieldNumber = 7;
+  inline const ::std::string& tradeid() const;
+  inline void set_tradeid(const ::std::string& value);
+  inline void set_tradeid(const char* value);
+  inline void set_tradeid(const char* value, size_t size);
+  inline ::std::string* mutable_tradeid();
+  inline ::std::string* release_tradeid();
+  
+  // required .protoc.TradeDirectionType Direction = 8;
+  inline bool has_direction() const;
+  inline void clear_direction();
+  static const int kDirectionFieldNumber = 8;
+  inline protoc::TradeDirectionType direction() const;
+  inline void set_direction(protoc::TradeDirectionType value);
+  
+  // required string OrderSysID = 9;
+  inline bool has_ordersysid() const;
+  inline void clear_ordersysid();
+  static const int kOrderSysIDFieldNumber = 9;
+  inline const ::std::string& ordersysid() const;
+  inline void set_ordersysid(const ::std::string& value);
+  inline void set_ordersysid(const char* value);
+  inline void set_ordersysid(const char* value, size_t size);
+  inline ::std::string* mutable_ordersysid();
+  inline ::std::string* release_ordersysid();
+  
+  // required string ParticipantID = 10;
+  inline bool has_participantid() const;
+  inline void clear_participantid();
+  static const int kParticipantIDFieldNumber = 10;
+  inline const ::std::string& participantid() const;
+  inline void set_participantid(const ::std::string& value);
+  inline void set_participantid(const char* value);
+  inline void set_participantid(const char* value, size_t size);
+  inline ::std::string* mutable_participantid();
+  inline ::std::string* release_participantid();
+  
+  // required string ClientID = 11;
+  inline bool has_clientid() const;
+  inline void clear_clientid();
+  static const int kClientIDFieldNumber = 11;
+  inline const ::std::string& clientid() const;
+  inline void set_clientid(const ::std::string& value);
+  inline void set_clientid(const char* value);
+  inline void set_clientid(const char* value, size_t size);
+  inline ::std::string* mutable_clientid();
+  inline ::std::string* release_clientid();
+  
+  // required .protoc.TradingRoleType TradingRole = 12;
+  inline bool has_tradingrole() const;
+  inline void clear_tradingrole();
+  static const int kTradingRoleFieldNumber = 12;
+  inline protoc::TradingRoleType tradingrole() const;
+  inline void set_tradingrole(protoc::TradingRoleType value);
+  
+  // required string ExchangeInstID = 13;
+  inline bool has_exchangeinstid() const;
+  inline void clear_exchangeinstid();
+  static const int kExchangeInstIDFieldNumber = 13;
+  inline const ::std::string& exchangeinstid() const;
+  inline void set_exchangeinstid(const ::std::string& value);
+  inline void set_exchangeinstid(const char* value);
+  inline void set_exchangeinstid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeinstid();
+  inline ::std::string* release_exchangeinstid();
+  
+  // required .protoc.OffsetFlagType OffsetFlag = 14;
+  inline bool has_offsetflag() const;
+  inline void clear_offsetflag();
+  static const int kOffsetFlagFieldNumber = 14;
+  inline protoc::OffsetFlagType offsetflag() const;
+  inline void set_offsetflag(protoc::OffsetFlagType value);
+  
+  // required .protoc.HedgeFlagType HedgeFlag = 15;
+  inline bool has_hedgeflag() const;
+  inline void clear_hedgeflag();
+  static const int kHedgeFlagFieldNumber = 15;
+  inline protoc::HedgeFlagType hedgeflag() const;
+  inline void set_hedgeflag(protoc::HedgeFlagType value);
+  
+  // required double Price = 16;
+  inline bool has_price() const;
+  inline void clear_price();
+  static const int kPriceFieldNumber = 16;
+  inline double price() const;
+  inline void set_price(double value);
+  
+  // required int32 Volume = 17;
+  inline bool has_volume() const;
+  inline void clear_volume();
+  static const int kVolumeFieldNumber = 17;
+  inline ::google::protobuf::int32 volume() const;
+  inline void set_volume(::google::protobuf::int32 value);
+  
+  // required string TradeDate = 18;
+  inline bool has_tradedate() const;
+  inline void clear_tradedate();
+  static const int kTradeDateFieldNumber = 18;
+  inline const ::std::string& tradedate() const;
+  inline void set_tradedate(const ::std::string& value);
+  inline void set_tradedate(const char* value);
+  inline void set_tradedate(const char* value, size_t size);
+  inline ::std::string* mutable_tradedate();
+  inline ::std::string* release_tradedate();
+  
+  // required string TradeTime = 19;
+  inline bool has_tradetime() const;
+  inline void clear_tradetime();
+  static const int kTradeTimeFieldNumber = 19;
+  inline const ::std::string& tradetime() const;
+  inline void set_tradetime(const ::std::string& value);
+  inline void set_tradetime(const char* value);
+  inline void set_tradetime(const char* value, size_t size);
+  inline ::std::string* mutable_tradetime();
+  inline ::std::string* release_tradetime();
+  
+  // required .protoc.TradeTypeType TradeType = 20;
+  inline bool has_tradetype() const;
+  inline void clear_tradetype();
+  static const int kTradeTypeFieldNumber = 20;
+  inline protoc::TradeTypeType tradetype() const;
+  inline void set_tradetype(protoc::TradeTypeType value);
+  
+  // required .protoc.PriceSourceType PriceSource = 21;
+  inline bool has_pricesource() const;
+  inline void clear_pricesource();
+  static const int kPriceSourceFieldNumber = 21;
+  inline protoc::PriceSourceType pricesource() const;
+  inline void set_pricesource(protoc::PriceSourceType value);
+  
+  // required string TraderID = 22;
+  inline bool has_traderid() const;
+  inline void clear_traderid();
+  static const int kTraderIDFieldNumber = 22;
+  inline const ::std::string& traderid() const;
+  inline void set_traderid(const ::std::string& value);
+  inline void set_traderid(const char* value);
+  inline void set_traderid(const char* value, size_t size);
+  inline ::std::string* mutable_traderid();
+  inline ::std::string* release_traderid();
+  
+  // required string OrderLocalID = 23;
+  inline bool has_orderlocalid() const;
+  inline void clear_orderlocalid();
+  static const int kOrderLocalIDFieldNumber = 23;
+  inline const ::std::string& orderlocalid() const;
+  inline void set_orderlocalid(const ::std::string& value);
+  inline void set_orderlocalid(const char* value);
+  inline void set_orderlocalid(const char* value, size_t size);
+  inline ::std::string* mutable_orderlocalid();
+  inline ::std::string* release_orderlocalid();
+  
+  // required string ClearingPartID = 24;
+  inline bool has_clearingpartid() const;
+  inline void clear_clearingpartid();
+  static const int kClearingPartIDFieldNumber = 24;
+  inline const ::std::string& clearingpartid() const;
+  inline void set_clearingpartid(const ::std::string& value);
+  inline void set_clearingpartid(const char* value);
+  inline void set_clearingpartid(const char* value, size_t size);
+  inline ::std::string* mutable_clearingpartid();
+  inline ::std::string* release_clearingpartid();
+  
+  // required string BusinessUnit = 25;
+  inline bool has_businessunit() const;
+  inline void clear_businessunit();
+  static const int kBusinessUnitFieldNumber = 25;
+  inline const ::std::string& businessunit() const;
+  inline void set_businessunit(const ::std::string& value);
+  inline void set_businessunit(const char* value);
+  inline void set_businessunit(const char* value, size_t size);
+  inline ::std::string* mutable_businessunit();
+  inline ::std::string* release_businessunit();
+  
+  // required int32 SequenceNo = 26;
+  inline bool has_sequenceno() const;
+  inline void clear_sequenceno();
+  static const int kSequenceNoFieldNumber = 26;
+  inline ::google::protobuf::int32 sequenceno() const;
+  inline void set_sequenceno(::google::protobuf::int32 value);
+  
+  // required string TradingDay = 27;
+  inline bool has_tradingday() const;
+  inline void clear_tradingday();
+  static const int kTradingDayFieldNumber = 27;
+  inline const ::std::string& tradingday() const;
+  inline void set_tradingday(const ::std::string& value);
+  inline void set_tradingday(const char* value);
+  inline void set_tradingday(const char* value, size_t size);
+  inline ::std::string* mutable_tradingday();
+  inline ::std::string* release_tradingday();
+  
+  // required int32 SettlementID = 28;
+  inline bool has_settlementid() const;
+  inline void clear_settlementid();
+  static const int kSettlementIDFieldNumber = 28;
+  inline ::google::protobuf::int32 settlementid() const;
+  inline void set_settlementid(::google::protobuf::int32 value);
+  
+  // required int32 BrokerOrderSeq = 29;
+  inline bool has_brokerorderseq() const;
+  inline void clear_brokerorderseq();
+  static const int kBrokerOrderSeqFieldNumber = 29;
+  inline ::google::protobuf::int32 brokerorderseq() const;
+  inline void set_brokerorderseq(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:protoc.Trade)
+ private:
+  inline void set_has_brokerid();
+  inline void clear_has_brokerid();
+  inline void set_has_investorid();
+  inline void clear_has_investorid();
+  inline void set_has_instrumentid();
+  inline void clear_has_instrumentid();
+  inline void set_has_orderref();
+  inline void clear_has_orderref();
+  inline void set_has_userid();
+  inline void clear_has_userid();
+  inline void set_has_exchangeid();
+  inline void clear_has_exchangeid();
+  inline void set_has_tradeid();
+  inline void clear_has_tradeid();
+  inline void set_has_direction();
+  inline void clear_has_direction();
+  inline void set_has_ordersysid();
+  inline void clear_has_ordersysid();
+  inline void set_has_participantid();
+  inline void clear_has_participantid();
+  inline void set_has_clientid();
+  inline void clear_has_clientid();
+  inline void set_has_tradingrole();
+  inline void clear_has_tradingrole();
+  inline void set_has_exchangeinstid();
+  inline void clear_has_exchangeinstid();
+  inline void set_has_offsetflag();
+  inline void clear_has_offsetflag();
+  inline void set_has_hedgeflag();
+  inline void clear_has_hedgeflag();
+  inline void set_has_price();
+  inline void clear_has_price();
+  inline void set_has_volume();
+  inline void clear_has_volume();
+  inline void set_has_tradedate();
+  inline void clear_has_tradedate();
+  inline void set_has_tradetime();
+  inline void clear_has_tradetime();
+  inline void set_has_tradetype();
+  inline void clear_has_tradetype();
+  inline void set_has_pricesource();
+  inline void clear_has_pricesource();
+  inline void set_has_traderid();
+  inline void clear_has_traderid();
+  inline void set_has_orderlocalid();
+  inline void clear_has_orderlocalid();
+  inline void set_has_clearingpartid();
+  inline void clear_has_clearingpartid();
+  inline void set_has_businessunit();
+  inline void clear_has_businessunit();
+  inline void set_has_sequenceno();
+  inline void clear_has_sequenceno();
+  inline void set_has_tradingday();
+  inline void clear_has_tradingday();
+  inline void set_has_settlementid();
+  inline void clear_has_settlementid();
+  inline void set_has_brokerorderseq();
+  inline void clear_has_brokerorderseq();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* brokerid_;
+  ::std::string* investorid_;
+  ::std::string* instrumentid_;
+  ::std::string* orderref_;
+  ::std::string* userid_;
+  ::std::string* exchangeid_;
+  ::std::string* tradeid_;
+  ::std::string* ordersysid_;
+  ::std::string* participantid_;
+  int direction_;
+  int tradingrole_;
+  ::std::string* clientid_;
+  ::std::string* exchangeinstid_;
+  int offsetflag_;
+  int hedgeflag_;
+  double price_;
+  ::std::string* tradedate_;
+  ::google::protobuf::int32 volume_;
+  int tradetype_;
+  ::std::string* tradetime_;
+  ::std::string* traderid_;
+  ::std::string* orderlocalid_;
+  int pricesource_;
+  ::google::protobuf::int32 sequenceno_;
+  ::std::string* clearingpartid_;
+  ::std::string* businessunit_;
+  ::std::string* tradingday_;
+  ::google::protobuf::int32 settlementid_;
+  ::google::protobuf::int32 brokerorderseq_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(29 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_trade_2eproto();
+  friend void protobuf_AssignDesc_trade_2eproto();
+  friend void protobuf_ShutdownFile_trade_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Trade* default_instance_;
 };
 // ===================================================================
 
@@ -1872,7 +3737,7 @@ inline ::std::string* PositionInfo::release_investorid() {
   }
 }
 
-// required string PosiDirection = 4;
+// required .protoc.PosiDirectionType PosiDirection = 4;
 inline bool PositionInfo::has_posidirection() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -1883,54 +3748,19 @@ inline void PositionInfo::clear_has_posidirection() {
   _has_bits_[0] &= ~0x00000008u;
 }
 inline void PositionInfo::clear_posidirection() {
-  if (posidirection_ != &::google::protobuf::internal::kEmptyString) {
-    posidirection_->clear();
-  }
+  posidirection_ = 49;
   clear_has_posidirection();
 }
-inline const ::std::string& PositionInfo::posidirection() const {
-  return *posidirection_;
+inline protoc::PosiDirectionType PositionInfo::posidirection() const {
+  return static_cast< protoc::PosiDirectionType >(posidirection_);
 }
-inline void PositionInfo::set_posidirection(const ::std::string& value) {
+inline void PositionInfo::set_posidirection(protoc::PosiDirectionType value) {
+  GOOGLE_DCHECK(protoc::PosiDirectionType_IsValid(value));
   set_has_posidirection();
-  if (posidirection_ == &::google::protobuf::internal::kEmptyString) {
-    posidirection_ = new ::std::string;
-  }
-  posidirection_->assign(value);
-}
-inline void PositionInfo::set_posidirection(const char* value) {
-  set_has_posidirection();
-  if (posidirection_ == &::google::protobuf::internal::kEmptyString) {
-    posidirection_ = new ::std::string;
-  }
-  posidirection_->assign(value);
-}
-inline void PositionInfo::set_posidirection(const char* value, size_t size) {
-  set_has_posidirection();
-  if (posidirection_ == &::google::protobuf::internal::kEmptyString) {
-    posidirection_ = new ::std::string;
-  }
-  posidirection_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* PositionInfo::mutable_posidirection() {
-  set_has_posidirection();
-  if (posidirection_ == &::google::protobuf::internal::kEmptyString) {
-    posidirection_ = new ::std::string;
-  }
-  return posidirection_;
-}
-inline ::std::string* PositionInfo::release_posidirection() {
-  clear_has_posidirection();
-  if (posidirection_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = posidirection_;
-    posidirection_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
+  posidirection_ = value;
 }
 
-// required string HedgeFlag = 5;
+// required .protoc.HedgeFlagType HedgeFlag = 5;
 inline bool PositionInfo::has_hedgeflag() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -1941,51 +3771,16 @@ inline void PositionInfo::clear_has_hedgeflag() {
   _has_bits_[0] &= ~0x00000010u;
 }
 inline void PositionInfo::clear_hedgeflag() {
-  if (hedgeflag_ != &::google::protobuf::internal::kEmptyString) {
-    hedgeflag_->clear();
-  }
+  hedgeflag_ = 49;
   clear_has_hedgeflag();
 }
-inline const ::std::string& PositionInfo::hedgeflag() const {
-  return *hedgeflag_;
+inline protoc::HedgeFlagType PositionInfo::hedgeflag() const {
+  return static_cast< protoc::HedgeFlagType >(hedgeflag_);
 }
-inline void PositionInfo::set_hedgeflag(const ::std::string& value) {
+inline void PositionInfo::set_hedgeflag(protoc::HedgeFlagType value) {
+  GOOGLE_DCHECK(protoc::HedgeFlagType_IsValid(value));
   set_has_hedgeflag();
-  if (hedgeflag_ == &::google::protobuf::internal::kEmptyString) {
-    hedgeflag_ = new ::std::string;
-  }
-  hedgeflag_->assign(value);
-}
-inline void PositionInfo::set_hedgeflag(const char* value) {
-  set_has_hedgeflag();
-  if (hedgeflag_ == &::google::protobuf::internal::kEmptyString) {
-    hedgeflag_ = new ::std::string;
-  }
-  hedgeflag_->assign(value);
-}
-inline void PositionInfo::set_hedgeflag(const char* value, size_t size) {
-  set_has_hedgeflag();
-  if (hedgeflag_ == &::google::protobuf::internal::kEmptyString) {
-    hedgeflag_ = new ::std::string;
-  }
-  hedgeflag_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* PositionInfo::mutable_hedgeflag() {
-  set_has_hedgeflag();
-  if (hedgeflag_ == &::google::protobuf::internal::kEmptyString) {
-    hedgeflag_ = new ::std::string;
-  }
-  return hedgeflag_;
-}
-inline ::std::string* PositionInfo::release_hedgeflag() {
-  clear_has_hedgeflag();
-  if (hedgeflag_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = hedgeflag_;
-    hedgeflag_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
+  hedgeflag_ = value;
 }
 
 // required string PositionDate = 6;
@@ -2830,6 +4625,4388 @@ inline void PositionInfo::set_marginratebyvolume(double value) {
   marginratebyvolume_ = value;
 }
 
+// -------------------------------------------------------------------
+
+// InputOrder
+
+// required string BrokerID = 1;
+inline bool InputOrder::has_brokerid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void InputOrder::set_has_brokerid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void InputOrder::clear_has_brokerid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void InputOrder::clear_brokerid() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    brokerid_->clear();
+  }
+  clear_has_brokerid();
+}
+inline const ::std::string& InputOrder::brokerid() const {
+  return *brokerid_;
+}
+inline void InputOrder::set_brokerid(const ::std::string& value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void InputOrder::set_brokerid(const char* value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void InputOrder::set_brokerid(const char* value, size_t size) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_brokerid() {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  return brokerid_;
+}
+inline ::std::string* InputOrder::release_brokerid() {
+  clear_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = brokerid_;
+    brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InvestorID = 2;
+inline bool InputOrder::has_investorid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void InputOrder::set_has_investorid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void InputOrder::clear_has_investorid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void InputOrder::clear_investorid() {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    investorid_->clear();
+  }
+  clear_has_investorid();
+}
+inline const ::std::string& InputOrder::investorid() const {
+  return *investorid_;
+}
+inline void InputOrder::set_investorid(const ::std::string& value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void InputOrder::set_investorid(const char* value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void InputOrder::set_investorid(const char* value, size_t size) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_investorid() {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  return investorid_;
+}
+inline ::std::string* InputOrder::release_investorid() {
+  clear_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = investorid_;
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InstrumentID = 3;
+inline bool InputOrder::has_instrumentid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void InputOrder::set_has_instrumentid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void InputOrder::clear_has_instrumentid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void InputOrder::clear_instrumentid() {
+  if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    instrumentid_->clear();
+  }
+  clear_has_instrumentid();
+}
+inline const ::std::string& InputOrder::instrumentid() const {
+  return *instrumentid_;
+}
+inline void InputOrder::set_instrumentid(const ::std::string& value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void InputOrder::set_instrumentid(const char* value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void InputOrder::set_instrumentid(const char* value, size_t size) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_instrumentid() {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  return instrumentid_;
+}
+inline ::std::string* InputOrder::release_instrumentid() {
+  clear_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = instrumentid_;
+    instrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string OrderRef = 4;
+inline bool InputOrder::has_orderref() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void InputOrder::set_has_orderref() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void InputOrder::clear_has_orderref() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void InputOrder::clear_orderref() {
+  if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+    orderref_->clear();
+  }
+  clear_has_orderref();
+}
+inline const ::std::string& InputOrder::orderref() const {
+  return *orderref_;
+}
+inline void InputOrder::set_orderref(const ::std::string& value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void InputOrder::set_orderref(const char* value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void InputOrder::set_orderref(const char* value, size_t size) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_orderref() {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  return orderref_;
+}
+inline ::std::string* InputOrder::release_orderref() {
+  clear_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = orderref_;
+    orderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string UserID = 5;
+inline bool InputOrder::has_userid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void InputOrder::set_has_userid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void InputOrder::clear_has_userid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void InputOrder::clear_userid() {
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    userid_->clear();
+  }
+  clear_has_userid();
+}
+inline const ::std::string& InputOrder::userid() const {
+  return *userid_;
+}
+inline void InputOrder::set_userid(const ::std::string& value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void InputOrder::set_userid(const char* value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void InputOrder::set_userid(const char* value, size_t size) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_userid() {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  return userid_;
+}
+inline ::std::string* InputOrder::release_userid() {
+  clear_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = userid_;
+    userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.OrderPriceTypeType OrderPriceType = 6;
+inline bool InputOrder::has_orderpricetype() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void InputOrder::set_has_orderpricetype() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void InputOrder::clear_has_orderpricetype() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void InputOrder::clear_orderpricetype() {
+  orderpricetype_ = 49;
+  clear_has_orderpricetype();
+}
+inline protoc::OrderPriceTypeType InputOrder::orderpricetype() const {
+  return static_cast< protoc::OrderPriceTypeType >(orderpricetype_);
+}
+inline void InputOrder::set_orderpricetype(protoc::OrderPriceTypeType value) {
+  GOOGLE_DCHECK(protoc::OrderPriceTypeType_IsValid(value));
+  set_has_orderpricetype();
+  orderpricetype_ = value;
+}
+
+// required .protoc.TradeDirectionType Direction = 7;
+inline bool InputOrder::has_direction() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void InputOrder::set_has_direction() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void InputOrder::clear_has_direction() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void InputOrder::clear_direction() {
+  direction_ = 48;
+  clear_has_direction();
+}
+inline protoc::TradeDirectionType InputOrder::direction() const {
+  return static_cast< protoc::TradeDirectionType >(direction_);
+}
+inline void InputOrder::set_direction(protoc::TradeDirectionType value) {
+  GOOGLE_DCHECK(protoc::TradeDirectionType_IsValid(value));
+  set_has_direction();
+  direction_ = value;
+}
+
+// required string CombOffsetFlag = 8;
+inline bool InputOrder::has_comboffsetflag() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void InputOrder::set_has_comboffsetflag() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void InputOrder::clear_has_comboffsetflag() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void InputOrder::clear_comboffsetflag() {
+  if (comboffsetflag_ != &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_->clear();
+  }
+  clear_has_comboffsetflag();
+}
+inline const ::std::string& InputOrder::comboffsetflag() const {
+  return *comboffsetflag_;
+}
+inline void InputOrder::set_comboffsetflag(const ::std::string& value) {
+  set_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_ = new ::std::string;
+  }
+  comboffsetflag_->assign(value);
+}
+inline void InputOrder::set_comboffsetflag(const char* value) {
+  set_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_ = new ::std::string;
+  }
+  comboffsetflag_->assign(value);
+}
+inline void InputOrder::set_comboffsetflag(const char* value, size_t size) {
+  set_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_ = new ::std::string;
+  }
+  comboffsetflag_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_comboffsetflag() {
+  set_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_ = new ::std::string;
+  }
+  return comboffsetflag_;
+}
+inline ::std::string* InputOrder::release_comboffsetflag() {
+  clear_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = comboffsetflag_;
+    comboffsetflag_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string CombHedgeFlag = 9;
+inline bool InputOrder::has_combhedgeflag() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void InputOrder::set_has_combhedgeflag() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void InputOrder::clear_has_combhedgeflag() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void InputOrder::clear_combhedgeflag() {
+  if (combhedgeflag_ != &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_->clear();
+  }
+  clear_has_combhedgeflag();
+}
+inline const ::std::string& InputOrder::combhedgeflag() const {
+  return *combhedgeflag_;
+}
+inline void InputOrder::set_combhedgeflag(const ::std::string& value) {
+  set_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_ = new ::std::string;
+  }
+  combhedgeflag_->assign(value);
+}
+inline void InputOrder::set_combhedgeflag(const char* value) {
+  set_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_ = new ::std::string;
+  }
+  combhedgeflag_->assign(value);
+}
+inline void InputOrder::set_combhedgeflag(const char* value, size_t size) {
+  set_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_ = new ::std::string;
+  }
+  combhedgeflag_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_combhedgeflag() {
+  set_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_ = new ::std::string;
+  }
+  return combhedgeflag_;
+}
+inline ::std::string* InputOrder::release_combhedgeflag() {
+  clear_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = combhedgeflag_;
+    combhedgeflag_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required double LimitPrice = 10;
+inline bool InputOrder::has_limitprice() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void InputOrder::set_has_limitprice() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void InputOrder::clear_has_limitprice() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void InputOrder::clear_limitprice() {
+  limitprice_ = 0;
+  clear_has_limitprice();
+}
+inline double InputOrder::limitprice() const {
+  return limitprice_;
+}
+inline void InputOrder::set_limitprice(double value) {
+  set_has_limitprice();
+  limitprice_ = value;
+}
+
+// required int32 VolumeTotalOriginal = 11;
+inline bool InputOrder::has_volumetotaloriginal() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void InputOrder::set_has_volumetotaloriginal() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void InputOrder::clear_has_volumetotaloriginal() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void InputOrder::clear_volumetotaloriginal() {
+  volumetotaloriginal_ = 0;
+  clear_has_volumetotaloriginal();
+}
+inline ::google::protobuf::int32 InputOrder::volumetotaloriginal() const {
+  return volumetotaloriginal_;
+}
+inline void InputOrder::set_volumetotaloriginal(::google::protobuf::int32 value) {
+  set_has_volumetotaloriginal();
+  volumetotaloriginal_ = value;
+}
+
+// required .protoc.TimeConditionType TimeCondition = 12;
+inline bool InputOrder::has_timecondition() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void InputOrder::set_has_timecondition() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void InputOrder::clear_has_timecondition() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void InputOrder::clear_timecondition() {
+  timecondition_ = 49;
+  clear_has_timecondition();
+}
+inline protoc::TimeConditionType InputOrder::timecondition() const {
+  return static_cast< protoc::TimeConditionType >(timecondition_);
+}
+inline void InputOrder::set_timecondition(protoc::TimeConditionType value) {
+  GOOGLE_DCHECK(protoc::TimeConditionType_IsValid(value));
+  set_has_timecondition();
+  timecondition_ = value;
+}
+
+// required string GTDDate = 13;
+inline bool InputOrder::has_gtddate() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void InputOrder::set_has_gtddate() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void InputOrder::clear_has_gtddate() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void InputOrder::clear_gtddate() {
+  if (gtddate_ != &::google::protobuf::internal::kEmptyString) {
+    gtddate_->clear();
+  }
+  clear_has_gtddate();
+}
+inline const ::std::string& InputOrder::gtddate() const {
+  return *gtddate_;
+}
+inline void InputOrder::set_gtddate(const ::std::string& value) {
+  set_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    gtddate_ = new ::std::string;
+  }
+  gtddate_->assign(value);
+}
+inline void InputOrder::set_gtddate(const char* value) {
+  set_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    gtddate_ = new ::std::string;
+  }
+  gtddate_->assign(value);
+}
+inline void InputOrder::set_gtddate(const char* value, size_t size) {
+  set_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    gtddate_ = new ::std::string;
+  }
+  gtddate_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_gtddate() {
+  set_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    gtddate_ = new ::std::string;
+  }
+  return gtddate_;
+}
+inline ::std::string* InputOrder::release_gtddate() {
+  clear_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = gtddate_;
+    gtddate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.VolumeConditionType VolumeCondition = 14;
+inline bool InputOrder::has_volumecondition() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void InputOrder::set_has_volumecondition() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void InputOrder::clear_has_volumecondition() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void InputOrder::clear_volumecondition() {
+  volumecondition_ = 49;
+  clear_has_volumecondition();
+}
+inline protoc::VolumeConditionType InputOrder::volumecondition() const {
+  return static_cast< protoc::VolumeConditionType >(volumecondition_);
+}
+inline void InputOrder::set_volumecondition(protoc::VolumeConditionType value) {
+  GOOGLE_DCHECK(protoc::VolumeConditionType_IsValid(value));
+  set_has_volumecondition();
+  volumecondition_ = value;
+}
+
+// required int32 MinVolume = 15;
+inline bool InputOrder::has_minvolume() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void InputOrder::set_has_minvolume() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void InputOrder::clear_has_minvolume() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void InputOrder::clear_minvolume() {
+  minvolume_ = 0;
+  clear_has_minvolume();
+}
+inline ::google::protobuf::int32 InputOrder::minvolume() const {
+  return minvolume_;
+}
+inline void InputOrder::set_minvolume(::google::protobuf::int32 value) {
+  set_has_minvolume();
+  minvolume_ = value;
+}
+
+// required .protoc.ContingentConditionType ContingentCondition = 16;
+inline bool InputOrder::has_contingentcondition() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+inline void InputOrder::set_has_contingentcondition() {
+  _has_bits_[0] |= 0x00008000u;
+}
+inline void InputOrder::clear_has_contingentcondition() {
+  _has_bits_[0] &= ~0x00008000u;
+}
+inline void InputOrder::clear_contingentcondition() {
+  contingentcondition_ = 49;
+  clear_has_contingentcondition();
+}
+inline protoc::ContingentConditionType InputOrder::contingentcondition() const {
+  return static_cast< protoc::ContingentConditionType >(contingentcondition_);
+}
+inline void InputOrder::set_contingentcondition(protoc::ContingentConditionType value) {
+  GOOGLE_DCHECK(protoc::ContingentConditionType_IsValid(value));
+  set_has_contingentcondition();
+  contingentcondition_ = value;
+}
+
+// required double StopPrice = 17;
+inline bool InputOrder::has_stopprice() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void InputOrder::set_has_stopprice() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void InputOrder::clear_has_stopprice() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void InputOrder::clear_stopprice() {
+  stopprice_ = 0;
+  clear_has_stopprice();
+}
+inline double InputOrder::stopprice() const {
+  return stopprice_;
+}
+inline void InputOrder::set_stopprice(double value) {
+  set_has_stopprice();
+  stopprice_ = value;
+}
+
+// required .protoc.ForceCloseReasonType ForceCloseReason = 18;
+inline bool InputOrder::has_forceclosereason() const {
+  return (_has_bits_[0] & 0x00020000u) != 0;
+}
+inline void InputOrder::set_has_forceclosereason() {
+  _has_bits_[0] |= 0x00020000u;
+}
+inline void InputOrder::clear_has_forceclosereason() {
+  _has_bits_[0] &= ~0x00020000u;
+}
+inline void InputOrder::clear_forceclosereason() {
+  forceclosereason_ = 48;
+  clear_has_forceclosereason();
+}
+inline protoc::ForceCloseReasonType InputOrder::forceclosereason() const {
+  return static_cast< protoc::ForceCloseReasonType >(forceclosereason_);
+}
+inline void InputOrder::set_forceclosereason(protoc::ForceCloseReasonType value) {
+  GOOGLE_DCHECK(protoc::ForceCloseReasonType_IsValid(value));
+  set_has_forceclosereason();
+  forceclosereason_ = value;
+}
+
+// required bool IsAutoSuspend = 19;
+inline bool InputOrder::has_isautosuspend() const {
+  return (_has_bits_[0] & 0x00040000u) != 0;
+}
+inline void InputOrder::set_has_isautosuspend() {
+  _has_bits_[0] |= 0x00040000u;
+}
+inline void InputOrder::clear_has_isautosuspend() {
+  _has_bits_[0] &= ~0x00040000u;
+}
+inline void InputOrder::clear_isautosuspend() {
+  isautosuspend_ = false;
+  clear_has_isautosuspend();
+}
+inline bool InputOrder::isautosuspend() const {
+  return isautosuspend_;
+}
+inline void InputOrder::set_isautosuspend(bool value) {
+  set_has_isautosuspend();
+  isautosuspend_ = value;
+}
+
+// required string BusinessUnit = 20;
+inline bool InputOrder::has_businessunit() const {
+  return (_has_bits_[0] & 0x00080000u) != 0;
+}
+inline void InputOrder::set_has_businessunit() {
+  _has_bits_[0] |= 0x00080000u;
+}
+inline void InputOrder::clear_has_businessunit() {
+  _has_bits_[0] &= ~0x00080000u;
+}
+inline void InputOrder::clear_businessunit() {
+  if (businessunit_ != &::google::protobuf::internal::kEmptyString) {
+    businessunit_->clear();
+  }
+  clear_has_businessunit();
+}
+inline const ::std::string& InputOrder::businessunit() const {
+  return *businessunit_;
+}
+inline void InputOrder::set_businessunit(const ::std::string& value) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(value);
+}
+inline void InputOrder::set_businessunit(const char* value) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(value);
+}
+inline void InputOrder::set_businessunit(const char* value, size_t size) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrder::mutable_businessunit() {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  return businessunit_;
+}
+inline ::std::string* InputOrder::release_businessunit() {
+  clear_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = businessunit_;
+    businessunit_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 RequestID = 21;
+inline bool InputOrder::has_requestid() const {
+  return (_has_bits_[0] & 0x00100000u) != 0;
+}
+inline void InputOrder::set_has_requestid() {
+  _has_bits_[0] |= 0x00100000u;
+}
+inline void InputOrder::clear_has_requestid() {
+  _has_bits_[0] &= ~0x00100000u;
+}
+inline void InputOrder::clear_requestid() {
+  requestid_ = 0;
+  clear_has_requestid();
+}
+inline ::google::protobuf::int32 InputOrder::requestid() const {
+  return requestid_;
+}
+inline void InputOrder::set_requestid(::google::protobuf::int32 value) {
+  set_has_requestid();
+  requestid_ = value;
+}
+
+// required bool UserForceClose = 22;
+inline bool InputOrder::has_userforceclose() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
+}
+inline void InputOrder::set_has_userforceclose() {
+  _has_bits_[0] |= 0x00200000u;
+}
+inline void InputOrder::clear_has_userforceclose() {
+  _has_bits_[0] &= ~0x00200000u;
+}
+inline void InputOrder::clear_userforceclose() {
+  userforceclose_ = false;
+  clear_has_userforceclose();
+}
+inline bool InputOrder::userforceclose() const {
+  return userforceclose_;
+}
+inline void InputOrder::set_userforceclose(bool value) {
+  set_has_userforceclose();
+  userforceclose_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// Order
+
+// required string BrokerID = 1;
+inline bool Order::has_brokerid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Order::set_has_brokerid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Order::clear_has_brokerid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Order::clear_brokerid() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    brokerid_->clear();
+  }
+  clear_has_brokerid();
+}
+inline const ::std::string& Order::brokerid() const {
+  return *brokerid_;
+}
+inline void Order::set_brokerid(const ::std::string& value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void Order::set_brokerid(const char* value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void Order::set_brokerid(const char* value, size_t size) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_brokerid() {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  return brokerid_;
+}
+inline ::std::string* Order::release_brokerid() {
+  clear_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = brokerid_;
+    brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InvestorID = 2;
+inline bool Order::has_investorid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Order::set_has_investorid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Order::clear_has_investorid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Order::clear_investorid() {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    investorid_->clear();
+  }
+  clear_has_investorid();
+}
+inline const ::std::string& Order::investorid() const {
+  return *investorid_;
+}
+inline void Order::set_investorid(const ::std::string& value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void Order::set_investorid(const char* value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void Order::set_investorid(const char* value, size_t size) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_investorid() {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  return investorid_;
+}
+inline ::std::string* Order::release_investorid() {
+  clear_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = investorid_;
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InstrumentID = 3;
+inline bool Order::has_instrumentid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Order::set_has_instrumentid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Order::clear_has_instrumentid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Order::clear_instrumentid() {
+  if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    instrumentid_->clear();
+  }
+  clear_has_instrumentid();
+}
+inline const ::std::string& Order::instrumentid() const {
+  return *instrumentid_;
+}
+inline void Order::set_instrumentid(const ::std::string& value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void Order::set_instrumentid(const char* value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void Order::set_instrumentid(const char* value, size_t size) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_instrumentid() {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  return instrumentid_;
+}
+inline ::std::string* Order::release_instrumentid() {
+  clear_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = instrumentid_;
+    instrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string OrderRef = 4;
+inline bool Order::has_orderref() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Order::set_has_orderref() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Order::clear_has_orderref() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Order::clear_orderref() {
+  if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+    orderref_->clear();
+  }
+  clear_has_orderref();
+}
+inline const ::std::string& Order::orderref() const {
+  return *orderref_;
+}
+inline void Order::set_orderref(const ::std::string& value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void Order::set_orderref(const char* value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void Order::set_orderref(const char* value, size_t size) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_orderref() {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  return orderref_;
+}
+inline ::std::string* Order::release_orderref() {
+  clear_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = orderref_;
+    orderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string UserID = 5;
+inline bool Order::has_userid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Order::set_has_userid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Order::clear_has_userid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Order::clear_userid() {
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    userid_->clear();
+  }
+  clear_has_userid();
+}
+inline const ::std::string& Order::userid() const {
+  return *userid_;
+}
+inline void Order::set_userid(const ::std::string& value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void Order::set_userid(const char* value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void Order::set_userid(const char* value, size_t size) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_userid() {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  return userid_;
+}
+inline ::std::string* Order::release_userid() {
+  clear_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = userid_;
+    userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.OrderPriceTypeType OrderPriceType = 6;
+inline bool Order::has_orderpricetype() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void Order::set_has_orderpricetype() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void Order::clear_has_orderpricetype() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void Order::clear_orderpricetype() {
+  orderpricetype_ = 49;
+  clear_has_orderpricetype();
+}
+inline protoc::OrderPriceTypeType Order::orderpricetype() const {
+  return static_cast< protoc::OrderPriceTypeType >(orderpricetype_);
+}
+inline void Order::set_orderpricetype(protoc::OrderPriceTypeType value) {
+  GOOGLE_DCHECK(protoc::OrderPriceTypeType_IsValid(value));
+  set_has_orderpricetype();
+  orderpricetype_ = value;
+}
+
+// required .protoc.TradeDirectionType Direction = 7;
+inline bool Order::has_direction() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Order::set_has_direction() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Order::clear_has_direction() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Order::clear_direction() {
+  direction_ = 48;
+  clear_has_direction();
+}
+inline protoc::TradeDirectionType Order::direction() const {
+  return static_cast< protoc::TradeDirectionType >(direction_);
+}
+inline void Order::set_direction(protoc::TradeDirectionType value) {
+  GOOGLE_DCHECK(protoc::TradeDirectionType_IsValid(value));
+  set_has_direction();
+  direction_ = value;
+}
+
+// required string CombOffsetFlag = 8;
+inline bool Order::has_comboffsetflag() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void Order::set_has_comboffsetflag() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void Order::clear_has_comboffsetflag() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void Order::clear_comboffsetflag() {
+  if (comboffsetflag_ != &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_->clear();
+  }
+  clear_has_comboffsetflag();
+}
+inline const ::std::string& Order::comboffsetflag() const {
+  return *comboffsetflag_;
+}
+inline void Order::set_comboffsetflag(const ::std::string& value) {
+  set_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_ = new ::std::string;
+  }
+  comboffsetflag_->assign(value);
+}
+inline void Order::set_comboffsetflag(const char* value) {
+  set_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_ = new ::std::string;
+  }
+  comboffsetflag_->assign(value);
+}
+inline void Order::set_comboffsetflag(const char* value, size_t size) {
+  set_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_ = new ::std::string;
+  }
+  comboffsetflag_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_comboffsetflag() {
+  set_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    comboffsetflag_ = new ::std::string;
+  }
+  return comboffsetflag_;
+}
+inline ::std::string* Order::release_comboffsetflag() {
+  clear_has_comboffsetflag();
+  if (comboffsetflag_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = comboffsetflag_;
+    comboffsetflag_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string CombHedgeFlag = 9;
+inline bool Order::has_combhedgeflag() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void Order::set_has_combhedgeflag() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void Order::clear_has_combhedgeflag() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void Order::clear_combhedgeflag() {
+  if (combhedgeflag_ != &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_->clear();
+  }
+  clear_has_combhedgeflag();
+}
+inline const ::std::string& Order::combhedgeflag() const {
+  return *combhedgeflag_;
+}
+inline void Order::set_combhedgeflag(const ::std::string& value) {
+  set_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_ = new ::std::string;
+  }
+  combhedgeflag_->assign(value);
+}
+inline void Order::set_combhedgeflag(const char* value) {
+  set_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_ = new ::std::string;
+  }
+  combhedgeflag_->assign(value);
+}
+inline void Order::set_combhedgeflag(const char* value, size_t size) {
+  set_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_ = new ::std::string;
+  }
+  combhedgeflag_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_combhedgeflag() {
+  set_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    combhedgeflag_ = new ::std::string;
+  }
+  return combhedgeflag_;
+}
+inline ::std::string* Order::release_combhedgeflag() {
+  clear_has_combhedgeflag();
+  if (combhedgeflag_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = combhedgeflag_;
+    combhedgeflag_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required double LimitPrice = 10;
+inline bool Order::has_limitprice() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void Order::set_has_limitprice() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void Order::clear_has_limitprice() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void Order::clear_limitprice() {
+  limitprice_ = 0;
+  clear_has_limitprice();
+}
+inline double Order::limitprice() const {
+  return limitprice_;
+}
+inline void Order::set_limitprice(double value) {
+  set_has_limitprice();
+  limitprice_ = value;
+}
+
+// required int32 VolumeTotalOriginal = 11;
+inline bool Order::has_volumetotaloriginal() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void Order::set_has_volumetotaloriginal() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void Order::clear_has_volumetotaloriginal() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void Order::clear_volumetotaloriginal() {
+  volumetotaloriginal_ = 0;
+  clear_has_volumetotaloriginal();
+}
+inline ::google::protobuf::int32 Order::volumetotaloriginal() const {
+  return volumetotaloriginal_;
+}
+inline void Order::set_volumetotaloriginal(::google::protobuf::int32 value) {
+  set_has_volumetotaloriginal();
+  volumetotaloriginal_ = value;
+}
+
+// required .protoc.TimeConditionType TimeCondition = 12;
+inline bool Order::has_timecondition() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void Order::set_has_timecondition() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void Order::clear_has_timecondition() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void Order::clear_timecondition() {
+  timecondition_ = 49;
+  clear_has_timecondition();
+}
+inline protoc::TimeConditionType Order::timecondition() const {
+  return static_cast< protoc::TimeConditionType >(timecondition_);
+}
+inline void Order::set_timecondition(protoc::TimeConditionType value) {
+  GOOGLE_DCHECK(protoc::TimeConditionType_IsValid(value));
+  set_has_timecondition();
+  timecondition_ = value;
+}
+
+// required string GTDDate = 13;
+inline bool Order::has_gtddate() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void Order::set_has_gtddate() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void Order::clear_has_gtddate() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void Order::clear_gtddate() {
+  if (gtddate_ != &::google::protobuf::internal::kEmptyString) {
+    gtddate_->clear();
+  }
+  clear_has_gtddate();
+}
+inline const ::std::string& Order::gtddate() const {
+  return *gtddate_;
+}
+inline void Order::set_gtddate(const ::std::string& value) {
+  set_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    gtddate_ = new ::std::string;
+  }
+  gtddate_->assign(value);
+}
+inline void Order::set_gtddate(const char* value) {
+  set_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    gtddate_ = new ::std::string;
+  }
+  gtddate_->assign(value);
+}
+inline void Order::set_gtddate(const char* value, size_t size) {
+  set_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    gtddate_ = new ::std::string;
+  }
+  gtddate_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_gtddate() {
+  set_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    gtddate_ = new ::std::string;
+  }
+  return gtddate_;
+}
+inline ::std::string* Order::release_gtddate() {
+  clear_has_gtddate();
+  if (gtddate_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = gtddate_;
+    gtddate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.VolumeConditionType VolumeCondition = 14;
+inline bool Order::has_volumecondition() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void Order::set_has_volumecondition() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void Order::clear_has_volumecondition() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void Order::clear_volumecondition() {
+  volumecondition_ = 49;
+  clear_has_volumecondition();
+}
+inline protoc::VolumeConditionType Order::volumecondition() const {
+  return static_cast< protoc::VolumeConditionType >(volumecondition_);
+}
+inline void Order::set_volumecondition(protoc::VolumeConditionType value) {
+  GOOGLE_DCHECK(protoc::VolumeConditionType_IsValid(value));
+  set_has_volumecondition();
+  volumecondition_ = value;
+}
+
+// required int32 MinVolume = 15;
+inline bool Order::has_minvolume() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void Order::set_has_minvolume() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void Order::clear_has_minvolume() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void Order::clear_minvolume() {
+  minvolume_ = 0;
+  clear_has_minvolume();
+}
+inline ::google::protobuf::int32 Order::minvolume() const {
+  return minvolume_;
+}
+inline void Order::set_minvolume(::google::protobuf::int32 value) {
+  set_has_minvolume();
+  minvolume_ = value;
+}
+
+// required .protoc.ContingentConditionType ContingentCondition = 16;
+inline bool Order::has_contingentcondition() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+inline void Order::set_has_contingentcondition() {
+  _has_bits_[0] |= 0x00008000u;
+}
+inline void Order::clear_has_contingentcondition() {
+  _has_bits_[0] &= ~0x00008000u;
+}
+inline void Order::clear_contingentcondition() {
+  contingentcondition_ = 49;
+  clear_has_contingentcondition();
+}
+inline protoc::ContingentConditionType Order::contingentcondition() const {
+  return static_cast< protoc::ContingentConditionType >(contingentcondition_);
+}
+inline void Order::set_contingentcondition(protoc::ContingentConditionType value) {
+  GOOGLE_DCHECK(protoc::ContingentConditionType_IsValid(value));
+  set_has_contingentcondition();
+  contingentcondition_ = value;
+}
+
+// required double StopPrice = 17;
+inline bool Order::has_stopprice() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void Order::set_has_stopprice() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void Order::clear_has_stopprice() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void Order::clear_stopprice() {
+  stopprice_ = 0;
+  clear_has_stopprice();
+}
+inline double Order::stopprice() const {
+  return stopprice_;
+}
+inline void Order::set_stopprice(double value) {
+  set_has_stopprice();
+  stopprice_ = value;
+}
+
+// required .protoc.ForceCloseReasonType ForceCloseReason = 18;
+inline bool Order::has_forceclosereason() const {
+  return (_has_bits_[0] & 0x00020000u) != 0;
+}
+inline void Order::set_has_forceclosereason() {
+  _has_bits_[0] |= 0x00020000u;
+}
+inline void Order::clear_has_forceclosereason() {
+  _has_bits_[0] &= ~0x00020000u;
+}
+inline void Order::clear_forceclosereason() {
+  forceclosereason_ = 48;
+  clear_has_forceclosereason();
+}
+inline protoc::ForceCloseReasonType Order::forceclosereason() const {
+  return static_cast< protoc::ForceCloseReasonType >(forceclosereason_);
+}
+inline void Order::set_forceclosereason(protoc::ForceCloseReasonType value) {
+  GOOGLE_DCHECK(protoc::ForceCloseReasonType_IsValid(value));
+  set_has_forceclosereason();
+  forceclosereason_ = value;
+}
+
+// required bool IsAutoSuspend = 19;
+inline bool Order::has_isautosuspend() const {
+  return (_has_bits_[0] & 0x00040000u) != 0;
+}
+inline void Order::set_has_isautosuspend() {
+  _has_bits_[0] |= 0x00040000u;
+}
+inline void Order::clear_has_isautosuspend() {
+  _has_bits_[0] &= ~0x00040000u;
+}
+inline void Order::clear_isautosuspend() {
+  isautosuspend_ = false;
+  clear_has_isautosuspend();
+}
+inline bool Order::isautosuspend() const {
+  return isautosuspend_;
+}
+inline void Order::set_isautosuspend(bool value) {
+  set_has_isautosuspend();
+  isautosuspend_ = value;
+}
+
+// required string BusinessUnit = 20;
+inline bool Order::has_businessunit() const {
+  return (_has_bits_[0] & 0x00080000u) != 0;
+}
+inline void Order::set_has_businessunit() {
+  _has_bits_[0] |= 0x00080000u;
+}
+inline void Order::clear_has_businessunit() {
+  _has_bits_[0] &= ~0x00080000u;
+}
+inline void Order::clear_businessunit() {
+  if (businessunit_ != &::google::protobuf::internal::kEmptyString) {
+    businessunit_->clear();
+  }
+  clear_has_businessunit();
+}
+inline const ::std::string& Order::businessunit() const {
+  return *businessunit_;
+}
+inline void Order::set_businessunit(const ::std::string& value) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(value);
+}
+inline void Order::set_businessunit(const char* value) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(value);
+}
+inline void Order::set_businessunit(const char* value, size_t size) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_businessunit() {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  return businessunit_;
+}
+inline ::std::string* Order::release_businessunit() {
+  clear_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = businessunit_;
+    businessunit_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 RequestID = 21;
+inline bool Order::has_requestid() const {
+  return (_has_bits_[0] & 0x00100000u) != 0;
+}
+inline void Order::set_has_requestid() {
+  _has_bits_[0] |= 0x00100000u;
+}
+inline void Order::clear_has_requestid() {
+  _has_bits_[0] &= ~0x00100000u;
+}
+inline void Order::clear_requestid() {
+  requestid_ = 0;
+  clear_has_requestid();
+}
+inline ::google::protobuf::int32 Order::requestid() const {
+  return requestid_;
+}
+inline void Order::set_requestid(::google::protobuf::int32 value) {
+  set_has_requestid();
+  requestid_ = value;
+}
+
+// required string OrderLocalID = 22;
+inline bool Order::has_orderlocalid() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
+}
+inline void Order::set_has_orderlocalid() {
+  _has_bits_[0] |= 0x00200000u;
+}
+inline void Order::clear_has_orderlocalid() {
+  _has_bits_[0] &= ~0x00200000u;
+}
+inline void Order::clear_orderlocalid() {
+  if (orderlocalid_ != &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_->clear();
+  }
+  clear_has_orderlocalid();
+}
+inline const ::std::string& Order::orderlocalid() const {
+  return *orderlocalid_;
+}
+inline void Order::set_orderlocalid(const ::std::string& value) {
+  set_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_ = new ::std::string;
+  }
+  orderlocalid_->assign(value);
+}
+inline void Order::set_orderlocalid(const char* value) {
+  set_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_ = new ::std::string;
+  }
+  orderlocalid_->assign(value);
+}
+inline void Order::set_orderlocalid(const char* value, size_t size) {
+  set_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_ = new ::std::string;
+  }
+  orderlocalid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_orderlocalid() {
+  set_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_ = new ::std::string;
+  }
+  return orderlocalid_;
+}
+inline ::std::string* Order::release_orderlocalid() {
+  clear_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = orderlocalid_;
+    orderlocalid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ExchangeID = 23;
+inline bool Order::has_exchangeid() const {
+  return (_has_bits_[0] & 0x00400000u) != 0;
+}
+inline void Order::set_has_exchangeid() {
+  _has_bits_[0] |= 0x00400000u;
+}
+inline void Order::clear_has_exchangeid() {
+  _has_bits_[0] &= ~0x00400000u;
+}
+inline void Order::clear_exchangeid() {
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeid_->clear();
+  }
+  clear_has_exchangeid();
+}
+inline const ::std::string& Order::exchangeid() const {
+  return *exchangeid_;
+}
+inline void Order::set_exchangeid(const ::std::string& value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void Order::set_exchangeid(const char* value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void Order::set_exchangeid(const char* value, size_t size) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_exchangeid() {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  return exchangeid_;
+}
+inline ::std::string* Order::release_exchangeid() {
+  clear_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeid_;
+    exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ParticipantID = 24;
+inline bool Order::has_participantid() const {
+  return (_has_bits_[0] & 0x00800000u) != 0;
+}
+inline void Order::set_has_participantid() {
+  _has_bits_[0] |= 0x00800000u;
+}
+inline void Order::clear_has_participantid() {
+  _has_bits_[0] &= ~0x00800000u;
+}
+inline void Order::clear_participantid() {
+  if (participantid_ != &::google::protobuf::internal::kEmptyString) {
+    participantid_->clear();
+  }
+  clear_has_participantid();
+}
+inline const ::std::string& Order::participantid() const {
+  return *participantid_;
+}
+inline void Order::set_participantid(const ::std::string& value) {
+  set_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    participantid_ = new ::std::string;
+  }
+  participantid_->assign(value);
+}
+inline void Order::set_participantid(const char* value) {
+  set_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    participantid_ = new ::std::string;
+  }
+  participantid_->assign(value);
+}
+inline void Order::set_participantid(const char* value, size_t size) {
+  set_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    participantid_ = new ::std::string;
+  }
+  participantid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_participantid() {
+  set_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    participantid_ = new ::std::string;
+  }
+  return participantid_;
+}
+inline ::std::string* Order::release_participantid() {
+  clear_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = participantid_;
+    participantid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ClientID = 25;
+inline bool Order::has_clientid() const {
+  return (_has_bits_[0] & 0x01000000u) != 0;
+}
+inline void Order::set_has_clientid() {
+  _has_bits_[0] |= 0x01000000u;
+}
+inline void Order::clear_has_clientid() {
+  _has_bits_[0] &= ~0x01000000u;
+}
+inline void Order::clear_clientid() {
+  if (clientid_ != &::google::protobuf::internal::kEmptyString) {
+    clientid_->clear();
+  }
+  clear_has_clientid();
+}
+inline const ::std::string& Order::clientid() const {
+  return *clientid_;
+}
+inline void Order::set_clientid(const ::std::string& value) {
+  set_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    clientid_ = new ::std::string;
+  }
+  clientid_->assign(value);
+}
+inline void Order::set_clientid(const char* value) {
+  set_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    clientid_ = new ::std::string;
+  }
+  clientid_->assign(value);
+}
+inline void Order::set_clientid(const char* value, size_t size) {
+  set_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    clientid_ = new ::std::string;
+  }
+  clientid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_clientid() {
+  set_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    clientid_ = new ::std::string;
+  }
+  return clientid_;
+}
+inline ::std::string* Order::release_clientid() {
+  clear_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = clientid_;
+    clientid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ExchangeInstID = 26;
+inline bool Order::has_exchangeinstid() const {
+  return (_has_bits_[0] & 0x02000000u) != 0;
+}
+inline void Order::set_has_exchangeinstid() {
+  _has_bits_[0] |= 0x02000000u;
+}
+inline void Order::clear_has_exchangeinstid() {
+  _has_bits_[0] &= ~0x02000000u;
+}
+inline void Order::clear_exchangeinstid() {
+  if (exchangeinstid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_->clear();
+  }
+  clear_has_exchangeinstid();
+}
+inline const ::std::string& Order::exchangeinstid() const {
+  return *exchangeinstid_;
+}
+inline void Order::set_exchangeinstid(const ::std::string& value) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(value);
+}
+inline void Order::set_exchangeinstid(const char* value) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(value);
+}
+inline void Order::set_exchangeinstid(const char* value, size_t size) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_exchangeinstid() {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  return exchangeinstid_;
+}
+inline ::std::string* Order::release_exchangeinstid() {
+  clear_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeinstid_;
+    exchangeinstid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string TraderID = 27;
+inline bool Order::has_traderid() const {
+  return (_has_bits_[0] & 0x04000000u) != 0;
+}
+inline void Order::set_has_traderid() {
+  _has_bits_[0] |= 0x04000000u;
+}
+inline void Order::clear_has_traderid() {
+  _has_bits_[0] &= ~0x04000000u;
+}
+inline void Order::clear_traderid() {
+  if (traderid_ != &::google::protobuf::internal::kEmptyString) {
+    traderid_->clear();
+  }
+  clear_has_traderid();
+}
+inline const ::std::string& Order::traderid() const {
+  return *traderid_;
+}
+inline void Order::set_traderid(const ::std::string& value) {
+  set_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    traderid_ = new ::std::string;
+  }
+  traderid_->assign(value);
+}
+inline void Order::set_traderid(const char* value) {
+  set_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    traderid_ = new ::std::string;
+  }
+  traderid_->assign(value);
+}
+inline void Order::set_traderid(const char* value, size_t size) {
+  set_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    traderid_ = new ::std::string;
+  }
+  traderid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_traderid() {
+  set_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    traderid_ = new ::std::string;
+  }
+  return traderid_;
+}
+inline ::std::string* Order::release_traderid() {
+  clear_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = traderid_;
+    traderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 InstallID = 28;
+inline bool Order::has_installid() const {
+  return (_has_bits_[0] & 0x08000000u) != 0;
+}
+inline void Order::set_has_installid() {
+  _has_bits_[0] |= 0x08000000u;
+}
+inline void Order::clear_has_installid() {
+  _has_bits_[0] &= ~0x08000000u;
+}
+inline void Order::clear_installid() {
+  installid_ = 0;
+  clear_has_installid();
+}
+inline ::google::protobuf::int32 Order::installid() const {
+  return installid_;
+}
+inline void Order::set_installid(::google::protobuf::int32 value) {
+  set_has_installid();
+  installid_ = value;
+}
+
+// required .protoc.OrderSubmitStatusType OrderSubmitStatus = 29;
+inline bool Order::has_ordersubmitstatus() const {
+  return (_has_bits_[0] & 0x10000000u) != 0;
+}
+inline void Order::set_has_ordersubmitstatus() {
+  _has_bits_[0] |= 0x10000000u;
+}
+inline void Order::clear_has_ordersubmitstatus() {
+  _has_bits_[0] &= ~0x10000000u;
+}
+inline void Order::clear_ordersubmitstatus() {
+  ordersubmitstatus_ = 48;
+  clear_has_ordersubmitstatus();
+}
+inline protoc::OrderSubmitStatusType Order::ordersubmitstatus() const {
+  return static_cast< protoc::OrderSubmitStatusType >(ordersubmitstatus_);
+}
+inline void Order::set_ordersubmitstatus(protoc::OrderSubmitStatusType value) {
+  GOOGLE_DCHECK(protoc::OrderSubmitStatusType_IsValid(value));
+  set_has_ordersubmitstatus();
+  ordersubmitstatus_ = value;
+}
+
+// required int32 NotifySequence = 30;
+inline bool Order::has_notifysequence() const {
+  return (_has_bits_[0] & 0x20000000u) != 0;
+}
+inline void Order::set_has_notifysequence() {
+  _has_bits_[0] |= 0x20000000u;
+}
+inline void Order::clear_has_notifysequence() {
+  _has_bits_[0] &= ~0x20000000u;
+}
+inline void Order::clear_notifysequence() {
+  notifysequence_ = 0;
+  clear_has_notifysequence();
+}
+inline ::google::protobuf::int32 Order::notifysequence() const {
+  return notifysequence_;
+}
+inline void Order::set_notifysequence(::google::protobuf::int32 value) {
+  set_has_notifysequence();
+  notifysequence_ = value;
+}
+
+// required string TradingDay = 31;
+inline bool Order::has_tradingday() const {
+  return (_has_bits_[0] & 0x40000000u) != 0;
+}
+inline void Order::set_has_tradingday() {
+  _has_bits_[0] |= 0x40000000u;
+}
+inline void Order::clear_has_tradingday() {
+  _has_bits_[0] &= ~0x40000000u;
+}
+inline void Order::clear_tradingday() {
+  if (tradingday_ != &::google::protobuf::internal::kEmptyString) {
+    tradingday_->clear();
+  }
+  clear_has_tradingday();
+}
+inline const ::std::string& Order::tradingday() const {
+  return *tradingday_;
+}
+inline void Order::set_tradingday(const ::std::string& value) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(value);
+}
+inline void Order::set_tradingday(const char* value) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(value);
+}
+inline void Order::set_tradingday(const char* value, size_t size) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_tradingday() {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  return tradingday_;
+}
+inline ::std::string* Order::release_tradingday() {
+  clear_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = tradingday_;
+    tradingday_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 SettlementID = 32;
+inline bool Order::has_settlementid() const {
+  return (_has_bits_[0] & 0x80000000u) != 0;
+}
+inline void Order::set_has_settlementid() {
+  _has_bits_[0] |= 0x80000000u;
+}
+inline void Order::clear_has_settlementid() {
+  _has_bits_[0] &= ~0x80000000u;
+}
+inline void Order::clear_settlementid() {
+  settlementid_ = 0;
+  clear_has_settlementid();
+}
+inline ::google::protobuf::int32 Order::settlementid() const {
+  return settlementid_;
+}
+inline void Order::set_settlementid(::google::protobuf::int32 value) {
+  set_has_settlementid();
+  settlementid_ = value;
+}
+
+// required string OrderSysID = 33;
+inline bool Order::has_ordersysid() const {
+  return (_has_bits_[1] & 0x00000001u) != 0;
+}
+inline void Order::set_has_ordersysid() {
+  _has_bits_[1] |= 0x00000001u;
+}
+inline void Order::clear_has_ordersysid() {
+  _has_bits_[1] &= ~0x00000001u;
+}
+inline void Order::clear_ordersysid() {
+  if (ordersysid_ != &::google::protobuf::internal::kEmptyString) {
+    ordersysid_->clear();
+  }
+  clear_has_ordersysid();
+}
+inline const ::std::string& Order::ordersysid() const {
+  return *ordersysid_;
+}
+inline void Order::set_ordersysid(const ::std::string& value) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(value);
+}
+inline void Order::set_ordersysid(const char* value) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(value);
+}
+inline void Order::set_ordersysid(const char* value, size_t size) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_ordersysid() {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  return ordersysid_;
+}
+inline ::std::string* Order::release_ordersysid() {
+  clear_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = ordersysid_;
+    ordersysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.OrderSourceType OrderSource = 34;
+inline bool Order::has_ordersource() const {
+  return (_has_bits_[1] & 0x00000002u) != 0;
+}
+inline void Order::set_has_ordersource() {
+  _has_bits_[1] |= 0x00000002u;
+}
+inline void Order::clear_has_ordersource() {
+  _has_bits_[1] &= ~0x00000002u;
+}
+inline void Order::clear_ordersource() {
+  ordersource_ = 48;
+  clear_has_ordersource();
+}
+inline protoc::OrderSourceType Order::ordersource() const {
+  return static_cast< protoc::OrderSourceType >(ordersource_);
+}
+inline void Order::set_ordersource(protoc::OrderSourceType value) {
+  GOOGLE_DCHECK(protoc::OrderSourceType_IsValid(value));
+  set_has_ordersource();
+  ordersource_ = value;
+}
+
+// required .protoc.OrderStatusType OrderStatus = 35;
+inline bool Order::has_orderstatus() const {
+  return (_has_bits_[1] & 0x00000004u) != 0;
+}
+inline void Order::set_has_orderstatus() {
+  _has_bits_[1] |= 0x00000004u;
+}
+inline void Order::clear_has_orderstatus() {
+  _has_bits_[1] &= ~0x00000004u;
+}
+inline void Order::clear_orderstatus() {
+  orderstatus_ = 48;
+  clear_has_orderstatus();
+}
+inline protoc::OrderStatusType Order::orderstatus() const {
+  return static_cast< protoc::OrderStatusType >(orderstatus_);
+}
+inline void Order::set_orderstatus(protoc::OrderStatusType value) {
+  GOOGLE_DCHECK(protoc::OrderStatusType_IsValid(value));
+  set_has_orderstatus();
+  orderstatus_ = value;
+}
+
+// required .protoc.OrderTypeType OrderType = 36;
+inline bool Order::has_ordertype() const {
+  return (_has_bits_[1] & 0x00000008u) != 0;
+}
+inline void Order::set_has_ordertype() {
+  _has_bits_[1] |= 0x00000008u;
+}
+inline void Order::clear_has_ordertype() {
+  _has_bits_[1] &= ~0x00000008u;
+}
+inline void Order::clear_ordertype() {
+  ordertype_ = 48;
+  clear_has_ordertype();
+}
+inline protoc::OrderTypeType Order::ordertype() const {
+  return static_cast< protoc::OrderTypeType >(ordertype_);
+}
+inline void Order::set_ordertype(protoc::OrderTypeType value) {
+  GOOGLE_DCHECK(protoc::OrderTypeType_IsValid(value));
+  set_has_ordertype();
+  ordertype_ = value;
+}
+
+// required int32 VolumeTraded = 37;
+inline bool Order::has_volumetraded() const {
+  return (_has_bits_[1] & 0x00000010u) != 0;
+}
+inline void Order::set_has_volumetraded() {
+  _has_bits_[1] |= 0x00000010u;
+}
+inline void Order::clear_has_volumetraded() {
+  _has_bits_[1] &= ~0x00000010u;
+}
+inline void Order::clear_volumetraded() {
+  volumetraded_ = 0;
+  clear_has_volumetraded();
+}
+inline ::google::protobuf::int32 Order::volumetraded() const {
+  return volumetraded_;
+}
+inline void Order::set_volumetraded(::google::protobuf::int32 value) {
+  set_has_volumetraded();
+  volumetraded_ = value;
+}
+
+// required int32 VolumeTotal = 38;
+inline bool Order::has_volumetotal() const {
+  return (_has_bits_[1] & 0x00000020u) != 0;
+}
+inline void Order::set_has_volumetotal() {
+  _has_bits_[1] |= 0x00000020u;
+}
+inline void Order::clear_has_volumetotal() {
+  _has_bits_[1] &= ~0x00000020u;
+}
+inline void Order::clear_volumetotal() {
+  volumetotal_ = 0;
+  clear_has_volumetotal();
+}
+inline ::google::protobuf::int32 Order::volumetotal() const {
+  return volumetotal_;
+}
+inline void Order::set_volumetotal(::google::protobuf::int32 value) {
+  set_has_volumetotal();
+  volumetotal_ = value;
+}
+
+// required string InsertDate = 39;
+inline bool Order::has_insertdate() const {
+  return (_has_bits_[1] & 0x00000040u) != 0;
+}
+inline void Order::set_has_insertdate() {
+  _has_bits_[1] |= 0x00000040u;
+}
+inline void Order::clear_has_insertdate() {
+  _has_bits_[1] &= ~0x00000040u;
+}
+inline void Order::clear_insertdate() {
+  if (insertdate_ != &::google::protobuf::internal::kEmptyString) {
+    insertdate_->clear();
+  }
+  clear_has_insertdate();
+}
+inline const ::std::string& Order::insertdate() const {
+  return *insertdate_;
+}
+inline void Order::set_insertdate(const ::std::string& value) {
+  set_has_insertdate();
+  if (insertdate_ == &::google::protobuf::internal::kEmptyString) {
+    insertdate_ = new ::std::string;
+  }
+  insertdate_->assign(value);
+}
+inline void Order::set_insertdate(const char* value) {
+  set_has_insertdate();
+  if (insertdate_ == &::google::protobuf::internal::kEmptyString) {
+    insertdate_ = new ::std::string;
+  }
+  insertdate_->assign(value);
+}
+inline void Order::set_insertdate(const char* value, size_t size) {
+  set_has_insertdate();
+  if (insertdate_ == &::google::protobuf::internal::kEmptyString) {
+    insertdate_ = new ::std::string;
+  }
+  insertdate_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_insertdate() {
+  set_has_insertdate();
+  if (insertdate_ == &::google::protobuf::internal::kEmptyString) {
+    insertdate_ = new ::std::string;
+  }
+  return insertdate_;
+}
+inline ::std::string* Order::release_insertdate() {
+  clear_has_insertdate();
+  if (insertdate_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = insertdate_;
+    insertdate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InsertTime = 40;
+inline bool Order::has_inserttime() const {
+  return (_has_bits_[1] & 0x00000080u) != 0;
+}
+inline void Order::set_has_inserttime() {
+  _has_bits_[1] |= 0x00000080u;
+}
+inline void Order::clear_has_inserttime() {
+  _has_bits_[1] &= ~0x00000080u;
+}
+inline void Order::clear_inserttime() {
+  if (inserttime_ != &::google::protobuf::internal::kEmptyString) {
+    inserttime_->clear();
+  }
+  clear_has_inserttime();
+}
+inline const ::std::string& Order::inserttime() const {
+  return *inserttime_;
+}
+inline void Order::set_inserttime(const ::std::string& value) {
+  set_has_inserttime();
+  if (inserttime_ == &::google::protobuf::internal::kEmptyString) {
+    inserttime_ = new ::std::string;
+  }
+  inserttime_->assign(value);
+}
+inline void Order::set_inserttime(const char* value) {
+  set_has_inserttime();
+  if (inserttime_ == &::google::protobuf::internal::kEmptyString) {
+    inserttime_ = new ::std::string;
+  }
+  inserttime_->assign(value);
+}
+inline void Order::set_inserttime(const char* value, size_t size) {
+  set_has_inserttime();
+  if (inserttime_ == &::google::protobuf::internal::kEmptyString) {
+    inserttime_ = new ::std::string;
+  }
+  inserttime_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_inserttime() {
+  set_has_inserttime();
+  if (inserttime_ == &::google::protobuf::internal::kEmptyString) {
+    inserttime_ = new ::std::string;
+  }
+  return inserttime_;
+}
+inline ::std::string* Order::release_inserttime() {
+  clear_has_inserttime();
+  if (inserttime_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = inserttime_;
+    inserttime_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ActiveTime = 41;
+inline bool Order::has_activetime() const {
+  return (_has_bits_[1] & 0x00000100u) != 0;
+}
+inline void Order::set_has_activetime() {
+  _has_bits_[1] |= 0x00000100u;
+}
+inline void Order::clear_has_activetime() {
+  _has_bits_[1] &= ~0x00000100u;
+}
+inline void Order::clear_activetime() {
+  if (activetime_ != &::google::protobuf::internal::kEmptyString) {
+    activetime_->clear();
+  }
+  clear_has_activetime();
+}
+inline const ::std::string& Order::activetime() const {
+  return *activetime_;
+}
+inline void Order::set_activetime(const ::std::string& value) {
+  set_has_activetime();
+  if (activetime_ == &::google::protobuf::internal::kEmptyString) {
+    activetime_ = new ::std::string;
+  }
+  activetime_->assign(value);
+}
+inline void Order::set_activetime(const char* value) {
+  set_has_activetime();
+  if (activetime_ == &::google::protobuf::internal::kEmptyString) {
+    activetime_ = new ::std::string;
+  }
+  activetime_->assign(value);
+}
+inline void Order::set_activetime(const char* value, size_t size) {
+  set_has_activetime();
+  if (activetime_ == &::google::protobuf::internal::kEmptyString) {
+    activetime_ = new ::std::string;
+  }
+  activetime_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_activetime() {
+  set_has_activetime();
+  if (activetime_ == &::google::protobuf::internal::kEmptyString) {
+    activetime_ = new ::std::string;
+  }
+  return activetime_;
+}
+inline ::std::string* Order::release_activetime() {
+  clear_has_activetime();
+  if (activetime_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = activetime_;
+    activetime_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string SuspendTime = 42;
+inline bool Order::has_suspendtime() const {
+  return (_has_bits_[1] & 0x00000200u) != 0;
+}
+inline void Order::set_has_suspendtime() {
+  _has_bits_[1] |= 0x00000200u;
+}
+inline void Order::clear_has_suspendtime() {
+  _has_bits_[1] &= ~0x00000200u;
+}
+inline void Order::clear_suspendtime() {
+  if (suspendtime_ != &::google::protobuf::internal::kEmptyString) {
+    suspendtime_->clear();
+  }
+  clear_has_suspendtime();
+}
+inline const ::std::string& Order::suspendtime() const {
+  return *suspendtime_;
+}
+inline void Order::set_suspendtime(const ::std::string& value) {
+  set_has_suspendtime();
+  if (suspendtime_ == &::google::protobuf::internal::kEmptyString) {
+    suspendtime_ = new ::std::string;
+  }
+  suspendtime_->assign(value);
+}
+inline void Order::set_suspendtime(const char* value) {
+  set_has_suspendtime();
+  if (suspendtime_ == &::google::protobuf::internal::kEmptyString) {
+    suspendtime_ = new ::std::string;
+  }
+  suspendtime_->assign(value);
+}
+inline void Order::set_suspendtime(const char* value, size_t size) {
+  set_has_suspendtime();
+  if (suspendtime_ == &::google::protobuf::internal::kEmptyString) {
+    suspendtime_ = new ::std::string;
+  }
+  suspendtime_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_suspendtime() {
+  set_has_suspendtime();
+  if (suspendtime_ == &::google::protobuf::internal::kEmptyString) {
+    suspendtime_ = new ::std::string;
+  }
+  return suspendtime_;
+}
+inline ::std::string* Order::release_suspendtime() {
+  clear_has_suspendtime();
+  if (suspendtime_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = suspendtime_;
+    suspendtime_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string UpdateTime = 43;
+inline bool Order::has_updatetime() const {
+  return (_has_bits_[1] & 0x00000400u) != 0;
+}
+inline void Order::set_has_updatetime() {
+  _has_bits_[1] |= 0x00000400u;
+}
+inline void Order::clear_has_updatetime() {
+  _has_bits_[1] &= ~0x00000400u;
+}
+inline void Order::clear_updatetime() {
+  if (updatetime_ != &::google::protobuf::internal::kEmptyString) {
+    updatetime_->clear();
+  }
+  clear_has_updatetime();
+}
+inline const ::std::string& Order::updatetime() const {
+  return *updatetime_;
+}
+inline void Order::set_updatetime(const ::std::string& value) {
+  set_has_updatetime();
+  if (updatetime_ == &::google::protobuf::internal::kEmptyString) {
+    updatetime_ = new ::std::string;
+  }
+  updatetime_->assign(value);
+}
+inline void Order::set_updatetime(const char* value) {
+  set_has_updatetime();
+  if (updatetime_ == &::google::protobuf::internal::kEmptyString) {
+    updatetime_ = new ::std::string;
+  }
+  updatetime_->assign(value);
+}
+inline void Order::set_updatetime(const char* value, size_t size) {
+  set_has_updatetime();
+  if (updatetime_ == &::google::protobuf::internal::kEmptyString) {
+    updatetime_ = new ::std::string;
+  }
+  updatetime_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_updatetime() {
+  set_has_updatetime();
+  if (updatetime_ == &::google::protobuf::internal::kEmptyString) {
+    updatetime_ = new ::std::string;
+  }
+  return updatetime_;
+}
+inline ::std::string* Order::release_updatetime() {
+  clear_has_updatetime();
+  if (updatetime_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = updatetime_;
+    updatetime_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string CancelTime = 44;
+inline bool Order::has_canceltime() const {
+  return (_has_bits_[1] & 0x00000800u) != 0;
+}
+inline void Order::set_has_canceltime() {
+  _has_bits_[1] |= 0x00000800u;
+}
+inline void Order::clear_has_canceltime() {
+  _has_bits_[1] &= ~0x00000800u;
+}
+inline void Order::clear_canceltime() {
+  if (canceltime_ != &::google::protobuf::internal::kEmptyString) {
+    canceltime_->clear();
+  }
+  clear_has_canceltime();
+}
+inline const ::std::string& Order::canceltime() const {
+  return *canceltime_;
+}
+inline void Order::set_canceltime(const ::std::string& value) {
+  set_has_canceltime();
+  if (canceltime_ == &::google::protobuf::internal::kEmptyString) {
+    canceltime_ = new ::std::string;
+  }
+  canceltime_->assign(value);
+}
+inline void Order::set_canceltime(const char* value) {
+  set_has_canceltime();
+  if (canceltime_ == &::google::protobuf::internal::kEmptyString) {
+    canceltime_ = new ::std::string;
+  }
+  canceltime_->assign(value);
+}
+inline void Order::set_canceltime(const char* value, size_t size) {
+  set_has_canceltime();
+  if (canceltime_ == &::google::protobuf::internal::kEmptyString) {
+    canceltime_ = new ::std::string;
+  }
+  canceltime_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_canceltime() {
+  set_has_canceltime();
+  if (canceltime_ == &::google::protobuf::internal::kEmptyString) {
+    canceltime_ = new ::std::string;
+  }
+  return canceltime_;
+}
+inline ::std::string* Order::release_canceltime() {
+  clear_has_canceltime();
+  if (canceltime_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = canceltime_;
+    canceltime_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ActiveTraderID = 45;
+inline bool Order::has_activetraderid() const {
+  return (_has_bits_[1] & 0x00001000u) != 0;
+}
+inline void Order::set_has_activetraderid() {
+  _has_bits_[1] |= 0x00001000u;
+}
+inline void Order::clear_has_activetraderid() {
+  _has_bits_[1] &= ~0x00001000u;
+}
+inline void Order::clear_activetraderid() {
+  if (activetraderid_ != &::google::protobuf::internal::kEmptyString) {
+    activetraderid_->clear();
+  }
+  clear_has_activetraderid();
+}
+inline const ::std::string& Order::activetraderid() const {
+  return *activetraderid_;
+}
+inline void Order::set_activetraderid(const ::std::string& value) {
+  set_has_activetraderid();
+  if (activetraderid_ == &::google::protobuf::internal::kEmptyString) {
+    activetraderid_ = new ::std::string;
+  }
+  activetraderid_->assign(value);
+}
+inline void Order::set_activetraderid(const char* value) {
+  set_has_activetraderid();
+  if (activetraderid_ == &::google::protobuf::internal::kEmptyString) {
+    activetraderid_ = new ::std::string;
+  }
+  activetraderid_->assign(value);
+}
+inline void Order::set_activetraderid(const char* value, size_t size) {
+  set_has_activetraderid();
+  if (activetraderid_ == &::google::protobuf::internal::kEmptyString) {
+    activetraderid_ = new ::std::string;
+  }
+  activetraderid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_activetraderid() {
+  set_has_activetraderid();
+  if (activetraderid_ == &::google::protobuf::internal::kEmptyString) {
+    activetraderid_ = new ::std::string;
+  }
+  return activetraderid_;
+}
+inline ::std::string* Order::release_activetraderid() {
+  clear_has_activetraderid();
+  if (activetraderid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = activetraderid_;
+    activetraderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ClearingPartID = 46;
+inline bool Order::has_clearingpartid() const {
+  return (_has_bits_[1] & 0x00002000u) != 0;
+}
+inline void Order::set_has_clearingpartid() {
+  _has_bits_[1] |= 0x00002000u;
+}
+inline void Order::clear_has_clearingpartid() {
+  _has_bits_[1] &= ~0x00002000u;
+}
+inline void Order::clear_clearingpartid() {
+  if (clearingpartid_ != &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_->clear();
+  }
+  clear_has_clearingpartid();
+}
+inline const ::std::string& Order::clearingpartid() const {
+  return *clearingpartid_;
+}
+inline void Order::set_clearingpartid(const ::std::string& value) {
+  set_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_ = new ::std::string;
+  }
+  clearingpartid_->assign(value);
+}
+inline void Order::set_clearingpartid(const char* value) {
+  set_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_ = new ::std::string;
+  }
+  clearingpartid_->assign(value);
+}
+inline void Order::set_clearingpartid(const char* value, size_t size) {
+  set_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_ = new ::std::string;
+  }
+  clearingpartid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_clearingpartid() {
+  set_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_ = new ::std::string;
+  }
+  return clearingpartid_;
+}
+inline ::std::string* Order::release_clearingpartid() {
+  clear_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = clearingpartid_;
+    clearingpartid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 SequenceNo = 47;
+inline bool Order::has_sequenceno() const {
+  return (_has_bits_[1] & 0x00004000u) != 0;
+}
+inline void Order::set_has_sequenceno() {
+  _has_bits_[1] |= 0x00004000u;
+}
+inline void Order::clear_has_sequenceno() {
+  _has_bits_[1] &= ~0x00004000u;
+}
+inline void Order::clear_sequenceno() {
+  sequenceno_ = 0;
+  clear_has_sequenceno();
+}
+inline ::google::protobuf::int32 Order::sequenceno() const {
+  return sequenceno_;
+}
+inline void Order::set_sequenceno(::google::protobuf::int32 value) {
+  set_has_sequenceno();
+  sequenceno_ = value;
+}
+
+// required int32 FrontID = 48;
+inline bool Order::has_frontid() const {
+  return (_has_bits_[1] & 0x00008000u) != 0;
+}
+inline void Order::set_has_frontid() {
+  _has_bits_[1] |= 0x00008000u;
+}
+inline void Order::clear_has_frontid() {
+  _has_bits_[1] &= ~0x00008000u;
+}
+inline void Order::clear_frontid() {
+  frontid_ = 0;
+  clear_has_frontid();
+}
+inline ::google::protobuf::int32 Order::frontid() const {
+  return frontid_;
+}
+inline void Order::set_frontid(::google::protobuf::int32 value) {
+  set_has_frontid();
+  frontid_ = value;
+}
+
+// required int32 SessionID = 49;
+inline bool Order::has_sessionid() const {
+  return (_has_bits_[1] & 0x00010000u) != 0;
+}
+inline void Order::set_has_sessionid() {
+  _has_bits_[1] |= 0x00010000u;
+}
+inline void Order::clear_has_sessionid() {
+  _has_bits_[1] &= ~0x00010000u;
+}
+inline void Order::clear_sessionid() {
+  sessionid_ = 0;
+  clear_has_sessionid();
+}
+inline ::google::protobuf::int32 Order::sessionid() const {
+  return sessionid_;
+}
+inline void Order::set_sessionid(::google::protobuf::int32 value) {
+  set_has_sessionid();
+  sessionid_ = value;
+}
+
+// required string UserProductInfo = 50;
+inline bool Order::has_userproductinfo() const {
+  return (_has_bits_[1] & 0x00020000u) != 0;
+}
+inline void Order::set_has_userproductinfo() {
+  _has_bits_[1] |= 0x00020000u;
+}
+inline void Order::clear_has_userproductinfo() {
+  _has_bits_[1] &= ~0x00020000u;
+}
+inline void Order::clear_userproductinfo() {
+  if (userproductinfo_ != &::google::protobuf::internal::kEmptyString) {
+    userproductinfo_->clear();
+  }
+  clear_has_userproductinfo();
+}
+inline const ::std::string& Order::userproductinfo() const {
+  return *userproductinfo_;
+}
+inline void Order::set_userproductinfo(const ::std::string& value) {
+  set_has_userproductinfo();
+  if (userproductinfo_ == &::google::protobuf::internal::kEmptyString) {
+    userproductinfo_ = new ::std::string;
+  }
+  userproductinfo_->assign(value);
+}
+inline void Order::set_userproductinfo(const char* value) {
+  set_has_userproductinfo();
+  if (userproductinfo_ == &::google::protobuf::internal::kEmptyString) {
+    userproductinfo_ = new ::std::string;
+  }
+  userproductinfo_->assign(value);
+}
+inline void Order::set_userproductinfo(const char* value, size_t size) {
+  set_has_userproductinfo();
+  if (userproductinfo_ == &::google::protobuf::internal::kEmptyString) {
+    userproductinfo_ = new ::std::string;
+  }
+  userproductinfo_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_userproductinfo() {
+  set_has_userproductinfo();
+  if (userproductinfo_ == &::google::protobuf::internal::kEmptyString) {
+    userproductinfo_ = new ::std::string;
+  }
+  return userproductinfo_;
+}
+inline ::std::string* Order::release_userproductinfo() {
+  clear_has_userproductinfo();
+  if (userproductinfo_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = userproductinfo_;
+    userproductinfo_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string StatusMsg = 51;
+inline bool Order::has_statusmsg() const {
+  return (_has_bits_[1] & 0x00040000u) != 0;
+}
+inline void Order::set_has_statusmsg() {
+  _has_bits_[1] |= 0x00040000u;
+}
+inline void Order::clear_has_statusmsg() {
+  _has_bits_[1] &= ~0x00040000u;
+}
+inline void Order::clear_statusmsg() {
+  if (statusmsg_ != &::google::protobuf::internal::kEmptyString) {
+    statusmsg_->clear();
+  }
+  clear_has_statusmsg();
+}
+inline const ::std::string& Order::statusmsg() const {
+  return *statusmsg_;
+}
+inline void Order::set_statusmsg(const ::std::string& value) {
+  set_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    statusmsg_ = new ::std::string;
+  }
+  statusmsg_->assign(value);
+}
+inline void Order::set_statusmsg(const char* value) {
+  set_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    statusmsg_ = new ::std::string;
+  }
+  statusmsg_->assign(value);
+}
+inline void Order::set_statusmsg(const char* value, size_t size) {
+  set_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    statusmsg_ = new ::std::string;
+  }
+  statusmsg_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_statusmsg() {
+  set_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    statusmsg_ = new ::std::string;
+  }
+  return statusmsg_;
+}
+inline ::std::string* Order::release_statusmsg() {
+  clear_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = statusmsg_;
+    statusmsg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required bool UserForceClose = 52;
+inline bool Order::has_userforceclose() const {
+  return (_has_bits_[1] & 0x00080000u) != 0;
+}
+inline void Order::set_has_userforceclose() {
+  _has_bits_[1] |= 0x00080000u;
+}
+inline void Order::clear_has_userforceclose() {
+  _has_bits_[1] &= ~0x00080000u;
+}
+inline void Order::clear_userforceclose() {
+  userforceclose_ = false;
+  clear_has_userforceclose();
+}
+inline bool Order::userforceclose() const {
+  return userforceclose_;
+}
+inline void Order::set_userforceclose(bool value) {
+  set_has_userforceclose();
+  userforceclose_ = value;
+}
+
+// required string ActiveUserID = 53;
+inline bool Order::has_activeuserid() const {
+  return (_has_bits_[1] & 0x00100000u) != 0;
+}
+inline void Order::set_has_activeuserid() {
+  _has_bits_[1] |= 0x00100000u;
+}
+inline void Order::clear_has_activeuserid() {
+  _has_bits_[1] &= ~0x00100000u;
+}
+inline void Order::clear_activeuserid() {
+  if (activeuserid_ != &::google::protobuf::internal::kEmptyString) {
+    activeuserid_->clear();
+  }
+  clear_has_activeuserid();
+}
+inline const ::std::string& Order::activeuserid() const {
+  return *activeuserid_;
+}
+inline void Order::set_activeuserid(const ::std::string& value) {
+  set_has_activeuserid();
+  if (activeuserid_ == &::google::protobuf::internal::kEmptyString) {
+    activeuserid_ = new ::std::string;
+  }
+  activeuserid_->assign(value);
+}
+inline void Order::set_activeuserid(const char* value) {
+  set_has_activeuserid();
+  if (activeuserid_ == &::google::protobuf::internal::kEmptyString) {
+    activeuserid_ = new ::std::string;
+  }
+  activeuserid_->assign(value);
+}
+inline void Order::set_activeuserid(const char* value, size_t size) {
+  set_has_activeuserid();
+  if (activeuserid_ == &::google::protobuf::internal::kEmptyString) {
+    activeuserid_ = new ::std::string;
+  }
+  activeuserid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_activeuserid() {
+  set_has_activeuserid();
+  if (activeuserid_ == &::google::protobuf::internal::kEmptyString) {
+    activeuserid_ = new ::std::string;
+  }
+  return activeuserid_;
+}
+inline ::std::string* Order::release_activeuserid() {
+  clear_has_activeuserid();
+  if (activeuserid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = activeuserid_;
+    activeuserid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 BrokerOrderSeq = 54;
+inline bool Order::has_brokerorderseq() const {
+  return (_has_bits_[1] & 0x00200000u) != 0;
+}
+inline void Order::set_has_brokerorderseq() {
+  _has_bits_[1] |= 0x00200000u;
+}
+inline void Order::clear_has_brokerorderseq() {
+  _has_bits_[1] &= ~0x00200000u;
+}
+inline void Order::clear_brokerorderseq() {
+  brokerorderseq_ = 0;
+  clear_has_brokerorderseq();
+}
+inline ::google::protobuf::int32 Order::brokerorderseq() const {
+  return brokerorderseq_;
+}
+inline void Order::set_brokerorderseq(::google::protobuf::int32 value) {
+  set_has_brokerorderseq();
+  brokerorderseq_ = value;
+}
+
+// required string RelativeOrderSysID = 55;
+inline bool Order::has_relativeordersysid() const {
+  return (_has_bits_[1] & 0x00400000u) != 0;
+}
+inline void Order::set_has_relativeordersysid() {
+  _has_bits_[1] |= 0x00400000u;
+}
+inline void Order::clear_has_relativeordersysid() {
+  _has_bits_[1] &= ~0x00400000u;
+}
+inline void Order::clear_relativeordersysid() {
+  if (relativeordersysid_ != &::google::protobuf::internal::kEmptyString) {
+    relativeordersysid_->clear();
+  }
+  clear_has_relativeordersysid();
+}
+inline const ::std::string& Order::relativeordersysid() const {
+  return *relativeordersysid_;
+}
+inline void Order::set_relativeordersysid(const ::std::string& value) {
+  set_has_relativeordersysid();
+  if (relativeordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    relativeordersysid_ = new ::std::string;
+  }
+  relativeordersysid_->assign(value);
+}
+inline void Order::set_relativeordersysid(const char* value) {
+  set_has_relativeordersysid();
+  if (relativeordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    relativeordersysid_ = new ::std::string;
+  }
+  relativeordersysid_->assign(value);
+}
+inline void Order::set_relativeordersysid(const char* value, size_t size) {
+  set_has_relativeordersysid();
+  if (relativeordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    relativeordersysid_ = new ::std::string;
+  }
+  relativeordersysid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_relativeordersysid() {
+  set_has_relativeordersysid();
+  if (relativeordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    relativeordersysid_ = new ::std::string;
+  }
+  return relativeordersysid_;
+}
+inline ::std::string* Order::release_relativeordersysid() {
+  clear_has_relativeordersysid();
+  if (relativeordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = relativeordersysid_;
+    relativeordersysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// Trade
+
+// required string BrokerID = 1;
+inline bool Trade::has_brokerid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Trade::set_has_brokerid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Trade::clear_has_brokerid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Trade::clear_brokerid() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    brokerid_->clear();
+  }
+  clear_has_brokerid();
+}
+inline const ::std::string& Trade::brokerid() const {
+  return *brokerid_;
+}
+inline void Trade::set_brokerid(const ::std::string& value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void Trade::set_brokerid(const char* value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void Trade::set_brokerid(const char* value, size_t size) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_brokerid() {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  return brokerid_;
+}
+inline ::std::string* Trade::release_brokerid() {
+  clear_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = brokerid_;
+    brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InvestorID = 2;
+inline bool Trade::has_investorid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void Trade::set_has_investorid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void Trade::clear_has_investorid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void Trade::clear_investorid() {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    investorid_->clear();
+  }
+  clear_has_investorid();
+}
+inline const ::std::string& Trade::investorid() const {
+  return *investorid_;
+}
+inline void Trade::set_investorid(const ::std::string& value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void Trade::set_investorid(const char* value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void Trade::set_investorid(const char* value, size_t size) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_investorid() {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  return investorid_;
+}
+inline ::std::string* Trade::release_investorid() {
+  clear_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = investorid_;
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InstrumentID = 3;
+inline bool Trade::has_instrumentid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Trade::set_has_instrumentid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Trade::clear_has_instrumentid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Trade::clear_instrumentid() {
+  if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    instrumentid_->clear();
+  }
+  clear_has_instrumentid();
+}
+inline const ::std::string& Trade::instrumentid() const {
+  return *instrumentid_;
+}
+inline void Trade::set_instrumentid(const ::std::string& value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void Trade::set_instrumentid(const char* value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void Trade::set_instrumentid(const char* value, size_t size) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_instrumentid() {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  return instrumentid_;
+}
+inline ::std::string* Trade::release_instrumentid() {
+  clear_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = instrumentid_;
+    instrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string OrderRef = 4;
+inline bool Trade::has_orderref() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Trade::set_has_orderref() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Trade::clear_has_orderref() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Trade::clear_orderref() {
+  if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+    orderref_->clear();
+  }
+  clear_has_orderref();
+}
+inline const ::std::string& Trade::orderref() const {
+  return *orderref_;
+}
+inline void Trade::set_orderref(const ::std::string& value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void Trade::set_orderref(const char* value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void Trade::set_orderref(const char* value, size_t size) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_orderref() {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  return orderref_;
+}
+inline ::std::string* Trade::release_orderref() {
+  clear_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = orderref_;
+    orderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string UserID = 5;
+inline bool Trade::has_userid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void Trade::set_has_userid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void Trade::clear_has_userid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void Trade::clear_userid() {
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    userid_->clear();
+  }
+  clear_has_userid();
+}
+inline const ::std::string& Trade::userid() const {
+  return *userid_;
+}
+inline void Trade::set_userid(const ::std::string& value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void Trade::set_userid(const char* value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void Trade::set_userid(const char* value, size_t size) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_userid() {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  return userid_;
+}
+inline ::std::string* Trade::release_userid() {
+  clear_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = userid_;
+    userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ExchangeID = 6;
+inline bool Trade::has_exchangeid() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void Trade::set_has_exchangeid() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void Trade::clear_has_exchangeid() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void Trade::clear_exchangeid() {
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeid_->clear();
+  }
+  clear_has_exchangeid();
+}
+inline const ::std::string& Trade::exchangeid() const {
+  return *exchangeid_;
+}
+inline void Trade::set_exchangeid(const ::std::string& value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void Trade::set_exchangeid(const char* value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void Trade::set_exchangeid(const char* value, size_t size) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_exchangeid() {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  return exchangeid_;
+}
+inline ::std::string* Trade::release_exchangeid() {
+  clear_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeid_;
+    exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string TradeID = 7;
+inline bool Trade::has_tradeid() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void Trade::set_has_tradeid() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void Trade::clear_has_tradeid() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void Trade::clear_tradeid() {
+  if (tradeid_ != &::google::protobuf::internal::kEmptyString) {
+    tradeid_->clear();
+  }
+  clear_has_tradeid();
+}
+inline const ::std::string& Trade::tradeid() const {
+  return *tradeid_;
+}
+inline void Trade::set_tradeid(const ::std::string& value) {
+  set_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    tradeid_ = new ::std::string;
+  }
+  tradeid_->assign(value);
+}
+inline void Trade::set_tradeid(const char* value) {
+  set_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    tradeid_ = new ::std::string;
+  }
+  tradeid_->assign(value);
+}
+inline void Trade::set_tradeid(const char* value, size_t size) {
+  set_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    tradeid_ = new ::std::string;
+  }
+  tradeid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_tradeid() {
+  set_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    tradeid_ = new ::std::string;
+  }
+  return tradeid_;
+}
+inline ::std::string* Trade::release_tradeid() {
+  clear_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = tradeid_;
+    tradeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.TradeDirectionType Direction = 8;
+inline bool Trade::has_direction() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void Trade::set_has_direction() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void Trade::clear_has_direction() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void Trade::clear_direction() {
+  direction_ = 48;
+  clear_has_direction();
+}
+inline protoc::TradeDirectionType Trade::direction() const {
+  return static_cast< protoc::TradeDirectionType >(direction_);
+}
+inline void Trade::set_direction(protoc::TradeDirectionType value) {
+  GOOGLE_DCHECK(protoc::TradeDirectionType_IsValid(value));
+  set_has_direction();
+  direction_ = value;
+}
+
+// required string OrderSysID = 9;
+inline bool Trade::has_ordersysid() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void Trade::set_has_ordersysid() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void Trade::clear_has_ordersysid() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void Trade::clear_ordersysid() {
+  if (ordersysid_ != &::google::protobuf::internal::kEmptyString) {
+    ordersysid_->clear();
+  }
+  clear_has_ordersysid();
+}
+inline const ::std::string& Trade::ordersysid() const {
+  return *ordersysid_;
+}
+inline void Trade::set_ordersysid(const ::std::string& value) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(value);
+}
+inline void Trade::set_ordersysid(const char* value) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(value);
+}
+inline void Trade::set_ordersysid(const char* value, size_t size) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_ordersysid() {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  return ordersysid_;
+}
+inline ::std::string* Trade::release_ordersysid() {
+  clear_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = ordersysid_;
+    ordersysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ParticipantID = 10;
+inline bool Trade::has_participantid() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void Trade::set_has_participantid() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void Trade::clear_has_participantid() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void Trade::clear_participantid() {
+  if (participantid_ != &::google::protobuf::internal::kEmptyString) {
+    participantid_->clear();
+  }
+  clear_has_participantid();
+}
+inline const ::std::string& Trade::participantid() const {
+  return *participantid_;
+}
+inline void Trade::set_participantid(const ::std::string& value) {
+  set_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    participantid_ = new ::std::string;
+  }
+  participantid_->assign(value);
+}
+inline void Trade::set_participantid(const char* value) {
+  set_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    participantid_ = new ::std::string;
+  }
+  participantid_->assign(value);
+}
+inline void Trade::set_participantid(const char* value, size_t size) {
+  set_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    participantid_ = new ::std::string;
+  }
+  participantid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_participantid() {
+  set_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    participantid_ = new ::std::string;
+  }
+  return participantid_;
+}
+inline ::std::string* Trade::release_participantid() {
+  clear_has_participantid();
+  if (participantid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = participantid_;
+    participantid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ClientID = 11;
+inline bool Trade::has_clientid() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void Trade::set_has_clientid() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void Trade::clear_has_clientid() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void Trade::clear_clientid() {
+  if (clientid_ != &::google::protobuf::internal::kEmptyString) {
+    clientid_->clear();
+  }
+  clear_has_clientid();
+}
+inline const ::std::string& Trade::clientid() const {
+  return *clientid_;
+}
+inline void Trade::set_clientid(const ::std::string& value) {
+  set_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    clientid_ = new ::std::string;
+  }
+  clientid_->assign(value);
+}
+inline void Trade::set_clientid(const char* value) {
+  set_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    clientid_ = new ::std::string;
+  }
+  clientid_->assign(value);
+}
+inline void Trade::set_clientid(const char* value, size_t size) {
+  set_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    clientid_ = new ::std::string;
+  }
+  clientid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_clientid() {
+  set_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    clientid_ = new ::std::string;
+  }
+  return clientid_;
+}
+inline ::std::string* Trade::release_clientid() {
+  clear_has_clientid();
+  if (clientid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = clientid_;
+    clientid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.TradingRoleType TradingRole = 12;
+inline bool Trade::has_tradingrole() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void Trade::set_has_tradingrole() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void Trade::clear_has_tradingrole() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void Trade::clear_tradingrole() {
+  tradingrole_ = 49;
+  clear_has_tradingrole();
+}
+inline protoc::TradingRoleType Trade::tradingrole() const {
+  return static_cast< protoc::TradingRoleType >(tradingrole_);
+}
+inline void Trade::set_tradingrole(protoc::TradingRoleType value) {
+  GOOGLE_DCHECK(protoc::TradingRoleType_IsValid(value));
+  set_has_tradingrole();
+  tradingrole_ = value;
+}
+
+// required string ExchangeInstID = 13;
+inline bool Trade::has_exchangeinstid() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void Trade::set_has_exchangeinstid() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void Trade::clear_has_exchangeinstid() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void Trade::clear_exchangeinstid() {
+  if (exchangeinstid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_->clear();
+  }
+  clear_has_exchangeinstid();
+}
+inline const ::std::string& Trade::exchangeinstid() const {
+  return *exchangeinstid_;
+}
+inline void Trade::set_exchangeinstid(const ::std::string& value) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(value);
+}
+inline void Trade::set_exchangeinstid(const char* value) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(value);
+}
+inline void Trade::set_exchangeinstid(const char* value, size_t size) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_exchangeinstid() {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  return exchangeinstid_;
+}
+inline ::std::string* Trade::release_exchangeinstid() {
+  clear_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeinstid_;
+    exchangeinstid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.OffsetFlagType OffsetFlag = 14;
+inline bool Trade::has_offsetflag() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void Trade::set_has_offsetflag() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void Trade::clear_has_offsetflag() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void Trade::clear_offsetflag() {
+  offsetflag_ = 48;
+  clear_has_offsetflag();
+}
+inline protoc::OffsetFlagType Trade::offsetflag() const {
+  return static_cast< protoc::OffsetFlagType >(offsetflag_);
+}
+inline void Trade::set_offsetflag(protoc::OffsetFlagType value) {
+  GOOGLE_DCHECK(protoc::OffsetFlagType_IsValid(value));
+  set_has_offsetflag();
+  offsetflag_ = value;
+}
+
+// required .protoc.HedgeFlagType HedgeFlag = 15;
+inline bool Trade::has_hedgeflag() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void Trade::set_has_hedgeflag() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void Trade::clear_has_hedgeflag() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void Trade::clear_hedgeflag() {
+  hedgeflag_ = 49;
+  clear_has_hedgeflag();
+}
+inline protoc::HedgeFlagType Trade::hedgeflag() const {
+  return static_cast< protoc::HedgeFlagType >(hedgeflag_);
+}
+inline void Trade::set_hedgeflag(protoc::HedgeFlagType value) {
+  GOOGLE_DCHECK(protoc::HedgeFlagType_IsValid(value));
+  set_has_hedgeflag();
+  hedgeflag_ = value;
+}
+
+// required double Price = 16;
+inline bool Trade::has_price() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+inline void Trade::set_has_price() {
+  _has_bits_[0] |= 0x00008000u;
+}
+inline void Trade::clear_has_price() {
+  _has_bits_[0] &= ~0x00008000u;
+}
+inline void Trade::clear_price() {
+  price_ = 0;
+  clear_has_price();
+}
+inline double Trade::price() const {
+  return price_;
+}
+inline void Trade::set_price(double value) {
+  set_has_price();
+  price_ = value;
+}
+
+// required int32 Volume = 17;
+inline bool Trade::has_volume() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void Trade::set_has_volume() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void Trade::clear_has_volume() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void Trade::clear_volume() {
+  volume_ = 0;
+  clear_has_volume();
+}
+inline ::google::protobuf::int32 Trade::volume() const {
+  return volume_;
+}
+inline void Trade::set_volume(::google::protobuf::int32 value) {
+  set_has_volume();
+  volume_ = value;
+}
+
+// required string TradeDate = 18;
+inline bool Trade::has_tradedate() const {
+  return (_has_bits_[0] & 0x00020000u) != 0;
+}
+inline void Trade::set_has_tradedate() {
+  _has_bits_[0] |= 0x00020000u;
+}
+inline void Trade::clear_has_tradedate() {
+  _has_bits_[0] &= ~0x00020000u;
+}
+inline void Trade::clear_tradedate() {
+  if (tradedate_ != &::google::protobuf::internal::kEmptyString) {
+    tradedate_->clear();
+  }
+  clear_has_tradedate();
+}
+inline const ::std::string& Trade::tradedate() const {
+  return *tradedate_;
+}
+inline void Trade::set_tradedate(const ::std::string& value) {
+  set_has_tradedate();
+  if (tradedate_ == &::google::protobuf::internal::kEmptyString) {
+    tradedate_ = new ::std::string;
+  }
+  tradedate_->assign(value);
+}
+inline void Trade::set_tradedate(const char* value) {
+  set_has_tradedate();
+  if (tradedate_ == &::google::protobuf::internal::kEmptyString) {
+    tradedate_ = new ::std::string;
+  }
+  tradedate_->assign(value);
+}
+inline void Trade::set_tradedate(const char* value, size_t size) {
+  set_has_tradedate();
+  if (tradedate_ == &::google::protobuf::internal::kEmptyString) {
+    tradedate_ = new ::std::string;
+  }
+  tradedate_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_tradedate() {
+  set_has_tradedate();
+  if (tradedate_ == &::google::protobuf::internal::kEmptyString) {
+    tradedate_ = new ::std::string;
+  }
+  return tradedate_;
+}
+inline ::std::string* Trade::release_tradedate() {
+  clear_has_tradedate();
+  if (tradedate_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = tradedate_;
+    tradedate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string TradeTime = 19;
+inline bool Trade::has_tradetime() const {
+  return (_has_bits_[0] & 0x00040000u) != 0;
+}
+inline void Trade::set_has_tradetime() {
+  _has_bits_[0] |= 0x00040000u;
+}
+inline void Trade::clear_has_tradetime() {
+  _has_bits_[0] &= ~0x00040000u;
+}
+inline void Trade::clear_tradetime() {
+  if (tradetime_ != &::google::protobuf::internal::kEmptyString) {
+    tradetime_->clear();
+  }
+  clear_has_tradetime();
+}
+inline const ::std::string& Trade::tradetime() const {
+  return *tradetime_;
+}
+inline void Trade::set_tradetime(const ::std::string& value) {
+  set_has_tradetime();
+  if (tradetime_ == &::google::protobuf::internal::kEmptyString) {
+    tradetime_ = new ::std::string;
+  }
+  tradetime_->assign(value);
+}
+inline void Trade::set_tradetime(const char* value) {
+  set_has_tradetime();
+  if (tradetime_ == &::google::protobuf::internal::kEmptyString) {
+    tradetime_ = new ::std::string;
+  }
+  tradetime_->assign(value);
+}
+inline void Trade::set_tradetime(const char* value, size_t size) {
+  set_has_tradetime();
+  if (tradetime_ == &::google::protobuf::internal::kEmptyString) {
+    tradetime_ = new ::std::string;
+  }
+  tradetime_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_tradetime() {
+  set_has_tradetime();
+  if (tradetime_ == &::google::protobuf::internal::kEmptyString) {
+    tradetime_ = new ::std::string;
+  }
+  return tradetime_;
+}
+inline ::std::string* Trade::release_tradetime() {
+  clear_has_tradetime();
+  if (tradetime_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = tradetime_;
+    tradetime_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.TradeTypeType TradeType = 20;
+inline bool Trade::has_tradetype() const {
+  return (_has_bits_[0] & 0x00080000u) != 0;
+}
+inline void Trade::set_has_tradetype() {
+  _has_bits_[0] |= 0x00080000u;
+}
+inline void Trade::clear_has_tradetype() {
+  _has_bits_[0] &= ~0x00080000u;
+}
+inline void Trade::clear_tradetype() {
+  tradetype_ = 48;
+  clear_has_tradetype();
+}
+inline protoc::TradeTypeType Trade::tradetype() const {
+  return static_cast< protoc::TradeTypeType >(tradetype_);
+}
+inline void Trade::set_tradetype(protoc::TradeTypeType value) {
+  GOOGLE_DCHECK(protoc::TradeTypeType_IsValid(value));
+  set_has_tradetype();
+  tradetype_ = value;
+}
+
+// required .protoc.PriceSourceType PriceSource = 21;
+inline bool Trade::has_pricesource() const {
+  return (_has_bits_[0] & 0x00100000u) != 0;
+}
+inline void Trade::set_has_pricesource() {
+  _has_bits_[0] |= 0x00100000u;
+}
+inline void Trade::clear_has_pricesource() {
+  _has_bits_[0] &= ~0x00100000u;
+}
+inline void Trade::clear_pricesource() {
+  pricesource_ = 48;
+  clear_has_pricesource();
+}
+inline protoc::PriceSourceType Trade::pricesource() const {
+  return static_cast< protoc::PriceSourceType >(pricesource_);
+}
+inline void Trade::set_pricesource(protoc::PriceSourceType value) {
+  GOOGLE_DCHECK(protoc::PriceSourceType_IsValid(value));
+  set_has_pricesource();
+  pricesource_ = value;
+}
+
+// required string TraderID = 22;
+inline bool Trade::has_traderid() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
+}
+inline void Trade::set_has_traderid() {
+  _has_bits_[0] |= 0x00200000u;
+}
+inline void Trade::clear_has_traderid() {
+  _has_bits_[0] &= ~0x00200000u;
+}
+inline void Trade::clear_traderid() {
+  if (traderid_ != &::google::protobuf::internal::kEmptyString) {
+    traderid_->clear();
+  }
+  clear_has_traderid();
+}
+inline const ::std::string& Trade::traderid() const {
+  return *traderid_;
+}
+inline void Trade::set_traderid(const ::std::string& value) {
+  set_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    traderid_ = new ::std::string;
+  }
+  traderid_->assign(value);
+}
+inline void Trade::set_traderid(const char* value) {
+  set_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    traderid_ = new ::std::string;
+  }
+  traderid_->assign(value);
+}
+inline void Trade::set_traderid(const char* value, size_t size) {
+  set_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    traderid_ = new ::std::string;
+  }
+  traderid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_traderid() {
+  set_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    traderid_ = new ::std::string;
+  }
+  return traderid_;
+}
+inline ::std::string* Trade::release_traderid() {
+  clear_has_traderid();
+  if (traderid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = traderid_;
+    traderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string OrderLocalID = 23;
+inline bool Trade::has_orderlocalid() const {
+  return (_has_bits_[0] & 0x00400000u) != 0;
+}
+inline void Trade::set_has_orderlocalid() {
+  _has_bits_[0] |= 0x00400000u;
+}
+inline void Trade::clear_has_orderlocalid() {
+  _has_bits_[0] &= ~0x00400000u;
+}
+inline void Trade::clear_orderlocalid() {
+  if (orderlocalid_ != &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_->clear();
+  }
+  clear_has_orderlocalid();
+}
+inline const ::std::string& Trade::orderlocalid() const {
+  return *orderlocalid_;
+}
+inline void Trade::set_orderlocalid(const ::std::string& value) {
+  set_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_ = new ::std::string;
+  }
+  orderlocalid_->assign(value);
+}
+inline void Trade::set_orderlocalid(const char* value) {
+  set_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_ = new ::std::string;
+  }
+  orderlocalid_->assign(value);
+}
+inline void Trade::set_orderlocalid(const char* value, size_t size) {
+  set_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_ = new ::std::string;
+  }
+  orderlocalid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_orderlocalid() {
+  set_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    orderlocalid_ = new ::std::string;
+  }
+  return orderlocalid_;
+}
+inline ::std::string* Trade::release_orderlocalid() {
+  clear_has_orderlocalid();
+  if (orderlocalid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = orderlocalid_;
+    orderlocalid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ClearingPartID = 24;
+inline bool Trade::has_clearingpartid() const {
+  return (_has_bits_[0] & 0x00800000u) != 0;
+}
+inline void Trade::set_has_clearingpartid() {
+  _has_bits_[0] |= 0x00800000u;
+}
+inline void Trade::clear_has_clearingpartid() {
+  _has_bits_[0] &= ~0x00800000u;
+}
+inline void Trade::clear_clearingpartid() {
+  if (clearingpartid_ != &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_->clear();
+  }
+  clear_has_clearingpartid();
+}
+inline const ::std::string& Trade::clearingpartid() const {
+  return *clearingpartid_;
+}
+inline void Trade::set_clearingpartid(const ::std::string& value) {
+  set_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_ = new ::std::string;
+  }
+  clearingpartid_->assign(value);
+}
+inline void Trade::set_clearingpartid(const char* value) {
+  set_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_ = new ::std::string;
+  }
+  clearingpartid_->assign(value);
+}
+inline void Trade::set_clearingpartid(const char* value, size_t size) {
+  set_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_ = new ::std::string;
+  }
+  clearingpartid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_clearingpartid() {
+  set_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    clearingpartid_ = new ::std::string;
+  }
+  return clearingpartid_;
+}
+inline ::std::string* Trade::release_clearingpartid() {
+  clear_has_clearingpartid();
+  if (clearingpartid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = clearingpartid_;
+    clearingpartid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string BusinessUnit = 25;
+inline bool Trade::has_businessunit() const {
+  return (_has_bits_[0] & 0x01000000u) != 0;
+}
+inline void Trade::set_has_businessunit() {
+  _has_bits_[0] |= 0x01000000u;
+}
+inline void Trade::clear_has_businessunit() {
+  _has_bits_[0] &= ~0x01000000u;
+}
+inline void Trade::clear_businessunit() {
+  if (businessunit_ != &::google::protobuf::internal::kEmptyString) {
+    businessunit_->clear();
+  }
+  clear_has_businessunit();
+}
+inline const ::std::string& Trade::businessunit() const {
+  return *businessunit_;
+}
+inline void Trade::set_businessunit(const ::std::string& value) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(value);
+}
+inline void Trade::set_businessunit(const char* value) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(value);
+}
+inline void Trade::set_businessunit(const char* value, size_t size) {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  businessunit_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_businessunit() {
+  set_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    businessunit_ = new ::std::string;
+  }
+  return businessunit_;
+}
+inline ::std::string* Trade::release_businessunit() {
+  clear_has_businessunit();
+  if (businessunit_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = businessunit_;
+    businessunit_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 SequenceNo = 26;
+inline bool Trade::has_sequenceno() const {
+  return (_has_bits_[0] & 0x02000000u) != 0;
+}
+inline void Trade::set_has_sequenceno() {
+  _has_bits_[0] |= 0x02000000u;
+}
+inline void Trade::clear_has_sequenceno() {
+  _has_bits_[0] &= ~0x02000000u;
+}
+inline void Trade::clear_sequenceno() {
+  sequenceno_ = 0;
+  clear_has_sequenceno();
+}
+inline ::google::protobuf::int32 Trade::sequenceno() const {
+  return sequenceno_;
+}
+inline void Trade::set_sequenceno(::google::protobuf::int32 value) {
+  set_has_sequenceno();
+  sequenceno_ = value;
+}
+
+// required string TradingDay = 27;
+inline bool Trade::has_tradingday() const {
+  return (_has_bits_[0] & 0x04000000u) != 0;
+}
+inline void Trade::set_has_tradingday() {
+  _has_bits_[0] |= 0x04000000u;
+}
+inline void Trade::clear_has_tradingday() {
+  _has_bits_[0] &= ~0x04000000u;
+}
+inline void Trade::clear_tradingday() {
+  if (tradingday_ != &::google::protobuf::internal::kEmptyString) {
+    tradingday_->clear();
+  }
+  clear_has_tradingday();
+}
+inline const ::std::string& Trade::tradingday() const {
+  return *tradingday_;
+}
+inline void Trade::set_tradingday(const ::std::string& value) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(value);
+}
+inline void Trade::set_tradingday(const char* value) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(value);
+}
+inline void Trade::set_tradingday(const char* value, size_t size) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Trade::mutable_tradingday() {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  return tradingday_;
+}
+inline ::std::string* Trade::release_tradingday() {
+  clear_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = tradingday_;
+    tradingday_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 SettlementID = 28;
+inline bool Trade::has_settlementid() const {
+  return (_has_bits_[0] & 0x08000000u) != 0;
+}
+inline void Trade::set_has_settlementid() {
+  _has_bits_[0] |= 0x08000000u;
+}
+inline void Trade::clear_has_settlementid() {
+  _has_bits_[0] &= ~0x08000000u;
+}
+inline void Trade::clear_settlementid() {
+  settlementid_ = 0;
+  clear_has_settlementid();
+}
+inline ::google::protobuf::int32 Trade::settlementid() const {
+  return settlementid_;
+}
+inline void Trade::set_settlementid(::google::protobuf::int32 value) {
+  set_has_settlementid();
+  settlementid_ = value;
+}
+
+// required int32 BrokerOrderSeq = 29;
+inline bool Trade::has_brokerorderseq() const {
+  return (_has_bits_[0] & 0x10000000u) != 0;
+}
+inline void Trade::set_has_brokerorderseq() {
+  _has_bits_[0] |= 0x10000000u;
+}
+inline void Trade::clear_has_brokerorderseq() {
+  _has_bits_[0] &= ~0x10000000u;
+}
+inline void Trade::clear_brokerorderseq() {
+  brokerorderseq_ = 0;
+  clear_has_brokerorderseq();
+}
+inline ::google::protobuf::int32 Trade::brokerorderseq() const {
+  return brokerorderseq_;
+}
+inline void Trade::set_brokerorderseq(::google::protobuf::int32 value) {
+  set_has_brokerorderseq();
+  brokerorderseq_ = value;
+}
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -2839,6 +9016,70 @@ inline void PositionInfo::set_marginratebyvolume(double value) {
 namespace google {
 namespace protobuf {
 
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::PosiDirectionType>() {
+  return protoc::PosiDirectionType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::HedgeFlagType>() {
+  return protoc::HedgeFlagType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::OrderPriceTypeType>() {
+  return protoc::OrderPriceTypeType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::TradeDirectionType>() {
+  return protoc::TradeDirectionType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::TimeConditionType>() {
+  return protoc::TimeConditionType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::VolumeConditionType>() {
+  return protoc::VolumeConditionType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::ContingentConditionType>() {
+  return protoc::ContingentConditionType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::ForceCloseReasonType>() {
+  return protoc::ForceCloseReasonType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::OrderSubmitStatusType>() {
+  return protoc::OrderSubmitStatusType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::OrderSourceType>() {
+  return protoc::OrderSourceType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::OrderStatusType>() {
+  return protoc::OrderStatusType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::OrderTypeType>() {
+  return protoc::OrderTypeType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::TradingRoleType>() {
+  return protoc::TradingRoleType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::OffsetFlagType>() {
+  return protoc::OffsetFlagType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::TradeTypeType>() {
+  return protoc::TradeTypeType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::PriceSourceType>() {
+  return protoc::PriceSourceType_descriptor();
+}
 
 }  // namespace google
 }  // namespace protobuf

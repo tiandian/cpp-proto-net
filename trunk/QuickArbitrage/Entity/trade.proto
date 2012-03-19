@@ -534,3 +534,123 @@ message Order
 	///相关报单
 	required string	RelativeOrderSysID = 55;
 };
+
+///TFtdcTradingRoleType是一个交易角色类型
+enum TradingRoleType
+{
+	///代理
+	ER_BROKER = 49;
+	///自营
+	ER_HOST = 50;
+	///做市商
+	ER_MAKER = 51;
+}
+
+///TFtdcOffsetFlagType是一个开平标志类型
+enum OffsetFlagType
+{
+	///开仓
+	OF_OPEN = 48;
+	///平仓
+	OF_CLOSE = 49;
+	///强平
+	OF_FORCE_CLOSE = 50;
+	///平今
+	OF_CLOSE_TODAY = 51;
+	///平昨
+	OF_CLOSE_YESTERDAY = 52;
+	///强减
+	OF_FORCE_OFF = 53;
+	///本地强平
+	OF_LOCAL_FORCE_CLOSE = 54;
+}
+
+///TFtdcTradeTypeType是一个成交类型类型
+enum TradeTypeType
+{
+	///普通成交
+	TRDT_COMMON = 48;
+	///期权执行
+	TRDT_OPTIONS_EXECUTION = 49;
+	///OTC成交
+	TRDT_OTC = 50;
+	///期转现衍生成交
+	TRDT_EFP_DERIVED = 51;
+	///组合衍生成交
+	TRDT_COMBINATION_DERIVED = 52;
+}
+
+///TFtdcPriceSourceType是一个成交价来源类型
+enum PriceSourceType
+{
+	///前成交价
+	PSRC_LAST_PRICE = 48;
+	///买委托价
+	PSRC_BUY = 49;
+	///卖委托价
+	PSRC_SELL = 50;
+}
+
+///成交
+// CThostFtdcTradeField
+message Trade
+{
+	///经纪公司代码
+	required string	BrokerID = 1;
+	///投资者代码
+	required string	InvestorID = 2;
+	///合约代码
+	required string	InstrumentID = 3;
+	///报单引用
+	required string	OrderRef = 4;
+	///用户代码
+	required string	UserID = 5;
+	///交易所代码
+	required string	ExchangeID = 6;
+	///成交编号
+	required string	TradeID = 7;
+	///买卖方向
+	required TradeDirectionType	Direction = 8;
+	///报单编号
+	required string	OrderSysID = 9;
+	///会员代码
+	required string	ParticipantID = 10;
+	///客户代码
+	required string	ClientID = 11;
+	///交易角色
+	required TradingRoleType	TradingRole = 12;;
+	///合约在交易所的代码
+	required string	ExchangeInstID = 13;
+	///开平标志
+	required OffsetFlagType	OffsetFlag = 14;
+	///投机套保标志
+	required HedgeFlagType	HedgeFlag = 15;
+	///价格
+	required double	Price =  16;
+	///数量
+	required int32	Volume = 17;
+	///成交时期
+	required string	TradeDate = 18;
+	///成交时间
+	required string	TradeTime = 19;
+	///成交类型
+	required TradeTypeType	TradeType = 20;
+	///成交价来源
+	required PriceSourceType	PriceSource = 21;
+	///交易所交易员代码
+	required string	TraderID = 22;
+	///本地报单编号
+	required string	OrderLocalID = 23;
+	///结算会员编号
+	required string	ClearingPartID = 24;
+	///业务单元
+	required string	BusinessUnit = 25;
+	///序号
+	required int32	SequenceNo = 26;
+	///交易日
+	required string	TradingDay = 27;
+	///结算编号
+	required int32	SettlementID = 28;
+	///经纪公司报单编号
+	required int32	BrokerOrderSeq = 29;
+};
