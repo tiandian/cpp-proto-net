@@ -17,6 +17,8 @@ public:
 
 	void Buy();
 
+	void AddPortfolio();
+
 protected:
 	virtual void ProcessQuote(CTP::Quote* pQuote);
 

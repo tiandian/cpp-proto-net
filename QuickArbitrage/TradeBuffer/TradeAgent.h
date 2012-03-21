@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ThostFtdcTraderApi.h"
+#include "protobuf_gen/trade.pb.h"
 
 #include <string>
 #include <boost/thread.hpp>
@@ -24,7 +25,14 @@ public:
 
 	void Buy();
 
+	bool SubmitOrder( const std::vector< boost::shared_ptr<protoc::InputOrder> >& orders);
+	bool SubmitOrder( protoc::InputOrder* pOrder);
+
 	void QueryAccount();
+
+	int GetSessionID(){ return SESSION_ID; }
+	int GetFrontID(){ return FRONT_ID; }
+	int GetLastMaxOrderRef(){ return m_maxOrderRef; }
 
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
@@ -99,5 +107,7 @@ private:
 	TThostFtdcFrontIDType	FRONT_ID;	//前置编号
 	TThostFtdcSessionIDType	SESSION_ID;	//会话编号
 	TThostFtdcOrderRefType	ORDER_REF;	//报单引用
+
+	int m_maxOrderRef;
 };
 

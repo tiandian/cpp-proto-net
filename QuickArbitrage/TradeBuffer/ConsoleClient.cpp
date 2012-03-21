@@ -2,6 +2,7 @@
 #include "ConsoleClient.h"
 #include "LogManager.h"
 #include "OrderManager.h"
+#include "protobuf_gen/trade.pb.h"
 
 extern CLogManager logger;
 extern COrderManager g_orderMgr;
@@ -79,4 +80,24 @@ void CConsoleClient::Logout()
 void CConsoleClient::Buy()
 {
 	g_orderMgr.Buy();
+}
+
+void CConsoleClient::AddPortfolio()
+{
+	CPortfolio* pPortfolio = new CPortfolio();
+	pPortfolio->SetQuantity(1);
+
+	// long cu1206
+	CLeg* pLeg = pPortfolio->AddLeg();
+	pLeg->SetSymbol(std::string("cu1206"));
+	pLeg->SetSide(protoc::LONG);
+	pLeg->SetRatio(1);
+
+	// short cu1207
+	pLeg = pPortfolio->AddLeg();
+	pLeg->SetSymbol(std::string("cu1207"));
+	pLeg->SetSide(protoc::SHORT);
+	pLeg->SetRatio(1);
+
+	g_orderMgr.AddPortfolio(pPortfolio);
 }
