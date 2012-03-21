@@ -3,8 +3,10 @@
 #include "Configuration.h"
 #include "LogManager.h"
 #include "OrderManager.h"
+#include "protobuf_gen/trade.pb.h"
 
 #include <sstream>
+#include <boost/foreach.hpp>
 
 #pragma comment(lib, "./ThostTraderApi/thosttraderapi.lib")
 
@@ -33,6 +35,7 @@ bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 
 CTradeAgent::CTradeAgent(COrderManager* pOrderMgr):
 	m_isConnected(false),
+	m_maxOrderRef(-1),
 	m_pUserApi(NULL)
 {
 	m_pOrderMgr = pOrderMgr;
@@ -121,9 +124,8 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		// 保存会话参数
 		FRONT_ID = pRspUserLogin->FrontID;
 		SESSION_ID = pRspUserLogin->SessionID;
-		int iNextOrderRef = atoi(pRspUserLogin->MaxOrderRef);
-		iNextOrderRef++;
-		sprintf(ORDER_REF, "%d", iNextOrderRef);
+		m_maxOrderRef = atoi(pRspUserLogin->MaxOrderRef);
+		//sprintf(ORDER_REF, "%d", iNextOrderRef);
 
 		// login succeeded
 		ss << "Login succeeded." << endl;
@@ -148,7 +150,7 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		errorMsg = pRspInfo->ErrorMsg;
 		ss << "Login failed due to " << pRspInfo->ErrorMsg << endl;
 
-		m_pOrderMgr->OnRspUserLogin(m_isConnected, errorMsg);
+		m_pOrderMgr->OnRspUserLogin(m_isConnected, errorMsg, -1);
 	}
 
 	logger.Info(ss.str());
@@ -175,12 +177,12 @@ void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmFie
 		if(!IsErrorRspInfo(pRspInfo))
 		{
 			// Settlement confirm succeeded, then notify login success
-			m_pOrderMgr->OnRspUserLogin(true, errorMsg);
+			m_pOrderMgr->OnRspUserLogin(true, errorMsg, m_maxOrderRef);
 		}
 		else
 		{
 			errorMsg = pRspInfo->ErrorMsg;
-			m_pOrderMgr->OnRspUserLogin(false, errorMsg);
+			m_pOrderMgr->OnRspUserLogin(false, errorMsg, -1);
 		}
 	}
 }
@@ -270,8 +272,37 @@ void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradin
 	cerr << "--->>> " << "OnRspQryTradingAccount" << endl;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
-		///请求查询投资者持仓
-		//ReqQryInvestorPosition();
+		boost::shared_ptr<protoc::AccountInfo> account(new protoc::AccountInfo);
+		account->set_brokerid(pTradingAccount->BrokerID);
+		account->set_accountid(pTradingAccount->AccountID);
+		account->set_premortgage(pTradingAccount->PreMortgage);
+		account->set_precredit(pTradingAccount->PreCredit);
+		account->set_predeposit(pTradingAccount->PreDeposit);
+		account->set_prebalance(pTradingAccount->PreBalance);
+		account->set_premargin(pTradingAccount->PreMargin);
+		account->set_interestbase(pTradingAccount->InterestBase);
+		account->set_interest(pTradingAccount->Interest);
+		account->set_deposit(pTradingAccount->Deposit);
+		account->set_withdraw(pTradingAccount->Withdraw);
+		account->set_frozenmargin(pTradingAccount->FrozenMargin);
+		account->set_frozencash(pTradingAccount->FrozenCash);
+		account->set_frozencommission(pTradingAccount->FrozenCommission);
+		account->set_currmargin(pTradingAccount->CurrMargin);
+		account->set_cashin(pTradingAccount->CashIn);
+		account->set_commission(pTradingAccount->Commission);
+		account->set_closeprofit(pTradingAccount->CloseProfit);
+		account->set_positionprofit(pTradingAccount->PositionProfit);
+		account->set_balance(pTradingAccount->Balance);
+		account->set_available(pTradingAccount->Available);
+		account->set_withdrawquota(pTradingAccount->WithdrawQuota);
+		account->set_reserve(pTradingAccount->Reserve);
+		account->set_tradingday(pTradingAccount->TradingDay);
+		account->set_settlementid(pTradingAccount->SettlementID);
+		account->set_credit(pTradingAccount->Credit);
+		account->set_mortgage(pTradingAccount->Mortgage);
+		account->set_exchangemargin(pTradingAccount->ExchangeMargin);
+		account->set_deliverymargin(pTradingAccount->DeliveryMargin);
+		account->set_exchangedeliverymargin(pTradingAccount->ExchangeDeliveryMargin);
 	}
 }
 
@@ -280,11 +311,6 @@ void CTradeAgent::OnRspQryInvestorPosition( CThostFtdcInvestorPositionField *pIn
 
 }
 
-void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-	cerr << "--->>> " << "OnRspOrderInsert" << endl;
-	IsErrorRspInfo(pRspInfo);
-}
 
 void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
@@ -337,22 +363,6 @@ void CTradeAgent::OnHeartBeatWarning( int nTimeLapse )
 
 }
 
-void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
-{
-	cerr << "--->>> " << "OnRtnOrder"  << endl;
-	if (IsMyOrder(pOrder))
-	{
-		/*if (IsTradingOrder(pOrder))
-		ReqOrderAction(pOrder);
-		else if (pOrder->OrderStatus == THOST_FTDC_OST_Canceled)
-		cout << "--->>> 撤单成功" << endl;*/
-	}
-}
-
-void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
-{
-	cerr << "--->>> " << "OnRtnTrade"  << endl;
-}
 
 void CTradeAgent::Buy()
 {
@@ -449,4 +459,284 @@ bool CTradeAgent::IsTradingOrder(CThostFtdcOrderField *pOrder)
 		(pOrder->OrderStatus != THOST_FTDC_OST_AllTraded));
 }
 
+bool CTradeAgent::SubmitOrder( const std::vector< boost::shared_ptr<protoc::InputOrder> >& orders )
+{
+	bool suc = true;
 
+	BOOST_FOREACH(const boost::shared_ptr<protoc::InputOrder>& ord, orders)
+	{
+		if(!SubmitOrder(ord.get()))
+			suc = false;
+	}
+
+	return suc;
+}
+
+bool CTradeAgent::SubmitOrder( protoc::InputOrder* pOrder )
+{
+	CThostFtdcInputOrderField req;
+	memset(&req, 0, sizeof(req));
+	///经纪公司代码
+	strcpy(req.BrokerID, pOrder->brokerid().c_str());
+	///投资者代码
+	strcpy(req.InvestorID, pOrder->brokerid().c_str());
+	///合约代码
+	strcpy(req.InstrumentID, pOrder->instrumentid().c_str());
+	///报单引用
+	strcpy(req.OrderRef, pOrder->orderref().c_str());
+	///用户代码
+	//	TThostFtdcUserIDType	UserID;
+	///报单价格条件: 限价
+	req.OrderPriceType = pOrder->orderpricetype();
+	///买卖方向: 
+	req.Direction = pOrder->direction();
+	///组合开平标志: 开仓
+	req.CombOffsetFlag[0] = (pOrder->combhedgeflag())[0];
+	///组合投机套保标志
+	req.CombHedgeFlag[0] = (pOrder->combhedgeflag())[0];
+	///价格
+	req.LimitPrice = pOrder->limitprice();
+	///数量: 1
+	req.VolumeTotalOriginal = pOrder->volumetotaloriginal();
+	///有效期类型: 当日有效
+	req.TimeCondition = pOrder->timecondition();
+	///GTD日期
+	//	TThostFtdcDateType	GTDDate;
+	///成交量类型: 任何数量
+	req.VolumeCondition = pOrder->volumecondition();
+	///最小成交量: 1
+	req.MinVolume = pOrder->minvolume();
+	///触发条件: 立即
+	req.ContingentCondition = pOrder->contingentcondition();
+	///止损价
+	//	TThostFtdcPriceType	StopPrice;
+	///强平原因: 非强平
+	req.ForceCloseReason = pOrder->forceclosereason();
+	///自动挂起标志: 否
+	req.IsAutoSuspend = pOrder->isautosuspend();
+	///业务单元
+	//	TThostFtdcBusinessUnitType	BusinessUnit;
+	///请求编号
+	int iRequestID = RequestIDIncrement();
+	req.RequestID = iRequestID;
+	///用户强评标志: 否
+	req.UserForceClose = pOrder->userforceclose();
+
+	int iResult = m_pUserApi->ReqOrderInsert(&req, iRequestID);
+
+#ifdef _DEBUG
+	ostringstream oss;
+	oss << "--->>> 报单录入请求(OrdRef:" << pOrder->orderref() << ", ReqestID:" << iRequestID << "): " << iResult << ((iResult == 0) ? ", 成功" : ", 失败");
+	logger.Debug(oss.str());
+#endif
+
+	return iResult == 0;
+}
+
+void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	ostringstream oss;
+	oss << "--->>> " << "OnRspOrderInsert ( for RequestID: " << nRequestID << " )" << endl;
+	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
+	if (bResult)
+		oss << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
+	
+	logger.Info(oss.str());
+
+	m_pOrderMgr->OnRspOrderInsert(false, std::string(pRspInfo->ErrorMsg), NULL);
+}
+
+void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
+{
+	ostringstream oss;
+	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
+	logger.Info(oss.str());
+
+	protoc::Order* pOrd = new protoc::Order;
+
+	///经纪公司代码
+	pOrd->set_brokerid(pOrder->BrokerID);
+	///投资者代码
+	pOrd->set_investorid(pOrder->InvestorID);
+	///合约代码
+	pOrd->set_instrumentid(pOrder->InstrumentID);
+	///报单引用
+	pOrd->set_orderref(pOrder->OrderRef);
+	///用户代码
+	pOrd->set_userid(pOrder->UserID);
+	///报单价格条件
+	pOrd->set_orderpricetype(static_cast	<protoc::OrderPriceTypeType>(pOrder->OrderPriceType));
+	///买卖方向
+	pOrd->set_direction(static_cast<protoc::TradeDirectionType>(pOrder->Direction));
+	///组合开平标志
+	pOrd->set_comboffsetflag(pOrder->CombOffsetFlag);
+	///组合投机套保标志
+	pOrd->set_combhedgeflag(pOrder->CombHedgeFlag);
+	///价格
+	pOrd->set_limitprice(pOrder->LimitPrice);
+	///数量
+	pOrd->set_volumetotaloriginal(pOrder->VolumeTotalOriginal);
+	///有效期类型
+	pOrd->set_timecondition(static_cast<protoc::TimeConditionType>(pOrder->TimeCondition));
+	///GTD日期
+	pOrd->set_gtddate(pOrder->GTDDate);
+	///成交量类型
+	pOrd->set_volumecondition(static_cast<protoc::VolumeConditionType>(pOrder->VolumeCondition));
+	///最小成交量
+	pOrd->set_minvolume(pOrder->MinVolume);
+	///触发条件
+	pOrd->set_contingentcondition(static_cast<protoc::ContingentConditionType>(pOrder->ContingentCondition));
+	///止损价
+	pOrd->set_stopprice(pOrder->StopPrice);
+	///强平原因
+	pOrd->set_forceclosereason(static_cast<protoc::ForceCloseReasonType>(pOrder->ForceCloseReason));
+	///自动挂起标志
+	pOrd->set_isautosuspend(pOrder->IsAutoSuspend);
+	///业务单元
+	pOrd->set_businessunit(pOrder->BusinessUnit);
+	///请求编号
+	pOrd->set_requestid(pOrder->RequestID);
+	// Above fields are same as InputOrder's
+	////////////////////////////////////////////////////////////////////
+
+	///本地报单编号
+	pOrd->set_orderlocalid(pOrder->OrderLocalID);
+	///交易所代码
+	pOrd->set_exchangeid(pOrder->ExchangeID);
+	///会员代码
+	pOrd->set_participantid(pOrder->ParticipantID);
+	///客户代码
+	pOrd->set_clientid(pOrder->ClientID);
+	///合约在交易所的代码
+	pOrd->set_exchangeinstid(pOrder->ExchangeInstID);
+	///交易所交易员代码
+	pOrd->set_traderid(pOrder->TraderID);
+	///安装编号
+	pOrd->set_installid(pOrder->InstallID);
+	///报单提交状态
+	pOrd->set_ordersubmitstatus(static_cast<protoc::OrderSubmitStatusType>(pOrder->OrderSubmitStatus));
+	///报单提示序号
+	pOrd->set_notifysequence(pOrder->NotifySequence);
+	///交易日
+	pOrd->set_tradingday(pOrder->TradingDay);
+	///结算编号
+	pOrd->set_settlementid(pOrder->SettlementID);
+	///报单编号
+	pOrd->set_ordersysid(pOrder->OrderSysID);
+	///报单来源
+	pOrd->set_ordersource(static_cast<protoc::OrderSourceType>(pOrder->OrderSource));
+	///报单状态
+	pOrd->set_orderstatus(static_cast<protoc::OrderStatusType>(pOrder->OrderStatus));
+	///报单类型
+	pOrd->set_ordertype(static_cast<protoc::OrderTypeType>(pOrder->OrderType));
+	///今成交数量
+	pOrd->set_volumetraded(pOrder->VolumeTraded);
+	///剩余数量
+	pOrd->set_volumetotal(pOrder->VolumeTotal);
+	///报单日期
+	pOrd->set_insertdate(pOrder->InsertDate);
+	///委托时间
+	pOrd->set_inserttime(pOrder->InsertTime);
+	///激活时间
+	pOrd->set_activetime(pOrder->ActiveTime);
+	///挂起时间
+	pOrd->set_suspendtime(pOrder->SuspendTime);
+	///最后修改时间
+	pOrd->set_updatetime(pOrder->UpdateTime);
+	///撤销时间
+	pOrd->set_canceltime(pOrder->CancelTime);
+	///最后修改交易所交易员代码
+	pOrd->set_activetraderid(pOrder->ActiveTraderID);
+	///结算会员编号
+	pOrd->set_clearingpartid(pOrder->ClearingPartID);
+	///序号
+	pOrd->set_sequenceno(pOrder->SequenceNo);
+	///前置编号
+	pOrd->set_frontid(pOrder->FrontID);
+	///会话编号
+	pOrd->set_sessionid(pOrder->SessionID);
+	///用户端产品信息
+	pOrd->set_userproductinfo(pOrder->UserProductInfo);
+	///状态信息
+	pOrd->set_statusmsg(pOrder->StatusMsg);
+	///用户强评标志
+	pOrd->set_userforceclose(pOrder->UserForceClose);
+	///操作用户代码
+	pOrd->set_activeuserid(pOrder->ActiveUserID);
+	///经纪公司报单编号
+	pOrd->set_brokerorderseq(pOrder->BrokerOrderSeq);
+	///相关报单
+	pOrd->set_relativeordersysid(pOrder->RelativeOrderSysID);
+
+	m_pOrderMgr->OnRspOrderInsert(true, std::string(""), pOrd);
+}
+
+void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
+{
+	ostringstream oss;
+	oss << "--->>> " << "OnRtnTrade (OrdRef:"  << pTrade->OrderRef << ") TradeId:" << pTrade->TradeID;
+	logger.Info(oss.str());
+
+	protoc::Trade* pTd = new protoc::Trade;
+
+	///经纪公司代码
+	pTd->set_brokerid(pTrade->BrokerID);
+	///投资者代码
+	pTd->set_investorid(pTrade->InvestorID);
+	///合约代码
+	pTd->set_instrumentid(pTrade->InstrumentID);
+	///报单引用
+	pTd->set_orderref(pTrade->OrderRef);
+	///用户代码
+	pTd->set_userid(pTrade->UserID);
+	///交易所代码
+	pTd->set_exchangeid(pTrade->ExchangeID);
+	///成交编号
+	pTd->set_tradeid(pTrade->TradeID);
+	///买卖方向
+	pTd->set_direction(static_cast<protoc::TradeDirectionType>(pTrade->Direction));
+	///报单编号
+	pTd->set_ordersysid(pTrade->OrderSysID);
+	///会员代码
+	pTd->set_participantid(pTrade->ParticipantID);
+	///客户代码
+	pTd->set_clientid(pTrade->ClientID);
+	///交易角色
+	pTd->set_tradingrole(static_cast<protoc::TradingRoleType>(pTrade->TradingRole));
+	///合约在交易所的代码
+	pTd->set_exchangeinstid(pTrade->ExchangeInstID);
+	///开平标志
+	pTd->set_offsetflag(static_cast<protoc::OffsetFlagType>(pTrade->OffsetFlag));
+	///投机套保标志
+	pTd->set_hedgeflag(static_cast<protoc::HedgeFlagType>(pTrade->HedgeFlag));
+	///价格
+	pTd->set_price(pTrade->Price);
+	///数量
+	pTd->set_volume(pTrade->Volume);
+	///成交时期
+	pTd->set_tradedate(pTrade->TradeDate);
+	///成交时间
+	pTd->set_tradetime(pTrade->TradeTime);
+	///成交类型
+	pTd->set_tradetype(static_cast<protoc::TradeTypeType>(pTrade->TradeType));
+	///成交价来源
+	pTd->set_pricesource(static_cast<protoc::PriceSourceType>(pTrade->PriceSource));
+	///交易所交易员代码
+	pTd->set_traderid(pTrade->TraderID);
+	///本地报单编号
+	pTd->set_orderlocalid(pTrade->OrderLocalID);
+	///结算会员编号
+	pTd->set_clearingpartid(pTrade->ClearingPartID);
+	///业务单元
+	pTd->set_businessunit(pTrade->BusinessUnit);
+	///序号
+	pTd->set_sequenceno(pTrade->SequenceNo);
+	///交易日
+	pTd->set_tradingday(pTrade->TradingDay);
+	///结算编号
+	pTd->set_settlementid(pTrade->SettlementID);
+	///经纪公司报单编号
+	pTd->set_brokerorderseq(pTrade->BrokerOrderSeq);
+
+	m_pOrderMgr->OnRtnTrade(pTd);
+}
