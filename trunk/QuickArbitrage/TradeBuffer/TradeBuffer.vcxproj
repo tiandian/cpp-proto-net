@@ -115,8 +115,8 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="MarketAgentCallback.h" />
     <ClInclude Include="MsgPack.h" />
     <ClInclude Include="MsgType.h" />
-    <ClInclude Include="OrderHelper.h" />
     <ClInclude Include="OrderManager.h" />
+    <ClInclude Include="OrderRepository.h" />
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="protobuf_gen\heartbeat.pb.h" />
     <ClInclude Include="protobuf_gen\login.pb.h" />
@@ -140,8 +140,8 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MarketAgent.cpp" />
     <ClCompile Include="MarketAgentCallback.cpp" />
-    <ClCompile Include="OrderHelper.cpp" />
     <ClCompile Include="OrderManager.cpp" />
+    <ClCompile Include="OrderRepository.cpp" />
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="protobuf_gen\heartbeat.pb.cc" />
     <ClCompile Include="protobuf_gen\login.pb.cc" />

@@ -118,7 +118,7 @@
     <ClInclude Include="Leg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrderHelper.h">
+    <ClInclude Include="OrderRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -186,7 +186,7 @@
     <ClCompile Include="Leg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrderHelper.cpp">
+    <ClCompile Include="OrderRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

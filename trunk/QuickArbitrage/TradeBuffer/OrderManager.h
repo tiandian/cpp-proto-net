@@ -4,6 +4,7 @@
 #include "RemoteClient.h"
 #include "TradeAgent.h"
 #include "Portfolio.h"
+#include "OrderRepository.h"
 
 #include <string>
 #include <vector>
@@ -11,6 +12,9 @@
 
 typedef std::vector< boost::shared_ptr< CPortfolio > > PortfolioVector;
 typedef PortfolioVector::iterator PortfolioVecIter;
+
+typedef std::vector< boost::shared_ptr<protoc::InputOrder> > InputOrderVec;
+typedef InputOrderVec::iterator InputOrderVecIter;
 
 class COrderManager : public QuoteListener
 {
@@ -51,23 +55,10 @@ public:
 	// Below methods are callbacks for CTradeAgent 
 
 	///登录请求响应
-	void OnRspUserLogin(bool succ, std::string& msg, int initOrderRefID)
-	{
-		if(m_pClient != NULL)
-		{
-			m_pClient->OnRegisterResult(succ, msg);
-		}
-
-		if(succ){
-			m_orderRefID = initOrderRefID;
-		}
-		else{
-			SetCurrentClient(NULL);
-		}
-	}
+	void OnRspUserLogin(bool succ, std::string& msg, int initOrderRefID);
 
 	///报单录入请求响应
-	void OnRspOrderInsert(bool succ, std::string& msg, protoc::Order* order);
+	void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg, protoc::Order* order);
 
 	///成交通知
 	void OnRtnTrade(protoc::Trade* pTrade);
@@ -101,11 +92,14 @@ private:
 
 	PortfolioVecIter FindPortfolio(const boost::uuids::uuid& pid);
 
+	boost::shared_ptr<protoc::InputOrder> CreateInputOrderByLeg(CLeg* leg);
+
 	CTradeAgent	m_tradeAgent;
 	
 	ClientBase* m_pClient;
 
 	PortfolioVector m_portfolioVec;
+	COrderRepository m_orderRepo;
 
 	int m_orderRefID;
 	boost::mutex m_mutOrderRef;

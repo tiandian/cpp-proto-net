@@ -6,6 +6,15 @@
 
 class CPortfolio;
 
+typedef enum _Leg_Status
+{
+	UNOPENED,
+	IS_OPENING,
+	OPENED,
+	IS_CLOSING,
+	CLOSED = UNOPENED 
+} LEG_STATUS;
+
 class CLeg
 {
 public:
@@ -23,6 +32,23 @@ public:
 
 	int GetQuantity();
 
+	bool GetIsOpened(){ return m_legStatus == OPENED; }
+	
+	LEG_STATUS GetStatus() { return m_legStatus; }
+	void SetStatus(LEG_STATUS status) { m_legStatus = status; }
+
+	protoc::OrderStatusType GetOrderStatus(){ return m_orderStatus; }
+	void SetOrderStatus(protoc::OrderStatusType status){ m_orderStatus = status; }
+
+	protoc::OrderSubmitStatusType GetOrderSubmitStatus(){ return m_orderSubmitStatus; }
+	void SetOrderSubmitStatus(protoc::OrderSubmitStatusType status){ m_orderSubmitStatus = status; }
+
+	const std::string& GetOrderRef() { return m_orderRef; }
+	void SetOrderRef(const std::string& orderRef) { m_orderRef = orderRef; }
+
+	const std::string& GetMessage() { return m_sMsg; }
+	void SetMessage(const std::string& msg) { m_sMsg = msg; }
+
 private:
 	CPortfolio* m_pPortfolio;
 
@@ -31,7 +57,12 @@ private:
 	int m_ratio;
 	int m_quantity;
 
-	bool m_isOpening;
+	LEG_STATUS m_legStatus;
 	protoc::OrderStatusType m_orderStatus;
+	protoc::OrderSubmitStatusType m_orderSubmitStatus;
+
+	std::string m_orderRef;
+	
+	std::string m_sMsg;
 };
 

@@ -536,14 +536,14 @@ bool CTradeAgent::SubmitOrder( protoc::InputOrder* pOrder )
 void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 	ostringstream oss;
-	oss << "--->>> " << "OnRspOrderInsert ( for RequestID: " << nRequestID << " )" << endl;
+	oss << "--->>> " << "OnRspOrderInsert for order ( OrderRef: " << pInputOrder->OrderRef << " ) with RequestID: " << nRequestID <<  endl;
 	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
 	if (bResult)
 		oss << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
 	
 	logger.Info(oss.str());
 
-	m_pOrderMgr->OnRspOrderInsert(false, std::string(pRspInfo->ErrorMsg), NULL);
+	m_pOrderMgr->OnRspOrderInsert(false, std::string(pInputOrder->OrderRef), std::string(pRspInfo->ErrorMsg), NULL);
 }
 
 void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
@@ -668,7 +668,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	///相关报单
 	pOrd->set_relativeordersysid(pOrder->RelativeOrderSysID);
 
-	m_pOrderMgr->OnRspOrderInsert(true, std::string(""), pOrd);
+	m_pOrderMgr->OnRspOrderInsert(true, pOrd->orderref(), std::string(""), pOrd);
 }
 
 void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
