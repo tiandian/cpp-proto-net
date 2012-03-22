@@ -6,7 +6,8 @@
 
 CLeg::CLeg(CPortfolio* portfolio) :
 	m_pPortfolio(portfolio),
-	m_isOpening(false)
+	m_legStatus(UNOPENED),
+	m_orderStatus(protoc::STATUS_UNKNOWN)
 {
 }
 
