@@ -55,8 +55,7 @@ private:
 	std::string m_symbol;
 	protoc::PosiDirectionType m_side;
 	int m_ratio;
-	int m_quantity;
-
+	
 	LEG_STATUS m_legStatus;
 	protoc::OrderStatusType m_orderStatus;
 	protoc::OrderSubmitStatusType m_orderSubmitStatus;

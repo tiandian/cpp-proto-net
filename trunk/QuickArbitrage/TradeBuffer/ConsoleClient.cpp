@@ -4,6 +4,8 @@
 #include "OrderManager.h"
 #include "protobuf_gen/trade.pb.h"
 
+#include <boost/uuid/uuid.hpp>
+
 extern CLogManager logger;
 extern COrderManager g_orderMgr;
 
@@ -82,6 +84,8 @@ void CConsoleClient::Buy()
 	g_orderMgr.Buy();
 }
 
+boost::uuids::uuid uidPortfolio;
+
 void CConsoleClient::AddPortfolio()
 {
 	CPortfolio* pPortfolio = new CPortfolio();
@@ -100,4 +104,12 @@ void CConsoleClient::AddPortfolio()
 	pLeg->SetRatio(1);
 
 	g_orderMgr.AddPortfolio(pPortfolio);
+
+	uidPortfolio = pPortfolio->GetID();
+}
+
+
+void CConsoleClient::OpenPosition()
+{
+	g_orderMgr.Portfolio_OpenPosition(uidPortfolio);
 }

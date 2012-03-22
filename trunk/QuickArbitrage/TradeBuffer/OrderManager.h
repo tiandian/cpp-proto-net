@@ -58,7 +58,10 @@ public:
 	void OnRspUserLogin(bool succ, std::string& msg, int initOrderRefID);
 
 	///报单录入请求响应
-	void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg, protoc::Order* order);
+	void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg);
+
+	///报单通知
+	void OnRtnOrder(protoc::Order* order);
 
 	///成交通知
 	void OnRtnTrade(protoc::Trade* pTrade);
@@ -81,8 +84,7 @@ public:
 	void OnRspOrderAction(){}
 
 
-	///报单通知
-	void OnRtnOrder(){}
+	
 
 	
 	//////////////////////////////////////////////////////////////////////////

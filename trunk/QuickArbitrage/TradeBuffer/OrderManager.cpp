@@ -174,7 +174,7 @@ const char* COrderManager::NextOrderRef()
 	return ORDER_REF_BUF;
 }
 
-void COrderManager::OnRspOrderInsert( bool succ, const std::string& orderRef, const std::string& msg, protoc::Order* order )
+void COrderManager::OnRspOrderInsert( bool succ, const std::string& orderRef, const std::string& msg)
 {
 	if(orderRef.length() == 0)
 	{
@@ -182,30 +182,38 @@ void COrderManager::OnRspOrderInsert( bool succ, const std::string& orderRef, co
 		return;
 	}
 
-	COrderItem* pOrderItem = m_orderRepo.GetOrderItem(orderRef);
-
-	if(succ)
+	// Once get here, there must be something wrong while order insert action
+	if(!succ)
 	{
-		if(order != NULL)
-		{
-			// Leg status will be changed accordingly HERE.
-			pOrderItem->SetOrder(OrderPtr(order));
-		}
-		else
-		{
-			logger.Warning("OrderInsert didn't return order object!");
-		}
-	}
-	else
-	{
-		// something is wrong with order insert action
+		COrderItem* pOrderItem = m_orderRepo.GetOrderItem(orderRef);
 		(pOrderItem->GetLeg())->SetMessage(msg);
 	}
 }
 
+
+void COrderManager::OnRtnOrder( protoc::Order* order )
+{
+	string orderRef = order->orderref();
+	
+	if(order != NULL)
+	{
+		COrderItem* pOrderItem = m_orderRepo.GetOrderItem(orderRef);
+		// Leg status will be changed accordingly HERE.
+		pOrderItem->SetOrder(OrderPtr(order));
+	}
+	else
+	{
+		logger.Warning("OrderInsert didn't return order object!");
+	}
+
+}
+
+
 void COrderManager::OnRtnTrade( protoc::Trade* pTrade )
 {
-
+	ostringstream oss;
+	oss << pTrade->instrumentid() << ": " << pTrade->price() << ", " << pTrade->volume() << ", " << pTrade->tradetime();
+	logger.Info(oss.str());
 }
 
 void COrderManager::OnRspUserLogin( bool succ, std::string& msg, int initOrderRefID )
@@ -226,8 +234,8 @@ void COrderManager::OnRspUserLogin( bool succ, std::string& msg, int initOrderRe
 boost::shared_ptr<protoc::InputOrder> COrderManager::CreateInputOrderByLeg( CLeg* leg )
 {
 	boost::shared_ptr<protoc::InputOrder> order(new protoc::InputOrder);
-	order->set_brokerid("0240");
-	order->set_investorid("0240050002");
+	//order->set_brokerid("0240");
+	//order->set_investorid("0240050002");
 	order->set_instrumentid(leg->GetSymbol());
 
 	order->set_orderref(NextOrderRef());

@@ -38,6 +38,8 @@ void ConsoleExecuteUnSubscribe(CConsoleClient* pConsole);
 void ConsoleExecuteLogin(CConsoleClient& console, string& cmd);
 void ConsoleExecuteLogout(CConsoleClient& console);
 void ConsoleExecuteBuy(CConsoleClient& console, string& cmd);
+void ConsoleExecuteAddPortfolio(CConsoleClient& console, string& cmd);
+void ConsoleExecuteOpenPortfolio(CConsoleClient& console, string& cmd);
 
 boost::condition_variable _condExit;
 boost::mutex _mut;
@@ -118,6 +120,14 @@ int _tmain(int argc, _TCHAR* argv[])
 			else if(boost::istarts_with(command, "buy"))
 			{
 				ConsoleExecuteBuy(consoleClient, command);
+			}
+			else if(command == "add portfolio")
+			{
+				ConsoleExecuteAddPortfolio(consoleClient, command);
+			}
+			else if(command == "open portfolio")
+			{
+				ConsoleExecuteOpenPortfolio(consoleClient, command);
 			}
 			else if(command == "list")
 			{
@@ -210,6 +220,15 @@ void ConsoleExecuteLogin(CConsoleClient& console, string& cmd)
 
 		cout << "Console client logged in successfully." << endl;
 	}
+	else if(splitVec.size() == 1)
+	{
+		string brokerId = "0240";
+		string uid = "0240050003";
+		string pwd = "888888";
+		bool succ = console.Login(brokerId, uid, pwd);
+
+		cout << "Console client logged in successfully." << endl;
+	}
 	else
 	{
 		cout << "Invalid login arguments. [e.g. login [account] [password]]" << endl;
@@ -225,4 +244,13 @@ void ConsoleExecuteLogout(CConsoleClient& console)
 void ConsoleExecuteBuy(CConsoleClient& console, string& cmd)
 {
 	console.Buy();
+}
+
+void ConsoleExecuteAddPortfolio(CConsoleClient& console, string& cmd)
+{
+	console.AddPortfolio();
+}
+void ConsoleExecuteOpenPortfolio(CConsoleClient& console, string& cmd)
+{
+	console.OpenPosition();
 }

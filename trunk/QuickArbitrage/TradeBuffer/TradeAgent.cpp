@@ -477,9 +477,9 @@ bool CTradeAgent::SubmitOrder( protoc::InputOrder* pOrder )
 	CThostFtdcInputOrderField req;
 	memset(&req, 0, sizeof(req));
 	///经纪公司代码
-	strcpy(req.BrokerID, pOrder->brokerid().c_str());
+	strcpy(req.BrokerID, m_brokerId.c_str());
 	///投资者代码
-	strcpy(req.InvestorID, pOrder->brokerid().c_str());
+	strcpy(req.InvestorID, m_userId.c_str());
 	///合约代码
 	strcpy(req.InstrumentID, pOrder->instrumentid().c_str());
 	///报单引用
@@ -491,7 +491,7 @@ bool CTradeAgent::SubmitOrder( protoc::InputOrder* pOrder )
 	///买卖方向: 
 	req.Direction = pOrder->direction();
 	///组合开平标志: 开仓
-	req.CombOffsetFlag[0] = (pOrder->combhedgeflag())[0];
+	req.CombOffsetFlag[0] = (pOrder->comboffsetflag())[0];
 	///组合投机套保标志
 	req.CombHedgeFlag[0] = (pOrder->combhedgeflag())[0];
 	///价格
@@ -543,7 +543,7 @@ void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CTho
 	
 	logger.Info(oss.str());
 
-	m_pOrderMgr->OnRspOrderInsert(false, std::string(pInputOrder->OrderRef), std::string(pRspInfo->ErrorMsg), NULL);
+	m_pOrderMgr->OnRspOrderInsert(false, std::string(pInputOrder->OrderRef), std::string(pRspInfo->ErrorMsg));
 }
 
 void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
@@ -624,11 +624,19 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	///报单编号
 	pOrd->set_ordersysid(pOrder->OrderSysID);
 	///报单来源
-	pOrd->set_ordersource(static_cast<protoc::OrderSourceType>(pOrder->OrderSource));
+	// sometimes OrderSource could be 0 insteade of '0'
+	if(pOrder->OrderSource < protoc::PARTICIPANT)
+		pOrd->set_ordersource(protoc::PARTICIPANT);
+	else
+		pOrd->set_ordersource(static_cast<protoc::OrderSourceType>(pOrder->OrderSource));
 	///报单状态
 	pOrd->set_orderstatus(static_cast<protoc::OrderStatusType>(pOrder->OrderStatus));
 	///报单类型
-	pOrd->set_ordertype(static_cast<protoc::OrderTypeType>(pOrder->OrderType));
+	// Sometimes OrderType could be 0 instead of '0'
+	if(pOrder->OrderType < protoc::NORMAL_ORDER)
+		pOrd->set_ordertype(protoc::NORMAL_ORDER);
+	else
+		pOrd->set_ordertype(static_cast<protoc::OrderTypeType>(pOrder->OrderType));
 	///今成交数量
 	pOrd->set_volumetraded(pOrder->VolumeTraded);
 	///剩余数量
@@ -668,7 +676,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	///相关报单
 	pOrd->set_relativeordersysid(pOrder->RelativeOrderSysID);
 
-	m_pOrderMgr->OnRspOrderInsert(true, pOrd->orderref(), std::string(""), pOrd);
+	m_pOrderMgr->OnRtnOrder(pOrd);
 }
 
 void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
