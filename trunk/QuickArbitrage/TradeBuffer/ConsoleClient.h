@@ -17,8 +17,9 @@ public:
 
 	void Buy();
 
-	void AddPortfolio();
+	void AddPortfolio(double longPrice = 0, double shortPrice = 0);
 	void OpenPosition();
+	void ShowPortfolio();
 
 protected:
 	virtual void ProcessQuote(CTP::Quote* pQuote);

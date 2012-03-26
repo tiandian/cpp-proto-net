@@ -48,6 +48,14 @@ void COrderItem::SetOrder( OrderPtr& pOrder )
 	m_order = pOrder;
 }
 
+void COrderItem::UpdateTrade( protoc::Trade* pTrade )
+{
+	if(pTrade->offsetflag() == protoc::OF_OPEN)
+	{
+		m_pLeg->SetCost(pTrade->price());
+	}
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Below is COrderRepository implementation

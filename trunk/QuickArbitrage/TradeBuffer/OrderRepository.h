@@ -23,6 +23,8 @@ public:
 
 	CLeg* GetLeg(){ return m_pLeg; }
 
+	void UpdateTrade( protoc::Trade* pTrade);
+
 private:
 	OrderPtr m_order;
 	CLeg* m_pLeg;

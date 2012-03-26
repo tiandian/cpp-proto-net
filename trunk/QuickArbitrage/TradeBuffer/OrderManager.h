@@ -39,6 +39,8 @@ public:
 
 	int GetPortfolioCount() { return m_portfolioVec.size(); }
 
+	const PortfolioVector& GetPortfolios() { return m_portfolioVec; }
+
 	bool Portfolio_OpenPosition(const boost::uuids::uuid& pid);
 	bool Portfolio_ClosePosition(const boost::uuids::uuid& pid);
 
