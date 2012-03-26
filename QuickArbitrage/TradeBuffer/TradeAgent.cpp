@@ -710,7 +710,14 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 	///客户代码
 	pTd->set_clientid(pTrade->ClientID);
 	///交易角色
-	pTd->set_tradingrole(static_cast<protoc::TradingRoleType>(pTrade->TradingRole));
+	if(pTrade->TradingRole < protoc::ER_BROKER)
+	{
+		pTd->set_tradingrole(protoc::ER_BROKER);
+	}
+	else
+	{
+		pTd->set_tradingrole(static_cast<protoc::TradingRoleType>(pTrade->TradingRole));
+	}
 	///合约在交易所的代码
 	pTd->set_exchangeinstid(pTrade->ExchangeInstID);
 	///开平标志
@@ -726,9 +733,15 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 	///成交时间
 	pTd->set_tradetime(pTrade->TradeTime);
 	///成交类型
-	pTd->set_tradetype(static_cast<protoc::TradeTypeType>(pTrade->TradeType));
+	if(pTrade->TradeType < protoc::TRDT_COMMON)
+		pTd->set_tradetype(protoc::TRDT_COMMON);
+	else
+		pTd->set_tradetype(static_cast<protoc::TradeTypeType>(pTrade->TradeType));
 	///成交价来源
-	pTd->set_pricesource(static_cast<protoc::PriceSourceType>(pTrade->PriceSource));
+	if(pTrade->PriceSource < protoc::PSRC_LAST_PRICE)
+		pTd->set_pricesource(protoc::PSRC_LAST_PRICE);
+	else
+		pTd->set_pricesource(static_cast<protoc::PriceSourceType>(pTrade->PriceSource));
 	///交易所交易员代码
 	pTd->set_traderid(pTrade->TraderID);
 	///本地报单编号

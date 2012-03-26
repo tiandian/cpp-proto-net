@@ -5,6 +5,10 @@
 #include "protobuf_gen/trade.pb.h"
 
 #include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/foreach.hpp>
+
+using namespace std;
 
 extern CLogManager logger;
 extern COrderManager g_orderMgr;
@@ -86,7 +90,7 @@ void CConsoleClient::Buy()
 
 boost::uuids::uuid uidPortfolio;
 
-void CConsoleClient::AddPortfolio()
+void CConsoleClient::AddPortfolio(double longPrice, double shortPrice)
 {
 	CPortfolio* pPortfolio = new CPortfolio();
 	pPortfolio->SetQuantity(1);
@@ -96,12 +100,16 @@ void CConsoleClient::AddPortfolio()
 	pLeg->SetSymbol(std::string("cu1206"));
 	pLeg->SetSide(protoc::LONG);
 	pLeg->SetRatio(1);
+	pLeg->SetOpenOrderPriceType(longPrice > 0 ? protoc::LIMIT_PRICE : protoc::ANY_PRICE);
+	pLeg->SetOpenLimitPrice(longPrice);
 
 	// short cu1207
 	pLeg = pPortfolio->AddLeg();
 	pLeg->SetSymbol(std::string("cu1207"));
 	pLeg->SetSide(protoc::SHORT);
 	pLeg->SetRatio(1);
+	pLeg->SetOpenOrderPriceType(shortPrice > 0 ? protoc::LIMIT_PRICE : protoc::ANY_PRICE);
+	pLeg->SetOpenLimitPrice(shortPrice);
 
 	g_orderMgr.AddPortfolio(pPortfolio);
 
@@ -112,4 +120,26 @@ void CConsoleClient::AddPortfolio()
 void CConsoleClient::OpenPosition()
 {
 	g_orderMgr.Portfolio_OpenPosition(uidPortfolio);
+}
+
+void CConsoleClient::ShowPortfolio()
+{
+	const PortfolioVector& portfolios = g_orderMgr.GetPortfolios();
+	// print all portfolios with legs
+	BOOST_FOREACH(const boost::shared_ptr< CPortfolio >& portfo, portfolios)
+	{
+		cout << "Portfolio ID: " << portfo->GetID() << endl;
+		const LegVector& legs = portfo->GetLegs();
+		int i = 0;
+		BOOST_FOREACH(const boost::shared_ptr<CLeg>& leg, legs)
+		{
+			cout << "leg " << ++i << ": " ;
+			cout << setw(10) << leg->GetSymbol() << setw(10) << leg->GetQuantity();
+			cout << setw(10) << leg->GetSideText() << setw(15) << leg->GetStatusText();
+			cout << setw(20) << leg->GetOrderSubmitStatusText() << setw(30) << leg->GetOrderStatusText();
+			cout << setw(10) << leg->GetOpenLimitPrice() << setw(10) << leg->GetCost() << setw(10) << leg->GetCloseLimitPrice(); 
+			cout << "    " << leg->GetStatusMessage();
+			cout << endl;
+		}
+	}
 }

@@ -15,6 +15,7 @@
 #include <boost/thread/locks.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/foreach.hpp>
+#include <boost/lexical_cast.hpp>
 #include <google/protobuf/stubs/common.h>
 
 
@@ -40,6 +41,9 @@ void ConsoleExecuteLogout(CConsoleClient& console);
 void ConsoleExecuteBuy(CConsoleClient& console, string& cmd);
 void ConsoleExecuteAddPortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteOpenPortfolio(CConsoleClient& console, string& cmd);
+void ConsoleExecuteShowPortfolio(CConsoleClient& console, string& cmd);
+
+typedef vector< string > split_vector_type;
 
 boost::condition_variable _condExit;
 boost::mutex _mut;
@@ -121,13 +125,17 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				ConsoleExecuteBuy(consoleClient, command);
 			}
-			else if(command == "add portfolio")
+			else if(boost::istarts_with(command, "add portfolio"))
 			{
 				ConsoleExecuteAddPortfolio(consoleClient, command);
 			}
 			else if(command == "open portfolio")
 			{
 				ConsoleExecuteOpenPortfolio(consoleClient, command);
+			}
+			else if(command == "show")
+			{
+				ConsoleExecuteShowPortfolio(consoleClient, command);
 			}
 			else if(command == "list")
 			{
@@ -206,8 +214,6 @@ void ConsoleExecuteUnSubscribe(CConsoleClient* pConsole)
 
 void ConsoleExecuteLogin(CConsoleClient& console, string& cmd)
 {
-	typedef vector< string > split_vector_type;
-
 	split_vector_type splitVec; 
 	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
 
@@ -248,9 +254,38 @@ void ConsoleExecuteBuy(CConsoleClient& console, string& cmd)
 
 void ConsoleExecuteAddPortfolio(CConsoleClient& console, string& cmd)
 {
-	console.AddPortfolio();
+	split_vector_type splitVec;
+	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
+
+	double longPrice = 0, shortPrice = 0;
+
+	if(splitVec.size() == 2)
+	{
+		console.AddPortfolio();
+	}
+	else if(splitVec.size() == 3)
+	{
+		longPrice =  boost::lexical_cast<double>(splitVec[2]);
+		console.AddPortfolio(longPrice, shortPrice);
+	}
+	else if(splitVec.size() == 4)
+	{
+		longPrice =  boost::lexical_cast<double>(splitVec[2]);
+		shortPrice = boost::lexical_cast<double>(splitVec[3]);
+		console.AddPortfolio(longPrice, shortPrice);
+	}
+	else
+	{
+		cout << "Please input e.g. 'add portfolio 59000 60000'" << endl;
+	}
 }
+
 void ConsoleExecuteOpenPortfolio(CConsoleClient& console, string& cmd)
 {
 	console.OpenPosition();
+}
+
+void ConsoleExecuteShowPortfolio(CConsoleClient& console, string& cmd)
+{
+	console.ShowPortfolio();
 }
