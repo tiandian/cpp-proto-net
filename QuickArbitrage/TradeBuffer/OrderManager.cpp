@@ -87,6 +87,9 @@ void COrderManager::Unregister( std::string& brokerId, std::string& userId )
 	{
 		m_tradeAgent.Logout();
 		m_pClient = NULL;
+
+		m_portfolioVec.clear();
+		m_orderRepo.Clear();
 	}
 }
 
@@ -314,6 +317,8 @@ void COrderManager::OnRspUserLogin( bool succ, std::string& msg, int initOrderRe
 
 	if(succ){
 		m_orderRefID = initOrderRefID;
+		m_database.EnsureValid(m_tradeAgent.GetUserId().c_str());
+		m_database.FetchPortfolio(m_portfolioVec);
 	}
 	else{
 		SetCurrentClient(NULL);

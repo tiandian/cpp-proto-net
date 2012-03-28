@@ -46,6 +46,7 @@ public:
 
 	int GetOrderItemCount();
 
+	void Clear();
 
 private:
 	typedef std::map< std::string, OrderItemPtr> OrderItemMap;

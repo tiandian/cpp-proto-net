@@ -9,6 +9,7 @@ class CDBAccess
 {
 public:
 	CDBAccess(const char* dbFilePath, bool shareConnection = false);
+	CDBAccess();
 	~CDBAccess(void);
 
 	bool Open();
@@ -23,10 +24,16 @@ public:
 	bool CheckTableExist(const string& tableName);
 	bool CheckTableExist(const char* tableName);
 
+	const string& GetDBFile() { return m_dbFile; }
+	void SetDBFile(const string& dbFile) { m_dbFile = dbFile; }
+
 	bool GetIsSharingConnection() { return m_shareConnection; }
 	void SetIsSharingConnection(bool val) { m_shareConnection = val; }
 
-private:
+protected:
+
+	int Exec(const string& sql, char** szErr);
+	int Exec(const char* sql, char** szErr);
 
 	sqlite3* m_db;
 	string m_dbFile;

@@ -23,6 +23,8 @@ public:
 		return boost::make_tuple(boost::ref(m_brokerId), boost::ref(m_userId), boost::ref(m_password));
 	}
 
+	const std::string& GetUserId() { return m_userId; }
+
 	void Buy();
 
 	bool SubmitOrder( const std::vector< boost::shared_ptr<protoc::InputOrder> >& orders);
