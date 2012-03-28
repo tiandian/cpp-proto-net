@@ -103,6 +103,7 @@ void COrderManager::AddPortfolio( CPortfolio* pPortfolio )
 {
 	boost::shared_ptr<CPortfolio> portfolio(pPortfolio);
 	m_portfolioVec.push_back(portfolio);
+	m_database.AddPortfolio(pPortfolio);
 }
 
 PortfolioVecIter COrderManager::FindPortfolio( const boost::uuids::uuid& pid )
@@ -173,11 +174,47 @@ bool COrderManager::Portfolio_ClosePosition( const boost::uuids::uuid& pid )
 		{
 			// create input order
 			boost::shared_ptr<protoc::InputOrder> order = CreateInputOrderByLeg(leg.get());
+			
+			if(order == NULL)
+				continue;	// leg is invalid to create input order, ignore it
+			
 			// record the OrderRef
 			leg->SetStatus(IS_CLOSING);
 			
 			bool submit = m_tradeAgent.SubmitOrder(order.get());
 			if(!submit) ret = false;
+		}
+	}
+
+	return ret;
+}
+
+bool COrderManager::Portfolio_CancelLegOrder( const boost::uuids::uuid& pid, int legIdx /*= -1*/ )
+{
+	bool ret = true;
+
+	CPortfolio* pPortfolio = GetPortfolio(pid);
+	if(pPortfolio != NULL)
+	{
+		const LegVector& legs = pPortfolio->GetLegs();
+
+		int i = 0;
+		BOOST_FOREACH(const boost::shared_ptr<CLeg>& leg, legs)
+		{
+			if(legIdx < 0 || i == legIdx)
+			{
+				// create input order
+				boost::shared_ptr<protoc::InputOrder> order = CreateCancelActionByLeg(leg.get());
+
+				if(order == NULL)
+					continue;	// leg is invalid to create input order, ignore it
+
+				// record the OrderRef
+				leg->SetStatus(IS_CLOSING);
+
+				bool submit = m_tradeAgent.SubmitOrder(order.get());
+				if(!submit) ret = false;
+			}
 		}
 	}
 
@@ -365,3 +402,12 @@ boost::shared_ptr<protoc::InputOrder> COrderManager::CreateInputOrderByLeg( CLeg
 
 	return order;
 }
+
+boost::shared_ptr<protoc::InputOrder> COrderManager::CreateCancelActionByLeg( CLeg* leg )
+{
+	return boost::shared_ptr<protoc::InputOrder>();
+}
+
+
+
+

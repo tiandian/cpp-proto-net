@@ -1,5 +1,6 @@
 #pragma once
 #include "clientbase.h"
+#include "protobuf_gen/trade.pb.h"
 
 #include <sstream>
 
@@ -19,7 +20,10 @@ public:
 
 	void AddPortfolio(double longPrice = 0, double shortPrice = 0);
 	void OpenPosition();
+	void ClosePosition();
 	void ShowPortfolio();
+	void SetLeg(int idx, protoc::PosiDirectionType side);
+	void CancelLeg(int idx);
 
 protected:
 	virtual void ProcessQuote(CTP::Quote* pQuote);

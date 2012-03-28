@@ -5,6 +5,7 @@
 #include "TradeAgent.h"
 #include "Portfolio.h"
 #include "OrderRepository.h"
+#include "TransactionDB.h"
 
 #include <string>
 #include <vector>
@@ -43,6 +44,7 @@ public:
 
 	bool Portfolio_OpenPosition(const boost::uuids::uuid& pid);
 	bool Portfolio_ClosePosition(const boost::uuids::uuid& pid);
+	bool Portfolio_CancelLegOrder(const boost::uuids::uuid& pid, int legIdx = -1);
 
 	CPortfolio* GetPortfolio(const boost::uuids::uuid& pid);
 
@@ -97,6 +99,7 @@ private:
 	PortfolioVecIter FindPortfolio(const boost::uuids::uuid& pid);
 
 	boost::shared_ptr<protoc::InputOrder> CreateInputOrderByLeg(CLeg* leg);
+	boost::shared_ptr<protoc::InputOrder> CreateCancelActionByLeg(CLeg* leg);
 
 	CTradeAgent	m_tradeAgent;
 	
@@ -108,5 +111,7 @@ private:
 	int m_orderRefID;
 	boost::mutex m_mutOrderRef;
 	TThostFtdcOrderRefType ORDER_REF_BUF;
+
+	CTransactionDB m_database;
 };
 

@@ -26,6 +26,8 @@ public:
 	int GetQuantity(){ return m_quantity; }
 	void SetQuantity(int quantity){ m_quantity = quantity; }
 
+	double GetDiff();
+
 	const boost::uuids::uuid& GetID() {return m_portfolioID;}
 
 private:

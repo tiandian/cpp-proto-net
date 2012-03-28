@@ -654,3 +654,48 @@ message Trade
 	///经纪公司报单编号
 	required int32	BrokerOrderSeq = 29;
 };
+
+
+///TFtdcActionFlagType是一个操作标志类型
+enum ActionFlagType
+{
+	///删除
+	AF_Delete = 48;
+	///修改
+	AF_Modify = 51;
+};
+
+
+///输入报单操作
+// CThostFtdcInputOrderActionField
+message InputOrderAction
+{
+	///经纪公司代码
+	required string	BrokerID = 1;
+	///投资者代码
+	required string	InvestorID = 2;
+	///报单操作引用
+	required int32	OrderActionRef = 3;
+	///报单引用
+	required string	OrderRef = 4;
+	///请求编号
+	required int32	RequestID = 5;
+	///前置编号
+	required int32	FrontID = 6;
+	///会话编号
+	required int32	SessionID = 7;
+	///交易所代码
+	required string	ExchangeID = 8;
+	///报单编号
+	required string	OrderSysID = 9;
+	///操作标志
+	required ActionFlagType	ActionFlag = 10;
+	///价格
+	required double	LimitPrice = 11;
+	///数量变化
+	required int32 VolumeChange = 12;
+	///用户代码
+	required string	UserID = 13;
+	///合约代码
+	required string	InstrumentID = 14;
+}

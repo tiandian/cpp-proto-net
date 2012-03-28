@@ -108,6 +108,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="connection.h" />
     <ClInclude Include="ConnectionManager.h" />
     <ClInclude Include="ConsoleClient.h" />
+    <ClInclude Include="DBAccess.h" />
     <ClInclude Include="Leg.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
@@ -127,15 +128,18 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="QuoteListener.h" />
     <ClInclude Include="RemoteClient.h" />
     <ClInclude Include="server.h" />
+    <ClInclude Include="sqlite\sqlite3.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
+    <ClInclude Include="TransactionDB.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientBase.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConnectionManager.cpp" />
     <ClCompile Include="ConsoleClient.cpp" />
+    <ClCompile Include="DBAccess.cpp" />
     <ClCompile Include="Leg.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MarketAgent.cpp" />
@@ -151,12 +155,17 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClCompile Include="QuoteAggregator.cpp" />
     <ClCompile Include="QuoteListener.cpp" />
     <ClCompile Include="RemoteClient.cpp" />
+    <ClCompile Include="sqlite\sqlite3.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeBufferMain.cpp" />
+    <ClCompile Include="TransactionDB.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
