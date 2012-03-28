@@ -98,7 +98,7 @@ void CConsoleClient::AddPortfolio(double longPrice, double shortPrice)
 	// long cu1206
 	CLeg* pLeg = pPortfolio->AddLeg();
 	pLeg->SetSymbol(std::string("cu1206"));
-	pLeg->SetSide(protoc::LONG);
+	pLeg->SetSide(protoc::SHORT);
 	pLeg->SetRatio(1);
 	pLeg->SetOpenOrderPriceType(longPrice > 0 ? protoc::LIMIT_PRICE : protoc::ANY_PRICE);
 	pLeg->SetOpenLimitPrice(longPrice);
@@ -106,7 +106,7 @@ void CConsoleClient::AddPortfolio(double longPrice, double shortPrice)
 	// short cu1207
 	pLeg = pPortfolio->AddLeg();
 	pLeg->SetSymbol(std::string("cu1207"));
-	pLeg->SetSide(protoc::SHORT);
+	pLeg->SetSide(protoc::LONG);
 	pLeg->SetRatio(1);
 	pLeg->SetOpenOrderPriceType(shortPrice > 0 ? protoc::LIMIT_PRICE : protoc::ANY_PRICE);
 	pLeg->SetOpenLimitPrice(shortPrice);
@@ -128,7 +128,7 @@ void CConsoleClient::ShowPortfolio()
 	// print all portfolios with legs
 	BOOST_FOREACH(const boost::shared_ptr< CPortfolio >& portfo, portfolios)
 	{
-		cout << "Portfolio ID: " << portfo->GetID() << endl;
+		cout << "Portfolio ID: " << portfo->GetID() << setw(10) << portfo->GetDiff() << endl;
 		const LegVector& legs = portfo->GetLegs();
 		int i = 0;
 		BOOST_FOREACH(const boost::shared_ptr<CLeg>& leg, legs)
@@ -142,4 +142,25 @@ void CConsoleClient::ShowPortfolio()
 			cout << endl;
 		}
 	}
+}
+
+void CConsoleClient::ClosePosition()
+{
+	g_orderMgr.Portfolio_ClosePosition(uidPortfolio);
+}
+
+void CConsoleClient::SetLeg( int idx, protoc::PosiDirectionType side )
+{
+	CPortfolio* port = g_orderMgr.GetPortfolio(uidPortfolio);
+	const LegVector& legs = port->GetLegs();
+	if( idx < legs.size() )
+	{
+		const boost::shared_ptr<CLeg>& l = legs[idx];
+		l->SetSide(side);
+	}
+}
+
+void CConsoleClient::CancelLeg( int idx )
+{
+
 }
