@@ -12,7 +12,10 @@ public:
 	CTransactionDB(void);
 	~CTransactionDB(void);
 
-	void AddPortfolio(CPortfolio* po){}
+	void EnsureValid(const char* dbFile);
+
+	void AddPortfolio(CPortfolio* po);
+	void FetchPortfolio(std::vector< boost::shared_ptr< CPortfolio > >& portfolioVec);
 	void ModifyPortfolio(CPortfolio* po){}
 	void RemovePortfolio(CPortfolio* po){}
 

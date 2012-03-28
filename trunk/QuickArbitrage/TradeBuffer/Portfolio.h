@@ -13,6 +13,7 @@ class CPortfolio
 {
 public:
 	CPortfolio(void);
+	CPortfolio(const boost::uuids::uuid& pid);
 	~CPortfolio(void);
 
 	const LegVector& GetLegs(){ return m_legs; }

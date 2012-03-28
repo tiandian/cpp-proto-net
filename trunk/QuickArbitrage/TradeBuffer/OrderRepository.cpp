@@ -95,3 +95,8 @@ int COrderRepository::GetOrderItemCount()
 	return m_orderItems.size();
 }
 
+void COrderRepository::Clear()
+{
+	m_orderItems.clear();
+}
+

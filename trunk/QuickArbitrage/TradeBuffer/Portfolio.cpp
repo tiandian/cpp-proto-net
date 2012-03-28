@@ -11,6 +11,11 @@ CPortfolio::CPortfolio(void):
 {
 }
 
+CPortfolio::CPortfolio(const boost::uuids::uuid& pid):
+	m_quantity(0),
+	m_portfolioID(pid)
+{
+}
 
 CPortfolio::~CPortfolio(void)
 {

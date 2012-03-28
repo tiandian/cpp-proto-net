@@ -7,14 +7,18 @@
 
 extern CLogManager logger;
 
+CDBAccess::CDBAccess():
+	m_db(NULL),
+	m_shareConnection(false)
+{
+}
+
 CDBAccess::CDBAccess(const char* dbFilePath, bool shareConnection):
 	m_db(NULL),
 	m_dbFile(dbFilePath),
 	m_shareConnection(shareConnection)
 {
-	
 }
-
 
 CDBAccess::~CDBAccess(void)
 {
@@ -116,5 +120,15 @@ bool CDBAccess::ExecuteSQL( const string& sqltext , int (*callback)(void*,int,ch
 		Close();
 
 	return rc == SQLITE_OK;
+}
+
+int CDBAccess::Exec( const string& sql, char** szErr )
+{
+	return Exec(sql.c_str(), szErr);
+}
+
+int CDBAccess::Exec( const char* sql, char** szErr )
+{
+	return sqlite3_exec(m_db, sql, NULL, NULL, szErr);
 }
 
