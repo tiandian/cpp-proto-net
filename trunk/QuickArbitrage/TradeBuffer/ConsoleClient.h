@@ -23,7 +23,9 @@ public:
 	void OpenPosition(int portIdx, int legIdx = -1);
 	void ClosePosition(int portIdx, int legIdx = -1);
 	void ShowPortfolio();
-	void SetLeg(int portIdx, int idx, protoc::PosiDirectionType side);
+	void SetLegDirection(int portIdx, int legIdx, protoc::PosiDirectionType side);
+	void SetLegOrdPriceType(int portIdx, int legIdx, protoc::OrderPriceTypeType priceType);
+	void SetLegLmtPrice(int portIdx, int legIdx, double limitPrice);
 	void CancelPortfolio(int portIdx, int legIdx = -1);
 
 protected:
