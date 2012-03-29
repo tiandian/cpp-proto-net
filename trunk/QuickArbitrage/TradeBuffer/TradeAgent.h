@@ -30,6 +30,8 @@ public:
 	bool SubmitOrder( const std::vector< boost::shared_ptr<protoc::InputOrder> >& orders);
 	bool SubmitOrder( protoc::InputOrder* pOrder);
 
+	bool SubmitOrderAction (protoc::InputOrderAction* pOrderAction);
+
 	void QueryAccount();
 
 	int GetSessionID(){ return SESSION_ID; }

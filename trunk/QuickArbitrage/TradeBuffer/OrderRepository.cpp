@@ -23,9 +23,9 @@ void COrderItem::SetOrder( OrderPtr& pOrder )
 	protoc::OrderStatusType orderStatus = pOrder->orderstatus();
 	m_pLeg->SetOrderStatus(orderStatus);
 
+	LEG_STATUS currentLegStatus = m_pLeg->GetStatus();
 	if(orderStatus == protoc::ALL_TRADED)
 	{
-		LEG_STATUS currentLegStatus = m_pLeg->GetStatus();
 		if(currentLegStatus == IS_OPENING)
 		{
 			// opening position succeeded
@@ -35,6 +35,24 @@ void COrderItem::SetOrder( OrderPtr& pOrder )
 		{
 			// closing position succeeded
 			m_pLeg->SetStatus(CLOSED);
+		}
+		else
+		{
+			assert(false);
+			logger.Warning("Unexpected leg status changing");		
+		}
+	}
+	else if(orderStatus == protoc::ORDER_CANCELED)
+	{
+		if(currentLegStatus == IS_OPENING)
+		{
+			// opening position succeeded
+			m_pLeg->SetStatus(UNOPENED);
+		}
+		else if(currentLegStatus == IS_CLOSING)
+		{
+			// closing position succeeded
+			m_pLeg->SetStatus(OPENED);
 		}
 		else
 		{

@@ -311,13 +311,6 @@ void CTradeAgent::OnRspQryInvestorPosition( CThostFtdcInvestorPositionField *pIn
 
 }
 
-
-void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-	cerr << "--->>> " << "OnRspOrderAction" << endl;
-	IsErrorRspInfo(pRspInfo);
-}
-
 void CTradeAgent::OnRspError( CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 
@@ -760,4 +753,54 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 	pTd->set_brokerorderseq(pTrade->BrokerOrderSeq);
 
 	m_pOrderMgr->OnRtnTrade(pTd);
+}
+
+bool CTradeAgent::SubmitOrderAction( protoc::InputOrderAction* pOrderAction )
+{
+	CThostFtdcInputOrderActionField req;
+	memset(&req, 0, sizeof(req));
+	///经纪公司代码
+	strcpy(req.BrokerID, m_brokerId.c_str());
+	///投资者代码
+	strcpy(req.InvestorID, m_userId.c_str());
+	///报单操作引用
+	//	TThostFtdcOrderActionRefType	OrderActionRef;
+	///报单引用
+	strcpy(req.OrderRef, pOrderAction->orderref().c_str());
+	///请求编号
+	int iRequestID = RequestIDIncrement();
+	req.RequestID = iRequestID;
+	///前置编号
+	req.FrontID = FRONT_ID;
+	///会话编号
+	req.SessionID = SESSION_ID;
+	///交易所代码
+	strcpy(req.ExchangeID, pOrderAction->exchangeid().c_str());
+	///报单编号
+	strcpy(req.OrderSysID, pOrderAction->ordersysid().c_str());
+	///操作标志
+	req.ActionFlag = THOST_FTDC_AF_Delete;	// Cancel order
+	///价格
+	//	TThostFtdcPriceType	LimitPrice;
+	///数量变化
+	//	TThostFtdcVolumeType	VolumeChange;
+	///用户代码
+	strcpy(req.UserID, pOrderAction->userid().c_str());
+	///合约代码
+	strcpy(req.InstrumentID, pOrderAction->instrumentid().c_str());
+
+	int iResult = m_pUserApi->ReqOrderAction(&req, iRequestID);
+
+#ifdef _DEBUG
+	ostringstream oss;
+	oss << "--->>> 报单操作请求 ( Canel OrdRef:" << pOrderAction->orderref() << ", ReqestID:" << iRequestID << "): " << iResult << ((iResult == 0) ? ", 成功" : ", 失败");
+	logger.Debug(oss.str());
+#endif
+
+	return iResult == 0;
+}
+
+void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	m_pOrderMgr->OnRspOrderInsert(IsErrorRspInfo(pRspInfo), std::string(pInputOrderAction->OrderRef), std::string(pRspInfo->ErrorMsg));
 }

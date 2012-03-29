@@ -92,8 +92,7 @@ void CTransactionDB::EnsureTradesTable()
 				[TradeDate] TEXT NOT NULL,					\n\
 				[TradeTime] TEXT NOT NULL,					\n\
 				[OrderLocalID] TEXT,						\n\
-				[SequenceNo] INT,							\n\
-				CONSTRAINT [sqlite_autoindex_Trades_1] PRIMARY KEY ([TradeID]));";
+				[SequenceNo] INT);";
 		ExecuteNonQuery(sql);
 	}
 }
@@ -260,7 +259,7 @@ void CTransactionDB::AddTrade( protoc::Trade* trade )
 {
 	ostringstream sqltext;
 	sqltext << "insert into [" << TRADES_TABLE << "] ";
-	sqltext << "([TradeID], [InstrumentID], [OrderRef], [Direction], [OrderSysID], [OffsetFlag], [HedgeFlag], [Price], [Volume], [TradeDate], [TradeTime]) ";
+	sqltext << "([TradeID], [InstrumentID], [OrderRef], [Direction], [OrderSysID], [OffsetFlag], [HedgeFlag], [Price], [Volume], [TradeDate], [TradeTime], [OrderLocalID], [SequenceNo]) ";
 	sqltext << "values(";
 	sqltext << "'" << trade->tradeid() << "',";
 	sqltext << "'" << trade->instrumentid() << "',";
@@ -273,8 +272,9 @@ void CTransactionDB::AddTrade( protoc::Trade* trade )
 	sqltext << trade->volume() << ",";
 	sqltext << "'" << trade->tradedate() << "',";
 	sqltext << "'" << trade->tradetime() << "',";
-	sqltext << ")";
-
+	sqltext << "'" << trade->orderlocalid() << "',";
+	sqltext << trade->sequenceno() << ");";
+	
 	bool succ = ExecuteNonQuery(sqltext.str());
 }
 

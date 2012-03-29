@@ -37,6 +37,7 @@ class PositionInfo;
 class InputOrder;
 class Order;
 class Trade;
+class InputOrderAction;
 
 enum PosiDirectionType {
   NET = 49,
@@ -407,6 +408,25 @@ inline bool PriceSourceType_Parse(
     const ::std::string& name, PriceSourceType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<PriceSourceType>(
     PriceSourceType_descriptor(), name, value);
+}
+enum ActionFlagType {
+  AF_Delete = 48,
+  AF_Modify = 51
+};
+bool ActionFlagType_IsValid(int value);
+const ActionFlagType ActionFlagType_MIN = AF_Delete;
+const ActionFlagType ActionFlagType_MAX = AF_Modify;
+const int ActionFlagType_ARRAYSIZE = ActionFlagType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* ActionFlagType_descriptor();
+inline const ::std::string& ActionFlagType_Name(ActionFlagType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    ActionFlagType_descriptor(), value);
+}
+inline bool ActionFlagType_Parse(
+    const ::std::string& name, ActionFlagType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<ActionFlagType>(
+    ActionFlagType_descriptor(), name, value);
 }
 // ===================================================================
 
@@ -2783,6 +2803,246 @@ class Trade : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static Trade* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class InputOrderAction : public ::google::protobuf::Message {
+ public:
+  InputOrderAction();
+  virtual ~InputOrderAction();
+  
+  InputOrderAction(const InputOrderAction& from);
+  
+  inline InputOrderAction& operator=(const InputOrderAction& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const InputOrderAction& default_instance();
+  
+  void Swap(InputOrderAction* other);
+  
+  // implements Message ----------------------------------------------
+  
+  InputOrderAction* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const InputOrderAction& from);
+  void MergeFrom(const InputOrderAction& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string BrokerID = 1;
+  inline bool has_brokerid() const;
+  inline void clear_brokerid();
+  static const int kBrokerIDFieldNumber = 1;
+  inline const ::std::string& brokerid() const;
+  inline void set_brokerid(const ::std::string& value);
+  inline void set_brokerid(const char* value);
+  inline void set_brokerid(const char* value, size_t size);
+  inline ::std::string* mutable_brokerid();
+  inline ::std::string* release_brokerid();
+  
+  // required string InvestorID = 2;
+  inline bool has_investorid() const;
+  inline void clear_investorid();
+  static const int kInvestorIDFieldNumber = 2;
+  inline const ::std::string& investorid() const;
+  inline void set_investorid(const ::std::string& value);
+  inline void set_investorid(const char* value);
+  inline void set_investorid(const char* value, size_t size);
+  inline ::std::string* mutable_investorid();
+  inline ::std::string* release_investorid();
+  
+  // required int32 OrderActionRef = 3;
+  inline bool has_orderactionref() const;
+  inline void clear_orderactionref();
+  static const int kOrderActionRefFieldNumber = 3;
+  inline ::google::protobuf::int32 orderactionref() const;
+  inline void set_orderactionref(::google::protobuf::int32 value);
+  
+  // required string OrderRef = 4;
+  inline bool has_orderref() const;
+  inline void clear_orderref();
+  static const int kOrderRefFieldNumber = 4;
+  inline const ::std::string& orderref() const;
+  inline void set_orderref(const ::std::string& value);
+  inline void set_orderref(const char* value);
+  inline void set_orderref(const char* value, size_t size);
+  inline ::std::string* mutable_orderref();
+  inline ::std::string* release_orderref();
+  
+  // required int32 RequestID = 5;
+  inline bool has_requestid() const;
+  inline void clear_requestid();
+  static const int kRequestIDFieldNumber = 5;
+  inline ::google::protobuf::int32 requestid() const;
+  inline void set_requestid(::google::protobuf::int32 value);
+  
+  // required int32 FrontID = 6;
+  inline bool has_frontid() const;
+  inline void clear_frontid();
+  static const int kFrontIDFieldNumber = 6;
+  inline ::google::protobuf::int32 frontid() const;
+  inline void set_frontid(::google::protobuf::int32 value);
+  
+  // required int32 SessionID = 7;
+  inline bool has_sessionid() const;
+  inline void clear_sessionid();
+  static const int kSessionIDFieldNumber = 7;
+  inline ::google::protobuf::int32 sessionid() const;
+  inline void set_sessionid(::google::protobuf::int32 value);
+  
+  // required string ExchangeID = 8;
+  inline bool has_exchangeid() const;
+  inline void clear_exchangeid();
+  static const int kExchangeIDFieldNumber = 8;
+  inline const ::std::string& exchangeid() const;
+  inline void set_exchangeid(const ::std::string& value);
+  inline void set_exchangeid(const char* value);
+  inline void set_exchangeid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeid();
+  inline ::std::string* release_exchangeid();
+  
+  // required string OrderSysID = 9;
+  inline bool has_ordersysid() const;
+  inline void clear_ordersysid();
+  static const int kOrderSysIDFieldNumber = 9;
+  inline const ::std::string& ordersysid() const;
+  inline void set_ordersysid(const ::std::string& value);
+  inline void set_ordersysid(const char* value);
+  inline void set_ordersysid(const char* value, size_t size);
+  inline ::std::string* mutable_ordersysid();
+  inline ::std::string* release_ordersysid();
+  
+  // required .protoc.ActionFlagType ActionFlag = 10;
+  inline bool has_actionflag() const;
+  inline void clear_actionflag();
+  static const int kActionFlagFieldNumber = 10;
+  inline protoc::ActionFlagType actionflag() const;
+  inline void set_actionflag(protoc::ActionFlagType value);
+  
+  // required double LimitPrice = 11;
+  inline bool has_limitprice() const;
+  inline void clear_limitprice();
+  static const int kLimitPriceFieldNumber = 11;
+  inline double limitprice() const;
+  inline void set_limitprice(double value);
+  
+  // required int32 VolumeChange = 12;
+  inline bool has_volumechange() const;
+  inline void clear_volumechange();
+  static const int kVolumeChangeFieldNumber = 12;
+  inline ::google::protobuf::int32 volumechange() const;
+  inline void set_volumechange(::google::protobuf::int32 value);
+  
+  // required string UserID = 13;
+  inline bool has_userid() const;
+  inline void clear_userid();
+  static const int kUserIDFieldNumber = 13;
+  inline const ::std::string& userid() const;
+  inline void set_userid(const ::std::string& value);
+  inline void set_userid(const char* value);
+  inline void set_userid(const char* value, size_t size);
+  inline ::std::string* mutable_userid();
+  inline ::std::string* release_userid();
+  
+  // required string InstrumentID = 14;
+  inline bool has_instrumentid() const;
+  inline void clear_instrumentid();
+  static const int kInstrumentIDFieldNumber = 14;
+  inline const ::std::string& instrumentid() const;
+  inline void set_instrumentid(const ::std::string& value);
+  inline void set_instrumentid(const char* value);
+  inline void set_instrumentid(const char* value, size_t size);
+  inline ::std::string* mutable_instrumentid();
+  inline ::std::string* release_instrumentid();
+  
+  // @@protoc_insertion_point(class_scope:protoc.InputOrderAction)
+ private:
+  inline void set_has_brokerid();
+  inline void clear_has_brokerid();
+  inline void set_has_investorid();
+  inline void clear_has_investorid();
+  inline void set_has_orderactionref();
+  inline void clear_has_orderactionref();
+  inline void set_has_orderref();
+  inline void clear_has_orderref();
+  inline void set_has_requestid();
+  inline void clear_has_requestid();
+  inline void set_has_frontid();
+  inline void clear_has_frontid();
+  inline void set_has_sessionid();
+  inline void clear_has_sessionid();
+  inline void set_has_exchangeid();
+  inline void clear_has_exchangeid();
+  inline void set_has_ordersysid();
+  inline void clear_has_ordersysid();
+  inline void set_has_actionflag();
+  inline void clear_has_actionflag();
+  inline void set_has_limitprice();
+  inline void clear_has_limitprice();
+  inline void set_has_volumechange();
+  inline void clear_has_volumechange();
+  inline void set_has_userid();
+  inline void clear_has_userid();
+  inline void set_has_instrumentid();
+  inline void clear_has_instrumentid();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* brokerid_;
+  ::std::string* investorid_;
+  ::std::string* orderref_;
+  ::google::protobuf::int32 orderactionref_;
+  ::google::protobuf::int32 requestid_;
+  ::google::protobuf::int32 frontid_;
+  ::google::protobuf::int32 sessionid_;
+  ::std::string* exchangeid_;
+  ::std::string* ordersysid_;
+  double limitprice_;
+  int actionflag_;
+  ::google::protobuf::int32 volumechange_;
+  ::std::string* userid_;
+  ::std::string* instrumentid_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(14 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_trade_2eproto();
+  friend void protobuf_AssignDesc_trade_2eproto();
+  friend void protobuf_ShutdownFile_trade_2eproto();
+  
+  void InitAsDefaultInstance();
+  static InputOrderAction* default_instance_;
 };
 // ===================================================================
 
@@ -9007,6 +9267,571 @@ inline void Trade::set_brokerorderseq(::google::protobuf::int32 value) {
   brokerorderseq_ = value;
 }
 
+// -------------------------------------------------------------------
+
+// InputOrderAction
+
+// required string BrokerID = 1;
+inline bool InputOrderAction::has_brokerid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void InputOrderAction::set_has_brokerid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void InputOrderAction::clear_has_brokerid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void InputOrderAction::clear_brokerid() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    brokerid_->clear();
+  }
+  clear_has_brokerid();
+}
+inline const ::std::string& InputOrderAction::brokerid() const {
+  return *brokerid_;
+}
+inline void InputOrderAction::set_brokerid(const ::std::string& value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void InputOrderAction::set_brokerid(const char* value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void InputOrderAction::set_brokerid(const char* value, size_t size) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrderAction::mutable_brokerid() {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  return brokerid_;
+}
+inline ::std::string* InputOrderAction::release_brokerid() {
+  clear_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = brokerid_;
+    brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InvestorID = 2;
+inline bool InputOrderAction::has_investorid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void InputOrderAction::set_has_investorid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void InputOrderAction::clear_has_investorid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void InputOrderAction::clear_investorid() {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    investorid_->clear();
+  }
+  clear_has_investorid();
+}
+inline const ::std::string& InputOrderAction::investorid() const {
+  return *investorid_;
+}
+inline void InputOrderAction::set_investorid(const ::std::string& value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void InputOrderAction::set_investorid(const char* value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void InputOrderAction::set_investorid(const char* value, size_t size) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrderAction::mutable_investorid() {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  return investorid_;
+}
+inline ::std::string* InputOrderAction::release_investorid() {
+  clear_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = investorid_;
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 OrderActionRef = 3;
+inline bool InputOrderAction::has_orderactionref() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void InputOrderAction::set_has_orderactionref() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void InputOrderAction::clear_has_orderactionref() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void InputOrderAction::clear_orderactionref() {
+  orderactionref_ = 0;
+  clear_has_orderactionref();
+}
+inline ::google::protobuf::int32 InputOrderAction::orderactionref() const {
+  return orderactionref_;
+}
+inline void InputOrderAction::set_orderactionref(::google::protobuf::int32 value) {
+  set_has_orderactionref();
+  orderactionref_ = value;
+}
+
+// required string OrderRef = 4;
+inline bool InputOrderAction::has_orderref() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void InputOrderAction::set_has_orderref() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void InputOrderAction::clear_has_orderref() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void InputOrderAction::clear_orderref() {
+  if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+    orderref_->clear();
+  }
+  clear_has_orderref();
+}
+inline const ::std::string& InputOrderAction::orderref() const {
+  return *orderref_;
+}
+inline void InputOrderAction::set_orderref(const ::std::string& value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void InputOrderAction::set_orderref(const char* value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void InputOrderAction::set_orderref(const char* value, size_t size) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrderAction::mutable_orderref() {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  return orderref_;
+}
+inline ::std::string* InputOrderAction::release_orderref() {
+  clear_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = orderref_;
+    orderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 RequestID = 5;
+inline bool InputOrderAction::has_requestid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void InputOrderAction::set_has_requestid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void InputOrderAction::clear_has_requestid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void InputOrderAction::clear_requestid() {
+  requestid_ = 0;
+  clear_has_requestid();
+}
+inline ::google::protobuf::int32 InputOrderAction::requestid() const {
+  return requestid_;
+}
+inline void InputOrderAction::set_requestid(::google::protobuf::int32 value) {
+  set_has_requestid();
+  requestid_ = value;
+}
+
+// required int32 FrontID = 6;
+inline bool InputOrderAction::has_frontid() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void InputOrderAction::set_has_frontid() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void InputOrderAction::clear_has_frontid() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void InputOrderAction::clear_frontid() {
+  frontid_ = 0;
+  clear_has_frontid();
+}
+inline ::google::protobuf::int32 InputOrderAction::frontid() const {
+  return frontid_;
+}
+inline void InputOrderAction::set_frontid(::google::protobuf::int32 value) {
+  set_has_frontid();
+  frontid_ = value;
+}
+
+// required int32 SessionID = 7;
+inline bool InputOrderAction::has_sessionid() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void InputOrderAction::set_has_sessionid() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void InputOrderAction::clear_has_sessionid() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void InputOrderAction::clear_sessionid() {
+  sessionid_ = 0;
+  clear_has_sessionid();
+}
+inline ::google::protobuf::int32 InputOrderAction::sessionid() const {
+  return sessionid_;
+}
+inline void InputOrderAction::set_sessionid(::google::protobuf::int32 value) {
+  set_has_sessionid();
+  sessionid_ = value;
+}
+
+// required string ExchangeID = 8;
+inline bool InputOrderAction::has_exchangeid() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void InputOrderAction::set_has_exchangeid() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void InputOrderAction::clear_has_exchangeid() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void InputOrderAction::clear_exchangeid() {
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeid_->clear();
+  }
+  clear_has_exchangeid();
+}
+inline const ::std::string& InputOrderAction::exchangeid() const {
+  return *exchangeid_;
+}
+inline void InputOrderAction::set_exchangeid(const ::std::string& value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void InputOrderAction::set_exchangeid(const char* value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void InputOrderAction::set_exchangeid(const char* value, size_t size) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrderAction::mutable_exchangeid() {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  return exchangeid_;
+}
+inline ::std::string* InputOrderAction::release_exchangeid() {
+  clear_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeid_;
+    exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string OrderSysID = 9;
+inline bool InputOrderAction::has_ordersysid() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void InputOrderAction::set_has_ordersysid() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void InputOrderAction::clear_has_ordersysid() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void InputOrderAction::clear_ordersysid() {
+  if (ordersysid_ != &::google::protobuf::internal::kEmptyString) {
+    ordersysid_->clear();
+  }
+  clear_has_ordersysid();
+}
+inline const ::std::string& InputOrderAction::ordersysid() const {
+  return *ordersysid_;
+}
+inline void InputOrderAction::set_ordersysid(const ::std::string& value) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(value);
+}
+inline void InputOrderAction::set_ordersysid(const char* value) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(value);
+}
+inline void InputOrderAction::set_ordersysid(const char* value, size_t size) {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  ordersysid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrderAction::mutable_ordersysid() {
+  set_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordersysid_ = new ::std::string;
+  }
+  return ordersysid_;
+}
+inline ::std::string* InputOrderAction::release_ordersysid() {
+  clear_has_ordersysid();
+  if (ordersysid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = ordersysid_;
+    ordersysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .protoc.ActionFlagType ActionFlag = 10;
+inline bool InputOrderAction::has_actionflag() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void InputOrderAction::set_has_actionflag() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void InputOrderAction::clear_has_actionflag() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void InputOrderAction::clear_actionflag() {
+  actionflag_ = 48;
+  clear_has_actionflag();
+}
+inline protoc::ActionFlagType InputOrderAction::actionflag() const {
+  return static_cast< protoc::ActionFlagType >(actionflag_);
+}
+inline void InputOrderAction::set_actionflag(protoc::ActionFlagType value) {
+  GOOGLE_DCHECK(protoc::ActionFlagType_IsValid(value));
+  set_has_actionflag();
+  actionflag_ = value;
+}
+
+// required double LimitPrice = 11;
+inline bool InputOrderAction::has_limitprice() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void InputOrderAction::set_has_limitprice() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void InputOrderAction::clear_has_limitprice() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void InputOrderAction::clear_limitprice() {
+  limitprice_ = 0;
+  clear_has_limitprice();
+}
+inline double InputOrderAction::limitprice() const {
+  return limitprice_;
+}
+inline void InputOrderAction::set_limitprice(double value) {
+  set_has_limitprice();
+  limitprice_ = value;
+}
+
+// required int32 VolumeChange = 12;
+inline bool InputOrderAction::has_volumechange() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void InputOrderAction::set_has_volumechange() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void InputOrderAction::clear_has_volumechange() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void InputOrderAction::clear_volumechange() {
+  volumechange_ = 0;
+  clear_has_volumechange();
+}
+inline ::google::protobuf::int32 InputOrderAction::volumechange() const {
+  return volumechange_;
+}
+inline void InputOrderAction::set_volumechange(::google::protobuf::int32 value) {
+  set_has_volumechange();
+  volumechange_ = value;
+}
+
+// required string UserID = 13;
+inline bool InputOrderAction::has_userid() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void InputOrderAction::set_has_userid() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void InputOrderAction::clear_has_userid() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void InputOrderAction::clear_userid() {
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    userid_->clear();
+  }
+  clear_has_userid();
+}
+inline const ::std::string& InputOrderAction::userid() const {
+  return *userid_;
+}
+inline void InputOrderAction::set_userid(const ::std::string& value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void InputOrderAction::set_userid(const char* value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void InputOrderAction::set_userid(const char* value, size_t size) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrderAction::mutable_userid() {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  return userid_;
+}
+inline ::std::string* InputOrderAction::release_userid() {
+  clear_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = userid_;
+    userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InstrumentID = 14;
+inline bool InputOrderAction::has_instrumentid() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void InputOrderAction::set_has_instrumentid() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void InputOrderAction::clear_has_instrumentid() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void InputOrderAction::clear_instrumentid() {
+  if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    instrumentid_->clear();
+  }
+  clear_has_instrumentid();
+}
+inline const ::std::string& InputOrderAction::instrumentid() const {
+  return *instrumentid_;
+}
+inline void InputOrderAction::set_instrumentid(const ::std::string& value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void InputOrderAction::set_instrumentid(const char* value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void InputOrderAction::set_instrumentid(const char* value, size_t size) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrderAction::mutable_instrumentid() {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  return instrumentid_;
+}
+inline ::std::string* InputOrderAction::release_instrumentid() {
+  clear_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = instrumentid_;
+    instrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -9079,6 +9904,10 @@ inline const EnumDescriptor* GetEnumDescriptor< protoc::TradeTypeType>() {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< protoc::PriceSourceType>() {
   return protoc::PriceSourceType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< protoc::ActionFlagType>() {
+  return protoc::ActionFlagType_descriptor();
 }
 
 }  // namespace google

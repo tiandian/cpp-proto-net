@@ -4,6 +4,7 @@
 #include "LogManager.h"
 
 #include "boost/foreach.hpp"
+#include "boost/format.hpp"
 
 using namespace std;
 
@@ -187,17 +188,21 @@ bool COrderManager::Portfolio_ClosePosition( const boost::uuids::uuid& pid )
 
 		BOOST_FOREACH(const boost::shared_ptr<CLeg>& leg, legs)
 		{
-			// create input order
-			boost::shared_ptr<protoc::InputOrder> order = CreateInputOrderByLeg(leg.get());
-			
-			if(order == NULL)
-				continue;	// leg is invalid to create input order, ignore it
-			
-			// record the OrderRef
-			leg->SetStatus(IS_CLOSING);
-			
-			bool submit = m_tradeAgent.SubmitOrder(order.get());
-			if(!submit) ret = false;
+			// create input order only when leg is opened
+			if(leg->GetStatus() == OPENED)
+			{
+				boost::shared_ptr<protoc::InputOrder> order = CreateInputOrderByLeg(leg.get());
+
+				// record the OrderRef
+				leg->SetOrderRef(order->orderref());
+				// record the OrderRef
+				leg->SetStatus(IS_CLOSING);
+
+				m_orderRepo.AddOrderItem(leg.get());
+
+				bool submit = m_tradeAgent.SubmitOrder(order.get());
+				if(!submit) ret = false;
+			}
 		}
 	}
 
@@ -219,15 +224,12 @@ bool COrderManager::Portfolio_CancelLegOrder( const boost::uuids::uuid& pid, int
 			if(legIdx < 0 || i == legIdx)
 			{
 				// create input order
-				boost::shared_ptr<protoc::InputOrder> order = CreateCancelActionByLeg(leg.get());
+				boost::shared_ptr<protoc::InputOrderAction> order = CreateCancelActionByLeg(leg.get());
 
 				if(order == NULL)
 					continue;	// leg is invalid to create input order, ignore it
 
-				// record the OrderRef
-				leg->SetStatus(IS_CLOSING);
-
-				bool submit = m_tradeAgent.SubmitOrder(order.get());
+				bool submit = m_tradeAgent.SubmitOrderAction(order.get());
 				if(!submit) ret = false;
 			}
 		}
@@ -268,8 +270,15 @@ void COrderManager::OnRtnOrder( protoc::Order* order )
 	if(order != NULL)
 	{
 		COrderItem* pOrderItem = m_orderRepo.GetOrderItem(orderRef);
-		// Leg status will be changed accordingly HERE.
-		pOrderItem->SetOrder(OrderPtr(order));
+		if(pOrderItem != NULL)
+		{
+			// Leg status will be changed accordingly HERE.
+			pOrderItem->SetOrder(OrderPtr(order));
+		}
+		else
+		{
+			logger.Warning(boost::str(boost::format("Unexpected order with ref:%s") % orderRef));
+		}
 	}
 	else
 	{
@@ -389,7 +398,7 @@ boost::shared_ptr<protoc::InputOrder> COrderManager::CreateInputOrderByLeg( CLeg
 		}
 		order->set_orderpricetype(leg->GetOpenOrderPriceType());
 		order->set_limitprice(leg->GetOpenLimitPrice());
-		CombOffset[0] = protoc::OF_CLOSE;
+		CombOffset[0] = protoc::OF_CLOSE_TODAY;
 	}
 	else
 	{
@@ -422,11 +431,53 @@ boost::shared_ptr<protoc::InputOrder> COrderManager::CreateInputOrderByLeg( CLeg
 	return order;
 }
 
-boost::shared_ptr<protoc::InputOrder> COrderManager::CreateCancelActionByLeg( CLeg* leg )
+boost::shared_ptr<protoc::InputOrderAction> COrderManager::CreateCancelActionByLeg( CLeg* leg )
 {
-	return boost::shared_ptr<protoc::InputOrder>();
+	LEG_STATUS status = leg->GetStatus();
+	if(status == IS_OPENING || status == IS_CLOSING)
+	{
+		boost::shared_ptr<protoc::InputOrderAction> orderAction(new protoc::InputOrderAction);
+		
+		std::string orderRefToCancel = leg->GetOrderRef();
+		orderAction->set_orderref(orderRefToCancel);
+
+		///操作标志
+		orderAction->set_actionflag(protoc::AF_Delete);	// Cancel order
+
+		COrderItem* pOrderItem = m_orderRepo.GetOrderItem(orderRefToCancel);
+		if(pOrderItem != NULL)
+		{
+			///交易所代码
+			orderAction->set_exchangeid(pOrderItem->GetOrder()->exchangeid());
+			///报单编号
+			orderAction->set_ordersysid(pOrderItem->GetOrder()->ordersysid());
+			///用户代码
+			orderAction->set_userid(pOrderItem->GetOrder()->userid());
+		}
+
+		orderAction->set_instrumentid(leg->GetSymbol());
+		
+		return orderAction;
+	}
+	else	// return null pointer
+		return boost::shared_ptr<protoc::InputOrderAction>();
 }
 
+void COrderManager::OnRspOrderAction( bool succ, const std::string& orderRef, const std::string& msg )
+{
+	if(orderRef.length() == 0)
+	{
+		logger.Warning("returned OrderRef is empty while OnRspOrderAction");
+		return;
+	}
 
-
-
+	// Once get here, there must be something wrong while order insert action
+	if(succ)
+	{
+		logger.Info(boost::str(boost::format("Cancel order(orderRef:%s) succeeded.") % orderRef));
+	}
+	else
+	{
+		logger.Warning(boost::str(boost::format("Cancel order(orderRef:%s) failed due to %s") % orderRef % msg));
+	}
+}
