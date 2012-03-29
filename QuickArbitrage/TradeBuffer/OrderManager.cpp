@@ -418,7 +418,16 @@ boost::shared_ptr<protoc::InputOrder> COrderManager::CreateInputOrderByLeg( CLeg
 
 // 	order->set_limitprice(0);
 	order->set_volumetotaloriginal(leg->GetQuantity());
-	order->set_timecondition(protoc::TC_GFD);
+	
+	if(order->orderpricetype() == protoc::ANY_PRICE)
+	{
+		// IOC needed for market price
+		order->set_timecondition(protoc::TC_IOC);
+	}
+	else
+	{
+		order->set_timecondition(protoc::TC_GFD);
+	}
 
 	order->set_volumecondition(protoc::VC_AV);
 	order->set_minvolume(1);
