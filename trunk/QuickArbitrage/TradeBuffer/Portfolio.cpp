@@ -38,3 +38,41 @@ double CPortfolio::GetDiff()
 	}
 	return diff;
 }
+
+void CPortfolio::SetAuto( bool autoFlag )
+{
+	m_autoRunning = autoFlag;
+	
+	if(m_entryTrigger != NULL)
+	{
+		m_entryTrigger->Activate(autoFlag);
+	}
+
+	if(m_exitTrigger != NULL)
+	{
+		m_exitTrigger->Activate(autoFlag);
+	}
+
+	if(m_stopLossTrigger != NULL)
+	{
+		m_stopLossTrigger->Activate(autoFlag);
+	}
+}
+
+void CPortfolio::UpdateQuote( CTP::Quote* quote )
+{
+	if(m_entryTrigger != NULL && !m_entryTrigger->GetIsTriggered())
+	{
+		m_entryTrigger->Test(quote);
+	}
+
+	if(m_exitTrigger != NULL && !m_exitTrigger->GetIsTriggered())
+	{
+		m_exitTrigger->Test(quote);
+	}
+
+	if(m_stopLossTrigger != NULL && !m_stopLossTrigger->GetIsTriggered())
+	{
+		m_stopLossTrigger->Test(quote);
+	}
+}

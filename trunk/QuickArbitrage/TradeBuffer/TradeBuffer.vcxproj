@@ -109,6 +109,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="ConnectionManager.h" />
     <ClInclude Include="ConsoleClient.h" />
     <ClInclude Include="DBAccess.h" />
+    <ClInclude Include="EntryDiffTrigger.h" />
     <ClInclude Include="Leg.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
@@ -133,6 +134,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
     <ClInclude Include="TransactionDB.h" />
+    <ClInclude Include="Trigger.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientBase.cpp" />
@@ -140,6 +142,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClCompile Include="ConnectionManager.cpp" />
     <ClCompile Include="ConsoleClient.cpp" />
     <ClCompile Include="DBAccess.cpp" />
+    <ClCompile Include="EntryDiffTrigger.cpp" />
     <ClCompile Include="Leg.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MarketAgent.cpp" />
@@ -166,6 +169,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeBufferMain.cpp" />
     <ClCompile Include="TransactionDB.cpp" />
+    <ClCompile Include="Trigger.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
