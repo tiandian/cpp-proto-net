@@ -44,6 +44,7 @@ void ConsoleExecuteOpenPortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteShowPortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteClosePortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteCancelPortfolio(CConsoleClient& console, string& cmd);
+void ConsoleExecuteSetLeg(CConsoleClient& console, string& cmd);
 
 typedef vector< string > split_vector_type;
 
@@ -142,6 +143,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			else if(boost::istarts_with(command, "close portfolio"))
 			{
 				ConsoleExecuteClosePortfolio(consoleClient, command);
+			}
+			else if(boost::istarts_with(command, "set leg"))
+			{
+				ConsoleExecuteSetLeg(consoleClient, command);
 			}
 			else if(command == "show")
 			{
@@ -365,4 +370,52 @@ void ConsoleExecuteCancelPortfolio(CConsoleClient& console, string& cmd)
 	{
 		cout << "Please input e.g. 'cancel portfolio 1 1'" << endl;
 	}
+}
+
+void ConsoleExecuteSetLeg(CConsoleClient& console, string& cmd)
+{
+	split_vector_type splitVec;
+	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
+
+	int portIdx = 0, legIdx = -1;
+
+	try
+	{
+		if(splitVec.size() == 5)
+		{
+			portIdx =  boost::lexical_cast<int>(splitVec[2]);
+			legIdx = boost::lexical_cast<int>(splitVec[3]);
+			const string& argu = splitVec[4];
+			if( argu == "limit")
+			{
+				console.SetLegOrdPriceType(portIdx, legIdx, protoc::LIMIT_PRICE);
+			}
+			else if( argu == "any" )
+			{
+				console.SetLegOrdPriceType(portIdx, legIdx, protoc::ANY_PRICE);
+			}
+			else if( argu == "long" )
+			{
+				console.SetLegDirection(portIdx, legIdx,  protoc::LONG);
+			}
+			else if( argu == "short" )
+			{
+				console.SetLegDirection(portIdx, legIdx,  protoc::SHORT);
+			}
+			else
+			{
+				double price = boost::lexical_cast<double>(argu);
+				console.SetLegLmtPrice(portIdx, legIdx, price);
+			}
+		}
+		else
+		{
+			cout << "Please input e.g. 'set leg 1 1 limit[any]'" << endl;
+		}
+	}
+	catch (std::exception& e)
+	{
+		cerr << e.what() << endl;
+	}
+
 }

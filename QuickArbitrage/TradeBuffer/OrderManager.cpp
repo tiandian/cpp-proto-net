@@ -396,8 +396,8 @@ boost::shared_ptr<protoc::InputOrder> COrderManager::CreateInputOrderByLeg( CLeg
 		{
 			throw std::exception("unexpected leg side");
 		}
-		order->set_orderpricetype(leg->GetOpenOrderPriceType());
-		order->set_limitprice(leg->GetOpenLimitPrice());
+		order->set_orderpricetype(leg->GetCloseOrderPriceType());
+		order->set_limitprice(leg->GetCloseLimitPrice());
 		CombOffset[0] = protoc::OF_CLOSE_TODAY;
 	}
 	else

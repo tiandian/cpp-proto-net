@@ -155,17 +155,61 @@ void CConsoleClient::ClosePosition(int portIdx, int legIdx)
 	}
 }
 
-void CConsoleClient::SetLeg( int portIdx, int idx, protoc::PosiDirectionType side )
+void CConsoleClient::SetLegDirection( int portIdx, int legIdx, protoc::PosiDirectionType side )
 {
 	boost::uuids::uuid uidPortfolio;
 	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
 	{
 		CPortfolio* port = g_orderMgr.GetPortfolio(uidPortfolio);
 		const LegVector& legs = port->GetLegs();
-		if( idx < legs.size() )
+		if( legIdx <= legs.size() && legIdx > 0)
 		{
-			const boost::shared_ptr<CLeg>& l = legs[idx];
+			const boost::shared_ptr<CLeg>& l = legs[legIdx - 1];
 			l->SetSide(side);
+		}
+	}
+}
+
+void CConsoleClient::SetLegOrdPriceType( int portIdx, int legIdx, protoc::OrderPriceTypeType priceType )
+{
+	boost::uuids::uuid uidPortfolio;
+	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
+	{
+		CPortfolio* port = g_orderMgr.GetPortfolio(uidPortfolio);
+		const LegVector& legs = port->GetLegs();
+		if( legIdx <= legs.size() && legIdx > 0 )
+		{
+			const boost::shared_ptr<CLeg>& l = legs[legIdx - 1];
+			if (l->GetStatus() == UNOPENED)
+			{
+				l->SetOpenOrderPriceType(priceType);
+			}
+			else if(l->GetStatus() == OPENED)
+			{
+				l->SetCloseOrderPriceType(priceType);
+			}
+		}
+	}
+}
+
+void CConsoleClient::SetLegLmtPrice( int portIdx, int legIdx, double limitPrice )
+{
+	boost::uuids::uuid uidPortfolio;
+	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
+	{
+		CPortfolio* port = g_orderMgr.GetPortfolio(uidPortfolio);
+		const LegVector& legs = port->GetLegs();
+		if( legIdx <= legs.size() && legIdx > 0 )
+		{
+			const boost::shared_ptr<CLeg>& l = legs[legIdx - 1];
+			if (l->GetStatus() == UNOPENED)
+			{
+				l->SetOpenLimitPrice(limitPrice);
+			}
+			else if(l->GetStatus() == OPENED)
+			{
+				l->SetCloseLimitPrice(limitPrice);
+			}
 		}
 	}
 }
@@ -194,3 +238,5 @@ bool CConsoleClient::GetPortfolioIDByIndex( int idx, boost::uuids::uuid* outPID 
 		return false;
 	}
 }
+
+
