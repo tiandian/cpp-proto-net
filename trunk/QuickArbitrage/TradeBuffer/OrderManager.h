@@ -47,6 +47,7 @@ public:
 	bool Portfolio_CancelLegOrder(const boost::uuids::uuid& pid, int legIdx = -1);
 
 	CPortfolio* GetPortfolio(const boost::uuids::uuid& pid);
+	CPortfolio* GetPortfolio(int portIdx);
 
 	void Buy()
 	{
