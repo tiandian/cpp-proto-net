@@ -42,6 +42,8 @@ void ConsoleExecuteBuy(CConsoleClient& console, string& cmd);
 void ConsoleExecuteAddPortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteOpenPortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteShowPortfolio(CConsoleClient& console, string& cmd);
+void ConsoleExecuteClosePortfolio(CConsoleClient& console, string& cmd);
+void ConsoleExecuteCancelPortfolio(CConsoleClient& console, string& cmd);
 
 typedef vector< string > split_vector_type;
 
@@ -132,6 +134,14 @@ int _tmain(int argc, _TCHAR* argv[])
 			else if(boost::istarts_with(command, "open portfolio"))
 			{
 				ConsoleExecuteOpenPortfolio(consoleClient, command);
+			}
+			else if(boost::istarts_with(command, "cancel portfolio"))
+			{
+				ConsoleExecuteCancelPortfolio(consoleClient, command);
+			}
+			else if(boost::istarts_with(command, "close portfolio"))
+			{
+				ConsoleExecuteClosePortfolio(consoleClient, command);
 			}
 			else if(command == "show")
 			{
@@ -307,4 +317,52 @@ void ConsoleExecuteOpenPortfolio(CConsoleClient& console, string& cmd)
 void ConsoleExecuteShowPortfolio(CConsoleClient& console, string& cmd)
 {
 	console.ShowPortfolio();
+}
+
+void ConsoleExecuteClosePortfolio(CConsoleClient& console, string& cmd)
+{
+	split_vector_type splitVec;
+	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
+
+	int portIdx = 0, legIdx = -1;
+
+	if(splitVec.size() == 3)
+	{
+		portIdx =  boost::lexical_cast<int>(splitVec[2]);
+		console.ClosePosition(portIdx);
+	}
+	else if(splitVec.size() == 4)
+	{
+		portIdx =  boost::lexical_cast<int>(splitVec[2]);
+		legIdx = boost::lexical_cast<int>(splitVec[3]);
+		console.ClosePosition(portIdx, legIdx);
+	}
+	else
+	{
+		cout << "Please input e.g. 'close portfolio 1 1'" << endl;
+	}
+}
+
+void ConsoleExecuteCancelPortfolio(CConsoleClient& console, string& cmd)
+{
+	split_vector_type splitVec;
+	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
+
+	int portIdx = 0, legIdx = -1;
+
+	if(splitVec.size() == 3)
+	{
+		portIdx =  boost::lexical_cast<int>(splitVec[2]);
+		console.CancelPortfolio(portIdx);
+	}
+	else if(splitVec.size() == 4)
+	{
+		portIdx =  boost::lexical_cast<int>(splitVec[2]);
+		legIdx = boost::lexical_cast<int>(splitVec[3]);
+		console.CancelPortfolio(portIdx, legIdx);
+	}
+	else
+	{
+		cout << "Please input e.g. 'cancel portfolio 1 1'" << endl;
+	}
 }

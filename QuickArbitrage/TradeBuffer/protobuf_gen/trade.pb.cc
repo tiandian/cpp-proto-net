@@ -33,6 +33,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* Trade_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   Trade_reflection_ = NULL;
+const ::google::protobuf::Descriptor* InputOrderAction_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  InputOrderAction_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* PosiDirectionType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* HedgeFlagType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* OrderPriceTypeType_descriptor_ = NULL;
@@ -49,6 +52,7 @@ const ::google::protobuf::EnumDescriptor* TradingRoleType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* OffsetFlagType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* TradeTypeType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* PriceSourceType_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* ActionFlagType_descriptor_ = NULL;
 
 }  // namespace
 
@@ -305,6 +309,34 @@ void protobuf_AssignDesc_trade_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Trade));
+  InputOrderAction_descriptor_ = file->message_type(5);
+  static const int InputOrderAction_offsets_[14] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, brokerid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, investorid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, orderactionref_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, orderref_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, requestid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, frontid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, sessionid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, exchangeid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, ordersysid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, actionflag_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, limitprice_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, volumechange_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, userid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, instrumentid_),
+  };
+  InputOrderAction_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      InputOrderAction_descriptor_,
+      InputOrderAction::default_instance_,
+      InputOrderAction_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(InputOrderAction));
   PosiDirectionType_descriptor_ = file->enum_type(0);
   HedgeFlagType_descriptor_ = file->enum_type(1);
   OrderPriceTypeType_descriptor_ = file->enum_type(2);
@@ -321,6 +353,7 @@ void protobuf_AssignDesc_trade_2eproto() {
   OffsetFlagType_descriptor_ = file->enum_type(13);
   TradeTypeType_descriptor_ = file->enum_type(14);
   PriceSourceType_descriptor_ = file->enum_type(15);
+  ActionFlagType_descriptor_ = file->enum_type(16);
 }
 
 namespace {
@@ -343,6 +376,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     Order_descriptor_, &Order::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Trade_descriptor_, &Trade::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    InputOrderAction_descriptor_, &InputOrderAction::default_instance());
 }
 
 }  // namespace
@@ -358,6 +393,8 @@ void protobuf_ShutdownFile_trade_2eproto() {
   delete Order_reflection_;
   delete Trade::default_instance_;
   delete Trade_reflection_;
+  delete InputOrderAction::default_instance_;
+  delete InputOrderAction_reflection_;
 }
 
 void protobuf_AddDesc_trade_2eproto() {
@@ -478,7 +515,15 @@ void protobuf_AddDesc_trade_2eproto() {
     "\026 \002(\t\022\024\n\014OrderLocalID\030\027 \002(\t\022\026\n\016ClearingP"
     "artID\030\030 \002(\t\022\024\n\014BusinessUnit\030\031 \002(\t\022\022\n\nSeq"
     "uenceNo\030\032 \002(\005\022\022\n\nTradingDay\030\033 \002(\t\022\024\n\014Set"
-    "tlementID\030\034 \002(\005\022\026\n\016BrokerOrderSeq\030\035 \002(\005*"
+    "tlementID\030\034 \002(\005\022\026\n\016BrokerOrderSeq\030\035 \002(\005\""
+    "\275\002\n\020InputOrderAction\022\020\n\010BrokerID\030\001 \002(\t\022\022"
+    "\n\nInvestorID\030\002 \002(\t\022\026\n\016OrderActionRef\030\003 \002"
+    "(\005\022\020\n\010OrderRef\030\004 \002(\t\022\021\n\tRequestID\030\005 \002(\005\022"
+    "\017\n\007FrontID\030\006 \002(\005\022\021\n\tSessionID\030\007 \002(\005\022\022\n\nE"
+    "xchangeID\030\010 \002(\t\022\022\n\nOrderSysID\030\t \002(\t\022*\n\nA"
+    "ctionFlag\030\n \002(\0162\026.protoc.ActionFlagType\022"
+    "\022\n\nLimitPrice\030\013 \002(\001\022\024\n\014VolumeChange\030\014 \002("
+    "\005\022\016\n\006UserID\030\r \002(\t\022\024\n\014InstrumentID\030\016 \002(\t*"
     "1\n\021PosiDirectionType\022\007\n\003NET\0201\022\010\n\004LONG\0202\022"
     "\t\n\005SHORT\0203*:\n\rHedgeFlagType\022\017\n\013SPECULATI"
     "ON\0201\022\r\n\tARBITRAGE\0202\022\t\n\005HEDGE\0203*\221\003\n\022Order"
@@ -540,7 +585,8 @@ void protobuf_AddDesc_trade_2eproto() {
     "EXECUTION\0201\022\014\n\010TRDT_OTC\0202\022\024\n\020TRDT_EFP_DE"
     "RIVED\0203\022\034\n\030TRDT_COMBINATION_DERIVED\0204*C\n"
     "\017PriceSourceType\022\023\n\017PSRC_LAST_PRICE\0200\022\014\n"
-    "\010PSRC_BUY\0201\022\r\n\tPSRC_SELL\0202", 6946);
+    "\010PSRC_BUY\0201\022\r\n\tPSRC_SELL\0202*.\n\016ActionFlag"
+    "Type\022\r\n\tAF_Delete\0200\022\r\n\tAF_Modify\0203", 7314);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "trade.proto", &protobuf_RegisterTypes);
   AccountInfo::default_instance_ = new AccountInfo();
@@ -548,11 +594,13 @@ void protobuf_AddDesc_trade_2eproto() {
   InputOrder::default_instance_ = new InputOrder();
   Order::default_instance_ = new Order();
   Trade::default_instance_ = new Trade();
+  InputOrderAction::default_instance_ = new InputOrderAction();
   AccountInfo::default_instance_->InitAsDefaultInstance();
   PositionInfo::default_instance_->InitAsDefaultInstance();
   InputOrder::default_instance_->InitAsDefaultInstance();
   Order::default_instance_->InitAsDefaultInstance();
   Trade::default_instance_->InitAsDefaultInstance();
+  InputOrderAction::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_trade_2eproto);
 }
 
@@ -847,6 +895,20 @@ bool PriceSourceType_IsValid(int value) {
     case 48:
     case 49:
     case 50:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* ActionFlagType_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ActionFlagType_descriptor_;
+}
+bool ActionFlagType_IsValid(int value) {
+  switch(value) {
+    case 48:
+    case 51:
       return true;
     default:
       return false;
@@ -9960,6 +10022,863 @@ void Trade::Swap(Trade* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = Trade_descriptor_;
   metadata.reflection = Trade_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int InputOrderAction::kBrokerIDFieldNumber;
+const int InputOrderAction::kInvestorIDFieldNumber;
+const int InputOrderAction::kOrderActionRefFieldNumber;
+const int InputOrderAction::kOrderRefFieldNumber;
+const int InputOrderAction::kRequestIDFieldNumber;
+const int InputOrderAction::kFrontIDFieldNumber;
+const int InputOrderAction::kSessionIDFieldNumber;
+const int InputOrderAction::kExchangeIDFieldNumber;
+const int InputOrderAction::kOrderSysIDFieldNumber;
+const int InputOrderAction::kActionFlagFieldNumber;
+const int InputOrderAction::kLimitPriceFieldNumber;
+const int InputOrderAction::kVolumeChangeFieldNumber;
+const int InputOrderAction::kUserIDFieldNumber;
+const int InputOrderAction::kInstrumentIDFieldNumber;
+#endif  // !_MSC_VER
+
+InputOrderAction::InputOrderAction()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void InputOrderAction::InitAsDefaultInstance() {
+}
+
+InputOrderAction::InputOrderAction(const InputOrderAction& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void InputOrderAction::SharedCtor() {
+  _cached_size_ = 0;
+  brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  orderactionref_ = 0;
+  orderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  requestid_ = 0;
+  frontid_ = 0;
+  sessionid_ = 0;
+  exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ordersysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  actionflag_ = 48;
+  limitprice_ = 0;
+  volumechange_ = 0;
+  userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  instrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+InputOrderAction::~InputOrderAction() {
+  SharedDtor();
+}
+
+void InputOrderAction::SharedDtor() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    delete brokerid_;
+  }
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    delete investorid_;
+  }
+  if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+    delete orderref_;
+  }
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    delete exchangeid_;
+  }
+  if (ordersysid_ != &::google::protobuf::internal::kEmptyString) {
+    delete ordersysid_;
+  }
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    delete userid_;
+  }
+  if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    delete instrumentid_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void InputOrderAction::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* InputOrderAction::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return InputOrderAction_descriptor_;
+}
+
+const InputOrderAction& InputOrderAction::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_trade_2eproto();  return *default_instance_;
+}
+
+InputOrderAction* InputOrderAction::default_instance_ = NULL;
+
+InputOrderAction* InputOrderAction::New() const {
+  return new InputOrderAction;
+}
+
+void InputOrderAction::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_brokerid()) {
+      if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+        brokerid_->clear();
+      }
+    }
+    if (has_investorid()) {
+      if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+        investorid_->clear();
+      }
+    }
+    orderactionref_ = 0;
+    if (has_orderref()) {
+      if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+        orderref_->clear();
+      }
+    }
+    requestid_ = 0;
+    frontid_ = 0;
+    sessionid_ = 0;
+    if (has_exchangeid()) {
+      if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+        exchangeid_->clear();
+      }
+    }
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (has_ordersysid()) {
+      if (ordersysid_ != &::google::protobuf::internal::kEmptyString) {
+        ordersysid_->clear();
+      }
+    }
+    actionflag_ = 48;
+    limitprice_ = 0;
+    volumechange_ = 0;
+    if (has_userid()) {
+      if (userid_ != &::google::protobuf::internal::kEmptyString) {
+        userid_->clear();
+      }
+    }
+    if (has_instrumentid()) {
+      if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+        instrumentid_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool InputOrderAction::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string BrokerID = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->brokerid().data(), this->brokerid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_InvestorID;
+        break;
+      }
+      
+      // required string InvestorID = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_InvestorID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_investorid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->investorid().data(), this->investorid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_OrderActionRef;
+        break;
+      }
+      
+      // required int32 OrderActionRef = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_OrderActionRef:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &orderactionref_)));
+          set_has_orderactionref();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_OrderRef;
+        break;
+      }
+      
+      // required string OrderRef = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_OrderRef:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_orderref()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->orderref().data(), this->orderref().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_RequestID;
+        break;
+      }
+      
+      // required int32 RequestID = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_RequestID:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &requestid_)));
+          set_has_requestid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(48)) goto parse_FrontID;
+        break;
+      }
+      
+      // required int32 FrontID = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_FrontID:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &frontid_)));
+          set_has_frontid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(56)) goto parse_SessionID;
+        break;
+      }
+      
+      // required int32 SessionID = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SessionID:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &sessionid_)));
+          set_has_sessionid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(66)) goto parse_ExchangeID;
+        break;
+      }
+      
+      // required string ExchangeID = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_ExchangeID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_exchangeid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->exchangeid().data(), this->exchangeid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(74)) goto parse_OrderSysID;
+        break;
+      }
+      
+      // required string OrderSysID = 9;
+      case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_OrderSysID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_ordersysid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->ordersysid().data(), this->ordersysid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(80)) goto parse_ActionFlag;
+        break;
+      }
+      
+      // required .protoc.ActionFlagType ActionFlag = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_ActionFlag:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (protoc::ActionFlagType_IsValid(value)) {
+            set_actionflag(static_cast< protoc::ActionFlagType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(10, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(89)) goto parse_LimitPrice;
+        break;
+      }
+      
+      // required double LimitPrice = 11;
+      case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_LimitPrice:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &limitprice_)));
+          set_has_limitprice();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(96)) goto parse_VolumeChange;
+        break;
+      }
+      
+      // required int32 VolumeChange = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_VolumeChange:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &volumechange_)));
+          set_has_volumechange();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(106)) goto parse_UserID;
+        break;
+      }
+      
+      // required string UserID = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_UserID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_userid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->userid().data(), this->userid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(114)) goto parse_InstrumentID;
+        break;
+      }
+      
+      // required string InstrumentID = 14;
+      case 14: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_InstrumentID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_instrumentid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->instrumentid().data(), this->instrumentid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void InputOrderAction::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string BrokerID = 1;
+  if (has_brokerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->brokerid(), output);
+  }
+  
+  // required string InvestorID = 2;
+  if (has_investorid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->investorid().data(), this->investorid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->investorid(), output);
+  }
+  
+  // required int32 OrderActionRef = 3;
+  if (has_orderactionref()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->orderactionref(), output);
+  }
+  
+  // required string OrderRef = 4;
+  if (has_orderref()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->orderref().data(), this->orderref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->orderref(), output);
+  }
+  
+  // required int32 RequestID = 5;
+  if (has_requestid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->requestid(), output);
+  }
+  
+  // required int32 FrontID = 6;
+  if (has_frontid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->frontid(), output);
+  }
+  
+  // required int32 SessionID = 7;
+  if (has_sessionid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->sessionid(), output);
+  }
+  
+  // required string ExchangeID = 8;
+  if (has_exchangeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeid().data(), this->exchangeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      8, this->exchangeid(), output);
+  }
+  
+  // required string OrderSysID = 9;
+  if (has_ordersysid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->ordersysid().data(), this->ordersysid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      9, this->ordersysid(), output);
+  }
+  
+  // required .protoc.ActionFlagType ActionFlag = 10;
+  if (has_actionflag()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      10, this->actionflag(), output);
+  }
+  
+  // required double LimitPrice = 11;
+  if (has_limitprice()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(11, this->limitprice(), output);
+  }
+  
+  // required int32 VolumeChange = 12;
+  if (has_volumechange()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->volumechange(), output);
+  }
+  
+  // required string UserID = 13;
+  if (has_userid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->userid().data(), this->userid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      13, this->userid(), output);
+  }
+  
+  // required string InstrumentID = 14;
+  if (has_instrumentid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->instrumentid().data(), this->instrumentid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      14, this->instrumentid(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* InputOrderAction::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string BrokerID = 1;
+  if (has_brokerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->brokerid(), target);
+  }
+  
+  // required string InvestorID = 2;
+  if (has_investorid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->investorid().data(), this->investorid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->investorid(), target);
+  }
+  
+  // required int32 OrderActionRef = 3;
+  if (has_orderactionref()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->orderactionref(), target);
+  }
+  
+  // required string OrderRef = 4;
+  if (has_orderref()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->orderref().data(), this->orderref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->orderref(), target);
+  }
+  
+  // required int32 RequestID = 5;
+  if (has_requestid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->requestid(), target);
+  }
+  
+  // required int32 FrontID = 6;
+  if (has_frontid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->frontid(), target);
+  }
+  
+  // required int32 SessionID = 7;
+  if (has_sessionid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->sessionid(), target);
+  }
+  
+  // required string ExchangeID = 8;
+  if (has_exchangeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeid().data(), this->exchangeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        8, this->exchangeid(), target);
+  }
+  
+  // required string OrderSysID = 9;
+  if (has_ordersysid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->ordersysid().data(), this->ordersysid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->ordersysid(), target);
+  }
+  
+  // required .protoc.ActionFlagType ActionFlag = 10;
+  if (has_actionflag()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      10, this->actionflag(), target);
+  }
+  
+  // required double LimitPrice = 11;
+  if (has_limitprice()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(11, this->limitprice(), target);
+  }
+  
+  // required int32 VolumeChange = 12;
+  if (has_volumechange()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->volumechange(), target);
+  }
+  
+  // required string UserID = 13;
+  if (has_userid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->userid().data(), this->userid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        13, this->userid(), target);
+  }
+  
+  // required string InstrumentID = 14;
+  if (has_instrumentid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->instrumentid().data(), this->instrumentid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        14, this->instrumentid(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int InputOrderAction::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string BrokerID = 1;
+    if (has_brokerid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->brokerid());
+    }
+    
+    // required string InvestorID = 2;
+    if (has_investorid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->investorid());
+    }
+    
+    // required int32 OrderActionRef = 3;
+    if (has_orderactionref()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->orderactionref());
+    }
+    
+    // required string OrderRef = 4;
+    if (has_orderref()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->orderref());
+    }
+    
+    // required int32 RequestID = 5;
+    if (has_requestid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->requestid());
+    }
+    
+    // required int32 FrontID = 6;
+    if (has_frontid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->frontid());
+    }
+    
+    // required int32 SessionID = 7;
+    if (has_sessionid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->sessionid());
+    }
+    
+    // required string ExchangeID = 8;
+    if (has_exchangeid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->exchangeid());
+    }
+    
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // required string OrderSysID = 9;
+    if (has_ordersysid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->ordersysid());
+    }
+    
+    // required .protoc.ActionFlagType ActionFlag = 10;
+    if (has_actionflag()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->actionflag());
+    }
+    
+    // required double LimitPrice = 11;
+    if (has_limitprice()) {
+      total_size += 1 + 8;
+    }
+    
+    // required int32 VolumeChange = 12;
+    if (has_volumechange()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->volumechange());
+    }
+    
+    // required string UserID = 13;
+    if (has_userid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->userid());
+    }
+    
+    // required string InstrumentID = 14;
+    if (has_instrumentid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->instrumentid());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void InputOrderAction::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const InputOrderAction* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const InputOrderAction*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void InputOrderAction::MergeFrom(const InputOrderAction& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_brokerid()) {
+      set_brokerid(from.brokerid());
+    }
+    if (from.has_investorid()) {
+      set_investorid(from.investorid());
+    }
+    if (from.has_orderactionref()) {
+      set_orderactionref(from.orderactionref());
+    }
+    if (from.has_orderref()) {
+      set_orderref(from.orderref());
+    }
+    if (from.has_requestid()) {
+      set_requestid(from.requestid());
+    }
+    if (from.has_frontid()) {
+      set_frontid(from.frontid());
+    }
+    if (from.has_sessionid()) {
+      set_sessionid(from.sessionid());
+    }
+    if (from.has_exchangeid()) {
+      set_exchangeid(from.exchangeid());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_ordersysid()) {
+      set_ordersysid(from.ordersysid());
+    }
+    if (from.has_actionflag()) {
+      set_actionflag(from.actionflag());
+    }
+    if (from.has_limitprice()) {
+      set_limitprice(from.limitprice());
+    }
+    if (from.has_volumechange()) {
+      set_volumechange(from.volumechange());
+    }
+    if (from.has_userid()) {
+      set_userid(from.userid());
+    }
+    if (from.has_instrumentid()) {
+      set_instrumentid(from.instrumentid());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void InputOrderAction::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void InputOrderAction::CopyFrom(const InputOrderAction& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool InputOrderAction::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00003fff) != 0x00003fff) return false;
+  
+  return true;
+}
+
+void InputOrderAction::Swap(InputOrderAction* other) {
+  if (other != this) {
+    std::swap(brokerid_, other->brokerid_);
+    std::swap(investorid_, other->investorid_);
+    std::swap(orderactionref_, other->orderactionref_);
+    std::swap(orderref_, other->orderref_);
+    std::swap(requestid_, other->requestid_);
+    std::swap(frontid_, other->frontid_);
+    std::swap(sessionid_, other->sessionid_);
+    std::swap(exchangeid_, other->exchangeid_);
+    std::swap(ordersysid_, other->ordersysid_);
+    std::swap(actionflag_, other->actionflag_);
+    std::swap(limitprice_, other->limitprice_);
+    std::swap(volumechange_, other->volumechange_);
+    std::swap(userid_, other->userid_);
+    std::swap(instrumentid_, other->instrumentid_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata InputOrderAction::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = InputOrderAction_descriptor_;
+  metadata.reflection = InputOrderAction_reflection_;
   return metadata;
 }
 

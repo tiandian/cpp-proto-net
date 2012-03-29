@@ -170,9 +170,14 @@ void CConsoleClient::SetLeg( int portIdx, int idx, protoc::PosiDirectionType sid
 	}
 }
 
-void CConsoleClient::CancelLeg( int portIdx, int idx )
+void CConsoleClient::CancelPortfolio(int portIdx, int legIdx)
 {
-
+	boost::uuids::uuid uidPortfolio;
+	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
+	{
+		cout << "Close position for portfolio :" << uidPortfolio << endl;
+		g_orderMgr.Portfolio_CancelLegOrder(uidPortfolio, legIdx);
+	}
 }
 
 bool CConsoleClient::GetPortfolioIDByIndex( int idx, boost::uuids::uuid* outPID )

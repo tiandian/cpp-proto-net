@@ -65,6 +65,9 @@ public:
 	///报单录入请求响应
 	void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg);
 
+	///报单操作请求响应
+	void OnRspOrderAction(bool succ, const std::string& orderRef, const std::string& msg);
+
 	///报单通知
 	void OnRtnOrder(protoc::Order* order);
 
@@ -82,15 +85,6 @@ public:
 
 	///请求查询投资者持仓响应
 	void OnRspQryInvestorPosition(){}
-
-	
-
-	///报单操作请求响应
-	void OnRspOrderAction(){}
-
-
-	
-
 	
 	//////////////////////////////////////////////////////////////////////////
 private:
@@ -100,7 +94,7 @@ private:
 	PortfolioVecIter FindPortfolio(const boost::uuids::uuid& pid);
 
 	boost::shared_ptr<protoc::InputOrder> CreateInputOrderByLeg(CLeg* leg);
-	boost::shared_ptr<protoc::InputOrder> CreateCancelActionByLeg(CLeg* leg);
+	boost::shared_ptr<protoc::InputOrderAction> CreateCancelActionByLeg(CLeg* leg);
 
 	CTradeAgent	m_tradeAgent;
 	

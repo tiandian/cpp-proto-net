@@ -24,7 +24,7 @@ public:
 	void ClosePosition(int portIdx, int legIdx = -1);
 	void ShowPortfolio();
 	void SetLeg(int portIdx, int idx, protoc::PosiDirectionType side);
-	void CancelLeg(int portIdx, int idx);
+	void CancelPortfolio(int portIdx, int legIdx = -1);
 
 protected:
 	virtual void ProcessQuote(CTP::Quote* pQuote);
