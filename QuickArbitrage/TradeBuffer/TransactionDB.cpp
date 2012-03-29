@@ -16,6 +16,7 @@
 #define TRANSACTION_DB_DIRECTORY "transaction"
 #define PORTFOLIO_TABLE "Portfolio"
 #define LEG_TABLE "Leg"
+#define TRADES_TABLE "Trades"
 
 using namespace std;
 
@@ -33,6 +34,7 @@ void CTransactionDB::EnsureValid( const char* dbFile )
 {
 	SetDBFile(boost::str(boost::format("%s\\%s.db") % TRANSACTION_DB_DIRECTORY % dbFile));
 	EnsurePortfolioTable();
+	EnsureTradesTable();
 }
 
 void CTransactionDB::EnsurePortfolioTable()
@@ -66,6 +68,32 @@ void CTransactionDB::EnsurePortfolioTable()
 				[CloseLimitPrice] DOUBLE DEFAULT 0,			\n\
 				[Cost] DOUBLE,								\n\
 				CONSTRAINT [sqlite_autoindex_Leg_1] PRIMARY KEY ([PID], [Symbol]));";
+		ExecuteNonQuery(sql);
+	}
+}
+
+
+void CTransactionDB::EnsureTradesTable()
+{
+	std::string sql;
+	if(!CheckTableExist(TRADES_TABLE))
+	{
+		// Create Portfolio table
+		sql = "CREATE TABLE [Trades] (						\n\
+				[TradeID] TEXT NOT NULL,					\n\
+				[InstrumentID] TEXT NOT NULL,				\n\
+				[OrderRef] TEXT NOT NULL,					\n\
+				[Direction] INT NOT NULL,					\n\
+				[OrderSysID] TEXT NOT NULL,					\n\
+				[OffsetFlag] INT NOT NULL,					\n\
+				[HedgeFlag] INT NOT NULL,					\n\
+				[Price] DOUBLE NOT NULL,					\n\
+				[Volume] INT NOT NULL,						\n\
+				[TradeDate] TEXT NOT NULL,					\n\
+				[TradeTime] TEXT NOT NULL,					\n\
+				[OrderLocalID] TEXT,						\n\
+				[SequenceNo] INT,							\n\
+				CONSTRAINT [sqlite_autoindex_Trades_1] PRIMARY KEY ([TradeID]));";
 		ExecuteNonQuery(sql);
 	}
 }
@@ -227,5 +255,28 @@ void CTransactionDB::FetchPortfolio( std::vector< boost::shared_ptr< CPortfolio 
 
 	if(!m_shareConnection) Close();
 }
+
+void CTransactionDB::AddTrade( protoc::Trade* trade )
+{
+	ostringstream sqltext;
+	sqltext << "insert into [" << TRADES_TABLE << "] ";
+	sqltext << "([TradeID], [InstrumentID], [OrderRef], [Direction], [OrderSysID], [OffsetFlag], [HedgeFlag], [Price], [Volume], [TradeDate], [TradeTime]) ";
+	sqltext << "values(";
+	sqltext << "'" << trade->tradeid() << "',";
+	sqltext << "'" << trade->instrumentid() << "',";
+	sqltext << "'" << trade->orderref() << "',";
+	sqltext << trade->direction() << ",";
+	sqltext << "'" << trade->ordersysid() << "',";
+	sqltext << trade->offsetflag() << ",";
+	sqltext << trade->hedgeflag() << ",";
+	sqltext << trade->price() << ",";
+	sqltext << trade->volume() << ",";
+	sqltext << "'" << trade->tradedate() << "',";
+	sqltext << "'" << trade->tradetime() << "',";
+	sqltext << ")";
+
+	bool succ = ExecuteNonQuery(sqltext.str());
+}
+
 
 

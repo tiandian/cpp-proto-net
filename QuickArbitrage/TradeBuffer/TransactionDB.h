@@ -19,10 +19,10 @@ public:
 	void ModifyPortfolio(CPortfolio* po){}
 	void RemovePortfolio(CPortfolio* po){}
 
-	void AddTrade(protoc::Trade* trade){}
+	void AddTrade(protoc::Trade* trade);
 
 private:
 	void EnsurePortfolioTable();
-
+	void EnsureTradesTable();
 };
 

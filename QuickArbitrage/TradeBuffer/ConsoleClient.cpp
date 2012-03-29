@@ -4,7 +4,6 @@
 #include "OrderManager.h"
 #include "protobuf_gen/trade.pb.h"
 
-#include <boost/uuid/uuid.hpp>
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/foreach.hpp>
 
@@ -88,8 +87,6 @@ void CConsoleClient::Buy()
 	g_orderMgr.Buy();
 }
 
-boost::uuids::uuid uidPortfolio;
-
 void CConsoleClient::AddPortfolio(double longPrice, double shortPrice)
 {
 	CPortfolio* pPortfolio = new CPortfolio();
@@ -112,23 +109,27 @@ void CConsoleClient::AddPortfolio(double longPrice, double shortPrice)
 	pLeg->SetOpenLimitPrice(shortPrice);
 
 	g_orderMgr.AddPortfolio(pPortfolio);
-
-	uidPortfolio = pPortfolio->GetID();
 }
 
-
-void CConsoleClient::OpenPosition()
+void CConsoleClient::OpenPosition(int portIdx, int legIdx)
 {
-	g_orderMgr.Portfolio_OpenPosition(uidPortfolio);
+	boost::uuids::uuid uidPortfolio;
+	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
+	{
+		cout << "Open position for portfolio :" << uidPortfolio << endl;
+		g_orderMgr.Portfolio_OpenPosition(uidPortfolio);
+	}
 }
 
 void CConsoleClient::ShowPortfolio()
 {
 	const PortfolioVector& portfolios = g_orderMgr.GetPortfolios();
 	// print all portfolios with legs
+	int idx = 0;
 	BOOST_FOREACH(const boost::shared_ptr< CPortfolio >& portfo, portfolios)
 	{
-		cout << "Portfolio ID: " << portfo->GetID() << setw(10) << portfo->GetDiff() << endl;
+		cout << "Idx:" << setw(2) << ++idx << " Portfolio ID: " << portfo->GetID();
+		cout << setw(7) << "Qty: " << portfo->GetQuantity() << "  Diff: " << portfo->GetDiff() << endl;
 		const LegVector& legs = portfo->GetLegs();
 		int i = 0;
 		BOOST_FOREACH(const boost::shared_ptr<CLeg>& leg, legs)
@@ -144,23 +145,47 @@ void CConsoleClient::ShowPortfolio()
 	}
 }
 
-void CConsoleClient::ClosePosition()
+void CConsoleClient::ClosePosition(int portIdx, int legIdx)
 {
-	g_orderMgr.Portfolio_ClosePosition(uidPortfolio);
-}
-
-void CConsoleClient::SetLeg( int idx, protoc::PosiDirectionType side )
-{
-	CPortfolio* port = g_orderMgr.GetPortfolio(uidPortfolio);
-	const LegVector& legs = port->GetLegs();
-	if( idx < legs.size() )
+	boost::uuids::uuid uidPortfolio;
+	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
 	{
-		const boost::shared_ptr<CLeg>& l = legs[idx];
-		l->SetSide(side);
+		cout << "Close position for portfolio :" << uidPortfolio << endl;
+		g_orderMgr.Portfolio_ClosePosition(uidPortfolio);
 	}
 }
 
-void CConsoleClient::CancelLeg( int idx )
+void CConsoleClient::SetLeg( int portIdx, int idx, protoc::PosiDirectionType side )
+{
+	boost::uuids::uuid uidPortfolio;
+	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
+	{
+		CPortfolio* port = g_orderMgr.GetPortfolio(uidPortfolio);
+		const LegVector& legs = port->GetLegs();
+		if( idx < legs.size() )
+		{
+			const boost::shared_ptr<CLeg>& l = legs[idx];
+			l->SetSide(side);
+		}
+	}
+}
+
+void CConsoleClient::CancelLeg( int portIdx, int idx )
 {
 
+}
+
+bool CConsoleClient::GetPortfolioIDByIndex( int idx, boost::uuids::uuid* outPID )
+{
+	CPortfolio* pPort = g_orderMgr.GetPortfolio(idx - 1);
+	if(pPort != NULL)
+	{
+		*outPID = pPort->GetID();
+		return true;
+	}
+	else
+	{
+		cout << "Input portfolio index(" << idx << ") beyond boundary." << endl;
+		return false;
+	}
 }

@@ -136,6 +136,18 @@ CPortfolio* COrderManager::GetPortfolio( const boost::uuids::uuid& pid )
 	}
 }
 
+CPortfolio* COrderManager::GetPortfolio( int portIdx )
+{
+	if( portIdx < m_portfolioVec.size() && portIdx >= 0)
+	{
+		return m_portfolioVec[portIdx].get();
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
 bool COrderManager::Portfolio_OpenPosition( const boost::uuids::uuid& pid )
 {
 	bool ret = true;
@@ -306,6 +318,8 @@ void COrderManager::OnRtnTrade( protoc::Trade* pTrade )
 	{
 		logger.Warning("Returned trade has no corresponding order!");
 	}
+
+	m_database.AddTrade(pTrade);
 }
 
 void COrderManager::OnRspUserLogin( bool succ, std::string& msg, int initOrderRefID )

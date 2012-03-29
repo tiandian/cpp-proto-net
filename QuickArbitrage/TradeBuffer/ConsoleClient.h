@@ -3,6 +3,7 @@
 #include "protobuf_gen/trade.pb.h"
 
 #include <sstream>
+#include <boost/uuid/uuid.hpp>
 
 class CConsoleClient :
 	public ClientBase
@@ -19,16 +20,18 @@ public:
 	void Buy();
 
 	void AddPortfolio(double longPrice = 0, double shortPrice = 0);
-	void OpenPosition();
-	void ClosePosition();
+	void OpenPosition(int portIdx, int legIdx = -1);
+	void ClosePosition(int portIdx, int legIdx = -1);
 	void ShowPortfolio();
-	void SetLeg(int idx, protoc::PosiDirectionType side);
-	void CancelLeg(int idx);
+	void SetLeg(int portIdx, int idx, protoc::PosiDirectionType side);
+	void CancelLeg(int portIdx, int idx);
 
 protected:
 	virtual void ProcessQuote(CTP::Quote* pQuote);
 
 private:
+	bool GetPortfolioIDByIndex(int idx, boost::uuids::uuid* outPID);
+
 	std::stringstream m_streamOut;
 
 	ClientBase* m_pRemoteClient;

@@ -129,7 +129,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			{
 				ConsoleExecuteAddPortfolio(consoleClient, command);
 			}
-			else if(command == "open portfolio")
+			else if(boost::istarts_with(command, "open portfolio"))
 			{
 				ConsoleExecuteOpenPortfolio(consoleClient, command);
 			}
@@ -282,7 +282,26 @@ void ConsoleExecuteAddPortfolio(CConsoleClient& console, string& cmd)
 
 void ConsoleExecuteOpenPortfolio(CConsoleClient& console, string& cmd)
 {
-	console.OpenPosition();
+	split_vector_type splitVec;
+	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
+
+	int portIdx = 0, legIdx = -1;
+
+	if(splitVec.size() == 3)
+	{
+		portIdx =  boost::lexical_cast<int>(splitVec[2]);
+		console.OpenPosition(portIdx);
+	}
+	else if(splitVec.size() == 4)
+	{
+		portIdx =  boost::lexical_cast<int>(splitVec[2]);
+		legIdx = boost::lexical_cast<int>(splitVec[3]);
+		console.OpenPosition(portIdx, legIdx);
+	}
+	else
+	{
+		cout << "Please input e.g. 'open portfolio 1 1'" << endl;
+	}
 }
 
 void ConsoleExecuteShowPortfolio(CConsoleClient& console, string& cmd)
