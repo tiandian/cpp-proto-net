@@ -5,6 +5,7 @@
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+#include <boost/bind.hpp>
 
 
 using namespace std;
@@ -141,6 +142,11 @@ void COrderManager::Unregister( std::string& brokerId, std::string& userId )
 		m_tradeAgent.Logout();
 		m_pClient = NULL;
 
+		{
+			WriteLock lock(m_lock);
+			m_dispatchMap.clear();
+			// todo:
+		}
 		m_portfolioVec.clear();
 		m_orderRepo.Clear();
 	}
@@ -164,8 +170,12 @@ void COrderManager::AddPortfolio( CPortfolio* pPortfolio )
 void COrderManager::AddPortfolio(const boost::shared_ptr<CPortfolio>& portfolio, bool submit/* = true*/)
 {
 	m_portfolioVec.push_back(portfolio);
-	m_database.AddPortfolio(portfolio.get());
+	if(submit)
+		m_database.AddPortfolio(portfolio.get());
 	AddPortfolioListenQuote(portfolio.get(), submit);
+
+	// Set Entry trigger here, just for test purpose
+	portfolio->GetEntryTrigger()->SetHandler(boost::bind(&COrderManager::Portfolio_OpenPosition, this, _1));
 }
 
 PortfolioVecIter COrderManager::FindPortfolio( const boost::uuids::uuid& pid )

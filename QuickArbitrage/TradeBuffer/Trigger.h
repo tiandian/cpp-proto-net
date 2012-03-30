@@ -2,16 +2,24 @@
 
 #include "protobuf_gen/quote.pb.h"
 
+#include <string>
+#include <map>
 #include <boost/function.hpp>
 #include <boost/uuid/uuid.hpp>
 
 typedef boost::function<bool(const boost::uuids::uuid&)> TriggerHandler;
+typedef std::map<std::string, std::string> TriggerParamMap;
+typedef TriggerParamMap::iterator TriggerParamMapIter;
 
 class CTrigger
 {
 public:
 	CTrigger(void);
 	virtual ~CTrigger(void);
+
+	virtual const char* GetName() = 0;
+	virtual void SetParameters(TriggerParamMap& paramMap) = 0;
+	virtual void GetParameters(TriggerParamMap& paramMap) = 0;
 
 	bool Test(CTP::Quote* quote);
 

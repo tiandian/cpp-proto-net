@@ -130,6 +130,15 @@ void CConsoleClient::ShowPortfolio()
 	{
 		cout << "Idx:" << setw(2) << ++idx << " Portfolio ID: " << portfo->GetID();
 		cout << setw(7) << "Qty: " << portfo->GetQuantity() << "  Diff: " << portfo->GetDiff() << endl;
+		cout << "IsAuto: " << (portfo->GetIsAuto() ? "Yes" : "No") << "  Entry Trigger Params: ";
+		TriggerParamMap params;
+		portfo->GetEntryTrigger()->GetParameters(params);
+		for (TriggerParamMapIter it = params.begin(); it != params.end(); ++it)
+		{
+			cout << it->first << "=" << it->second << " ";
+		}
+		cout << endl;
+
 		const LegVector& legs = portfo->GetLegs();
 		int i = 0;
 		BOOST_FOREACH(const boost::shared_ptr<CLeg>& leg, legs)
@@ -236,6 +245,32 @@ bool CConsoleClient::GetPortfolioIDByIndex( int idx, boost::uuids::uuid* outPID 
 	{
 		cout << "Input portfolio index(" << idx << ") beyond boundary." << endl;
 		return false;
+	}
+}
+
+void CConsoleClient::SetPortfolioAuto( int portIdx, bool isAuto )
+{
+	boost::uuids::uuid uidPortfolio;
+	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
+	{
+		CPortfolio* port = g_orderMgr.GetPortfolio(uidPortfolio);
+		port->SetAuto(isAuto);
+	}
+}
+
+void CConsoleClient::SetPortfolioParams( int portIdx, const string& key, const string& value )
+{
+	boost::uuids::uuid uidPortfolio;
+	if(GetPortfolioIDByIndex(portIdx, &uidPortfolio))
+	{
+		CPortfolio* port = g_orderMgr.GetPortfolio(uidPortfolio);
+		TriggerParamMap params;
+		params[key] = value;
+		CTrigger* trigger = port->GetEntryTrigger();
+		if(trigger != NULL)
+		{
+			trigger->SetParameters(params);
+		}
 	}
 }
 

@@ -27,7 +27,8 @@ public:
 	void SetLegOrdPriceType(int portIdx, int legIdx, protoc::OrderPriceTypeType priceType);
 	void SetLegLmtPrice(int portIdx, int legIdx, double limitPrice);
 	void CancelPortfolio(int portIdx, int legIdx = -1);
-
+	void SetPortfolioAuto(int portIdx, bool isAuto);
+	void SetPortfolioParams(int portIdx, const string& key, const string& value);
 protected:
 	virtual void ProcessQuote(CTP::Quote* pQuote);
 
