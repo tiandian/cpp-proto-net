@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include <boost/thread.hpp>
 
 typedef std::vector< boost::shared_ptr< CPortfolio > > PortfolioVector;
@@ -96,6 +97,12 @@ private:
 	boost::shared_ptr<protoc::InputOrder> CreateInputOrderByLeg(CLeg* leg);
 	boost::shared_ptr<protoc::InputOrderAction> CreateCancelActionByLeg(CLeg* leg);
 
+	void AddPortfolioListenQuote(CPortfolio* portfolio, bool submit = true);
+	void RemovePortfolioListenQuote(CPortfolio* portfolio);
+
+	void AddPortfolio(const boost::shared_ptr<CPortfolio>& portfolio, bool submit = true);
+	void UpdateListeningQuote();
+
 	CTradeAgent	m_tradeAgent;
 	
 	ClientBase* m_pClient;
@@ -108,5 +115,13 @@ private:
 	TThostFtdcOrderRefType ORDER_REF_BUF;
 
 	CTransactionDB m_database;
+
+	typedef std::multimap<std::string, CPortfolio*> SymbolPortfolioMap;
+	typedef SymbolPortfolioMap::iterator SymbolPortfolioMapIter;
+	SymbolPortfolioMap m_dispatchMap;
+	typedef boost::shared_mutex Lock; 
+	typedef boost::unique_lock< boost::shared_mutex > WriteLock; 
+	typedef boost::shared_lock< boost::shared_mutex >  ReadLock;
+	Lock m_lock;
 };
 

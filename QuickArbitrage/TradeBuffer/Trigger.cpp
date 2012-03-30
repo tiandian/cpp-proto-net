@@ -16,7 +16,7 @@ CTrigger::~CTrigger(void)
 
 bool CTrigger::Test( CTP::Quote* quote )
 {
-	if(m_isActive)
+	if(m_isActive && !m_isTriggered)
 	{
 		if(OnConditionCheck(quote))
 		{
