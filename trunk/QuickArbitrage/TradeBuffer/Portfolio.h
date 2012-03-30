@@ -38,8 +38,11 @@ public:
 	void SetAuto(bool autoFlag);
 
 	void SetEntryTrigger(TriggerPtr& trigger) { m_entryTrigger = trigger; }
+	CTrigger* GetEntryTrigger() { return m_entryTrigger.get(); }
 	void SetExitTrigger(TriggerPtr& trigger) { m_exitTrigger = trigger; }
+	CTrigger* GetExitTrigger() { return m_exitTrigger.get(); }
 	void SetStopLossTrigger(TriggerPtr& trigger) { m_stopLossTrigger = trigger; }
+	CTrigger* GetStopLossTrigger() { return m_stopLossTrigger.get(); }
 
 	void UpdateQuote(CTP::Quote* quote);
 private:

@@ -8,6 +8,7 @@
 
 CPortfolio::CPortfolio(void):
 	m_quantity(0),
+	m_autoRunning(false),
 	m_portfolioID(boost::uuids::random_generator()())
 {
 }
@@ -15,6 +16,7 @@ CPortfolio::CPortfolio(void):
 CPortfolio::CPortfolio(const boost::uuids::uuid& pid):
 	m_entryTrigger(new CEntryDiffTrigger(this)),
 	m_quantity(0),
+	m_autoRunning(false),
 	m_portfolioID(pid)
 {
 	

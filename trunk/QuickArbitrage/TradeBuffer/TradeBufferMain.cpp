@@ -45,6 +45,7 @@ void ConsoleExecuteShowPortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteClosePortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteCancelPortfolio(CConsoleClient& console, string& cmd);
 void ConsoleExecuteSetLeg(CConsoleClient& console, string& cmd);
+void ConsoleExecuteSetPortfolio(CConsoleClient& console, string& cmd);
 
 typedef vector< string > split_vector_type;
 
@@ -147,6 +148,10 @@ int _tmain(int argc, _TCHAR* argv[])
 			else if(boost::istarts_with(command, "set leg"))
 			{
 				ConsoleExecuteSetLeg(consoleClient, command);
+			}
+			else if(boost::istarts_with(command, "portfolio "))
+			{
+				ConsoleExecuteSetPortfolio(consoleClient, command);
 			}
 			else if(command == "show")
 			{
@@ -418,4 +423,42 @@ void ConsoleExecuteSetLeg(CConsoleClient& console, string& cmd)
 		cerr << e.what() << endl;
 	}
 
+}
+
+void ConsoleExecuteSetPortfolio(CConsoleClient& console, string& cmd)
+{
+	split_vector_type splitVec;
+	boost::split( splitVec, cmd, boost::is_any_of(" "), boost::token_compress_on );
+
+	if(splitVec.size() > 3)
+	{
+		int nPortIdx = boost::lexical_cast<int>(splitVec[1]);
+		const string& operArgu = splitVec[2];
+		if(operArgu == "auto")
+		{
+			const string& paramVal = splitVec[3];
+			if(paramVal == "on")
+			{
+				console.SetPortfolioAuto(nPortIdx, true);
+			}
+			else if (paramVal == "off")
+			{
+				console.SetPortfolioAuto(nPortIdx, false);
+			}
+		}
+		else if(operArgu == "set" && splitVec.size() == 5)
+		{
+			const string& keyArgu = splitVec[3];
+			const string& valArgu = splitVec[4];
+			console.SetPortfolioParams(nPortIdx, keyArgu, valArgu);
+		}
+		else
+		{
+			cout << "invalid input '" << operArgu << "'" << endl;
+		}
+	}
+	else
+	{
+		cout << "Please input e.g. 'portfolio 1 set diff 60' or 'portfolio 1 auto on[off]'" << endl;
+	}
 }
