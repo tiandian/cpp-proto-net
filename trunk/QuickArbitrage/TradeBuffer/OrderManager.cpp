@@ -3,8 +3,9 @@
 #include "QuoteAggregator.h"
 #include "LogManager.h"
 
-#include "boost/foreach.hpp"
-#include "boost/format.hpp"
+#include <boost/foreach.hpp>
+#include <boost/format.hpp>
+
 
 using namespace std;
 
@@ -26,7 +27,58 @@ COrderManager::~COrderManager(void)
 
 void COrderManager::OnQuoteRecevied(boost::shared_ptr<CTP::Quote>& pQuote)
 {
+	ReadLock lock(m_lock);
+	const string& symb = pQuote->symbol();
+	pair<SymbolPortfolioMapIter, SymbolPortfolioMapIter> ret = m_dispatchMap.equal_range(symb);
+	for (SymbolPortfolioMapIter it = ret.first; it != ret.second; ++it)
+	{
+		(it->second)->UpdateQuote(pQuote.get());
+	}
+}
 
+void COrderManager::AddPortfolioListenQuote(CPortfolio* portfolio, bool submit/* = true*/)
+{
+	WriteLock lock(m_lock);
+	BOOST_FOREACH(const boost::shared_ptr<CLeg>& leg, portfolio->GetLegs())
+	{
+		const string& symb = leg->GetSymbol();
+		m_dispatchMap.insert(pair<string, CPortfolio*>(symb, portfolio));
+	}
+	if(submit)
+		UpdateListeningQuote();
+}
+
+void COrderManager::RemovePortfolioListenQuote(CPortfolio* portfolio)
+{
+	WriteLock lock(m_lock);
+	BOOST_FOREACH(const boost::shared_ptr<CLeg>& leg, portfolio->GetLegs())
+	{
+		const string& symb = leg->GetSymbol();
+		pair<SymbolPortfolioMapIter, SymbolPortfolioMapIter> ret = m_dispatchMap.equal_range(symb);
+		for (SymbolPortfolioMapIter it = ret.first; it != ret.second; ++it)
+		{
+			if(it->second == portfolio)
+			{
+				// find it;
+				m_dispatchMap.erase(it);
+				break;
+			}
+		}
+	}
+	UpdateListeningQuote();
+}
+
+void COrderManager::UpdateListeningQuote()
+{
+	vector<string> currentSymbols;
+	for (SymbolPortfolioMapIter it = m_dispatchMap.begin(); it != m_dispatchMap.end(); ++it)
+	{
+		currentSymbols.push_back(it->first);
+	}
+	if(currentSymbols.size() > 0)
+		Subscribe(currentSymbols);
+	else
+		UnSubscribe();
 }
 
 void COrderManager::Initialize()
@@ -106,8 +158,14 @@ void COrderManager::RemovePortfolio( const boost::uuids::uuid& pid )
 void COrderManager::AddPortfolio( CPortfolio* pPortfolio )
 {
 	boost::shared_ptr<CPortfolio> portfolio(pPortfolio);
+	AddPortfolio(portfolio);
+}
+
+void COrderManager::AddPortfolio(const boost::shared_ptr<CPortfolio>& portfolio, bool submit/* = true*/)
+{
 	m_portfolioVec.push_back(portfolio);
-	m_database.AddPortfolio(pPortfolio);
+	m_database.AddPortfolio(portfolio.get());
+	AddPortfolioListenQuote(portfolio.get(), submit);
 }
 
 PortfolioVecIter COrderManager::FindPortfolio( const boost::uuids::uuid& pid )
@@ -341,7 +399,15 @@ void COrderManager::OnRspUserLogin( bool succ, std::string& msg, int initOrderRe
 	if(succ){
 		m_orderRefID = initOrderRefID;
 		m_database.EnsureValid(m_tradeAgent.GetUserId().c_str());
-		m_database.FetchPortfolio(m_portfolioVec);
+
+		PortfolioVector tmpVec;
+		m_database.FetchPortfolio(tmpVec);
+		BOOST_FOREACH(const boost::shared_ptr<CPortfolio>& port, tmpVec)
+		{
+			AddPortfolio(port, false);
+		}
+		// consolidate submit
+		UpdateListeningQuote();
 	}
 	else{
 		SetCurrentClient(NULL);

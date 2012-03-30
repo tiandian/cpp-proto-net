@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "Portfolio.h"
+#include "EntryDiffTrigger.h"
 
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -12,9 +13,11 @@ CPortfolio::CPortfolio(void):
 }
 
 CPortfolio::CPortfolio(const boost::uuids::uuid& pid):
+	m_entryTrigger(new CEntryDiffTrigger(this)),
 	m_quantity(0),
 	m_portfolioID(pid)
 {
+	
 }
 
 CPortfolio::~CPortfolio(void)
@@ -61,17 +64,17 @@ void CPortfolio::SetAuto( bool autoFlag )
 
 void CPortfolio::UpdateQuote( CTP::Quote* quote )
 {
-	if(m_entryTrigger != NULL && !m_entryTrigger->GetIsTriggered())
+	if(m_entryTrigger != NULL)
 	{
 		m_entryTrigger->Test(quote);
 	}
 
-	if(m_exitTrigger != NULL && !m_exitTrigger->GetIsTriggered())
+	if(m_exitTrigger != NULL)
 	{
 		m_exitTrigger->Test(quote);
 	}
 
-	if(m_stopLossTrigger != NULL && !m_stopLossTrigger->GetIsTriggered())
+	if(m_stopLossTrigger != NULL)
 	{
 		m_stopLossTrigger->Test(quote);
 	}
