@@ -82,6 +82,7 @@
     <Compile Include="Util\NumericComparison .cs" />
     <Compile Include="ViewModel\EquityItem.cs" />
     <Compile Include="ViewModel\FutureContractItem.cs" />
+    <Compile Include="ViewModel\PortfolioCommands.cs" />
     <Compile Include="ViewModel\PortfolioPerformance.cs" />
     <Compile Include="ViewModel\PortfolioSalesItem.cs" />
     <Compile Include="ViewModel\PositionItem.cs" />

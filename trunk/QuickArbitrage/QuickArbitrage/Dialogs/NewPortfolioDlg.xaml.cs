@@ -38,6 +38,24 @@ namespace QuickArbitrage.Main.Dialogs
             
         }
 
+        public bool IsOK { get; private set; }
+
+        public RunningPortfolioItem NewPortfolio
+        {
+            get
+            {
+                RunningPortfolioItem portfolio = new RunningPortfolioItem();
+               
+                foreach (var f in _composition)
+                {
+                    EquityItem eq = new EquityItem();
+
+                    portfolio.Equities.Add(eq);
+                }
+                return portfolio;
+            }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             if (this.availExchList.Items.Count > 0)
@@ -79,11 +97,13 @@ namespace QuickArbitrage.Main.Dialogs
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
+            this.IsOK = true;
             this.Close();
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
+            this.IsOK = false;
             this.Close();
         }
 
@@ -145,7 +165,7 @@ namespace QuickArbitrage.Main.Dialogs
         }
     }
 
-    class ComposedFutureViewModel : BaseViewModel
+    public class ComposedFutureViewModel : BaseViewModel
     {
         #region ID
         
@@ -233,7 +253,7 @@ namespace QuickArbitrage.Main.Dialogs
         #endregion
     }
 
-    class ComposedFutureList : ObservableCollection<ComposedFutureViewModel>
+    public class ComposedFutureList : ObservableCollection<ComposedFutureViewModel>
     {
         public ComposedFutureList()
         {

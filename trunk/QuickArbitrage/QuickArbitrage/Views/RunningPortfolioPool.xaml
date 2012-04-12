@@ -11,11 +11,16 @@
              xmlns:conv="clr-namespace:QuickArbitrage.Main.Converters"
              xmlns:ctrl="clr-namespace:QuickArbitrage.Main.Controls"
              xmlns:enum="clr-namespace:QuickArbitrage.Common.Enums;assembly=QuickArbitrage.Common"
+             xmlns:vm="clr-namespace:QuickArbitrage.Main.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800" Loaded="UserControl_Loaded" MinHeight="200" >
     <UserControl.Resources>
         <local:RunningPortfoliosViewModel x:Key="portfolios" />
     </UserControl.Resources>
+    <UserControl.CommandBindings>
+        <CommandBinding Command="vm:PortfolioCommands.LegOpenPosition" Executed="LegOpenPositionHandler" />
+        <CommandBinding Command="vm:PortfolioCommands.PortfolioOpenPosition" Executed="PortfolioOpenPositionHandler" />
+    </UserControl.CommandBindings>
     <Border BorderBrush="Gray" BorderThickness="5" >
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
@@ -165,7 +170,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
-                                    <Border Height="50" Margin="4, 4, 0, 4" BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 3">
+                                    <Border Height="75" Margin="4, 4, 0, 4" BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 3">
                                         <DockPanel>
                                             <ctrl:TabSelector DataSource="{StaticResource runningTypeItems}" DockPanel.Dock="Left">
                                                 <ctrl:TabSelector.SelectedItem>

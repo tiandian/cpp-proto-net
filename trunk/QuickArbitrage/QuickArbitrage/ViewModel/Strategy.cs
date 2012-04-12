@@ -6,7 +6,7 @@ using QuickArbitrage.Main.Util;
 
 namespace QuickArbitrage.Main.ViewModel
 {
-    class Strategy : BaseViewModel
+    public class Strategy : BaseViewModel
     {
         #region StrategyID
         
