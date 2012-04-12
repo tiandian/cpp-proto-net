@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace QuickArbitrage.Main.ViewModel
 {
-    class RunningPortfolioItem : BaseViewModel
+    public class RunningPortfolioItem : BaseViewModel
     {
         #region RunningType
         

@@ -35,6 +35,11 @@ namespace QuickArbitrage.Main.Views
             _runningPortfolios = this.FindResource("portfolios") as RunningPortfoliosViewModel;
         }
 
+        public void Add(RunningPortfolioItem portfolio)
+        {
+            _runningPortfolios.Add(portfolio);
+        }
+
         private void tabTradingType_SelectionChanged(object sender, Controls.TabSelectionChangedEventArgs e)
         {
             TradingTypeOptionItem item = e.SelectedItem as TradingTypeOptionItem;
@@ -56,7 +61,7 @@ namespace QuickArbitrage.Main.Views
         {
             //QuickArbitrage.Connection.TransferTest.StreamFileTest.WriteCustomer("e:\\cus.bin");
             IAccountClient client = QuickArbitrage.Connection.ClientFactory.Instance.GetAccountClient();
-            client.Login("xixihaha", "thisispwd", new LoginCallback(
+            client.Login("0240050002", "888888", new LoginCallback(
                                             (succ, msg) => {
 
                                                 if (succ)
@@ -84,6 +89,16 @@ namespace QuickArbitrage.Main.Views
         {
             string qInfo = string.Format("{0}, {1}, {2}", e.Symbol, e.Quote.last, e.Quote.update_time);
             System.Diagnostics.Trace.WriteLine(qInfo);
+        }
+
+        private void LegOpenPositionHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void PortfolioOpenPositionHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+
         }
     }
 
@@ -123,7 +138,10 @@ namespace QuickArbitrage.Main.Views
                 Side = Side.Short,
                 PrevClose = 60990,
                 Cost = 61240,
-                Last = 60980
+                Ask = 60990,
+                Bid = 60970,
+                Last = 60980,
+                LegStatus = "未开仓"
             };
 
             EquityItem eqB = new EquityItem()
@@ -133,7 +151,10 @@ namespace QuickArbitrage.Main.Views
                 Side = Side.Long,
                 PrevClose = 61280,
                 Cost = 61570,
-                Last = 61290
+                Ask = 61300,
+                Bid = 61280,
+                Last = 61290,
+                LegStatus = "未开仓"
             };
 
             RunningPortfolioItem portfolio = new RunningPortfolioItem();
@@ -155,7 +176,10 @@ namespace QuickArbitrage.Main.Views
                 Side = Side.Short,
                 PrevClose = 61580,
                 Cost = 61860,
-                Last = 61560
+                Last = 61560,
+                Ask = 61580,
+                Bid = 61550,
+                LegStatus = "未开仓"
             };
 
             eqB = new EquityItem()
@@ -165,7 +189,10 @@ namespace QuickArbitrage.Main.Views
                 Side = Side.Long,
                 PrevClose = 61740,
                 Cost = 62020,
-                Last = 61750
+                Last = 61750,
+                Ask = 61760,
+                Bid = 61740,
+                LegStatus = "未开仓"
             };
 
             portfolio = new RunningPortfolioItem();

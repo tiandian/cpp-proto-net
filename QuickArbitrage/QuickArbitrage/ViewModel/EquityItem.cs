@@ -7,7 +7,7 @@ using QuickArbitrage.Common.Enums;
 
 namespace QuickArbitrage.Main.ViewModel
 {
-    class EquityItem : BaseViewModel
+    public class EquityItem : BaseViewModel
     {
         #region Code
 
@@ -183,6 +183,57 @@ namespace QuickArbitrage.Main.ViewModel
         		{
         			_gain = value;
         			this.OnPropertyChanged("Gain");
+        		}
+        	}
+        }
+        #endregion
+
+        #region Ask
+        
+        private double _ask;
+        public double Ask
+        {
+        	get { return _ask; }
+        	set
+        	{
+        		if (_ask != value)
+        		{
+        			_ask = value;
+        			this.OnPropertyChanged("Ask");
+        		}
+        	}
+        }
+        #endregion
+
+        #region Bid
+        
+        private double _bid;
+        public double Bid
+        {
+        	get { return _bid; }
+        	set
+        	{
+        		if (_bid != value)
+        		{
+        			_bid = value;
+        			this.OnPropertyChanged("Bid");
+        		}
+        	}
+        }
+        #endregion
+
+        #region LegStatus
+        
+        private string _legStatus;
+        public string LegStatus
+        {
+        	get { return _legStatus; }
+        	set
+        	{
+        		if (_legStatus != value)
+        		{
+        			_legStatus = value;
+        			this.OnPropertyChanged("LegStatus");
         		}
         	}
         }

@@ -23,7 +23,7 @@
                 <uc:TimeNSales ></uc:TimeNSales>
             </DockPanel>
             <ctrl:DockPanelSplitter DockPanel.Dock="Bottom"/>
-            <uc:RunningPortfolioPool />
+            <uc:RunningPortfolioPool x:Name="portfolioPool"/>
             
         </DockPanel>
         
