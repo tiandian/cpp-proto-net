@@ -1,0 +1,65 @@
+﻿<Window x:Class="AutoTrade.MainFrame.ShellWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:igDock="http://infragistics.com/DockManager"
+        xmlns:cal="http://www.codeplex.com/CompositeWPF"
+        xmlns:account="clr-namespace:AutoTrade.MainFrame.Modules.Account"
+        xmlns:portfolio="clr-namespace:AutoTrade.MainFrame.Modules.Portfolio"
+        xmlns:region="clr-namespace:AutoTrade.MainFrame.Region"
+        Title="ShellWindow" Height="600" Width="800" >
+    <Grid>
+        <DockPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                <Button>Add Account</Button>
+                <Button>Add Portfolio</Button>
+                <Button Name="btnSaveLayout" Click="btnSaveLayout_Click">Save layout</Button>
+                <Button Name="btnLoadLayout" Click="btnLoadLayout_Click">Load layout</Button>
+            </StackPanel>
+
+            <igDock:XamDockManager Name="dockManager">
+                <igDock:XamDockManager.Panes>
+                    <igDock:SplitPane x:Name="splitToolbox2" 
+                              igDock:XamDockManager.InitialLocation="DockedLeft">
+                        <igDock:ContentPane x:Name="paneToolbox2" Header="Toolbox" />
+                    </igDock:SplitPane>
+                    <igDock:SplitPane x:Name="splitFind2"
+                igDock:XamDockManager.FloatingSize="100,40"
+                igDock:XamDockManager.InitialLocation="FloatingOnly">
+                        <igDock:ContentPane x:Name="paneFind2" 
+                                    Header="Find and Replace" />
+                    </igDock:SplitPane>
+                    <igDock:SplitPane x:Name="splitRight2"
+                              igDock:XamDockManager.InitialLocation="DockedRight">
+                        <igDock:TabGroupPane x:Name="tabTrees2">
+                            <igDock:ContentPane x:Name="paneSolution2" Header="Solution Explorer" 
+                                                cal:RegionManager.RegionName="{x:Static region:RegionNames.AccountRegion}">
+                                <!--<account:AccountTree />-->
+                            </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="paneClassView2" 
+                                        Header="Class View" 
+                                        IsPinned="False" />
+                        </igDock:TabGroupPane>
+                    </igDock:SplitPane>
+                    <igDock:SplitPane x:Name="splitOutput2" 
+                              igDock:XamDockManager.FloatingSize="100,40"
+                              igDock:XamDockManager.InitialLocation="DockableFloating">
+                        <igDock:ContentPane x:Name="paneOutput2" 
+                                    Header="Output" />
+                    </igDock:SplitPane>
+                </igDock:XamDockManager.Panes>
+                <igDock:DocumentContentHost>
+                    <igDock:SplitPane x:Name="rootDocSplit2">
+                        <igDock:TabGroupPane x:Name="mainGroup2">
+                            <igDock:ContentPane x:Name="file1a" Header="File 1" >
+                                <portfolio:PortfolioList />
+                            </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="file2a" Header="File 2" />
+                        </igDock:TabGroupPane>
+                    </igDock:SplitPane>
+                </igDock:DocumentContentHost>
+
+            </igDock:XamDockManager>
+        </DockPanel>
+        
+    </Grid>
+</Window>
