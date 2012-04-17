@@ -9,14 +9,14 @@
         Title="ShellWindow" Height="600" Width="800" >
     <Grid>
         <DockPanel>
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{StaticResource TabControlContentBrush}">
                 <Button>Add Account</Button>
                 <Button>Add Portfolio</Button>
                 <Button Name="btnSaveLayout" Click="btnSaveLayout_Click">Save layout</Button>
                 <Button Name="btnLoadLayout" Click="btnLoadLayout_Click">Load layout</Button>
             </StackPanel>
 
-            <igDock:XamDockManager Name="dockManager">
+            <igDock:XamDockManager Name="dockManager" Theme="Office2k7Blue">
                 <igDock:XamDockManager.Panes>
                     <igDock:SplitPane x:Name="splitToolbox2" 
                               igDock:XamDockManager.InitialLocation="DockedLeft">
