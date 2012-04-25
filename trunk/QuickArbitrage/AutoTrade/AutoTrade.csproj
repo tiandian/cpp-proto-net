@@ -86,13 +86,21 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AutoTradeBootstrapper.cs" />
+    <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="Logging\ILog.cs" />
     <Compile Include="Logging\Log4netLogger.cs" />
     <Compile Include="LogManager.cs" />
+    <Compile Include="Modules\Account\AccountInfo.cs" />
+    <Compile Include="Modules\Account\AccountManager.cs" />
     <Compile Include="Modules\Account\AccountModule.cs" />
     <Compile Include="Modules\Account\AccountTree.xaml.cs">
       <DependentUpon>AccountTree.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Account\AddAccountDlg.xaml.cs">
+      <DependentUpon>AddAccountDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Portfolio\LegItem.cs" />
+    <Compile Include="Modules\Portfolio\PortfolioItem.cs" />
     <Compile Include="Modules\Portfolio\PortfolioList.xaml.cs">
       <DependentUpon>PortfolioList.xaml</DependentUpon>
     </Compile>
@@ -133,6 +141,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Account\AddAccountDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Portfolio\PortfolioList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -169,6 +181,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{42AB64CD-C7BE-48D7-A652-9CD951239411}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

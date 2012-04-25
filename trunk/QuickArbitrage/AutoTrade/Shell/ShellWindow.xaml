@@ -10,46 +10,33 @@
     <Grid>
         <DockPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{StaticResource TabControlContentBrush}">
-                <Button>Add Account</Button>
+                <Button Command="{Binding AddAccountCommand}">Add Account</Button>
                 <Button>Add Portfolio</Button>
                 <Button Name="btnSaveLayout" Click="btnSaveLayout_Click">Save layout</Button>
                 <Button Name="btnLoadLayout" Click="btnLoadLayout_Click">Load layout</Button>
             </StackPanel>
 
+            <StatusBar DockPanel.Dock="Bottom" Background="{StaticResource TabControlContentBrush}">Ready</StatusBar>
+            
             <igDock:XamDockManager Name="dockManager" Theme="Office2k7Blue">
                 <igDock:XamDockManager.Panes>
-                    <igDock:SplitPane x:Name="splitToolbox2" 
-                              igDock:XamDockManager.InitialLocation="DockedLeft">
-                        <igDock:ContentPane x:Name="paneToolbox2" Header="Toolbox" />
+                    <igDock:SplitPane x:Name="leftSplitPane" igDock:XamDockManager.InitialLocation="DockedLeft">
+                        <igDock:ContentPane x:Name="accountOverViewPane" Header="Account OverView" 
+                                            cal:RegionManager.RegionName="{x:Static region:RegionNames.AccountRegion}">
+                            <!--<account:AccountTree />-->
+                        </igDock:ContentPane>
                     </igDock:SplitPane>
-                    <igDock:SplitPane x:Name="splitFind2"
-                igDock:XamDockManager.FloatingSize="100,40"
-                igDock:XamDockManager.InitialLocation="FloatingOnly">
-                        <igDock:ContentPane x:Name="paneFind2" 
-                                    Header="Find and Replace" />
-                    </igDock:SplitPane>
-                    <igDock:SplitPane x:Name="splitRight2"
-                              igDock:XamDockManager.InitialLocation="DockedRight">
-                        <igDock:TabGroupPane x:Name="tabTrees2">
-                            <igDock:ContentPane x:Name="paneSolution2" Header="Solution Explorer" 
-                                                cal:RegionManager.RegionName="{x:Static region:RegionNames.AccountRegion}">
-                                <!--<account:AccountTree />-->
-                            </igDock:ContentPane>
-                            <igDock:ContentPane x:Name="paneClassView2" 
-                                        Header="Class View" 
-                                        IsPinned="False" />
-                        </igDock:TabGroupPane>
-                    </igDock:SplitPane>
-                    <igDock:SplitPane x:Name="splitOutput2" 
-                              igDock:XamDockManager.FloatingSize="100,40"
-                              igDock:XamDockManager.InitialLocation="DockableFloating">
-                        <igDock:ContentPane x:Name="paneOutput2" 
-                                    Header="Output" />
+                    <igDock:SplitPane x:Name="bottomSplitPane" SplitterOrientation="Vertical" Height="200"
+                              igDock:XamDockManager.InitialLocation="DockedBottom">
+                        <igDock:ContentPane x:Name="positionPane" 
+                                    Header="Position View" />
+                        <igDock:ContentPane x:Name="timeNSalesPane" 
+                                    Header="Time N Sales Pane" />
                     </igDock:SplitPane>
                 </igDock:XamDockManager.Panes>
                 <igDock:DocumentContentHost>
-                    <igDock:SplitPane x:Name="rootDocSplit2">
-                        <igDock:TabGroupPane x:Name="mainGroup2">
+                    <igDock:SplitPane x:Name="rootDocSplit">
+                        <igDock:TabGroupPane x:Name="mainGroup">
                             <igDock:ContentPane x:Name="file1a" Header="File 1" >
                                 <portfolio:PortfolioList />
                             </igDock:ContentPane>
