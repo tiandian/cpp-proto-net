@@ -51,6 +51,9 @@
     <Compile Include="Contract\ILog.cs" />
     <Compile Include="Contract\IQuoteClient.cs" />
     <Compile Include="Contract\ITradeClient.cs" />
+    <Compile Include="DataEntity\Account.cs" />
+    <Compile Include="DataEntity\Leg.cs" />
+    <Compile Include="DataEntity\Portfolio.cs" />
     <Compile Include="DataEntity\Quote.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Enums\TradeAction.cs" />

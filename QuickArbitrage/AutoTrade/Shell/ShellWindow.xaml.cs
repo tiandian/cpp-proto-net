@@ -18,10 +18,17 @@ namespace AutoTrade.MainFrame
     /// Interaction logic for ShellWindow.xaml
     /// </summary>
     [Export]
-    public partial class ShellWindow : Window
+    partial class ShellWindow : Window
     {
-        public ShellWindow()
+        private ShellViewModel _viewModel;
+
+        [ImportingConstructor]
+        internal ShellWindow(ShellViewModel viewModel)
         {
+            _viewModel = viewModel;
+            this.DataContext = _viewModel;
+            _viewModel.GetOwner = () => this;
+
             InitializeComponent();
         }
 
