@@ -26,8 +26,10 @@ namespace AutoTrade.MainFrame.Modules.Account
         public void Initialize()
         {
             LogManager.Logger.Debug("loading Account module.");
-            this._regionManager.RegisterViewWithRegion(Region.RegionNames.AccountRegion,
+            this._regionManager.RegisterViewWithRegion(Region.RegionNames.AccountTreeRegion,
                 () => this._container.GetInstance<AccountTree>());
+            this._regionManager.RegisterViewWithRegion(Region.RegionNames.AccountDetailsRegion,
+                () => this._container.GetInstance<AccountDetail>());
         }
     }
 }

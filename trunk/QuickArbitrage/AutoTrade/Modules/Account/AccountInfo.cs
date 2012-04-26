@@ -51,6 +51,24 @@ namespace AutoTrade.MainFrame.Modules.Account
         }
         #endregion
 
+        #region Password
+        private string _password;
+
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                if (_password != value)
+                {
+                    _password = value;
+                    RaisePropertyChanged("Password");
+                }
+            }
+        }
+        #endregion
+
+
         public PortfolioItem CreatePortfolio()
         {
             return PortfolioItem.Create(AccountID, _portfolios.Count.ToString());

@@ -32,17 +32,22 @@ namespace AutoTrade.MainFrame
 
         public void OnAddAccount(object param)
         {
-            AddAccountDlg dlg = new AddAccountDlg();
+            AccountInfo acctInfo = new AccountInfo();
+            AddAccountDlg dlg = new AddAccountDlg(acctInfo);
             if (GetOwner != null)
             {
                 dlg.Owner = GetOwner();
             }
-            dlg.ShowDialog();
+            bool? ret = dlg.ShowDialog();
+            if (ret.HasValue && ret.Value)
+            {
+                AccountMgr.Add(acctInfo);
+            }
         }
 
         public void OnAddPortfolio(object param)
         {
-
+            
         }
     }
 }

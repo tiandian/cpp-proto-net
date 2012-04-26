@@ -25,5 +25,30 @@ namespace AutoTrade.MainFrame.Modules.Account
         {
             InitializeComponent();
         }
+
+
+        private AccountManager _accountMgr;
+
+        [Import]
+        public AccountManager AccountManager
+        {
+            get { return _accountMgr; }
+            set 
+            { 
+                _accountMgr = value;
+                this.DataContext = _accountMgr;
+            }
+        }
+
+        private void xamDataTreeAccounts_SelectedNodesCollectionChanged(object sender, Infragistics.Controls.Menus.NodeSelectionEventArgs e)
+        {
+            var nodes = e.CurrentSelectedNodes;
+            if (nodes.Count > 0)
+            {
+                AccountInfo acct = nodes[0].Data as AccountInfo;
+                AccountManager.SelectedAccount = acct;
+            }
+        }
+
     }
 }

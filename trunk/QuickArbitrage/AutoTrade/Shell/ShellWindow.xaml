@@ -6,7 +6,7 @@
         xmlns:account="clr-namespace:AutoTrade.MainFrame.Modules.Account"
         xmlns:portfolio="clr-namespace:AutoTrade.MainFrame.Modules.Portfolio"
         xmlns:region="clr-namespace:AutoTrade.MainFrame.Region"
-        Title="ShellWindow" Height="600" Width="800" >
+        Title="ShellWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
         <DockPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{StaticResource TabControlContentBrush}">
@@ -20,10 +20,13 @@
             
             <igDock:XamDockManager Name="dockManager" Theme="Office2k7Blue">
                 <igDock:XamDockManager.Panes>
-                    <igDock:SplitPane x:Name="leftSplitPane" igDock:XamDockManager.InitialLocation="DockedLeft">
-                        <igDock:ContentPane x:Name="accountOverViewPane" Header="Account OverView" 
-                                            cal:RegionManager.RegionName="{x:Static region:RegionNames.AccountRegion}">
-                            <!--<account:AccountTree />-->
+                    <igDock:SplitPane x:Name="leftSplitPane" igDock:XamDockManager.InitialLocation="DockedLeft" 
+                                      Width="200" SplitterOrientation="Horizontal">
+                        <igDock:ContentPane x:Name="accountTreeViewPane" Header="Account OverView"
+                                            cal:RegionManager.RegionName="{x:Static region:RegionNames.AccountTreeRegion}">
+                        </igDock:ContentPane>
+                        <igDock:ContentPane x:Name="accountDetailsViewPane" Header="Account Detail"
+                                            cal:RegionManager.RegionName="{x:Static region:RegionNames.AccountDetailsRegion}">
                         </igDock:ContentPane>
                     </igDock:SplitPane>
                     <igDock:SplitPane x:Name="bottomSplitPane" SplitterOrientation="Vertical" Height="200"
