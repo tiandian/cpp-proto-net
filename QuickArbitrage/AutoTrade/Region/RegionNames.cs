@@ -7,7 +7,9 @@ namespace AutoTrade.MainFrame.Region
 {
     public class RegionNames
     {
-        public static readonly string AccountRegion = "AccountRegion";
+        public static readonly string AccountTreeRegion = "AccountTreeRegion";
+
+        public static readonly string AccountDetailsRegion = "AccountDetailsRegion";
 
         public static readonly string PortfolioRegion = "PortfolioRegion";
     }

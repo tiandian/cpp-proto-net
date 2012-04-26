@@ -4,8 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300" xmlns:ig="http://schemas.infragistics.com/xaml">
     <Grid>
-        <TextBlock>Account Tree</TextBlock>
+        <ig:XamDataTree Name="xamDataTreeAccounts" ItemsSource="{Binding Accounts}" 
+                        SelectedNodesCollectionChanged="xamDataTreeAccounts_SelectedNodesCollectionChanged">
+
+            <ig:XamDataTree.GlobalNodeLayouts>
+                <ig:NodeLayout Key="AccountLayout" TargetTypeName="AccountInfo" DisplayMemberPath="AccountID">
+                    
+                </ig:NodeLayout>
+            </ig:XamDataTree.GlobalNodeLayouts>
+        </ig:XamDataTree>
     </Grid>
 </UserControl>
