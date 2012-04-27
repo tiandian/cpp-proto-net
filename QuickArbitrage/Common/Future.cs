@@ -15,7 +15,7 @@ namespace QuickArbitrage.Common
 
         public string ExchName { get; set; }
 
-        internal Future()
+        public Future()
         {
             this.Id = string.Empty;
             this.Name = string.Empty;
@@ -39,7 +39,7 @@ namespace QuickArbitrage.Common
 
         public string Name { get; set; }
 
-        internal ExchangeInfo()
+        public ExchangeInfo()
         {
             this.ID = ExchangeID.Unknown;
             this.Name = string.Empty;
