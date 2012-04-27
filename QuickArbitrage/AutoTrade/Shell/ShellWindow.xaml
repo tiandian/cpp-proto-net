@@ -10,8 +10,8 @@
     <Grid>
         <DockPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{StaticResource TabControlContentBrush}">
-                <Button Command="{Binding AddAccountCommand}">Add Account</Button>
-                <Button>Add Portfolio</Button>
+                <Button Command="{Binding AddAccountCommand}">添加帐号</Button>
+                <Button Command="{Binding AddPortfolioCommand}">添加组合</Button>
                 <Button Name="btnSaveLayout" Click="btnSaveLayout_Click">Save layout</Button>
                 <Button Name="btnLoadLayout" Click="btnLoadLayout_Click">Load layout</Button>
             </StackPanel>
