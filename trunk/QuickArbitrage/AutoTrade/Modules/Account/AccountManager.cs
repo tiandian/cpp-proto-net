@@ -14,6 +14,8 @@ namespace AutoTrade.MainFrame.Modules.Account
     {
         private ObservableCollection<AccountInfo> _accounts = new ObservableCollection<AccountInfo>();
 
+        public event Action<AccountInfo> OnSelectedAccountChanged;
+
         public IEnumerable<AccountInfo> Accounts
         {
             get { return _accounts; }
@@ -36,6 +38,8 @@ namespace AutoTrade.MainFrame.Modules.Account
                 {
                     _selectedAcct = value;
                     RaisePropertyChanged("SelectedAccount");
+                    if (OnSelectedAccountChanged != null)
+                        OnSelectedAccountChanged(_selectedAcct);
                 }
             }
         }

@@ -94,9 +94,14 @@
     <Compile Include="Modules\Account\AccountDetail.xaml.cs">
       <DependentUpon>AccountDetail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Portfolio\AddEditPortfolioDlg.xaml.cs">
+      <DependentUpon>AddEditPortfolioDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\IFuturesRepositry.cs" />
+    <Compile Include="Utils\LocalFileFuturesList.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
-    <Compile Include="Logging\ILog.cs" />
-    <Compile Include="Logging\Log4netLogger.cs" />
+    <Compile Include="Utils\ILog.cs" />
+    <Compile Include="Utils\Log4netLogger.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="Modules\Account\AccountInfo.cs" />
     <Compile Include="Modules\Account\AccountManager.cs" />
@@ -157,6 +162,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Portfolio\AddEditPortfolioDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Portfolio\PortfolioList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -194,7 +203,11 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Data\AllFutrues.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{42AB64CD-C7BE-48D7-A652-9CD951239411}</Project>

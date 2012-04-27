@@ -6,6 +6,8 @@ using Microsoft.Practices.Prism.ViewModel;
 using System.ComponentModel.Composition;
 using AutoTrade.MainFrame.ViewModels;
 using AutoTrade.MainFrame.Modules.Account;
+using AutoTrade.MainFrame.Modules.Portfolio;
+using AutoTrade.MainFrame.Utils;
 
 namespace AutoTrade.MainFrame
 {
@@ -15,8 +17,20 @@ namespace AutoTrade.MainFrame
         public DelegateCommand AddAccountCommand { get; private set; }
         public DelegateCommand AddPortfolioCommand { get; private set; }
 
+        private AccountManager _acctMgr;
         [Import]
-        private AccountManager AccountMgr { get; set; }
+        private AccountManager AccountMgr 
+        {
+            get { return _acctMgr; }
+            set
+            {
+                _acctMgr = value;
+                _acctMgr.OnSelectedAccountChanged += new Action<AccountInfo>(OnSelectedAccountChanged);
+            }
+        }
+
+        [Import]
+        private IFuturesRepositry FuturesList { get; set; }
 
         public ShellViewModel()
         {
@@ -28,6 +42,7 @@ namespace AutoTrade.MainFrame
         private void InitCommands()
         {
             AddAccountCommand = new DelegateCommand(OnAddAccount);
+            AddPortfolioCommand = new DelegateCommand(OnAddPortfolio, CanAddPortfolio);
         }
 
         public void OnAddAccount(object param)
@@ -47,7 +62,25 @@ namespace AutoTrade.MainFrame
 
         public void OnAddPortfolio(object param)
         {
-            
+            PortfolioItem pfItem = AccountMgr.SelectedAccount.CreatePortfolio();
+            AddEditPortfolioDlg dlg = new AddEditPortfolioDlg(FuturesList, pfItem);
+            bool? ret = dlg.ShowDialog();
+            if (ret.HasValue && ret.Value)
+            {
+                AccountMgr.SelectedAccount.AddPortfolio(pfItem);
+            }
+        }
+
+        public bool CanAddPortfolio(object param)
+        {
+            if (AccountMgr == null) return false;
+
+            return AccountMgr.SelectedAccount != null;
+        }
+
+        void OnSelectedAccountChanged(AccountInfo obj)
+        {
+            AddPortfolioCommand.RaiseCanExecuteChanged();
         }
     }
 }
