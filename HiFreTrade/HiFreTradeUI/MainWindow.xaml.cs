@@ -13,17 +13,29 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using HiFreTradeUI.Win32Invoke;
 using System.Diagnostics;
+using System.ComponentModel.Composition;
 
 namespace HiFreTradeUI
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    [Export]
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private ShellViewModel _viewModel;
+
+        [ImportingConstructor]
+        public MainWindow(ShellViewModel viewModel, UIThread threadHolder)
         {
+            _viewModel = viewModel;
+
+            this.DataContext = _viewModel;
+
             InitializeComponent();
+
+            // Store the dispacther, so that all view models can consume
+            threadHolder.Dispatcher = this.Dispatcher;
         }
 
         private void btnTest_Click(object sender, RoutedEventArgs e)
@@ -31,8 +43,20 @@ namespace HiFreTradeUI
             int ret = Gateway.TestCall(12, 32);
             Debug.WriteLine("Return value is {0}", ret);
 
-            bool connected = Gateway.ConnectMarketAgent("0240", "23412434", "888888");
-            Debug.WriteLine("Connected {0}", connected);
+            //bool connected = Gateway.ConnectMarketAgent("2030", "00092", "888888", QuoteUpdateCallback);
+            //Debug.WriteLine("Connected {0}", connected);
+
+            Gateway.SetSymbol("cu1207");
+        }
+
+        private void QuoteUpdateCallback(string symbol) 
+        {
+            Debug.WriteLine("Recevied symbol {0}", symbol);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            this._viewModel.Connect();
         }
     }
 }

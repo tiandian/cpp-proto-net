@@ -93,6 +93,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
   <ItemGroup>
     <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="ClientAgent.h" />
+    <ClInclude Include="EntityStructs.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="MarketAgent.h" />
