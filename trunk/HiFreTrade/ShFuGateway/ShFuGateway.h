@@ -5,20 +5,24 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "EntityStructs.h"
+
 #ifdef SHFUGATEWAY_EXPORTS
 #define SHFU_GATEWAY_EXPORT __declspec(dllexport)
 #else
 #define SHFU_GATEWAY_EXPORT __declspec(dllimport)
 #endif
 
-typedef void (__stdcall *QuoteCallback)(const char* quoteStr);
+typedef void (__stdcall *QuoteCallback)(const QuoteData* pQuoteData);
 
 extern "C"
 {
 	SHFU_GATEWAY_EXPORT int __stdcall TestCall(int a, int b);
 
-	SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(const char* brokerID, 
-		const char* userID, const char* password, QuoteCallback callbackHandler);
+	SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* brokerID, 
+															const char* userID, 
+															const char* password,
+															QuoteCallback callbackHandler);
 
 	SHFU_GATEWAY_EXPORT void __stdcall DisconnectMarketAgent();
 
