@@ -134,9 +134,12 @@ namespace HiFreTradeUI.ViewModels
                 }, null);
         }
 
+        private static Gateway.QuoteUpdateDelegate quoteUpdateFunc;
+
         private bool ConnectGateway()
         {
-            return Gateway.ConnectMarketAgent("2030", "00092", "888888", QuoteUpdateCallback); ;
+            quoteUpdateFunc = new Gateway.QuoteUpdateDelegate(QuoteUpdateCallback);
+            return Gateway.ConnectMarketAgent("2030", "00092", "888888", quoteUpdateFunc);
         }
 
         private void QuoteUpdateCallback(QuoteData quote)

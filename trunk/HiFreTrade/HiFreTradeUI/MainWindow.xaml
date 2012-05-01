@@ -4,7 +4,9 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:igDock="http://infragistics.com/DockManager"
         xmlns:igEditor="http://infragistics.com/Editors"
+        xmlns:cal="http://www.codeplex.com/CompositeWPF"
         xmlns:ig="http://schemas.infragistics.com/xaml"
+        xmlns:src="clr-namespace:HiFreTradeUI"
         Title="MainWindow" Height="600" Width="800" Loaded="Window_Loaded">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -127,20 +129,45 @@
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">横盘时间：</TextBlock>
                             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">秒</TextBlock>
-                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"/>
+                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}" 
+                                                       Value="{Binding Trade.RectPeriod, Mode=TwoWay}"/>
                         </DockPanel>
 
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">横盘区间：</TextBlock>
                             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
-                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"/>
+                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
+                                                       Value="{Binding Trade.RectRange, Mode=TwoWay}"/>
                         </DockPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="10, 2">
                             <TextBlock VerticalAlignment="Center" Margin="2, 0">突破横盘：</TextBlock>
-                            <CheckBox Margin="4, 2">向上</CheckBox>
-                            <CheckBox Margin="4, 2">向下</CheckBox>
+                            <CheckBox Margin="4, 2" IsChecked="{Binding Trade.UpBreak, Mode=TwoWay}">向上</CheckBox>
+                            <CheckBox Margin="4, 2" IsChecked="{Binding Trade.DownBreak, Mode=TwoWay}">向下</CheckBox>
                         </StackPanel>
+
+                        <DockPanel Margin="10, 2">
+                            <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">突破速度：</TextBlock>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">秒内</TextBlock>
+                                    <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
+                                                       Value="{Binding Trade.BreakoutTimespan, Mode=TwoWay}"/>
+                                </DockPanel>
+                                <DockPanel Grid.Column="1">
+                                    <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0, 0, 2, 0">突破</TextBlock>
+                                    <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
+                                    <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
+                                                       Value="{Binding Trade.BreakoutCriterion, Mode=TwoWay}" Margin="2, 0, 0, 0"/>
+                                </DockPanel>
+                            </Grid>
+                            
+                            
+                        </DockPanel>
                     </StackPanel>
                 </Border>
 
@@ -151,7 +178,8 @@
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">盈利点数：</TextBlock>
                             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
-                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"></igEditor:XamNumericEditor>
+                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
+                                                       Value="{Binding Trade.GainLimit, Mode=TwoWay}"></igEditor:XamNumericEditor>
                         </DockPanel>
                     </StackPanel>
                 </Border>
@@ -163,7 +191,8 @@
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">亏损点数：</TextBlock>
                             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
-                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"></igEditor:XamNumericEditor>
+                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
+                                                       Value="{Binding Trade.LossLimit, Mode=TwoWay}"></igEditor:XamNumericEditor>
                         </DockPanel>
                     </StackPanel>
                 </Border>
@@ -189,13 +218,16 @@
         <igDock:XamDockManager Grid.Column="1" Theme="Office2k7Blue" LayoutMode="FillContainer">
             <igDock:XamDockManager.Panes>
                 <igDock:SplitPane>
-                    <igDock:ContentPane Name="operationRecordsPane" Header="操作记录"/>
+                    <igDock:ContentPane Name="operationRecordsPane" Header="操作记录"
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.OperationsRegion}"/>
                 </igDock:SplitPane>
 
                 <igDock:SplitPane x:Name="leftSplitPane" igDock:XamDockManager.InitialLocation="DockedRight" 
                                       Width="200" SplitterOrientation="Horizontal">
-                    <igDock:ContentPane Name="positionPane" Header="持仓状况" />
-                    <igDock:ContentPane Name="timeNSalesPane" Header="成交明细" />
+                    <igDock:ContentPane Name="positionPane" Header="持仓状况" 
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.PositionRegion}"/>
+                    <igDock:ContentPane Name="timeNSalesPane" Header="成交明细" 
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.TimeNSalesRegion}"/>
                 </igDock:SplitPane>
                 
             </igDock:XamDockManager.Panes>

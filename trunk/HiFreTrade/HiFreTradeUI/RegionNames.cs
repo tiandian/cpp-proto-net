@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace HiFreTradeUI
+{
+    public class RegionNames
+    {
+        public static readonly string OperationsRegion = "OperationsRegion";
+
+        public static readonly string TimeNSalesRegion = "TimeNSalesRegion";
+
+        public static readonly string PositionRegion = "PositionRegion";
+    }
+}
