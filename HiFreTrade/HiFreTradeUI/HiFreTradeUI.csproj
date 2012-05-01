@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="InfragisticsWPF4.DataPresenter.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
     <Reference Include="InfragisticsWPF4.DockManager.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
       <Private>True</Private>
     </Reference>
@@ -86,16 +87,35 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Events\OperRecordUpdateEvent.cs" />
+    <Compile Include="Events\TimeNSalesUpdateEvent.cs" />
     <Compile Include="HiFreBootsrapper.cs" />
     <Compile Include="LogManager.cs" />
+    <Compile Include="Modules\OperationsView.xaml.cs">
+      <DependentUpon>OperationsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\PositionView.xaml.cs">
+      <DependentUpon>PositionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\TimeNSalesView.xaml.cs">
+      <DependentUpon>TimeNSalesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\WatchModule.cs" />
+    <Compile Include="RegionNames.cs" />
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="UIThread.cs" />
     <Compile Include="Utils\ILog.cs" />
     <Compile Include="Utils\Log4netLogger.cs" />
+    <Compile Include="ViewModels\OperationsVM.cs" />
+    <Compile Include="ViewModels\PositionVM.cs" />
     <Compile Include="ViewModels\QuoteVM.cs" />
+    <Compile Include="ViewModels\TimeNSalesVM.cs" />
     <Compile Include="ViewModels\TradeVM.cs" />
+    <Compile Include="Win32Invoke\BreakOutStrategy.cs" />
     <Compile Include="Win32Invoke\Gateway.cs" />
+    <Compile Include="Win32Invoke\OperationRecord.cs" />
     <Compile Include="Win32Invoke\QuoteData.cs" />
+    <Compile Include="Win32Invoke\TimeNSalesData.cs" />
     <Page Include="BureauBlue.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -112,6 +132,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Modules\OperationsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\PositionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\TimeNSalesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -137,9 +169,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
