@@ -117,6 +117,24 @@ namespace HiFreTradeUI.ViewModels
         }
         #endregion
 
+        #region CurrentSymbol
+        private string _currentSymbol;
+
+        public string CurrentSymbol
+        {
+            get { return _currentSymbol; }
+            set
+            {
+                if (_currentSymbol != value)
+                {
+                    _currentSymbol = value;
+                    Gateway.SetSymbol(_currentSymbol);
+                    RaisePropertyChanged("CurrentSymbol");
+                }
+            }
+        }
+        #endregion
+
 
         public void Connect()
         {
@@ -151,8 +169,8 @@ namespace HiFreTradeUI.ViewModels
                                 Last = quote.dLast;
                                 Change = quote.dLast - quote.dPrevClose;
                                 PercentChg = Change / quote.dPrevClose;
-                                Ask = quote.dAsk;
-                                Bid = quote.dBid;
+                                Ask = quote.dAsk == double.MaxValue ? 0d : quote.dAsk;
+                                Bid = quote.dBid == double.MaxValue ? 0d : quote.dBid;
                             }));
         }
 

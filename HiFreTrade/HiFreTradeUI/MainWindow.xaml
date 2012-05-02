@@ -51,7 +51,8 @@
             <!-- 选择交易品种 -->
             <DockPanel DockPanel.Dock="Top" Margin="4">
                 <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="4, 2">交易品种：</TextBlock>
-                <ComboBox x:Name="comboSymbols" Margin="4" ItemsSource="{Binding AvaialbeSymbols}" />
+                <ComboBox x:Name="comboSymbols" Margin="4" ItemsSource="{Binding AvaialbeSymbols}"
+                          SelectedItem="{Binding Quote.CurrentSymbol, Mode=TwoWay}"/>
             </DockPanel>
 
             <Border DockPanel.Dock="Top" BorderThickness="2" CornerRadius="4" BorderBrush="#FF44A2CD"  Margin="4">

@@ -24,3 +24,20 @@ struct QuoteData
 	double dAsk;
 	int iAskSize;
 };
+
+struct BreakOutStrategy
+{
+	// Entry condition
+	int iRectPeriod;
+	int iRectRange;
+	bool bUpBreak;
+	bool bDownBreak;
+	int iBreakoutCriterion;
+	int iBreakoutTimespan;
+
+	// Exit condition
+	int iGainLimit;
+
+	// StopLoss condition
+	int iLossLimit;
+};

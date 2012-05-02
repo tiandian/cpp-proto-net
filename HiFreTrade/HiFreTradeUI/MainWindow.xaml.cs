@@ -46,7 +46,7 @@ namespace HiFreTradeUI
             //bool connected = Gateway.ConnectMarketAgent("2030", "00092", "888888", QuoteUpdateCallback);
             //Debug.WriteLine("Connected {0}", connected);
 
-            Gateway.SetSymbol("cu1207");
+            Gateway.SetSymbol("IF1205");
         }
 
         private void QuoteUpdateCallback(string symbol) 

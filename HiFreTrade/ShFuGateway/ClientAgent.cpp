@@ -10,6 +10,7 @@ CClientAgent::CClientAgent(void):
 
 CClientAgent::~CClientAgent(void)
 {
+	m_bufferRunner.Stop();
 }
 
 void CClientAgent::DispatchMsgPack( boost::shared_ptr<CQuote>& package )
@@ -20,4 +21,10 @@ void CClientAgent::DispatchMsgPack( boost::shared_ptr<CQuote>& package )
 void CClientAgent::UpdateQuote( boost::shared_ptr<CQuote>& quote )
 {
 	m_bufferRunner.Enqueue(quote);
+}
+
+void CClientAgent::Initialize( QuoteUpdateFunc callback )
+{
+	m_quoteCallback = callback;
+	m_bufferRunner.Start();
 }
