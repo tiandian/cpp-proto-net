@@ -44,8 +44,6 @@ SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* brokerID,
 
 	logger.Debug(boost::str(boost::format("Login market with %s, %s, %s") % brokerID % userID % password));
 
-	_callbackHandler = callbackHandler;
-
 	if(!g_marketAgent.Connect())
 	{
 		Cleanup();
@@ -57,8 +55,9 @@ SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* brokerID,
 		return false;
 	}
 
-	//_callbackHandler = callbackHandler;
-	g_clientAgent.SetQuoteCallback(boost::bind(SendQuoteUpdate, _1));
+	g_orderProcessor.Initialize();
+	g_clientAgent.Initialize(boost::bind(SendQuoteUpdate, _1));
+	_callbackHandler = callbackHandler;
 
 	return true;
 }
@@ -70,29 +69,17 @@ SHFU_GATEWAY_EXPORT void __stdcall DisconnectMarketAgent()
 
 SHFU_GATEWAY_EXPORT void __stdcall SetSymbol(const char* symbol)
 {
-	//g_orderProcessor.SetSymbol(std::string(symbol));
-	if(_callbackHandler != NULL)
-	{
-		QuoteData qd;
-		strcpy(qd.caSymbol, "test symbol");
-		strcpy(qd.caTradingDay, "20120501");
-		qd.dLast = 54321.6;
-		qd.dPrevClose = 12345.6;
-		qd.dOpen = 32456.1;
-		qd.dHigh = 55555.5;
-		qd.dLow = 11111.1;
-		qd.iVolume = 666666;
-		qd.dTurnover = 33330000;
-		qd.dClose = 232.45;
-		strcpy(qd.caUpdateTime, "11:20");
-		qd.iUpdateMillisec = 2000;
-		qd.dBid = 10;
-		qd.iBidSize = 100;
-		qd.dAsk = 20;
-		qd.iAskSize = 200;
-		_callbackHandler(&qd);
-		//_callbackHandler("test symbol");
-	}
+	g_orderProcessor.SetSymbol(std::string(symbol));
+}
+
+SHFU_GATEWAY_EXPORT bool __stdcall Start(const BreakOutStrategy* pStrategy)
+{
+	return false;
+}
+
+SHFU_GATEWAY_EXPORT void __stdcall Stop()
+{
+
 }
 
 void Cleanup()
@@ -105,6 +92,23 @@ void SendQuoteUpdate(CQuote* pQuote)
 {
 	if(_callbackHandler != NULL)
 	{
-		//_callbackHandler(pQuote->get_symbol().c_str());
+		QuoteData qd;
+		strcpy(qd.caSymbol, pQuote->get_symbol().c_str());
+		strcpy(qd.caTradingDay, pQuote->get_trading_day().c_str());
+		qd.dLast = pQuote->get_last();
+		qd.dPrevClose = pQuote->get_prev_close();
+		qd.dOpen = pQuote->get_open();
+		qd.dHigh = pQuote->get_high();
+		qd.dLow = pQuote->get_low();
+		qd.iVolume = pQuote->get_volume();
+		qd.dTurnover = pQuote->get_turnover();
+		qd.dClose = pQuote->get_close();
+		strcpy(qd.caUpdateTime, pQuote->get_update_time().c_str());
+		qd.iUpdateMillisec = pQuote->get_update_millisec();
+		qd.dBid = pQuote->get_bid();
+		qd.iBidSize = pQuote->get_bid_size();
+		qd.dAsk = pQuote->get_ask();
+		qd.iAskSize = pQuote->get_ask_size();
+		_callbackHandler(&qd);
 	}
 }

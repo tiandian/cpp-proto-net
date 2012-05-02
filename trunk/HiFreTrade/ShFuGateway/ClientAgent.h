@@ -12,10 +12,8 @@ public:
 	CClientAgent(void);
 	~CClientAgent(void);
 
-	void SetQuoteCallback(QuoteUpdateFunc callback)
-	{
-		m_quoteCallback = callback;
-	}
+
+	void Initialize(QuoteUpdateFunc callback);
 
 	void UpdateQuote(boost::shared_ptr<CQuote>& quote);
 

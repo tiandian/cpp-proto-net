@@ -2,22 +2,26 @@
 #include "OrderProcessor.h"
 #include "MarketAgent.h"
 #include "ClientAgent.h"
+#include "LogManager.h"
 
-#include <vector>
+
 
 using namespace std;
 
 extern CMarketAgent g_marketAgent;
 extern CClientAgent g_clientAgent;
+extern CLogManager	logger;
 
 COrderProcessor::COrderProcessor(void):
-	m_bufferRunner(boost::bind(&COrderProcessor::ProcessQuote, this, _1))
+	m_bufferRunner(boost::bind(&COrderProcessor::ProcessQuote, this, _1)),
+	m_currentSymbols(1)
 {
 }
 
 
 COrderProcessor::~COrderProcessor(void)
 {
+	m_bufferRunner.Stop();
 }
 
 void COrderProcessor::OnSubscribeCompleted()
@@ -41,12 +45,18 @@ void COrderProcessor::ForwardQuote( boost::shared_ptr<CQuote>& pQuote )
 	g_clientAgent.UpdateQuote(pQuote);
 }
 
+
 void COrderProcessor::SetSymbol( const std::string& symb )
 {
-	m_currentSymbol = symb;
-	vector<string> regSymbols;
-	regSymbols.push_back(m_currentSymbol);
-	bool succ = g_marketAgent.SubscribesQuotes(regSymbols);
+	if(!m_currentSymbols[0].empty())
+	{
+		g_marketAgent.UnSubscribesQuotes(m_currentSymbols);
+	}
+	m_currentSymbols[0] = symb;
+	if(!symb.empty())
+	{
+		bool subSucc = g_marketAgent.SubscribesQuotes(m_currentSymbols);
+	}
 }
 
 void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
@@ -54,4 +64,13 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 	// TODO: test condition and fire trigger
 
 	ForwardQuote(pQuote);
+}
+
+void COrderProcessor::Initialize()
+{
+	g_marketAgent.SetCallbackHanlder(this);
+
+	m_bufferRunner.Start();
+
+	logger.Info("Quote aggregator initialized.");
 }
