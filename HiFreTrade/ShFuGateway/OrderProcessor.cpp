@@ -42,7 +42,8 @@ void COrderProcessor::OnQuoteReceived( CQuote* pQuote )
 
 void COrderProcessor::ForwardQuote( boost::shared_ptr<CQuote>& pQuote )
 {
-	g_clientAgent.UpdateQuote(pQuote);
+	boost::shared_ptr<CMessage> msgPack = pQuote;
+	g_clientAgent.Publish(msgPack);
 }
 
 

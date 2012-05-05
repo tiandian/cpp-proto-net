@@ -98,11 +98,14 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="MarketAgent.h" />
     <ClInclude Include="MarketAgentCallback.h" />
+    <ClInclude Include="Message.h" />
+    <ClInclude Include="OperationRecordData.h" />
     <ClInclude Include="OrderProcessor.h" />
     <ClInclude Include="Quote.h" />
     <ClInclude Include="ShFuGateway.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TimeNSalePacket.h" />
     <ClInclude Include="TradeAgent.h" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +120,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     </ClCompile>
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MarketAgent.cpp" />
+    <ClCompile Include="OperationRecordData.cpp" />
     <ClCompile Include="OrderProcessor.cpp" />
     <ClCompile Include="Quote.cpp" />
     <ClCompile Include="ShFuGateway.cpp" />
@@ -124,6 +128,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TimeNSalePacket.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

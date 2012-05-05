@@ -169,6 +169,9 @@ bool CMarketAgent::Login( const char* brokerID, const char* userID, const char* 
 	ss << "Log in market (" << brokerID << " ," << userID << " ," << password << ")";
 	logger.Trace(ss.str());
 
+	m_brokerID = brokerID;
+	m_userID = userID;
+
 	int iResult = -1;
 
 	try
@@ -221,7 +224,7 @@ void CMarketAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, C
 	logger.Info(ss.str());
 }
 
-void CMarketAgent::Logout( const char* brokerID, const char* userID )
+void CMarketAgent::Logout()
 {
 	logger.Trace("Logging out");
 
@@ -232,8 +235,8 @@ void CMarketAgent::Logout( const char* brokerID, const char* userID )
 	try{
 		CThostFtdcUserLogoutField req;
 		memset(&req, 0, sizeof(req));
-		strcpy(req.BrokerID, brokerID);
-		strcpy(req.UserID, userID);
+		strcpy(req.BrokerID, m_brokerID.c_str());
+		strcpy(req.UserID, m_userID.c_str());
 
 		if(m_pUserApi != NULL)
 			nResult = m_pUserApi->ReqUserLogout(&req, RequestIDIncrement());

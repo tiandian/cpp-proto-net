@@ -2,7 +2,8 @@
 #include "Quote.h"
 
 
-CQuote::CQuote(void)
+CQuote::CQuote(void):
+	CMessage(QUOTE)
 {
 }
 

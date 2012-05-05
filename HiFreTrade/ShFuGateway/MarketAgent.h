@@ -16,7 +16,7 @@ public:
 	bool Connect();
 	void Disconnect();
 	bool Login(const char* brokerID, const char* userID, const char* password);
-	void Logout( const char* brokerID, const char* userID );
+	void Logout();
 
 	bool SubscribesQuotes( std::vector<std::string>& subscribeArr );
 	bool UnSubscribesQuotes( std::vector<std::string>& unSubscribeArr );
@@ -72,5 +72,8 @@ private:
 	boost::condition_variable m_condConnectDone;
 	boost::mutex m_mutex;
 	boost::thread m_thQuoting;
+
+	std::string m_brokerID;
+	std::string m_userID;
 };
 

@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Message.h"
+
 #include <string>
 
 using namespace std;
 
-class CQuote
+class CQuote : public CMessage
 {
 public:
 	CQuote(void);
