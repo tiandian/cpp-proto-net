@@ -94,6 +94,8 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="EntityStructs.h" />
+    <ClInclude Include="InputOrder.h" />
+    <ClInclude Include="InputOrderAction.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="MarketAgent.h" />
@@ -102,11 +104,14 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="OperationRecordData.h" />
     <ClInclude Include="OrderProcessor.h" />
     <ClInclude Include="Quote.h" />
+    <ClInclude Include="ReturnOrder.h" />
     <ClInclude Include="ShFuGateway.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TimeNSalePacket.h" />
+    <ClInclude Include="Trade.h" />
     <ClInclude Include="TradeAgent.h" />
+    <ClInclude Include="TradeEnumDefinition.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClientAgent.cpp" />
@@ -118,17 +123,21 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="InputOrder.cpp" />
+    <ClCompile Include="InputOrderAction.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MarketAgent.cpp" />
     <ClCompile Include="OperationRecordData.cpp" />
     <ClCompile Include="OrderProcessor.cpp" />
     <ClCompile Include="Quote.cpp" />
+    <ClCompile Include="ReturnOrder.cpp" />
     <ClCompile Include="ShFuGateway.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TimeNSalePacket.cpp" />
+    <ClCompile Include="Trade.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
