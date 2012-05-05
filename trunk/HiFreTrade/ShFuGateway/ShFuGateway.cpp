@@ -10,6 +10,8 @@
 #include "TradeAgent.h"
 #include "ClientAgent.h"
 #include "Quote.h"
+#include "OperationRecordData.h"
+#include "TimeNSalePacket.h"
 
 #include <boost/format.hpp>
 #include <string>
@@ -20,12 +22,14 @@ COrderProcessor g_orderProcessor;
 CTradeAgent g_tradeAgent;
 CClientAgent g_clientAgent;
 
-std::string _brokerID;
-std::string _userID;
-QuoteCallback _callbackHandler = NULL;
+QuoteCallback _quoteCallbackHandler = NULL;
+OperationRecordCallback _recordCallbackHandler = NULL;
+TimeNSalesCallback _tnsCallbackHandler = NULL;
 
 void Cleanup();
 void SendQuoteUpdate(CQuote* pQuote);
+void SendOperationRecords(COperationRecordData* pRecord);
+void SendTimeNSales(CTimeNSalePacket* pTns);
 
 SHFU_GATEWAY_EXPORT int __stdcall TestCall(int a, int b)
 {
@@ -39,9 +43,6 @@ SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* brokerID,
 														const char* password,
 														QuoteCallback callbackHandler)
 {
-	_brokerID = brokerID;
-	_userID = userID;
-
 	logger.Debug(boost::str(boost::format("Login market with %s, %s, %s") % brokerID % userID % password));
 
 	if(!g_marketAgent.Connect())
@@ -56,8 +57,8 @@ SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* brokerID,
 	}
 
 	g_orderProcessor.Initialize();
-	g_clientAgent.Initialize(boost::bind(SendQuoteUpdate, _1));
-	_callbackHandler = callbackHandler;
+	g_clientAgent.SetQuoteCallback(boost::bind(SendQuoteUpdate, _1));
+	_quoteCallbackHandler = callbackHandler;
 
 	return true;
 }
@@ -65,6 +66,26 @@ SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* brokerID,
 SHFU_GATEWAY_EXPORT void __stdcall DisconnectMarketAgent()
 {
 	Cleanup();
+}
+
+SHFU_GATEWAY_EXPORT bool __stdcall ConnectTradeAgent(	const char* brokerID, 
+														const char* userID, 
+														const char* password,
+														OperationRecordCallback recordCallback,
+														TimeNSalesCallback tnsCallback)
+{
+	g_clientAgent.SetOperationRecordCallback(boost::bind(SendOperationRecords, _1));
+	_recordCallbackHandler = recordCallback;
+
+	g_clientAgent.SetTimeNSalesCallback(boost::bind(SendTimeNSales, _1));
+	_tnsCallbackHandler = tnsCallback;
+
+	return true;
+}
+
+SHFU_GATEWAY_EXPORT void __stdcall DisconnectTradeAgent()
+{
+
 }
 
 SHFU_GATEWAY_EXPORT void __stdcall SetSymbol(const char* symbol)
@@ -84,13 +105,13 @@ SHFU_GATEWAY_EXPORT void __stdcall Stop()
 
 void Cleanup()
 {
-	g_marketAgent.Logout(_brokerID.c_str(), _userID.c_str());
+	g_marketAgent.Logout();
 	g_marketAgent.Disconnect();
 }
 
 void SendQuoteUpdate(CQuote* pQuote)
 {
-	if(_callbackHandler != NULL)
+	if(_quoteCallbackHandler != NULL)
 	{
 		QuoteData qd;
 		strcpy(qd.caSymbol, pQuote->get_symbol().c_str());
@@ -109,6 +130,22 @@ void SendQuoteUpdate(CQuote* pQuote)
 		qd.iBidSize = pQuote->get_bid_size();
 		qd.dAsk = pQuote->get_ask();
 		qd.iAskSize = pQuote->get_ask_size();
-		_callbackHandler(&qd);
+		_quoteCallbackHandler(&qd);
+	}
+}
+
+void SendOperationRecords(COperationRecordData* pRecord)
+{
+	if(_recordCallbackHandler != NULL)
+	{
+
+	}
+}
+
+void SendTimeNSales(CTimeNSalePacket* pTns)
+{
+	if(_tnsCallbackHandler != NULL)
+	{
+
 	}
 }

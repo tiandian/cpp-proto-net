@@ -14,6 +14,8 @@
 #endif
 
 typedef void (__stdcall *QuoteCallback)(const QuoteData* pQuoteData);
+typedef void (__stdcall *OperationRecordCallback)(const OperationRecord* pRecord);
+typedef void (__stdcall *TimeNSalesCallback)(const TimeNSalesData* pTnsData);
 
 extern "C"
 {
@@ -25,6 +27,14 @@ extern "C"
 															QuoteCallback callbackHandler);
 
 	SHFU_GATEWAY_EXPORT void __stdcall DisconnectMarketAgent();
+
+	SHFU_GATEWAY_EXPORT bool __stdcall ConnectTradeAgent(	const char* brokerID, 
+															const char* userID, 
+															const char* password,
+															OperationRecordCallback recordCallback,
+															TimeNSalesCallback tnsCallback);
+
+	SHFU_GATEWAY_EXPORT void __stdcall DisconnectTradeAgent();
 
 	SHFU_GATEWAY_EXPORT void __stdcall SetSymbol(const char* symbol);
 

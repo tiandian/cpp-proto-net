@@ -72,11 +72,11 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock>卖一</TextBlock>
-                            <TextBlock Style="{StaticResource AskBidStyle}" Text="{Binding Quote.Ask, FallbackValue=---}"/>
+                            <TextBlock Style="{StaticResource AskBidStyle}" Text="{Binding Quote.Ask, FallbackValue=---, StringFormat=F1}"/>
                         </StackPanel>
                         <StackPanel Grid.Row="1"  Orientation="Horizontal">
                             <TextBlock>买一</TextBlock>
-                            <TextBlock Style="{StaticResource AskBidStyle}" Text="{Binding Quote.Bid, FallbackValue=---}"/>
+                            <TextBlock Style="{StaticResource AskBidStyle}" Text="{Binding Quote.Bid, FallbackValue=---, StringFormat=F1}"/>
                         </StackPanel>
                     </Grid>
                     <DockPanel Margin="2">
@@ -85,10 +85,10 @@
                             <TextBlock Margin="2" TextAlignment="Right" FontSize="14" 
                                        Text="{Binding Quote.PercentChg, StringFormat=P, FallbackValue=-.-%}" />
                             <TextBlock Margin="2" TextAlignment="Right" FontSize="16" FontWeight="Bold"
-                                       Text="{Binding Quote.Change, FallbackValue=--}" />
+                                       Text="{Binding Quote.Change, FallbackValue=--, StringFormat=F1}" />
                         </StackPanel>
                         <TextBlock VerticalAlignment="Bottom" FontSize="32" FontWeight="Bold" TextAlignment="Right"
-                                   Text="{Binding Quote.Last, FallbackValue=---}"/>
+                                   Text="{Binding Quote.Last, FallbackValue=---, StringFormat=F1}"/>
                     </DockPanel>
                 </DockPanel>
             </Border>

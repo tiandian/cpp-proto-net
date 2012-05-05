@@ -29,11 +29,17 @@ namespace HiFreTradeUI.Win32Invoke
         public double dEntryPoint;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = TIMEFIELD_LEN)]
         public string caEntryTime;
+        public int iEntryType;
+        public int iEntryQuantity;
+        public int iEntryStatus;
 
         public double dExitPoint;
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = TIMEFIELD_LEN)]
         public string caExitTime;
         public int iExitReason;
+        public int iExitType;
+        public int iExitQuantity;
+        public int iExitStatus;
 
         public double ProfitLoss;
     }
