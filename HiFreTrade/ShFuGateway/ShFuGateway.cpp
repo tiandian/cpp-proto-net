@@ -76,6 +76,8 @@ SHFU_GATEWAY_EXPORT bool __stdcall ConnectTradeAgent(	const char* brokerID,
 {
 	logger.Debug(boost::str(boost::format("Login trade with %s, %s, %s") % brokerID % userID % password));
 
+	g_tradeAgent.Initialize(&g_orderProcessor);
+
 	if(!g_tradeAgent.Login(brokerID, userID, password))
 	{
 		Cleanup();

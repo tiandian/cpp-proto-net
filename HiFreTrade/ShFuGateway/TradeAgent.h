@@ -93,11 +93,13 @@ private:
 	std::string m_password;
 
 	bool m_isConnected;
+	bool m_loginAndConfirm;
 	// 请求编号
 	int m_iRequestID;
 
 	boost::mutex m_mutex;
 	boost::condition_variable m_condLogout;
+	boost::condition_variable m_condConnectDone;
 
 	// 会话参数
 	TThostFtdcFrontIDType	FRONT_ID;	//前置编号

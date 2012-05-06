@@ -13,6 +13,7 @@
 
 #define LOGOUT_TIMEOUT_SECOND 5
 #define WAIT_SECONDS_FOR_FLOWCONTROL 1
+#define CONNECT_TIMEOUT_MINUTE 1
 
 const char* TradeAddress = "tcp://asp-sim2-front1.financial-trading-platform.com:26205";
 
@@ -37,6 +38,7 @@ bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 
 CTradeAgent::CTradeAgent(void):
 	m_isConnected(false),
+	m_loginAndConfirm(false),
 	m_maxOrderRef(-1),
 	m_pUserApi(NULL),
 	m_pOrderProcessor(NULL)
@@ -78,7 +80,18 @@ bool CTradeAgent::Login( const char* brokerId, const char* userId, const char* p
 
 		m_thTrading = boost::thread(&TradingThreadFunc, m_pUserApi, TradeAddress);
 
-		return true;
+		// wait 1 minute for connected event
+		{
+			boost::unique_lock<boost::mutex> lock(m_mutex);
+			if(!m_condConnectDone.timed_wait(lock, boost::posix_time::minutes(CONNECT_TIMEOUT_MINUTE)))
+			{
+				logger.Warning("Connecting trade time out");
+				return false;
+			}
+
+		}
+
+		return m_loginAndConfirm;
 	}
 	catch(std::exception& ex)
 	{
@@ -118,6 +131,8 @@ void CTradeAgent::OnFrontConnected()
 
 void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	boost::lock_guard<boost::mutex> lock(m_mutex);
+
 	std::string errorMsg;
 	std::ostringstream ss;
 	ss << "Login Response (ID:" << nRequestID <<")" << endl;
@@ -155,6 +170,7 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		ss << "Login failed due to " << pRspInfo->ErrorMsg << endl;
 
 		m_pOrderProcessor->OnRspUserLogin(m_isConnected, errorMsg, -1);
+		m_condConnectDone.notify_one();
 	}
 
 	logger.Info(ss.str());
@@ -175,6 +191,8 @@ void CTradeAgent::ReqSettlementInfoConfirm()
 
 void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	boost::lock_guard<boost::mutex> lock(m_mutex);
+
 	string errorMsg;
 	if (bIsLast)
 	{
@@ -183,6 +201,9 @@ void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmFie
 			// Settlement confirm succeeded, then notify login success
 			logger.Info(boost::str(boost::format("SettlementInfo Confirm Succeeded. MaxOrderRef:%d") % m_maxOrderRef));
 			m_pOrderProcessor->OnRspUserLogin(true, errorMsg, m_maxOrderRef);
+
+			m_loginAndConfirm = true;
+			m_condConnectDone.notify_one();
 		}
 		else
 		{
