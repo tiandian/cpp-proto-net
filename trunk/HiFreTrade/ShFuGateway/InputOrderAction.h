@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TradeEnumDefinition.h"
+
 #include <string>
 
 using namespace std;

@@ -2,6 +2,7 @@
 #include "TradeAgent.h"
 #include "LogManager.h"
 #include "ReturnOrder.h"
+#include "OrderProcessor.h"
 #include "Trade.h"
 
 #include <sstream>
@@ -37,7 +38,8 @@ bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 CTradeAgent::CTradeAgent(void):
 	m_isConnected(false),
 	m_maxOrderRef(-1),
-	m_pUserApi(NULL)
+	m_pUserApi(NULL),
+	m_pOrderProcessor(NULL)
 {
 }
 
@@ -56,7 +58,7 @@ void TradingThreadFunc(CThostFtdcTraderApi* pUserApi, const char* address)
 	pUserApi->Join();
 }
 
-void CTradeAgent::Login( const std::string& brokerId, const std::string& userId, const std::string& password )
+bool CTradeAgent::Login( const char* brokerId, const char* userId, const char* password )
 {
 	try{
 		// 初始化UserApi
@@ -71,10 +73,12 @@ void CTradeAgent::Login( const std::string& brokerId, const std::string& userId,
 		m_pUserApi->SubscribePrivateTopic(THOST_TERT_QUICK);	
 
 		std::ostringstream ss;
-		ss << "Try to trading front (" << TradeAddress << ") ...";
+		ss << "Try to connect trading front (" << TradeAddress << ") ...";
 		logger.Info(ss.str());
 
 		m_thTrading = boost::thread(&TradingThreadFunc, m_pUserApi, TradeAddress);
+
+		return true;
 	}
 	catch(std::exception& ex)
 	{
@@ -86,6 +90,7 @@ void CTradeAgent::Login( const std::string& brokerId, const std::string& userId,
 		logger.Error("Unknown error encounted while logging in trading front");
 	}
 
+	return false;
 }
 
 void CTradeAgent::OnFrontConnected()
@@ -148,6 +153,8 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		// login failed
 		errorMsg = pRspInfo->ErrorMsg;
 		ss << "Login failed due to " << pRspInfo->ErrorMsg << endl;
+
+		m_pOrderProcessor->OnRspUserLogin(m_isConnected, errorMsg, -1);
 	}
 
 	logger.Info(ss.str());
@@ -168,17 +175,20 @@ void CTradeAgent::ReqSettlementInfoConfirm()
 
 void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	string errorMsg;
 	if (bIsLast)
 	{
 		if(!IsErrorRspInfo(pRspInfo))
 		{
 			// Settlement confirm succeeded, then notify login success
 			logger.Info(boost::str(boost::format("SettlementInfo Confirm Succeeded. MaxOrderRef:%d") % m_maxOrderRef));
+			m_pOrderProcessor->OnRspUserLogin(true, errorMsg, m_maxOrderRef);
 		}
 		else
 		{
-			string errorMsg = pRspInfo->ErrorMsg;
+			errorMsg = pRspInfo->ErrorMsg;
 			logger.Info(boost::str(boost::format("SettlementInfo Confirm Failed. Error:%s") % errorMsg));
+			m_pOrderProcessor->OnRspUserLogin(false, errorMsg, -1);
 		}
 	}
 }
@@ -419,6 +429,8 @@ void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CTho
 		oss << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
 
 	logger.Info(oss.str());
+
+	m_pOrderProcessor->OnRspOrderInsert(false, std::string(pInputOrder->OrderRef), std::string(pRspInfo->ErrorMsg));
 }
 
 void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
@@ -427,7 +439,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
 	logger.Info(oss.str());
 
-	CReturnOrder* pOrd = new CReturnOrder;
+	boost::shared_ptr<CReturnOrder> pOrd(new CReturnOrder);
 
 	///经纪公司代码
 	pOrd->set_brokerid(pOrder->BrokerID);
@@ -460,7 +472,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	///最小成交量
 	pOrd->set_minvolume(pOrder->MinVolume);
 	///触发条件
-	pOrd->set_contingentcondition(static_cast<:ContingentConditionType>(pOrder->ContingentCondition));
+	pOrd->set_contingentcondition(static_cast<ContingentConditionType>(pOrder->ContingentCondition));
 	///止损价
 	pOrd->set_stopprice(pOrder->StopPrice);
 	///强平原因
@@ -550,6 +562,8 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	pOrd->set_brokerorderseq(pOrder->BrokerOrderSeq);
 	///相关报单
 	pOrd->set_relativeordersysid(pOrder->RelativeOrderSysID);
+
+	m_pOrderProcessor->OnRtnOrder(pOrd.get());
 }
 
 void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
@@ -558,7 +572,7 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 	oss << "--->>> " << "OnRtnTrade (OrdRef:"  << pTrade->OrderRef << ") TradeId:" << pTrade->TradeID;
 	logger.Info(oss.str());
 
-	CTrade* pTd = new CTrade;
+	boost::shared_ptr<CTrade> pTd(new CTrade);
 
 	///经纪公司代码
 	pTd->set_brokerid(pTrade->BrokerID);
@@ -632,7 +646,7 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 	///经纪公司报单编号
 	pTd->set_brokerorderseq(pTrade->BrokerOrderSeq);
 
-	//m_pOrderMgr->OnRtnTrade(pTd);
+	m_pOrderProcessor->OnRtnTrade(pTd.get());
 }
 
 bool CTradeAgent::SubmitOrderAction( CInputOrderAction* pOrderAction )
@@ -682,5 +696,5 @@ bool CTradeAgent::SubmitOrderAction( CInputOrderAction* pOrderAction )
 
 void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-	//m_pOrderMgr->OnRspOrderInsert(IsErrorRspInfo(pRspInfo), std::string(pInputOrderAction->OrderRef), std::string(pRspInfo->ErrorMsg));
+	m_pOrderProcessor->OnRspOrderInsert(IsErrorRspInfo(pRspInfo), std::string(pInputOrderAction->OrderRef), std::string(pRspInfo->ErrorMsg));
 }

@@ -41,6 +41,10 @@ extern "C"
 	SHFU_GATEWAY_EXPORT bool __stdcall Start(const BreakOutStrategy* pStrategy);
 
 	SHFU_GATEWAY_EXPORT void __stdcall Stop();
+
+	SHFU_GATEWAY_EXPORT void __stdcall OpenPosition(int quantity, int longshort);
+
+	SHFU_GATEWAY_EXPORT void __stdcall ClosePosition();
 };
 
 #endif

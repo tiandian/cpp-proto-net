@@ -74,6 +74,14 @@ SHFU_GATEWAY_EXPORT bool __stdcall ConnectTradeAgent(	const char* brokerID,
 														OperationRecordCallback recordCallback,
 														TimeNSalesCallback tnsCallback)
 {
+	logger.Debug(boost::str(boost::format("Login trade with %s, %s, %s") % brokerID % userID % password));
+
+	if(!g_tradeAgent.Login(brokerID, userID, password))
+	{
+		Cleanup();
+		return false;
+	}
+
 	g_clientAgent.SetOperationRecordCallback(boost::bind(SendOperationRecords, _1));
 	_recordCallbackHandler = recordCallback;
 
@@ -85,7 +93,7 @@ SHFU_GATEWAY_EXPORT bool __stdcall ConnectTradeAgent(	const char* brokerID,
 
 SHFU_GATEWAY_EXPORT void __stdcall DisconnectTradeAgent()
 {
-
+	g_tradeAgent.Logout();
 }
 
 SHFU_GATEWAY_EXPORT void __stdcall SetSymbol(const char* symbol)
@@ -103,6 +111,16 @@ SHFU_GATEWAY_EXPORT void __stdcall Stop()
 
 }
 
+SHFU_GATEWAY_EXPORT void __stdcall OpenPosition(int quantity, int longshort)
+{
+	g_orderProcessor.OpenPosition(quantity, longshort);
+}
+
+SHFU_GATEWAY_EXPORT void __stdcall ClosePosition()
+{
+	g_orderProcessor.ClosePosition();
+}
+
 void Cleanup()
 {
 	g_marketAgent.Logout();
@@ -113,7 +131,7 @@ void SendQuoteUpdate(CQuote* pQuote)
 {
 	if(_quoteCallbackHandler != NULL)
 	{
-		QuoteData qd;
+		static QuoteData qd;
 		strcpy(qd.caSymbol, pQuote->get_symbol().c_str());
 		strcpy(qd.caTradingDay, pQuote->get_trading_day().c_str());
 		qd.dLast = pQuote->get_last();
@@ -138,7 +156,7 @@ void SendOperationRecords(COperationRecordData* pRecord)
 {
 	if(_recordCallbackHandler != NULL)
 	{
-
+		_recordCallbackHandler(pRecord->InnerStruct());
 	}
 }
 
@@ -146,6 +164,6 @@ void SendTimeNSales(CTimeNSalePacket* pTns)
 {
 	if(_tnsCallbackHandler != NULL)
 	{
-
+		_tnsCallbackHandler(pTns->InnerStruct());
 	}
 }

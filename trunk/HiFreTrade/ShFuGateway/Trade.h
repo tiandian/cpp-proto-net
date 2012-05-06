@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TradeEnumDefinition.h"
+
 #include <string>
 
 using namespace std;
@@ -63,12 +65,12 @@ public:
 	void set_exchangeinstid(const string& exchInstId){m_exchangeInstId = exchInstId;}
 
 	///组合开平标志
-	const string& offsetflag() {return m_combOffsetFlag;}
-	void set_offsetflag(const string& combOffsetFlag) {m_combOffsetFlag = combOffsetFlag;}
+	OffsetFlagType offsetflag() {return m_offsetFlag;}
+	void set_offsetflag(OffsetFlagType offsetFlag) {m_offsetFlag = offsetFlag;}
 
 	///组合投机套保标志
-	const string& hedgeflag() {return m_combHedgeFlag;}
-	void set_hedgeflag(const string& combHedgeFlag) {m_combHedgeFlag = combHedgeFlag;}
+	HedgeFlagType hedgeflag() {return m_hedgeFlag;}
+	void set_hedgeflag(HedgeFlagType hedgeFlag) {m_hedgeFlag = hedgeFlag;}
 
 	///价格
 	double price(){return m_price;}
@@ -142,8 +144,8 @@ private:
 	string m_clientId;
 	TradingRoleType m_tradingRole;
 	string m_exchangeInstId;
-	string m_combOffsetFlag;
-	string m_combHedgeFlag;
+	OffsetFlagType m_offsetFlag;
+	HedgeFlagType m_hedgeFlag;
 	double m_price;
 	int m_volume;
 	string m_tradeDate;
@@ -154,7 +156,7 @@ private:
 	string m_orderLocalId;
 	string m_clearingPartId;
 	string m_businessUnit;
-	string m_sequenceNo;
+	int m_sequenceNo;
 	string m_tradingDay;
 	int m_settlementId;
 	int m_brokerOrderSeq;

@@ -7,6 +7,11 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread.hpp>
+#include <boost/thread/condition_variable.hpp>
+#include <boost/thread/mutex.hpp>
+
+class COrderProcessor;
 
 class CTradeAgent : public CThostFtdcTraderSpi
 {
@@ -14,7 +19,12 @@ public:
 	CTradeAgent(void);
 	~CTradeAgent(void);
 
-	void Login(const std::string& brokerId, const std::string& userId, const std::string& password);
+	void Initialize(COrderProcessor* pOrderProcessor)
+	{
+		m_pOrderProcessor = pOrderProcessor;
+	}
+
+	bool Login(const char* brokerId, const char* userId, const char* password);
 	void Logout();
 
 	bool SubmitOrder( const std::vector< boost::shared_ptr<CInputOrder> >& orders );
@@ -95,6 +105,8 @@ private:
 	TThostFtdcOrderRefType	ORDER_REF;	//报单引用
 
 	int m_maxOrderRef;
+
+	COrderProcessor* m_pOrderProcessor;
 
 };
 
