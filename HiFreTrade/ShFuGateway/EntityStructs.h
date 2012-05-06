@@ -47,22 +47,30 @@ struct BreakOutStrategy
 #define LONG_BREAKOUT 1
 
 // iEntryType and iExitType
-#define SHORT_OPEN = 0
-#define LONG_OPEN = 1
-#define SHORT_CLOSE = 2
-#define LONG_CLOSE = 3
+#define SHORT_OPEN 0
+#define LONG_OPEN 1
+#define SHORT_CLOSE 2
+#define LONG_CLOSE 3
 
 // iEntryStatus and iExitStatus
-#define UNKNOWN = 0
-#define ORDER_SUBMIT = 1
-#define PARTIALLY_FILLED = 2
-#define FULL_FILLED = 3
-#define CANCELED = 4
+#define UNOPEN 0
+#define ORDER_SUBMIT 1
+#define PENDING 2
+#define PARTIALLY_FILLED 3
+#define FULL_FILLED 4
+#define CANCELED 5
+#define REJECTED 6
+#define UNKNOWN 7
+#define CLOSED UNOPEN
+
+// iEntryReason
+#define CONDITION_TRIGGER 0
+#define MANUAL_OPEN 1
 
 // iExitReason
-#define STOP_GAIN = 0
-#define STOP_LOSS = 1
-#define MANUAL_CLOSE = 2
+#define STOP_GAIN 0
+#define STOP_LOSS 1
+#define MANUAL_CLOSE 2
 
 struct OperationRecord
 {
@@ -78,6 +86,7 @@ struct OperationRecord
 
 	double dEntryPoint;
 	char caEntryTime[UPDATE_TIME_LEN];
+	int iEntryReason;
 	int iEntryType;
 	int iEntryQuantity;
 	int iEntryStatus;
@@ -98,6 +107,7 @@ struct TimeNSalesData
 
 	char caTimeStamp[UPDATE_TIME_LEN];
 	
+	double dPrice;
 	int iQuantity;
 	int iDirection;
 };

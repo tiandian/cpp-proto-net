@@ -18,6 +18,7 @@ namespace HiFreTradeUI.Win32Invoke
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = TIMESTAMP_LEN)]
         public string caTimeStamp;
 
+        public double dPrice;
         public int iQuantity;
         public int iDirection;
     }

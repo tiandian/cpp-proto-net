@@ -5,6 +5,7 @@
 CTimeNSalePacket::CTimeNSalePacket(void):
 CMessage(TIME_AND_SALES)
 {
+	memset(&m_innerData, 0, sizeof(m_innerData));
 }
 
 
