@@ -7,7 +7,8 @@
         xmlns:cal="http://www.codeplex.com/CompositeWPF"
         xmlns:ig="http://schemas.infragistics.com/xaml"
         xmlns:src="clr-namespace:HiFreTradeUI"
-        Title="MainWindow" Height="600" Width="800" Loaded="Window_Loaded">
+        Title="MainWindow" Height="600" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
+        Closed="Window_Closed">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
@@ -203,7 +204,7 @@
             <Border DockPanel.Dock="Top" BorderBrush="Yellow" BorderThickness="2" CornerRadius="4" Margin="4">
                 <DockPanel Margin="4">
                     <TextBlock DockPanel.Dock="Left">紧急情况下使用：</TextBlock>
-                    <Button Width="100">强制平仓</Button>
+                    <Button Width="100" Name="btnForceClose" Click="btnForceClose_Click">强制平仓</Button>
                 </DockPanel>
             </Border>
             
@@ -218,16 +219,16 @@
 
         <igDock:XamDockManager Grid.Column="1" Theme="Office2k7Blue" LayoutMode="FillContainer">
             <igDock:XamDockManager.Panes>
-                <igDock:SplitPane>
+                <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedTop" MinHeight="300">
                     <igDock:ContentPane Name="operationRecordsPane" Header="操作记录"
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.OperationsRegion}"/>
                 </igDock:SplitPane>
 
-                <igDock:SplitPane x:Name="leftSplitPane" igDock:XamDockManager.InitialLocation="DockedRight" 
-                                      Width="200" SplitterOrientation="Horizontal">
+                <igDock:SplitPane x:Name="leftSplitPane" igDock:XamDockManager.InitialLocation="DockedBottom" 
+                                      SplitterOrientation="Vertical">
                     <igDock:ContentPane Name="positionPane" Header="持仓状况" 
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.PositionRegion}"/>
-                    <igDock:ContentPane Name="timeNSalesPane" Header="成交明细" 
+                    <igDock:ContentPane Name="timeNSalesPane" Header="成交明细"
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.TimeNSalesRegion}"/>
                 </igDock:SplitPane>
                 

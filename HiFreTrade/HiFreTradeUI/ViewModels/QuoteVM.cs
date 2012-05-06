@@ -152,6 +152,11 @@ namespace HiFreTradeUI.ViewModels
                 }, null);
         }
 
+        public void Disconnect()
+        {
+            Gateway.DisconnectMarketAgent();
+        }
+
         private static Gateway.QuoteUpdateDelegate quoteUpdateFunc;
 
         private bool ConnectGateway()

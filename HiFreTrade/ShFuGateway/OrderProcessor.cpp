@@ -97,7 +97,7 @@ const char* COrderProcessor::NextOrderRef()
 	return ORDER_REF_BUF;
 }
 
-char OFFSET_FLAG[2][1] = { OF_OPEN, OF_CLOSE_TODAY };
+char OFFSET_FLAG[2][2] = { {OF_OPEN, '\0'}, {OF_CLOSE_TODAY, '\0'} };
 
 std::string OPEN_OFFSET(OFFSET_FLAG[0]);
 std::string CLOSE_OFFSET(OFFSET_FLAG[1]);
@@ -184,7 +184,7 @@ boost::shared_ptr<CInputOrder> COrderProcessor::CreateOrder(int quantity,
 
 void COrderProcessor::OpenPosition( int quantity, int longshort )
 {
-	if(m_currentSymbols.size() == 0)
+	if(m_currentSymbols[0].empty())
 		return;
 
 	if(m_currentRecord->EntryStatus() == UNOPEN)
@@ -193,13 +193,14 @@ void COrderProcessor::OpenPosition( int quantity, int longshort )
 		double limitPrice = flag == OP::SHORT ? m_latestQuote.Bid() : m_latestQuote.Ask();
 		boost::shared_ptr<CInputOrder> order = CreateOrder(quantity, OP::OPEN, flag, limitPrice);
 
+		m_currentRecord->SetEntryReason(MANUAL_OPEN);
 		g_tradeAgent.SubmitOrder(order.get());
 	}
 }
 
 void COrderProcessor::ClosePosition()
 {
-	if(m_currentSymbols.size() == 0)
+	if(m_currentSymbols[0].empty())
 		return;
 
 	if(m_currentRecord->EntryStatus() == FULL_FILLED)
@@ -209,6 +210,7 @@ void COrderProcessor::ClosePosition()
 		double limitPrice = flag == OP::SHORT ? m_latestQuote.Ask() : m_latestQuote.Bid();
 		boost::shared_ptr<CInputOrder> order = CreateOrder(quantity, OP::CLOSE, flag, limitPrice);
 
+		m_currentRecord->SetExitReason(MANUAL_CLOSE);
 		g_tradeAgent.SubmitOrder(order.get());
 	}
 }
@@ -235,11 +237,23 @@ void COrderProcessor::OnRspOrderAction( bool succ, const std::string& orderRef, 
 
 int ConvertToOrderStatusConst(OrderSubmitStatusType submitStatus, OrderStatusType orderStatus)
 {
-	if(submitStatus == INSERT_SUBMITTED ||
-		submitStatus == MODIFY_SUBMITTED ||
-		submitStatus == CANCEL_SUBMITTED)
+	if(submitStatus == INSERT_SUBMITTED)
 	{
-		return ORDER_SUBMIT;
+		if(orderStatus == ALL_TRADED)
+			return FULL_FILLED;
+		else if(orderStatus == NO_TRADE_QUEUEING || orderStatus == NO_TRADE_NOT_QUEUEING)
+			return PENDING;
+		else if(orderStatus == PART_TRADED_QUEUEING || orderStatus == PART_TRADED_NOT_QUEUEING)
+			return PARTIALLY_FILLED;
+		else
+			return ORDER_SUBMIT;
+	}
+	if(submitStatus == CANCEL_SUBMITTED)
+	{
+		if(orderStatus == ORDER_CANCELED)
+			return CANCELED;
+		else
+			return UNKNOWN;
 	}
 	if(submitStatus == ACCEPTED)
 	{
@@ -277,7 +291,7 @@ void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 		m_currentRecord->SetEntryQuantity(order->volumetraded());
 		int entryStatus = ConvertToOrderStatusConst(order->ordersubmitstatus(), order->orderstatus());
 		m_currentRecord->SetEntryStatus(entryStatus);
-		
+
 	}
 	else
 	{
@@ -285,13 +299,12 @@ void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 		int exitType = order->direction() == SELL ? LONG_CLOSE : SHORT_CLOSE;
 		m_currentRecord->SetExitType(exitType);
 		m_currentRecord->SetExitTime(order->inserttime().c_str());
-		m_currentRecord->SetEntryPoint(order->limitprice());
+		m_currentRecord->SetExitPoint(order->limitprice());
 
 		m_currentRecord->SetExitQuantity(order->volumetraded());
 		int exitStatus = ConvertToOrderStatusConst(order->ordersubmitstatus(), order->orderstatus());
 		m_currentRecord->SetExitStatus(exitStatus);
 
-		m_currentRecord->SetExitReason(MANUAL_CLOSE);
 	}
 
 	boost::shared_ptr<CMessage> msgPack = m_currentRecord;
