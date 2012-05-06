@@ -90,5 +90,11 @@ namespace HiFreTradeUI
         {
 
         }
+
+        public void Disconnect()
+        {
+            Trade.Disconnect();
+            Quote.Disconnect();
+        }
     }
 }

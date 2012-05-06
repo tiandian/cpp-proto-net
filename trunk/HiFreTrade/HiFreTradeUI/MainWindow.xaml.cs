@@ -46,7 +46,9 @@ namespace HiFreTradeUI
             //bool connected = Gateway.ConnectMarketAgent("2030", "00092", "888888", QuoteUpdateCallback);
             //Debug.WriteLine("Connected {0}", connected);
 
-            Gateway.SetSymbol("IF1205");
+            //Gateway.SetSymbol("IF1205");
+
+            Gateway.OpenPosition(1, 1);
         }
 
         private void QuoteUpdateCallback(string symbol) 
@@ -57,6 +59,16 @@ namespace HiFreTradeUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this._viewModel.Connect();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            this._viewModel.Disconnect();
+        }
+
+        private void btnForceClose_Click(object sender, RoutedEventArgs e)
+        {
+            Gateway.ClosePosition();
         }
     }
 }

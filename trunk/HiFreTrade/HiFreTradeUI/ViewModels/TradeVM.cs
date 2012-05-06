@@ -5,12 +5,21 @@ using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using System.ComponentModel.Composition;
 using Win32 = HiFreTradeUI.Win32Invoke;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Prism.Events;
+using HiFreTradeUI.Events;
 
 namespace HiFreTradeUI.ViewModels
 {
     [Export]
     public class TradeVM : NotificationObject
     {
+        private IEventAggregator EventAggregator { get; set; }
+        public TradeVM()
+        {
+            EventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+        }
+
         [Import]
         private UIThread UIThread { get; set; }
 
@@ -47,6 +56,11 @@ namespace HiFreTradeUI.ViewModels
                 }, null);
         }
 
+        public void Disconnect()
+        {
+            Win32.Gateway.DisconnectTradeAgent();
+        }
+
         private static Win32.Gateway.OperationRecordUpdateDelegate recordsUpdateFunc;
         private static Win32.Gateway.TimeNSalesUpdateDelegate tnsDataUpdateFunc;
 
@@ -54,12 +68,161 @@ namespace HiFreTradeUI.ViewModels
         {
             recordsUpdateFunc = new Win32.Gateway.OperationRecordUpdateDelegate(OnOperationRecordsUpdate);
             tnsDataUpdateFunc = new Win32.Gateway.TimeNSalesUpdateDelegate(OnTimeNSalesUpdate);
-            return Win32.Gateway.ConnectTradeAgent("0240", "0240050002", "888888", recordsUpdateFunc, tnsDataUpdateFunc);
+            return Win32.Gateway.ConnectTradeAgent("0240", "0240050004", "888888", recordsUpdateFunc, tnsDataUpdateFunc);
         }
 
-        public void OnOperationRecordsUpdate(Win32.OperationRecord record)
+        private static string GetDirection(int iDirection)
         {
+            /* iDirection
+            #define SHORT_BREAKOUT 0
+            #define LONG_BREAKOUT 1 */
+            switch(iDirection)
+            {
+                case 0:
+                    return "空头突破";
+                case 1:
+                    return "多头突破";
+                default:
+                    throw new ArgumentException(string.Format("Invalid given direction({0})", iDirection));
+            }
+        }
 
+        private static string GetEntryReason(int iEntryReason)
+        {
+            /*
+            // iEntryReason
+            #define CONDITION_TRIGGER 0
+            #define MANUAL_OPEN 1
+            */
+            switch(iEntryReason)
+            {
+                case 0:
+                    return "条件触发";
+                case 1:
+                    return "手动开仓";
+                default:
+                    throw new ArgumentException(string.Format("Invalid entry reason({0})", iEntryReason));
+            }
+        }
+
+        private static string GetExitReason(int iExitReason)
+        {
+            /*
+            // iExitReason
+            #define STOP_GAIN 0
+            #define STOP_LOSS 1
+            #define MANUAL_CLOSE 2
+            */
+            switch(iExitReason)
+            {
+                case 0:
+                    return "止盈";
+                case 1:
+                    return "止损";
+                case 2:
+                    return "手动平仓";
+                default:
+                    throw new ArgumentException(string.Format("Invalid exit reason({0})", iExitReason));
+            }
+        }
+
+        private static string GetEntryExitType(int iType)
+        {
+            /*
+            // iEntryType and iExitType
+            #define SHORT_OPEN 0
+            #define LONG_OPEN 1
+            #define SHORT_CLOSE 2
+            #define LONG_CLOSE 3
+             */
+            switch(iType)
+            {
+                case 0:
+                    return "空开";
+                case 1:
+                    return "多开";
+                case 2:
+                    return "空平";
+                case 3:
+                    return "多平";
+                default:
+                    throw new ArgumentException(string.Format("Invalid entry or exit type ({0})", iType));
+            }
+        }
+
+        private static string GetEntryExitStatus(int iStatus)
+        {
+            /*
+            // iEntryStatus and iExitStatus
+            #define UNOPEN 0
+            #define ORDER_SUBMIT 1
+            #define PENDING 2
+            #define PARTIALLY_FILLED 3
+            #define FULL_FILLED 4
+            #define CANCELED 5
+            #define REJECTED 6
+            #define UNKNOWN 7
+            #define CLOSED UNOPEN
+             */
+            switch(iStatus)
+            {
+                case 0:
+                    return "未开仓";
+                case 1:
+                    return "已提交";
+                case 2:
+                    return "等待成交";
+                case 3:
+                    return "部分成交";
+                case 4:
+                    return "全部成交";
+                case 5:
+                    return "已撤单";
+                case 6:
+                    return "被拒绝";
+                case 7:
+                    return "未知";
+                default:
+                    throw new ArgumentException(string.Format("Invalid entry or exit status ({0})", iStatus));
+            }
+        }
+
+        public void OnOperationRecordsUpdate(Win32.OperationRecord win32Record)
+        {
+            OperationRecord record = new OperationRecord();
+
+            record.RecordID = win32Record.iRecordId;
+            record.Symbol = win32Record.caSymbol;
+            DateTime time;
+            bool succ = DateTime.TryParse(win32Record.caRectPeriodBegin, out time);
+            if(succ) record.RectPeriodBegin = time;
+            succ = DateTime.TryParse(win32Record.caRectPeriodEnd, out time);
+            if(succ) record.RectPeriodEnd = time;
+
+            record.UpperBoundary = win32Record.dUpperBoundary;
+            record.LowerBoundary = win32Record.dLowerBoundary;
+            record.Range = win32Record.dRange;
+            record.Direction = GetDirection(win32Record.iDirection);
+
+            record.EntryPoint = win32Record.dEntryPoint;
+            succ = DateTime.TryParse(win32Record.caEntryTime, out time);
+            if(succ) record.EntryTime = time;
+            record.EntryReason = GetEntryReason(win32Record.iEntryReason);
+            record.EntryType = GetEntryExitType(win32Record.iEntryType);
+            record.EntryQuantity = win32Record.iEntryQuantity;
+            record.EntryStatus = GetEntryExitStatus(win32Record.iEntryStatus);
+
+            record.ExitPoint = win32Record.dExitPoint;
+            succ = DateTime.TryParse(win32Record.caExitTime, out time);
+            if(succ) record.ExitTime = time;
+            record.ExitReason = GetExitReason(win32Record.iExitReason);
+            record.ExitType = GetEntryExitType(win32Record.iExitType);
+            record.ExitQuantity = win32Record.iExitQuantity;
+            record.ExitStatus = GetEntryExitStatus(win32Record.iExitStatus);
+
+            record.ProfitLoss = win32Record.ProfitLoss;
+
+            EventAggregator.GetEvent<OperRecordUpdateEvent>().Publish(record);
         }
 
         public void OnTimeNSalesUpdate(Win32.TimeNSalesData tnsData)
