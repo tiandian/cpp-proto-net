@@ -336,6 +336,6 @@ void COrderProcessor::OnRtnTrade( CTrade* pTrade )
 	}
 	tnsPacket->SetDirection(direction);
 
-	boost::shared_ptr<CMessage> msgPack = m_currentRecord;
+	boost::shared_ptr<CMessage> msgPack = tnsPacket;
 	g_clientAgent.Publish(msgPack);
 }

@@ -225,9 +225,18 @@ namespace HiFreTradeUI.ViewModels
             EventAggregator.GetEvent<OperRecordUpdateEvent>().Publish(record);
         }
 
-        public void OnTimeNSalesUpdate(Win32.TimeNSalesData tnsData)
+        public void OnTimeNSalesUpdate(Win32.TimeNSalesData tnsPacket)
         {
+            TimeNSalesData tnsData = new TimeNSalesData();
+            tnsData.Symbol = tnsPacket.caSymbol;
+            DateTime time;
+            bool succ = DateTime.TryParse(tnsPacket.caTimeStamp, out time);
+            tnsData.TimeStamp = time;
+            tnsData.Price = tnsPacket.dPrice;
+            tnsData.Quantity = tnsPacket.iQuantity;
+            tnsData.Direction = GetEntryExitType(tnsPacket.iDirection);
 
+            EventAggregator.GetEvent<TimeNSalesUpdateEvent>().Publish(tnsData);
         }
 
         #region RectPeriod
