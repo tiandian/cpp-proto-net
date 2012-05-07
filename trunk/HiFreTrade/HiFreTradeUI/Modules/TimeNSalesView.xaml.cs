@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel.Composition;
+using HiFreTradeUI.ViewModels;
 
 namespace HiFreTradeUI.Modules
 {
@@ -21,8 +22,13 @@ namespace HiFreTradeUI.Modules
     [Export]
     public partial class TimeNSalesView : UserControl
     {
-        public TimeNSalesView()
+        private TimeNSalesVM _viewModel;
+
+        [ImportingConstructor]
+        public TimeNSalesView(TimeNSalesVM viewModel)
         {
+            _viewModel = viewModel;
+            this.DataContext = _viewModel;
             InitializeComponent();
         }
     }
