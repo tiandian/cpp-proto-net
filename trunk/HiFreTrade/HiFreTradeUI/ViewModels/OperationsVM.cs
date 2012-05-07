@@ -28,6 +28,8 @@ namespace HiFreTradeUI.ViewModels
             if (existingRec != null)
             {
                 // update
+                existingRec.Symbol = record.Symbol;
+
                 existingRec.RectPeriodBegin = record.RectPeriodBegin;
                 existingRec.RectPeriodEnd = record.RectPeriodEnd;
                 existingRec.UpperBoundary = record.UpperBoundary;

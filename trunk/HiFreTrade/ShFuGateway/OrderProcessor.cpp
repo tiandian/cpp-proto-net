@@ -25,6 +25,7 @@ COrderProcessor::COrderProcessor(void):
 	m_currentSymbols(1),
 	m_currentRecord(new COperationRecordData)
 {
+	m_currentRecord->SetRecordId(1);
 }
 
 
@@ -67,6 +68,12 @@ void COrderProcessor::SetSymbol( const std::string& symb )
 	{
 		bool subSucc = g_marketAgent.SubscribesQuotes(m_currentSymbols);
 		m_latestQuote.setSymbol(symb);
+	}
+
+	if(m_currentRecord->EntryStatus() == UNOPEN)
+	{
+		m_currentRecord->SetSymbol(symb.c_str());
+		PublishRecord();
 	}
 }
 
@@ -280,6 +287,8 @@ int ConvertToOrderStatusConst(OrderSubmitStatusType submitStatus, OrderStatusTyp
 
 void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 {
+	bool position_closed = false;
+
 	if(order->comboffsetflag() == OPEN_OFFSET)
 	{
 		// Open position order
@@ -305,10 +314,19 @@ void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 		int exitStatus = ConvertToOrderStatusConst(order->ordersubmitstatus(), order->orderstatus());
 		m_currentRecord->SetExitStatus(exitStatus);
 
+		if(exitStatus == FULL_FILLED)
+		{
+			double profit = exitType == LONG_CLOSE ? m_currentRecord->ExitPoint() - m_currentRecord->EntryPoint()
+				: m_currentRecord->EntryPoint() - m_currentRecord->ExitPoint();
+			m_currentRecord->SetProfitLoss(profit);
+			position_closed = true;
+		}
 	}
 
-	boost::shared_ptr<CMessage> msgPack = m_currentRecord;
-	g_clientAgent.Publish(msgPack);
+	PublishRecord();
+
+	if(position_closed)
+		OnPositionClosed();
 }
 
 void COrderProcessor::OnRtnTrade( CTrade* pTrade )
@@ -337,5 +355,27 @@ void COrderProcessor::OnRtnTrade( CTrade* pTrade )
 	tnsPacket->SetDirection(direction);
 
 	boost::shared_ptr<CMessage> msgPack = tnsPacket;
+	g_clientAgent.Publish(msgPack);
+}
+
+void COrderProcessor::OnPositionClosed()
+{
+	ResetRecord();
+
+	PublishRecord();
+}
+
+void COrderProcessor::ResetRecord()
+{
+	boost::shared_ptr<COperationRecordData> newRecord(new COperationRecordData);
+	newRecord->SetRecordId(m_currentRecord->RecordId() + 1);
+	newRecord->SetSymbol(m_currentSymbols[0].c_str());
+
+	m_currentRecord = newRecord;	
+}
+
+void COrderProcessor::PublishRecord()
+{
+	boost::shared_ptr<CMessage> msgPack = m_currentRecord;
 	g_clientAgent.Publish(msgPack);
 }
