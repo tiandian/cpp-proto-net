@@ -68,7 +68,7 @@ namespace HiFreTradeUI.ViewModels
         {
             recordsUpdateFunc = new Win32.Gateway.OperationRecordUpdateDelegate(OnOperationRecordsUpdate);
             tnsDataUpdateFunc = new Win32.Gateway.TimeNSalesUpdateDelegate(OnTimeNSalesUpdate);
-            return Win32.Gateway.ConnectTradeAgent("0240", "0240050004", "888888", recordsUpdateFunc, tnsDataUpdateFunc);
+            return Win32.Gateway.ConnectTradeAgent("0240", "0240050003", "888888", recordsUpdateFunc, tnsDataUpdateFunc);
         }
 
         private static string GetDirection(int iDirection)

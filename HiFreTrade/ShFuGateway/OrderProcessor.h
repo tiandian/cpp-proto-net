@@ -84,6 +84,12 @@ private:
 
 	void ForwardQuote(boost::shared_ptr<CQuote>& pQuote);
 
+	void OnPositionClosed();
+
+	void ResetRecord();
+
+	void PublishRecord();
+
 	boost::shared_ptr<CInputOrder> CreateOrder(int quantity, 
 		OP::OPEN_CLOSE_FLAG open_close, OP::LONG_SHORT_FLAG long_short, double limitPrice);
 	

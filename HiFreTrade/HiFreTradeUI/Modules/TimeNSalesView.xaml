@@ -23,15 +23,15 @@
             <igDP:XamDataGrid.FieldLayouts>
                 <igDP:FieldLayout>
                     <igDP:FieldLayout.Fields>
-                        <igDP:Field  Name="Direction" Label="开平" />
-                        <igDP:Field  Name="Symbol" Label="代号" />
-                        <igDP:Field  Name="Price" Label="成交价" />
-                        <igDP:Field  Name="Quantity" Label="数量" />
                         <igDP:Field  Name="TimeStamp" Label="时间" >
                             <igDP:Field.Settings>
                                 <igDP:FieldSettings EditorStyle="{StaticResource timeDisplayStyle}"/>
                             </igDP:Field.Settings>
                         </igDP:Field>
+                        <igDP:Field  Name="Direction" Label="开平" />
+                        <igDP:Field  Name="Symbol" Label="代号" />
+                        <igDP:Field  Name="Price" Label="成交价" />
+                        <igDP:Field  Name="Quantity" Label="数量" />
                     </igDP:FieldLayout.Fields>
                 </igDP:FieldLayout>
             </igDP:XamDataGrid.FieldLayouts>
