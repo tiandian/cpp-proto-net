@@ -42,35 +42,37 @@ struct BreakOutStrategy
 	int iLossLimit;
 };
 
+// for every definition
+#define UNKNOWN 0
+
 // iDirection
-#define SHORT_BREAKOUT 0
-#define LONG_BREAKOUT 1
+#define SHORT_BREAKOUT 1
+#define LONG_BREAKOUT 2
 
 // iEntryType and iExitType
-#define SHORT_OPEN 0
-#define LONG_OPEN 1
-#define SHORT_CLOSE 2
-#define LONG_CLOSE 3
+#define SHORT_OPEN 1
+#define LONG_OPEN 2
+#define SHORT_CLOSE 3
+#define LONG_CLOSE 4
 
 // iEntryStatus and iExitStatus
-#define UNOPEN 0
-#define ORDER_SUBMIT 1
-#define PENDING 2
-#define PARTIALLY_FILLED 3
-#define FULL_FILLED 4
-#define CANCELED 5
-#define REJECTED 6
-#define UNKNOWN 7
+#define UNOPEN 1
+#define ORDER_SUBMIT 2
+#define PENDING 3
+#define PARTIALLY_FILLED 4
+#define FULL_FILLED 5
+#define CANCELED 6
+#define REJECTED 7
 #define CLOSED UNOPEN
 
 // iEntryReason
-#define CONDITION_TRIGGER 0
-#define MANUAL_OPEN 1
+#define CONDITION_TRIGGER 1
+#define MANUAL_OPEN 2
 
 // iExitReason
-#define STOP_GAIN 0
-#define STOP_LOSS 1
-#define MANUAL_CLOSE 2
+#define STOP_GAIN 1
+#define STOP_LOSS 2
+#define MANUAL_CLOSE 3
 
 struct OperationRecord
 {
