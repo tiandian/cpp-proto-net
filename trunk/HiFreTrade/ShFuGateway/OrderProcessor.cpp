@@ -23,7 +23,9 @@ extern CLogManager	logger;
 COrderProcessor::COrderProcessor(void):
 	m_bufferRunner(boost::bind(&COrderProcessor::ProcessQuote, this, _1)),
 	m_currentSymbols(1),
-	m_currentRecord(new COperationRecordData)
+	m_orderQty(0),
+	m_currentRecord(new COperationRecordData),
+	m_isRunning(false)
 {
 	m_currentRecord->SetRecordId(1);
 }
@@ -70,7 +72,7 @@ void COrderProcessor::SetSymbol( const std::string& symb )
 		m_latestQuote.setSymbol(symb);
 	}
 
-	if(m_currentRecord->EntryStatus() == UNOPEN)
+	if(m_currentRecord->EntryStatus() <= UNOPEN)
 	{
 		m_currentRecord->SetSymbol(symb.c_str());
 		PublishRecord();
@@ -80,9 +82,53 @@ void COrderProcessor::SetSymbol( const std::string& symb )
 void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 {
 	// update lastest quote
-	m_latestQuote.UpdateQuote(pQuote->get_last(), pQuote->get_ask(), pQuote->get_bid());
-	// TODO: test condition and fire trigger
+	double last = pQuote->get_last();
+	double ask = pQuote->get_ask();
+	double bid = pQuote->get_bid();
 
+	m_latestQuote.UpdateQuote(last, ask, bid);
+	// TODO: test condition and fire trigger
+	if(m_isRunning)
+	{
+		if(m_currentRecord->EntryStatus() <= UNOPEN)
+		{
+			int offsetFlag = UNKNOWN;
+			bool condOK = m_openCondition.Check(last, &offsetFlag);
+			if(condOK)
+			{
+				// open position
+				if(offsetFlag == LONG_OPEN)
+				{
+					OpenPosition(m_orderQty, offsetFlag, ask, CONDITION_TRIGGER);
+				}
+				else if(offsetFlag == SHORT_OPEN)
+				{
+					OpenPosition(m_orderQty, offsetFlag, bid, CONDITION_TRIGGER);
+				}
+			}
+		}
+		else if(m_currentRecord->EntryStatus() == FULL_FILLED)
+		{
+			int offsetFlag = UNKNOWN;
+			bool stopGain = m_stopGain.Check(last, &offsetFlag);
+			if(stopGain && offsetFlag > UNKNOWN)
+			{
+				double limitprice = offsetFlag == LONG_CLOSE ? bid : ask;
+				// stop gain
+				ClosePosition(offsetFlag, limitprice, STOP_GAIN);
+			}
+			else
+			{
+				bool stopLoss = m_stopLoss.Check(last, &offsetFlag);
+				if(stopLoss && offsetFlag > UNKNOWN)
+				{
+					double limitprice = offsetFlag == LONG_CLOSE ? bid : ask;
+					// stop loss
+					ClosePosition(offsetFlag, limitprice, STOP_LOSS);
+				}
+			}
+		}
+	}
 
 	ForwardQuote(pQuote);
 }
@@ -194,15 +240,21 @@ void COrderProcessor::OpenPosition( int quantity, int longshort )
 	if(m_currentSymbols[0].empty())
 		return;
 
-	if(m_currentRecord->EntryStatus() == UNOPEN)
+	if(m_currentRecord->EntryStatus() <= UNOPEN)
 	{
 		OP::LONG_SHORT_FLAG flag = longshort == SHORT_OPEN ? OP::SHORT : OP::LONG;
 		double limitPrice = flag == OP::SHORT ? m_latestQuote.Bid() : m_latestQuote.Ask();
-		boost::shared_ptr<CInputOrder> order = CreateOrder(quantity, OP::OPEN, flag, limitPrice);
-
-		m_currentRecord->SetEntryReason(MANUAL_OPEN);
-		g_tradeAgent.SubmitOrder(order.get());
+		OpenPosition(quantity, longshort, limitPrice, MANUAL_OPEN);
 	}
+}
+
+void COrderProcessor::OpenPosition(int quantity, int longshort, double limitprice, int entryReason)
+{
+	OP::LONG_SHORT_FLAG flag = longshort == SHORT_OPEN ? OP::SHORT : OP::LONG;
+	boost::shared_ptr<CInputOrder> order = CreateOrder(quantity, OP::OPEN, flag, limitprice);
+
+	m_currentRecord->SetEntryReason(entryReason);
+	g_tradeAgent.SubmitOrder(order.get());
 }
 
 void COrderProcessor::ClosePosition()
@@ -212,14 +264,19 @@ void COrderProcessor::ClosePosition()
 
 	if(m_currentRecord->EntryStatus() == FULL_FILLED)
 	{
-		OP::LONG_SHORT_FLAG flag = m_currentRecord->EntryType() == SHORT_OPEN ? OP::SHORT : OP::LONG;
-		int quantity = m_currentRecord->EntryQuantity();
-		double limitPrice = flag == OP::SHORT ? m_latestQuote.Ask() : m_latestQuote.Bid();
-		boost::shared_ptr<CInputOrder> order = CreateOrder(quantity, OP::CLOSE, flag, limitPrice);
-
-		m_currentRecord->SetExitReason(MANUAL_CLOSE);
-		g_tradeAgent.SubmitOrder(order.get());
+		int longShortCloseFlag = m_currentRecord->EntryType() == SHORT_OPEN ? SHORT_CLOSE : LONG_CLOSE;
+		double limitPrice = longShortCloseFlag == SHORT_CLOSE ? m_latestQuote.Ask() : m_latestQuote.Bid();
+		ClosePosition(longShortCloseFlag, limitPrice, MANUAL_CLOSE);
 	}
+}
+
+void COrderProcessor::ClosePosition(int longshort, double limitprice, int exitReason)
+{
+	int quantity = m_currentRecord->EntryQuantity();
+	OP::LONG_SHORT_FLAG flag = longshort == SHORT_CLOSE ? OP::SHORT : OP::LONG;
+	boost::shared_ptr<CInputOrder> order = CreateOrder(quantity, OP::CLOSE, flag, limitprice);
+	m_currentRecord->SetExitReason(exitReason);
+	g_tradeAgent.SubmitOrder(order.get());
 }
 
 void COrderProcessor::OnRspUserLogin( bool succ, std::string& msg, int initOrderRefID )
@@ -378,4 +435,14 @@ void COrderProcessor::PublishRecord()
 {
 	boost::shared_ptr<CMessage> msgPack = m_currentRecord;
 	g_clientAgent.Publish(msgPack);
+}
+
+void COrderProcessor::Start()
+{
+	m_isRunning = true;
+}
+
+void COrderProcessor::Stop()
+{
+	m_isRunning = false;
 }

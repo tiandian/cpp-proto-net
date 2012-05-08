@@ -5,6 +5,7 @@
 #include "OperationRecordData.h"
 #include "InputOrder.h"
 #include "QuoteCache.h"
+#include "ConditionChecker.h"
 
 #include <string>
 #include <vector>
@@ -37,9 +38,15 @@ public:
 
 	void Initialize();
 	void SetSymbol(const std::string& symb);
+	void SetQuantity(int qty){ m_orderQty = qty; }
 
 	void OpenPosition(int quantity, int longshort);
+	void OpenPosition(int quantity, int longshort, double limitprice, int entryReason);
 	void ClosePosition();
+	void ClosePosition(int longshort, double limitprice, int exitReason);
+
+	void Start();
+	void Stop();
 
 	virtual void OnSubscribeCompleted();
 	virtual void OnUnsubscribeCompleted();
@@ -103,5 +110,12 @@ private:
 	boost::shared_ptr<COperationRecordData> m_currentRecord;
 
 	CQuoteCache m_latestQuote; 
+
+	COpenPosiCondition m_openCondition;
+	CStopGainCondition m_stopGain;
+	CStopLossCondition m_stopLoss;
+	bool m_isRunning;
+
+	int m_orderQty;
 };
 

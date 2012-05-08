@@ -74,13 +74,15 @@ namespace HiFreTradeUI.ViewModels
         private static string GetDirection(int iDirection)
         {
             /* iDirection
-            #define SHORT_BREAKOUT 0
-            #define LONG_BREAKOUT 1 */
+            #define SHORT_BREAKOUT 1
+            #define LONG_BREAKOUT 2 */
             switch(iDirection)
             {
                 case 0:
-                    return "空头突破";
+                    return "未突破";
                 case 1:
+                    return "空头突破";
+                case 2:
                     return "多头突破";
                 default:
                     throw new ArgumentException(string.Format("Invalid given direction({0})", iDirection));
@@ -91,14 +93,16 @@ namespace HiFreTradeUI.ViewModels
         {
             /*
             // iEntryReason
-            #define CONDITION_TRIGGER 0
-            #define MANUAL_OPEN 1
+            #define CONDITION_TRIGGER 1
+            #define MANUAL_OPEN 2
             */
             switch(iEntryReason)
             {
                 case 0:
-                    return "条件触发";
+                    return "未开仓";
                 case 1:
+                    return "条件触发";
+                case 2:
                     return "手动开仓";
                 default:
                     throw new ArgumentException(string.Format("Invalid entry reason({0})", iEntryReason));
@@ -109,17 +113,19 @@ namespace HiFreTradeUI.ViewModels
         {
             /*
             // iExitReason
-            #define STOP_GAIN 0
-            #define STOP_LOSS 1
-            #define MANUAL_CLOSE 2
+            #define STOP_GAIN 1
+            #define STOP_LOSS 2
+            #define MANUAL_CLOSE 3
             */
             switch(iExitReason)
             {
                 case 0:
-                    return "止盈";
+                    return "未平仓";
                 case 1:
-                    return "止损";
+                    return "止盈";
                 case 2:
+                    return "止损";
+                case 3:
                     return "手动平仓";
                 default:
                     throw new ArgumentException(string.Format("Invalid exit reason({0})", iExitReason));
@@ -130,20 +136,22 @@ namespace HiFreTradeUI.ViewModels
         {
             /*
             // iEntryType and iExitType
-            #define SHORT_OPEN 0
-            #define LONG_OPEN 1
-            #define SHORT_CLOSE 2
-            #define LONG_CLOSE 3
+            #define SHORT_OPEN 1
+            #define LONG_OPEN 2
+            #define SHORT_CLOSE 3
+            #define LONG_CLOSE 4
              */
             switch(iType)
             {
                 case 0:
-                    return "空开";
+                    return "未知";
                 case 1:
-                    return "多开";
+                    return "空开";
                 case 2:
-                    return "空平";
+                    return "多开";
                 case 3:
+                    return "空平";
+                case 4:
                     return "多平";
                 default:
                     throw new ArgumentException(string.Format("Invalid entry or exit type ({0})", iType));
@@ -154,34 +162,33 @@ namespace HiFreTradeUI.ViewModels
         {
             /*
             // iEntryStatus and iExitStatus
-            #define UNOPEN 0
-            #define ORDER_SUBMIT 1
-            #define PENDING 2
-            #define PARTIALLY_FILLED 3
-            #define FULL_FILLED 4
-            #define CANCELED 5
-            #define REJECTED 6
-            #define UNKNOWN 7
+            #define UNOPEN 1
+            #define ORDER_SUBMIT 2
+            #define PENDING 3
+            #define PARTIALLY_FILLED 4
+            #define FULL_FILLED 5
+            #define CANCELED 6
+            #define REJECTED 7
             #define CLOSED UNOPEN
              */
             switch(iStatus)
             {
                 case 0:
-                    return "未开仓";
-                case 1:
-                    return "已提交";
-                case 2:
-                    return "等待成交";
-                case 3:
-                    return "部分成交";
-                case 4:
-                    return "全部成交";
-                case 5:
-                    return "已撤单";
-                case 6:
-                    return "被拒绝";
-                case 7:
                     return "未知";
+                case 1:
+                    return "未开仓";
+                case 2:
+                    return "已提交";
+                case 3:
+                    return "等待成交";
+                case 4:
+                    return "部分成交";
+                case 5:
+                    return "全部成交";
+                case 6:
+                    return "已撤单";
+                case 7:
+                    return "被拒绝";
                 default:
                     throw new ArgumentException(string.Format("Invalid entry or exit status ({0})", iStatus));
             }
