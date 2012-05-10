@@ -85,7 +85,7 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 	double last = pQuote->get_last();
 	double ask = pQuote->get_ask();
 	double bid = pQuote->get_bid();
-
+	
 	m_latestQuote.UpdateQuote(last, ask, bid);
 	// TODO: test condition and fire trigger
 	if(m_isRunning)
@@ -93,7 +93,7 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 		if(m_currentRecord->EntryStatus() <= UNOPEN)
 		{
 			int offsetFlag = UNKNOWN;
-			bool condOK = m_openCondition.Check(last, &offsetFlag);
+			bool condOK = m_openCondition.Check(last, pQuote->get_update_time(), &offsetFlag);
 			if(condOK)
 			{
 				// open position
@@ -110,7 +110,7 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 		else if(m_currentRecord->EntryStatus() == FULL_FILLED)
 		{
 			int offsetFlag = UNKNOWN;
-			bool stopGain = m_stopGain.Check(last, &offsetFlag);
+			bool stopGain = m_stopGain.Check(last, pQuote->get_update_time(), &offsetFlag);
 			if(stopGain && offsetFlag > UNKNOWN)
 			{
 				double limitprice = offsetFlag == LONG_CLOSE ? bid : ask;
@@ -119,7 +119,7 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 			}
 			else
 			{
-				bool stopLoss = m_stopLoss.Check(last, &offsetFlag);
+				bool stopLoss = m_stopLoss.Check(last, pQuote->get_update_time(), &offsetFlag);
 				if(stopLoss && offsetFlag > UNKNOWN)
 				{
 					double limitprice = offsetFlag == LONG_CLOSE ? bid : ask;
