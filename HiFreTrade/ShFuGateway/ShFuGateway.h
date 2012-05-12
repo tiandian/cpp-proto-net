@@ -38,7 +38,7 @@ extern "C"
 
 	SHFU_GATEWAY_EXPORT void __stdcall SetSymbol(const char* symbol);
 
-	SHFU_GATEWAY_EXPORT bool __stdcall Start(const BreakOutStrategy* pStrategy);
+	SHFU_GATEWAY_EXPORT void __stdcall Start(const BreakOutStrategy* pStrategy);
 
 	SHFU_GATEWAY_EXPORT void __stdcall Stop();
 

@@ -264,9 +264,9 @@ namespace HiFreTradeUI.ViewModels
         #endregion
 
         #region RectRange
-        private int _rectRange = 5;
+        private double _rectRange = 5 * 0.2d;
 
-        public int RectRange
+        public double RectRange
         {
             get { return _rectRange; }
             set
@@ -315,9 +315,9 @@ namespace HiFreTradeUI.ViewModels
         #endregion
 
         #region BreakoutCriterion
-        private int _breakCriterion = 3;
+        private double _breakCriterion = 3 * 0.2d;
 
-        public int BreakoutCriterion
+        public double BreakoutCriterion
         {
             get { return _breakCriterion; }
             set
@@ -349,9 +349,9 @@ namespace HiFreTradeUI.ViewModels
         #endregion
 
         #region GainLimit
-        private int _gainLimit = 8;
+        private double _gainLimit = 8 * 0.2d;
 
-        public int GainLimit
+        public double GainLimit
         {
             get { return _gainLimit; }
             set
@@ -366,9 +366,9 @@ namespace HiFreTradeUI.ViewModels
         #endregion
 
         #region LossLimit
-        private int _lossLimit = 3;
+        private double _lossLimit = 3 * 0.2d;
 
-        public int LossLimit
+        public double LossLimit
         {
             get { return _lossLimit; }
             set
@@ -382,5 +382,23 @@ namespace HiFreTradeUI.ViewModels
         }
         #endregion
 
+        public void Start()
+        {
+            Win32Invoke.BreakOutStrategy strategy = new Win32Invoke.BreakOutStrategy();
+            strategy.iRectPeriod = RectPeriod;
+            strategy.dRectRange = RectRange;
+            strategy.bUpBreak = UpBreak;
+            strategy.bDownBreak = DownBreak;
+            strategy.dBreakoutCriterion = BreakoutCriterion;
+            strategy.iBreakoutTimespan = BreakoutTimespan;
+            strategy.dGainLimit = GainLimit;
+            strategy.dLossLimit = LossLimit;
+            Win32Invoke.Gateway.Start(strategy);
+        }
+
+        public void Stop()
+        {
+            Win32Invoke.Gateway.Stop();
+        }
     }
 }
