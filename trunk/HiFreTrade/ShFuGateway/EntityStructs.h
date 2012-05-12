@@ -29,17 +29,17 @@ struct BreakOutStrategy
 {
 	// Entry condition
 	int iRectPeriod;
-	int iRectRange;
+	double dRectRange;
 	bool bUpBreak;
 	bool bDownBreak;
-	int iBreakoutCriterion;
+	double dBreakoutCriterion;
 	int iBreakoutTimespan;
 
 	// Exit condition
-	int iGainLimit;
+	double dGainLimit;
 
 	// StopLoss condition
-	int iLossLimit;
+	double dLossLimit;
 };
 
 // for every definition

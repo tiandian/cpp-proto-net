@@ -37,8 +37,7 @@ namespace HiFreTradeUI.Win32Invoke
         public static extern void DisconnectTradeAgent();
 
         [DllImport("ShFuGateway.dll")]
-        [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool Start();
+        public static extern void Start(BreakOutStrategy strategy);
 
         [DllImport("ShFuGateway.dll")]
         public static extern void Stop();

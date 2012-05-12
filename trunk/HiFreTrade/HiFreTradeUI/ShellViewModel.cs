@@ -83,12 +83,12 @@ namespace HiFreTradeUI
 
         public void Start()
         {
-
+            Trade.Start();
         }
 
         public void Stop()
         {
-
+            Trade.Stop();
         }
 
         public void Disconnect()

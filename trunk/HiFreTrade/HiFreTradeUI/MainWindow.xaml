@@ -138,8 +138,8 @@
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">横盘区间：</TextBlock>
                             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
-                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
-                                                       Value="{Binding Trade.RectRange, Mode=TwoWay}"/>
+                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Double}"
+                                                       Value="{Binding Trade.RectRange, Mode=TwoWay}" Format="F1" SpinIncrement="0.2"/>
                         </DockPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="10, 2">
@@ -163,8 +163,9 @@
                                 <DockPanel Grid.Column="1">
                                     <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="0, 0, 2, 0">突破</TextBlock>
                                     <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
-                                    <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
-                                                       Value="{Binding Trade.BreakoutCriterion, Mode=TwoWay}" Margin="2, 0, 0, 0"/>
+                                    <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Double}"
+                                                       Value="{Binding Trade.BreakoutCriterion, Mode=TwoWay}" Margin="2, 0, 0, 0"
+                                                       Format="F1" SpinIncrement="0.2"/>
                                 </DockPanel>
                             </Grid>
                             
@@ -180,8 +181,9 @@
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">盈利点数：</TextBlock>
                             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
-                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
-                                                       Value="{Binding Trade.GainLimit, Mode=TwoWay}"></igEditor:XamNumericEditor>
+                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Double}"
+                                                       Value="{Binding Trade.GainLimit, Mode=TwoWay}"
+                                                       Format="F1" SpinIncrement="0.2"></igEditor:XamNumericEditor>
                         </DockPanel>
                     </StackPanel>
                 </Border>
@@ -193,8 +195,9 @@
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">亏损点数：</TextBlock>
                             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
-                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Int32}"
-                                                       Value="{Binding Trade.LossLimit, Mode=TwoWay}"></igEditor:XamNumericEditor>
+                            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" ValueType="{x:Type sys:Double}"
+                                                       Value="{Binding Trade.LossLimit, Mode=TwoWay}"
+                                                       Format="F1" SpinIncrement="0.2"></igEditor:XamNumericEditor>
                         </DockPanel>
                     </StackPanel>
                 </Border>

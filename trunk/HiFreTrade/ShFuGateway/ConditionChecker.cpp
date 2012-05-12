@@ -7,6 +7,13 @@
 
 extern CLogManager	logger;
 
+bool DoubleGreaterEqual(double a, double b)
+{
+	if(a >= b) return true;
+	else
+		return b - a < COMPARE_PRECISION; 
+}
+
 COpenPosiCondition::COpenPosiCondition(void)
 {
 	m_range = 0;
@@ -31,9 +38,11 @@ COpenPosiCondition::~COpenPosiCondition(void)
 
 bool COpenPosiCondition::Check( double last, const string& quoteTime, int* offsetFlag )
 {
+	boost::mutex::scoped_lock lock(m_mutex);
+
 	QuotePtr latestQuote(new Quote(last, quoteTime));
 
-	logger.Trace(boost::str(boost::format("%-8.1f, %s") 
+	logger.Trace(boost::str(boost::format("//********** Begin Check: %-8.1f, %s   **********//") 
 		% last % boost::posix_time::to_simple_string((latestQuote->time()).time_of_day()).c_str()));
 
 	bool openPosition = false;
@@ -45,12 +54,13 @@ bool COpenPosiCondition::Check( double last, const string& quoteTime, int* offse
 	{
 		InRangeCheck(latestQuote);
 	}
-
+	logger.Trace("//********** End Check **********//\n");
 	return openPosition;
 }
 
 void COpenPosiCondition::InRangeCheck(const QuotePtr& latestQuote)
 {
+	logger.Trace("In Range Checking");
 	m_endTime = latestQuote->time();
 
 	if(m_high.get() == NULL || m_high->price() < latestQuote->price())
@@ -62,7 +72,7 @@ void COpenPosiCondition::InRangeCheck(const QuotePtr& latestQuote)
 	m_quoteQueue.push_back(latestQuote);
 
 	boost::posix_time::time_duration diff = m_endTime - (m_quoteQueue.front())->time();
-	while (diff.seconds() > m_rectPeriod)
+	while (diff.total_seconds() > m_rectPeriod)
 	{
 		m_periodOK = true;
 
@@ -96,6 +106,7 @@ void COpenPosiCondition::InRangeCheck(const QuotePtr& latestQuote)
 
 bool COpenPosiCondition::BreakoutCheck(const QuotePtr& latestQuote, int* offsetFlag)
 {
+	logger.Trace("Breakout Checking");
 	if(!m_breakingUp && !m_breakingDown)
 	{
 		if(m_allowUp && latestQuote->price() > m_high->price())
@@ -133,7 +144,7 @@ bool COpenPosiCondition::BreakoutCheck(const QuotePtr& latestQuote, int* offsetF
 	{
 		// check if within judge timespan
 		boost::posix_time::time_duration breakoutDuration = latestQuote->time() - m_breakoutJudgeBegin;
-		if(breakoutDuration.seconds() < m_timespan)
+		if(breakoutDuration.total_seconds() < m_timespan)
 		{
 			// if within judge timespan
 			if(m_breakingUp && latestQuote->price() > m_breakoutHigh->price())
@@ -156,10 +167,10 @@ bool COpenPosiCondition::BreakoutCheck(const QuotePtr& latestQuote, int* offsetF
 			if(m_breakingUp)
 			{
 				breakpoints = latestQuote->price() - m_high->price();
-				logger.Debug(boost::str(boost::format("Breakout Criterion: %d.  Up break points: %-3.1f") 
+				logger.Debug(boost::str(boost::format("Breakout Criterion: %-3.1f.  Up break points: %-3.1f") 
 					% m_criterion
 					% breakpoints));
-				if(breakpoints >= m_criterion)
+				if(DoubleGreaterEqual(breakpoints, m_criterion))
 				{
 					logger.Debug("UP breakout succeeded.");
 					*offsetFlag = LONG_OPEN;
@@ -176,10 +187,10 @@ bool COpenPosiCondition::BreakoutCheck(const QuotePtr& latestQuote, int* offsetF
 			if(m_breakingDown)
 			{
 				breakpoints = m_low->price() - latestQuote->price();
-				logger.Debug(boost::str(boost::format("Breakout Criterion: %d.  Down break points: %-3.1f") 
+				logger.Debug(boost::str(boost::format("Breakout Criterion: %-3.1f.  Down break points: %-3.1f") 
 					% m_criterion
 					% breakpoints));
-				if(breakpoints >= m_criterion)
+				if(DoubleGreaterEqual(breakpoints, m_criterion))
 				{
 					logger.Debug("DOWN breakout succeeded.");
 					*offsetFlag = SHORT_OPEN;
@@ -189,7 +200,7 @@ bool COpenPosiCondition::BreakoutCheck(const QuotePtr& latestQuote, int* offsetF
 				{
 					// if failed to breakout
 					logger.Debug("DOWN breakout failed.");
-					UpdateHigh(m_breakoutLow);	// update high
+					UpdateLow(m_breakoutLow);	// update high
 				}
 			}
 			
@@ -232,14 +243,18 @@ const COpenPosiCondition::QuotePtr& COpenPosiCondition::FindLow()
 
 void COpenPosiCondition::UpdateHigh( const QuotePtr& highQuote )
 {
-	logger.Trace(boost::str(boost::format("high: %-8.1f => %-8.1f ") % m_high->price() % highQuote->price()));
+	logger.Trace(boost::str(boost::format("high: %-8.1f => %-8.1f ") 
+		% High()
+		% highQuote->price()));
 	m_high = highQuote;
 	UpdateRange();
 }
 
 void COpenPosiCondition::UpdateLow( const QuotePtr& lowQuote )
 {
-	logger.Trace(boost::str(boost::format("low: %-8.1f => %-8.1f ") % m_low->price() % lowQuote->price()));
+	logger.Trace(boost::str(boost::format("low: %-8.1f => %-8.1f ") 
+		% Low()
+		% lowQuote->price()));
 	m_low = lowQuote;
 	UpdateRange();
 }

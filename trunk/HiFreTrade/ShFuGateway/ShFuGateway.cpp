@@ -103,14 +103,14 @@ SHFU_GATEWAY_EXPORT void __stdcall SetSymbol(const char* symbol)
 	g_orderProcessor.SetSymbol(std::string(symbol));
 }
 
-SHFU_GATEWAY_EXPORT bool __stdcall Start(const BreakOutStrategy* pStrategy)
+SHFU_GATEWAY_EXPORT void __stdcall Start(const BreakOutStrategy* pStrategy)
 {
-	return false;
+	g_orderProcessor.Start(pStrategy);
 }
 
 SHFU_GATEWAY_EXPORT void __stdcall Stop()
 {
-
+	g_orderProcessor.Stop();
 }
 
 SHFU_GATEWAY_EXPORT void __stdcall OpenPosition(int quantity, int longshort)

@@ -11,20 +11,20 @@ namespace HiFreTradeUI.Win32Invoke
     {
         // Entry condition
         public int iRectPeriod;
-        public int iRectRange;
+        public double dRectRange;
 
         [MarshalAs(UnmanagedType.I1)]
         public bool bUpBreak;
         [MarshalAs(UnmanagedType.I1)]
         public bool bDownBreak;
 
-        public int iBreakoutCriterion;
+        public double dBreakoutCriterion;
         public int iBreakoutTimespan;
 
         // Exit condition
-        public int iGainLimit;
+        public double dGainLimit;
 
         // StopLoss condition
-        public int iLossLimit;
+        public double dLossLimit;
     }
 }

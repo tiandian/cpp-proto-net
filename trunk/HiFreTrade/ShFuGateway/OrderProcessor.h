@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 
 class CReturnOrder;
 class CTrade;
@@ -45,7 +46,7 @@ public:
 	void ClosePosition();
 	void ClosePosition(int longshort, double limitprice, int exitReason);
 
-	void Start();
+	void Start(const BreakOutStrategy* pStrategy);
 	void Stop();
 
 	virtual void OnSubscribeCompleted();
@@ -108,6 +109,7 @@ private:
 	char ORDER_REF_BUF[13];
 
 	boost::shared_ptr<COperationRecordData> m_currentRecord;
+	boost::mutex m_record_mutex;
 
 	CQuoteCache m_latestQuote; 
 

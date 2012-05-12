@@ -100,11 +100,23 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 				if(offsetFlag == LONG_OPEN)
 				{
 					OpenPosition(m_orderQty, offsetFlag, ask, CONDITION_TRIGGER);
+					m_currentRecord->SetDirection(LONG_BREAKOUT);
 				}
 				else if(offsetFlag == SHORT_OPEN)
 				{
 					OpenPosition(m_orderQty, offsetFlag, bid, CONDITION_TRIGGER);
+					m_currentRecord->SetDirection(SHORT_BREAKOUT);
 				}
+			}
+			// Update open condition checker status to client
+			{
+				boost::mutex::scoped_lock lock(m_record_mutex);
+				m_currentRecord->SetRectPeriodBegin(m_openCondition.RectPeriodBegin().c_str());
+				m_currentRecord->SetRectPeriodEnd(m_openCondition.RectPeriodEnd().c_str());
+				m_currentRecord->SetUpperBoundary(m_openCondition.High());
+				m_currentRecord->SetLowerBoundary(m_openCondition.Low());
+				m_currentRecord->SetRange(m_openCondition.Range());
+				PublishRecord();
 			}
 		}
 		else if(m_currentRecord->EntryStatus() == FULL_FILLED)
@@ -345,7 +357,7 @@ int ConvertToOrderStatusConst(OrderSubmitStatusType submitStatus, OrderStatusTyp
 void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 {
 	bool position_closed = false;
-
+	boost::mutex::scoped_lock lock(m_record_mutex);
 	if(order->comboffsetflag() == OPEN_OFFSET)
 	{
 		// Open position order
@@ -424,6 +436,8 @@ void COrderProcessor::OnPositionClosed()
 
 void COrderProcessor::ResetRecord()
 {
+	boost::mutex::scoped_lock lock(m_record_mutex);
+
 	boost::shared_ptr<COperationRecordData> newRecord(new COperationRecordData);
 	newRecord->SetRecordId(m_currentRecord->RecordId() + 1);
 	newRecord->SetSymbol(m_currentSymbols[0].c_str());
@@ -437,12 +451,21 @@ void COrderProcessor::PublishRecord()
 	g_clientAgent.Publish(msgPack);
 }
 
-void COrderProcessor::Start()
+void COrderProcessor::Start(const BreakOutStrategy* pStrategy)
 {
+	m_openCondition.setRectPeriod(pStrategy->iRectPeriod);
+	m_openCondition.setRectRange(pStrategy->dRectRange);
+	m_openCondition.setBreakoutCriterion(pStrategy->dBreakoutCriterion);
+	m_openCondition.setBreakoutTimespan(pStrategy->iBreakoutTimespan);
+	m_openCondition.setAllowDown(pStrategy->bDownBreak);
+	m_openCondition.setAllowUp(pStrategy->bUpBreak);
+
 	m_isRunning = true;
 }
 
 void COrderProcessor::Stop()
 {
 	m_isRunning = false;
+
+	m_openCondition.Reset();
 }

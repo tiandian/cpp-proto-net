@@ -5,10 +5,11 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/shared_ptr.hpp>
+#include <boost/thread/mutex.hpp>
 
 using namespace std;
 
-#define COMPARE_PRECISION 0.2
+#define COMPARE_PRECISION 0.01
 
 class CConditionChecker
 {
@@ -48,11 +49,23 @@ public:
 	bool Check(double last, const string& quoteTime, int* offsetFlag);
 
 	void setRectPeriod(int period) { m_rectPeriod = period; }
-	void setRectRange(int range) { m_rectRange = range; }
+	void setRectRange(double range) { m_rectRange = range; }
 	void setAllowUp(bool up) { m_allowUp = up; }
 	void setAllowDown(bool down) { m_allowDown = down; }
-	void setBreakoutCriterion(int criterion) { m_criterion = criterion; }
+	void setBreakoutCriterion(double criterion) { m_criterion = criterion; }
 	void setBreakoutTimespan(int timespan) { m_timespan = timespan; }
+
+	string RectPeriodBegin() 
+	{ 
+		return boost::posix_time::to_simple_string(m_beginTime.time_of_day()); 
+	}
+	string RectPeriodEnd() 
+	{	
+		return boost::posix_time::to_simple_string(m_endTime.time_of_day()); 
+	}
+	double High() { return (m_high.get() != NULL ? m_high->price() : 0); }
+	double Low() { return (m_low.get() != NULL ? m_low->price() : 0); }
+	double Range() { return m_range; }
 
 	void Enable(bool enabled) {}
 	void Reset()
@@ -116,15 +129,17 @@ private:
 	bool m_periodOK;
 
 	int m_rectPeriod;
-	int m_rectRange;
+	double m_rectRange;
 	bool m_allowUp;
 	bool m_allowDown;
-	int m_criterion;
+	double m_criterion;
 	int m_timespan;
 
 	boost::posix_time::ptime m_breakoutJudgeBegin;
 	bool m_breakingUp;
 	bool m_breakingDown;
+
+	boost::mutex m_mutex;
 };
 
 class CStopGainCondition : public CConditionChecker
