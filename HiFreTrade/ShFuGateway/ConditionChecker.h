@@ -8,6 +8,8 @@
 
 using namespace std;
 
+#define COMPARE_PRECISION 0.2
+
 class CConditionChecker
 {
 public:
@@ -45,37 +47,59 @@ public:
 
 	bool Check(double last, const string& quoteTime, int* offsetFlag);
 
+	void setRectPeriod(int period) { m_rectPeriod = period; }
+	void setRectRange(int range) { m_rectRange = range; }
+	void setAllowUp(bool up) { m_allowUp = up; }
+	void setAllowDown(bool down) { m_allowDown = down; }
+	void setBreakoutCriterion(int criterion) { m_criterion = criterion; }
+	void setBreakoutTimespan(int timespan) { m_timespan = timespan; }
+
+	void Enable(bool enabled) {}
+	void Reset()
+	{
+		m_range = 0;
+		m_readyForBreakout = false;
+		m_periodOK =  false;
+
+		m_rectPeriod = 0;
+		m_rectRange = 0;
+		m_allowUp = false;
+		m_allowDown = false;
+		m_criterion = 0;
+		m_timespan = 0;
+
+		m_high.reset();
+		m_breakoutHigh.reset();
+		m_low.reset();
+		m_breakoutLow.reset();
+
+		m_quoteQueue.clear();
+
+		ResetBreakoutJudgement();	
+	}
+
 private:
 
-	void UpdateHigh(const QuotePtr& highQuote)
-	{
-		m_high = highQuote;
-		UpdateRange();
-	}
+	void UpdateHigh(const QuotePtr& highQuote);
 
-	void UpdateLow(const QuotePtr& lowQuote)
-	{
-		m_low = lowQuote;
-		UpdateRange();
-	}
+	void UpdateLow(const QuotePtr& lowQuote);
 
-	void UpdateRange()
-	{
-		if(m_high.get() != NULL && m_low.get() != NULL)
-		{
-			m_range = m_high->price() - m_low->price();
-			if(abs(m_range - 5) < 0.2)
-				m_readyForBreakout = true;
-			else
-				m_readyForBreakout = false;
-		}
-	}
+	void UpdateRange();
 
 	const QuotePtr& FindHigh();
 	const QuotePtr& FindLow();
 
-	void InRangeCheck(double last, const string& quoteTime);
-	bool BreakoutCheck(double last, const string& quoteTime, int* offsetFlag);
+	void InRangeCheck(const QuotePtr& latestQuote);
+	bool BreakoutCheck(const QuotePtr& latestQuote, int* offsetFlag);
+
+	void ResetBreakoutJudgement()
+	{
+		m_breakoutJudgeBegin = boost::posix_time::not_a_date_time;
+		m_breakingUp = false;
+		m_breakingDown = false;
+		m_breakoutHigh.reset();
+		m_breakoutLow.reset();
+	}
 	
 	std::deque<QuotePtr> m_quoteQueue;
 	
@@ -84,12 +108,23 @@ private:
 
 	QuotePtr m_high;
 	QuotePtr m_breakoutHigh;
-	QuotePtr m_breakoutLast;
 	QuotePtr m_low;
 	QuotePtr m_breakoutLow;
 
 	double m_range;
 	bool m_readyForBreakout;
+	bool m_periodOK;
+
+	int m_rectPeriod;
+	int m_rectRange;
+	bool m_allowUp;
+	bool m_allowDown;
+	int m_criterion;
+	int m_timespan;
+
+	boost::posix_time::ptime m_breakoutJudgeBegin;
+	bool m_breakingUp;
+	bool m_breakingDown;
 };
 
 class CStopGainCondition : public CConditionChecker
