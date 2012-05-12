@@ -13,6 +13,7 @@ namespace HiFreTradeUI
     public class ShellViewModel : NotificationObject
     {
         private ObservableCollection<string> _availableSymbols = new ObservableCollection<string>();
+        private ObservableCollection<EntryTypeItem> _entryTypeItemSource = new ObservableCollection<EntryTypeItem>();
 
         public ShellViewModel()
         {
@@ -20,6 +21,9 @@ namespace HiFreTradeUI
             _availableSymbols.Add("IF1206");
             _availableSymbols.Add("IF1209");
             _availableSymbols.Add("IF1212");
+
+            _entryTypeItemSource.Add(new EntryTypeItem() { EntryID = 2, DisplayName = "多开" });
+            _entryTypeItemSource.Add(new EntryTypeItem() { EntryID = 1, DisplayName = "空开" });
         }
 
         [Import]
@@ -60,6 +64,24 @@ namespace HiFreTradeUI
         }
         #endregion
 
+        #region ManualEntryType
+        private int _manualEntryType;
+
+        public int ManualEntryType
+        {
+            get { return _manualEntryType; }
+            set
+            {
+                if (_manualEntryType != value)
+                {
+                    _manualEntryType = value;
+                    RaisePropertyChanged("ManualEntryType");
+                }
+            }
+        }
+        #endregion
+
+
         [Import]
         public QuoteVM Quote { get; set; }
 
@@ -72,6 +94,11 @@ namespace HiFreTradeUI
             {
                 return _availableSymbols;
             }
+        }
+
+        public IEnumerable<EntryTypeItem> EntryTypeItemSource
+        {
+            get { return _entryTypeItemSource; }
         }
 
         public void Connect()
@@ -95,6 +122,12 @@ namespace HiFreTradeUI
         {
             Trade.Disconnect();
             Quote.Disconnect();
+        }
+
+        public class EntryTypeItem
+        {
+            public int EntryID { get; set; }
+            public string DisplayName { get; set; }
         }
     }
 }

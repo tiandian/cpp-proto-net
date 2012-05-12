@@ -70,5 +70,17 @@ namespace HiFreTradeUI
         {
             Gateway.ClosePosition();
         }
+
+        private void btnManualOpen_Click(object sender, RoutedEventArgs e)
+        {
+            int entryType = _viewModel.ManualEntryType;
+            int quantity = _viewModel.Trade.OrderQty;
+            Gateway.OpenPosition(quantity, entryType);
+        }
+
+        private void btnManualClose_Click(object sender, RoutedEventArgs e)
+        {
+            Gateway.ClosePosition();
+        }
     }
 }
