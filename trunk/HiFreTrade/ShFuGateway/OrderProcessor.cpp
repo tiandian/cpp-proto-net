@@ -30,7 +30,6 @@ COrderProcessor::COrderProcessor(void):
 	m_currentRecord->SetRecordId(1);
 }
 
-
 COrderProcessor::~COrderProcessor(void)
 {
 	m_bufferRunner.Stop();
@@ -96,6 +95,7 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 			bool condOK = m_openCondition.Check(last, pQuote->get_update_time(), &offsetFlag);
 			if(condOK)
 			{
+				m_currentRecord->SetEntryStatus(SENDING_ORDER);
 				// open position
 				if(offsetFlag == LONG_OPEN)
 				{
@@ -362,14 +362,22 @@ void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 	{
 		// Open position order
 		int entryType = order->direction() == BUY ? LONG_OPEN : SHORT_OPEN;
+		double orderPrice = order->limitprice();
 		m_currentRecord->SetEntryType(entryType);
 		m_currentRecord->SetEntryTime(order->inserttime().c_str());
-		m_currentRecord->SetEntryPoint(order->limitprice());
+		m_currentRecord->SetEntryPoint(orderPrice);
 
 		m_currentRecord->SetEntryQuantity(order->volumetraded());
 		int entryStatus = ConvertToOrderStatusConst(order->ordersubmitstatus(), order->orderstatus());
 		m_currentRecord->SetEntryStatus(entryStatus);
 
+		if(entryStatus == FULL_FILLED)
+		{
+			m_stopGain.setCost(orderPrice);
+			m_stopGain.setEntryType(entryType);
+			m_stopLoss.setCost(orderPrice);
+			m_stopLoss.setEntryType(entryType);
+		}
 	}
 	else
 	{
@@ -385,6 +393,10 @@ void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 
 		if(exitStatus == FULL_FILLED)
 		{
+			m_stopGain.Reset();
+			m_stopLoss.Reset();
+			m_openCondition.Reset();
+
 			double profit = exitType == LONG_CLOSE ? m_currentRecord->ExitPoint() - m_currentRecord->EntryPoint()
 				: m_currentRecord->EntryPoint() - m_currentRecord->ExitPoint();
 			m_currentRecord->SetProfitLoss(profit);

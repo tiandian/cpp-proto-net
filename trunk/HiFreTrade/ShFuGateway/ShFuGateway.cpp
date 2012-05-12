@@ -123,6 +123,21 @@ SHFU_GATEWAY_EXPORT void __stdcall ClosePosition()
 	g_orderProcessor.ClosePosition();
 }
 
+SHFU_GATEWAY_EXPORT void __stdcall SetQuantity(int quantity)
+{
+	g_orderProcessor.SetQuantity(quantity);
+}
+
+SHFU_GATEWAY_EXPORT void __stdcall EnableStopGain(bool isEnabled)
+{
+	g_orderProcessor.EnableStopGain(isEnabled);
+}
+
+SHFU_GATEWAY_EXPORT void __stdcall EnableStopLoss(bool isEnabled)
+{
+	g_orderProcessor.EnableStopLoss(isEnabled);
+}
+
 void Cleanup()
 {
 	g_marketAgent.Logout();

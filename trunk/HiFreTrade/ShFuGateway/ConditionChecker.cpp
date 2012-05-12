@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "ConditionChecker.h"
-#include "EntityStructs.h"
 #include "LogManager.h"
+#include "EntityStructs.h"
 
 #include <boost/format.hpp>
 
@@ -276,4 +276,78 @@ void COpenPosiCondition::UpdateRange()
 				m_readyForBreakout = false;
 		}
 	}
+}
+
+bool CStopGainCondition::Check( double last, const string& quoteTime, int* offsetFlag )
+{
+	if(!m_isEnabled)
+		return false;
+
+	double gain = 0;
+	if(m_entryType == LONG_OPEN)
+	{
+		gain = last - m_cost;
+	}
+	else
+		gain = m_cost - last;
+
+	if(DoubleGreaterEqual(gain, m_gainLimit))
+	{
+		logger.Info(boost::str(boost::format("Stop gain at %8.1f, %s with gain %4.1f (%4.1f)") 
+			% last % quoteTime.c_str() % gain % m_gainLimit));
+		*offsetFlag = m_entryType == LONG_OPEN ? LONG_CLOSE : SHORT_CLOSE;
+		return true;
+	}
+	else
+		return false;
+}
+
+bool CStopLossCondition::Check( double last, const string& quoteTime, int* offsetFlag )
+{
+	if(!m_isEnabled)
+		return false;
+
+	double loss = 0;
+	if(m_entryType == LONG_OPEN)
+	{
+		if(last > m_turningPoint)
+		{
+			logger.Info(boost::str(boost::format("[LONG] Update turning point: %8.1f => %8.1f   at %s") 
+				% m_turningPoint % last % quoteTime.c_str()));
+			m_turningPoint = last;
+		}
+		else
+		{
+			loss = m_turningPoint - last;
+			if(DoubleGreaterEqual(loss, m_lossLimit))
+			{
+				logger.Info(boost::str(boost::format("[LONG] Stop loss at %8.1f, %s with loss %4.1f (%4.1f)") 
+					% last % quoteTime.c_str() % loss % m_lossLimit));
+				*offsetFlag = LONG_CLOSE;
+				return true;
+			}
+		}
+	}
+	else if(m_entryType == SHORT_OPEN)
+	{
+		if(last < m_turningPoint)
+		{
+			logger.Info(boost::str(boost::format("[SHORT] Update turning point: %8.1f => %8.1f   at %s") 
+				% m_turningPoint % last % quoteTime.c_str()));
+			m_turningPoint = last;
+		}
+		else
+		{
+			loss = last - m_turningPoint;
+			if(DoubleGreaterEqual(loss, m_lossLimit))
+			{
+				logger.Info(boost::str(boost::format("[SHORT] Stop loss at %8.1f, %s with loss %4.1f (%4.1f)") 
+					% last % quoteTime.c_str() % loss % m_lossLimit));
+				*offsetFlag = SHORT_CLOSE;
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
