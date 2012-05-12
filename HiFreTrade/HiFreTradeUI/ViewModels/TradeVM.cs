@@ -246,6 +246,23 @@ namespace HiFreTradeUI.ViewModels
             EventAggregator.GetEvent<TimeNSalesUpdateEvent>().Publish(tnsData);
         }
 
+        #region OrderQty
+        private int _orderQty = 1;
+
+        public int OrderQty
+        {
+            get { return _orderQty; }
+            set
+            {
+                if (_orderQty != value)
+                {
+                    _orderQty = value;
+                    RaisePropertyChanged("OrderQty");
+                }
+            }
+        }
+        #endregion
+
         #region RectPeriod
         private int _rectPeriod = 180;
 
