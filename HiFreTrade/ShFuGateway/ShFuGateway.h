@@ -45,6 +45,12 @@ extern "C"
 	SHFU_GATEWAY_EXPORT void __stdcall OpenPosition(int quantity, int longshort);
 
 	SHFU_GATEWAY_EXPORT void __stdcall ClosePosition();
+
+	SHFU_GATEWAY_EXPORT void __stdcall SetQuantity(int quantity);
+	
+	SHFU_GATEWAY_EXPORT void __stdcall EnableStopGain(bool isEnabled);
+	
+	SHFU_GATEWAY_EXPORT void __stdcall EnableStopLoss(bool isEnabled);
 };
 
 #endif

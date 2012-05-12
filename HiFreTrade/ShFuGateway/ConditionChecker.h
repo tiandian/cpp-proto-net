@@ -145,17 +145,51 @@ private:
 class CStopGainCondition : public CConditionChecker
 {
 public:
-	CStopGainCondition(void){}
+	CStopGainCondition(void):m_gainLimit(0),m_cost(0),m_entryType(0),m_isEnabled(true)
+	{}
 	~CStopGainCondition(void){}
 
-	bool Check(double last, const string& quoteTime, int* offsetFlag){ return false; }
+	bool Check(double last, const string& quoteTime, int* offsetFlag);
+
+	void setGainLimit(double gain) { m_gainLimit = gain; }
+	void setCost(double cost) { m_cost = cost; }
+	void setEntryType(int entryType) { m_entryType = entryType; }
+	void Enable(bool enabled) { m_isEnabled = enabled; }
+	void Reset()
+	{
+		m_cost = 0;
+		m_entryType = 0;
+	}
+
+private:
+	double m_gainLimit;
+	double m_cost;
+	int m_entryType;
+	bool m_isEnabled;
 };
 
 class CStopLossCondition : public CConditionChecker
 {
 public:
-	CStopLossCondition(void){}
+	CStopLossCondition(void):m_lossLimit(0),m_cost(0),m_entryType(0),m_isEnabled(true),m_turningPoint(0)
+	{}
 	~CStopLossCondition(void){}
 
-	bool Check(double last, const string& quoteTime, int* offsetFlag){ return false; }
+	bool Check(double last, const string& quoteTime, int* offsetFlag);
+
+	void setLossLimit(double loss) { m_lossLimit = loss; }
+	void setCost(double cost) { m_cost = cost; m_turningPoint = m_cost; }
+	void setEntryType(int entryType) { m_entryType = entryType; }
+	void Enable(bool enabled) { m_isEnabled = enabled; }
+	void Reset()
+	{
+		setCost(0);
+		m_entryType = 0;
+	}
+private:
+	double m_lossLimit;
+	double m_cost;
+	int m_entryType;
+	bool m_isEnabled;
+	double m_turningPoint;
 };

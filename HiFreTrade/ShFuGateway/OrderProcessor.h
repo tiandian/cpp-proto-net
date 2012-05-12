@@ -40,11 +40,14 @@ public:
 	void Initialize();
 	void SetSymbol(const std::string& symb);
 	void SetQuantity(int qty){ m_orderQty = qty; }
-
+	
 	void OpenPosition(int quantity, int longshort);
 	void OpenPosition(int quantity, int longshort, double limitprice, int entryReason);
 	void ClosePosition();
 	void ClosePosition(int longshort, double limitprice, int exitReason);
+
+	void EnableStopGain(bool isEnabled){ m_stopGain.Enable(isEnabled); }
+	void EnableStopLoss(bool isEnabled){ m_stopLoss.Enable(isEnabled); }
 
 	void Start(const BreakOutStrategy* pStrategy);
 	void Stop();
@@ -119,5 +122,6 @@ private:
 	bool m_isRunning;
 
 	int m_orderQty;
+
 };
 

@@ -64,6 +64,7 @@ struct BreakOutStrategy
 #define CANCELED 6
 #define REJECTED 7
 #define CLOSED UNOPEN
+#define SENDING_ORDER 8
 
 // iEntryReason
 #define CONDITION_TRIGGER 1
