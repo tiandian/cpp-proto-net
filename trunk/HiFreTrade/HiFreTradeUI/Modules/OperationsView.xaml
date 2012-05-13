@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" >
     <Grid>
-        <igDP:XamDataGrid Name="xamDataGrid1" DataSource="{Binding Records}" AutoFit="True">
+        <igDP:XamDataGrid Name="xamDataGrid1" Theme="Office2k7Blue" DataSource="{Binding Records}" AutoFit="True">
             <igDP:XamDataGrid.Resources>
                 <Style x:Key="timeDisplayStyle" TargetType="{x:Type igEditors:XamDateTimeEditor}">
                     <Setter Property="Format" Value="T" />
@@ -18,7 +18,7 @@
                 <igDP:FieldSettings AllowEdit="False" Width="Auto"/>
             </igDP:XamDataGrid.FieldSettings>
             <igDP:XamDataGrid.FieldLayoutSettings>
-                <igDP:FieldLayoutSettings AutoArrangeCells="Never" AutoGenerateFields="False"/>
+                <igDP:FieldLayoutSettings AutoArrangeCells="Never" AutoGenerateFields="False" />
             </igDP:XamDataGrid.FieldLayoutSettings>
             <igDP:XamDataGrid.FieldLayouts>
                 <igDP:FieldLayout>
