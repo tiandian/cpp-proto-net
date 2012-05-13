@@ -45,6 +45,8 @@ public:
 	void OpenPosition(int quantity, int longshort, double limitprice, int entryReason);
 	void ClosePosition();
 	void ClosePosition(int longshort, double limitprice, int exitReason);
+	bool CancelOrder();
+
 
 	void EnableStopGain(bool isEnabled, double gainLimit)
 	{ 
@@ -131,5 +133,28 @@ private:
 
 	int m_orderQty;
 
+	class SubmitOrderInfo
+	{
+	public:
+
+		bool Exists() {return !OrderRef.empty(); }
+
+		void Reset()
+		{
+			Symbol.clear();
+			OrderRef.clear();
+			ExchangeId.clear();
+			OrderSysId.clear();
+			UserId.clear();
+		}
+
+		std::string Symbol;
+		std::string OrderRef;
+		std::string ExchangeId;
+		std::string OrderSysId;
+		std::string UserId;
+	};
+
+	SubmitOrderInfo m_pendingOrderInfo;
 };
 

@@ -46,6 +46,8 @@ extern "C"
 
 	SHFU_GATEWAY_EXPORT void __stdcall ClosePosition();
 
+	SHFU_GATEWAY_EXPORT bool __stdcall CancelOrder();
+
 	SHFU_GATEWAY_EXPORT void __stdcall SetQuantity(int quantity);
 	
 	SHFU_GATEWAY_EXPORT void __stdcall EnableStopGain(bool isEnabled, double gainLimit);

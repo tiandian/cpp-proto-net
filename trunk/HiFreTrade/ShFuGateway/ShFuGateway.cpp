@@ -138,6 +138,11 @@ SHFU_GATEWAY_EXPORT void __stdcall EnableStopLoss(bool isEnabled, double lossLim
 	g_orderProcessor.EnableStopLoss(isEnabled, lossLimit);
 }
 
+SHFU_GATEWAY_EXPORT bool __stdcall CancelOrder()
+{
+	return g_orderProcessor.CancelOrder();
+}
+
 void Cleanup()
 {
 	g_marketAgent.Logout();

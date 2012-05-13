@@ -49,6 +49,10 @@ namespace HiFreTradeUI.Win32Invoke
         public static extern void ClosePosition();
 
         [DllImport("ShFuGateway.dll")]
+        [return: MarshalAs(UnmanagedType.I1)]
+        public static extern bool CancelOrder();
+
+        [DllImport("ShFuGateway.dll")]
         public static extern void SetQuantity(int quantity);
 
         [DllImport("ShFuGateway.dll")]
