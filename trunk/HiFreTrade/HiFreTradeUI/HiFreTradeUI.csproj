@@ -36,11 +36,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="InfragisticsWPF4.DataPresenter.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="InfragisticsWPF4.DataPresenter.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
       <Private>True</Private>
     </Reference>
-    <Reference Include="InfragisticsWPF4.Editors.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb" />
+    <Reference Include="InfragisticsWPF4.Editors.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="InfragisticsWPF4.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
       <Private>True</Private>
     </Reference>
