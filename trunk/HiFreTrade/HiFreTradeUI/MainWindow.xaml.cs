@@ -75,6 +75,8 @@ namespace HiFreTradeUI
         {
             int entryType = _viewModel.ManualEntryType;
             int quantity = _viewModel.Trade.OrderQty;
+            Gateway.EnableStopGain(_viewModel.Trade.IsStopGainEnabled, _viewModel.Trade.GainLimit);
+            Gateway.EnableStopLoss(_viewModel.Trade.IsStopLossEnabled, _viewModel.Trade.LossLimit);
             Gateway.OpenPosition(quantity, entryType);
         }
 

@@ -128,14 +128,14 @@ SHFU_GATEWAY_EXPORT void __stdcall SetQuantity(int quantity)
 	g_orderProcessor.SetQuantity(quantity);
 }
 
-SHFU_GATEWAY_EXPORT void __stdcall EnableStopGain(bool isEnabled)
+SHFU_GATEWAY_EXPORT void __stdcall EnableStopGain(bool isEnabled, double gainLimit)
 {
-	g_orderProcessor.EnableStopGain(isEnabled);
+	g_orderProcessor.EnableStopGain(isEnabled, gainLimit);
 }
 
-SHFU_GATEWAY_EXPORT void __stdcall EnableStopLoss(bool isEnabled)
+SHFU_GATEWAY_EXPORT void __stdcall EnableStopLoss(bool isEnabled, double lossLimit)
 {
-	g_orderProcessor.EnableStopLoss(isEnabled);
+	g_orderProcessor.EnableStopLoss(isEnabled, lossLimit);
 }
 
 void Cleanup()

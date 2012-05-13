@@ -119,25 +119,26 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 				PublishRecord();
 			}
 		}
-		else if(m_currentRecord->EntryStatus() == FULL_FILLED)
+	}
+
+	if(m_currentRecord->EntryStatus() == FULL_FILLED)
+	{
+		int offsetFlag = UNKNOWN;
+		bool stopGain = m_stopGain.Check(last, pQuote->get_update_time(), &offsetFlag);
+		if(stopGain && offsetFlag > UNKNOWN)
 		{
-			int offsetFlag = UNKNOWN;
-			bool stopGain = m_stopGain.Check(last, pQuote->get_update_time(), &offsetFlag);
-			if(stopGain && offsetFlag > UNKNOWN)
+			double limitprice = offsetFlag == LONG_CLOSE ? bid : ask;
+			// stop gain
+			ClosePosition(offsetFlag, limitprice, STOP_GAIN);
+		}
+		else
+		{
+			bool stopLoss = m_stopLoss.Check(last, pQuote->get_update_time(), &offsetFlag);
+			if(stopLoss && offsetFlag > UNKNOWN)
 			{
 				double limitprice = offsetFlag == LONG_CLOSE ? bid : ask;
-				// stop gain
-				ClosePosition(offsetFlag, limitprice, STOP_GAIN);
-			}
-			else
-			{
-				bool stopLoss = m_stopLoss.Check(last, pQuote->get_update_time(), &offsetFlag);
-				if(stopLoss && offsetFlag > UNKNOWN)
-				{
-					double limitprice = offsetFlag == LONG_CLOSE ? bid : ask;
-					// stop loss
-					ClosePosition(offsetFlag, limitprice, STOP_LOSS);
-				}
+				// stop loss
+				ClosePosition(offsetFlag, limitprice, STOP_LOSS);
 			}
 		}
 	}
@@ -357,54 +358,56 @@ int ConvertToOrderStatusConst(OrderSubmitStatusType submitStatus, OrderStatusTyp
 void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 {
 	bool position_closed = false;
-	boost::mutex::scoped_lock lock(m_record_mutex);
-	if(order->comboffsetflag() == OPEN_OFFSET)
 	{
-		// Open position order
-		int entryType = order->direction() == BUY ? LONG_OPEN : SHORT_OPEN;
-		double orderPrice = order->limitprice();
-		m_currentRecord->SetEntryType(entryType);
-		m_currentRecord->SetEntryTime(order->inserttime().c_str());
-		m_currentRecord->SetEntryPoint(orderPrice);
-
-		m_currentRecord->SetEntryQuantity(order->volumetraded());
-		int entryStatus = ConvertToOrderStatusConst(order->ordersubmitstatus(), order->orderstatus());
-		m_currentRecord->SetEntryStatus(entryStatus);
-
-		if(entryStatus == FULL_FILLED)
+		boost::mutex::scoped_lock lock(m_record_mutex);
+		if(order->comboffsetflag() == OPEN_OFFSET)
 		{
-			m_stopGain.setCost(orderPrice);
-			m_stopGain.setEntryType(entryType);
-			m_stopLoss.setCost(orderPrice);
-			m_stopLoss.setEntryType(entryType);
+			// Open position order
+			int entryType = order->direction() == BUY ? LONG_OPEN : SHORT_OPEN;
+			double orderPrice = order->limitprice();
+			m_currentRecord->SetEntryType(entryType);
+			m_currentRecord->SetEntryTime(order->inserttime().c_str());
+			m_currentRecord->SetEntryPoint(orderPrice);
+
+			m_currentRecord->SetEntryQuantity(order->volumetraded());
+			int entryStatus = ConvertToOrderStatusConst(order->ordersubmitstatus(), order->orderstatus());
+			m_currentRecord->SetEntryStatus(entryStatus);
+
+			if(entryStatus == FULL_FILLED)
+			{
+				m_stopGain.setCost(orderPrice);
+				m_stopGain.setEntryType(entryType);
+				m_stopLoss.setCost(orderPrice);
+				m_stopLoss.setEntryType(entryType);
+			}
 		}
-	}
-	else
-	{
-		// Close position order
-		int exitType = order->direction() == SELL ? LONG_CLOSE : SHORT_CLOSE;
-		m_currentRecord->SetExitType(exitType);
-		m_currentRecord->SetExitTime(order->inserttime().c_str());
-		m_currentRecord->SetExitPoint(order->limitprice());
-
-		m_currentRecord->SetExitQuantity(order->volumetraded());
-		int exitStatus = ConvertToOrderStatusConst(order->ordersubmitstatus(), order->orderstatus());
-		m_currentRecord->SetExitStatus(exitStatus);
-
-		if(exitStatus == FULL_FILLED)
+		else
 		{
-			m_stopGain.Reset();
-			m_stopLoss.Reset();
-			m_openCondition.Reset();
+			// Close position order
+			int exitType = order->direction() == SELL ? LONG_CLOSE : SHORT_CLOSE;
+			m_currentRecord->SetExitType(exitType);
+			m_currentRecord->SetExitTime(order->inserttime().c_str());
+			m_currentRecord->SetExitPoint(order->limitprice());
 
-			double profit = exitType == LONG_CLOSE ? m_currentRecord->ExitPoint() - m_currentRecord->EntryPoint()
-				: m_currentRecord->EntryPoint() - m_currentRecord->ExitPoint();
-			m_currentRecord->SetProfitLoss(profit);
-			position_closed = true;
+			m_currentRecord->SetExitQuantity(order->volumetraded());
+			int exitStatus = ConvertToOrderStatusConst(order->ordersubmitstatus(), order->orderstatus());
+			m_currentRecord->SetExitStatus(exitStatus);
+
+			if(exitStatus == FULL_FILLED)
+			{
+				m_stopGain.Reset();
+				m_stopLoss.Reset();
+				m_openCondition.Reset();
+
+				double profit = exitType == LONG_CLOSE ? m_currentRecord->ExitPoint() - m_currentRecord->EntryPoint()
+					: m_currentRecord->EntryPoint() - m_currentRecord->ExitPoint();
+				m_currentRecord->SetProfitLoss(profit);
+				position_closed = true;
+			}
 		}
-	}
 
-	PublishRecord();
+		PublishRecord();
+	}
 
 	if(position_closed)
 		OnPositionClosed();
@@ -441,6 +444,8 @@ void COrderProcessor::OnRtnTrade( CTrade* pTrade )
 
 void COrderProcessor::OnPositionClosed()
 {
+	boost::mutex::scoped_lock lock(m_record_mutex);
+
 	ResetRecord();
 
 	PublishRecord();
@@ -448,8 +453,6 @@ void COrderProcessor::OnPositionClosed()
 
 void COrderProcessor::ResetRecord()
 {
-	boost::mutex::scoped_lock lock(m_record_mutex);
-
 	boost::shared_ptr<COperationRecordData> newRecord(new COperationRecordData);
 	newRecord->SetRecordId(m_currentRecord->RecordId() + 1);
 	newRecord->SetSymbol(m_currentSymbols[0].c_str());

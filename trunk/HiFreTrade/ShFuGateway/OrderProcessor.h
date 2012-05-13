@@ -46,8 +46,16 @@ public:
 	void ClosePosition();
 	void ClosePosition(int longshort, double limitprice, int exitReason);
 
-	void EnableStopGain(bool isEnabled){ m_stopGain.Enable(isEnabled); }
-	void EnableStopLoss(bool isEnabled){ m_stopLoss.Enable(isEnabled); }
+	void EnableStopGain(bool isEnabled, double gainLimit)
+	{ 
+		m_stopGain.Enable(isEnabled); 
+		m_stopGain.setGainLimit(gainLimit);
+	}
+	void EnableStopLoss(bool isEnabled, double lossLimit)
+	{ 
+		m_stopLoss.Enable(isEnabled);
+		m_stopLoss.setLossLimit(lossLimit);
+	}
 
 	void Start(const BreakOutStrategy* pStrategy);
 	void Stop();

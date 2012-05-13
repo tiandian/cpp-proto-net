@@ -155,6 +155,7 @@ public:
 	void setCost(double cost) { m_cost = cost; }
 	void setEntryType(int entryType) { m_entryType = entryType; }
 	void Enable(bool enabled) { m_isEnabled = enabled; }
+	bool IsEnabled() { return m_isEnabled; }
 	void Reset()
 	{
 		m_cost = 0;
@@ -181,6 +182,7 @@ public:
 	void setCost(double cost) { m_cost = cost; m_turningPoint = m_cost; }
 	void setEntryType(int entryType) { m_entryType = entryType; }
 	void Enable(bool enabled) { m_isEnabled = enabled; }
+	bool IsEnabled() { return m_isEnabled; }
 	void Reset()
 	{
 		setCost(0);
