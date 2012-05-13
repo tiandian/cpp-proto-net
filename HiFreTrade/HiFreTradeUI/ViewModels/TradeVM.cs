@@ -61,6 +61,21 @@ namespace HiFreTradeUI.ViewModels
             Win32.Gateway.DisconnectTradeAgent();
         }
 
+        public void EnableStopGain(bool enabled)
+        {
+            Win32.Gateway.EnableStopGain(enabled, GainLimit);
+        }
+
+        public void EnableStopLoss(bool enabled)
+        {
+            Win32.Gateway.EnableStopLoss(enabled, LossLimit);
+        }
+
+        public void SubmitOrderQty(int quantity)
+        {
+            Win32.Gateway.SetQuantity(quantity);
+        }
+
         private static Win32.Gateway.OperationRecordUpdateDelegate recordsUpdateFunc;
         private static Win32.Gateway.TimeNSalesUpdateDelegate tnsDataUpdateFunc;
 
@@ -257,6 +272,9 @@ namespace HiFreTradeUI.ViewModels
                 if (_orderQty != value)
                 {
                     _orderQty = value;
+
+                    SubmitOrderQty(_orderQty);
+
                     RaisePropertyChanged("OrderQty");
                 }
             }
@@ -399,6 +417,46 @@ namespace HiFreTradeUI.ViewModels
         }
         #endregion
 
+        #region IsStopGainEnabled
+        private bool _isStopGainEnabled = true;
+
+        public bool IsStopGainEnabled
+        {
+            get { return _isStopGainEnabled; }
+            set
+            {
+                if (_isStopGainEnabled != value)
+                {
+                    _isStopGainEnabled = value;
+
+                    EnableStopGain(_isStopGainEnabled);
+
+                    RaisePropertyChanged("IsStopGainEnabled");
+                }
+            }
+        }
+        #endregion
+
+        #region IsStopLossEnabled
+        private bool _isStopLossEnabled = true;
+
+        public bool IsStopLossEnabled
+        {
+            get { return _isStopLossEnabled; }
+            set
+            {
+                if (_isStopLossEnabled != value)
+                {
+                    _isStopLossEnabled = value;
+
+                    EnableStopLoss(_isStopLossEnabled);
+
+                    RaisePropertyChanged("IsStopLossEnabled");
+                }
+            }
+        }
+        #endregion
+
         public void Start()
         {
             Win32Invoke.BreakOutStrategy strategy = new Win32Invoke.BreakOutStrategy();
@@ -410,6 +468,9 @@ namespace HiFreTradeUI.ViewModels
             strategy.iBreakoutTimespan = BreakoutTimespan;
             strategy.dGainLimit = GainLimit;
             strategy.dLossLimit = LossLimit;
+
+            Win32Invoke.Gateway.SetQuantity(_orderQty);
+
             Win32Invoke.Gateway.Start(strategy);
         }
 

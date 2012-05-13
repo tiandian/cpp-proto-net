@@ -47,5 +47,14 @@ namespace HiFreTradeUI.Win32Invoke
 
         [DllImport("ShFuGateway.dll")]
         public static extern void ClosePosition();
+
+        [DllImport("ShFuGateway.dll")]
+        public static extern void SetQuantity(int quantity);
+
+        [DllImport("ShFuGateway.dll")]
+        public static extern void EnableStopGain(bool isEnabled, double gainLimit);
+
+        [DllImport("ShFuGateway.dll")]
+        public static extern void EnableStopLoss(bool isEnabled, double lossLimit);
     }
 }

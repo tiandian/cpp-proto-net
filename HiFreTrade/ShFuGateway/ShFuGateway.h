@@ -48,9 +48,9 @@ extern "C"
 
 	SHFU_GATEWAY_EXPORT void __stdcall SetQuantity(int quantity);
 	
-	SHFU_GATEWAY_EXPORT void __stdcall EnableStopGain(bool isEnabled);
+	SHFU_GATEWAY_EXPORT void __stdcall EnableStopGain(bool isEnabled, double gainLimit);
 	
-	SHFU_GATEWAY_EXPORT void __stdcall EnableStopLoss(bool isEnabled);
+	SHFU_GATEWAY_EXPORT void __stdcall EnableStopLoss(bool isEnabled, double lossLimit);
 };
 
 #endif
