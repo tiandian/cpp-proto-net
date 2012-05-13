@@ -253,7 +253,9 @@ void COrderProcessor::OpenPosition( int quantity, int longshort )
 	if(m_currentSymbols[0].empty())
 		return;
 
-	if(m_currentRecord->EntryStatus() <= UNOPEN)
+	if(m_currentRecord->EntryStatus() <= UNOPEN ||
+		m_currentRecord->EntryStatus() == CANCELED ||
+		m_currentRecord->EntryStatus() == REJECTED)
 	{
 		OP::LONG_SHORT_FLAG flag = longshort == SHORT_OPEN ? OP::SHORT : OP::LONG;
 		double limitPrice = flag == OP::SHORT ? m_latestQuote.Bid() : m_latestQuote.Ask();
@@ -309,7 +311,11 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 
 void COrderProcessor::OnRspOrderAction( bool succ, const std::string& orderRef, const std::string& msg )
 {
-
+	if(succ)
+		logger.Info(boost::str(boost::format("Cancel order(%s) succeeded.") % orderRef));
+	else
+		logger.Info(boost::str(boost::format("Cancel order(%s) failed. message: %s") 
+								% orderRef.c_str() % msg.c_str()));
 }
 
 int ConvertToOrderStatusConst(OrderSubmitStatusType submitStatus, OrderStatusType orderStatus)
@@ -380,6 +386,22 @@ void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 				m_stopLoss.setCost(orderPrice);
 				m_stopLoss.setEntryType(entryType);
 			}
+
+			if(entryStatus == FULL_FILLED ||
+				entryStatus == CANCELED ||
+				entryStatus == REJECTED )
+			{	// reset pending order
+				m_pendingOrderInfo.Reset();
+			}
+			else
+			{
+				// save information for cancel
+				m_pendingOrderInfo.Symbol = order->instrumentid();
+				m_pendingOrderInfo.OrderRef = order->orderref();
+				m_pendingOrderInfo.ExchangeId = order->exchangeid();
+				m_pendingOrderInfo.OrderSysId = order->ordersysid();
+				m_pendingOrderInfo.UserId = order->userid();
+			}
 		}
 		else
 		{
@@ -403,6 +425,21 @@ void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 					: m_currentRecord->EntryPoint() - m_currentRecord->ExitPoint();
 				m_currentRecord->SetProfitLoss(profit);
 				position_closed = true;
+			}
+			if(exitStatus == FULL_FILLED ||
+				exitStatus == CANCELED ||
+				exitStatus == REJECTED )
+			{	// reset pending order
+				m_pendingOrderInfo.Reset();
+			}
+			else
+			{
+				// save information for cancel
+				m_pendingOrderInfo.Symbol = order->instrumentid();
+				m_pendingOrderInfo.OrderRef = order->orderref();
+				m_pendingOrderInfo.ExchangeId = order->exchangeid();
+				m_pendingOrderInfo.OrderSysId = order->ordersysid();
+				m_pendingOrderInfo.UserId = order->userid();
 			}
 		}
 
@@ -483,4 +520,29 @@ void COrderProcessor::Stop()
 	m_isRunning = false;
 
 	m_openCondition.Reset();
+}
+
+bool COrderProcessor::CancelOrder()
+{
+	if(!m_pendingOrderInfo.Exists()) return false;
+
+	boost::shared_ptr<CInputOrderAction> orderAction(new CInputOrderAction);
+
+	orderAction->set_orderref(m_pendingOrderInfo.OrderRef);
+
+	///操作标志
+	orderAction->set_actionflag(AF_Delete);	// Cancel order
+
+	///交易所代码
+	orderAction->set_exchangeid(m_pendingOrderInfo.ExchangeId);
+	///报单编号
+	orderAction->set_ordersysid(m_pendingOrderInfo.OrderSysId);
+	///用户代码
+	orderAction->set_userid(m_pendingOrderInfo.UserId);
+	
+	orderAction->set_instrumentid(m_pendingOrderInfo.Symbol);
+
+	g_tradeAgent.SubmitOrderAction(orderAction.get());
+
+	return true;
 }

@@ -246,7 +246,7 @@
             <Border DockPanel.Dock="Top" BorderBrush="Yellow" BorderThickness="2" CornerRadius="4" Margin="4">
                 <DockPanel Margin="4">
                     <TextBlock DockPanel.Dock="Left">紧急情况下使用：</TextBlock>
-                    <Button Width="100" Name="btnForceClose" Click="btnForceClose_Click">强制平仓</Button>
+                    <Button Width="100" Name="btnCancelOrder" Click="btnCancelOrder_Click">撤单</Button>
                 </DockPanel>
             </Border>
             

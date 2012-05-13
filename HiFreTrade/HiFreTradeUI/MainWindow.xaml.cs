@@ -66,9 +66,9 @@ namespace HiFreTradeUI
             this._viewModel.Disconnect();
         }
 
-        private void btnForceClose_Click(object sender, RoutedEventArgs e)
+        private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
         {
-            Gateway.ClosePosition();
+            Gateway.CancelOrder();
         }
 
         private void btnManualOpen_Click(object sender, RoutedEventArgs e)
