@@ -261,7 +261,7 @@
 
         <igDock:XamDockManager Grid.Column="1" Theme="Office2k7Blue" LayoutMode="FillContainer">
             <igDock:XamDockManager.Panes>
-                <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedTop" MinHeight="300">
+                <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedTop" Height="400">
                     <igDock:ContentPane Name="operationRecordsPane" Header="操作记录"
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.OperationsRegion}"/>
                 </igDock:SplitPane>
