@@ -185,8 +185,9 @@ namespace HiFreTradeUI.ViewModels
             #define CANCELED 6
             #define REJECTED 7
             #define CLOSED UNOPEN
+            #define SENDING_ORDER 8
              */
-            switch(iStatus)
+            switch (iStatus)
             {
                 case 0:
                     return "未知";
@@ -204,6 +205,8 @@ namespace HiFreTradeUI.ViewModels
                     return "已撤单";
                 case 7:
                     return "被拒绝";
+                case 8:
+                    return "正在下单";
                 default:
                     throw new ArgumentException(string.Format("Invalid entry or exit status ({0})", iStatus));
             }
@@ -299,7 +302,7 @@ namespace HiFreTradeUI.ViewModels
         #endregion
 
         #region RectRange
-        private double _rectRange = 5 * 0.2d;
+        private double _rectRange = 2 * 5 * 0.2d;
 
         public double RectRange
         {

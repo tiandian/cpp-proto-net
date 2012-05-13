@@ -267,7 +267,7 @@ void COpenPosiCondition::UpdateRange()
 		m_range = m_high->price() - m_low->price();
 		if(m_periodOK)
 		{
-			if(abs(m_range - m_rectRange) < COMPARE_PRECISION)
+			if(DoubleGreaterEqual(m_rectRange, m_range))
 			{
 				m_readyForBreakout = true;
 				logger.Info(boost::str(boost::format("Ready for breakout. current range: %-4.1f,  target range: %-4.1f") % m_range % m_rectRange));
