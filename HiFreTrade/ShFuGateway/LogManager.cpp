@@ -52,7 +52,7 @@ void CLogManager::Init()
 		// One can also use lambda expressions to setup filters and formatters
 		logging::init_log_to_file
 			(
-			"log.txt",
+			"log\\gatway.txt",
 			keywords::filter = flt::attr< severity_level >("Severity", std::nothrow) >= trace,
 			keywords::format = fmt::format("%1% [%2%] <%3%> %4%")
 			% fmt::date_time("TimeStamp", std::nothrow)
