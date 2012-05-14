@@ -14,6 +14,7 @@ namespace HiFreTradeUI.Modules
     {
         public void Initialize()
         {
+            LogManager.Logger.Info("Watch module initializing...");
             IRegionManager regionMgr = ServiceLocator.Current.GetInstance<IRegionManager>();
             regionMgr.RegisterViewWithRegion(RegionNames.OperationsRegion,
                 () => ServiceLocator.Current.GetInstance<OperationsView>());

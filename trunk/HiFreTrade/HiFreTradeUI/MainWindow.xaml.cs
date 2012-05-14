@@ -28,6 +28,7 @@ namespace HiFreTradeUI
         [ImportingConstructor]
         public MainWindow(ShellViewModel viewModel, UIThread threadHolder)
         {
+            LogManager.Logger.Info("MainWindow Initializing...");
             _viewModel = viewModel;
 
             this.DataContext = _viewModel;
@@ -58,16 +59,19 @@ namespace HiFreTradeUI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            LogManager.Logger.Info("Window loaded, Connecting market...");
             this._viewModel.Connect();
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            LogManager.Logger.Info("Window closed, Disconnecting market...");
             this._viewModel.Disconnect();
         }
 
         private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
         {
+            LogManager.Logger.Debug("Cancel order");
             Gateway.CancelOrder();
         }
 
@@ -77,11 +81,13 @@ namespace HiFreTradeUI
             int quantity = _viewModel.Trade.OrderQty;
             Gateway.EnableStopGain(_viewModel.Trade.IsStopGainEnabled, _viewModel.Trade.GainLimit);
             Gateway.EnableStopLoss(_viewModel.Trade.IsStopLossEnabled, _viewModel.Trade.LossLimit);
+            LogManager.Logger.DebugFormat("Open position. Entry:{0}, Quantity:{1}", entryType, quantity);
             Gateway.OpenPosition(quantity, entryType);
         }
 
         private void btnManualClose_Click(object sender, RoutedEventArgs e)
         {
+            LogManager.Logger.Debug("Close position");
             Gateway.ClosePosition();
         }
     }
