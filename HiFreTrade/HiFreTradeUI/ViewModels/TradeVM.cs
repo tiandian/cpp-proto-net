@@ -214,54 +214,68 @@ namespace HiFreTradeUI.ViewModels
 
         public void OnOperationRecordsUpdate(Win32.OperationRecord win32Record)
         {
-            OperationRecord record = new OperationRecord();
+            try
+            {
+                OperationRecord record = new OperationRecord();
 
-            record.RecordID = win32Record.iRecordId;
-            record.Symbol = win32Record.caSymbol;
-            DateTime time;
-            bool succ = DateTime.TryParse(win32Record.caRectPeriodBegin, out time);
-            if(succ) record.RectPeriodBegin = time;
-            succ = DateTime.TryParse(win32Record.caRectPeriodEnd, out time);
-            if(succ) record.RectPeriodEnd = time;
+                record.RecordID = win32Record.iRecordId;
+                record.Symbol = win32Record.caSymbol;
+                DateTime time;
+                bool succ = DateTime.TryParse(win32Record.caRectPeriodBegin, out time);
+                if (succ) record.RectPeriodBegin = time;
+                succ = DateTime.TryParse(win32Record.caRectPeriodEnd, out time);
+                if (succ) record.RectPeriodEnd = time;
 
-            record.UpperBoundary = win32Record.dUpperBoundary;
-            record.LowerBoundary = win32Record.dLowerBoundary;
-            record.Range = win32Record.dRange;
-            record.Direction = GetDirection(win32Record.iDirection);
+                record.UpperBoundary = win32Record.dUpperBoundary;
+                record.LowerBoundary = win32Record.dLowerBoundary;
+                record.Range = win32Record.dRange;
+                record.Direction = GetDirection(win32Record.iDirection);
 
-            record.EntryPoint = win32Record.dEntryPoint;
-            succ = DateTime.TryParse(win32Record.caEntryTime, out time);
-            if(succ) record.EntryTime = time;
-            record.EntryReason = GetEntryReason(win32Record.iEntryReason);
-            record.EntryType = GetEntryExitType(win32Record.iEntryType);
-            record.EntryQuantity = win32Record.iEntryQuantity;
-            record.EntryStatus = GetEntryExitStatus(win32Record.iEntryStatus);
+                record.EntryPoint = win32Record.dEntryPoint;
+                succ = DateTime.TryParse(win32Record.caEntryTime, out time);
+                if (succ) record.EntryTime = time;
+                record.EntryReason = GetEntryReason(win32Record.iEntryReason);
+                record.EntryType = GetEntryExitType(win32Record.iEntryType);
+                record.EntryQuantity = win32Record.iEntryQuantity;
+                record.EntryStatus = GetEntryExitStatus(win32Record.iEntryStatus);
 
-            record.ExitPoint = win32Record.dExitPoint;
-            succ = DateTime.TryParse(win32Record.caExitTime, out time);
-            if(succ) record.ExitTime = time;
-            record.ExitReason = GetExitReason(win32Record.iExitReason);
-            record.ExitType = GetEntryExitType(win32Record.iExitType);
-            record.ExitQuantity = win32Record.iExitQuantity;
-            record.ExitStatus = GetEntryExitStatus(win32Record.iExitStatus);
+                record.ExitPoint = win32Record.dExitPoint;
+                succ = DateTime.TryParse(win32Record.caExitTime, out time);
+                if (succ) record.ExitTime = time;
+                record.ExitReason = GetExitReason(win32Record.iExitReason);
+                record.ExitType = GetEntryExitType(win32Record.iExitType);
+                record.ExitQuantity = win32Record.iExitQuantity;
+                record.ExitStatus = GetEntryExitStatus(win32Record.iExitStatus);
 
-            record.ProfitLoss = win32Record.ProfitLoss;
+                record.ProfitLoss = win32Record.ProfitLoss;
 
-            EventAggregator.GetEvent<OperRecordUpdateEvent>().Publish(record);
+                EventAggregator.GetEvent<OperRecordUpdateEvent>().Publish(record);
+            }
+            catch (System.Exception ex)
+            {
+                LogManager.Logger.ErrorFormat("Operation Record updating error:{0}", ex.Message);            	
+            }
         }
 
         public void OnTimeNSalesUpdate(Win32.TimeNSalesData tnsPacket)
         {
-            TimeNSalesData tnsData = new TimeNSalesData();
-            tnsData.Symbol = tnsPacket.caSymbol;
-            DateTime time;
-            bool succ = DateTime.TryParse(tnsPacket.caTimeStamp, out time);
-            tnsData.TimeStamp = time;
-            tnsData.Price = tnsPacket.dPrice;
-            tnsData.Quantity = tnsPacket.iQuantity;
-            tnsData.Direction = GetEntryExitType(tnsPacket.iDirection);
+            try
+            {
+                TimeNSalesData tnsData = new TimeNSalesData();
+                tnsData.Symbol = tnsPacket.caSymbol;
+                DateTime time;
+                bool succ = DateTime.TryParse(tnsPacket.caTimeStamp, out time);
+                tnsData.TimeStamp = time;
+                tnsData.Price = tnsPacket.dPrice;
+                tnsData.Quantity = tnsPacket.iQuantity;
+                tnsData.Direction = GetEntryExitType(tnsPacket.iDirection);
 
-            EventAggregator.GetEvent<TimeNSalesUpdateEvent>().Publish(tnsData);
+                EventAggregator.GetEvent<TimeNSalesUpdateEvent>().Publish(tnsData);
+            }
+            catch (System.Exception ex)
+            {
+                LogManager.Logger.ErrorFormat("Time and sales updating error:{0}", ex.Message);            	
+            }
         }
 
         #region OrderQty

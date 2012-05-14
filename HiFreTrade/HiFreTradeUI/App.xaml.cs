@@ -16,6 +16,7 @@ namespace HiFreTradeUI
         {
             base.OnStartup(e);
 
+            LogManager.Logger.Info("Application start up");
 #if (DEBUG)
             RunInDebugMode();
 #else
