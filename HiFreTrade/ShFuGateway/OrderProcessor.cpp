@@ -512,6 +512,9 @@ void COrderProcessor::Start(const BreakOutStrategy* pStrategy)
 	m_openCondition.setAllowDown(pStrategy->bDownBreak);
 	m_openCondition.setAllowUp(pStrategy->bUpBreak);
 
+	m_stopGain.setGainLimit(pStrategy->dGainLimit);
+	m_stopLoss.setLossLimit(pStrategy->dLossLimit);
+
 	m_isRunning = true;
 }
 

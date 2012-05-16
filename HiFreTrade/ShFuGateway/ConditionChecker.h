@@ -74,13 +74,6 @@ public:
 		m_readyForBreakout = false;
 		m_periodOK =  false;
 
-		m_rectPeriod = 0;
-		m_rectRange = 0;
-		m_allowUp = false;
-		m_allowDown = false;
-		m_criterion = 0;
-		m_timespan = 0;
-
 		m_high.reset();
 		m_breakoutHigh.reset();
 		m_low.reset();

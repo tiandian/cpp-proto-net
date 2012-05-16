@@ -187,10 +187,10 @@
                 <!-- 平仓条件 -->
                 <Border BorderBrush="Green" BorderThickness="2" CornerRadius="4" Margin="4">
                     <StackPanel Margin="4">
-                        <DockPanel >
+                        <StackPanel Orientation="Horizontal" >
                             <TextBlock DockPanel.Dock="Left"  Margin="0, 4" FontSize="14" FontWeight="Bold">平仓条件</TextBlock>
                             <CheckBox VerticalAlignment="Center" Margin="20, 2" IsChecked="{Binding Trade.IsStopGainEnabled, Mode=TwoWay}">启用</CheckBox>
-                        </DockPanel>
+                        </StackPanel>
                         
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">盈利点数：</TextBlock>
@@ -205,10 +205,10 @@
                 <!-- 止损条件 -->
                 <Border BorderBrush="Red" BorderThickness="2" CornerRadius="4" Margin="4">
                     <StackPanel Margin="4">
-                        <DockPanel>
+                        <StackPanel Orientation="Horizontal" >
                             <TextBlock Margin="0, 4" FontSize="14" FontWeight="Bold">止损条件</TextBlock>
                             <CheckBox VerticalAlignment="Center" Margin="20, 2" IsChecked="{Binding Trade.IsStopLossEnabled, Mode=TwoWay}">启用</CheckBox>
-                        </DockPanel>
+                        </StackPanel>
                         <DockPanel Margin="10, 2">
                             <TextBlock DockPanel.Dock="Left" VerticalAlignment="Center" Margin="2, 0">亏损点数：</TextBlock>
                             <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Margin="2, 0">点</TextBlock>
