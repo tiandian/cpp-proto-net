@@ -94,6 +94,9 @@
     <Compile Include="Events\OperRecordUpdateEvent.cs" />
     <Compile Include="Events\TimeNSalesUpdateEvent.cs" />
     <Compile Include="HiFreBootsrapper.cs" />
+    <Compile Include="LoginWnd.xaml.cs">
+      <DependentUpon>LoginWnd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LogManager.cs" />
     <Compile Include="Modules\OperationsView.xaml.cs">
       <DependentUpon>OperationsView.xaml</DependentUpon>
@@ -110,6 +113,8 @@
     <Compile Include="UIThread.cs" />
     <Compile Include="Utils\ILog.cs" />
     <Compile Include="Utils\Log4netLogger.cs" />
+    <Compile Include="Utils\RuntimeContext.cs" />
+    <Compile Include="ViewModels\LoginVM.cs" />
     <Compile Include="ViewModels\OperationsVM.cs" />
     <Compile Include="ViewModels\PositionVM.cs" />
     <Compile Include="ViewModels\QuoteVM.cs" />
@@ -123,6 +128,10 @@
     <Page Include="BureauBlue.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="LoginWnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -174,7 +183,9 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <SplashScreen Include="splash.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

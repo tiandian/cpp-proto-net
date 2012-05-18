@@ -26,6 +26,13 @@ namespace HiFreTradeUI
             base.InitializeShell();
 
             Application.Current.MainWindow = (MainWindow)this.Shell;
+            
+        }
+
+        protected override void InitializeModules()
+        {
+            base.InitializeModules();
+
             Application.Current.MainWindow.Show();
         }
 
