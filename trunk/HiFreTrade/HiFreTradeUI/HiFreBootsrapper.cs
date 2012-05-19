@@ -33,7 +33,18 @@ namespace HiFreTradeUI
         {
             base.InitializeModules();
 
-            Application.Current.MainWindow.Show();
+            LoginWnd wnd = this.Container.GetExportedValue<LoginWnd>();
+            bool? succ = wnd.ShowDialog();
+            if (succ.HasValue && succ.Value)
+            {
+                Application.Current.MainWindow.Show();
+            }
+            else
+            {
+                Logger.Log("Login failed, exit.", Category.Info, Priority.Medium);
+                Application.Current.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+                Application.Current.Shutdown();
+            }
         }
 
         protected override DependencyObject CreateShell()

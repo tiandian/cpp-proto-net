@@ -49,7 +49,7 @@ namespace HiFreTradeUI
 
             //Gateway.SetSymbol("IF1205");
 
-            Gateway.OpenPosition(1, 1);
+            //Gateway.OpenPosition(1, 1);
         }
 
         private void QuoteUpdateCallback(string symbol) 

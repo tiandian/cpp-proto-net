@@ -105,7 +105,7 @@ namespace HiFreTradeUI
         {
             Quote.Connect();
 
-            Trade.Connect();
+            //Trade.Connect();
         }
 
         public void Start()

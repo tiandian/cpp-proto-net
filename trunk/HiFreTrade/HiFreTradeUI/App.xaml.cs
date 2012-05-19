@@ -22,7 +22,6 @@ namespace HiFreTradeUI
 #else
             RunInReleaseMode();
 #endif
-            this.ShutdownMode = ShutdownMode.OnMainWindowClose;
         }
 
         private static void RunInDebugMode()
