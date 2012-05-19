@@ -33,18 +33,6 @@ public:
 	const TimeNSalesData* InnerStruct() { return &m_innerData; }
 
 private:
-	static void SafeStringCopy(char * destination, const char * source, int destCapacity)
-	{
-		int len = strlen(source);
-		if(len < destCapacity)
-		{
-			strcpy(destination, source);
-		}
-		else
-		{
-			strncpy(destination, source, destCapacity - 1);
-		}
-	}
 
 	TimeNSalesData m_innerData;
 };

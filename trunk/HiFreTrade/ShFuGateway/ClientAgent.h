@@ -6,10 +6,12 @@
 class CQuote;
 class COperationRecordData;
 class CTimeNSalePacket;
+class CAccountInfoMsg;
 
 typedef boost::function<void(CQuote*)> QuoteUpdateFunc;
 typedef boost::function<void(COperationRecordData*)> OperationRecordUpdateFunc;
 typedef boost::function<void(CTimeNSalePacket*)> TimeNSalesUpdateFunc;
+typedef boost::function<void(CAccountInfoMsg*)> AccountInfoUpdateFunc;
 
 class CClientAgent
 {
@@ -21,6 +23,7 @@ public:
 	void SetQuoteCallback(QuoteUpdateFunc callback);
 	void SetOperationRecordCallback(OperationRecordUpdateFunc callback);
 	void SetTimeNSalesCallback(TimeNSalesUpdateFunc callback);
+	void SetAccountInfoCallback(AccountInfoUpdateFunc callback);
 
 	void Publish(boost::shared_ptr<CMessage>& msgPack);
 
@@ -31,6 +34,7 @@ private:
 	QuoteUpdateFunc m_quoteCallback;
 	OperationRecordUpdateFunc m_recordCallback;
 	TimeNSalesUpdateFunc m_tnsUpdateCallback;
+	AccountInfoUpdateFunc m_acctUpdateCallback;
 
 	CBufferRunner< boost::shared_ptr<CMessage> > m_bufferRunner;
 };

@@ -3,6 +3,7 @@
 #include "Quote.h"
 #include "OperationRecordData.h"
 #include "TimeNSalePacket.h"
+#include "AccountInfoMsg.h"
 
 
 CClientAgent::CClientAgent(void):
@@ -37,6 +38,12 @@ void CClientAgent::DispatchMsgPack( boost::shared_ptr<CMessage>& package )
 		if(tns != NULL)
 			m_tnsUpdateCallback(tns);
 	}
+	else if(msgType == ACCOUNT_INFO)
+	{
+		CAccountInfoMsg* acct = dynamic_cast<CAccountInfoMsg*>(package.get());
+		if(acct != NULL)
+			m_acctUpdateCallback(acct);
+	}
 }
 
 void CClientAgent::Publish( boost::shared_ptr<CMessage>& msgPack )
@@ -57,4 +64,9 @@ void CClientAgent::SetOperationRecordCallback( OperationRecordUpdateFunc callbac
 void CClientAgent::SetTimeNSalesCallback( TimeNSalesUpdateFunc callback )
 {
 	m_tnsUpdateCallback = callback;
+}
+
+void CClientAgent::SetAccountInfoCallback( AccountInfoUpdateFunc callback )
+{
+	m_acctUpdateCallback = callback;
 }

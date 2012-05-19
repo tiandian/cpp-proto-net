@@ -91,6 +91,8 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AccountInfo.h" />
+    <ClInclude Include="AccountInfoMsg.h" />
     <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ConditionChecker.h" />
@@ -117,6 +119,8 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="TradeEnumDefinition.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AccountInfo.cpp" />
+    <ClCompile Include="AccountInfoMsg.cpp" />
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ConditionChecker.cpp" />
     <ClCompile Include="dllmain.cpp">
@@ -131,6 +135,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClCompile Include="InputOrderAction.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MarketAgent.cpp" />
+    <ClCompile Include="Message.cpp" />
     <ClCompile Include="OperationRecordData.cpp" />
     <ClCompile Include="OrderProcessor.cpp" />
     <ClCompile Include="Quote.cpp" />

@@ -5,20 +5,16 @@ enum MsgType
 	//TEXT,
 	QUOTE,
 	OPERATION_RECORD,
-	TIME_AND_SALES
+	TIME_AND_SALES,
+	ACCOUNT_INFO
 };
 
 class CMessage
 {
 public: 
-	CMessage(MsgType msgType):
-	  m_type(msgType)
-	{
-	}
+	CMessage(MsgType msgType);
 
-	virtual ~CMessage()
-	{
-	}
+	virtual ~CMessage();
 
 	MsgType GetType() 
 	{ 
@@ -28,3 +24,5 @@ public:
 private:
 	MsgType m_type;
 };
+
+void SafeStringCopy(char * destination, const char * source, int destCapacity);

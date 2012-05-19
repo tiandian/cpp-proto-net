@@ -4,6 +4,9 @@
 #include "ReturnOrder.h"
 #include "OrderProcessor.h"
 #include "Trade.h"
+#include "AccountInfo.h"
+#include "AccountInfoMsg.h"
+#include "ClientAgent.h"
 
 #include <sstream>
 #include <boost/format.hpp>
@@ -18,6 +21,7 @@
 const char* TradeAddress = "tcp://asp-sim2-front1.financial-trading-platform.com:26205";
 
 extern CLogManager	logger;
+extern CClientAgent g_clientAgent;
 
 using namespace std;
 
@@ -299,7 +303,43 @@ void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradin
 	cerr << "--->>> " << "OnRspQryTradingAccount" << endl;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
+		CAccountInfo account;
+		account.set_brokerid(pTradingAccount->BrokerID);
+		account.set_accountid(pTradingAccount->AccountID);
+		account.set_premortgage(pTradingAccount->PreMortgage);
+		account.set_precredit(pTradingAccount->PreCredit);
+		account.set_predeposit(pTradingAccount->PreDeposit);
+		account.set_prebalance(pTradingAccount->PreBalance);
+		account.set_premargin(pTradingAccount->PreMargin);
+		account.set_interestbase(pTradingAccount->InterestBase);
+		account.set_interest(pTradingAccount->Interest);
+		account.set_deposit(pTradingAccount->Deposit);
+		account.set_withdraw(pTradingAccount->Withdraw);
+		account.set_frozenmargin(pTradingAccount->FrozenMargin);
+		account.set_frozencash(pTradingAccount->FrozenCash);
+		account.set_frozencommission(pTradingAccount->FrozenCommission);
+		account.set_currmargin(pTradingAccount->CurrMargin);
+		account.set_cashin(pTradingAccount->CashIn);
+		account.set_commission(pTradingAccount->Commission);
+		account.set_closeprofit(pTradingAccount->CloseProfit);
+		account.set_positionprofit(pTradingAccount->PositionProfit);
+		account.set_balance(pTradingAccount->Balance);
+		account.set_available(pTradingAccount->Available);
+		account.set_withdrawquota(pTradingAccount->WithdrawQuota);
+		account.set_reserve(pTradingAccount->Reserve);
+		account.set_tradingday(pTradingAccount->TradingDay);
+		account.set_settlementid(pTradingAccount->SettlementID);
+		account.set_credit(pTradingAccount->Credit);
+		account.set_mortgage(pTradingAccount->Mortgage);
+		account.set_exchangemargin(pTradingAccount->ExchangeMargin);
+		account.set_deliverymargin(pTradingAccount->DeliveryMargin);
+		account.set_exchangedeliverymargin(pTradingAccount->ExchangeDeliveryMargin);
+
+		CAccountInfoMsg* accountMsg = new CAccountInfoMsg;
+		accountMsg->SetData(&account);
+		boost::shared_ptr<CMessage> msgPack(accountMsg);
 		
+		g_clientAgent.Publish(msgPack);
 	}
 }
 
