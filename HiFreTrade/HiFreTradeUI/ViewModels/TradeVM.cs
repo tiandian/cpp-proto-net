@@ -8,10 +8,12 @@ using Win32 = HiFreTradeUI.Win32Invoke;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Prism.Events;
 using HiFreTradeUI.Events;
+using HiFreTradeUI.Utils;
 
 namespace HiFreTradeUI.ViewModels
 {
     [Export]
+    [PartCreationPolicy(CreationPolicy.Shared)]
     public class TradeVM : NotificationObject
     {
         private IEventAggregator EventAggregator { get; set; }
@@ -22,6 +24,8 @@ namespace HiFreTradeUI.ViewModels
 
         [Import]
         private UIThread UIThread { get; set; }
+
+        public event Action<bool> ConnectionStatusChanged;
 
         #region IsConnected
         private bool _isConnected;
@@ -42,8 +46,13 @@ namespace HiFreTradeUI.ViewModels
 
         public void Connect()
         {
-            Func<bool> connectFunc = new Func<bool>(ConnectGateway);
-            connectFunc.BeginInvoke(
+            Connect(RuntimeContext.TestAccountID, RuntimeContext.TestPassword);
+        }
+
+        public void Connect(string accountId, string password)
+        {
+            Func<string, string, bool> connectFunc = new Func<string, string, bool>(ConnectGateway);
+            connectFunc.BeginInvoke(accountId, password, 
                 delegate(IAsyncResult ar)
                 {
                     bool connected = connectFunc.EndInvoke(ar);
@@ -52,8 +61,15 @@ namespace HiFreTradeUI.ViewModels
                             delegate
                             {
                                 IsConnected = connected;
+                                RaiseConnectedEvent(connected);
                             }));
                 }, null);
+        }
+
+        private void RaiseConnectedEvent(bool connected)
+        {
+            if (ConnectionStatusChanged != null)
+                ConnectionStatusChanged(connected);
         }
 
         public void Disconnect()
@@ -79,11 +95,11 @@ namespace HiFreTradeUI.ViewModels
         private static Win32.Gateway.OperationRecordUpdateDelegate recordsUpdateFunc;
         private static Win32.Gateway.TimeNSalesUpdateDelegate tnsDataUpdateFunc;
 
-        private bool ConnectGateway()
+        private bool ConnectGateway(string accountId, string password)
         {
             recordsUpdateFunc = new Win32.Gateway.OperationRecordUpdateDelegate(OnOperationRecordsUpdate);
             tnsDataUpdateFunc = new Win32.Gateway.TimeNSalesUpdateDelegate(OnTimeNSalesUpdate);
-            return Win32.Gateway.ConnectTradeAgent("0240", "0240050003", "888888", recordsUpdateFunc, tnsDataUpdateFunc);
+            return Win32.Gateway.ConnectTradeAgent(RuntimeContext.TestBorkerID, accountId, password, recordsUpdateFunc, tnsDataUpdateFunc);
         }
 
         private static string GetDirection(int iDirection)
