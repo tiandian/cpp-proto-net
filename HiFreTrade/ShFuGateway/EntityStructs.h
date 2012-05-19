@@ -115,3 +115,39 @@ struct TimeNSalesData
 	int iDirection;
 };
 
+#define BROKERID_LEN 11
+#define ACCOUNTID_LEN 13
+
+struct AccountInfoData
+{
+	char caBrokerId[BROKERID_LEN];
+	char caAccountId[ACCOUNTID_LEN];
+	double dPremortgage;
+	double	dPreCredit;
+	double	dPreDeposit;
+	double	dPreBalance;
+	double	dPreMargin;
+	double	dInterestBase;
+	double	dInterest;
+	double	dDeposit;
+	double	dWithdraw;
+	double	dFrozenMargin;
+	double	dFrozenCash;
+	double	dFrozenCommission;
+	double	dCurrMargin;
+	double	dCashIn;
+	double	dCommission;
+	double	dCloseProfit;
+	double	dPositionProfit;
+	double	dBalance;
+	double	dAvailable;
+	double	dWithdrawQuota;
+	double	dReserve;
+	char	caTradingDay[TRADINDG_DAY_LEN];
+	int		iSettlementId;
+	double	dCredit;
+	double	dMortgage;
+	double	dExchangeMargin;
+	double	dDeliveryMargin;
+	double	dExchangeDeliveryMargin;
+};
