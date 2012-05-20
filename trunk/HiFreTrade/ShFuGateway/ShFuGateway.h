@@ -16,6 +16,7 @@
 typedef void (__stdcall *QuoteCallback)(const QuoteData* pQuoteData);
 typedef void (__stdcall *OperationRecordCallback)(const OperationRecord* pRecord);
 typedef void (__stdcall *TimeNSalesCallback)(const TimeNSalesData* pTnsData);
+typedef void (__stdcall *AccountInfoCallback)(const AccountInfoData* pAcctInfo);
 
 extern "C"
 {
@@ -53,6 +54,10 @@ extern "C"
 	SHFU_GATEWAY_EXPORT void __stdcall EnableStopGain(bool isEnabled, double gainLimit);
 	
 	SHFU_GATEWAY_EXPORT void __stdcall EnableStopLoss(bool isEnabled, double lossLimit);
+
+	SHFU_GATEWAY_EXPORT void __stdcall RegAccountInfo(AccountInfoCallback acctInfoCallback);
+
+	SHFU_GATEWAY_EXPORT void __stdcall QueryAccountInfo();
 };
 
 #endif

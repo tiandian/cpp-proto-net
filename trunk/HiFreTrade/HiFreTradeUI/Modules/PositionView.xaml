@@ -5,7 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-        <TextBlock>Position View</TextBlock>
-    </Grid>
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top">
+            <Button Width="80" Height="28" Name="btnQueryAccount" Click="btnQueryAccount_Click">查询账户</Button>
+            <TextBlock Text="{Binding UpdateTime, StringFormat=T, FallbackValue=---}" HorizontalAlignment="Right" Margin="4"/>
+        </DockPanel>
+        <StackPanel>
+            <DockPanel>
+                <TextBlock Width="80">可用资金</TextBlock>
+                <TextBlock Text="{Binding Available}"></TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Width="80">结算准备金</TextBlock>
+                <TextBlock Text="{Binding Balance}"></TextBlock>
+            </DockPanel>
+        </StackPanel>
+    </DockPanel>
 </UserControl>

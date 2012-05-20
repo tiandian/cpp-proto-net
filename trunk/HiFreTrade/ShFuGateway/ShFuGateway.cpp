@@ -12,6 +12,7 @@
 #include "Quote.h"
 #include "OperationRecordData.h"
 #include "TimeNSalePacket.h"
+#include "AccountInfoMsg.h"
 
 #include <boost/format.hpp>
 #include <string>
@@ -25,11 +26,13 @@ CClientAgent g_clientAgent;
 QuoteCallback _quoteCallbackHandler = NULL;
 OperationRecordCallback _recordCallbackHandler = NULL;
 TimeNSalesCallback _tnsCallbackHandler = NULL;
+AccountInfoCallback _acctCallbackHandler = NULL;
 
 void Cleanup();
 void SendQuoteUpdate(CQuote* pQuote);
 void SendOperationRecords(COperationRecordData* pRecord);
 void SendTimeNSales(CTimeNSalePacket* pTns);
+void SendAccountInfo(CAccountInfoMsg* pAcctInfo);
 
 SHFU_GATEWAY_EXPORT int __stdcall TestCall(int a, int b)
 {
@@ -143,6 +146,17 @@ SHFU_GATEWAY_EXPORT bool __stdcall CancelOrder()
 	return g_orderProcessor.CancelOrder();
 }
 
+SHFU_GATEWAY_EXPORT void __stdcall RegAccountInfo(AccountInfoCallback acctInfoCallback)
+{
+	g_clientAgent.SetAccountInfoCallback(boost::bind(SendAccountInfo, _1));
+	_acctCallbackHandler = acctInfoCallback;
+}
+
+SHFU_GATEWAY_EXPORT void __stdcall QueryAccountInfo()
+{
+	g_tradeAgent.QueryAccount();
+}
+
 void Cleanup()
 {
 	g_marketAgent.Logout();
@@ -187,5 +201,13 @@ void SendTimeNSales(CTimeNSalePacket* pTns)
 	if(_tnsCallbackHandler != NULL)
 	{
 		_tnsCallbackHandler(pTns->InnerStruct());
+	}
+}
+
+void SendAccountInfo(CAccountInfoMsg* pAcctInfo)
+{
+	if(_acctCallbackHandler != NULL)
+	{
+		_acctCallbackHandler(pAcctInfo->InnerStruct());
 	}
 }

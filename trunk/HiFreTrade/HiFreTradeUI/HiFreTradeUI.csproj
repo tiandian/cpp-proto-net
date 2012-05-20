@@ -120,6 +120,7 @@
     <Compile Include="ViewModels\QuoteVM.cs" />
     <Compile Include="ViewModels\TimeNSalesVM.cs" />
     <Compile Include="ViewModels\TradeVM.cs" />
+    <Compile Include="Win32Invoke\AccountInfoData.cs" />
     <Compile Include="Win32Invoke\BreakOutStrategy.cs" />
     <Compile Include="Win32Invoke\Gateway.cs" />
     <Compile Include="Win32Invoke\OperationRecord.cs" />
