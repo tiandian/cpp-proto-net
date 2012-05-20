@@ -17,8 +17,8 @@ namespace HiFreTradeUI
 
         public ShellViewModel()
         {
-            _availableSymbols.Add("IF1205");
             _availableSymbols.Add("IF1206");
+            _availableSymbols.Add("IF1207");
             _availableSymbols.Add("IF1209");
             _availableSymbols.Add("IF1212");
 
