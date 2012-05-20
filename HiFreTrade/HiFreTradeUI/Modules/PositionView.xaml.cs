@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel.Composition;
+using HiFreTradeUI.ViewModels;
 
 namespace HiFreTradeUI.Modules
 {
@@ -21,9 +22,21 @@ namespace HiFreTradeUI.Modules
     [Export]
     public partial class PositionView : UserControl
     {
-        public PositionView()
+        private PositionVM ViewModel {get;set;}
+
+        [ImportingConstructor]
+        public PositionView(PositionVM viewModel)
         {
+            ViewModel = viewModel;
+            this.DataContext = ViewModel;
+            ViewModel.UIDispatcher = this.Dispatcher;
+
             InitializeComponent();
+        }
+
+        private void btnQueryAccount_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.QueryAccount();
         }
     }
 }

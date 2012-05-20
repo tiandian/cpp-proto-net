@@ -32,6 +32,8 @@ public:
 
 	bool SubmitOrderAction( CInputOrderAction* pOrderAction );
 
+	void QueryAccount();
+
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
 

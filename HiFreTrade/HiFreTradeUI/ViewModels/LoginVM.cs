@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using System.ComponentModel.Composition;
+using HiFreTradeUI.Utils;
 
 namespace HiFreTradeUI.ViewModels
 {
@@ -12,6 +13,11 @@ namespace HiFreTradeUI.ViewModels
     [Export]
     public class LoginVM : NotificationObject
     {
+        public LoginVM()
+        {
+            _accountId = RuntimeContext.TestAccountID;
+        }
+
         #region IsUIEnabled
         private bool _isUIEnabled = true;
 

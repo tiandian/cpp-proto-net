@@ -17,6 +17,8 @@ namespace HiFreTradeUI.Win32Invoke
 
         public delegate void TimeNSalesUpdateDelegate(TimeNSalesData timeNSalesData);
 
+        public delegate void AccountInfoUpdateDelegate(AccountInfoData acctInfoData);
+
         [DllImport("ShFuGateway.dll")]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool ConnectMarketAgent(string brokerID, string userID, string password, QuoteUpdateDelegate quoteUpdateHandler);
@@ -60,5 +62,11 @@ namespace HiFreTradeUI.Win32Invoke
 
         [DllImport("ShFuGateway.dll")]
         public static extern void EnableStopLoss(bool isEnabled, double lossLimit);
+
+        [DllImport("ShFuGateway.dll")]
+        public static extern void RegAccountInfo(AccountInfoUpdateDelegate acctInfoCallback);
+
+        [DllImport("ShFuGateway.dll")]
+        public static extern void QueryAccountInfo();
     }
 }
