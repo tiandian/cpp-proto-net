@@ -7,6 +7,7 @@
 #include "AccountInfo.h"
 #include "AccountInfoMsg.h"
 #include "ClientAgent.h"
+#include "PositionDetailMsg.h"
 
 #include <sstream>
 #include <boost/format.hpp>
@@ -295,11 +296,6 @@ void CTradeAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThos
 }
 
 void CTradeAgent::OnRspQryInstrument( CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
-}
-
-void CTradeAgent::OnRspQryInvestorPosition( CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 
 }
@@ -785,6 +781,104 @@ void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradin
 		CAccountInfoMsg* accountMsg = new CAccountInfoMsg;
 		accountMsg->SetData(&account);
 		boost::shared_ptr<CMessage> msgPack(accountMsg);
+
+		g_clientAgent.Publish(msgPack);
+	}
+}
+
+void CTradeAgent::QueryOrders()
+{
+	CThostFtdcQryOrderField req;
+	memset(&req, 0, sizeof(req));
+	strcpy_s(req.BrokerID, m_brokerId.c_str());
+	strcpy_s(req.InvestorID, m_userId.c_str());
+	strcpy_s(req.InstrumentID, "IF1206");
+
+	while (true)
+	{
+		int iResult = m_pUserApi->ReqQryOrder(&req, RequestIDIncrement());
+		if (!IsFlowControl(iResult))
+		{
+			std::string infoText = boost::str(boost::format("Query orders: %d, %s") % iResult % ((iResult == 0) ? ", 成功" : ", 失败"));
+			logger.Info(infoText);
+			break;
+		}
+		else
+		{
+			logger.Warning(boost::str(boost::format("--->>> Query trading account: %d, 受到流控") % iResult));
+			Sleep(1000);
+		}
+	} // while
+	
+}
+
+void CTradeAgent::OnRspQryOrder( CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+
+}
+
+void CTradeAgent::QueryPositions()
+{
+	CThostFtdcQryInvestorPositionField req;
+	memset(&req, 0, sizeof(req));
+	strcpy_s(req.BrokerID, m_brokerId.c_str());
+	strcpy_s(req.InvestorID, m_userId.c_str());
+	strcpy_s(req.InstrumentID, "IF1206");
+
+	while (true)
+	{
+		int iResult = m_pUserApi->ReqQryInvestorPosition(&req, RequestIDIncrement());
+		if (!IsFlowControl(iResult))
+		{
+			std::string infoText = boost::str(boost::format("Query investor position: %d, %s") % iResult % ((iResult == 0) ? ", 成功" : ", 失败"));
+			logger.Info(infoText);
+			break;
+		}
+		else
+		{
+			logger.Warning(boost::str(boost::format("--->>> Query trading account: %d, 受到流控") % iResult));
+			Sleep(1000);
+		}
+	} // while
+}
+
+void CTradeAgent::OnRspQryInvestorPosition( CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+
+}
+
+void CTradeAgent::QueryPositionDetails(const std::string& symbol)
+{
+	CThostFtdcQryInvestorPositionDetailField req;
+	memset(&req, 0, sizeof(req));
+	strcpy_s(req.BrokerID, m_brokerId.c_str());
+	strcpy_s(req.InvestorID, m_userId.c_str());
+	strcpy_s(req.InstrumentID, symbol.c_str());
+
+	while (true)
+	{
+		int iResult = m_pUserApi->ReqQryInvestorPositionDetail(&req, RequestIDIncrement());
+		if (!IsFlowControl(iResult))
+		{
+			std::string infoText = boost::str(boost::format("Query investor position details: %d, %s") % iResult % ((iResult == 0) ? ", 成功" : ", 失败"));
+			logger.Info(infoText);
+			break;
+		}
+		else
+		{
+			logger.Warning(boost::str(boost::format("--->>> Query trading account: %d, 受到流控") % iResult));
+			Sleep(1000);
+		}
+	} // while
+}
+
+void CTradeAgent::OnRspQryInvestorPositionDetail( CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	if(!IsErrorRspInfo(pRspInfo))
+	{
+		CPositionDetailMsg* positionDetailMsg = new CPositionDetailMsg;
+		positionDetailMsg->SetData(pInvestorPositionDetail);
+		boost::shared_ptr<CMessage> msgPack(positionDetailMsg);
 
 		g_clientAgent.Publish(msgPack);
 	}

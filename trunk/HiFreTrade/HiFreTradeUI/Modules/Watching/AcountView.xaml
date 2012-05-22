@@ -1,0 +1,55 @@
+﻿<UserControl x:Class="HiFreTradeUI.Modules.AccountView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
+    <DockPanel>
+        <DockPanel DockPanel.Dock="Top" >
+            <Button Width="80" Height="28" Name="btnQueryAccount" Click="btnQueryAccount_Click">查询账户</Button>
+            <TextBlock Text="{Binding UpdateTime, StringFormat=T, FallbackValue=--:--:--}" HorizontalAlignment="Right"/>
+        </DockPanel>
+        <StackPanel Margin="4">
+            <StackPanel.Resources>
+                <Style TargetType="DockPanel">
+                    <Setter Property="Margin" Value="2"/>
+                    <Setter Property="Background" Value="#FFF0F0F0" />
+                </Style>
+            </StackPanel.Resources>
+            <DockPanel>
+                <TextBlock Width="80">可用资金</TextBlock>
+                <TextBlock Text="{Binding Available, StringFormat=N0}"></TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Width="80">结算准备金</TextBlock>
+                <TextBlock Text="{Binding Balance, StringFormat=N0}"></TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Width="80">当前保证金</TextBlock>
+                <TextBlock Text="{Binding CurrMargin, StringFormat=N0}"></TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Width="80">手续费</TextBlock>
+                <TextBlock Text="{Binding Commission, StringFormat=N0}"></TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Width="80">平仓盈亏</TextBlock>
+                <TextBlock Text="{Binding CloseProfit, StringFormat=N0}"></TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Width="80">持仓盈亏</TextBlock>
+                <TextBlock Text="{Binding PositionProfit, StringFormat=N0}"></TextBlock>
+            </DockPanel>
+
+            <DockPanel>
+                <TextBlock Width="80">占用保证金</TextBlock>
+                <TextBlock Text="{Binding FrozenMargin, StringFormat=N0}"></TextBlock>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock Width="80">下单冻结</TextBlock>
+                <TextBlock Text="{Binding FrozenCash, StringFormat=N0}"></TextBlock>
+            </DockPanel>
+        </StackPanel>
+    </DockPanel>
+</UserControl>

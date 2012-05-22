@@ -4,10 +4,16 @@
 #include "OperationRecordData.h"
 #include "TimeNSalePacket.h"
 #include "AccountInfoMsg.h"
+#include "PositionDetailMsg.h"
 
 
 CClientAgent::CClientAgent(void):
-	m_bufferRunner(boost::bind(&CClientAgent::DispatchMsgPack, this, _1))
+	 m_quoteCallback(NULL)
+	,m_recordCallback(NULL)
+	,m_tnsUpdateCallback(NULL)
+	,m_acctUpdateCallback(NULL)
+	,m_positionDetailUpdateCallback(NULL)
+	,m_bufferRunner(boost::bind(&CClientAgent::DispatchMsgPack, this, _1))
 {
 	m_bufferRunner.Start();
 }
@@ -44,6 +50,14 @@ void CClientAgent::DispatchMsgPack( boost::shared_ptr<CMessage>& package )
 		if(acct != NULL)
 			m_acctUpdateCallback(acct);
 	}
+	else if(msgType == POSITION_DETAIL)
+	{
+		CPositionDetailMsg* position = dynamic_cast<CPositionDetailMsg*>(package.get());
+		if(position != NULL)
+		{
+			m_positionDetailUpdateCallback(position);
+		}
+	}
 }
 
 void CClientAgent::Publish( boost::shared_ptr<CMessage>& msgPack )
@@ -69,4 +83,9 @@ void CClientAgent::SetTimeNSalesCallback( TimeNSalesUpdateFunc callback )
 void CClientAgent::SetAccountInfoCallback( AccountInfoUpdateFunc callback )
 {
 	m_acctUpdateCallback = callback;
+}
+
+void CClientAgent::SetPositionDetailCallback( PositionDetailUpdateFunc callback )
+{
+	m_positionDetailUpdateCallback = callback;
 }

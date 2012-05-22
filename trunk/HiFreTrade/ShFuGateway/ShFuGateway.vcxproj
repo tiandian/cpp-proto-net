@@ -106,6 +106,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClInclude Include="Message.h" />
     <ClInclude Include="OperationRecordData.h" />
     <ClInclude Include="OrderProcessor.h" />
+    <ClInclude Include="PositionDetailMsg.h" />
     <ClInclude Include="Quote.h" />
     <ClInclude Include="QuoteCache.h" />
     <ClInclude Include="resource.h" />
@@ -138,6 +139,7 @@ if not exist $(OutDir)Td md $(OutDir)Td</Command>
     <ClCompile Include="Message.cpp" />
     <ClCompile Include="OperationRecordData.cpp" />
     <ClCompile Include="OrderProcessor.cpp" />
+    <ClCompile Include="PositionDetailMsg.cpp" />
     <ClCompile Include="Quote.cpp" />
     <ClCompile Include="ReturnOrder.cpp" />
     <ClCompile Include="ShFuGateway.cpp" />
