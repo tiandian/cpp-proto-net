@@ -17,6 +17,7 @@ typedef void (__stdcall *QuoteCallback)(const QuoteData* pQuoteData);
 typedef void (__stdcall *OperationRecordCallback)(const OperationRecord* pRecord);
 typedef void (__stdcall *TimeNSalesCallback)(const TimeNSalesData* pTnsData);
 typedef void (__stdcall *AccountInfoCallback)(const AccountInfoData* pAcctInfo);
+typedef void (__stdcall *PositionDetailCallback)(const PositionDetail* pPositionDetail);
 
 extern "C"
 {
@@ -58,6 +59,10 @@ extern "C"
 	SHFU_GATEWAY_EXPORT void __stdcall RegAccountInfo(AccountInfoCallback acctInfoCallback);
 
 	SHFU_GATEWAY_EXPORT void __stdcall QueryAccountInfo();
+
+	SHFU_GATEWAY_EXPORT void __stdcall RegPositionDetail(PositionDetailCallback posiDetialCallback);
+
+	SHFU_GATEWAY_EXPORT void __stdcall QueryPositionDetail(const char* symbol);
 };
 
 #endif

@@ -262,14 +262,21 @@
         <igDock:XamDockManager Grid.Column="1" Theme="Office2k7Blue" LayoutMode="FillContainer">
             <igDock:XamDockManager.Panes>
                 <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedTop" Height="400">
-                    <igDock:ContentPane Name="operationRecordsPane" Header="操作记录"
+                    <igDock:TabGroupPane>
+                        <igDock:ContentPane Name="operationRecordsPane" Header="操作记录"
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.OperationsRegion}"/>
+                        <igDock:ContentPane Header="持仓状况"
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.PositionRegion}"/>
+                        <igDock:ContentPane Header="委托查询"
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.OrdersRegion}"/>
+                    </igDock:TabGroupPane>
+                    
                 </igDock:SplitPane>
 
                 <igDock:SplitPane x:Name="leftSplitPane" igDock:XamDockManager.InitialLocation="DockedBottom" 
                                       SplitterOrientation="Vertical">
-                    <igDock:ContentPane Name="positionPane" Header="持仓状况" 
-                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.PositionRegion}"/>
+                    <igDock:ContentPane Name="positionPane" Header="帐户信息" 
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.AccountRegion}"/>
                     <igDock:ContentPane Name="timeNSalesPane" Header="成交明细"
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.TimeNSalesRegion}"/>
                 </igDock:SplitPane>

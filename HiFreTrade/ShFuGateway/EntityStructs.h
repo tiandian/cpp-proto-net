@@ -151,3 +151,23 @@ struct AccountInfoData
 	double	dDeliveryMargin;
 	double	dExchangeDeliveryMargin;
 };
+
+#define EXCHANGEID_LEN 9
+
+struct PositionDetail
+{
+	char	caSymbol[SYMBOL_LEN];
+	char	cHedgeFlag;
+	int		iDirection;
+	char	caOpenDate[TRADINDG_DAY_LEN];
+	int		iVolume;
+	double	dOpenPrice;
+	char    caTradingDay[TRADINDG_DAY_LEN];
+	char	caExchangeID[EXCHANGEID_LEN];
+	double	dCloseProfit;
+	double	dPositionProfit;
+	double	dMargin;
+	double	dMarginRateByMoney;
+	int		CloseVolume;
+	double	CloseAmount;
+};

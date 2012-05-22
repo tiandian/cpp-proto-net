@@ -33,7 +33,9 @@ public:
 	bool SubmitOrderAction( CInputOrderAction* pOrderAction );
 
 	void QueryAccount();
-
+	void QueryOrders();
+	void QueryPositions();
+	void QueryPositionDetails(const std::string& symbol);
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
 
@@ -78,6 +80,12 @@ public:
 
 	///成交通知
 	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
+
+	///请求查询报单响应
+	virtual void OnRspQryOrder(CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
+
+	///请求查询投资者持仓明细响应
+	virtual void OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	//////////////////////////////////////////////////////////////////////////
 
