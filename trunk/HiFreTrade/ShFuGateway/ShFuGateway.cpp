@@ -133,6 +133,11 @@ SHFU_GATEWAY_EXPORT void __stdcall ClosePosition()
 	g_orderProcessor.ClosePosition();
 }
 
+SHFU_GATEWAY_EXPORT void __stdcall ForceClose(const char* symbol, int longshort, int quantity, bool closeYesterday)
+{
+	g_orderProcessor.ForceClose(std::string(symbol), longshort, quantity, closeYesterday);
+}
+
 SHFU_GATEWAY_EXPORT void __stdcall SetQuantity(int quantity)
 {
 	g_orderProcessor.SetQuantity(quantity);

@@ -48,6 +48,8 @@ extern "C"
 
 	SHFU_GATEWAY_EXPORT void __stdcall ClosePosition();
 
+	SHFU_GATEWAY_EXPORT void __stdcall ForceClose(const char* symbol, int longshort, int quantity, bool closeYesterday);
+
 	SHFU_GATEWAY_EXPORT bool __stdcall CancelOrder();
 
 	SHFU_GATEWAY_EXPORT void __stdcall SetQuantity(int quantity);

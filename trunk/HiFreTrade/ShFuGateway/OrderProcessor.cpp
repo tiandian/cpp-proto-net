@@ -163,18 +163,22 @@ const char* COrderProcessor::NextOrderRef()
 	return ORDER_REF_BUF;
 }
 
-char OFFSET_FLAG[2][2] = { {OF_OPEN, '\0'}, {OF_CLOSE_TODAY, '\0'} };
+char OFFSET_FLAG[3][2] = { {OF_OPEN, '\0'}, {OF_CLOSE_TODAY, '\0'} , {OF_CLOSE_YESTERDAY, '\0'}};
 
 std::string OPEN_OFFSET(OFFSET_FLAG[0]);
 std::string CLOSE_OFFSET(OFFSET_FLAG[1]);
+std::string CLOSE_YESTERDAY_OFFSET(OFFSET_FLAG[2]);
 
 boost::shared_ptr<CInputOrder> COrderProcessor::CreateOrder(int quantity, 
-	OP::OPEN_CLOSE_FLAG open_close, OP::LONG_SHORT_FLAG long_short, double limitPrice)
+	OP::OPEN_CLOSE_FLAG open_close, OP::LONG_SHORT_FLAG long_short, double limitPrice, const char* symbol)
 {
 	boost::shared_ptr<CInputOrder> order(new CInputOrder);
 	//order->set_brokerid("0240");
 	//order->set_investorid("0240050002");
-	order->set_instrumentid(m_currentSymbols[0]);
+	if(symbol == NULL)
+		order->set_instrumentid(m_currentSymbols[0]);
+	else
+		order->set_instrumentid(std::string(symbol));
 	order->set_orderref(NextOrderRef());
 
 	if(open_close == OP::OPEN)
@@ -195,7 +199,8 @@ boost::shared_ptr<CInputOrder> COrderProcessor::CreateOrder(int quantity,
 		}
 		order->set_comboffsetflag(OPEN_OFFSET);
 	}
-	else if(open_close == OP::CLOSE)
+	else if(open_close == OP::CLOSE ||
+			open_close == OP::CLOSE_YESTERDAY)
 	{
 		// in case wanna close position
 		if(long_short == OP::LONG)
@@ -210,7 +215,10 @@ boost::shared_ptr<CInputOrder> COrderProcessor::CreateOrder(int quantity,
 		{
 			throw std::exception("unexpected leg side");
 		}
-		order->set_comboffsetflag(CLOSE_OFFSET);
+		if(open_close == OP::CLOSE)
+			order->set_comboffsetflag(CLOSE_OFFSET);
+		else if(open_close == OP::CLOSE_YESTERDAY)
+			order->set_comboffsetflag(CLOSE_YESTERDAY_OFFSET);
 	}
 	else
 	{
@@ -291,6 +299,15 @@ void COrderProcessor::ClosePosition(int longshort, double limitprice, int exitRe
 	OP::LONG_SHORT_FLAG flag = longshort == SHORT_CLOSE ? OP::SHORT : OP::LONG;
 	boost::shared_ptr<CInputOrder> order = CreateOrder(quantity, OP::CLOSE, flag, limitprice);
 	m_currentRecord->SetExitReason(exitReason);
+	g_tradeAgent.SubmitOrder(order.get());
+}
+
+void COrderProcessor::ForceClose(const std::string& symbol, int longshort, int quantity, bool closeYesterday)
+{
+	OP::OPEN_CLOSE_FLAG closeFlag = closeYesterday ? OP::CLOSE_YESTERDAY : OP::CLOSE;
+	OP::LONG_SHORT_FLAG flag = longshort == SHORT_OPEN ? OP::SHORT : OP::LONG;
+	double limitPrice = longshort == SHORT_CLOSE ? m_latestQuote.Ask() : m_latestQuote.Bid();
+	boost::shared_ptr<CInputOrder> order = CreateOrder(quantity, closeFlag, flag, limitPrice, symbol.c_str());
 	g_tradeAgent.SubmitOrder(order.get());
 }
 

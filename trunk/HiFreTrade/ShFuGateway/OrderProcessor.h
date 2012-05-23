@@ -26,7 +26,8 @@ namespace OP{
 	enum OPEN_CLOSE_FLAG
 	{
 		OPEN = 0,
-		CLOSE = 1
+		CLOSE = 1,
+		CLOSE_YESTERDAY = 2
 	};
 
 };
@@ -45,6 +46,7 @@ public:
 	void OpenPosition(int quantity, int longshort, double limitprice, int entryReason);
 	void ClosePosition();
 	void ClosePosition(int longshort, double limitprice, int exitReason);
+	void ForceClose(const std::string& symbol, int longshort, int quantity, bool closeYesterday);
 	bool CancelOrder();
 
 
@@ -112,7 +114,7 @@ private:
 	void PublishRecord();
 
 	boost::shared_ptr<CInputOrder> CreateOrder(int quantity, 
-		OP::OPEN_CLOSE_FLAG open_close, OP::LONG_SHORT_FLAG long_short, double limitPrice);
+		OP::OPEN_CLOSE_FLAG open_close, OP::LONG_SHORT_FLAG long_short, double limitPrice, const char* symbol = NULL);
 	
 	std::vector<std::string> m_currentSymbols;
 	CBufferRunner< boost::shared_ptr<CQuote> > m_bufferRunner;

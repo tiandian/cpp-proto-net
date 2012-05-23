@@ -5,11 +5,12 @@ using System.Text;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.ViewModel;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace HiFreTradeUI.ViewModels
 {
     [Export]
-    public class PositionDetailVM
+    public class PositionDetailVM : NotificationObject
     {
         private ObservableCollection<PositionDetailItem> _positionDetailItems = new ObservableCollection<PositionDetailItem>();
 
@@ -28,15 +29,13 @@ namespace HiFreTradeUI.ViewModels
             PositionDetailItem posiItem = new PositionDetailItem();
 
             posiItem.Symbol = posiDetail.caSymbol;
+            posiItem.TradeID = posiDetail.caTradeID;
             posiItem.HedgeFlag = GetHedgeText(posiDetail.cHedgeFlag);
             posiItem.Direction = GetDirection(posiDetail.iDirection);
-            DateTime day;
-            bool succ = DateTime.TryParse(posiDetail.caOpenDate, out day);
-            if(succ) posiItem.OpenDate = day;
+            posiItem.OpenDate = GetDate(posiDetail.caOpenDate);
             posiItem.Volume = posiDetail.iVolume;
             posiItem.OpenPrice = posiDetail.dOpenPrice;
-            succ = DateTime.TryParse(posiDetail.caTradingDay, out day);
-            if (succ) posiItem.TradingDay = day;
+            posiItem.TradingDay = GetDate(posiDetail.caTradingDay);
             posiItem.ExchangeID = posiDetail.caExchangeID;
             posiItem.CloseProfit = posiDetail.dCloseProfit;
             posiItem.PositionProfit = posiDetail.dPositionProfit;
@@ -81,6 +80,29 @@ namespace HiFreTradeUI.ViewModels
                     return "未知";
             }
         }
+
+        private static DateTime GetDate(string tradeDate)
+        {
+            return DateTime.ParseExact(tradeDate, "yyyyMMdd", CultureInfo.CurrentCulture);
+        }
+
+        #region UpdateTime
+        private DateTime updateTime;
+
+        public DateTime UpdateTime
+        {
+            get { return updateTime; }
+            set
+            {
+                if (updateTime != value)
+                {
+                    updateTime = value;
+                    RaisePropertyChanged("UpdateTime");
+                }
+            }
+        }
+        #endregion
+
     }
 
     public class PositionDetailItem : NotificationObject
@@ -97,6 +119,23 @@ namespace HiFreTradeUI.ViewModels
                 {
                     _symbol = value;
                     RaisePropertyChanged("Symbol");
+                }
+            }
+        }
+        #endregion
+
+        #region TradeID
+        private string _tradeID;
+
+        public string TradeID
+        {
+            get { return _tradeID; }
+            set
+            {
+                if (_tradeID != value)
+                {
+                    _tradeID = value;
+                    RaisePropertyChanged("TradeID");
                 }
             }
         }
