@@ -37,7 +37,7 @@
             </igDP:XamDataGrid.Resources>
             <igDP:XamDataGrid.FieldLayouts>
                 <igDP:FieldLayout >
-                    <igDP:UnboundField Name="closePosition" Label="">
+                    <igDP:UnboundField Name="closePosition" Label="操作">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings CellValuePresenterStyle="{StaticResource closePosiColStyle}"/>
                         </igDP:UnboundField.Settings>
