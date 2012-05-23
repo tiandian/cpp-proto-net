@@ -15,6 +15,7 @@ public:
 	void SetData(CThostFtdcInvestorPositionDetailField* pPosition)
 	{
 		SafeStringCopy(m_innerData.caSymbol, pPosition->InstrumentID, SYMBOL_LEN);
+		SafeStringCopy(m_innerData.caTradeID, pPosition->TradeID, TRADEID_LEN);
 		m_innerData.cHedgeFlag = pPosition->HedgeFlag;
 		
 		if(pPosition->Direction == THOST_FTDC_D_Buy)

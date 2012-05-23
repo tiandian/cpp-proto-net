@@ -12,9 +12,14 @@ namespace HiFreTradeUI.Win32Invoke
         public const int TRADINDG_DAY_LEN = 9;
         public const int SYMBOL_LEN = 31;
         public const int EXCHANGEID_LEN = 9;
+        public const int TRADEID_LEN = 21;
 
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = SYMBOL_LEN)]
         public string	caSymbol;
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = TRADEID_LEN)]
+        public string	caTradeID;
+
 	    public char	    cHedgeFlag;
 	    public int		iDirection;
 	

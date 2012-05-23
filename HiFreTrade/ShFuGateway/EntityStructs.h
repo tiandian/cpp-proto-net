@@ -153,10 +153,12 @@ struct AccountInfoData
 };
 
 #define EXCHANGEID_LEN 9
+#define TRADEID_LEN 21
 
 struct PositionDetail
 {
 	char	caSymbol[SYMBOL_LEN];
+	char	caTradeID[TRADEID_LEN];
 	char	cHedgeFlag;
 	int		iDirection;
 	char	caOpenDate[TRADINDG_DAY_LEN];

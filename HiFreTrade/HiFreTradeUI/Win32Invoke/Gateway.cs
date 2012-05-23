@@ -19,6 +19,8 @@ namespace HiFreTradeUI.Win32Invoke
 
         public delegate void AccountInfoUpdateDelegate(AccountInfoData acctInfoData);
 
+        public delegate void PositionDetailUpdateDelegate(PositionDetail positionDetail);
+
         [DllImport("ShFuGateway.dll")]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool ConnectMarketAgent(string brokerID, string userID, string password, QuoteUpdateDelegate quoteUpdateHandler);
@@ -51,6 +53,9 @@ namespace HiFreTradeUI.Win32Invoke
         public static extern void ClosePosition();
 
         [DllImport("ShFuGateway.dll")]
+        public static extern void ForceClose(string symbol, int longshort, int quantity, bool closeYesterday);
+
+        [DllImport("ShFuGateway.dll")]
         [return: MarshalAs(UnmanagedType.I1)]
         public static extern bool CancelOrder();
 
@@ -68,5 +73,11 @@ namespace HiFreTradeUI.Win32Invoke
 
         [DllImport("ShFuGateway.dll")]
         public static extern void QueryAccountInfo();
+
+        [DllImport("ShFuGateway.dll")]
+        public static extern void RegPositionDetail(PositionDetailUpdateDelegate posiDetialCallback);
+
+        [DllImport("ShFuGateway.dll")]
+	    public static extern void QueryPositionDetail(string symbol);
     }
 }
