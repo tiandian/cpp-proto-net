@@ -8,6 +8,7 @@
 #include "AccountInfoMsg.h"
 #include "ClientAgent.h"
 #include "PositionDetailMsg.h"
+#include "OrderMsg.h"
 
 #include <sstream>
 #include <boost/format.hpp>
@@ -786,13 +787,13 @@ void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradin
 	}
 }
 
-void CTradeAgent::QueryOrders()
+void CTradeAgent::QueryOrders(const std::string& symbol)
 {
 	CThostFtdcQryOrderField req;
 	memset(&req, 0, sizeof(req));
 	strcpy_s(req.BrokerID, m_brokerId.c_str());
 	strcpy_s(req.InvestorID, m_userId.c_str());
-	strcpy_s(req.InstrumentID, "IF1206");
+	strcpy_s(req.InstrumentID, symbol.c_str());
 
 	while (true)
 	{
@@ -814,7 +815,14 @@ void CTradeAgent::QueryOrders()
 
 void CTradeAgent::OnRspQryOrder( CThostFtdcOrderField *pOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	if(!IsErrorRspInfo(pRspInfo))
+	{
+		COrderMsg* pOrderMsg = new COrderMsg;
+		pOrderMsg->SetData(pOrder);
+		boost::shared_ptr<CMessage> msgPack(pOrderMsg);
 
+		g_clientAgent.Publish(msgPack);
+	}
 }
 
 void CTradeAgent::QueryPositions()

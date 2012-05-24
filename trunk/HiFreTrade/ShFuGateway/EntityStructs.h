@@ -173,3 +173,33 @@ struct PositionDetail
 	int		CloseVolume;
 	double	CloseAmount;
 };
+
+#define ORDER_REF_LEN 13
+#define INVESTORID_LEN 13
+#define USERID_LEN 16
+#define ORDER_SYS_ID_LEN 21
+
+struct OrderInfo
+{
+	char	caSymbol[SYMBOL_LEN];
+	char	caOrderRef[ORDER_REF_LEN];
+	char	caInvestorID[INVESTORID_LEN];
+	char	caUserID[USERID_LEN];
+	char	cHedgeFlag;
+	int		iEntryExitType;
+	char	cPriceType;
+	double	dLimitPrice;
+	int		iVolumeTotalOriginal;
+	char	caExchangeID[EXCHANGEID_LEN];
+	int		iOrderStatus;
+	char	caOrderSysID[ORDER_SYS_ID_LEN];
+	int		iVolumeTraded;
+	int		iVolumeRemain;
+	char	caInsertDate[TRADINDG_DAY_LEN];
+	char	caInsertTime[UPDATE_TIME_LEN];
+	char	caUpdateTime[UPDATE_TIME_LEN];
+	char	caCancelTime[UPDATE_TIME_LEN];
+	int		iFrontID;
+	int		iSessionID;
+
+};
