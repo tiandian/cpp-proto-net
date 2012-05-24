@@ -14,6 +14,7 @@
 #include "TimeNSalePacket.h"
 #include "AccountInfoMsg.h"
 #include "PositionDetailMsg.h"
+#include "OrderMsg.h"
 
 #include <boost/format.hpp>
 #include <string>
@@ -29,6 +30,7 @@ OperationRecordCallback _recordCallbackHandler = NULL;
 TimeNSalesCallback _tnsCallbackHandler = NULL;
 AccountInfoCallback _acctCallbackHandler = NULL;
 PositionDetailCallback _posiDetialCallbackHandler = NULL;
+OrderCallback _orderCallbackHandler = NULL;
 
 void Cleanup();
 void SendQuoteUpdate(CQuote* pQuote);
@@ -36,6 +38,7 @@ void SendOperationRecords(COperationRecordData* pRecord);
 void SendTimeNSales(CTimeNSalePacket* pTns);
 void SendAccountInfo(CAccountInfoMsg* pAcctInfo);
 void SendPositionDetail(CPositionDetailMsg* pPosiDetailMsg);
+void SendOrder(COrderMsg* pOrderMsg);
 
 SHFU_GATEWAY_EXPORT int __stdcall TestCall(int a, int b)
 {
@@ -180,6 +183,17 @@ SHFU_GATEWAY_EXPORT void __stdcall QueryPositionDetail(const char* symbol)
 	g_tradeAgent.QueryPositionDetails(std::string(symbol));
 }
 
+SHFU_GATEWAY_EXPORT void __stdcall RegOrders(OrderCallback orderCallback)
+{
+	g_clientAgent.SetOrderCallback(boost::bind(SendOrder, _1));
+	_orderCallbackHandler = orderCallback;
+}
+
+SHFU_GATEWAY_EXPORT void __stdcall QueryOrders(const char* symbol)
+{
+	g_tradeAgent.QueryOrders(std::string(symbol));
+}
+
 void Cleanup()
 {
 	g_marketAgent.Logout();
@@ -240,5 +254,13 @@ void SendPositionDetail(CPositionDetailMsg* pPosiDetailMsg)
 	if(_posiDetialCallbackHandler != NULL)
 	{
 		_posiDetialCallbackHandler(pPosiDetailMsg->InnerStruct());
+	}
+}
+
+void SendOrder(COrderMsg* pOrderMsg)
+{
+	if(_orderCallbackHandler != NULL)
+	{
+		_orderCallbackHandler(pOrderMsg->InnerStruct());
 	}
 }

@@ -5,6 +5,7 @@
 #include "TimeNSalePacket.h"
 #include "AccountInfoMsg.h"
 #include "PositionDetailMsg.h"
+#include "OrderMsg.h"
 
 
 CClientAgent::CClientAgent(void):
@@ -13,6 +14,7 @@ CClientAgent::CClientAgent(void):
 	,m_tnsUpdateCallback(NULL)
 	,m_acctUpdateCallback(NULL)
 	,m_positionDetailUpdateCallback(NULL)
+	,m_orderUpdateCallback(NULL)
 	,m_bufferRunner(boost::bind(&CClientAgent::DispatchMsgPack, this, _1))
 {
 	m_bufferRunner.Start();
@@ -58,6 +60,14 @@ void CClientAgent::DispatchMsgPack( boost::shared_ptr<CMessage>& package )
 			m_positionDetailUpdateCallback(position);
 		}
 	}
+	else if(msgType == ORDER)
+	{
+		COrderMsg* orderMsg = dynamic_cast<COrderMsg*>(package.get());
+		if(orderMsg != NULL)
+		{
+			m_orderUpdateCallback(orderMsg);
+		}
+	}
 }
 
 void CClientAgent::Publish( boost::shared_ptr<CMessage>& msgPack )
@@ -88,4 +98,9 @@ void CClientAgent::SetAccountInfoCallback( AccountInfoUpdateFunc callback )
 void CClientAgent::SetPositionDetailCallback( PositionDetailUpdateFunc callback )
 {
 	m_positionDetailUpdateCallback = callback;
+}
+
+void CClientAgent::SetOrderCallback( OrderUpdateFunc callback )
+{
+	m_orderUpdateCallback = callback;
 }

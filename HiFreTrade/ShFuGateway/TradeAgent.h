@@ -33,7 +33,7 @@ public:
 	bool SubmitOrderAction( CInputOrderAction* pOrderAction );
 
 	void QueryAccount();
-	void QueryOrders();
+	void QueryOrders(const std::string& symbol);
 	void QueryPositions();
 	void QueryPositionDetails(const std::string& symbol);
 	//////////////////////////////////////////////////////////////////////////
