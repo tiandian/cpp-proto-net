@@ -81,7 +81,7 @@ namespace HiFreTradeUI.ViewModels
             }
         }
 
-        private static DateTime GetDate(string tradeDate)
+        public static DateTime GetDate(string tradeDate)
         {
             return DateTime.ParseExact(tradeDate, "yyyyMMdd", CultureInfo.CurrentCulture);
         }

@@ -163,7 +163,7 @@ namespace HiFreTradeUI.ViewModels
             }
         }
 
-        private static string GetEntryExitType(int iType)
+        public static string GetEntryExitType(int iType)
         {
             /*
             // iEntryType and iExitType
@@ -189,7 +189,7 @@ namespace HiFreTradeUI.ViewModels
             }
         }
 
-        private static string GetEntryExitStatus(int iStatus)
+        public static string GetEntryExitStatus(int iStatus)
         {
             /*
             // iEntryStatus and iExitStatus
