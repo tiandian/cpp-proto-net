@@ -70,6 +70,12 @@ extern "C"
 	SHFU_GATEWAY_EXPORT void __stdcall RegOrders(OrderCallback orderCallback);
 
 	SHFU_GATEWAY_EXPORT void __stdcall QueryOrders(const char* symbol);
+
+	SHFU_GATEWAY_EXPORT void __stdcall CancelOrder2(const char* ordRef, 
+													const char* exchId, 
+													const char* ordSysId, 
+													const char* userId, 
+													const char* symbol);
 };
 
 #endif

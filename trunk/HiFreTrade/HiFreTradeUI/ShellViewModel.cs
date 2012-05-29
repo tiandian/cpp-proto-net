@@ -81,6 +81,22 @@ namespace HiFreTradeUI
         }
         #endregion
 
+        #region AppTitle
+        private string _appTitle;
+
+        public string AppTitle
+        {
+            get { return _appTitle; }
+            set
+            {
+                if (_appTitle != value)
+                {
+                    _appTitle = value;
+                    RaisePropertyChanged("AppTitle");
+                }
+            }
+        }
+        #endregion
 
         [Import]
         public QuoteVM Quote { get; set; }

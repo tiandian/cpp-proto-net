@@ -7,8 +7,8 @@
         xmlns:cal="http://www.codeplex.com/CompositeWPF"
         xmlns:ig="http://schemas.infragistics.com/xaml"
         xmlns:src="clr-namespace:HiFreTradeUI"
-        Title="MainWindow" Height="700" Width="1024" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
-        Closed="Window_Closed">
+        Height="700" Width="1024" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen"
+        Closed="Window_Closed" Title="{Binding AppTitle, FallbackValue=HiFreTrade}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>

@@ -48,6 +48,11 @@ public:
 	void ClosePosition(int longshort, double limitprice, int exitReason);
 	void ForceClose(const std::string& symbol, int longshort, int quantity, bool closeYesterday);
 	bool CancelOrder();
+	void CancelOrder(	const std::string& ordRef, 
+						const std::string& exchId, 
+						const std::string& ordSysId, 
+						const std::string& userId, 
+						const std::string& symbol);
 
 
 	void EnableStopGain(bool isEnabled, double gainLimit)

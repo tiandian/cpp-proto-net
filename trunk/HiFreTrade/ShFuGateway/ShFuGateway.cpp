@@ -194,6 +194,16 @@ SHFU_GATEWAY_EXPORT void __stdcall QueryOrders(const char* symbol)
 	g_tradeAgent.QueryOrders(std::string(symbol));
 }
 
+SHFU_GATEWAY_EXPORT void __stdcall CancelOrder2(const char* ordRef, 
+												const char* exchId, 
+												const char* ordSysId, 
+												const char* userId, 
+												const char* symbol)
+{
+	g_orderProcessor.CancelOrder(std::string(ordRef), std::string(exchId), std::string(ordSysId),
+		std::string(userId), std::string(symbol));
+}
+
 void Cleanup()
 {
 	g_marketAgent.Logout();
