@@ -87,5 +87,12 @@ namespace HiFreTradeUI.Win32Invoke
 
         [DllImport("ShFuGateway.dll")]
 	    public static extern void QueryOrders(string symbol);
+
+        [DllImport("ShFuGateway.dll")]
+        public static extern void CancelOrder2( string ordRef,
+                                                string exchId,
+                                                string ordSysId,
+                                                string userId,
+                                                string symbol);
     }
 }

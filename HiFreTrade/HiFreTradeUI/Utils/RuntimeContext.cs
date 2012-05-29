@@ -12,7 +12,7 @@ namespace HiFreTradeUI.Utils
         public static readonly string TestAccountID = "0240050005";
         public static readonly string TestPassword = "888888";
 
-        public static string CurrentBrokerID 
+        public static string CurrentUserID 
         {
             get;
             set;

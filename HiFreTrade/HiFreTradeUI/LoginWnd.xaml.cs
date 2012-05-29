@@ -41,6 +41,7 @@ namespace HiFreTradeUI
         {
             if (succ)
             {
+                HiFreTradeUI.Utils.RuntimeContext.CurrentUserID = _viewModel.AccountId;
                 this.DialogResult = true;
             }
             else

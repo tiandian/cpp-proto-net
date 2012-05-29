@@ -267,6 +267,7 @@ void COrderProcessor::OpenPosition( int quantity, int longshort )
 	{
 		OP::LONG_SHORT_FLAG flag = longshort == SHORT_OPEN ? OP::SHORT : OP::LONG;
 		double limitPrice = flag == OP::SHORT ? m_latestQuote.Bid() : m_latestQuote.Ask();
+		limitPrice -= 10;
 		OpenPosition(quantity, longshort, limitPrice, MANUAL_OPEN);
 	}
 }
@@ -565,4 +566,30 @@ bool COrderProcessor::CancelOrder()
 	g_tradeAgent.SubmitOrderAction(orderAction.get());
 
 	return true;
+}
+
+void COrderProcessor::CancelOrder(	const std::string& ordRef, 
+									const std::string& exchId, 
+									const std::string& ordSysId, 
+									const std::string& userId,
+									const std::string& symbol)
+{
+	boost::shared_ptr<CInputOrderAction> orderAction(new CInputOrderAction);
+
+	orderAction->set_orderref(ordRef);
+
+	///操作标志
+	orderAction->set_actionflag(AF_Delete);	// Cancel order
+
+	///交易所代码
+	orderAction->set_exchangeid(exchId);
+	///报单编号
+	orderAction->set_ordersysid(ordSysId);
+	///用户代码
+	orderAction->set_userid(userId);
+
+	orderAction->set_instrumentid(symbol);
+
+	g_tradeAgent.SubmitOrderAction(orderAction.get());
+
 }

@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using HiFreTradeUI.Win32Invoke;
 using System.Diagnostics;
 using System.ComponentModel.Composition;
+using System.Reflection;
+using HiFreTradeUI.Utils;
 
 namespace HiFreTradeUI
 {
@@ -59,6 +61,9 @@ namespace HiFreTradeUI
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            string ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            _viewModel.AppTitle = string.Format("High Frequency Trading v{0} [{1}]", ver, RuntimeContext.CurrentUserID);
+
             LogManager.Logger.Info("Window loaded, Connecting market...");
             this._viewModel.Connect();
         }

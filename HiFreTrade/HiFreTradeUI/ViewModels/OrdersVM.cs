@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 namespace HiFreTradeUI.ViewModels
 {
     [Export]
-    public class OrdersVM
+    public class OrdersVM : NotificationObject
     {
         private ObservableCollection<OrderItem> _orders = new ObservableCollection<OrderItem>();
 
@@ -17,6 +17,23 @@ namespace HiFreTradeUI.ViewModels
         {
             get { return _orders; }
         }
+
+        #region UpdateTime
+        private DateTime updateTime;
+
+        public DateTime UpdateTime
+        {
+            get { return updateTime; }
+            set
+            {
+                if (updateTime != value)
+                {
+                    updateTime = value;
+                    RaisePropertyChanged("UpdateTime");
+                }
+            }
+        }
+        #endregion
 
         public void Clear()
         {
@@ -62,13 +79,13 @@ namespace HiFreTradeUI.ViewModels
             switch (hedgeFlag)
             {
                 case '1':
-                    hedgeText = "套保";
+                    hedgeText = "投机";
                     break;
                 case '2':
                     hedgeText = "套利";
                     break;
                 case '3':
-                    hedgeText = "投机";
+                    hedgeText = "套保";
                     break;
             }
 

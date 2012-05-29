@@ -817,6 +817,8 @@ void CTradeAgent::OnRspQryOrder( CThostFtdcOrderField *pOrder, CThostFtdcRspInfo
 {
 	if(!IsErrorRspInfo(pRspInfo))
 	{
+		if(pOrder == NULL) return;	// no order returned
+
 		COrderMsg* pOrderMsg = new COrderMsg;
 		pOrderMsg->SetData(pOrder);
 		boost::shared_ptr<CMessage> msgPack(pOrderMsg);
@@ -884,6 +886,8 @@ void CTradeAgent::OnRspQryInvestorPositionDetail( CThostFtdcInvestorPositionDeta
 {
 	if(!IsErrorRspInfo(pRspInfo))
 	{
+		if(pInvestorPositionDetail == NULL) return;
+
 		CPositionDetailMsg* positionDetailMsg = new CPositionDetailMsg;
 		positionDetailMsg->SetData(pInvestorPositionDetail);
 		boost::shared_ptr<CMessage> msgPack(positionDetailMsg);
