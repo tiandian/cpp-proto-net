@@ -1,8 +1,11 @@
 #pragma once
 
 #include "APInvokeNative.h"
+#include "server.h"
 
-#include <string> 
+#include <string>
+#include <map>
+#include <boost/smart_ptr.hpp>
 
 using namespace std;
 
@@ -28,6 +31,10 @@ public:
 	void Close();
 
 private:
+	void OnClientAccepted(connection_ptr conn);
+
 	SessionManagerHandler* m_callback;
+
+	boost::shared_ptr<server> m_server;
 };
 
