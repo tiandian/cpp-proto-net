@@ -1,6 +1,7 @@
 #pragma once
 
 #include "APInvokeNative.h"
+#include "connection.h"
 #include "server.h"
 
 #include <string>
@@ -9,14 +10,47 @@
 
 using namespace std;
 
+class APSessionManager;
+
 class APSession : public Session
 {
 public:
+	APSession(const string& sid, const connection_ptr& conn):
+		m_isContinuousReading(false),
+		m_pSessionMgr(NULL)
+	{
+		m_sessionId = sid;
+		m_conn = conn;
+	}
+
 	const string& SessionId() { return m_sessionId; }
 
+	const string& GetIPAddress() { return m_ipAddr; }
+
+	void GetReady(APSessionManager* sessionMgr);
+
+	void BeginWrite(MSG_TYPE msg, string& data);
+
+	void OnWriteCompleted(const boost::system::error_code& e, std::size_t bytes_transferred);
+
+	void BeginRead();
+
+	void OnReadCompleted(const boost::system::error_code& e, MSG_TYPE msg, const string& data);
+
+	void Close();
+
 private:
+
+	void OnSocketError(const boost::system::error_code& e);
+
+	connection_ptr m_conn;
 	string m_sessionId;
+	string m_ipAddr;
+	APSessionManager* m_pSessionMgr;
+	bool m_isContinuousReading;
 };
+
+typedef boost::shared_ptr<APSession> SessionPtr;
 
 class APSessionManager : public SessionManager
 {
@@ -30,11 +64,15 @@ public:
 
 	void Close();
 
+	void HandleError(const string& sessionId, const boost::system::error_code& e);
+
 private:
 	void OnClientAccepted(connection_ptr conn);
 
 	SessionManagerHandler* m_callback;
 
 	boost::shared_ptr<server> m_server;
+
+	std::map<std::string, SessionPtr> m_clientMap;
 };
 

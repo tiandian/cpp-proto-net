@@ -1,6 +1,12 @@
 #include "StdAfx.h"
 #include "APSessionManager.h"
 
+#include <sstream>
+#include <boost/bind.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
+
 SessionManager* SessionManager::Create()
 {
 	return new APSessionManager;
@@ -21,14 +27,16 @@ bool APSessionManager::Listen( unsigned int nPort )
 	m_server = boost::shared_ptr<server>(new server(nPort));
 	m_server->set_accept_handler(boost::bind(&APSessionManager::OnClientAccepted, this, _1));
 
-	if(m_callback != NULL)
-		m_callback->OnConnected(NULL);
 	return true;
 }
 
 void APSessionManager::Close()
 {
+	// close all client first
+	m_clientMap.clear();
 
+	// destory server
+	m_server.reset();
 }
 
 void APSessionManager::RegisterCallback( SessionManagerHandler* handler )
@@ -38,5 +46,126 @@ void APSessionManager::RegisterCallback( SessionManagerHandler* handler )
 
 void APSessionManager::OnClientAccepted( connection_ptr conn )
 {
+	boost::uuids::random_generator gen;
+	boost::uuids::uuid uuid_ = gen();
+	string sessionId = boost::uuids::to_string(uuid_);
 
+	SessionPtr client(new APSession(sessionId, conn));
+	m_clientMap.insert(std::make_pair(sessionId, client));
+	
+}
+
+void APSessionManager::HandleError( const string& sessionId, const boost::system::error_code& e )
+{
+	if(e)
+	{
+		// log error
+		std::ostringstream oss;
+		std::map<std::string, SessionPtr>::iterator foundClnt = m_clientMap.find(sessionId);
+
+		Session* pSession = NULL;
+
+		if(foundClnt != m_clientMap.end())
+		{
+			oss << "Client (ip:" << (foundClnt->second)->GetIPAddress() << ", sid:" << sessionId <<") encounter error:";
+			oss << e.message();
+			pSession = (foundClnt->second).get();
+		}
+		else
+		{
+			oss << "Error happent to the not existing client : " << e.message();
+		}
+
+		if(m_callback != NULL)
+		{
+			m_callback->OnError(pSession, oss.str());
+		}
+
+		// handle error
+		int eVal = e.value();
+
+		// client close the connection
+		if(eVal == 10054)
+		{
+			// close myself
+			(foundClnt->second)->Close();
+			// remove from map storage
+			m_clientMap.erase(foundClnt);
+		}
+	}
+}
+
+void APSession::GetReady( APSessionManager* sessionMgr )
+{
+	m_pSessionMgr = sessionMgr;
+	m_isContinuousReading = true;
+	BeginRead();
+}
+
+void APSession::BeginWrite( MSG_TYPE msg, string& data )
+{
+	m_conn->async_write(msg, data, boost::bind(&APSession::OnWriteCompleted, this, _1, _2));
+}
+
+void APSession::OnWriteCompleted( const boost::system::error_code& e, std::size_t bytes_transferred )
+{
+	if(e)
+	{
+		OnSocketError(e);
+	}
+	else
+	{
+
+	}
+}
+
+void APSession::BeginRead()
+{
+	m_conn->async_read(boost::bind(&APSession::OnReadCompleted, this, _1, _2, _3));
+}
+
+void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE msg, const string& data )
+{
+	if(e)
+	{
+		OnSocketError(e);
+	}
+	else
+	{
+		switch (msg)
+		{	
+		case SYS:
+			{
+			}
+			break;
+		case REQ:
+			{
+			}
+			break;
+		case RSP:
+			{
+			}
+			break;
+		case CALLBK:
+			{
+			}
+			break;
+		}
+
+		if(m_isContinuousReading)
+			BeginRead();
+	}
+}
+
+void APSession::OnSocketError( const boost::system::error_code& e )
+{
+	if(m_pSessionMgr != NULL)
+	{
+		m_conn->socket().get_io_service().post(boost::bind(&APSessionManager::HandleError, m_pSessionMgr, m_sessionId, e));
+	}
+}
+
+void APSession::Close()
+{
+	m_conn->close();
 }
