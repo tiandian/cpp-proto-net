@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "APSessionManager.h"
+#include "../Transmission/gen/packet.pb.h"
 
 #include <sstream>
 #include <boost/bind.hpp>
@@ -7,13 +8,20 @@
 #include <boost/uuid/uuid_generators.hpp>
 #include <boost/uuid/uuid_io.hpp>
 
+
 SessionManager* SessionManager::Create()
 {
 	return new APSessionManager;
 }
 
+bool HandleConnected(const string& userId, const string& pwd)
+{
+	return userId == "APInvoke Connection";
+}
+
 APSessionManager::APSessionManager(void):
-m_callback(NULL)
+m_callback(NULL),
+m_threadPool(2)
 {
 }
 
@@ -52,7 +60,9 @@ void APSessionManager::OnClientAccepted( connection_ptr conn )
 
 	SessionPtr client(new APSession(sessionId, conn));
 	m_clientMap.insert(std::make_pair(sessionId, client));
-	
+	client->GetReady(this);
+
+
 }
 
 void APSessionManager::HandleError( const string& sessionId, const boost::system::error_code& e )
@@ -134,19 +144,29 @@ void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE ms
 	{
 		switch (msg)
 		{	
-		case SYS:
+		case CONN:
 			{
+				AP::Connect reqConn;
+				reqConn.ParseFromString(data);
+				
+				AP::ConnectAck rspConn;
+				if(HandleConnected(reqConn.userid(), reqConn.password()))
+				{
+					rspConn.set_success(true);
+					rspConn.set_session(SessionId());
+				}
+				else
+				{
+					rspConn.set_success(false);
+				}
+				BeginSendMessage(CONN_ACK, &rspConn);
 			}
 			break;
 		case REQ:
 			{
 			}
 			break;
-		case RSP:
-			{
-			}
-			break;
-		case CALLBK:
+		case CALLBK_RSP:
 			{
 			}
 			break;
