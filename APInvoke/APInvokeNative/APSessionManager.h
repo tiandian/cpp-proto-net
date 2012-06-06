@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <boost/smart_ptr.hpp>
+#include <boost/threadpool.hpp>
 
 using namespace std;
 
@@ -23,11 +24,21 @@ public:
 		m_conn = conn;
 	}
 
+	~APSession(){ Close(); }
+
 	const string& SessionId() { return m_sessionId; }
 
 	const string& GetIPAddress() { return m_ipAddr; }
 
 	void GetReady(APSessionManager* sessionMgr);
+
+	template<typename T>
+	void BeginSendMessage(MSG_TYPE type, T* pT)
+	{
+		std::string data;
+		pT->SerializeToString(&data);
+		BeginWrite(type, data);
+	}
 
 	void BeginWrite(MSG_TYPE msg, string& data);
 
@@ -68,11 +79,30 @@ public:
 
 private:
 	void OnClientAccepted(connection_ptr conn);
+	void RaiseConnected(const APSession* session) 
+	{
+		if(m_callback != NULL) m_callback->OnConnected(session);
+	}
+	void RaiseDisconnected(const APSession* session)
+	{
+		if(m_callback != NULL) m_callback->OnDisconnected(session);
+	}
+	void RaiseError(const APSession* session, const string& errorMsg)
+	{
+		if(m_callback != NULL) m_callback->OnError(session, errorMsg);
+	}
 
 	SessionManagerHandler* m_callback;
 
 	boost::shared_ptr<server> m_server;
 
 	std::map<std::string, SessionPtr> m_clientMap;
+
+	typedef boost::threadpool::thread_pool<	boost::threadpool::task_func, 
+											boost::threadpool::fifo_scheduler, 
+											boost::threadpool::static_size, 
+											boost::threadpool::resize_controller, 
+											boost::threadpool::immediately> ThreadPool;
+	ThreadPool m_threadPool;
 };
 

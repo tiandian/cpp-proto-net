@@ -85,6 +85,7 @@ copy /y $(TargetPath) $(ProjectDir)lib\</Command>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Transmission\gen\packet.pb.h" />
     <ClInclude Include="APInvokeNative.h" />
     <ClInclude Include="APSessionManager.h" />
     <ClInclude Include="connection.h" />
@@ -94,6 +95,7 @@ copy /y $(TargetPath) $(ProjectDir)lib\</Command>
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Transmission\gen\packet.pb.cc" />
     <ClCompile Include="APInvokeNative.cpp" />
     <ClCompile Include="APSessionManager.cpp" />
     <ClCompile Include="dllmain.cpp">

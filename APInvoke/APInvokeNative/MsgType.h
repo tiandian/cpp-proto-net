@@ -4,8 +4,11 @@ typedef enum _MsgType
 {
 	UNKNOWN,
 
-	// System
-	SYS,
+	// Connect
+	CONN,
+
+	// Connect Ack
+	CONN_ACK,
 
 	// Request
 	REQ,
@@ -13,7 +16,10 @@ typedef enum _MsgType
 	// Response
 	RSP,
 
-	// Callback
-	CALLBK
+	// Callback Req
+	CALLBK_REQ,
+
+	// Callback Rsp
+	CALLBK_RSP
 
 } MSG_TYPE;
