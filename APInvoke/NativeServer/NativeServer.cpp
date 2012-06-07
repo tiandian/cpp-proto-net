@@ -11,7 +11,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	ServerSessionCallback sessionCallback;
 	SessionManager* pSessionManager = SessionManager::Create();
-	pSessionManager->RegisterCallback(&sessionCallback);
+	pSessionManager->RegisterHandler(&sessionCallback);
 	pSessionManager->Listen(16888);
 	delete pSessionManager;
 	return 0;
