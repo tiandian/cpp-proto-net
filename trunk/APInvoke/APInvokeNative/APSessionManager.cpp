@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "APSessionManager.h"
-#include "../Transmission/gen/packet.pb.h"
 
 #include <sstream>
 #include <boost/bind.hpp>
@@ -47,7 +46,7 @@ void APSessionManager::Close()
 	m_server.reset();
 }
 
-void APSessionManager::RegisterCallback( SessionManagerHandler* handler )
+void APSessionManager::RegisterHandler( SessionManagerHandler* handler )
 {
 	m_callback = handler;
 }
@@ -103,6 +102,37 @@ void APSessionManager::HandleError( const string& sessionId, const boost::system
 			m_clientMap.erase(foundClnt);
 		}
 	}
+}
+
+void APSessionManager::HandleRequest( const string& sessionId, const RequestPtr& request )
+{
+	m_threadPool.schedule(boost::bind(&APSessionManager::OnRequest, this, sessionId, request));
+}
+
+// Be intentional to copy sessionId
+void APSessionManager::OnRequest( string sessionId, const RequestPtr& request )
+{
+	string outData;
+	m_callback->DispatchPacket(sessionId, request->method(), request->param_data(), outData);
+
+	AP::Response resp;
+	resp.set_method(request->method());
+	resp.set_return_data(outData);
+
+	APSession* pSession = GetSession(sessionId);
+	if(pSession != NULL)
+	{
+		pSession->BeginSendMessage(RSP, &resp);
+	}
+}
+
+APSession* APSessionManager::GetSession( const string& sessionId )
+{
+	ClientMapIter iter = m_clientMap.find(sessionId);
+	if(iter != m_clientMap.end())
+		return (iter->second).get();
+	else
+		return NULL;
 }
 
 void APSession::GetReady( APSessionManager* sessionMgr )
@@ -164,10 +194,18 @@ void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE ms
 			break;
 		case REQ:
 			{
+				RequestPtr reqMethod( new AP::Request );
+				reqMethod->ParseFromString(data);
+
+				m_pSessionMgr->HandleRequest(SessionId(), reqMethod);
 			}
 			break;
 		case CALLBK_RSP:
 			{
+				CallBkRspPtr callbackRsp (new AP::CallbackRsp);
+				callbackRsp->ParseFromString(data);
+
+				m_callbackRspHandler->OnCallbackResponse(callbackRsp->method(), callbackRsp->return_data());
 			}
 			break;
 		}
@@ -188,4 +226,18 @@ void APSession::OnSocketError( const boost::system::error_code& e )
 void APSession::Close()
 {
 	m_conn->close();
+}
+
+void APSession::BeginCallback( const string& method, const string& callbackReqData )
+{
+	AP::CallbackReq callbackReq;
+	callbackReq.set_method(method);
+	callbackReq.set_param_data(callbackReqData);
+
+	BeginSendMessage(CALLBK_REQ, &callbackReq);
+}
+
+void APSession::RegisterCallback( SessionCallback* callbackRsp )
+{
+	m_callbackRspHandler = callbackRsp;
 }

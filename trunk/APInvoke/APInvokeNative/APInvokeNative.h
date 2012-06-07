@@ -23,12 +23,22 @@ public:
 	// TODO: add your methods here.
 };
 
+class SessionCallback
+{
+public:
+	virtual void OnCallbackResponse(const string& method, const string& return_data){}
+};
+
 class APINVOKENATIVE_API Session
 {
 public:
 	virtual ~Session(void){}
 
-	virtual const string& SessionId() = 0; 
+	virtual const string& SessionId() = 0;
+
+	virtual void BeginCallback(const string& method, const string& callbackReqData) = 0;
+
+	virtual void RegisterCallback(SessionCallback* callbackRsp) = 0;
 };
 
 class SessionManagerHandler
@@ -39,6 +49,9 @@ public:
 	virtual void OnDisconnected(const Session* session){}
 
 	virtual void OnError(const Session* session, const string& errorMsg){}
+
+	virtual void DispatchPacket(const string& sessionId, 
+		const string& method, const string& in_data, string& out_data){}
 };
 
 class APINVOKENATIVE_API SessionManager
@@ -48,7 +61,7 @@ public:
 	
 	virtual ~SessionManager(void){}
 
-	virtual void RegisterCallback(SessionManagerHandler* handler) = 0;
+	virtual void RegisterHandler(SessionManagerHandler* handler) = 0;
 
 	virtual bool Listen(unsigned int nPort) = 0;
 
