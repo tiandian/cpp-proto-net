@@ -12,7 +12,7 @@ namespace APInvokeManaged
         public delegate void ConnectDoneCallback(bool succ, string err);
         public delegate void SendDoneCallback(bool succ, string err);
         public delegate void ReceiveDoneCallback(bool succ, string err, MsgType msgType, byte[] data);
-
+        
         private const int HeaderBytesLength = 12;
 
         private Socket _tcpClient;
@@ -25,6 +25,8 @@ namespace APInvokeManaged
         private int _port;
         private bool _isConnected = false;
         private bool _isContinuousReading = false;
+
+        public event Action<MsgType, byte[]> OnDataReceived;
 
         public ConnectionBase(string address, int port)
         {
@@ -235,7 +237,7 @@ namespace APInvokeManaged
             {
                 if (succ)
                 {
-                    OnDataReceived(msgType, data);
+                    RaiseDataReceived(msgType, data);
                 }
                 else
                 {
@@ -251,9 +253,10 @@ namespace APInvokeManaged
             _isContinuousReading = false;
         }
 
-        protected virtual void OnDataReceived(MsgType msg_type, byte[] data)
+        private void RaiseDataReceived(MsgType msg_type, byte[] data)
         {
-
+            if (OnDataReceived != null)
+                OnDataReceived(msg_type, data);
         }
 
         public void Close()

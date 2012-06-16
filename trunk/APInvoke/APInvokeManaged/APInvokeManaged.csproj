@@ -51,6 +51,7 @@
     <Compile Include="Packet\Connect.cs" />
     <Compile Include="Packet\RequestResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DataTranslater.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

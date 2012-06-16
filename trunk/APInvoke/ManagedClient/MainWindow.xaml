@@ -3,6 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
+        <StackPanel Orientation="Vertical" Width="100" HorizontalAlignment="Left">
+            <Button Name="btnLaunch" Click="btnLaunch_Click">Launch</Button>
+            <Button Name="btnConnect" Click="btnConnect_Click">Connect</Button>
+            <Button Name="btnSend" Click="btnSend_Click">Send</Button>
+        </StackPanel>
         
     </Grid>
 </Window>
