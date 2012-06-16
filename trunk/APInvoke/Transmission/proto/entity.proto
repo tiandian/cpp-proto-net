@@ -1,0 +1,23 @@
+package Entity;
+
+message TestHelloParams
+{
+	required string param1 = 1;
+	required string param2 = 2;
+}
+
+message TestHelloReturn
+{
+	required bool success = 1;
+}
+
+message TestCallbackParams
+{
+	required string param3 = 1;
+	required string param4 = 2;
+}
+
+message TestCallbackReturn
+{
+	required int32 RetVal = 1;
+}

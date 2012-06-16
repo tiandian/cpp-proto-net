@@ -95,15 +95,15 @@ private:
 
 	void OnRequest(string sessionId, const RequestPtr& request);
 
-	void RaiseConnected(const APSession* session) 
+	void RaiseConnected(APSession* session) 
 	{
 		if(m_callback != NULL) m_callback->OnConnected(session);
 	}
-	void RaiseDisconnected(const APSession* session)
+	void RaiseDisconnected(APSession* session)
 	{
 		if(m_callback != NULL) m_callback->OnDisconnected(session);
 	}
-	void RaiseError(const APSession* session, const string& errorMsg)
+	void RaiseError(APSession* session, const string& errorMsg)
 	{
 		if(m_callback != NULL) m_callback->OnError(session, errorMsg);
 	}

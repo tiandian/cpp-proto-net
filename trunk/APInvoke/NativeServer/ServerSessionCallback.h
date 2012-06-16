@@ -8,10 +8,13 @@ public:
 	ServerSessionCallback(void);
 	~ServerSessionCallback(void);
 
-	virtual void OnConnected(const Session* session);
+	virtual void OnConnected(Session* session);
 
-	virtual void OnDisconnected(const Session* session){}
+	virtual void OnDisconnected(Session* session);
 
-	virtual void OnError(const Session* session, const string& errorMsg){}
+	virtual void OnError(Session* session, const string& errorMsg);
+
+	virtual void DispatchPacket(const string& sessionId, 
+		const string& method, const string& in_data, string& out_data);
 };
 

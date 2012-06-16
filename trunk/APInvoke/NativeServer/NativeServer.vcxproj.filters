@@ -30,6 +30,9 @@
     <ClInclude Include="ServerSessionCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Transmission\gen\entity.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -39,6 +42,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServerSessionCallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Transmission\gen\entity.pb.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
