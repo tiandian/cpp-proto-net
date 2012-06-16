@@ -16,12 +16,19 @@
 
 using namespace std;
 
+//////////////////////////////////////////////////////////////////////////
+// Auto generated sample export
 // This class is exported from the APInvokeNative.dll
 class APINVOKENATIVE_API CAPInvokeNative {
 public:
 	CAPInvokeNative(void);
 	// TODO: add your methods here.
 };
+
+extern APINVOKENATIVE_API int nAPInvokeNative;
+
+APINVOKENATIVE_API int fnAPInvokeNative(void);
+//////////////////////////////////////////////////////////////////////////
 
 class SessionCallback
 {
@@ -44,11 +51,11 @@ public:
 class SessionManagerHandler
 {
 public:
-	virtual void OnConnected(const Session* session){}
+	virtual void OnConnected(Session* session){}
 
-	virtual void OnDisconnected(const Session* session){}
+	virtual void OnDisconnected(Session* session){}
 
-	virtual void OnError(const Session* session, const string& errorMsg){}
+	virtual void OnError(Session* session, const string& errorMsg){}
 
 	virtual void DispatchPacket(const string& sessionId, 
 		const string& method, const string& in_data, string& out_data){}
@@ -69,6 +76,3 @@ public:
 
 };
 
-extern APINVOKENATIVE_API int nAPInvokeNative;
-
-APINVOKENATIVE_API int fnAPInvokeNative(void);
