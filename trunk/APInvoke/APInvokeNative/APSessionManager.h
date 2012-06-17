@@ -19,6 +19,7 @@ class APSession : public Session
 public:
 	APSession(const string& sid, const connection_ptr& conn):
 		m_isContinuousReading(false),
+		m_isConnected(false),
 		m_pSessionMgr(NULL),
 		m_callbackRspHandler(NULL)
 	{
@@ -29,6 +30,8 @@ public:
 	~APSession(){ Close(); }
 
 	const string& SessionId() { return m_sessionId; }
+
+	bool IsConnected() { return m_isConnected; }
 
 	const string& GetIPAddress() { return m_ipAddr; }
 
@@ -59,10 +62,12 @@ public:
 private:
 
 	void OnSocketError(const boost::system::error_code& e);
+	void OnConnectionEstablished();
 
 	connection_ptr m_conn;
 	string m_sessionId;
 	string m_ipAddr;
+	bool m_isConnected;
 	APSessionManager* m_pSessionMgr;
 	bool m_isContinuousReading;
 	SessionCallback* m_callbackRspHandler;
@@ -90,23 +95,24 @@ public:
 
 	void HandleRequest(const string& sessionId, const RequestPtr& request);
 
+	void RaiseConnected(Session* session) 
+	{
+		if(m_callback != NULL) m_callback->OnConnected(session);
+	}
+	void RaiseDisconnected(Session* session)
+	{
+		if(m_callback != NULL) m_callback->OnDisconnected(session);
+	}
+	void RaiseError(Session* session, const string& errorMsg)
+	{
+		if(m_callback != NULL) m_callback->OnError(session, errorMsg);
+	}
+
 private:
 	void OnClientAccepted(connection_ptr conn);
 
 	void OnRequest(string sessionId, const RequestPtr& request);
 
-	void RaiseConnected(APSession* session) 
-	{
-		if(m_callback != NULL) m_callback->OnConnected(session);
-	}
-	void RaiseDisconnected(APSession* session)
-	{
-		if(m_callback != NULL) m_callback->OnDisconnected(session);
-	}
-	void RaiseError(APSession* session, const string& errorMsg)
-	{
-		if(m_callback != NULL) m_callback->OnError(session, errorMsg);
-	}
 
 	SessionManagerHandler* m_callback;
 

@@ -85,21 +85,23 @@ void APSessionManager::HandleError( const string& sessionId, const boost::system
 			oss << "Error happent to the not existing client : " << e.message();
 		}
 
-		if(m_callback != NULL)
-		{
-			m_callback->OnError(pSession, oss.str());
-		}
+		RaiseError(pSession, oss.str());
 
 		// handle error
 		int eVal = e.value();
 
 		// client close the connection
-		if(eVal == 10054)
+		if(eVal == 10054 ||			// socket closed: client abnormally shut down
+			eVal == 2)				// end of file: client call close
 		{
 			// close myself
 			(foundClnt->second)->Close();
+
+			RaiseDisconnected(pSession);
+
 			// remove from map storage
 			m_clientMap.erase(foundClnt);
+			
 		}
 	}
 }
@@ -140,6 +142,7 @@ void APSession::GetReady( APSessionManager* sessionMgr )
 	m_pSessionMgr = sessionMgr;
 	m_isContinuousReading = true;
 	BeginRead();
+	m_isConnected = true;
 }
 
 void APSession::BeginWrite( MSG_TYPE msg, string& data )
@@ -184,6 +187,8 @@ void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE ms
 				{
 					rspConn.set_success(true);
 					rspConn.set_session(SessionId());
+
+					OnConnectionEstablished();
 				}
 				else
 				{
@@ -217,7 +222,7 @@ void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE ms
 
 void APSession::OnSocketError( const boost::system::error_code& e )
 {
-	if(m_pSessionMgr != NULL)
+	if(m_pSessionMgr != NULL && m_isConnected)
 	{
 		m_conn->socket().get_io_service().post(boost::bind(&APSessionManager::HandleError, m_pSessionMgr, m_sessionId, e));
 	}
@@ -225,6 +230,7 @@ void APSession::OnSocketError( const boost::system::error_code& e )
 
 void APSession::Close()
 {
+	m_isConnected = false;
 	m_conn->close();
 }
 
@@ -240,4 +246,12 @@ void APSession::BeginCallback( const string& method, const string& callbackReqDa
 void APSession::RegisterCallback( SessionCallback* callbackRsp )
 {
 	m_callbackRspHandler = callbackRsp;
+}
+
+void APSession::OnConnectionEstablished()
+{
+	if(m_pSessionMgr != NULL)
+	{
+		m_conn->socket().get_io_service().post(boost::bind(&APSessionManager::RaiseConnected, m_pSessionMgr, this));
+	}
 }
