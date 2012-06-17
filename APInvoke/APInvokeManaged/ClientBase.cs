@@ -9,7 +9,7 @@ namespace APInvokeManaged
 {
     public abstract class ClientBase
     {
-        private static string _authId = "xixihaha";
+        private static string _authId = "APInvoke Connection";
         private static string _authPwd = "";
 
         public static string AuthId
@@ -35,13 +35,14 @@ namespace APInvokeManaged
         {
             _connection = new ConnectionBase();
             _connection.OnDataReceived += new Action<MsgType, byte[]>(_connection_OnDataReceived);
+            _connection.OnError += new Action<string>(_connection_OnError);
         }
 
         public bool Connect(string address, int port)
         {
-            bool connected = false;
             lock(_syncObj)
             {
+                bool connected = false;
                 ConnectAsync(address, port, 
                     delegate(bool succ, string err)
                     {
@@ -53,8 +54,8 @@ namespace APInvokeManaged
                     });
 
                 Monitor.Wait(_syncObj);
+                return connected;
             }
-            return connected;
         }
 
         public void ConnectAsync(string address, int port, Action<bool, string> connectCompletionHandler)
@@ -102,6 +103,15 @@ namespace APInvokeManaged
                     RaiseError(string.Format("Unexpected message ({0}) received", msgType));
                     break;
             }
+        }
+
+
+        void _connection_OnError(string errMsg)
+        {
+            if (!_connection.IsConnected)
+                IsConnected = false;
+
+            RaiseError(errMsg);
         }
 
         private void RaiseError(string errMsg)

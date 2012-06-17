@@ -9,6 +9,8 @@ namespace APInvokeManaged
 {
     class ConnectionBase
     {
+        public enum Status { Closed, Open, Fault, Closing };
+
         public delegate void ConnectDoneCallback(bool succ, string err);
         public delegate void SendDoneCallback(bool succ, string err);
         public delegate void ReceiveDoneCallback(bool succ, string err, MsgType msgType, byte[] data);
@@ -23,10 +25,11 @@ namespace APInvokeManaged
 
         private string _address;
         private int _port;
-        private bool _isConnected = false;
+        private Status _status = Status.Closed;
         private bool _isContinuousReading = false;
-
+        
         public event Action<MsgType, byte[]> OnDataReceived;
+        public event Action<string> OnError;
 
         public ConnectionBase(string address, int port)
         {
@@ -38,12 +41,22 @@ namespace APInvokeManaged
         {
         }
 
+        public Status ConnectionStatus
+        {
+            get { return _status; }
+        }
+
+        public bool IsConnected
+        {
+            get { return _status == Status.Open; }
+        }
+
         public string Address
         {
             get { return _address; }
             set 
             {
-                if (_isConnected)
+                if (IsConnected)
                     throw new InvalidOperationException("Cannot change address during connected");
                 _address = value; 
             }
@@ -54,7 +67,7 @@ namespace APInvokeManaged
             get { return _port; }
             set 
             {
-                if (_isConnected)
+                if (IsConnected)
                     throw new InvalidOperationException("Cannot change port during connected");
 
                 _port = value;
@@ -66,8 +79,8 @@ namespace APInvokeManaged
             if (string.IsNullOrEmpty(Address))
                 throw new InvalidOperationException("Address is not set");
             if (Port < 1 || Port > 65535)
-                throw new InvalidOperationException("Port is not valid"); 
-            if (_isConnected)
+                throw new InvalidOperationException("Port is not valid");
+            if (IsConnected)
                 throw new InvalidOperationException("Cannot connect again during connected");
 
             IPHostEntry hostEntry = Dns.GetHostEntry(Address);
@@ -86,7 +99,8 @@ namespace APInvokeManaged
                     try
                     {
                         _tcpClient.EndConnect(ar);
-                        _isConnected = succ = true;
+                        succ = true;
+                        _status = Status.Open;
                     }
                     catch (System.Exception ex)
                     {
@@ -163,6 +177,9 @@ namespace APInvokeManaged
                 try
                 {
                     int recvBytes = _tcpClient.EndReceive(ar);
+                    
+                    if (!IsConnected) return;   // remote call close
+
                     System.Diagnostics.Debug.Assert(recvBytes == HeaderBytesLength);
 
                     // parse header buffer
@@ -177,6 +194,11 @@ namespace APInvokeManaged
                     _inbound_data = new byte[data_size];
 
                     succ = true;
+                }
+                catch(SocketException socketEx)
+                {
+                    err = string.Format("Socket Error: {0}", socketEx.Message);
+                    _status = Status.Fault;
                 }
                 catch (System.Exception ex)
                 {
@@ -207,6 +229,9 @@ namespace APInvokeManaged
                 try
                 {
                     int recvBytes = _tcpClient.EndReceive(ar);
+
+                    if (!IsConnected) return;   // remote call close
+
                     System.Diagnostics.Debug.Assert(recvBytes == _inbound_data.Length);
                     succ = true;
 
@@ -214,6 +239,11 @@ namespace APInvokeManaged
                     {
                         callback(succ, err, _inbound_msg_type, _inbound_data);
                     }
+                }
+                catch (SocketException socketEx)
+                {
+                    err = string.Format("Socket Error: {0}", socketEx.Message);
+                    _status = Status.Fault;
                 }
                 catch (System.Exception ex)
                 {
@@ -241,7 +271,9 @@ namespace APInvokeManaged
                 }
                 else
                 {
-                    throw new Exception(string.Format("Error occurs while receiving data:{0}", err));
+                    RaiseError(err);
+                    if (!IsConnected)   // don't read socket any more once error
+                        _isContinuousReading = false;
                 }
             };
             _isContinuousReading = true;
@@ -259,13 +291,19 @@ namespace APInvokeManaged
                 OnDataReceived(msg_type, data);
         }
 
+        private void RaiseError(string errMsg)
+        {
+            if (OnError != null)
+                OnError(errMsg);
+        }
+
         public void Close()
         {
             Action<IAsyncResult> disconnectDoneAction = delegate(IAsyncResult ar)
             {
-                _isConnected = false;
+                _status = Status.Closed;
             };
-
+            _status = Status.Closing;
             _tcpClient.BeginDisconnect(false, new AsyncCallback(disconnectDoneAction), null);
         }
     }

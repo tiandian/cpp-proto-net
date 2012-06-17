@@ -43,6 +43,8 @@ public:
 
 	virtual const string& SessionId() = 0;
 
+	virtual bool IsConnected() = 0;
+
 	virtual void BeginCallback(const string& method, const string& callbackReqData) = 0;
 
 	virtual void RegisterCallback(SessionCallback* callbackRsp) = 0;
