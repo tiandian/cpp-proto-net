@@ -313,14 +313,14 @@ class Request : public ::google::protobuf::Message {
   inline ::std::string* mutable_method();
   inline ::std::string* release_method();
   
-  // required string param_data = 3;
+  // required bytes param_data = 3;
   inline bool has_param_data() const;
   inline void clear_param_data();
   static const int kParamDataFieldNumber = 3;
   inline const ::std::string& param_data() const;
   inline void set_param_data(const ::std::string& value);
   inline void set_param_data(const char* value);
-  inline void set_param_data(const char* value, size_t size);
+  inline void set_param_data(const void* value, size_t size);
   inline ::std::string* mutable_param_data();
   inline ::std::string* release_param_data();
   
@@ -416,14 +416,14 @@ class Response : public ::google::protobuf::Message {
   inline ::std::string* mutable_method();
   inline ::std::string* release_method();
   
-  // required string return_data = 2;
+  // required bytes return_data = 2;
   inline bool has_return_data() const;
   inline void clear_return_data();
   static const int kReturnDataFieldNumber = 2;
   inline const ::std::string& return_data() const;
   inline void set_return_data(const ::std::string& value);
   inline void set_return_data(const char* value);
-  inline void set_return_data(const char* value, size_t size);
+  inline void set_return_data(const void* value, size_t size);
   inline ::std::string* mutable_return_data();
   inline ::std::string* release_return_data();
   
@@ -516,14 +516,14 @@ class CallbackReq : public ::google::protobuf::Message {
   inline ::std::string* mutable_method();
   inline ::std::string* release_method();
   
-  // required string param_data = 2;
+  // required bytes param_data = 2;
   inline bool has_param_data() const;
   inline void clear_param_data();
   static const int kParamDataFieldNumber = 2;
   inline const ::std::string& param_data() const;
   inline void set_param_data(const ::std::string& value);
   inline void set_param_data(const char* value);
-  inline void set_param_data(const char* value, size_t size);
+  inline void set_param_data(const void* value, size_t size);
   inline ::std::string* mutable_param_data();
   inline ::std::string* release_param_data();
   
@@ -627,14 +627,14 @@ class CallbackRsp : public ::google::protobuf::Message {
   inline ::std::string* mutable_method();
   inline ::std::string* release_method();
   
-  // required string return_data = 3;
+  // required bytes return_data = 3;
   inline bool has_return_data() const;
   inline void clear_return_data();
   static const int kReturnDataFieldNumber = 3;
   inline const ::std::string& return_data() const;
   inline void set_return_data(const ::std::string& value);
   inline void set_return_data(const char* value);
-  inline void set_return_data(const char* value, size_t size);
+  inline void set_return_data(const void* value, size_t size);
   inline ::std::string* mutable_return_data();
   inline ::std::string* release_return_data();
   
@@ -990,7 +990,7 @@ inline ::std::string* Request::release_method() {
   }
 }
 
-// required string param_data = 3;
+// required bytes param_data = 3;
 inline bool Request::has_param_data() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -1023,7 +1023,7 @@ inline void Request::set_param_data(const char* value) {
   }
   param_data_->assign(value);
 }
-inline void Request::set_param_data(const char* value, size_t size) {
+inline void Request::set_param_data(const void* value, size_t size) {
   set_has_param_data();
   if (param_data_ == &::google::protobuf::internal::kEmptyString) {
     param_data_ = new ::std::string;
@@ -1110,7 +1110,7 @@ inline ::std::string* Response::release_method() {
   }
 }
 
-// required string return_data = 2;
+// required bytes return_data = 2;
 inline bool Response::has_return_data() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1143,7 +1143,7 @@ inline void Response::set_return_data(const char* value) {
   }
   return_data_->assign(value);
 }
-inline void Response::set_return_data(const char* value, size_t size) {
+inline void Response::set_return_data(const void* value, size_t size) {
   set_has_return_data();
   if (return_data_ == &::google::protobuf::internal::kEmptyString) {
     return_data_ = new ::std::string;
@@ -1230,7 +1230,7 @@ inline ::std::string* CallbackReq::release_method() {
   }
 }
 
-// required string param_data = 2;
+// required bytes param_data = 2;
 inline bool CallbackReq::has_param_data() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1263,7 +1263,7 @@ inline void CallbackReq::set_param_data(const char* value) {
   }
   param_data_->assign(value);
 }
-inline void CallbackReq::set_param_data(const char* value, size_t size) {
+inline void CallbackReq::set_param_data(const void* value, size_t size) {
   set_has_param_data();
   if (param_data_ == &::google::protobuf::internal::kEmptyString) {
     param_data_ = new ::std::string;
@@ -1408,7 +1408,7 @@ inline ::std::string* CallbackRsp::release_method() {
   }
 }
 
-// required string return_data = 3;
+// required bytes return_data = 3;
 inline bool CallbackRsp::has_return_data() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -1441,7 +1441,7 @@ inline void CallbackRsp::set_return_data(const char* value) {
   }
   return_data_->assign(value);
 }
-inline void CallbackRsp::set_return_data(const char* value, size_t size) {
+inline void CallbackRsp::set_return_data(const void* value, size_t size) {
   set_has_return_data();
   if (return_data_ == &::google::protobuf::internal::kEmptyString) {
     return_data_ = new ::std::string;
