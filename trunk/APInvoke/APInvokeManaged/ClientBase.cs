@@ -86,6 +86,54 @@ namespace APInvokeManaged
             _connection.Close();
         }
 
+        public byte[] Request(string method, byte[] reqData)
+        {
+            lock (_syncObj)
+            {
+                byte[] ret_data = null;
+                RequestAsync(method, reqData,
+                    delegate(bool succ, byte[] retData)
+                    {
+                        lock (_syncObj)
+                        {
+                            ret_data = retData;
+                            Monitor.Pulse(_syncObj);
+                        }
+                    });
+
+                Monitor.Wait(_syncObj);
+                return ret_data;
+            }
+        }
+
+        public void RequestAsync(string method, byte[] reqData, Action<bool, byte[]> responseHandler)
+        {
+            Packet.Request req = new Packet.Request()
+            {
+                session = SessionId,
+                method = method,
+                param_data = reqData
+            };
+
+            byte[] data = DataTranslater.Serialize(req);
+
+            BookRequest(method, responseHandler);
+
+            _connection.SendAsync(MsgType.REQ, data,
+                delegate(bool succ, string msg)
+                {
+                    if (succ)
+                    {
+                        Trace.WriteLine(string.Format("Request {0} success.", method));
+                    }
+                    else
+                    {
+                        RemoveBookedRequest(method);
+                        responseHandler(false, null);
+                    }
+                });
+        }
+
         protected abstract void DispatchMessage();
 
         void _connection_OnDataReceived(MsgType msgType, byte[] receivedData)
@@ -96,6 +144,7 @@ namespace APInvokeManaged
                     OnEstablishConnectionAck(receivedData);
                     break;
                 case MsgType.RSP:
+                    OnResponse(receivedData);
                     break;
                 case MsgType.CALLBK_REQ:
                     break;
@@ -148,9 +197,12 @@ namespace APInvokeManaged
 
         private void OnEstablishConnectionAck(byte[] data)
         {
-            Packet.ConnectAck connAck = DataTranslater.Deserialize<Packet.ConnectAck>(data);
-            IsConnected = connAck.success;
-            SessionId = connAck.session;
+            if (data != null && data.Length > 0)
+            {
+                Packet.ConnectAck connAck = DataTranslater.Deserialize<Packet.ConnectAck>(data);
+                IsConnected = connAck.success;
+                SessionId = connAck.session;
+            }
 
             Delegate callback = GetResponseCallback(typeof(Packet.Connect).Name);
             if (callback != null)
@@ -158,6 +210,29 @@ namespace APInvokeManaged
                 Action<bool, string> connCompletion = callback as Action<bool, string>;
                 if (connCompletion != null)
                     connCompletion(IsConnected, "");
+            }
+        }
+
+        private void OnResponse(byte[] data)
+        {
+            bool recvSucc = false;
+            byte[] respData = null;
+            string method = string.Empty;
+            if (data != null && data.Length > 0)
+            {
+                Packet.Response resp = DataTranslater.Deserialize<Packet.Response>(data);
+                method = resp.method;
+                respData = resp.return_data;
+
+                recvSucc = !string.IsNullOrEmpty(resp.method);
+            }
+
+            Delegate callback = GetResponseCallback(method);
+            if (callback != null)
+            {
+                Action<bool, byte[]> respCompletion = callback as Action<bool, byte[]>;
+                if (respCompletion != null)
+                    respCompletion(recvSucc, respData);
             }
         }
 
