@@ -9,7 +9,9 @@
 
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
 
-const char* MarketDataAddress = "tcp://asp-sim2-md1.financial-trading-platform.com:26213";
+const char* SimMarketData = "tcp://asp-sim2-md1.financial-trading-platform.com:26213";
+const char* MarketDataAddress = "tcp://gfqh-md3.financial-trading-platform.com:41213";
+
 
 #define SYMBOL_MAX_LENGTH 10
 #define CONNECT_TIMEOUT_MINUTE 1
@@ -42,7 +44,7 @@ void RunMarketDataFunc(CThostFtdcMdApi* pUserApi, const char* address)
 	pUserApi->Join();
 }
 
-bool CMarketAgent::Connect()
+bool CMarketAgent::Connect(const char* serverAddr)
 {
 	try{
 		// 初始化UserApi
@@ -50,10 +52,10 @@ bool CMarketAgent::Connect()
 		m_pUserApi->RegisterSpi(this);						// 注册事件类
 
 		std::stringstream ss(std::stringstream::out);
-		ss << "Try to connect market (" << MarketDataAddress << ") ...";
+		ss << "Try to connect market (" << serverAddr << ") ...";
 		logger.Info(ss.str());
 
-		m_thQuoting = boost::thread(&RunMarketDataFunc, m_pUserApi, MarketDataAddress);
+		m_thQuoting = boost::thread(&RunMarketDataFunc, m_pUserApi, serverAddr);
 		
 		// wait 1 minute for connected event
 		{

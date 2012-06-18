@@ -6,6 +6,7 @@ using Microsoft.Practices.Prism.ViewModel;
 using System.ComponentModel.Composition;
 using HiFreTradeUI.Win32Invoke;
 using System.Diagnostics;
+using HiFreTradeUI.ServerConfig;
 
 namespace HiFreTradeUI.ViewModels
 {
@@ -135,6 +136,24 @@ namespace HiFreTradeUI.ViewModels
         }
         #endregion
 
+        #region MarketDataServ
+        private ServerInfo _mktServ;
+
+        public ServerInfo MarketDataServ
+        {
+            get { return _mktServ; }
+            set
+            {
+                if (_mktServ != value)
+                {
+                    _mktServ = value;
+                    RaisePropertyChanged("MarketDataServ");
+                }
+            }
+        }
+        #endregion
+        
+        
 
         public void Connect()
         {
@@ -162,7 +181,17 @@ namespace HiFreTradeUI.ViewModels
         private bool ConnectGateway()
         {
             quoteUpdateFunc = new Gateway.QuoteUpdateDelegate(QuoteUpdateCallback);
-            return Gateway.ConnectMarketAgent("2030", "00092", "888888", quoteUpdateFunc);
+
+            if (MarketDataServ.IsReal)
+            {
+                return Gateway.ConnectMarketAgent(MarketDataServ.Address,
+                    "9000", "880810898", "9804441", quoteUpdateFunc);
+            }
+            else
+            {
+                return Gateway.ConnectMarketAgent(MarketDataServ.Address,
+                    "2030", "00092", "888888", quoteUpdateFunc);
+            }
         }
 
         private void QuoteUpdateCallback(QuoteData quote)

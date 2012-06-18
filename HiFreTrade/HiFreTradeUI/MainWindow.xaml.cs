@@ -16,6 +16,8 @@ using System.Diagnostics;
 using System.ComponentModel.Composition;
 using System.Reflection;
 using HiFreTradeUI.Utils;
+using Microsoft.Practices.ServiceLocation;
+using HiFreTradeUI.ViewModels;
 
 namespace HiFreTradeUI
 {
@@ -62,7 +64,9 @@ namespace HiFreTradeUI
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             string ver = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            _viewModel.AppTitle = string.Format("High Frequency Trading v{0} [{1}]", ver, RuntimeContext.CurrentUserID);
+            QuoteVM quoteViewModel = ServiceLocator.Current.GetInstance<QuoteVM>();
+            _viewModel.AppTitle = string.Format("High Frequency Trading v{0} [{1}] ({2})", 
+                ver, RuntimeContext.CurrentUserID, quoteViewModel.MarketDataServ.Name);
 
             LogManager.Logger.Info("Window loaded, Connecting market...");
             this._viewModel.Connect();

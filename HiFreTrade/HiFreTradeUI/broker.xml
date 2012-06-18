@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<marketData>
+  <serverGroup name="模拟">
+    <server name="模拟1" address="tcp://asp-sim2-md1.financial-trading-platform.com:26213" isReal="false"/>
+  </serverGroup>
+  <serverGroup name="上海电信">
+    <server name="上海电信1" address="tcp://gfqh-md1.financial-trading-platform.com:41213"/>
+    <server name="上海电信2" address="tcp://gfqh-md2.financial-trading-platform.com:41213"/>
+    <server name="上海电信3" address="tcp://gfqh-md3.financial-trading-platform.com:41213"/>
+    <server name="上海电信4" address="tcp://gfqh-md4.financial-trading-platform.com:41213"/>
+    <server name="上海电信9" address="tcp://gfqh-md9.financial-trading-platform.com:31213"/>
+  </serverGroup>
+  <serverGroup name="上海联通">
+    <server name="上海联通5" address="tcp://gfqh-md5.financial-trading-platform.com:41213"/>
+    <server name="上海联通6" address="tcp://gfqh-md6.financial-trading-platform.com:41213"/>
+    <server name="上海联通10" address="tcp://gfqh-md10.financial-trading-platform.com:31213"/>
+  </serverGroup>
+</marketData>
