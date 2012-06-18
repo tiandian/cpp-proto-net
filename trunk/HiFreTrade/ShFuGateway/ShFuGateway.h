@@ -24,7 +24,8 @@ extern "C"
 {
 	SHFU_GATEWAY_EXPORT int __stdcall TestCall(int a, int b);
 
-	SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* brokerID, 
+	SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* mktDataAddress, 
+															const char* brokerID, 
 															const char* userID, 
 															const char* password,
 															QuoteCallback callbackHandler);
@@ -76,6 +77,8 @@ extern "C"
 													const char* ordSysId, 
 													const char* userId, 
 													const char* symbol);
+
+	SHFU_GATEWAY_EXPORT int __stdcall TestMarketAddress(const char* address);
 };
 
 #endif

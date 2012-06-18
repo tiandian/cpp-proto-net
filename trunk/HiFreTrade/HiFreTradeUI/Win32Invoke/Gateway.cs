@@ -25,7 +25,7 @@ namespace HiFreTradeUI.Win32Invoke
 
         [DllImport("ShFuGateway.dll")]
         [return: MarshalAs(UnmanagedType.I1)]
-        public static extern bool ConnectMarketAgent(string brokerID, string userID, string password, QuoteUpdateDelegate quoteUpdateHandler);
+        public static extern bool ConnectMarketAgent(string srvAddr, string brokerID, string userID, string password, QuoteUpdateDelegate quoteUpdateHandler);
 
         [DllImport("ShFuGateway.dll")]
         public static extern void DisconnectMarketAgent();
@@ -94,5 +94,8 @@ namespace HiFreTradeUI.Win32Invoke
                                                 string ordSysId,
                                                 string userId,
                                                 string symbol);
+
+        [DllImport("ShFuGateway.dll")]
+        public static extern int TestMarketAddress(string address);
     }
 }

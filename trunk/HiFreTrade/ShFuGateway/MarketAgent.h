@@ -13,7 +13,7 @@ public:
 	CMarketAgent(void);
 	~CMarketAgent(void);
 
-	bool Connect();
+	bool Connect(const char* serverAddr);
 	void Disconnect();
 	bool Login(const char* brokerID, const char* userID, const char* password);
 	void Logout();

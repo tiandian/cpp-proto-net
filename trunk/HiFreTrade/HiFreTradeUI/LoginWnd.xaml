@@ -15,6 +15,10 @@
             <Button IsDefault="True" Name="btnLogin" Click="btnLogin_Click" IsEnabled="{Binding IsUIEnabled}">登录</Button>
             <Button IsCancel="True" Name="btnCancel" Click="btnCancel_Click" IsEnabled="{Binding IsUIEnabled}">取消</Button>
         </StackPanel>
+        <StackPanel DockPanel.Dock="Top" Margin="10" Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBox Name="txtSvrName" Width="100" IsReadOnly="True">[请选择]</TextBox>
+            <Button Name="btnConn" Click="btnConn_Click" Width="60" Margin="2"  DockPanel.Dock="Right">更改</Button>
+        </StackPanel>
         
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
             <StackPanel.Resources>

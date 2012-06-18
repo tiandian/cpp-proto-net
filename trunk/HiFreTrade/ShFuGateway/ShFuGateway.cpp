@@ -15,6 +15,7 @@
 #include "AccountInfoMsg.h"
 #include "PositionDetailMsg.h"
 #include "OrderMsg.h"
+#include "ConnectionTester.h"
 
 #include <boost/format.hpp>
 #include <string>
@@ -51,14 +52,15 @@ SHFU_GATEWAY_EXPORT int __stdcall TestCall(int a, int b)
 	return c;
 }
 
-SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* brokerID, 
+SHFU_GATEWAY_EXPORT bool __stdcall ConnectMarketAgent(	const char* mktDataAddress, 
+														const char* brokerID, 
 														const char* userID, 
 														const char* password,
 														QuoteCallback callbackHandler)
 {
 	logger.Debug(boost::str(boost::format("Login market with %s, %s, %s") % brokerID % userID % password));
 
-	if(!g_marketAgent.Connect())
+	if(!g_marketAgent.Connect(mktDataAddress))
 	{
 		Cleanup();
 		return false;
@@ -202,6 +204,16 @@ SHFU_GATEWAY_EXPORT void __stdcall CancelOrder2(const char* ordRef,
 {
 	g_orderProcessor.CancelOrder(std::string(ordRef), std::string(exchId), std::string(ordSysId),
 		std::string(userId), std::string(symbol));
+}
+
+SHFU_GATEWAY_EXPORT int __stdcall TestMarketAddress(const char* address)
+{
+	CConnectionTester connTester;
+	int delay = -1;
+	if(connTester.Validate(std::string(address), &delay))
+		return 1;
+	else
+		return -1;
 }
 
 void Cleanup()

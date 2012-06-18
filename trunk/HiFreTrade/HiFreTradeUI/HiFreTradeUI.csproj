@@ -116,7 +116,14 @@
     </Compile>
     <Compile Include="Modules\Watching\WatchModule.cs" />
     <Compile Include="RegionNames.cs" />
+    <Compile Include="ServerConfig\ServerConfiguation.cs" />
+    <Compile Include="ServerConfig\ServerGroup.cs" />
+    <Compile Include="ServerConfig\ServerInfo.cs" />
+    <Compile Include="ServerConfig\ServerStatusConverter.cs" />
     <Compile Include="ShellViewModel.cs" />
+    <Compile Include="TestConnectionWnd.xaml.cs">
+      <DependentUpon>TestConnectionWnd.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UIThread.cs" />
     <Compile Include="Utils\ILog.cs" />
     <Compile Include="Utils\Log4netLogger.cs" />
@@ -177,6 +184,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TestConnectionWnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -205,6 +216,11 @@
   </ItemGroup>
   <ItemGroup>
     <SplashScreen Include="splash.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="broker.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
