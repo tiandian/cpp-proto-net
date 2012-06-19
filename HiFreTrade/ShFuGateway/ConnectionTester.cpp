@@ -3,7 +3,7 @@
 
 #include <boost/smart_ptr.hpp>
 
-#define TEST_CONN_TIMEOUT 30
+#define TEST_CONN_TIMEOUT 15
 
 CConnectionTester::CConnectionTester(void):
 m_pUserApi(NULL)
