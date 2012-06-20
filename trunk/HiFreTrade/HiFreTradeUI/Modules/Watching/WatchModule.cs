@@ -6,6 +6,7 @@ using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.MefExtensions.Modularity;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Prism.Regions;
+using HiFreTradeUI.Modules.Watching;
 
 namespace HiFreTradeUI.Modules
 {
@@ -22,6 +23,8 @@ namespace HiFreTradeUI.Modules
                 () => ServiceLocator.Current.GetInstance<TimeNSalesView>());
             regionMgr.RegisterViewWithRegion(RegionNames.AccountRegion,
                 () => ServiceLocator.Current.GetInstance<AccountView>());
+            regionMgr.RegisterViewWithRegion(RegionNames.RecentQuotesRegion,
+                () => ServiceLocator.Current.GetInstance<RecentQuotesView>());
         }
     }
 }

@@ -27,6 +27,8 @@ extern CClientAgent g_clientAgent;
 
 using namespace std;
 
+void PrintRtnOrder(CThostFtdcOrderField* pOrder);
+
 // 流控判断
 bool IsFlowControl(int iResult)
 {
@@ -577,6 +579,10 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	///相关报单
 	pOrd->set_relativeordersysid(pOrder->RelativeOrderSysID);
 
+	// Print order detail once rejected
+	if(pOrder->OrderSubmitStatus >= THOST_FTDC_OSS_InsertRejected)
+		PrintRtnOrder(pOrder);
+
 	m_pOrderProcessor->OnRtnOrder(pOrd.get());
 }
 
@@ -894,4 +900,24 @@ void CTradeAgent::OnRspQryInvestorPositionDetail( CThostFtdcInvestorPositionDeta
 
 		g_clientAgent.Publish(msgPack);
 	}
+}
+
+void PrintRtnOrder(CThostFtdcOrderField* pOrder)
+{
+	ostringstream oss;
+	oss << "\n///////////////////////\n";
+	oss << "合约代码\t" << pOrder->InstrumentID << "\n";
+	oss << "报单引用\t" << pOrder->OrderRef << "\n";
+	oss << "报单价格条件\t" << pOrder->OrderPriceType << "\n";	
+	oss << "买卖方向\t" << pOrder->Direction << "\n";	
+	oss << "组合开平标志\t" << pOrder->CombOffsetFlag << "\n";
+	oss << "组合投机套保标志\t" << pOrder->CombHedgeFlag << "\n";
+	oss << "价格\t" << pOrder->LimitPrice << "\n";
+	oss << "数量\t" << pOrder->VolumeTotalOriginal << "\n";
+	oss << "有效期类型\t" << pOrder->TimeCondition << "\n";
+	oss << "成交量类型\t" << pOrder->VolumeCondition << "\n";
+	oss << "请求编号\t" << pOrder->RequestID << "\n";
+	oss << "///////////////////////\n";
+	
+	logger.Debug(oss.str());
 }

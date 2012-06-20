@@ -111,6 +111,9 @@
     <Compile Include="Modules\Watching\AcountView.xaml.cs">
       <DependentUpon>AcountView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Watching\RecentQuotesView.xaml.cs">
+      <DependentUpon>RecentQuotesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Watching\TimeNSalesView.xaml.cs">
       <DependentUpon>TimeNSalesView.xaml</DependentUpon>
     </Compile>
@@ -177,6 +180,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Watching\AcountView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Watching\RecentQuotesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
