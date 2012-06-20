@@ -16,5 +16,7 @@ namespace HiFreTradeUI
         public static readonly string AccountRegion = "AccountRegion";
 
         public static readonly string OrdersRegion = "OrdersRegion";
+
+        public static readonly string RecentQuotesRegion = "RecentQuotes";
     }
 }

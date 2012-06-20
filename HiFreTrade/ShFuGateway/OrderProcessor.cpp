@@ -123,8 +123,14 @@ void COrderProcessor::ProcessQuote( boost::shared_ptr<CQuote>& pQuote )
 
 	if(m_currentRecord->EntryStatus() == FULL_FILLED)
 	{
+		double stopGainTestPrice = last;
+		if(m_currentRecord->EntryType() == LONG_OPEN)
+			stopGainTestPrice = bid;
+		else if(m_currentRecord->EntryType() == SHORT_OPEN)
+			stopGainTestPrice = ask;
+		
 		int offsetFlag = UNKNOWN;
-		bool stopGain = m_stopGain.Check(last, pQuote->get_update_time(), &offsetFlag);
+		bool stopGain = m_stopGain.Check(stopGainTestPrice, pQuote->get_update_time(), &offsetFlag);
 		if(stopGain && offsetFlag > UNKNOWN)
 		{
 			double limitprice = offsetFlag == LONG_CLOSE ? bid : ask;
@@ -410,6 +416,16 @@ void COrderProcessor::OnRtnOrder( CReturnOrder* order )
 				entryStatus == REJECTED )
 			{	// reset pending order
 				m_pendingOrderInfo.Reset();
+
+				if(entryStatus == REJECTED)
+				{
+					// special handle open position order rejected
+					// forcibly start next trading
+					position_closed = true;
+					m_stopGain.Reset();
+					m_stopLoss.Reset();
+					m_openCondition.Reset();
+				}
 			}
 			else
 			{
