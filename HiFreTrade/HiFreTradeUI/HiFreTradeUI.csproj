@@ -92,6 +92,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Events\OperRecordUpdateEvent.cs" />
+    <Compile Include="Events\QuoteUpdateEvent.cs" />
     <Compile Include="Events\TimeNSalesUpdateEvent.cs" />
     <Compile Include="HiFreBootsrapper.cs" />
     <Compile Include="LoginWnd.xaml.cs">
@@ -137,6 +138,7 @@
     <Compile Include="ViewModels\PositionDetailVM.cs" />
     <Compile Include="ViewModels\AccountVM.cs" />
     <Compile Include="ViewModels\QuoteVM.cs" />
+    <Compile Include="ViewModels\RecentQuotesVM.cs" />
     <Compile Include="ViewModels\TimeNSalesVM.cs" />
     <Compile Include="ViewModels\TradeVM.cs" />
     <Compile Include="Win32Invoke\AccountInfoData.cs" />

@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel.Composition;
+using HiFreTradeUI.ViewModels;
 
 namespace HiFreTradeUI.Modules.Watching
 {
@@ -21,8 +22,10 @@ namespace HiFreTradeUI.Modules.Watching
     [Export]
     public partial class RecentQuotesView : UserControl
     {
-        public RecentQuotesView()
+        [ImportingConstructor]
+        public RecentQuotesView(RecentQuotesVM viewModel)
         {
+            this.DataContext = viewModel;
             InitializeComponent();
         }
     }
