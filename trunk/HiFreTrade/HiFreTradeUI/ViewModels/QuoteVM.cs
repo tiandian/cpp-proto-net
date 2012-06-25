@@ -7,6 +7,8 @@ using System.ComponentModel.Composition;
 using HiFreTradeUI.Win32Invoke;
 using System.Diagnostics;
 using HiFreTradeUI.ServerConfig;
+using Microsoft.Practices.Prism.Events;
+using HiFreTradeUI.Events;
 
 namespace HiFreTradeUI.ViewModels
 {
@@ -15,6 +17,14 @@ namespace HiFreTradeUI.ViewModels
     {
         [Import]
         private UIThread UIThread { get; set; }
+
+        private readonly IEventAggregator _aggregator;
+
+        [ImportingConstructor]
+        public QuoteVM(IEventAggregator aggregator)
+        {
+            _aggregator = aggregator;
+        }
 
         #region IsConnected
         private bool _isConnected;
@@ -206,6 +216,22 @@ namespace HiFreTradeUI.ViewModels
                                 Ask = quote.dAsk == double.MaxValue ? 0d : quote.dAsk;
                                 Bid = quote.dBid == double.MaxValue ? 0d : quote.dBid;
                             }));
+
+            _aggregator.GetEvent<QuoteUpdateEvent>().Publish(ToBindableQuote(quote));
+        }
+
+        public static QuoteItem ToBindableQuote(QuoteData quoteData)
+        {
+            QuoteItem item = new QuoteItem();
+            item.Last = quoteData.dLast;
+            item.Ask = quoteData.dAsk;
+            item.Bid = quoteData.dBid;
+
+            DateTime time;
+            bool succ = DateTime.TryParse(quoteData.caUpdateTime, out time);
+            if (succ) item.UpdateTime = time;
+            
+            return item;
         }
 
     }
