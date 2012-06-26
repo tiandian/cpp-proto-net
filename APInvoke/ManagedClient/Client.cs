@@ -9,12 +9,14 @@ namespace ManagedClient
 {
     class Client : ClientBase
     {
+        public event Action<string, string> OnCallbackEvent;
+
         public bool TestHello(string p1, string p2)
         {
             TestHelloParams tp = new TestHelloParams()
             {
-                 param1 = "aaa",
-                 param2 = "bbb"
+                 param1 = p1,
+                 param2 = p2
             };
             byte[] param_data = DataTranslater.Serialize(tp);
 
@@ -28,9 +30,16 @@ namespace ManagedClient
                 throw new Exception("Returned data is invalid"); 
         }
 
-        protected override void DispatchMessage()
+        protected override void DispatchCallback(string method, byte[] paramData)
         {
-            
+            if (method == "TestCallback")
+            {
+                if (OnCallbackEvent != null)
+                {
+                    TestCallbackParams cbParams = DataTranslater.Deserialize<TestCallbackParams>(paramData);
+                    OnCallbackEvent(cbParams.param3, cbParams.param4);
+                }
+            }
         }
     }
 }
