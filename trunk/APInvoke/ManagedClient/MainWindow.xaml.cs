@@ -29,10 +29,16 @@ namespace ManagedClient
         {
             _client = new Client();
             _client.OnError += new Action<string>(_client_OnError);
+            _client.OnCallbackEvent += new Action<string, string>(_client_OnCallbackEvent);
             
             InitializeComponent();
 
             InitServProc();
+        }
+
+        void _client_OnCallbackEvent(string arg1, string arg2)
+        {
+            Debug.WriteLine(string.Format("Callback param1:{0}, param2:{1}", arg1, arg2));
         }
 
         void _client_OnError(string errorMsg)
@@ -62,7 +68,8 @@ namespace ManagedClient
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
-
+            bool succ = _client.TestHello("aaa", "bbb");
+            Debug.WriteLine(string.Format("Invocation {0}", succ));
         }
 
         private void btnLaunch_Click(object sender, RoutedEventArgs e)

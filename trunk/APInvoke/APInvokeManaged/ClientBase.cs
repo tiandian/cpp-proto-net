@@ -134,7 +134,7 @@ namespace APInvokeManaged
                 });
         }
 
-        protected abstract void DispatchMessage();
+        protected abstract void DispatchCallback(string method, byte[] paramData);
 
         void _connection_OnDataReceived(MsgType msgType, byte[] receivedData)
         {
@@ -147,6 +147,7 @@ namespace APInvokeManaged
                     OnResponse(receivedData);
                     break;
                 case MsgType.CALLBK_REQ:
+                    OnCallbackReq(receivedData);
                     break;
                 default:
                     RaiseError(string.Format("Unexpected message ({0}) received", msgType));
@@ -233,6 +234,20 @@ namespace APInvokeManaged
                 Action<bool, byte[]> respCompletion = callback as Action<bool, byte[]>;
                 if (respCompletion != null)
                     respCompletion(recvSucc, respData);
+            }
+        }
+
+        private void OnCallbackReq(byte[] callbackReqData)
+        {
+            byte[] paramData = null;
+            string method = string.Empty;
+            if (callbackReqData != null && callbackReqData.Length > 0)
+            {
+                Packet.CallbackReq cbReq = DataTranslater.Deserialize<Packet.CallbackReq>(callbackReqData);
+                method = cbReq.method;
+                paramData = cbReq.param_data;
+
+                DispatchCallback(method, paramData);                
             }
         }
 
