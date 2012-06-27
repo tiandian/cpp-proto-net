@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APInvokeManaged", "..\APInv
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "APInvokeNative", "..\APInvoke\APInvokeNative\APInvokeNative.vcxproj", "{C97CFF3D-9D80-49B9-8344-853107529012}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TradeStation", "TradeStation\TradeStation.vcxproj", "{70401BB4-1B2C-447C-9739-CE4C762E64CB}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -59,6 +61,18 @@ Global
 		{C97CFF3D-9D80-49B9-8344-853107529012}.Release|Win32.ActiveCfg = Release|Win32
 		{C97CFF3D-9D80-49B9-8344-853107529012}.Release|Win32.Build.0 = Release|Win32
 		{C97CFF3D-9D80-49B9-8344-853107529012}.Release|x86.ActiveCfg = Release|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Debug|Win32.Build.0 = Debug|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Debug|x86.ActiveCfg = Debug|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Release|Any CPU.ActiveCfg = Release|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Release|Win32.ActiveCfg = Release|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Release|Win32.Build.0 = Release|Win32
+		{70401BB4-1B2C-447C-9739-CE4C762E64CB}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
