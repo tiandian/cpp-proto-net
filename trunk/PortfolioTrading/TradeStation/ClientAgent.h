@@ -5,6 +5,7 @@
 #include "StrategyManager.h"
 #include "PortfolioManager.h"
 #include "ManualOrderPlacer.h"
+#include "OrderProcessor.h"
 
 class CClientAgent
 {
@@ -18,5 +19,6 @@ private:
 	CStrategyManager	m_strategyMgr;
 	CPortfolioManager	m_portfolioMgr;
 	CManualOrderPlacer	m_orderPlacer;
+	COrderProcessor		m_orderProcessor;
 };
 

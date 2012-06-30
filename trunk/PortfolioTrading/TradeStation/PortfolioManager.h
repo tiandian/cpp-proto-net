@@ -1,6 +1,14 @@
 #pragma once
 
-#include "OrderProcessor.h"
+#include "Portfolio.h"
+
+#include <string>
+#include <map>
+#include <boost/shared_ptr.hpp>
+
+using namespace std;
+
+typedef boost::shared_ptr<CPortfolio> PortfolioPtr;
 
 class CPortfolioManager
 {
@@ -8,7 +16,15 @@ public:
 	CPortfolioManager(void);
 	~CPortfolioManager(void);
 
+	void Add(CPortfolio* portfolio);
+	CPortfolio* Get(const string& portfId);
+
 private:
-	COrderProcessor m_orderProcessor;
+
+	typedef map<string, PortfolioPtr> PortfolioMap;
+	typedef PortfolioMap::iterator PortfolioMapIter;
+
+	PortfolioMap m_mapPortfolios;
+	
 };
 
