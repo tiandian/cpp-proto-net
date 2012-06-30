@@ -1,0 +1,17 @@
+package entity;
+
+///TFtdcPosiDirectionType是一个持仓多空方向类型
+enum PosiDirectionType {
+	NET = 49;
+    LONG = 50;
+    SHORT = 51;
+}
+
+enum LegStatus
+{
+	UNOPENED = 0;
+	IS_OPENING = 1;
+	OPENED = 2;
+	IS_CLOSING = 3;
+	CLOSED = 4; 
+}
