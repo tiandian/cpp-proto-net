@@ -25,3 +25,8 @@ void CPortfolioManager::Add( CPortfolio* portfolio )
 	const string& pid = portfolio->ID();
 	m_mapPortfolios.insert(make_pair(pid, PortfolioPtr(portfolio)));
 }
+
+void CPortfolioManager::Remove( const string& portfId )
+{
+	m_mapPortfolios.erase(portfId);
+}

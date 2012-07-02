@@ -81,11 +81,13 @@
     <None Include="..\Entity\enum.proto" />
     <None Include="..\Entity\message.proto" />
     <None Include="..\Entity\proto_gen.bat" />
+    <None Include="..\Entity\quote.proto" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Entity\gen\cpp\enum.pb.h" />
     <ClInclude Include="..\Entity\gen\cpp\message.pb.h" />
+    <ClInclude Include="..\Entity\gen\cpp\quote.pb.h" />
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="ManualOrderPlacer.h" />
@@ -93,6 +95,8 @@
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioManager.h" />
     <ClInclude Include="QuoteAgent.h" />
+    <ClInclude Include="QuoteAggregator.h" />
+    <ClInclude Include="QuoteListener.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StrategyManager.h" />
     <ClInclude Include="targetver.h" />
@@ -105,6 +109,9 @@
     <ClCompile Include="..\Entity\gen\cpp\message.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\Entity\gen\cpp\quote.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="ManualOrderPlacer.cpp" />
@@ -114,6 +121,8 @@
     </ClCompile>
     <ClCompile Include="PortfolioManager.cpp" />
     <ClCompile Include="QuoteAgent.cpp" />
+    <ClCompile Include="QuoteAggregator.cpp" />
+    <ClCompile Include="QuoteListener.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
