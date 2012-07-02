@@ -19,7 +19,7 @@ class CPortfolio
 public:
 	~CPortfolio(void);
 
-	CPortfolio* Create(entity::PortfolioItem* pPortfItem)
+	static CPortfolio* Create(entity::PortfolioItem* pPortfItem)
 	{
 		CPortfolio* pPortf = new CPortfolio();
 		pPortf->SetItem(pPortfItem);

@@ -18,6 +18,7 @@ public:
 
 	void Add(CPortfolio* portfolio);
 	CPortfolio* Get(const string& portfId);
+	void Remove(const string& portfId);
 
 private:
 
