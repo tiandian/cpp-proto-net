@@ -81,6 +81,9 @@
     <ClInclude Include="..\Entity\gen\cpp\quote.pb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="QuoteAgentCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

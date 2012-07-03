@@ -30,3 +30,13 @@ void CQuoteAgent::Logout()
 {
 
 }
+
+bool CQuoteAgent::SubscribesQuotes( vector<string>& subscribeArr )
+{
+	return false;
+}
+
+bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
+{
+	return false;
+}
