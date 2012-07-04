@@ -90,6 +90,10 @@
     <ClInclude Include="..\Entity\gen\cpp\quote.pb.h" />
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ClientManager.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="globalmembers.h" />
+    <ClInclude Include="LogManager.h" />
+    <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="ManualOrderPlacer.h" />
     <ClInclude Include="OrderProcessor.h" />
@@ -98,6 +102,7 @@
     <ClInclude Include="QuoteAgent.h" />
     <ClInclude Include="QuoteAggregator.h" />
     <ClInclude Include="QuoteListener.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StrategyManager.h" />
     <ClInclude Include="targetver.h" />
@@ -115,6 +120,8 @@
     </ClCompile>
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ClientManager.cpp" />
+    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="ManualOrderPlacer.cpp" />
     <ClCompile Include="OrderProcessor.cpp" />
     <ClCompile Include="Portfolio.cpp">
@@ -131,6 +138,9 @@
     <ClCompile Include="StrategyManager.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeStation.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="TradeStation.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
