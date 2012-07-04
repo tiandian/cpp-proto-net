@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "QuoteAggregator.h"
+#include "globalmembers.h"
 
 #include <boost/foreach.hpp>
 
@@ -151,7 +152,7 @@ bool CQuoteAggregator::SubmitToServer()
 	}
 	else
 	{
-		//logger.Trace("Subscribed symbols didn't change, no need to submit.");
+		logger.Trace("Subscribed symbols didn't change, no need to submit.");
 		retVal = true;
 	}
 
