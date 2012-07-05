@@ -22,16 +22,18 @@ public:
 	void Remove(const string& pid);
 
 	std::string QuoteAddress() const { return m_quoteAddress; }
-	void QuoteAddress(std::string val) { m_quoteAddress = val; }
+	bool QuoteConnect(const std::string& address, const std::string& streamDir);
+	void QuoteDisconnect();
 
-	bool ConnectTrade(const string& brokerId, const string& userId, const string& password);
-	void DisconnectTrade();
+	bool TradeLogin(const string& brokerId, const string& userId, const string& password);
+	void TradeLogout();
 
 	std::string TradeAddress() const { return m_tradeAddress; }
-	void TradeAddress(std::string val) { m_tradeAddress = val; }
+	bool TradeConnect(const std::string& address, const std::string& streamDir);
+	void TradeDisconnect();
 
-	bool ConnectQuote(const string& brokerId, const string& userId, const string& password);
-	void DisconnectQuote();
+	bool QuoteLogin(const string& brokerId, const string& userId, const string& password);
+	void QuoteLogout();
 
 	void OpenPosition(const string& pid){}
 	void ClosePosition(const string& pid){}

@@ -23,34 +23,48 @@ void CClientAgent::Remove( const string& pid )
 	m_portfolioMgr.Remove(pid);
 }
 
-bool CClientAgent::ConnectTrade( const string& brokerId, const string& userId, const string& password )
+bool CClientAgent::TradeConnect( const std::string& address, const std::string& streamDir )
 {
-	m_quoteAgent.Open(m_quoteAddress);
-
-	m_quoteAgent.Login(brokerId, userId, password);
-
-	return false;
+	m_tradeAddress = address;
+	return m_tradeAgent.Open(m_tradeAddress, streamDir);
 }
 
-void CClientAgent::DisconnectTrade()
+bool CClientAgent::TradeLogin( const string& brokerId, const string& userId, const string& password )
+{
+	return m_tradeAgent.Login(brokerId, userId, password);
+}
+
+void CClientAgent::TradeLogout()
+{
+	m_tradeAgent.Logout();
+}
+
+void CClientAgent::TradeDisconnect()
+{
+	m_tradeAgent.Logout();
+	m_tradeAgent.Close();
+}
+
+bool CClientAgent::QuoteLogin( const string& brokerId, const string& userId, const string& password )
+{
+	return m_quoteAgent.Login(brokerId, userId, password);
+}
+
+void CClientAgent::QuoteLogout()
 {
 	m_quoteAgent.Logout();
+}
 
+bool CClientAgent::QuoteConnect( const std::string& address, const std::string& streamDir )
+{
+	m_quoteAddress = address;
+	return m_quoteAgent.Open(m_quoteAddress, streamDir);
+}
+
+void CClientAgent::QuoteDisconnect()
+{
+	m_quoteAgent.Logout();
 	m_quoteAgent.Close();
 }
 
-bool CClientAgent::ConnectQuote( const string& brokerId, const string& userId, const string& password )
-{
-	m_tradeAgent.Open(m_tradeAddress);
 
-	m_tradeAgent.Login(brokerId, userId, password);
-
-	return false;
-}
-
-void CClientAgent::DisconnectQuote()
-{
-	m_tradeAgent.Logout();
-
-	m_tradeAgent.Close();
-}

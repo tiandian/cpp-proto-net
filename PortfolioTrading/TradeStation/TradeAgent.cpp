@@ -11,7 +11,7 @@ CTradeAgent::~CTradeAgent(void)
 {
 }
 
-bool CTradeAgent::Open( const string& address )
+bool CTradeAgent::Open( const string& address, const string& streamDir )
 {
 	return false;
 }

@@ -23,5 +23,15 @@ namespace PortfolioTrading
         {
             InitializeComponent();
         }
+
+        private void btnLaunch_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnTest_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

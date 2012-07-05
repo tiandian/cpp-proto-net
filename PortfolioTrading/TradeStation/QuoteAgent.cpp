@@ -1,6 +1,15 @@
 #include "StdAfx.h"
 #include "QuoteAgent.h"
+#include "globalmembers.h"
+#include "FileOperations.h"
 
+#include <boost/format.hpp>
+
+#pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
+
+#define SYMBOL_MAX_LENGTH 10
+#define CONNECT_TIMEOUT_MINUTE 1
+#define DISCONNECT_TIMEOUT_SECOND 5
 
 CQuoteAgent::CQuoteAgent(void)
 {
@@ -11,8 +20,55 @@ CQuoteAgent::~CQuoteAgent(void)
 {
 }
 
-bool CQuoteAgent::Open( const string& address )
+void RunMarketDataFunc(CThostFtdcMdApi* pUserApi, const char* address)
 {
+	// duplicate address string and use boost.smart_ptr to manage its lifecycle
+	boost::scoped_array<char> front_addr(strdup(address));
+
+	pUserApi->RegisterFront(front_addr.get());					// connect
+	pUserApi->Init();
+
+	pUserApi->Join();
+}
+
+bool CQuoteAgent::Open( const string& address, const string& streamDir )
+{
+	try{
+		string streamFolder = streamDir + "/Md";
+		if(!CreateFolderIfNotExists(streamFolder))
+			return false;
+
+		// 初始化UserApi
+		m_pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(streamFolder.c_str());			// 创建UserApi
+		m_pUserApi->RegisterSpi(this);						// 注册事件类
+
+		logger.Info(boost::str(boost::format("Try to connect market (%s) ...") % address));
+
+		m_thQuoting = boost::thread(&RunMarketDataFunc, m_pUserApi, address.c_str());
+
+		// wait 1 minute for connected event
+		{
+			boost::unique_lock<boost::mutex> lock(m_mutex);
+			if(!m_condConnectDone.timed_wait(lock, boost::posix_time::minutes(CONNECT_TIMEOUT_MINUTE)))
+			{
+				logger.Warning("Connecting time out");
+				return false;
+			}
+
+			m_bIsConnected = true;
+		}
+		return true;
+	}
+	catch(std::exception& ex)
+	{
+		logger.Error("Failed to connect to market for quote, details is following");
+		logger.Error(ex.what());
+	}
+	catch(...)
+	{
+		logger.Error("Unknown error encounted while connecting market for quote");
+	}
+
 	return false;
 }
 
@@ -39,4 +95,49 @@ bool CQuoteAgent::SubscribesQuotes( vector<string>& subscribeArr )
 bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 {
 	return false;
+}
+
+void CQuoteAgent::OnFrontConnected()
+{
+
+}
+
+void CQuoteAgent::OnFrontDisconnected( int nReason )
+{
+
+}
+
+void CQuoteAgent::OnHeartBeatWarning( int nTimeLapse )
+{
+
+}
+
+void CQuoteAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+
+}
+
+void CQuoteAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+
+}
+
+void CQuoteAgent::OnRspError( CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+
+}
+
+void CQuoteAgent::OnRspSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+
+}
+
+void CQuoteAgent::OnRspUnSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+
+}
+
+void CQuoteAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMarketData )
+{
+
 }

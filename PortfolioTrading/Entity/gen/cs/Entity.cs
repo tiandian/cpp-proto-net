@@ -101,42 +101,28 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-}
-// Generated from: enum.proto
-namespace entity
-{
-    [global::ProtoBuf.ProtoContract(Name=@"PosiDirectionType")]
-    public enum PosiDirectionType
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"QuoteConnectParam")]
+  public partial class QuoteConnectParam : global::ProtoBuf.IExtensible
+  {
+    public QuoteConnectParam() {}
+    
+    private string _QuoteAddress;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"QuoteAddress", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string QuoteAddress
     {
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"NET", Value=49)]
-      NET = 49,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"LONG", Value=50)]
-      LONG = 50,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"SHORT", Value=51)]
-      SHORT = 51
+      get { return _QuoteAddress; }
+      set { _QuoteAddress = value; }
     }
-  
-    [global::ProtoBuf.ProtoContract(Name=@"LegStatus")]
-    public enum LegStatus
+    private string _StreamFolder;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"StreamFolder", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string StreamFolder
     {
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"UNOPENED", Value=0)]
-      UNOPENED = 0,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"IS_OPENING", Value=1)]
-      IS_OPENING = 1,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"OPENED", Value=2)]
-      OPENED = 2,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"IS_CLOSING", Value=3)]
-      IS_CLOSING = 3,
-            
-      [global::ProtoBuf.ProtoEnum(Name=@"CLOSED", Value=4)]
-      CLOSED = 4
+      get { return _StreamFolder; }
+      set { _StreamFolder = value; }
     }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
   
 }
