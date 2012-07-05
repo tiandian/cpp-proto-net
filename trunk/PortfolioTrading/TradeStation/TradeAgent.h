@@ -10,7 +10,7 @@ public:
 	CTradeAgent(void);
 	~CTradeAgent(void);
 
-	bool Open(const string& address);
+	bool Open( const string& address, const string& streamDir );
 	void Close();
 
 	bool Login(const string& brokerId, const string& userId, const string& password);

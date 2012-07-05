@@ -19,3 +19,9 @@ message PortfolioItem
 	required bool AutoClose = 5;
 	repeated LegItem Legs = 6; 
 }
+
+message QuoteConnectParam
+{
+	required string QuoteAddress = 1;
+	required string StreamFolder = 2;
+}

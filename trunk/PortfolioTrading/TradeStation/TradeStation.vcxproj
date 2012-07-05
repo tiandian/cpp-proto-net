@@ -57,6 +57,10 @@
       <AdditionalLibraryDirectories>D:\Dev\boost_1_49_0\stage\lib;D:\Dev\protobuf-2.4.1\lib\Debug;</AdditionalLibraryDirectories>
       <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y .\ThostTraderApi\thostMduserapi.dll $(OutDir)
+copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -91,6 +95,7 @@
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
@@ -121,6 +126,7 @@
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="FileOperations.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="ManualOrderPlacer.cpp" />
     <ClCompile Include="OrderProcessor.cpp" />
