@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PortfolioTrading.Infrastructure;
+using System.Diagnostics;
 
 namespace PortfolioTrading
 {
@@ -19,19 +21,45 @@ namespace PortfolioTrading
     /// </summary>
     public partial class MainWindow : Window
     {
+        private Client _client;
+        private NativeHost _host;
+
         public MainWindow()
         {
+            _host = new NativeHost();
+
+            _client = new Client();
+            _client.OnError += new Action<string>(_client_OnError);
+
             InitializeComponent();
+        }
+
+        void _client_OnError(string err)
+        {
+            Debug.WriteLine(err);
         }
 
         private void btnLaunch_Click(object sender, RoutedEventArgs e)
         {
-
+            _host.Startup(16168);
         }
 
-        private void btnTest_Click(object sender, RoutedEventArgs e)
+        private void btnExit_Click(object sender, RoutedEventArgs e)
         {
+            _host.Exit();
+        }
 
+        private void btnConnect_Click(object sender, RoutedEventArgs e)
+        {
+            bool succ = _client.Connect("127.0.0.1", 16168);
+            Debug.WriteLine(string.Format("Connect {0}", succ ? "Succeeded" : "Failed"));
+        }
+
+        private void btnQuoteConn_Click(object sender, RoutedEventArgs e)
+        {
+            OperationResult result = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
+                                                          "0240005010/Md");
+            Debug.WriteLine(string.Format("Connect: {0}. {1}", result.Success, result.ErrorMessage));
         }
     }
 }

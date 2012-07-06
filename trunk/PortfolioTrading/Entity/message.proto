@@ -20,8 +20,14 @@ message PortfolioItem
 	repeated LegItem Legs = 6; 
 }
 
-message QuoteConnectParam
+message ConnectParam
 {
 	required string QuoteAddress = 1;
 	required string StreamFolder = 2;
+}
+
+message OperationReturn
+{
+	required bool Success = 1;
+	required string ErrorMessage = 2;
 }

@@ -34,9 +34,7 @@ namespace PortfolioTrading.Infrastructure
             _hostProc.EnableRaisingEvents = true;
             _hostProc.Exited += host_Exited;
 
-            _hostProc.Start();
-
-            return true;
+            return _hostProc.Start();
         }
 
         private void host_Exited(object sender, EventArgs e)

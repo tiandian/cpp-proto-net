@@ -101,10 +101,10 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"QuoteConnectParam")]
-  public partial class QuoteConnectParam : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ConnectParam")]
+  public partial class ConnectParam : global::ProtoBuf.IExtensible
   {
-    public QuoteConnectParam() {}
+    public ConnectParam() {}
     
     private string _QuoteAddress;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"QuoteAddress", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -119,6 +119,30 @@ namespace entity
     {
       get { return _StreamFolder; }
       set { _StreamFolder = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"OperationReturn")]
+  public partial class OperationReturn : global::ProtoBuf.IExtensible
+  {
+    public OperationReturn() {}
+    
+    private bool _Success;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"Success", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool Success
+    {
+      get { return _Success; }
+      set { _Success = value; }
+    }
+    private string _ErrorMessage;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"ErrorMessage", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string ErrorMessage
+    {
+      get { return _ErrorMessage; }
+      set { _ErrorMessage = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
