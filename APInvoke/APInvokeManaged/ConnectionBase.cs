@@ -164,10 +164,10 @@ namespace APInvokeManaged
         public void ReceiveAsync(ReceiveDoneCallback callback)
         {
             _tcpClient.BeginReceive(_inbound_header, 0, HeaderBytesLength,
-                 SocketFlags.None, new AsyncCallback(OnReceiveHader), callback);
+                 SocketFlags.None, new AsyncCallback(OnReceiveHeader), callback);
         }
 
-        private void OnReceiveHader(IAsyncResult ar)
+        private void OnReceiveHeader(IAsyncResult ar)
         {
             bool succ = false;
             string err = string.Empty;

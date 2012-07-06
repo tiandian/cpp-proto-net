@@ -27,7 +27,7 @@ public:
 		m_conn = conn;
 	}
 
-	~APSession(){ Close(); }
+	~APSession(){ }
 
 	const string& SessionId() { return m_sessionId; }
 

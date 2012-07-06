@@ -40,10 +40,16 @@ bool APSessionManager::Listen( unsigned int nPort )
 void APSessionManager::Close()
 {
 	// close all client first
-	m_clientMap.clear();
+	for (ClientMapIter cltIter = m_clientMap.begin(); cltIter != m_clientMap.end(); ++ cltIter)
+	{
+		(cltIter->second)->Close();
+	}
 
 	// destory server
 	m_server.reset();
+
+	// destory clients
+	m_clientMap.clear();
 }
 
 void APSessionManager::RegisterHandler( SessionManagerHandler* handler )

@@ -5,7 +5,9 @@
     <Grid>
         <StackPanel Orientation="Vertical">
             <Button Name="btnLaunch" Click="btnLaunch_Click">Launch</Button>
-            <Button Name="btnTest" Click="btnTest_Click">Test</Button>
+            <Button Name="btnExit" Click="btnExit_Click">Exit</Button>
+            <Button Name="btnConnect" Click="btnConnect_Click">Connect</Button>
+            <Button Name="btnQuoteConn" Click="btnQuoteConn_Click">Quote Connect</Button>
         </StackPanel>
     </Grid>
 </Window>
