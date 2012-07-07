@@ -23,9 +23,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* PortfolioItem_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PortfolioItem_reflection_ = NULL;
-const ::google::protobuf::Descriptor* QuoteConnectParam_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* ConnectParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  QuoteConnectParam_reflection_ = NULL;
+  ConnectParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* OperationReturn_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  OperationReturn_reflection_ = NULL;
 
 }  // namespace
 
@@ -74,22 +77,38 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PortfolioItem));
-  QuoteConnectParam_descriptor_ = file->message_type(2);
-  static const int QuoteConnectParam_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuoteConnectParam, quoteaddress_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuoteConnectParam, streamfolder_),
+  ConnectParam_descriptor_ = file->message_type(2);
+  static const int ConnectParam_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectParam, quoteaddress_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectParam, streamfolder_),
   };
-  QuoteConnectParam_reflection_ =
+  ConnectParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      QuoteConnectParam_descriptor_,
-      QuoteConnectParam::default_instance_,
-      QuoteConnectParam_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuoteConnectParam, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(QuoteConnectParam, _unknown_fields_),
+      ConnectParam_descriptor_,
+      ConnectParam::default_instance_,
+      ConnectParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectParam, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(QuoteConnectParam));
+      sizeof(ConnectParam));
+  OperationReturn_descriptor_ = file->message_type(3);
+  static const int OperationReturn_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OperationReturn, success_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OperationReturn, errormessage_),
+  };
+  OperationReturn_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      OperationReturn_descriptor_,
+      OperationReturn::default_instance_,
+      OperationReturn_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OperationReturn, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OperationReturn, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(OperationReturn));
 }
 
 namespace {
@@ -107,7 +126,9 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     PortfolioItem_descriptor_, &PortfolioItem::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    QuoteConnectParam_descriptor_, &QuoteConnectParam::default_instance());
+    ConnectParam_descriptor_, &ConnectParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    OperationReturn_descriptor_, &OperationReturn::default_instance());
 }
 
 }  // namespace
@@ -117,8 +138,10 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete LegItem_reflection_;
   delete PortfolioItem::default_instance_;
   delete PortfolioItem_reflection_;
-  delete QuoteConnectParam::default_instance_;
-  delete QuoteConnectParam_reflection_;
+  delete ConnectParam::default_instance_;
+  delete ConnectParam_reflection_;
+  delete OperationReturn::default_instance_;
+  delete OperationReturn_reflection_;
 }
 
 void protobuf_AddDesc_message_2eproto() {
@@ -136,16 +159,19 @@ void protobuf_AddDesc_message_2eproto() {
     "tfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005"
     "\022\014\n\004Diff\030\003 \002(\001\022\020\n\010AutoOpen\030\004 \002(\010\022\021\n\tAuto"
     "Close\030\005 \002(\010\022\035\n\004Legs\030\006 \003(\0132\017.entity.LegIt"
-    "em\"\?\n\021QuoteConnectParam\022\024\n\014QuoteAddress\030"
-    "\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t", 347);
+    "em\":\n\014ConnectParam\022\024\n\014QuoteAddress\030\001 \002(\t"
+    "\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017OperationRetur"
+    "n\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t", 400);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LegItem::default_instance_ = new LegItem();
   PortfolioItem::default_instance_ = new PortfolioItem();
-  QuoteConnectParam::default_instance_ = new QuoteConnectParam();
+  ConnectParam::default_instance_ = new ConnectParam();
+  OperationReturn::default_instance_ = new OperationReturn();
   LegItem::default_instance_->InitAsDefaultInstance();
   PortfolioItem::default_instance_->InitAsDefaultInstance();
-  QuoteConnectParam::default_instance_->InitAsDefaultInstance();
+  ConnectParam::default_instance_->InitAsDefaultInstance();
+  OperationReturn::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
 
@@ -939,36 +965,36 @@ void PortfolioItem::Swap(PortfolioItem* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int QuoteConnectParam::kQuoteAddressFieldNumber;
-const int QuoteConnectParam::kStreamFolderFieldNumber;
+const int ConnectParam::kQuoteAddressFieldNumber;
+const int ConnectParam::kStreamFolderFieldNumber;
 #endif  // !_MSC_VER
 
-QuoteConnectParam::QuoteConnectParam()
+ConnectParam::ConnectParam()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void QuoteConnectParam::InitAsDefaultInstance() {
+void ConnectParam::InitAsDefaultInstance() {
 }
 
-QuoteConnectParam::QuoteConnectParam(const QuoteConnectParam& from)
+ConnectParam::ConnectParam(const ConnectParam& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void QuoteConnectParam::SharedCtor() {
+void ConnectParam::SharedCtor() {
   _cached_size_ = 0;
   quoteaddress_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   streamfolder_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-QuoteConnectParam::~QuoteConnectParam() {
+ConnectParam::~ConnectParam() {
   SharedDtor();
 }
 
-void QuoteConnectParam::SharedDtor() {
+void ConnectParam::SharedDtor() {
   if (quoteaddress_ != &::google::protobuf::internal::kEmptyString) {
     delete quoteaddress_;
   }
@@ -979,27 +1005,27 @@ void QuoteConnectParam::SharedDtor() {
   }
 }
 
-void QuoteConnectParam::SetCachedSize(int size) const {
+void ConnectParam::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* QuoteConnectParam::descriptor() {
+const ::google::protobuf::Descriptor* ConnectParam::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return QuoteConnectParam_descriptor_;
+  return ConnectParam_descriptor_;
 }
 
-const QuoteConnectParam& QuoteConnectParam::default_instance() {
+const ConnectParam& ConnectParam::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
 }
 
-QuoteConnectParam* QuoteConnectParam::default_instance_ = NULL;
+ConnectParam* ConnectParam::default_instance_ = NULL;
 
-QuoteConnectParam* QuoteConnectParam::New() const {
-  return new QuoteConnectParam;
+ConnectParam* ConnectParam::New() const {
+  return new ConnectParam;
 }
 
-void QuoteConnectParam::Clear() {
+void ConnectParam::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_quoteaddress()) {
       if (quoteaddress_ != &::google::protobuf::internal::kEmptyString) {
@@ -1016,7 +1042,7 @@ void QuoteConnectParam::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool QuoteConnectParam::MergePartialFromCodedStream(
+bool ConnectParam::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -1071,7 +1097,7 @@ bool QuoteConnectParam::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void QuoteConnectParam::SerializeWithCachedSizes(
+void ConnectParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required string QuoteAddress = 1;
   if (has_quoteaddress()) {
@@ -1097,7 +1123,7 @@ void QuoteConnectParam::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* QuoteConnectParam::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* ConnectParam::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required string QuoteAddress = 1;
   if (has_quoteaddress()) {
@@ -1126,7 +1152,7 @@ void QuoteConnectParam::SerializeWithCachedSizes(
   return target;
 }
 
-int QuoteConnectParam::ByteSize() const {
+int ConnectParam::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -1156,10 +1182,10 @@ int QuoteConnectParam::ByteSize() const {
   return total_size;
 }
 
-void QuoteConnectParam::MergeFrom(const ::google::protobuf::Message& from) {
+void ConnectParam::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const QuoteConnectParam* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const QuoteConnectParam*>(
+  const ConnectParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ConnectParam*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -1168,7 +1194,7 @@ void QuoteConnectParam::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void QuoteConnectParam::MergeFrom(const QuoteConnectParam& from) {
+void ConnectParam::MergeFrom(const ConnectParam& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_quoteaddress()) {
@@ -1181,25 +1207,25 @@ void QuoteConnectParam::MergeFrom(const QuoteConnectParam& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void QuoteConnectParam::CopyFrom(const ::google::protobuf::Message& from) {
+void ConnectParam::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void QuoteConnectParam::CopyFrom(const QuoteConnectParam& from) {
+void ConnectParam::CopyFrom(const ConnectParam& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool QuoteConnectParam::IsInitialized() const {
+bool ConnectParam::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   
   return true;
 }
 
-void QuoteConnectParam::Swap(QuoteConnectParam* other) {
+void ConnectParam::Swap(ConnectParam* other) {
   if (other != this) {
     std::swap(quoteaddress_, other->quoteaddress_);
     std::swap(streamfolder_, other->streamfolder_);
@@ -1209,11 +1235,274 @@ void QuoteConnectParam::Swap(QuoteConnectParam* other) {
   }
 }
 
-::google::protobuf::Metadata QuoteConnectParam::GetMetadata() const {
+::google::protobuf::Metadata ConnectParam::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = QuoteConnectParam_descriptor_;
-  metadata.reflection = QuoteConnectParam_reflection_;
+  metadata.descriptor = ConnectParam_descriptor_;
+  metadata.reflection = ConnectParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int OperationReturn::kSuccessFieldNumber;
+const int OperationReturn::kErrorMessageFieldNumber;
+#endif  // !_MSC_VER
+
+OperationReturn::OperationReturn()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void OperationReturn::InitAsDefaultInstance() {
+}
+
+OperationReturn::OperationReturn(const OperationReturn& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void OperationReturn::SharedCtor() {
+  _cached_size_ = 0;
+  success_ = false;
+  errormessage_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+OperationReturn::~OperationReturn() {
+  SharedDtor();
+}
+
+void OperationReturn::SharedDtor() {
+  if (errormessage_ != &::google::protobuf::internal::kEmptyString) {
+    delete errormessage_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void OperationReturn::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* OperationReturn::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return OperationReturn_descriptor_;
+}
+
+const OperationReturn& OperationReturn::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+OperationReturn* OperationReturn::default_instance_ = NULL;
+
+OperationReturn* OperationReturn::New() const {
+  return new OperationReturn;
+}
+
+void OperationReturn::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    success_ = false;
+    if (has_errormessage()) {
+      if (errormessage_ != &::google::protobuf::internal::kEmptyString) {
+        errormessage_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool OperationReturn::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required bool Success = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &success_)));
+          set_has_success();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_ErrorMessage;
+        break;
+      }
+      
+      // required string ErrorMessage = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_ErrorMessage:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_errormessage()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->errormessage().data(), this->errormessage().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void OperationReturn::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required bool Success = 1;
+  if (has_success()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(1, this->success(), output);
+  }
+  
+  // required string ErrorMessage = 2;
+  if (has_errormessage()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->errormessage().data(), this->errormessage().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->errormessage(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* OperationReturn::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required bool Success = 1;
+  if (has_success()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(1, this->success(), target);
+  }
+  
+  // required string ErrorMessage = 2;
+  if (has_errormessage()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->errormessage().data(), this->errormessage().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->errormessage(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int OperationReturn::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required bool Success = 1;
+    if (has_success()) {
+      total_size += 1 + 1;
+    }
+    
+    // required string ErrorMessage = 2;
+    if (has_errormessage()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->errormessage());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void OperationReturn::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const OperationReturn* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const OperationReturn*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void OperationReturn::MergeFrom(const OperationReturn& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_success()) {
+      set_success(from.success());
+    }
+    if (from.has_errormessage()) {
+      set_errormessage(from.errormessage());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void OperationReturn::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void OperationReturn::CopyFrom(const OperationReturn& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool OperationReturn::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  
+  return true;
+}
+
+void OperationReturn::Swap(OperationReturn* other) {
+  if (other != this) {
+    std::swap(success_, other->success_);
+    std::swap(errormessage_, other->errormessage_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata OperationReturn::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = OperationReturn_descriptor_;
+  metadata.reflection = OperationReturn_reflection_;
   return metadata;
 }
 

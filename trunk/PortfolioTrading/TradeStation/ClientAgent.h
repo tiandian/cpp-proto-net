@@ -7,6 +7,7 @@
 #include "ManualOrderPlacer.h"
 #include "OrderProcessor.h"
 #include "../Entity/gen/cpp/message.pb.h"
+#include "../../APInvoke/APInvokeNative/APInvokeNative.h"
 
 #include <string>
 
@@ -18,27 +19,36 @@ public:
 	CClientAgent(void);
 	~CClientAgent(void);
 
+	void SetSession(Session* pSession) 
+	{ 
+		m_pSession = pSession; 
+		SetClientStatus( m_pSession != NULL );
+	}
+
 	void Add(entity::PortfolioItem* portfolioItem);
 	void Remove(const string& pid);
 
 	std::string QuoteAddress() const { return m_quoteAddress; }
-	bool QuoteConnect(const std::string& address, const std::string& streamDir);
+	boost::tuple<bool, string> QuoteConnect(const std::string& address, const std::string& streamDir);
 	void QuoteDisconnect();
 
-	bool TradeLogin(const string& brokerId, const string& userId, const string& password);
+	boost::tuple<bool, string> TradeLogin(const string& brokerId, const string& userId, const string& password);
 	void TradeLogout();
 
 	std::string TradeAddress() const { return m_tradeAddress; }
-	bool TradeConnect(const std::string& address, const std::string& streamDir);
+	boost::tuple<bool, string> TradeConnect(const std::string& address, const std::string& streamDir);
 	void TradeDisconnect();
 
-	bool QuoteLogin(const string& brokerId, const string& userId, const string& password);
+	boost::tuple<bool, string> QuoteLogin(const string& brokerId, const string& userId, const string& password);
 	void QuoteLogout();
 
 	void OpenPosition(const string& pid){}
 	void ClosePosition(const string& pid){}
 
 private:
+
+	void SetClientStatus(bool connected) { m_clientConnected = connected; }
+
 	CQuoteAgent			m_quoteAgent;
 	CTradeAgent			m_tradeAgent;
 	CStrategyManager	m_strategyMgr;
@@ -49,5 +59,8 @@ private:
 	string m_quoteAddress;
 	string m_tradeAddress;
 
+	Session* m_pSession;
+
+	bool m_clientConnected;
 };
 

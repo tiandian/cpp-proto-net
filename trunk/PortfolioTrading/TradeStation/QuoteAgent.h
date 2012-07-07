@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <boost/thread.hpp>
+#include <boost/tuple/tuple.hpp>
 
 using namespace std;
 
@@ -15,10 +16,10 @@ public:
 	CQuoteAgent(void);
 	~CQuoteAgent(void);
 
-	bool Open( const string& address, const string& streamDir );
+	boost::tuple<bool, string> Open( const string& address, const string& streamDir );
 	void Close();
 
-	bool Login(const string& brokerId, const string& userId, const string& password);
+	boost::tuple<bool, string> Login(const string& brokerId, const string& userId, const string& password);
 	void Logout();
 
 	bool SubscribesQuotes( vector<string>& subscribeArr );

@@ -10,14 +10,15 @@ bool CreateFolderIfNotExists(const string& folderName)
 {
 	path p(folderName);
 
+	path currDir;
 	for(path::iterator iter = p.begin(); iter != p.end(); ++iter)
 	{
-		const path& curr = *iter;
-		if(!exists(curr))
+		currDir /= (*iter);
+		if(!exists(currDir))
 		{
 			try
 			{
-				create_directory(curr);
+				create_directory(currDir);
 			}
 			catch (const filesystem_error& ex)
 			{

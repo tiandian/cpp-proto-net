@@ -31,12 +31,16 @@ void RunMarketDataFunc(CThostFtdcMdApi* pUserApi, const char* address)
 	pUserApi->Join();
 }
 
-bool CQuoteAgent::Open( const string& address, const string& streamDir )
+boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const string& streamDir )
 {
+	string errMsg;
 	try{
 		string streamFolder = streamDir + "/Md";
 		if(!CreateFolderIfNotExists(streamFolder))
-			return false;
+		{
+			errMsg = boost::str(boost::format("Cannot create stream folder (%s)") % streamFolder);
+			return boost::make_tuple(false, errMsg);
+		}
 
 		// 初始化UserApi
 		m_pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(streamFolder.c_str());			// 创建UserApi
@@ -51,25 +55,28 @@ bool CQuoteAgent::Open( const string& address, const string& streamDir )
 			boost::unique_lock<boost::mutex> lock(m_mutex);
 			if(!m_condConnectDone.timed_wait(lock, boost::posix_time::minutes(CONNECT_TIMEOUT_MINUTE)))
 			{
-				logger.Warning("Connecting time out");
-				return false;
+				errMsg = "Connecting time out";
+				logger.Warning(errMsg);
+				return boost::make_tuple(false, errMsg);
 			}
 
 			m_bIsConnected = true;
 		}
-		return true;
+		return boost::make_tuple(true, errMsg);
 	}
 	catch(std::exception& ex)
 	{
-		logger.Error("Failed to connect to market for quote, details is following");
-		logger.Error(ex.what());
+		errMsg = "Failed to connect to market for quote, details is following\n";
+		errMsg = ex.what();
+		logger.Error(errMsg);
 	}
 	catch(...)
 	{
-		logger.Error("Unknown error encounted while connecting market for quote");
+		errMsg = "Unknown error encounted while connecting market for quote";
+		logger.Error(errMsg);
 	}
 
-	return false;
+	return boost::make_tuple(false, errMsg);
 }
 
 void CQuoteAgent::Close()
@@ -77,7 +84,7 @@ void CQuoteAgent::Close()
 
 }
 
-bool CQuoteAgent::Login( const string& brokerId, const string& userId, const string& password )
+boost::tuple<bool, string> CQuoteAgent::Login( const string& brokerId, const string& userId, const string& password )
 {
 	return false;
 }

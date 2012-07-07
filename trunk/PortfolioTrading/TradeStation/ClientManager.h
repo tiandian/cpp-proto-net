@@ -6,12 +6,16 @@
 #include <string>
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <boost/function.hpp>
 
 using namespace std;
 
 typedef boost::shared_ptr<CClientAgent> ClientPtr;
 typedef map<string, ClientPtr> ClientMap;
 typedef ClientMap::iterator ClientMapIter;
+typedef boost::function<void(CClientAgent*, const string&, string&)> ReqTransFunc;
+typedef map<string, ReqTransFunc> ReqTranslatorMap;
+typedef ReqTranslatorMap::iterator ReqTranslatorMapIter;
 
 class CClientManager : public SessionManagerHandler
 {
@@ -28,7 +32,14 @@ public:
 	virtual void DispatchPacket(const string& sessionId, 
 		const string& method, const string& in_data, string& out_data);
 
+	CClientAgent* GetClient(const string& sessionId);
+
 private:
+	void InitializeReqTranslators();
+
+	void QuoteConnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+
+	ReqTranslatorMap m_reqTransMap;
 	ClientMap m_clients;
 };
 

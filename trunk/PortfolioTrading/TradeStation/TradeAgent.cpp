@@ -11,9 +11,9 @@ CTradeAgent::~CTradeAgent(void)
 {
 }
 
-bool CTradeAgent::Open( const string& address, const string& streamDir )
+boost::tuple<bool, string> CTradeAgent::Open( const string& address, const string& streamDir )
 {
-	return false;
+	return boost::make_tuple(false, "");
 }
 
 void CTradeAgent::Close()
@@ -21,9 +21,9 @@ void CTradeAgent::Close()
 
 }
 
-bool CTradeAgent::Login( const string& brokerId, const string& userId, const string& password )
+boost::tuple<bool, string> CTradeAgent::Login( const string& brokerId, const string& userId, const string& password )
 {
-	return false;
+	return boost::make_tuple(false, "");
 }
 
 void CTradeAgent::Logout()
