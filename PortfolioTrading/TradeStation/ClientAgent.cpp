@@ -2,7 +2,8 @@
 #include "ClientAgent.h"
 #include "Portfolio.h"
 
-CClientAgent::CClientAgent(void)
+CClientAgent::CClientAgent(void):
+m_clientConnected(false)
 {
 }
 
@@ -23,13 +24,13 @@ void CClientAgent::Remove( const string& pid )
 	m_portfolioMgr.Remove(pid);
 }
 
-bool CClientAgent::TradeConnect( const std::string& address, const std::string& streamDir )
+boost::tuple<bool, string> CClientAgent::TradeConnect( const std::string& address, const std::string& streamDir )
 {
 	m_tradeAddress = address;
 	return m_tradeAgent.Open(m_tradeAddress, streamDir);
 }
 
-bool CClientAgent::TradeLogin( const string& brokerId, const string& userId, const string& password )
+boost::tuple<bool, string> CClientAgent::TradeLogin( const string& brokerId, const string& userId, const string& password )
 {
 	return m_tradeAgent.Login(brokerId, userId, password);
 }
@@ -45,7 +46,7 @@ void CClientAgent::TradeDisconnect()
 	m_tradeAgent.Close();
 }
 
-bool CClientAgent::QuoteLogin( const string& brokerId, const string& userId, const string& password )
+boost::tuple<bool, string> CClientAgent::QuoteLogin( const string& brokerId, const string& userId, const string& password )
 {
 	return m_quoteAgent.Login(brokerId, userId, password);
 }
@@ -55,7 +56,7 @@ void CClientAgent::QuoteLogout()
 	m_quoteAgent.Logout();
 }
 
-bool CClientAgent::QuoteConnect( const std::string& address, const std::string& streamDir )
+boost::tuple<bool, string> CClientAgent::QuoteConnect( const std::string& address, const std::string& streamDir )
 {
 	m_quoteAddress = address;
 	return m_quoteAgent.Open(m_quoteAddress, streamDir);

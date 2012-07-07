@@ -35,7 +35,8 @@ void protobuf_ShutdownFile_message_2eproto();
 
 class LegItem;
 class PortfolioItem;
-class QuoteConnectParam;
+class ConnectParam;
+class OperationReturn;
 
 // ===================================================================
 
@@ -294,14 +295,14 @@ class PortfolioItem : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class QuoteConnectParam : public ::google::protobuf::Message {
+class ConnectParam : public ::google::protobuf::Message {
  public:
-  QuoteConnectParam();
-  virtual ~QuoteConnectParam();
+  ConnectParam();
+  virtual ~ConnectParam();
   
-  QuoteConnectParam(const QuoteConnectParam& from);
+  ConnectParam(const ConnectParam& from);
   
-  inline QuoteConnectParam& operator=(const QuoteConnectParam& from) {
+  inline ConnectParam& operator=(const ConnectParam& from) {
     CopyFrom(from);
     return *this;
   }
@@ -315,17 +316,17 @@ class QuoteConnectParam : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const QuoteConnectParam& default_instance();
+  static const ConnectParam& default_instance();
   
-  void Swap(QuoteConnectParam* other);
+  void Swap(ConnectParam* other);
   
   // implements Message ----------------------------------------------
   
-  QuoteConnectParam* New() const;
+  ConnectParam* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const QuoteConnectParam& from);
-  void MergeFrom(const QuoteConnectParam& from);
+  void CopyFrom(const ConnectParam& from);
+  void MergeFrom(const ConnectParam& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -370,7 +371,7 @@ class QuoteConnectParam : public ::google::protobuf::Message {
   inline ::std::string* mutable_streamfolder();
   inline ::std::string* release_streamfolder();
   
-  // @@protoc_insertion_point(class_scope:entity.QuoteConnectParam)
+  // @@protoc_insertion_point(class_scope:entity.ConnectParam)
  private:
   inline void set_has_quoteaddress();
   inline void clear_has_quoteaddress();
@@ -390,7 +391,103 @@ class QuoteConnectParam : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_message_2eproto();
   
   void InitAsDefaultInstance();
-  static QuoteConnectParam* default_instance_;
+  static ConnectParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class OperationReturn : public ::google::protobuf::Message {
+ public:
+  OperationReturn();
+  virtual ~OperationReturn();
+  
+  OperationReturn(const OperationReturn& from);
+  
+  inline OperationReturn& operator=(const OperationReturn& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const OperationReturn& default_instance();
+  
+  void Swap(OperationReturn* other);
+  
+  // implements Message ----------------------------------------------
+  
+  OperationReturn* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const OperationReturn& from);
+  void MergeFrom(const OperationReturn& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required bool Success = 1;
+  inline bool has_success() const;
+  inline void clear_success();
+  static const int kSuccessFieldNumber = 1;
+  inline bool success() const;
+  inline void set_success(bool value);
+  
+  // required string ErrorMessage = 2;
+  inline bool has_errormessage() const;
+  inline void clear_errormessage();
+  static const int kErrorMessageFieldNumber = 2;
+  inline const ::std::string& errormessage() const;
+  inline void set_errormessage(const ::std::string& value);
+  inline void set_errormessage(const char* value);
+  inline void set_errormessage(const char* value, size_t size);
+  inline ::std::string* mutable_errormessage();
+  inline ::std::string* release_errormessage();
+  
+  // @@protoc_insertion_point(class_scope:entity.OperationReturn)
+ private:
+  inline void set_has_success();
+  inline void clear_has_success();
+  inline void set_has_errormessage();
+  inline void clear_has_errormessage();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* errormessage_;
+  bool success_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static OperationReturn* default_instance_;
 };
 // ===================================================================
 
@@ -702,56 +799,56 @@ PortfolioItem::mutable_legs() {
 
 // -------------------------------------------------------------------
 
-// QuoteConnectParam
+// ConnectParam
 
 // required string QuoteAddress = 1;
-inline bool QuoteConnectParam::has_quoteaddress() const {
+inline bool ConnectParam::has_quoteaddress() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void QuoteConnectParam::set_has_quoteaddress() {
+inline void ConnectParam::set_has_quoteaddress() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void QuoteConnectParam::clear_has_quoteaddress() {
+inline void ConnectParam::clear_has_quoteaddress() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void QuoteConnectParam::clear_quoteaddress() {
+inline void ConnectParam::clear_quoteaddress() {
   if (quoteaddress_ != &::google::protobuf::internal::kEmptyString) {
     quoteaddress_->clear();
   }
   clear_has_quoteaddress();
 }
-inline const ::std::string& QuoteConnectParam::quoteaddress() const {
+inline const ::std::string& ConnectParam::quoteaddress() const {
   return *quoteaddress_;
 }
-inline void QuoteConnectParam::set_quoteaddress(const ::std::string& value) {
+inline void ConnectParam::set_quoteaddress(const ::std::string& value) {
   set_has_quoteaddress();
   if (quoteaddress_ == &::google::protobuf::internal::kEmptyString) {
     quoteaddress_ = new ::std::string;
   }
   quoteaddress_->assign(value);
 }
-inline void QuoteConnectParam::set_quoteaddress(const char* value) {
+inline void ConnectParam::set_quoteaddress(const char* value) {
   set_has_quoteaddress();
   if (quoteaddress_ == &::google::protobuf::internal::kEmptyString) {
     quoteaddress_ = new ::std::string;
   }
   quoteaddress_->assign(value);
 }
-inline void QuoteConnectParam::set_quoteaddress(const char* value, size_t size) {
+inline void ConnectParam::set_quoteaddress(const char* value, size_t size) {
   set_has_quoteaddress();
   if (quoteaddress_ == &::google::protobuf::internal::kEmptyString) {
     quoteaddress_ = new ::std::string;
   }
   quoteaddress_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* QuoteConnectParam::mutable_quoteaddress() {
+inline ::std::string* ConnectParam::mutable_quoteaddress() {
   set_has_quoteaddress();
   if (quoteaddress_ == &::google::protobuf::internal::kEmptyString) {
     quoteaddress_ = new ::std::string;
   }
   return quoteaddress_;
 }
-inline ::std::string* QuoteConnectParam::release_quoteaddress() {
+inline ::std::string* ConnectParam::release_quoteaddress() {
   clear_has_quoteaddress();
   if (quoteaddress_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -763,59 +860,143 @@ inline ::std::string* QuoteConnectParam::release_quoteaddress() {
 }
 
 // required string StreamFolder = 2;
-inline bool QuoteConnectParam::has_streamfolder() const {
+inline bool ConnectParam::has_streamfolder() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void QuoteConnectParam::set_has_streamfolder() {
+inline void ConnectParam::set_has_streamfolder() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void QuoteConnectParam::clear_has_streamfolder() {
+inline void ConnectParam::clear_has_streamfolder() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void QuoteConnectParam::clear_streamfolder() {
+inline void ConnectParam::clear_streamfolder() {
   if (streamfolder_ != &::google::protobuf::internal::kEmptyString) {
     streamfolder_->clear();
   }
   clear_has_streamfolder();
 }
-inline const ::std::string& QuoteConnectParam::streamfolder() const {
+inline const ::std::string& ConnectParam::streamfolder() const {
   return *streamfolder_;
 }
-inline void QuoteConnectParam::set_streamfolder(const ::std::string& value) {
+inline void ConnectParam::set_streamfolder(const ::std::string& value) {
   set_has_streamfolder();
   if (streamfolder_ == &::google::protobuf::internal::kEmptyString) {
     streamfolder_ = new ::std::string;
   }
   streamfolder_->assign(value);
 }
-inline void QuoteConnectParam::set_streamfolder(const char* value) {
+inline void ConnectParam::set_streamfolder(const char* value) {
   set_has_streamfolder();
   if (streamfolder_ == &::google::protobuf::internal::kEmptyString) {
     streamfolder_ = new ::std::string;
   }
   streamfolder_->assign(value);
 }
-inline void QuoteConnectParam::set_streamfolder(const char* value, size_t size) {
+inline void ConnectParam::set_streamfolder(const char* value, size_t size) {
   set_has_streamfolder();
   if (streamfolder_ == &::google::protobuf::internal::kEmptyString) {
     streamfolder_ = new ::std::string;
   }
   streamfolder_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* QuoteConnectParam::mutable_streamfolder() {
+inline ::std::string* ConnectParam::mutable_streamfolder() {
   set_has_streamfolder();
   if (streamfolder_ == &::google::protobuf::internal::kEmptyString) {
     streamfolder_ = new ::std::string;
   }
   return streamfolder_;
 }
-inline ::std::string* QuoteConnectParam::release_streamfolder() {
+inline ::std::string* ConnectParam::release_streamfolder() {
   clear_has_streamfolder();
   if (streamfolder_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
     ::std::string* temp = streamfolder_;
     streamfolder_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// OperationReturn
+
+// required bool Success = 1;
+inline bool OperationReturn::has_success() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void OperationReturn::set_has_success() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void OperationReturn::clear_has_success() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void OperationReturn::clear_success() {
+  success_ = false;
+  clear_has_success();
+}
+inline bool OperationReturn::success() const {
+  return success_;
+}
+inline void OperationReturn::set_success(bool value) {
+  set_has_success();
+  success_ = value;
+}
+
+// required string ErrorMessage = 2;
+inline bool OperationReturn::has_errormessage() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void OperationReturn::set_has_errormessage() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void OperationReturn::clear_has_errormessage() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void OperationReturn::clear_errormessage() {
+  if (errormessage_ != &::google::protobuf::internal::kEmptyString) {
+    errormessage_->clear();
+  }
+  clear_has_errormessage();
+}
+inline const ::std::string& OperationReturn::errormessage() const {
+  return *errormessage_;
+}
+inline void OperationReturn::set_errormessage(const ::std::string& value) {
+  set_has_errormessage();
+  if (errormessage_ == &::google::protobuf::internal::kEmptyString) {
+    errormessage_ = new ::std::string;
+  }
+  errormessage_->assign(value);
+}
+inline void OperationReturn::set_errormessage(const char* value) {
+  set_has_errormessage();
+  if (errormessage_ == &::google::protobuf::internal::kEmptyString) {
+    errormessage_ = new ::std::string;
+  }
+  errormessage_->assign(value);
+}
+inline void OperationReturn::set_errormessage(const char* value, size_t size) {
+  set_has_errormessage();
+  if (errormessage_ == &::google::protobuf::internal::kEmptyString) {
+    errormessage_ = new ::std::string;
+  }
+  errormessage_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* OperationReturn::mutable_errormessage() {
+  set_has_errormessage();
+  if (errormessage_ == &::google::protobuf::internal::kEmptyString) {
+    errormessage_ = new ::std::string;
+  }
+  return errormessage_;
+}
+inline ::std::string* OperationReturn::release_errormessage() {
+  clear_has_errormessage();
+  if (errormessage_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = errormessage_;
+    errormessage_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }

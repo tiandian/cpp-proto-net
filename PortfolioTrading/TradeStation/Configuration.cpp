@@ -48,7 +48,7 @@ bool CConfiguration::Load( int argc, _TCHAR* argv[] )
 
 		po::options_description conn("Connection");
 		conn.add_options()
-			("port", po::value<unsigned short>(&m_port)->default_value(18168),
+			("port", po::value<unsigned short>(&m_port)->default_value(16168),
 			"listening port");
 
 		po::options_description cmdline_options;
