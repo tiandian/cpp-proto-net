@@ -7,10 +7,14 @@ using System.Threading;
 
 namespace APInvokeManaged
 {
+    public delegate void ResponseHandlerDel(bool invoke, byte[] ret_data, string errorMsg);
+
     public abstract class ClientBase
     {
         private static string _authId = "APInvoke Connection";
         private static string _authPwd = "";
+
+        public static readonly byte[] VoidParam = new byte[0];
 
         public static string AuthId
         {
@@ -23,6 +27,8 @@ namespace APInvokeManaged
             set { _authPwd = value; }
         }
 
+        public TimeSpan SyncInvocationTimeout { get; set; } 
+
         private ConnectionBase _connection;
         private Dictionary<string, Delegate> _requestDic = new Dictionary<string, Delegate>();
         private object _syncObj = new object();
@@ -33,6 +39,7 @@ namespace APInvokeManaged
 
         public ClientBase()
         {
+            SyncInvocationTimeout = TimeSpan.FromSeconds(30);
             _connection = new ConnectionBase();
             _connection.OnDataReceived += new Action<MsgType, byte[]>(_connection_OnDataReceived);
             _connection.OnError += new Action<string>(_connection_OnError);
@@ -53,7 +60,9 @@ namespace APInvokeManaged
                         }
                     });
 
-                Monitor.Wait(_syncObj);
+                bool wtSucc = Monitor.Wait(_syncObj, SyncInvocationTimeout);
+                if (!wtSucc)
+                    throw new InvocationTimeout("Connecting server time out");
                 return connected;
             }
         }
@@ -90,23 +99,36 @@ namespace APInvokeManaged
         {
             lock (_syncObj)
             {
+                bool invokeSucc = false;
                 byte[] ret_data = null;
+                string invokeErr = string.Empty;
                 RequestAsync(method, reqData,
-                    delegate(bool succ, byte[] retData)
+                    delegate(bool succ, byte[] retData, string errMsg)
                     {
                         lock (_syncObj)
                         {
+                            invokeSucc = succ;
                             ret_data = retData;
+                            invokeErr = errMsg;
                             Monitor.Pulse(_syncObj);
                         }
                     });
 
-                Monitor.Wait(_syncObj);
+                bool wtSucc = Monitor.Wait(_syncObj);
+                if (wtSucc)
+                {
+                    if (!invokeSucc)
+                        throw new RequestResponseException(invokeErr);
+                }
+                else
+                {
+                    throw new InvocationTimeout(string.Format("Request '{0}' timeout", method));
+                }
                 return ret_data;
             }
         }
 
-        public void RequestAsync(string method, byte[] reqData, Action<bool, byte[]> responseHandler)
+        public void RequestAsync(string method, byte[] reqData, ResponseHandlerDel responseHandler)
         {
             Packet.Request req = new Packet.Request()
             {
@@ -129,7 +151,7 @@ namespace APInvokeManaged
                     else
                     {
                         RemoveBookedRequest(method);
-                        responseHandler(false, null);
+                        responseHandler(false, null, msg);
                     }
                 });
         }
@@ -219,21 +241,23 @@ namespace APInvokeManaged
             bool recvSucc = false;
             byte[] respData = null;
             string method = string.Empty;
+            string errMsg = string.Empty;
             if (data != null && data.Length > 0)
             {
                 Packet.Response resp = DataTranslater.Deserialize<Packet.Response>(data);
                 method = resp.method;
                 respData = resp.return_data;
+                errMsg = resp.error;
 
-                recvSucc = !string.IsNullOrEmpty(resp.method);
+                recvSucc = !string.IsNullOrEmpty(resp.method) && resp.invoke;
             }
 
             Delegate callback = GetResponseCallback(method);
             if (callback != null)
             {
-                Action<bool, byte[]> respCompletion = callback as Action<bool, byte[]>;
+                ResponseHandlerDel respCompletion = callback as ResponseHandlerDel;
                 if (respCompletion != null)
-                    respCompletion(recvSucc, respData);
+                    respCompletion(recvSucc, respData, errMsg);
             }
         }
 
@@ -286,5 +310,16 @@ namespace APInvokeManaged
                 _requestDic.Remove(method);
             }
         }
+    }
+
+    public class RequestResponseException : Exception
+    {
+        public RequestResponseException(string errMsg) : base(errMsg) 
+        { }
+    }
+
+    public class InvocationTimeout : Exception
+    {
+        public InvocationTimeout(string errMsg) : base(errMsg) { }
     }
 }

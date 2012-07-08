@@ -8,7 +8,7 @@
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
 
 #define SYMBOL_MAX_LENGTH 10
-#define CONNECT_TIMEOUT_MINUTE 1
+#define CONNECT_TIMEOUT_SECONDS 15
 #define DISCONNECT_TIMEOUT_SECOND 5
 
 CQuoteAgent::CQuoteAgent(void)
@@ -53,7 +53,7 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 		// wait 1 minute for connected event
 		{
 			boost::unique_lock<boost::mutex> lock(m_mutex);
-			if(!m_condConnectDone.timed_wait(lock, boost::posix_time::minutes(CONNECT_TIMEOUT_MINUTE)))
+			if(!m_condConnectDone.timed_wait(lock, boost::posix_time::seconds(CONNECT_TIMEOUT_SECONDS)))
 			{
 				errMsg = "Connecting time out";
 				logger.Warning(errMsg);
@@ -81,7 +81,27 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 
 void CQuoteAgent::Close()
 {
+	if(!m_bIsConnected)
+		return;
 
+	if(m_pUserApi != NULL)
+	{
+		//m_pUserApi->RegisterSpi(NULL);
+		m_pUserApi->Release();
+
+		{
+			boost::unique_lock<boost::mutex> lock(m_mutex);
+
+			if(m_bIsConnected)
+			{
+				if(!m_condConnectDone.timed_wait(lock, boost::posix_time::seconds(DISCONNECT_TIMEOUT_SECOND)))
+				{
+					logger.Warning("Disconnecting time out");
+					m_bIsConnected = false;
+				}
+			}
+		}
+	}
 }
 
 boost::tuple<bool, string> CQuoteAgent::Login( const string& brokerId, const string& userId, const string& password )
@@ -106,17 +126,54 @@ bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 
 void CQuoteAgent::OnFrontConnected()
 {
-
+	boost::lock_guard<boost::mutex> lock(m_mutex);
+	logger.Info("Market connected");
+	m_condConnectDone.notify_all();
 }
 
 void CQuoteAgent::OnFrontDisconnected( int nReason )
 {
+	boost::lock_guard<boost::mutex> lock(m_mutex);
 
+	if(!m_bIsConnected)
+		return;	// disconnect already time out 
+
+	if(nReason == 0)
+	{
+		logger.Info("Market normaly disconnected.");
+	}
+	else
+	{
+		string reasonTxt = "Disconnected with market due to ";
+		switch (nReason)
+		{
+		case 0x1001:
+			reasonTxt.append("Cannot read from network");
+			break;
+		case 0x1002:
+			reasonTxt.append("Cannot write to network");
+			break;
+		case 0x2001:
+			reasonTxt.append("Receiving heart beat time out");
+			break;
+		case 0x2002:
+			reasonTxt.append("Sending heart beat time out");
+			break;
+		case 0x2003:
+			reasonTxt.append("Invalid packets received");
+			break;
+		}
+		reasonTxt.append(" (will reconnect automatically).");
+		logger.Warning(reasonTxt);
+	}
+
+	m_bIsConnected = false;
+	m_condConnectDone.notify_all();
 }
 
 void CQuoteAgent::OnHeartBeatWarning( int nTimeLapse )
 {
-
+	logger.Warning(boost::str(boost::format("Hear beat warning - %d") % nTimeLapse));
 }
 
 void CQuoteAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )

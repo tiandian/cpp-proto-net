@@ -38,6 +38,7 @@ private:
 	void InitializeReqTranslators();
 
 	void QuoteConnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void QuoteDisconnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
 	ReqTranslatorMap m_reqTransMap;
 	ClientMap m_clients;

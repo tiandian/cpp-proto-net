@@ -121,11 +121,27 @@ void APSessionManager::HandleRequest( const string& sessionId, const RequestPtr&
 void APSessionManager::OnRequest( string sessionId, const RequestPtr& request )
 {
 	string outData;
-	m_callback->DispatchPacket(sessionId, request->method(), request->param_data(), outData);
-
+	bool invokeSucc = false;
+	string errorMsg = "Encoutered unknown error";
+	try
+	{
+		m_callback->DispatchPacket(sessionId, request->method(), request->param_data(), outData);
+		invokeSucc = true;
+	}
+	catch (exception& ex)
+	{
+		errorMsg = ex.what();
+	}
+	catch(...)
+	{
+		errorMsg = "Encoutered unknown error";
+	}
+	
 	AP::Response resp;
 	resp.set_method(request->method());
 	resp.set_return_data(outData);
+	resp.set_invoke(invokeSucc);
+	resp.set_error(errorMsg);
 
 	APSession* pSession = GetSession(sessionId);
 	if(pSession != NULL)
