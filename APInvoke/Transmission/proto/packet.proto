@@ -23,6 +23,8 @@ message Response
 {
 	required string method = 1;
 	required bytes return_data = 2;
+	required bool invoke = 3;
+	required string error = 4;
 }
 
 message CallbackReq
@@ -36,4 +38,6 @@ message CallbackRsp
 	required string session = 1;
 	required string method = 2;
 	required bytes return_data = 3;
+	required bool invoke = 4;
+	required string error = 5;
 }
