@@ -427,20 +427,44 @@ class Response : public ::google::protobuf::Message {
   inline ::std::string* mutable_return_data();
   inline ::std::string* release_return_data();
   
+  // required bool invoke = 3;
+  inline bool has_invoke() const;
+  inline void clear_invoke();
+  static const int kInvokeFieldNumber = 3;
+  inline bool invoke() const;
+  inline void set_invoke(bool value);
+  
+  // required string error = 4;
+  inline bool has_error() const;
+  inline void clear_error();
+  static const int kErrorFieldNumber = 4;
+  inline const ::std::string& error() const;
+  inline void set_error(const ::std::string& value);
+  inline void set_error(const char* value);
+  inline void set_error(const char* value, size_t size);
+  inline ::std::string* mutable_error();
+  inline ::std::string* release_error();
+  
   // @@protoc_insertion_point(class_scope:AP.Response)
  private:
   inline void set_has_method();
   inline void clear_has_method();
   inline void set_has_return_data();
   inline void clear_has_return_data();
+  inline void set_has_invoke();
+  inline void clear_has_invoke();
+  inline void set_has_error();
+  inline void clear_has_error();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* method_;
   ::std::string* return_data_;
+  ::std::string* error_;
+  bool invoke_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_packet_2eproto();
   friend void protobuf_AssignDesc_packet_2eproto();
@@ -638,6 +662,24 @@ class CallbackRsp : public ::google::protobuf::Message {
   inline ::std::string* mutable_return_data();
   inline ::std::string* release_return_data();
   
+  // required bool invoke = 4;
+  inline bool has_invoke() const;
+  inline void clear_invoke();
+  static const int kInvokeFieldNumber = 4;
+  inline bool invoke() const;
+  inline void set_invoke(bool value);
+  
+  // required string error = 5;
+  inline bool has_error() const;
+  inline void clear_error();
+  static const int kErrorFieldNumber = 5;
+  inline const ::std::string& error() const;
+  inline void set_error(const ::std::string& value);
+  inline void set_error(const char* value);
+  inline void set_error(const char* value, size_t size);
+  inline ::std::string* mutable_error();
+  inline ::std::string* release_error();
+  
   // @@protoc_insertion_point(class_scope:AP.CallbackRsp)
  private:
   inline void set_has_session();
@@ -646,15 +688,21 @@ class CallbackRsp : public ::google::protobuf::Message {
   inline void clear_has_method();
   inline void set_has_return_data();
   inline void clear_has_return_data();
+  inline void set_has_invoke();
+  inline void clear_has_invoke();
+  inline void set_has_error();
+  inline void clear_has_error();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* session_;
   ::std::string* method_;
   ::std::string* return_data_;
+  ::std::string* error_;
+  bool invoke_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_packet_2eproto();
   friend void protobuf_AssignDesc_packet_2eproto();
@@ -1168,6 +1216,86 @@ inline ::std::string* Response::release_return_data() {
   }
 }
 
+// required bool invoke = 3;
+inline bool Response::has_invoke() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void Response::set_has_invoke() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void Response::clear_has_invoke() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void Response::clear_invoke() {
+  invoke_ = false;
+  clear_has_invoke();
+}
+inline bool Response::invoke() const {
+  return invoke_;
+}
+inline void Response::set_invoke(bool value) {
+  set_has_invoke();
+  invoke_ = value;
+}
+
+// required string error = 4;
+inline bool Response::has_error() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void Response::set_has_error() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void Response::clear_has_error() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void Response::clear_error() {
+  if (error_ != &::google::protobuf::internal::kEmptyString) {
+    error_->clear();
+  }
+  clear_has_error();
+}
+inline const ::std::string& Response::error() const {
+  return *error_;
+}
+inline void Response::set_error(const ::std::string& value) {
+  set_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    error_ = new ::std::string;
+  }
+  error_->assign(value);
+}
+inline void Response::set_error(const char* value) {
+  set_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    error_ = new ::std::string;
+  }
+  error_->assign(value);
+}
+inline void Response::set_error(const char* value, size_t size) {
+  set_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    error_ = new ::std::string;
+  }
+  error_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Response::mutable_error() {
+  set_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    error_ = new ::std::string;
+  }
+  return error_;
+}
+inline ::std::string* Response::release_error() {
+  clear_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = error_;
+    error_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
 // -------------------------------------------------------------------
 
 // CallbackReq
@@ -1462,6 +1590,86 @@ inline ::std::string* CallbackRsp::release_return_data() {
   } else {
     ::std::string* temp = return_data_;
     return_data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required bool invoke = 4;
+inline bool CallbackRsp::has_invoke() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void CallbackRsp::set_has_invoke() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void CallbackRsp::clear_has_invoke() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void CallbackRsp::clear_invoke() {
+  invoke_ = false;
+  clear_has_invoke();
+}
+inline bool CallbackRsp::invoke() const {
+  return invoke_;
+}
+inline void CallbackRsp::set_invoke(bool value) {
+  set_has_invoke();
+  invoke_ = value;
+}
+
+// required string error = 5;
+inline bool CallbackRsp::has_error() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void CallbackRsp::set_has_error() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void CallbackRsp::clear_has_error() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void CallbackRsp::clear_error() {
+  if (error_ != &::google::protobuf::internal::kEmptyString) {
+    error_->clear();
+  }
+  clear_has_error();
+}
+inline const ::std::string& CallbackRsp::error() const {
+  return *error_;
+}
+inline void CallbackRsp::set_error(const ::std::string& value) {
+  set_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    error_ = new ::std::string;
+  }
+  error_->assign(value);
+}
+inline void CallbackRsp::set_error(const char* value) {
+  set_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    error_ = new ::std::string;
+  }
+  error_->assign(value);
+}
+inline void CallbackRsp::set_error(const char* value, size_t size) {
+  set_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    error_ = new ::std::string;
+  }
+  error_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* CallbackRsp::mutable_error() {
+  set_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    error_ = new ::std::string;
+  }
+  return error_;
+}
+inline ::std::string* CallbackRsp::release_error() {
+  clear_has_error();
+  if (error_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = error_;
+    error_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }

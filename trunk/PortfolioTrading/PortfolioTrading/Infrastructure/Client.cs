@@ -16,7 +16,7 @@ namespace PortfolioTrading.Infrastructure
 
         public void QuoteDisconnect()
         {
-
+            ServerDisconnect("QuoteDisconnect");
         }
 
         public OperationResult TradeConnect(string tradeAddress, string streamDir)
@@ -26,7 +26,7 @@ namespace PortfolioTrading.Infrastructure
 
         public void TradeDisconnect()
         {
-
+            ServerDisconnect("TradeDisconnect");
         }
 
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
@@ -55,6 +55,11 @@ namespace PortfolioTrading.Infrastructure
                     Success = false,
                     ErrorMessage = "Returned data is invalid"
                 };
+        }
+
+        private void ServerDisconnect(string method)
+        {
+            byte[] void_ret = Request(method, ClientBase.VoidParam);
         }
 
         protected override void DispatchCallback(string method, byte[] paramData)

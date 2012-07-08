@@ -4,10 +4,25 @@
         Title="MainWindow" Height="350" Width="525">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Button Name="btnLaunch" Click="btnLaunch_Click">Launch</Button>
-            <Button Name="btnExit" Click="btnExit_Click">Exit</Button>
-            <Button Name="btnConnect" Click="btnConnect_Click">Connect</Button>
-            <Button Name="btnQuoteConn" Click="btnQuoteConn_Click">Quote Connect</Button>
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="MinWidth" Value="80" />
+                    <Setter Property="Margin" Value="2"/>
+                </Style>
+            </StackPanel.Resources>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnLaunch" Click="btnLaunch_Click" Width="80">Launch</Button>
+                <Button Name="btnExit" Click="btnExit_Click"  Width="80">Exit</Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnConnect" Click="btnConnect_Click">Connect</Button>
+                <Button Name="btnDisconnect" Click="btnDisconnect_Click">Disconnect</Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnQuoteConn" Click="btnQuoteConn_Click">Quote Open</Button>
+                <Button Name="btnQuoteClose" Click="btnQuoteClose_Click">Quote Close</Button>
+            </StackPanel>
+            
         </StackPanel>
     </Grid>
 </Window>

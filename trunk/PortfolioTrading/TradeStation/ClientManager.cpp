@@ -70,6 +70,7 @@ CClientAgent* CClientManager::GetClient( const string& sessionId )
 void CClientManager::InitializeReqTranslators()
 {
 	m_reqTransMap.insert(make_pair("QuoteConnect", boost::bind(&CClientManager::QuoteConnect, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("QuoteDisconnect", boost::bind(&CClientManager::QuoteDisconnect, this, _1, _2, _3)));
 }
 
 void CClientManager::QuoteConnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
@@ -84,6 +85,11 @@ void CClientManager::QuoteConnect( CClientAgent* pClientAgent, const string& in_
 	operRet.set_errormessage(boost::get<1>(ret));
 
 	operRet.SerializeToString(&out_data);
+}
+
+void CClientManager::QuoteDisconnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	pClientAgent->QuoteDisconnect();
 }
 
 

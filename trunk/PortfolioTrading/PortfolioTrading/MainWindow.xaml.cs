@@ -57,9 +57,27 @@ namespace PortfolioTrading
 
         private void btnQuoteConn_Click(object sender, RoutedEventArgs e)
         {
+            
             OperationResult result = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
                                                           "0240005010");
-            Debug.WriteLine(string.Format("Connect: {0}. {1}", result.Success, result.ErrorMessage));
+            MessageBox.Show(this, string.Format("Connect: {0}. {1}", result.Success, result.ErrorMessage));
+        }
+
+        private void btnDisconnect_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnQuoteClose_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                _client.QuoteDisconnect();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.Message);            	
+            }
         }
     }
 }

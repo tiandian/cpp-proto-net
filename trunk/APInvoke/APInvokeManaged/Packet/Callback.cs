@@ -26,5 +26,11 @@ namespace APInvokeManaged.Packet
 
         [ProtoMember(3)]
         public byte[] return_data { get; set; }
+
+        [ProtoMember(4)]
+        public bool invoke { get; set; }
+
+        [ProtoMember(5)]
+        public string error { get; set; }
     }
 }
