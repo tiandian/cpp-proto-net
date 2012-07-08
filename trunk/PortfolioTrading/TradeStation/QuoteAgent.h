@@ -64,15 +64,26 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 
 private:
+	int RequestIDIncrement();
+	// «Î«Û±‡∫≈
+	int m_iRequestID;
+	boost::mutex m_mutReqIdInc;
+
+	boost::condition_variable m_condLogin;
+	boost::mutex m_mutLogin;
+	string m_sLoginError;
+	bool m_loginSuccess;
+
 	CThostFtdcMdApi* m_pUserApi;
 	CQuoteAgentCallback* m_pCallback;
 
 	bool m_bIsConnected;
-	// «Î«Û±‡∫≈
-	int m_iRequestID;
 
 	boost::condition_variable m_condConnectDone;
 	boost::mutex m_mutex;
 	boost::thread m_thQuoting;
+
+	string m_brokerID;
+	string m_userID;
 };
 

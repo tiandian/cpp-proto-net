@@ -10,8 +10,10 @@
 #define SYMBOL_MAX_LENGTH 10
 #define CONNECT_TIMEOUT_SECONDS 15
 #define DISCONNECT_TIMEOUT_SECOND 5
+#define LOGIN_TIMEOUT_SECONDS 15
 
-CQuoteAgent::CQuoteAgent(void)
+CQuoteAgent::CQuoteAgent(void):
+m_loginSuccess(false)
 {
 }
 
@@ -106,7 +108,71 @@ void CQuoteAgent::Close()
 
 boost::tuple<bool, string> CQuoteAgent::Login( const string& brokerId, const string& userId, const string& password )
 {
-	return false;
+	string traceInfo = boost::str(boost::format("Log in quote (%s, %s, %s)") 
+		% brokerId.c_str() % userId % password);
+	logger.Trace(traceInfo);
+	
+	m_brokerID = brokerId;
+	m_userID = userId;
+	
+	try
+	{
+		CThostFtdcReqUserLoginField req;
+		memset(&req, 0, sizeof(req));
+		strcpy(req.BrokerID, brokerId.c_str());
+		strcpy(req.UserID, userId.c_str());
+		strcpy(req.Password, password.c_str());
+		if(m_pUserApi != NULL)
+		{
+			boost::unique_lock<boost::mutex> lock(m_mutLogin);
+
+			int requestId = RequestIDIncrement();
+			int iResult = m_pUserApi->ReqUserLogin(&req, requestId);
+			bool reqSucc = iResult == 0;
+			string loginInfo = boost::str(boost::format("Sending login %s, RequestID: %d")
+				% (reqSucc ? "Succeeded" : "Failed") % requestId);
+			logger.Info(loginInfo);
+			
+			if(reqSucc)
+			{
+				if(!m_condLogin.timed_wait(lock, boost::posix_time::seconds(LOGIN_TIMEOUT_SECONDS)))
+				{
+					m_sLoginError = "Login timeout";
+					logger.Error(m_sLoginError);
+				}
+			}
+			else
+			{
+				m_sLoginError = loginInfo;
+			}
+		}
+	}
+	catch (...)
+	{
+		m_sLoginError = "Encouter error while logging in market for quote";
+		logger.Error(m_sLoginError);
+	}
+
+	return boost::make_tuple(m_loginSuccess, m_sLoginError);
+}
+
+void CQuoteAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	boost::mutex::scoped_lock lock(m_mutLogin);
+
+	m_loginSuccess = (pRspInfo->ErrorID == 0);
+	string loginInfo = boost::str(
+		boost::format(
+		"Quote login response (ReqId:%d): %s") 
+		% nRequestID 
+		% (m_loginSuccess ? "Succeeded" : "Failed"));
+	logger.Info(loginInfo);
+
+	if(!m_loginSuccess)
+	{
+		m_sLoginError = pRspInfo->ErrorMsg;
+		logger.Error(boost::str(boost::format("Error Message:%s") % pRspInfo->ErrorMsg));
+	}
 }
 
 void CQuoteAgent::Logout()
@@ -176,11 +242,6 @@ void CQuoteAgent::OnHeartBeatWarning( int nTimeLapse )
 	logger.Warning(boost::str(boost::format("Hear beat warning - %d") % nTimeLapse));
 }
 
-void CQuoteAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
-}
-
 void CQuoteAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 
@@ -204,4 +265,10 @@ void CQuoteAgent::OnRspUnSubMarketData( CThostFtdcSpecificInstrumentField *pSpec
 void CQuoteAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMarketData )
 {
 
+}
+
+int CQuoteAgent::RequestIDIncrement()
+{
+	boost::mutex::scoped_lock lock(m_mutex);
+	return ++m_iRequestID;
 }
