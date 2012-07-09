@@ -45,11 +45,13 @@ void APSessionManager::Close()
 		(cltIter->second)->Close();
 	}
 
-	// destory server
-	m_server.reset();
+	m_server->stop();
 
 	// destory clients
 	m_clientMap.clear();
+
+	// destory server
+	m_server.reset();
 }
 
 void APSessionManager::RegisterHandler( SessionManagerHandler* handler )

@@ -79,5 +79,15 @@ namespace PortfolioTrading
                 MessageBox.Show(ex.Message);            	
             }
         }
+
+        private void btnQuoteLogin_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnQuoteLogout_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

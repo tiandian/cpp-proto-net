@@ -31,3 +31,10 @@ message OperationReturn
 	required bool Success = 1;
 	required string ErrorMessage = 2;
 }
+
+message LoginParam
+{
+	required string BrokerId = 1;
+	required string UserId = 2;
+	required string Password = 3;
+}
