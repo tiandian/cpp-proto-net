@@ -21,6 +21,8 @@
             <StackPanel Orientation="Horizontal">
                 <Button Name="btnQuoteConn" Click="btnQuoteConn_Click">Quote Open</Button>
                 <Button Name="btnQuoteClose" Click="btnQuoteClose_Click">Quote Close</Button>
+                <Button Name="btnQuoteLogin" Click="btnQuoteLogin_Click">Quote Login</Button>
+                <Button Name="btnQuoteLogout" Click="btnQuoteLogout_Click">Quote Logout</Button>
             </StackPanel>
             
         </StackPanel>

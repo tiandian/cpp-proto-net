@@ -149,4 +149,35 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"LoginParam")]
+  public partial class LoginParam : global::ProtoBuf.IExtensible
+  {
+    public LoginParam() {}
+    
+    private string _BrokerId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"BrokerId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string BrokerId
+    {
+      get { return _BrokerId; }
+      set { _BrokerId = value; }
+    }
+    private string _UserId;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"UserId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string UserId
+    {
+      get { return _UserId; }
+      set { _UserId = value; }
+    }
+    private string _Password;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"Password", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string Password
+    {
+      get { return _Password; }
+      set { _Password = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }

@@ -42,11 +42,13 @@ public:
 	{
 		if(p_acceptor_ != NULL)
 		{
-			p_acceptor_.reset();
-			p_io_service_work_.reset();
+			p_acceptor_->close();
+			//p_acceptor_.reset();
+			p_io_service_->stop();
+			//p_io_service_work_.reset();
 			//p_io_service_->stop();
 			io_service_thread.join();
-			p_io_service_.reset();
+			//p_io_service_.reset();
 		}
 	}
 

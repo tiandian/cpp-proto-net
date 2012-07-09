@@ -71,6 +71,8 @@ void CClientManager::InitializeReqTranslators()
 {
 	m_reqTransMap.insert(make_pair("QuoteConnect", boost::bind(&CClientManager::QuoteConnect, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("QuoteDisconnect", boost::bind(&CClientManager::QuoteDisconnect, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("QuoteLogin", boost::bind(&CClientManager::QuoteLogin, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("QuoteLogout", boost::bind(&CClientManager::QuoteLogout, this, _1, _2, _3)));
 }
 
 void CClientManager::QuoteConnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
@@ -90,6 +92,26 @@ void CClientManager::QuoteConnect( CClientAgent* pClientAgent, const string& in_
 void CClientManager::QuoteDisconnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
 {
 	pClientAgent->QuoteDisconnect();
+}
+
+void CClientManager::QuoteLogin( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::LoginParam loginParam;
+	loginParam.ParseFromString(in_data);
+
+	boost::tuple<bool, string> ret = pClientAgent->QuoteLogin(
+			loginParam.brokerid(), loginParam.userid(), loginParam.password());
+
+	entity::OperationReturn operRet;
+	operRet.set_success(boost::get<0>(ret));
+	operRet.set_errormessage(boost::get<1>(ret));
+
+	operRet.SerializeToString(&out_data);
+}
+
+void CClientManager::QuoteLogout( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	pClientAgent->QuoteLogout();
 }
 
 

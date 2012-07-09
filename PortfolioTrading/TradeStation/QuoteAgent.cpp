@@ -25,7 +25,7 @@ CQuoteAgent::~CQuoteAgent(void)
 void RunMarketDataFunc(CThostFtdcMdApi* pUserApi, const char* address)
 {
 	// duplicate address string and use boost.smart_ptr to manage its lifecycle
-	boost::scoped_array<char> front_addr(strdup(address));
+	boost::scoped_array<char> front_addr(_strdup(address));
 
 	pUserApi->RegisterFront(front_addr.get());					// connect
 	pUserApi->Init();
@@ -119,9 +119,9 @@ boost::tuple<bool, string> CQuoteAgent::Login( const string& brokerId, const str
 	{
 		CThostFtdcReqUserLoginField req;
 		memset(&req, 0, sizeof(req));
-		strcpy(req.BrokerID, brokerId.c_str());
-		strcpy(req.UserID, userId.c_str());
-		strcpy(req.Password, password.c_str());
+		strcpy_s(req.BrokerID, brokerId.c_str());
+		strcpy_s(req.UserID, userId.c_str());
+		strcpy_s(req.Password, password.c_str());
 		if(m_pUserApi != NULL)
 		{
 			boost::unique_lock<boost::mutex> lock(m_mutLogin);
@@ -177,7 +177,53 @@ void CQuoteAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 
 void CQuoteAgent::Logout()
 {
+	logger.Trace("Logging out");
 
+	if(!m_bIsConnected)
+		return;
+
+	int nResult = -1;
+	try{
+		CThostFtdcUserLogoutField req;
+		memset(&req, 0, sizeof(req));
+		strcpy_s(req.BrokerID, m_brokerID.c_str());
+		strcpy_s(req.UserID, m_userID.c_str());
+
+		if(m_pUserApi != NULL)
+			nResult = m_pUserApi->ReqUserLogout(&req, RequestIDIncrement());
+
+		if(nResult == 0)
+		{
+			logger.Info("Sending logout successfully");
+		}
+		else
+		{
+			logger.Error("Sending logout failed");
+		}
+	}
+	catch(...)
+	{
+		logger.Error("Unknown error happent while logging out");
+	}
+}
+
+void CQuoteAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	logger.Info(boost::str(boost::format("Logout Response (ReqID:%d)") % nRequestID));
+
+	string logoutInfo;
+	if(pRspInfo->ErrorID == 0)
+	{
+		logoutInfo = boost::str(boost::format("Logout succeeded. BrokerId:%s, UserId:%s") 
+									% pUserLogout->BrokerID % pUserLogout->UserID);
+	}
+	else
+	{
+		// login failed
+		logoutInfo = boost::str(boost::format("Logout failed due to %s") % pRspInfo->ErrorMsg);
+	}
+
+	logger.Info(logoutInfo);
 }
 
 bool CQuoteAgent::SubscribesQuotes( vector<string>& subscribeArr )
@@ -240,11 +286,6 @@ void CQuoteAgent::OnFrontDisconnected( int nReason )
 void CQuoteAgent::OnHeartBeatWarning( int nTimeLapse )
 {
 	logger.Warning(boost::str(boost::format("Hear beat warning - %d") % nTimeLapse));
-}
-
-void CQuoteAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
 }
 
 void CQuoteAgent::OnRspError( CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )

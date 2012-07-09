@@ -29,6 +29,26 @@ namespace PortfolioTrading.Infrastructure
             ServerDisconnect("TradeDisconnect");
         }
 
+        public OperationResult QuoteLogin(string brokerId, string userId, string password)
+        {
+            return ServerLogin("QuoteLogin", brokerId, userId, password);
+        }
+
+        public void QuoteLogout()
+        {
+            ServerLogout("QuoteLogout");
+        }
+
+        public OperationResult TradeLogin(string brokerId, string userId, string password)
+        {
+            return ServerLogin("TradeLogin", brokerId, userId, password);
+        }
+
+        public void TradeLogout()
+        {
+            ServerLogout("TradeLogout");
+        }
+
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
         {
             ConnectParam connParam = new ConnectParam()
@@ -53,11 +73,45 @@ namespace PortfolioTrading.Infrastructure
                 return new OperationResult
                 {
                     Success = false,
-                    ErrorMessage = "Returned data is invalid"
+                    ErrorMessage = "Returned data (Connect) is invalid"
                 };
         }
 
         private void ServerDisconnect(string method)
+        {
+            byte[] void_ret = Request(method, ClientBase.VoidParam);
+        }
+
+        private OperationResult ServerLogin(string method, string brokerId, string userId, string password)
+        {
+            LoginParam connParam = new LoginParam()
+            {
+                BrokerId = brokerId,
+                UserId = userId,
+                Password = password
+            };
+
+            byte[] param_data = DataTranslater.Serialize(connParam);
+
+            byte[] ret_data = Request(method, param_data);
+            if (ret_data != null)
+            {
+                OperationReturn rt = DataTranslater.Deserialize<OperationReturn>(ret_data);
+                return new OperationResult
+                {
+                    Success = rt.Success,
+                    ErrorMessage = rt.ErrorMessage
+                };
+            }
+            else
+                return new OperationResult
+                {
+                    Success = false,
+                    ErrorMessage = "Returned data (Login) is invalid"
+                };
+        }
+
+        private void ServerLogout(string method)
         {
             byte[] void_ret = Request(method, ClientBase.VoidParam);
         }

@@ -40,6 +40,9 @@ private:
 	void QuoteConnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void QuoteDisconnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
+	void QuoteLogin(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void QuoteLogout(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+
 	ReqTranslatorMap m_reqTransMap;
 	ClientMap m_clients;
 };
