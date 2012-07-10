@@ -112,6 +112,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="StrategyManager.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
+    <ClInclude Include="TradeAgentCallback.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Entity\gen\cpp\enum.pb.cc">

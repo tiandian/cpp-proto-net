@@ -13,7 +13,10 @@
 #define LOGIN_TIMEOUT_SECONDS 15
 
 CQuoteAgent::CQuoteAgent(void):
-m_loginSuccess(false)
+m_loginSuccess(false),
+m_pUserApi(NULL),
+m_pCallback(NULL),
+m_bIsConnected(false)
 {
 }
 
