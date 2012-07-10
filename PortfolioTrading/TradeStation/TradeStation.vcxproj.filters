@@ -102,6 +102,9 @@
     <ClInclude Include="FileOperations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TradeAgentCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

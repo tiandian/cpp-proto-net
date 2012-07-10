@@ -29,6 +29,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* OperationReturn_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   OperationReturn_reflection_ = NULL;
+const ::google::protobuf::Descriptor* LoginParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  LoginParam_reflection_ = NULL;
 
 }  // namespace
 
@@ -109,6 +112,23 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(OperationReturn));
+  LoginParam_descriptor_ = file->message_type(4);
+  static const int LoginParam_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, brokerid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, userid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, password_),
+  };
+  LoginParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      LoginParam_descriptor_,
+      LoginParam::default_instance_,
+      LoginParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(LoginParam));
 }
 
 namespace {
@@ -129,6 +149,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     ConnectParam_descriptor_, &ConnectParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     OperationReturn_descriptor_, &OperationReturn::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    LoginParam_descriptor_, &LoginParam::default_instance());
 }
 
 }  // namespace
@@ -142,6 +164,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ConnectParam_reflection_;
   delete OperationReturn::default_instance_;
   delete OperationReturn_reflection_;
+  delete LoginParam::default_instance_;
+  delete LoginParam_reflection_;
 }
 
 void protobuf_AddDesc_message_2eproto() {
@@ -161,17 +185,21 @@ void protobuf_AddDesc_message_2eproto() {
     "Close\030\005 \002(\010\022\035\n\004Legs\030\006 \003(\0132\017.entity.LegIt"
     "em\":\n\014ConnectParam\022\024\n\014QuoteAddress\030\001 \002(\t"
     "\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017OperationRetur"
-    "n\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t", 400);
+    "n\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t"
+    "\"@\n\nLoginParam\022\020\n\010BrokerId\030\001 \002(\t\022\016\n\006User"
+    "Id\030\002 \002(\t\022\020\n\010Password\030\003 \002(\t", 466);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LegItem::default_instance_ = new LegItem();
   PortfolioItem::default_instance_ = new PortfolioItem();
   ConnectParam::default_instance_ = new ConnectParam();
   OperationReturn::default_instance_ = new OperationReturn();
+  LoginParam::default_instance_ = new LoginParam();
   LegItem::default_instance_->InitAsDefaultInstance();
   PortfolioItem::default_instance_->InitAsDefaultInstance();
   ConnectParam::default_instance_->InitAsDefaultInstance();
   OperationReturn::default_instance_->InitAsDefaultInstance();
+  LoginParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
 
@@ -1503,6 +1531,345 @@ void OperationReturn::Swap(OperationReturn* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = OperationReturn_descriptor_;
   metadata.reflection = OperationReturn_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int LoginParam::kBrokerIdFieldNumber;
+const int LoginParam::kUserIdFieldNumber;
+const int LoginParam::kPasswordFieldNumber;
+#endif  // !_MSC_VER
+
+LoginParam::LoginParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void LoginParam::InitAsDefaultInstance() {
+}
+
+LoginParam::LoginParam(const LoginParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void LoginParam::SharedCtor() {
+  _cached_size_ = 0;
+  brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  password_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+LoginParam::~LoginParam() {
+  SharedDtor();
+}
+
+void LoginParam::SharedDtor() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    delete brokerid_;
+  }
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    delete userid_;
+  }
+  if (password_ != &::google::protobuf::internal::kEmptyString) {
+    delete password_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void LoginParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* LoginParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return LoginParam_descriptor_;
+}
+
+const LoginParam& LoginParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+LoginParam* LoginParam::default_instance_ = NULL;
+
+LoginParam* LoginParam::New() const {
+  return new LoginParam;
+}
+
+void LoginParam::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_brokerid()) {
+      if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+        brokerid_->clear();
+      }
+    }
+    if (has_userid()) {
+      if (userid_ != &::google::protobuf::internal::kEmptyString) {
+        userid_->clear();
+      }
+    }
+    if (has_password()) {
+      if (password_ != &::google::protobuf::internal::kEmptyString) {
+        password_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool LoginParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string BrokerId = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->brokerid().data(), this->brokerid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_UserId;
+        break;
+      }
+      
+      // required string UserId = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_UserId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_userid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->userid().data(), this->userid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_Password;
+        break;
+      }
+      
+      // required string Password = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Password:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_password()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->password().data(), this->password().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void LoginParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string BrokerId = 1;
+  if (has_brokerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->brokerid(), output);
+  }
+  
+  // required string UserId = 2;
+  if (has_userid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->userid().data(), this->userid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->userid(), output);
+  }
+  
+  // required string Password = 3;
+  if (has_password()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->password().data(), this->password().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->password(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* LoginParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string BrokerId = 1;
+  if (has_brokerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->brokerid(), target);
+  }
+  
+  // required string UserId = 2;
+  if (has_userid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->userid().data(), this->userid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->userid(), target);
+  }
+  
+  // required string Password = 3;
+  if (has_password()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->password().data(), this->password().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->password(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int LoginParam::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string BrokerId = 1;
+    if (has_brokerid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->brokerid());
+    }
+    
+    // required string UserId = 2;
+    if (has_userid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->userid());
+    }
+    
+    // required string Password = 3;
+    if (has_password()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->password());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void LoginParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const LoginParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const LoginParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void LoginParam::MergeFrom(const LoginParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_brokerid()) {
+      set_brokerid(from.brokerid());
+    }
+    if (from.has_userid()) {
+      set_userid(from.userid());
+    }
+    if (from.has_password()) {
+      set_password(from.password());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void LoginParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void LoginParam::CopyFrom(const LoginParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool LoginParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  
+  return true;
+}
+
+void LoginParam::Swap(LoginParam* other) {
+  if (other != this) {
+    std::swap(brokerid_, other->brokerid_);
+    std::swap(userid_, other->userid_);
+    std::swap(password_, other->password_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata LoginParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = LoginParam_descriptor_;
+  metadata.reflection = LoginParam_reflection_;
   return metadata;
 }
 

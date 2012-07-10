@@ -37,6 +37,7 @@ class LegItem;
 class PortfolioItem;
 class ConnectParam;
 class OperationReturn;
+class LoginParam;
 
 // ===================================================================
 
@@ -488,6 +489,120 @@ class OperationReturn : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static OperationReturn* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class LoginParam : public ::google::protobuf::Message {
+ public:
+  LoginParam();
+  virtual ~LoginParam();
+  
+  LoginParam(const LoginParam& from);
+  
+  inline LoginParam& operator=(const LoginParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LoginParam& default_instance();
+  
+  void Swap(LoginParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  LoginParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const LoginParam& from);
+  void MergeFrom(const LoginParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string BrokerId = 1;
+  inline bool has_brokerid() const;
+  inline void clear_brokerid();
+  static const int kBrokerIdFieldNumber = 1;
+  inline const ::std::string& brokerid() const;
+  inline void set_brokerid(const ::std::string& value);
+  inline void set_brokerid(const char* value);
+  inline void set_brokerid(const char* value, size_t size);
+  inline ::std::string* mutable_brokerid();
+  inline ::std::string* release_brokerid();
+  
+  // required string UserId = 2;
+  inline bool has_userid() const;
+  inline void clear_userid();
+  static const int kUserIdFieldNumber = 2;
+  inline const ::std::string& userid() const;
+  inline void set_userid(const ::std::string& value);
+  inline void set_userid(const char* value);
+  inline void set_userid(const char* value, size_t size);
+  inline ::std::string* mutable_userid();
+  inline ::std::string* release_userid();
+  
+  // required string Password = 3;
+  inline bool has_password() const;
+  inline void clear_password();
+  static const int kPasswordFieldNumber = 3;
+  inline const ::std::string& password() const;
+  inline void set_password(const ::std::string& value);
+  inline void set_password(const char* value);
+  inline void set_password(const char* value, size_t size);
+  inline ::std::string* mutable_password();
+  inline ::std::string* release_password();
+  
+  // @@protoc_insertion_point(class_scope:entity.LoginParam)
+ private:
+  inline void set_has_brokerid();
+  inline void clear_has_brokerid();
+  inline void set_has_userid();
+  inline void clear_has_userid();
+  inline void set_has_password();
+  inline void clear_has_password();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* brokerid_;
+  ::std::string* userid_;
+  ::std::string* password_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static LoginParam* default_instance_;
 };
 // ===================================================================
 
@@ -997,6 +1112,184 @@ inline ::std::string* OperationReturn::release_errormessage() {
   } else {
     ::std::string* temp = errormessage_;
     errormessage_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// LoginParam
+
+// required string BrokerId = 1;
+inline bool LoginParam::has_brokerid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void LoginParam::set_has_brokerid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void LoginParam::clear_has_brokerid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void LoginParam::clear_brokerid() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    brokerid_->clear();
+  }
+  clear_has_brokerid();
+}
+inline const ::std::string& LoginParam::brokerid() const {
+  return *brokerid_;
+}
+inline void LoginParam::set_brokerid(const ::std::string& value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void LoginParam::set_brokerid(const char* value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void LoginParam::set_brokerid(const char* value, size_t size) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* LoginParam::mutable_brokerid() {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  return brokerid_;
+}
+inline ::std::string* LoginParam::release_brokerid() {
+  clear_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = brokerid_;
+    brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string UserId = 2;
+inline bool LoginParam::has_userid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void LoginParam::set_has_userid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void LoginParam::clear_has_userid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void LoginParam::clear_userid() {
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    userid_->clear();
+  }
+  clear_has_userid();
+}
+inline const ::std::string& LoginParam::userid() const {
+  return *userid_;
+}
+inline void LoginParam::set_userid(const ::std::string& value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void LoginParam::set_userid(const char* value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void LoginParam::set_userid(const char* value, size_t size) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* LoginParam::mutable_userid() {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  return userid_;
+}
+inline ::std::string* LoginParam::release_userid() {
+  clear_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = userid_;
+    userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string Password = 3;
+inline bool LoginParam::has_password() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void LoginParam::set_has_password() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void LoginParam::clear_has_password() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void LoginParam::clear_password() {
+  if (password_ != &::google::protobuf::internal::kEmptyString) {
+    password_->clear();
+  }
+  clear_has_password();
+}
+inline const ::std::string& LoginParam::password() const {
+  return *password_;
+}
+inline void LoginParam::set_password(const ::std::string& value) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    password_ = new ::std::string;
+  }
+  password_->assign(value);
+}
+inline void LoginParam::set_password(const char* value) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    password_ = new ::std::string;
+  }
+  password_->assign(value);
+}
+inline void LoginParam::set_password(const char* value, size_t size) {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    password_ = new ::std::string;
+  }
+  password_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* LoginParam::mutable_password() {
+  set_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    password_ = new ::std::string;
+  }
+  return password_;
+}
+inline ::std::string* LoginParam::release_password() {
+  clear_has_password();
+  if (password_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = password_;
+    password_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
