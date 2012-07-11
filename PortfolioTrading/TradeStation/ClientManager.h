@@ -43,6 +43,12 @@ private:
 	void QuoteLogin(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void QuoteLogout(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
+	void TradeConnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void TradeDisconnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+
+	void TradeLogin(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void TradeLogout(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+
 	ReqTranslatorMap m_reqTransMap;
 	ClientMap m_clients;
 };

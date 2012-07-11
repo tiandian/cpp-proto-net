@@ -73,6 +73,11 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("QuoteDisconnect", boost::bind(&CClientManager::QuoteDisconnect, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("QuoteLogin", boost::bind(&CClientManager::QuoteLogin, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("QuoteLogout", boost::bind(&CClientManager::QuoteLogout, this, _1, _2, _3)));
+
+	m_reqTransMap.insert(make_pair("TradeConnect", boost::bind(&CClientManager::TradeConnect, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("TradeDisconnect", boost::bind(&CClientManager::TradeDisconnect, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("TradeLogin", boost::bind(&CClientManager::TradeLogin, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("TradeLogout", boost::bind(&CClientManager::TradeLogout, this, _1, _2, _3)));
 }
 
 void CClientManager::QuoteConnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
@@ -112,6 +117,45 @@ void CClientManager::QuoteLogin( CClientAgent* pClientAgent, const string& in_da
 void CClientManager::QuoteLogout( CClientAgent* pClientAgent, const string& in_data, string& out_data )
 {
 	pClientAgent->QuoteLogout();
+}
+
+void CClientManager::TradeConnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::ConnectParam connParam;
+	connParam.ParseFromString(in_data);
+
+	boost::tuple<bool, string> ret = pClientAgent->TradeConnect(connParam.quoteaddress(), connParam.streamfolder());
+
+	entity::OperationReturn operRet;
+	operRet.set_success(boost::get<0>(ret));
+	operRet.set_errormessage(boost::get<1>(ret));
+
+	operRet.SerializeToString(&out_data);
+}
+
+void CClientManager::TradeDisconnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	pClientAgent->TradeDisconnect();
+}
+
+void CClientManager::TradeLogin( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::LoginParam loginParam;
+	loginParam.ParseFromString(in_data);
+
+	boost::tuple<bool, string> ret = pClientAgent->TradeLogin(
+		loginParam.brokerid(), loginParam.userid(), loginParam.password());
+
+	entity::OperationReturn operRet;
+	operRet.set_success(boost::get<0>(ret));
+	operRet.set_errormessage(boost::get<1>(ret));
+
+	operRet.SerializeToString(&out_data);
+}
+
+void CClientManager::TradeLogout( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	pClientAgent->TradeLogout();
 }
 
 

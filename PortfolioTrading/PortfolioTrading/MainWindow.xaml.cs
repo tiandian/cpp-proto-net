@@ -82,12 +82,33 @@ namespace PortfolioTrading
 
         private void btnQuoteLogin_Click(object sender, RoutedEventArgs e)
         {
-
+            OperationResult result = _client.QuoteLogin("2030", "00092", "888888");
         }
 
         private void btnQuoteLogout_Click(object sender, RoutedEventArgs e)
         {
+            _client.QuoteLogout();
+        }
 
+        private void btnTradeConn_Click(object sender, RoutedEventArgs e)
+        {
+            OperationResult result = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
+                                                          "0240005010");
+        }
+
+        private void btnTradeClose_Click(object sender, RoutedEventArgs e)
+        {
+            _client.TradeDisconnect();
+        }
+
+        private void btnTradeLogin_Click(object sender, RoutedEventArgs e)
+        {
+            OperationResult result = _client.TradeLogin("0240", "0240050005", "888888");
+        }
+
+        private void btnTradeLogout_Click(object sender, RoutedEventArgs e)
+        {
+            _client.TradeLogout();
         }
     }
 }
