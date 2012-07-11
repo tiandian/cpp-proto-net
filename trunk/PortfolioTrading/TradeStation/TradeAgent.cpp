@@ -32,7 +32,8 @@ m_loginSuccess(false),
 m_pUserApi(NULL),
 m_pCallback(NULL),
 m_bIsConnected(false),
-m_maxOrderRef(0)
+m_maxOrderRef(0),
+m_iRequestID(0)
 {
 }
 
@@ -175,7 +176,7 @@ void CTradeAgent::OnFrontDisconnected( int nReason )
 boost::tuple<bool, string> CTradeAgent::Login( const string& brokerId, const string& userId, const string& password )
 {
 	string traceInfo = boost::str(boost::format("Log in trade (%s, %s, %s)") 
-		% brokerId.c_str() % userId % password);
+		% brokerId.c_str() % userId.c_str() % password.c_str());
 	logger.Trace(traceInfo);
 
 	m_brokerID = brokerId;
@@ -236,6 +237,8 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 
 	if(m_loginSuccess)
 	{
+		m_condLogin.notify_one();
+
 		// 保存会话参数
 		FRONT_ID = pRspUserLogin->FrontID;
 		SESSION_ID = pRspUserLogin->SessionID;
@@ -268,7 +271,7 @@ void CTradeAgent::Logout()
 {
 	logger.Trace("Trade Logging out");
 
-	if(!m_bIsConnected)
+	if(!m_bIsConnected || !m_loginSuccess)
 		return;
 
 	int nResult = -1;
@@ -283,6 +286,7 @@ void CTradeAgent::Logout()
 
 		if(nResult == 0)
 		{
+			m_loginSuccess = false;
 			logger.Info("Sending Trade logout successfully");
 		}
 		else

@@ -16,7 +16,8 @@ CQuoteAgent::CQuoteAgent(void):
 m_loginSuccess(false),
 m_pUserApi(NULL),
 m_pCallback(NULL),
-m_bIsConnected(false)
+m_bIsConnected(false),
+m_iRequestID(0)
 {
 }
 
@@ -164,6 +165,7 @@ void CQuoteAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 	boost::mutex::scoped_lock lock(m_mutLogin);
 
 	m_loginSuccess = (pRspInfo->ErrorID == 0);
+	m_condLogin.notify_one();
 	string loginInfo = boost::str(
 		boost::format(
 		"Quote login response (ReqId:%d): %s") 
@@ -182,7 +184,7 @@ void CQuoteAgent::Logout()
 {
 	logger.Trace("Logging out");
 
-	if(!m_bIsConnected)
+	if(!m_bIsConnected || !m_loginSuccess)
 		return;
 
 	int nResult = -1;
@@ -193,11 +195,15 @@ void CQuoteAgent::Logout()
 		strcpy_s(req.UserID, m_userID.c_str());
 
 		if(m_pUserApi != NULL)
-			nResult = m_pUserApi->ReqUserLogout(&req, RequestIDIncrement());
+		{
+			int reqId = RequestIDIncrement();
+			nResult = m_pUserApi->ReqUserLogout(&req, reqId);
+		}
 
 		if(nResult == 0)
 		{
 			logger.Info("Sending logout successfully");
+			m_loginSuccess = false;
 		}
 		else
 		{
@@ -314,5 +320,5 @@ void CQuoteAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMa
 int CQuoteAgent::RequestIDIncrement()
 {
 	boost::mutex::scoped_lock lock(m_mutex);
-	return ++m_iRequestID;
+	return m_iRequestID++;
 }

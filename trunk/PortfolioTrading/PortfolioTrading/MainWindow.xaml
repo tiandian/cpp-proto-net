@@ -24,7 +24,12 @@
                 <Button Name="btnQuoteLogin" Click="btnQuoteLogin_Click">Quote Login</Button>
                 <Button Name="btnQuoteLogout" Click="btnQuoteLogout_Click">Quote Logout</Button>
             </StackPanel>
-            
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnTradeConn" Click="btnTradeConn_Click">Trade Open</Button>
+                <Button Name="btnTradeClose" Click="btnTradeClose_Click">Trade Close</Button>
+                <Button Name="btnTradeLogin" Click="btnTradeLogin_Click">Trade Login</Button>
+                <Button Name="btnTradeLogout" Click="btnTradeLogout_Click">Trade Logout</Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>
