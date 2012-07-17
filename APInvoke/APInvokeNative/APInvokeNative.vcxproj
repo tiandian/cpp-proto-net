@@ -90,7 +90,7 @@ copy /y $(TargetPath) $(ProjectDir)lib\</Command>
     <ClInclude Include="APSessionManager.h" />
     <ClInclude Include="connection.h" />
     <ClInclude Include="MsgType.h" />
-    <ClInclude Include="server.h" />
+    <ClInclude Include="server.hpp" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -107,6 +107,9 @@ copy /y $(TargetPath) $(ProjectDir)lib\</Command>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="server.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

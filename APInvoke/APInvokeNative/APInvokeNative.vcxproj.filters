@@ -33,13 +33,13 @@
     <ClInclude Include="connection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="server.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MsgType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Transmission\gen\packet.pb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="server.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -57,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\Transmission\gen\packet.pb.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
