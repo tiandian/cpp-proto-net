@@ -1,8 +1,9 @@
 #pragma once
 
 #include "APInvokeNative.h"
+#include "MsgType.h"
 #include "connection.h"
-#include "server.h"
+#include "server.hpp"
 #include "../Transmission/gen/packet.pb.h"
 
 #include <string>
@@ -127,5 +128,6 @@ private:
 											boost::threadpool::resize_controller, 
 											boost::threadpool::immediately> ThreadPool;
 	ThreadPool m_threadPool;
+
 };
 

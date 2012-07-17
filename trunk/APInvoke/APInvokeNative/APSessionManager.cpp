@@ -31,9 +31,9 @@ APSessionManager::~APSessionManager(void)
 
 bool APSessionManager::Listen( unsigned int nPort )
 {
-	m_server = boost::shared_ptr<server>(new server(nPort));
+	m_server = boost::shared_ptr<server>(new server(string("192.168.2.100"), string("16168")));
 	m_server->set_accept_handler(boost::bind(&APSessionManager::OnClientAccepted, this, _1));
-
+	m_server->run();
 	return true;
 }
 
@@ -45,10 +45,10 @@ void APSessionManager::Close()
 		(cltIter->second)->Close();
 	}
 
-	m_server->stop();
-
 	// destory clients
 	m_clientMap.clear();
+
+	m_server->stop();
 
 	// destory server
 	m_server.reset();
@@ -68,8 +68,6 @@ void APSessionManager::OnClientAccepted( connection_ptr conn )
 	SessionPtr client(new APSession(sessionId, conn));
 	m_clientMap.insert(std::make_pair(sessionId, client));
 	client->GetReady(this);
-
-
 }
 
 void APSessionManager::HandleError( const string& sessionId, const boost::system::error_code& e )
