@@ -2,18 +2,21 @@
 
 #include "QuoteAgent.h"
 #include "TradeAgent.h"
+#include "QuoteAggregator.h"
 #include "StrategyManager.h"
 #include "PortfolioManager.h"
 #include "ManualOrderPlacer.h"
 #include "OrderProcessor.h"
+#include "QuoteListener.h"
 #include "../Entity/gen/cpp/message.pb.h"
 #include "../../APInvoke/APInvokeNative/APInvokeNative.h"
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
-class CClientAgent
+class CClientAgent : public CQuoteListener
 {
 public:
 	CClientAgent(void);
@@ -27,6 +30,9 @@ public:
 
 	void Add(entity::PortfolioItem* portfolioItem);
 	void Remove(const string& pid);
+	void RegQuote(vector<string>& symbols);
+
+	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 
 	std::string QuoteAddress() const { return m_quoteAddress; }
 	boost::tuple<bool, string> QuoteConnect(const std::string& address, const std::string& streamDir);
@@ -50,6 +56,7 @@ private:
 	void SetClientStatus(bool connected) { m_clientConnected = connected; }
 
 	CQuoteAgent			m_quoteAgent;
+	CQuoteAggregator	m_quoteAggregator;
 	CTradeAgent			m_tradeAgent;
 	CStrategyManager	m_strategyMgr;
 	CPortfolioManager	m_portfolioMgr;

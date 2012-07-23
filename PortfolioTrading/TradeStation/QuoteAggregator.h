@@ -3,6 +3,7 @@
 #include "QuoteListener.h"
 #include "QuoteAgent.h"
 #include "QuoteAgentCallback.h"
+#include "BufferRunner.h"
 
 #include <string>
 #include <vector>
@@ -13,7 +14,7 @@
 
 using namespace std;
 
-class CQuoteAggregator
+class CQuoteAggregator : public CQuoteAgentCallback
 {
 public:
 	CQuoteAggregator(void);
@@ -48,5 +49,7 @@ private:
 	SymbolListenerMap m_symbolListeners;
 	std::set<std::string> m_subscribingSymbols;
 	CQuoteAgent* m_quoteAgent;
+
+	CBufferRunner< boost::shared_ptr<entity::Quote> > m_bufferRunner;
 };
 

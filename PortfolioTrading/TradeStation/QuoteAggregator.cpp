@@ -6,13 +6,14 @@
 
 
 CQuoteAggregator::CQuoteAggregator(void):
-m_quoteAgent(NULL)
+m_quoteAgent(NULL),
+m_bufferRunner(boost::bind(&CQuoteAggregator::DispatchQuotes, this, _1))
 {
 }
 
-
 CQuoteAggregator::~CQuoteAggregator(void)
 {
+	m_bufferRunner.Stop();
 }
 
 void CQuoteAggregator::Initialize( CQuoteAgent* quoteAgent )
@@ -82,7 +83,8 @@ void CQuoteAggregator::OnUnsubscribeCompleted()
 
 void CQuoteAggregator::OnQuoteReceived( entity::Quote* pQuote )
 {
-
+	// wrap row pointer in shared pointer and manage the memory
+	m_bufferRunner.Enqueue(boost::shared_ptr<entity::Quote>(pQuote));
 }
 
 void CQuoteAggregator::DispatchQuotes( boost::shared_ptr<entity::Quote>& pQuote )

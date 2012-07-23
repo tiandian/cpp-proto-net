@@ -38,6 +38,7 @@ class PortfolioItem;
 class ConnectParam;
 class OperationReturn;
 class LoginParam;
+class RegQuoteParam;
 
 // ===================================================================
 
@@ -603,6 +604,95 @@ class LoginParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static LoginParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class RegQuoteParam : public ::google::protobuf::Message {
+ public:
+  RegQuoteParam();
+  virtual ~RegQuoteParam();
+  
+  RegQuoteParam(const RegQuoteParam& from);
+  
+  inline RegQuoteParam& operator=(const RegQuoteParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const RegQuoteParam& default_instance();
+  
+  void Swap(RegQuoteParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  RegQuoteParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const RegQuoteParam& from);
+  void MergeFrom(const RegQuoteParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // repeated string Symbols = 1;
+  inline int symbols_size() const;
+  inline void clear_symbols();
+  static const int kSymbolsFieldNumber = 1;
+  inline const ::std::string& symbols(int index) const;
+  inline ::std::string* mutable_symbols(int index);
+  inline void set_symbols(int index, const ::std::string& value);
+  inline void set_symbols(int index, const char* value);
+  inline void set_symbols(int index, const char* value, size_t size);
+  inline ::std::string* add_symbols();
+  inline void add_symbols(const ::std::string& value);
+  inline void add_symbols(const char* value);
+  inline void add_symbols(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& symbols() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_symbols();
+  
+  // @@protoc_insertion_point(class_scope:entity.RegQuoteParam)
+ private:
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::RepeatedPtrField< ::std::string> symbols_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static RegQuoteParam* default_instance_;
 };
 // ===================================================================
 
@@ -1292,6 +1382,54 @@ inline ::std::string* LoginParam::release_password() {
     password_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// -------------------------------------------------------------------
+
+// RegQuoteParam
+
+// repeated string Symbols = 1;
+inline int RegQuoteParam::symbols_size() const {
+  return symbols_.size();
+}
+inline void RegQuoteParam::clear_symbols() {
+  symbols_.Clear();
+}
+inline const ::std::string& RegQuoteParam::symbols(int index) const {
+  return symbols_.Get(index);
+}
+inline ::std::string* RegQuoteParam::mutable_symbols(int index) {
+  return symbols_.Mutable(index);
+}
+inline void RegQuoteParam::set_symbols(int index, const ::std::string& value) {
+  symbols_.Mutable(index)->assign(value);
+}
+inline void RegQuoteParam::set_symbols(int index, const char* value) {
+  symbols_.Mutable(index)->assign(value);
+}
+inline void RegQuoteParam::set_symbols(int index, const char* value, size_t size) {
+  symbols_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* RegQuoteParam::add_symbols() {
+  return symbols_.Add();
+}
+inline void RegQuoteParam::add_symbols(const ::std::string& value) {
+  symbols_.Add()->assign(value);
+}
+inline void RegQuoteParam::add_symbols(const char* value) {
+  symbols_.Add()->assign(value);
+}
+inline void RegQuoteParam::add_symbols(const char* value, size_t size) {
+  symbols_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+RegQuoteParam::symbols() const {
+  return symbols_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+RegQuoteParam::mutable_symbols() {
+  return &symbols_;
 }
 
 

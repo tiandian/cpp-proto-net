@@ -92,6 +92,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="..\Entity\gen\cpp\enum.pb.h" />
     <ClInclude Include="..\Entity\gen\cpp\message.pb.h" />
     <ClInclude Include="..\Entity\gen\cpp\quote.pb.h" />
+    <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Configuration.h" />

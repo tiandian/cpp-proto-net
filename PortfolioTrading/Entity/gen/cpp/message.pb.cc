@@ -32,6 +32,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* LoginParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   LoginParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* RegQuoteParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  RegQuoteParam_reflection_ = NULL;
 
 }  // namespace
 
@@ -129,6 +132,21 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LoginParam));
+  RegQuoteParam_descriptor_ = file->message_type(5);
+  static const int RegQuoteParam_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegQuoteParam, symbols_),
+  };
+  RegQuoteParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      RegQuoteParam_descriptor_,
+      RegQuoteParam::default_instance_,
+      RegQuoteParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegQuoteParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegQuoteParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(RegQuoteParam));
 }
 
 namespace {
@@ -151,6 +169,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     OperationReturn_descriptor_, &OperationReturn::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     LoginParam_descriptor_, &LoginParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    RegQuoteParam_descriptor_, &RegQuoteParam::default_instance());
 }
 
 }  // namespace
@@ -166,6 +186,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete OperationReturn_reflection_;
   delete LoginParam::default_instance_;
   delete LoginParam_reflection_;
+  delete RegQuoteParam::default_instance_;
+  delete RegQuoteParam_reflection_;
 }
 
 void protobuf_AddDesc_message_2eproto() {
@@ -187,7 +209,8 @@ void protobuf_AddDesc_message_2eproto() {
     "\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017OperationRetur"
     "n\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t"
     "\"@\n\nLoginParam\022\020\n\010BrokerId\030\001 \002(\t\022\016\n\006User"
-    "Id\030\002 \002(\t\022\020\n\010Password\030\003 \002(\t", 466);
+    "Id\030\002 \002(\t\022\020\n\010Password\030\003 \002(\t\" \n\rRegQuotePa"
+    "ram\022\017\n\007Symbols\030\001 \003(\t", 500);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LegItem::default_instance_ = new LegItem();
@@ -195,11 +218,13 @@ void protobuf_AddDesc_message_2eproto() {
   ConnectParam::default_instance_ = new ConnectParam();
   OperationReturn::default_instance_ = new OperationReturn();
   LoginParam::default_instance_ = new LoginParam();
+  RegQuoteParam::default_instance_ = new RegQuoteParam();
   LegItem::default_instance_->InitAsDefaultInstance();
   PortfolioItem::default_instance_->InitAsDefaultInstance();
   ConnectParam::default_instance_->InitAsDefaultInstance();
   OperationReturn::default_instance_->InitAsDefaultInstance();
   LoginParam::default_instance_->InitAsDefaultInstance();
+  RegQuoteParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
 
@@ -1870,6 +1895,215 @@ void LoginParam::Swap(LoginParam* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = LoginParam_descriptor_;
   metadata.reflection = LoginParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int RegQuoteParam::kSymbolsFieldNumber;
+#endif  // !_MSC_VER
+
+RegQuoteParam::RegQuoteParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void RegQuoteParam::InitAsDefaultInstance() {
+}
+
+RegQuoteParam::RegQuoteParam(const RegQuoteParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void RegQuoteParam::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+RegQuoteParam::~RegQuoteParam() {
+  SharedDtor();
+}
+
+void RegQuoteParam::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void RegQuoteParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* RegQuoteParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return RegQuoteParam_descriptor_;
+}
+
+const RegQuoteParam& RegQuoteParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+RegQuoteParam* RegQuoteParam::default_instance_ = NULL;
+
+RegQuoteParam* RegQuoteParam::New() const {
+  return new RegQuoteParam;
+}
+
+void RegQuoteParam::Clear() {
+  symbols_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool RegQuoteParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated string Symbols = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Symbols:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_symbols()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->symbols(0).data(), this->symbols(0).length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(10)) goto parse_Symbols;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void RegQuoteParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // repeated string Symbols = 1;
+  for (int i = 0; i < this->symbols_size(); i++) {
+  ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    this->symbols(i).data(), this->symbols(i).length(),
+    ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->symbols(i), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* RegQuoteParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // repeated string Symbols = 1;
+  for (int i = 0; i < this->symbols_size(); i++) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->symbols(i).data(), this->symbols(i).length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(1, this->symbols(i), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int RegQuoteParam::ByteSize() const {
+  int total_size = 0;
+  
+  // repeated string Symbols = 1;
+  total_size += 1 * this->symbols_size();
+  for (int i = 0; i < this->symbols_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->symbols(i));
+  }
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void RegQuoteParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const RegQuoteParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const RegQuoteParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void RegQuoteParam::MergeFrom(const RegQuoteParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  symbols_.MergeFrom(from.symbols_);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void RegQuoteParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void RegQuoteParam::CopyFrom(const RegQuoteParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool RegQuoteParam::IsInitialized() const {
+  
+  return true;
+}
+
+void RegQuoteParam::Swap(RegQuoteParam* other) {
+  if (other != this) {
+    symbols_.Swap(&other->symbols_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata RegQuoteParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = RegQuoteParam_descriptor_;
+  metadata.reflection = RegQuoteParam_reflection_;
   return metadata;
 }
 

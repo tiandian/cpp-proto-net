@@ -5,8 +5,8 @@
 CClientAgent::CClientAgent(void):
 m_clientConnected(false)
 {
+	m_quoteAggregator.Initialize(&m_quoteAgent);
 }
-
 
 CClientAgent::~CClientAgent(void)
 {
@@ -66,6 +66,16 @@ void CClientAgent::QuoteDisconnect()
 {
 	m_quoteAgent.Logout();
 	m_quoteAgent.Close();
+}
+
+void CClientAgent::RegQuote( vector<string>& symbols )
+{
+
+}
+
+void CClientAgent::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
+{
+
 }
 
 
