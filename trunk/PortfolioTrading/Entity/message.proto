@@ -38,3 +38,8 @@ message LoginParam
 	required string UserId = 2;
 	required string Password = 3;
 }
+
+message RegQuoteParam
+{
+	repeated string Symbols = 1;
+}

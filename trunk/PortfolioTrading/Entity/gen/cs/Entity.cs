@@ -180,4 +180,21 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"RegQuoteParam")]
+  public partial class RegQuoteParam : global::ProtoBuf.IExtensible
+  {
+    public RegQuoteParam() {}
+    
+    private readonly global::System.Collections.Generic.List<string> _Symbols = new global::System.Collections.Generic.List<string>();
+    [global::ProtoBuf.ProtoMember(1, Name=@"Symbols", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<string> Symbols
+    {
+      get { return _Symbols; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }
