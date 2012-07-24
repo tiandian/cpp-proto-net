@@ -3,8 +3,7 @@
 
 #include <boost/uuid/uuid_generators.hpp>
 
-CQuoteListener::CQuoteListener(void):
-m_token(boost::uuids::nil_uuid())
+CQuoteListener::CQuoteListener(void)
 {
 }
 

@@ -25,6 +25,10 @@
                 <Button Name="btnQuoteLogout" Click="btnQuoteLogout_Click">Quote Logout</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
+                <TextBox Width="250" Name="tbSymbols"></TextBox>
+                <Button Name="btnRegQuote" Click="btnRegQuote_Click">Reg Quote</Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <Button Name="btnTradeConn" Click="btnTradeConn_Click">Trade Open</Button>
                 <Button Name="btnTradeClose" Click="btnTradeClose_Click">Trade Close</Button>
                 <Button Name="btnTradeLogin" Click="btnTradeLogin_Click">Trade Login</Button>

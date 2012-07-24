@@ -30,8 +30,14 @@ namespace PortfolioTrading
 
             _client = new Client();
             _client.OnError += new Action<string>(_client_OnError);
+            _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
 
             InitializeComponent();
+        }
+
+        void _client_OnQuoteReceived(entity.Quote obj)
+        {
+            Debug.WriteLine(string.Format("{0}\t{1}\t{2}", obj.symbol, obj.last, obj.update_time));
         }
 
         void _client_OnError(string err)
@@ -109,6 +115,22 @@ namespace PortfolioTrading
         private void btnTradeLogout_Click(object sender, RoutedEventArgs e)
         {
             _client.TradeLogout();
+        }
+
+        private void btnRegQuote_Click(object sender, RoutedEventArgs e)
+        {
+            string symbolContent = tbSymbols.Text.Trim();
+            if (string.IsNullOrWhiteSpace(symbolContent))
+                _client.RegisterQuote(new string[] { });
+            else
+            {
+                string[] symbols = symbolContent.Split(',');
+                foreach (var s in symbols)
+                {
+                    s.Trim();
+                }
+                _client.RegisterQuote(symbols);
+            }
         }
     }
 }
