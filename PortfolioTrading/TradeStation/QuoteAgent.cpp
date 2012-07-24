@@ -4,6 +4,7 @@
 #include "FileOperations.h"
 
 #include <boost/format.hpp>
+#include <sstream>
 
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
 
@@ -237,12 +238,217 @@ void CQuoteAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThos
 
 bool CQuoteAgent::SubscribesQuotes( vector<string>& subscribeArr )
 {
-	return false;
+	bool retVal = false;
+
+	// know symbols's count
+	int symbCount = subscribeArr.size();
+
+	if(symbCount > 0)
+	{
+		stringstream info(std::stringstream::out);
+		info <<	"Subscribe quote for symbols as following " << endl;
+
+		// new string array
+		char** symbols = new char*[symbCount];
+
+		// loop set for copying each symbol to array
+		int idx = 0;
+		for (vector<string>::iterator iter = subscribeArr.begin(); 
+			iter != subscribeArr.end(); ++iter, ++idx)
+		{
+			symbols[idx] = new char[SYMBOL_MAX_LENGTH];
+			strcpy_s(symbols[idx], SYMBOL_MAX_LENGTH, iter->c_str());
+			info << iter->c_str() << " ";
+		}
+
+		try	
+		{
+			logger.Trace(info.str());
+			// 'REALLY' submit symbols to server side
+			int iResult = m_pUserApi->SubscribeMarketData(symbols, symbCount);
+
+			if(iResult == 0)
+			{
+				retVal = true;
+				logger.Info("Subscribe quotes to server sent.");
+			}
+			else
+			{
+				retVal = false;
+				logger.Error("Failed to send subscribe quotes");
+			}
+		}
+		catch(...)
+		{
+			logger.Error("Unknown error happent while subscribe market data for quoting");
+		}
+
+		for(int i = 0; i < symbCount; ++i)
+		{
+			delete[] symbols[i];
+		}
+		delete[] symbols; 
+	}
+
+	return retVal;
 }
+
+void CQuoteAgent::OnRspSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	stringstream txt(stringstream::out); 
+	txt << "Subscribe '" << pSpecificInstrument->InstrumentID;
+
+	if(pRspInfo->ErrorID == 0)
+	{
+		txt << "' SUCCEEDED.";
+		logger.Info(txt.str());
+	}
+	else
+	{
+		txt << "' FAILED due to ";
+		txt << pRspInfo->ErrorMsg;
+		logger.Warning(txt.str());
+	}
+
+	if(m_pCallback != NULL)
+	{
+		m_pCallback->OnSubscribeCompleted();
+	}
+}
+
+void CQuoteAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMarketData )
+{
+	if(m_pCallback != NULL)
+	{
+		entity::Quote* quote = new entity::Quote();	// it will be managed by quote aggregator
+
+		quote->set_symbol(pDepthMarketData->InstrumentID);
+		quote->set_trading_day(pDepthMarketData->TradingDay);
+		quote->set_exchange_id(pDepthMarketData->ExchangeID);
+		quote->set_exchange_symbol_id(pDepthMarketData->ExchangeInstID);
+		quote->set_last(pDepthMarketData->LastPrice);
+		quote->set_prev_settlement_price(pDepthMarketData->PreSettlementPrice);
+		quote->set_prev_close(pDepthMarketData->PreClosePrice);
+		quote->set_prev_open_interest(pDepthMarketData->PreOpenInterest);
+		quote->set_open(pDepthMarketData->OpenPrice);
+		quote->set_high(pDepthMarketData->HighestPrice);
+		quote->set_low(pDepthMarketData->LowestPrice);
+		quote->set_volume(pDepthMarketData->Volume);
+		quote->set_turnover(pDepthMarketData->Turnover);
+		quote->set_open_interest(pDepthMarketData->OpenInterest);
+		quote->set_close(pDepthMarketData->ClosePrice);
+		quote->set_settlement_price(pDepthMarketData->SettlementPrice);
+		quote->set_upper_limit_price(pDepthMarketData->UpperLimitPrice);
+		quote->set_lower_limit_price(pDepthMarketData->LowerLimitPrice);
+		quote->set_prev_delta(pDepthMarketData->PreDelta);
+		quote->set_curr_delta(pDepthMarketData->CurrDelta);
+		quote->set_update_time(pDepthMarketData->UpdateTime);
+		quote->set_update_millisec(pDepthMarketData->UpdateMillisec);
+
+		quote->set_bid(pDepthMarketData->BidPrice1);
+		quote->set_bid_size(pDepthMarketData->BidVolume1);
+		quote->set_ask(pDepthMarketData->AskPrice1);
+		quote->set_ask_size(pDepthMarketData->AskVolume1);
+		quote->set_bid_2(pDepthMarketData->BidPrice2);
+		quote->set_bid_size_2(pDepthMarketData->BidVolume2);
+		quote->set_ask_2(pDepthMarketData->AskPrice2);
+		quote->set_ask_size_2(pDepthMarketData->AskVolume2);
+		quote->set_bid_3(pDepthMarketData->BidPrice3);
+		quote->set_bid_size_3(pDepthMarketData->BidVolume3);
+		quote->set_ask_3(pDepthMarketData->AskPrice3);
+		quote->set_ask_size_3(pDepthMarketData->AskVolume3);
+		quote->set_bid_4(pDepthMarketData->BidPrice4);
+		quote->set_bid_size_4(pDepthMarketData->BidVolume4);
+		quote->set_ask_4(pDepthMarketData->AskPrice4);
+		quote->set_ask_size_4(pDepthMarketData->AskVolume4);
+		quote->set_bid_5(pDepthMarketData->BidPrice5);
+		quote->set_bid_size_5(pDepthMarketData->BidVolume5);
+		quote->set_ask_5(pDepthMarketData->AskPrice5);
+		quote->set_ask_size_5(pDepthMarketData->AskVolume5);
+		quote->set_average_price(pDepthMarketData->AveragePrice);
+
+		m_pCallback->OnQuoteReceived(quote);
+	}
+}
+
 
 bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 {
-	return false;
+	bool retVal = false;
+
+	// know symbols's count
+	int symbCount = unSubscribeArr.size();
+
+	if(symbCount > 0)
+	{
+		stringstream info(std::stringstream::out);
+		info <<	"Unsubscribe following symbols' quote" << endl;
+
+		// new string array
+		char** symbols = new char*[symbCount];
+
+		// loop set for copying each symbol to array
+		int idx = 0;
+		for (vector<string>::iterator iter = unSubscribeArr.begin(); 
+			iter !=unSubscribeArr.end(); ++iter, ++idx)
+		{
+			symbols[idx] = new char[SYMBOL_MAX_LENGTH];
+			strcpy_s(symbols[idx], SYMBOL_MAX_LENGTH, iter->c_str());
+			info << iter->c_str() << " ";
+		}
+
+		try	
+		{
+			logger.Trace(info.str());
+			// 'REALLY' unsubscribe symbols to server side
+			int iResult = m_pUserApi->UnSubscribeMarketData(symbols, symbCount);
+
+			if(iResult == 0)
+			{
+				retVal = true;
+				logger.Info("Unsubscribe quotes sent.");
+			}
+			else
+			{
+				retVal = false;
+				logger.Error("Failed to send unsubscribe quotes");
+			}
+		}
+		catch(...)
+		{
+			logger.Error("Unknown error happent while Unsubscribe quoting");
+		}
+
+		for(int i = 0; i < symbCount; ++i)
+		{
+			delete[] symbols[i];
+		}
+		delete[] symbols; 
+	}
+
+	return retVal;
+}
+
+void CQuoteAgent::OnRspUnSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	stringstream txt(stringstream::out); 
+	txt << "UnSubscribe '" << pSpecificInstrument->InstrumentID;
+	if(pRspInfo->ErrorID == 0)
+	{
+		txt << "' succeeded.";
+		logger.Trace(txt.str());
+	}
+	else
+	{
+		txt << "' failed due to ";
+		txt << pRspInfo->ErrorMsg;
+		logger.Warning(txt.str());
+	}
+
+	if(m_pCallback != NULL)
+	{
+		m_pCallback->OnUnsubscribeCompleted();
+	}
 }
 
 void CQuoteAgent::OnFrontConnected()
@@ -298,21 +504,6 @@ void CQuoteAgent::OnHeartBeatWarning( int nTimeLapse )
 }
 
 void CQuoteAgent::OnRspError( CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
-}
-
-void CQuoteAgent::OnRspSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
-}
-
-void CQuoteAgent::OnRspUnSubMarketData( CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
-}
-
-void CQuoteAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMarketData )
 {
 
 }

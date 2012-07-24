@@ -70,12 +70,29 @@ void CClientAgent::QuoteDisconnect()
 
 void CClientAgent::RegQuote( vector<string>& symbols )
 {
-
+	if(symbols.size() > 0)
+	{
+		if(!Registered())
+		{
+			SetSymbols(symbols);
+			m_quoteAggregator.SubscribeQuotes(this);
+		}
+		else
+		{
+			m_quoteAggregator.ChangeQuotes(this, symbols);
+		}
+	}
+	else
+	{
+		m_quoteAggregator.UnsubscribeQuotes(this);
+	}
 }
 
 void CClientAgent::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 {
-
+	std::string callbackData;
+	pQuote->SerializeToString(&callbackData);
+	m_pSession->BeginCallback("QuotePush", callbackData);
 }
 
 

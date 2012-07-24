@@ -49,6 +49,16 @@ namespace PortfolioTrading.Infrastructure
             ServerLogout("TradeLogout");
         }
 
+        public void RegisterQuote(string[] symbols)
+        {
+            RegQuoteParam regQuoteParam = new RegQuoteParam();
+            regQuoteParam.Symbols.AddRange(symbols);
+
+            byte[] param_data = DataTranslater.Serialize(regQuoteParam);
+
+            byte[] ret_data = Request("RegQuote", param_data);
+        }
+
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
         {
             ConnectParam connParam = new ConnectParam()
@@ -116,9 +126,18 @@ namespace PortfolioTrading.Infrastructure
             byte[] void_ret = Request(method, ClientBase.VoidParam);
         }
 
+        public event Action<Quote> OnQuoteReceived;
+
         protected override void DispatchCallback(string method, byte[] paramData)
         {
-            throw new NotImplementedException();
+            if (method == "QuotePush")
+            {
+                if (OnQuoteReceived != null)
+                {
+                    Quote quoteData = DataTranslater.Deserialize<Quote>(paramData);
+                    OnQuoteReceived(quoteData);
+                }
+            }
         }
     }
 
