@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 #include "ClientAgent.h"
 #include "Portfolio.h"
+#include "PortfolioOrderHelper.h"
+
+#include <boost/shared_ptr.hpp>
 
 CClientAgent::CClientAgent(void):
 m_clientConnected(false)
@@ -93,6 +96,14 @@ void CClientAgent::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 	std::string callbackData;
 	pQuote->SerializeToString(&callbackData);
 	m_pSession->BeginCallback("QuotePush", callbackData);
+}
+
+void CClientAgent::PortfolioOpenPosition( const string& pid, int quantity )
+{
+	// build order
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOrder(portf));
+	// send to order manager
 }
 
 

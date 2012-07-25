@@ -94,6 +94,9 @@
     <Compile Include="..\Entity\gen\cs\Quote.cs">
       <Link>Gen\Quote.cs</Link>
     </Compile>
+    <Compile Include="..\Entity\gen\cs\Trade.cs">
+      <Link>Gen\Trade.cs</Link>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
