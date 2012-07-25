@@ -8,7 +8,7 @@
 #include "ManualOrderPlacer.h"
 #include "OrderProcessor.h"
 #include "QuoteListener.h"
-#include "../Entity/gen/cpp/message.pb.h"
+#include "PortfolioOrderHelper.h"
 #include "../../APInvoke/APInvokeNative/APInvokeNative.h"
 
 #include <string>
@@ -31,6 +31,7 @@ public:
 	void Add(entity::PortfolioItem* portfolioItem);
 	void Remove(const string& pid);
 	void RegQuote(vector<string>& symbols);
+	void PortfolioOpenPosition(const string& pid, int quantity);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 

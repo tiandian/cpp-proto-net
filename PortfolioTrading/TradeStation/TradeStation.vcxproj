@@ -86,12 +86,14 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <None Include="..\Entity\message.proto" />
     <None Include="..\Entity\proto_gen.bat" />
     <None Include="..\Entity\quote.proto" />
+    <None Include="..\Entity\trade.proto" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Entity\gen\cpp\enum.pb.h" />
     <ClInclude Include="..\Entity\gen\cpp\message.pb.h" />
     <ClInclude Include="..\Entity\gen\cpp\quote.pb.h" />
+    <ClInclude Include="..\Entity\gen\cpp\trade.pb.h" />
     <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ClientManager.h" />
@@ -100,6 +102,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="globalmembers.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
+    <ClInclude Include="PortfolioOrderHelper.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="ManualOrderPlacer.h" />
     <ClInclude Include="OrderProcessor.h" />
@@ -125,6 +128,9 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClCompile Include="..\Entity\gen\cpp\quote.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\Entity\gen\cpp\trade.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="Configuration.cpp" />
@@ -136,6 +142,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PortfolioManager.cpp" />
+    <ClCompile Include="PortfolioOrderHelper.cpp" />
     <ClCompile Include="QuoteAgent.cpp" />
     <ClCompile Include="QuoteAggregator.cpp" />
     <ClCompile Include="QuoteListener.cpp" />
