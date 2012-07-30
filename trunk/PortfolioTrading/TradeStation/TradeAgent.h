@@ -21,6 +21,11 @@ public:
 	boost::tuple<bool, string> Login(const string& brokerId, const string& userId, const string& password);
 	void Logout();
 
+	void SetCallbackHanlder(CTradeAgentCallback* pCallback){ m_pCallback = pCallback; }
+
+	bool SubmitOrder(trade::InputOrder* pInputOrder);
+	bool SubmitOrderAction(trade::InputOrderAction* pInputOrderAction);
+
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
 
@@ -61,10 +66,10 @@ public:
 	virtual void OnHeartBeatWarning(int nTimeLapse);
 
 	///报单通知
-	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder){}
+	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
 
 	///成交通知
-	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade){}
+	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
 
 	//////////////////////////////////////////////////////////////////////////
 
