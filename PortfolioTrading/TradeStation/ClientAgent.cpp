@@ -103,7 +103,8 @@ void CClientAgent::PortfolioOpenPosition( const string& pid, int quantity )
 	// build order
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOrder(portf));
-	// send to order manager
+	// send to order processor
+	m_orderProcessor.OpenOrder(multilegOrder);
 }
 
 

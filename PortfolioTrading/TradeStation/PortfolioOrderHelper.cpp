@@ -4,7 +4,8 @@
 
 trade::MultiLegOrder* BuildOrder(CPortfolio* portfolio)
 {
-	trade::MultiLegOrder* pOrder = new trade::MultiLegOrder;
-
-	return pOrder;
+	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
+	trade::Order* pOrder = pMultiLegOrder->add_legs();
+	
+	return pMultiLegOrder;
 }
