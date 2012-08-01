@@ -33,6 +33,8 @@ public:
 
 	CLeg* GetLeg(int legId);
 
+	vector<LegPtr>& Legs(){ return m_vecLegs; }
+
 private:
 	void SetItem(entity::PortfolioItem* pPortfItem);
 
@@ -54,6 +56,8 @@ public:
 
 	const string& Symbol(){ return m_symbol; }
 	void SetSymbol(const string& symb) { m_symbol = symb; }
+
+	entity::LegItem* Item(){ return m_pInnerItem; }
 
 private:
 	void SetItem(entity::LegItem* pLegItem){ m_pInnerItem = pLegItem; }
