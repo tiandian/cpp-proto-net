@@ -43,3 +43,9 @@ message RegQuoteParam
 {
 	repeated string Symbols = 1;
 }
+
+message PorfOpenPositionParam
+{
+	required string PortfId = 1;
+	required int32 Quantity = 2;
+}

@@ -51,6 +51,9 @@ private:
 	void TradeLogin(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void TradeLogout(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
+	void AddPorf(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void PorfOpenPosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+
 	ReqTranslatorMap m_reqTransMap;
 	ClientMap m_clients;
 };

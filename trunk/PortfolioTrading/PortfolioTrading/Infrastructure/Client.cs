@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using APInvokeManaged;
 using entity;
+using System.Diagnostics;
 
 namespace PortfolioTrading.Infrastructure
 {
@@ -57,6 +58,26 @@ namespace PortfolioTrading.Infrastructure
             byte[] param_data = DataTranslater.Serialize(regQuoteParam);
 
             byte[] ret_data = Request("RegQuote", param_data);
+        }
+
+        public void AddPortf(PortfolioItem portfItem)
+        {
+            Debug.Assert(!string.IsNullOrEmpty(portfItem.ID), "Portfolio item must have ID already");
+            if(string.IsNullOrEmpty(portfItem.ID)) return;
+
+            byte[] portf_data = DataTranslater.Serialize(portfItem);
+
+            byte[] ret_data = Request("AddPortf", portf_data);
+        }
+
+        public void PorfOpenPosition(string pid, int quantity)
+        {
+            PorfOpenPositionParam opParam = new PorfOpenPositionParam();
+            opParam.PortfId = pid;
+            opParam.Quantity = quantity;
+
+            byte[] param_data = DataTranslater.Serialize(opParam);
+            byte[] ret_data = Request("PorfOpenPosition", param_data);
         }
 
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)

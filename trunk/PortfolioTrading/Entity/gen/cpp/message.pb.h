@@ -39,6 +39,7 @@ class ConnectParam;
 class OperationReturn;
 class LoginParam;
 class RegQuoteParam;
+class PorfOpenPositionParam;
 
 // ===================================================================
 
@@ -693,6 +694,102 @@ class RegQuoteParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static RegQuoteParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class PorfOpenPositionParam : public ::google::protobuf::Message {
+ public:
+  PorfOpenPositionParam();
+  virtual ~PorfOpenPositionParam();
+  
+  PorfOpenPositionParam(const PorfOpenPositionParam& from);
+  
+  inline PorfOpenPositionParam& operator=(const PorfOpenPositionParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PorfOpenPositionParam& default_instance();
+  
+  void Swap(PorfOpenPositionParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  PorfOpenPositionParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PorfOpenPositionParam& from);
+  void MergeFrom(const PorfOpenPositionParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string PortfId = 1;
+  inline bool has_portfid() const;
+  inline void clear_portfid();
+  static const int kPortfIdFieldNumber = 1;
+  inline const ::std::string& portfid() const;
+  inline void set_portfid(const ::std::string& value);
+  inline void set_portfid(const char* value);
+  inline void set_portfid(const char* value, size_t size);
+  inline ::std::string* mutable_portfid();
+  inline ::std::string* release_portfid();
+  
+  // required int32 Quantity = 2;
+  inline bool has_quantity() const;
+  inline void clear_quantity();
+  static const int kQuantityFieldNumber = 2;
+  inline ::google::protobuf::int32 quantity() const;
+  inline void set_quantity(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:entity.PorfOpenPositionParam)
+ private:
+  inline void set_has_portfid();
+  inline void clear_has_portfid();
+  inline void set_has_quantity();
+  inline void clear_has_quantity();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* portfid_;
+  ::google::protobuf::int32 quantity_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static PorfOpenPositionParam* default_instance_;
 };
 // ===================================================================
 
@@ -1430,6 +1527,90 @@ RegQuoteParam::symbols() const {
 inline ::google::protobuf::RepeatedPtrField< ::std::string>*
 RegQuoteParam::mutable_symbols() {
   return &symbols_;
+}
+
+// -------------------------------------------------------------------
+
+// PorfOpenPositionParam
+
+// required string PortfId = 1;
+inline bool PorfOpenPositionParam::has_portfid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PorfOpenPositionParam::set_has_portfid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PorfOpenPositionParam::clear_has_portfid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PorfOpenPositionParam::clear_portfid() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    portfid_->clear();
+  }
+  clear_has_portfid();
+}
+inline const ::std::string& PorfOpenPositionParam::portfid() const {
+  return *portfid_;
+}
+inline void PorfOpenPositionParam::set_portfid(const ::std::string& value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void PorfOpenPositionParam::set_portfid(const char* value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void PorfOpenPositionParam::set_portfid(const char* value, size_t size) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PorfOpenPositionParam::mutable_portfid() {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  return portfid_;
+}
+inline ::std::string* PorfOpenPositionParam::release_portfid() {
+  clear_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = portfid_;
+    portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 Quantity = 2;
+inline bool PorfOpenPositionParam::has_quantity() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PorfOpenPositionParam::set_has_quantity() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PorfOpenPositionParam::clear_has_quantity() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PorfOpenPositionParam::clear_quantity() {
+  quantity_ = 0;
+  clear_has_quantity();
+}
+inline ::google::protobuf::int32 PorfOpenPositionParam::quantity() const {
+  return quantity_;
+}
+inline void PorfOpenPositionParam::set_quantity(::google::protobuf::int32 value) {
+  set_has_quantity();
+  quantity_ = value;
 }
 
 

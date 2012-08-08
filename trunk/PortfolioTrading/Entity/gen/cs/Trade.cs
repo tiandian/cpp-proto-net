@@ -1412,15 +1412,22 @@ namespace trade
       get { return _OrderId; }
       set { _OrderId = value; }
     }
+    private string _PortfolioId;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"PortfolioId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string PortfolioId
+    {
+      get { return _PortfolioId; }
+      set { _PortfolioId = value; }
+    }
     private int _Quantity;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Quantity", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"Quantity", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int Quantity
     {
       get { return _Quantity; }
       set { _Quantity = value; }
     }
     private readonly global::System.Collections.Generic.List<trade.Order> _Legs = new global::System.Collections.Generic.List<trade.Order>();
-    [global::ProtoBuf.ProtoMember(3, Name=@"Legs", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(4, Name=@"Legs", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public global::System.Collections.Generic.List<trade.Order> Legs
     {
       get { return _Legs; }

@@ -14,6 +14,7 @@ public:
 	std::string investorId;
 	trade::OrderPriceTypeType orderPriceType;
 	double limitPrice;
+	int quantity;
 };
 
 trade::MultiLegOrder* BuildOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx);

@@ -287,6 +287,37 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 	}
 }
 
+void CTradeAgent::ReqSettlementInfoConfirm()
+{
+	CThostFtdcSettlementInfoConfirmField req;
+	memset(&req, 0, sizeof(req));
+	strcpy(req.BrokerID, m_brokerID.c_str());
+	strcpy(req.InvestorID, m_userID.c_str());
+	int iResult = m_pUserApi->ReqSettlementInfoConfirm(&req, RequestIDIncrement());
+
+	ostringstream debugSS;
+	debugSS << "--->>> 请求投资者结算结果确认: " << iResult << ((iResult == 0) ? ", 成功" : ", 失败");
+	logger.Info(debugSS.str());
+}
+
+void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	string errorMsg;
+	if (bIsLast)
+	{
+		if(!IsErrorRspInfo(pRspInfo))
+		{
+			// Settlement confirm succeeded, then notify login success
+			m_pCallback->OnRspUserLogin(true, errorMsg, m_maxOrderRef);
+		}
+		else
+		{
+			errorMsg = pRspInfo->ErrorMsg;
+			m_pCallback->OnRspUserLogin(false, errorMsg, -1);
+		}
+	}
+}
+
 void CTradeAgent::Logout()
 {
 	logger.Trace("Trade Logging out");
@@ -339,10 +370,6 @@ void CTradeAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThos
 	logger.Info(logoutInfo);
 }
 
-void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
-}
 
 void CTradeAgent::OnRspQryInstrument( CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {

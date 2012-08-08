@@ -132,5 +132,36 @@ namespace PortfolioTrading
                 _client.RegisterQuote(symbols);
             }
         }
+
+        private entity.PortfolioItem portfolioItem;
+
+        private void btnAddPortf_Click(object sender, RoutedEventArgs e)
+        {
+            portfolioItem = new entity.PortfolioItem();
+            portfolioItem.ID = Guid.NewGuid().ToString();
+            portfolioItem.AutoOpen = true;
+            portfolioItem.Diff = 2;
+            portfolioItem.Quantity = 1;
+
+            entity.LegItem leg1 = new entity.LegItem();
+            leg1.Symbol = "cu1208";
+            leg1.Side = entity.PosiDirectionType.LONG;
+            leg1.Ratio = 1;
+            portfolioItem.Legs.Add(leg1);
+
+            entity.LegItem leg2 = new entity.LegItem();
+            leg2.Symbol = "cu1209";
+            leg2.Side = entity.PosiDirectionType.SHORT;
+            leg2.Ratio = 1;
+            portfolioItem.Legs.Add(leg2);
+
+            _client.AddPortf(portfolioItem);
+
+        }
+
+        private void btnOpenPosi_Click(object sender, RoutedEventArgs e)
+        {
+            _client.PorfOpenPosition(portfolioItem.ID, 1);
+        }
     }
 }
