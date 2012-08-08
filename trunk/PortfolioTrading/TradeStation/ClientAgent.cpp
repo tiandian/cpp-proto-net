@@ -9,6 +9,8 @@ CClientAgent::CClientAgent(void):
 m_clientConnected(false)
 {
 	m_quoteAggregator.Initialize(&m_quoteAgent);
+	m_portfolioMgr.SetQuoteAggregator(&m_quoteAggregator);
+	m_strategyMgr.SetQuoteAggregator(&m_quoteAggregator);
 }
 
 CClientAgent::~CClientAgent(void)

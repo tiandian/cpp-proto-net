@@ -5,7 +5,8 @@
 #include <boost/format.hpp>
 
 
-CPortfolioManager::CPortfolioManager(void)
+CPortfolioManager::CPortfolioManager(void):
+m_quoteAggregator(NULL)
 {
 }
 
@@ -27,6 +28,7 @@ void CPortfolioManager::Add( CPortfolio* portfolio )
 {
 	const string& pid = portfolio->ID();
 	m_mapPortfolios.insert(make_pair(pid, PortfolioPtr(portfolio)));
+	portfolio->SetManager(this);
 
 	logger.Info(boost::str(boost::format("Portfolio(%s) added") % pid.c_str()));
 }

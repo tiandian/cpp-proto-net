@@ -1,8 +1,11 @@
 #include "StdAfx.h"
 #include "Portfolio.h"
+#include "PortfolioManager.h"
 
+#include <boost/foreach.hpp>
 
-CPortfolio::CPortfolio(void)
+CPortfolio::CPortfolio(void):
+m_porfMgr(NULL)
 {
 }
 
@@ -40,4 +43,28 @@ void CPortfolio::SetItem( entity::PortfolioItem* pPortfItem )
 	{
 		AddLeg(&(*legIter));
 	}
+}
+
+void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
+{
+
+}
+
+void CPortfolio::SetManager( CPortfolioManager* parentMgr )
+{
+	m_porfMgr = parentMgr;
+
+	vector<string> listenSymbols;
+	BOOST_FOREACH(const LegPtr& leg, m_vecLegs)
+	{
+		listenSymbols.push_back(leg->Symbol());
+	}
+
+	SetSymbols(listenSymbols);
+	m_porfMgr->QuoteAggregator()->SubscribeQuotes(this);
+}
+
+void CPortfolio::Cleanup()
+{
+	m_porfMgr->QuoteAggregator()->UnsubscribeQuotes(this);
 }
