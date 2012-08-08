@@ -2,7 +2,8 @@
 #include "StrategyManager.h"
 
 
-CStrategyManager::CStrategyManager(void)
+CStrategyManager::CStrategyManager(void):
+m_quoteAggregator(NULL)
 {
 }
 

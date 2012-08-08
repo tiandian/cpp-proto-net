@@ -197,4 +197,28 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PorfOpenPositionParam")]
+  public partial class PorfOpenPositionParam : global::ProtoBuf.IExtensible
+  {
+    public PorfOpenPositionParam() {}
+    
+    private string _PortfId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"PortfId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string PortfId
+    {
+      get { return _PortfId; }
+      set { _PortfId = value; }
+    }
+    private int _Quantity;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Quantity", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int Quantity
+    {
+      get { return _Quantity; }
+      set { _Quantity = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }

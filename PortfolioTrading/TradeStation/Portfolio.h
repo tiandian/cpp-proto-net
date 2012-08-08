@@ -1,18 +1,22 @@
 #pragma once
 
+#include "QuoteListener.h"
+#include "../Entity/gen/cpp/message.pb.h"
+
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-#include "../Entity/gen/cpp/message.pb.h"
+
 
 using namespace std;
 
 class CLeg;
+class CPortfolioManager;
 
 typedef boost::shared_ptr<entity::PortfolioItem> PortfItemPtr;
 typedef boost::shared_ptr<CLeg> LegPtr;
 
-class CPortfolio
+class CPortfolio : public CQuoteListener
 {
 	CPortfolio(void);
 
@@ -26,6 +30,8 @@ public:
 		return pPortf;
 	}
 
+	void SetManager(CPortfolioManager* parentMgr);
+
 	int Count();
 	const string& ID(){ return m_innerItem->id(); }
 
@@ -35,11 +41,18 @@ public:
 
 	vector<LegPtr>& Legs(){ return m_vecLegs; }
 
+	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
+
+	// Need to be done before remove from manager
+	void Cleanup();
+
 private:
 	void SetItem(entity::PortfolioItem* pPortfItem);
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;
+
+	CPortfolioManager* m_porfMgr;
 };
 
 class CLeg
