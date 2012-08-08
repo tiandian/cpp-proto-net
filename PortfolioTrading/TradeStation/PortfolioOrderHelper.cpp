@@ -6,6 +6,8 @@
 trade::MultiLegOrder* BuildOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx)
 {
 	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
+	pMultiLegOrder->set_quantity(placeOrderCtx->quantity);
+	pMultiLegOrder->set_portfolioid(portfolio->ID());
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
 	{
 		trade::Order* order = pMultiLegOrder->add_legs();

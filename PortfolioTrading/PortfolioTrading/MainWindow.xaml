@@ -34,6 +34,10 @@
                 <Button Name="btnTradeLogin" Click="btnTradeLogin_Click">Trade Login</Button>
                 <Button Name="btnTradeLogout" Click="btnTradeLogout_Click">Trade Logout</Button>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <Button Name="btnAddPortf" Click="btnAddPortf_Click">Add Portf</Button>
+                <Button Name="btnOpenPosi" Click="btnOpenPosi_Click">Open Posi</Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

@@ -28,7 +28,7 @@ public:
 	// Below methods are callbacks for CTradeAgent 
 
 	///登录请求响应
-	virtual void OnRspUserLogin(bool succ, std::string& msg, int initOrderRefID){}
+	virtual void OnRspUserLogin(bool succ, std::string& msg, int initOrderRefID);
 
 	///报单录入请求响应
 	virtual void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg){}
@@ -59,6 +59,8 @@ public:
 private:
 	map<string, MultiLegOrderPtr> m_pendingMultiLegOrders;
 
+	map<int, string> m_pendingTicketOrderMap;
+	 
 	CTradeAgent* m_pTradeAgent;
 };
 

@@ -3112,17 +3112,28 @@ class MultiLegOrder : public ::google::protobuf::Message {
   inline ::std::string* mutable_orderid();
   inline ::std::string* release_orderid();
   
-  // required int32 Quantity = 2;
+  // required string PortfolioId = 2;
+  inline bool has_portfolioid() const;
+  inline void clear_portfolioid();
+  static const int kPortfolioIdFieldNumber = 2;
+  inline const ::std::string& portfolioid() const;
+  inline void set_portfolioid(const ::std::string& value);
+  inline void set_portfolioid(const char* value);
+  inline void set_portfolioid(const char* value, size_t size);
+  inline ::std::string* mutable_portfolioid();
+  inline ::std::string* release_portfolioid();
+  
+  // required int32 Quantity = 3;
   inline bool has_quantity() const;
   inline void clear_quantity();
-  static const int kQuantityFieldNumber = 2;
+  static const int kQuantityFieldNumber = 3;
   inline ::google::protobuf::int32 quantity() const;
   inline void set_quantity(::google::protobuf::int32 value);
   
-  // repeated .trade.Order Legs = 3;
+  // repeated .trade.Order Legs = 4;
   inline int legs_size() const;
   inline void clear_legs();
-  static const int kLegsFieldNumber = 3;
+  static const int kLegsFieldNumber = 4;
   inline const ::trade::Order& legs(int index) const;
   inline ::trade::Order* mutable_legs(int index);
   inline ::trade::Order* add_legs();
@@ -3135,17 +3146,20 @@ class MultiLegOrder : public ::google::protobuf::Message {
  private:
   inline void set_has_orderid();
   inline void clear_has_orderid();
+  inline void set_has_portfolioid();
+  inline void clear_has_portfolioid();
   inline void set_has_quantity();
   inline void clear_has_quantity();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* orderid_;
+  ::std::string* portfolioid_;
   ::google::protobuf::RepeatedPtrField< ::trade::Order > legs_;
   ::google::protobuf::int32 quantity_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_trade_2eproto();
   friend void protobuf_AssignDesc_trade_2eproto();
@@ -10004,15 +10018,73 @@ inline ::std::string* MultiLegOrder::release_orderid() {
   }
 }
 
-// required int32 Quantity = 2;
-inline bool MultiLegOrder::has_quantity() const {
+// required string PortfolioId = 2;
+inline bool MultiLegOrder::has_portfolioid() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void MultiLegOrder::set_has_quantity() {
+inline void MultiLegOrder::set_has_portfolioid() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void MultiLegOrder::clear_has_quantity() {
+inline void MultiLegOrder::clear_has_portfolioid() {
   _has_bits_[0] &= ~0x00000002u;
+}
+inline void MultiLegOrder::clear_portfolioid() {
+  if (portfolioid_ != &::google::protobuf::internal::kEmptyString) {
+    portfolioid_->clear();
+  }
+  clear_has_portfolioid();
+}
+inline const ::std::string& MultiLegOrder::portfolioid() const {
+  return *portfolioid_;
+}
+inline void MultiLegOrder::set_portfolioid(const ::std::string& value) {
+  set_has_portfolioid();
+  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
+    portfolioid_ = new ::std::string;
+  }
+  portfolioid_->assign(value);
+}
+inline void MultiLegOrder::set_portfolioid(const char* value) {
+  set_has_portfolioid();
+  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
+    portfolioid_ = new ::std::string;
+  }
+  portfolioid_->assign(value);
+}
+inline void MultiLegOrder::set_portfolioid(const char* value, size_t size) {
+  set_has_portfolioid();
+  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
+    portfolioid_ = new ::std::string;
+  }
+  portfolioid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* MultiLegOrder::mutable_portfolioid() {
+  set_has_portfolioid();
+  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
+    portfolioid_ = new ::std::string;
+  }
+  return portfolioid_;
+}
+inline ::std::string* MultiLegOrder::release_portfolioid() {
+  clear_has_portfolioid();
+  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = portfolioid_;
+    portfolioid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 Quantity = 3;
+inline bool MultiLegOrder::has_quantity() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void MultiLegOrder::set_has_quantity() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void MultiLegOrder::clear_has_quantity() {
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void MultiLegOrder::clear_quantity() {
   quantity_ = 0;
@@ -10026,7 +10098,7 @@ inline void MultiLegOrder::set_quantity(::google::protobuf::int32 value) {
   quantity_ = value;
 }
 
-// repeated .trade.Order Legs = 3;
+// repeated .trade.Order Legs = 4;
 inline int MultiLegOrder::legs_size() const {
   return legs_.size();
 }

@@ -1,5 +1,8 @@
 #include "StdAfx.h"
 #include "PortfolioManager.h"
+#include "globalmembers.h"
+
+#include <boost/format.hpp>
 
 
 CPortfolioManager::CPortfolioManager(void)
@@ -24,6 +27,8 @@ void CPortfolioManager::Add( CPortfolio* portfolio )
 {
 	const string& pid = portfolio->ID();
 	m_mapPortfolios.insert(make_pair(pid, PortfolioPtr(portfolio)));
+
+	logger.Info(boost::str(boost::format("Portfolio(%s) added") % pid.c_str()));
 }
 
 void CPortfolioManager::Remove( const string& portfId )

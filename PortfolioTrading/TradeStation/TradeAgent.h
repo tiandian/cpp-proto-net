@@ -26,6 +26,8 @@ public:
 	bool SubmitOrder(trade::InputOrder* pInputOrder);
 	bool SubmitOrderAction(trade::InputOrderAction* pInputOrderAction);
 
+	void ReqSettlementInfoConfirm();
+
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
 
