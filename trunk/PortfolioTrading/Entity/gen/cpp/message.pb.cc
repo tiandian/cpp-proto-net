@@ -49,11 +49,12 @@ void protobuf_AssignDesc_message_2eproto() {
       "message.proto");
   GOOGLE_CHECK(file != NULL);
   LegItem_descriptor_ = file->message_type(0);
-  static const int LegItem_offsets_[4] = {
+  static const int LegItem_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, ratio_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, side_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, status_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, last_),
   };
   LegItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -221,20 +222,21 @@ void protobuf_AddDesc_message_2eproto() {
 
   ::entity::protobuf_AddDesc_enum_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\rmessage.proto\022\006entity\032\nenum.proto\"t\n\007L"
-    "egItem\022\016\n\006Symbol\030\001 \002(\t\022\r\n\005Ratio\030\002 \002(\005\022\'\n"
-    "\004Side\030\003 \002(\0162\031.entity.PosiDirectionType\022!"
-    "\n\006Status\030\004 \002(\0162\021.entity.LegStatus\"\177\n\rPor"
-    "tfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005"
-    "\022\014\n\004Diff\030\003 \002(\001\022\020\n\010AutoOpen\030\004 \002(\010\022\021\n\tAuto"
-    "Close\030\005 \002(\010\022\035\n\004Legs\030\006 \003(\0132\017.entity.LegIt"
-    "em\":\n\014ConnectParam\022\024\n\014QuoteAddress\030\001 \002(\t"
-    "\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017OperationRetur"
-    "n\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t"
-    "\"@\n\nLoginParam\022\020\n\010BrokerId\030\001 \002(\t\022\016\n\006User"
-    "Id\030\002 \002(\t\022\020\n\010Password\030\003 \002(\t\" \n\rRegQuotePa"
-    "ram\022\017\n\007Symbols\030\001 \003(\t\":\n\025PorfOpenPosition"
-    "Param\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005", 560);
+    "\n\rmessage.proto\022\006entity\032\nenum.proto\"\202\001\n\007"
+    "LegItem\022\016\n\006Symbol\030\001 \002(\t\022\r\n\005Ratio\030\002 \002(\005\022\'"
+    "\n\004Side\030\003 \002(\0162\031.entity.PosiDirectionType\022"
+    "!\n\006Status\030\004 \002(\0162\021.entity.LegStatus\022\014\n\004La"
+    "st\030\005 \002(\001\"\177\n\rPortfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n"
+    "\010Quantity\030\002 \002(\005\022\014\n\004Diff\030\003 \002(\001\022\020\n\010AutoOpe"
+    "n\030\004 \002(\010\022\021\n\tAutoClose\030\005 \002(\010\022\035\n\004Legs\030\006 \003(\013"
+    "2\017.entity.LegItem\":\n\014ConnectParam\022\024\n\014Quo"
+    "teAddress\030\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n"
+    "\017OperationReturn\022\017\n\007Success\030\001 \002(\010\022\024\n\014Err"
+    "orMessage\030\002 \002(\t\"@\n\nLoginParam\022\020\n\010BrokerI"
+    "d\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Password\030\003 \002("
+    "\t\" \n\rRegQuoteParam\022\017\n\007Symbols\030\001 \003(\t\":\n\025P"
+    "orfOpenPositionParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n"
+    "\010Quantity\030\002 \002(\005", 575);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LegItem::default_instance_ = new LegItem();
@@ -269,6 +271,7 @@ const int LegItem::kSymbolFieldNumber;
 const int LegItem::kRatioFieldNumber;
 const int LegItem::kSideFieldNumber;
 const int LegItem::kStatusFieldNumber;
+const int LegItem::kLastFieldNumber;
 #endif  // !_MSC_VER
 
 LegItem::LegItem()
@@ -291,6 +294,7 @@ void LegItem::SharedCtor() {
   ratio_ = 0;
   side_ = 49;
   status_ = 0;
+  last_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -336,6 +340,7 @@ void LegItem::Clear() {
     ratio_ = 0;
     side_ = 49;
     status_ = 0;
+    last_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -417,6 +422,22 @@ bool LegItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(41)) goto parse_Last;
+        break;
+      }
+      
+      // required double Last = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_Last:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &last_)));
+          set_has_last();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -465,6 +486,11 @@ void LegItem::SerializeWithCachedSizes(
       4, this->status(), output);
   }
   
+  // required double Last = 5;
+  if (has_last()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->last(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -498,6 +524,11 @@ void LegItem::SerializeWithCachedSizes(
   if (has_status()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       4, this->status(), target);
+  }
+  
+  // required double Last = 5;
+  if (has_last()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->last(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -535,6 +566,11 @@ int LegItem::ByteSize() const {
     if (has_status()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->status());
+    }
+    
+    // required double Last = 5;
+    if (has_last()) {
+      total_size += 1 + 8;
     }
     
   }
@@ -576,6 +612,9 @@ void LegItem::MergeFrom(const LegItem& from) {
     if (from.has_status()) {
       set_status(from.status());
     }
+    if (from.has_last()) {
+      set_last(from.last());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -593,7 +632,7 @@ void LegItem::CopyFrom(const LegItem& from) {
 }
 
 bool LegItem::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
   
   return true;
 }
@@ -604,6 +643,7 @@ void LegItem::Swap(LegItem* other) {
     std::swap(ratio_, other->ratio_);
     std::swap(side_, other->side_);
     std::swap(status_, other->status_);
+    std::swap(last_, other->last_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

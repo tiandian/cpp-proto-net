@@ -47,7 +47,32 @@ void CPortfolio::SetItem( entity::PortfolioItem* pPortfItem )
 
 void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 {
+	double diff = 0;
+	for(vector<LegPtr>::iterator iter = m_vecLegs.begin(); iter != m_vecLegs.end(); ++iter)
+	{
+		entity::LegItem* leg = iter->get()->Item();
+		
+		if(leg->symbol() == pQuote->symbol())
+		{
+			leg->set_last(pQuote->last());
+		}
 
+		double legPrice = leg->last();
+		if(legPrice > 0)
+		{
+			if(leg->side() == entity::LONG)
+			{
+				diff +=	legPrice;
+			}
+			else
+				diff -= legPrice;
+		}
+		else	// if one of legs has no price, set diff 0 anyway
+			diff = 0;
+	}
+
+	m_innerItem->set_diff(diff);
+	PushUpdate();
 }
 
 void CPortfolio::SetManager( CPortfolioManager* parentMgr )
@@ -67,4 +92,9 @@ void CPortfolio::SetManager( CPortfolioManager* parentMgr )
 void CPortfolio::Cleanup()
 {
 	m_porfMgr->QuoteAggregator()->UnsubscribeQuotes(this);
+}
+
+void CPortfolio::PushUpdate()
+{
+	m_porfMgr->PublishPortfolioUpdate(m_innerItem.get());
 }

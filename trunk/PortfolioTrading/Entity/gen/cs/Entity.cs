@@ -44,6 +44,13 @@ namespace entity
       get { return _Status; }
       set { _Status = value; }
     }
+    private double _Last;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"Last", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double Last
+    {
+      get { return _Last; }
+      set { _Last = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

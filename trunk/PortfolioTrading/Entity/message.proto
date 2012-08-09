@@ -8,6 +8,7 @@ message LegItem
 	required int32 Ratio = 2;
 	required PosiDirectionType Side = 3;
 	required LegStatus Status = 4;
+	required double Last = 5;
 }
 
 message PortfolioItem
