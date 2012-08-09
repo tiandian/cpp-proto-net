@@ -129,6 +129,13 @@ class LegItem : public ::google::protobuf::Message {
   inline entity::LegStatus status() const;
   inline void set_status(entity::LegStatus value);
   
+  // required double Last = 5;
+  inline bool has_last() const;
+  inline void clear_last();
+  static const int kLastFieldNumber = 5;
+  inline double last() const;
+  inline void set_last(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.LegItem)
  private:
   inline void set_has_symbol();
@@ -139,16 +146,19 @@ class LegItem : public ::google::protobuf::Message {
   inline void clear_has_side();
   inline void set_has_status();
   inline void clear_has_status();
+  inline void set_has_last();
+  inline void clear_has_last();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* symbol_;
   ::google::protobuf::int32 ratio_;
   int side_;
+  double last_;
   int status_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -922,6 +932,28 @@ inline void LegItem::set_status(entity::LegStatus value) {
   GOOGLE_DCHECK(entity::LegStatus_IsValid(value));
   set_has_status();
   status_ = value;
+}
+
+// required double Last = 5;
+inline bool LegItem::has_last() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void LegItem::set_has_last() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void LegItem::clear_has_last() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void LegItem::clear_last() {
+  last_ = 0;
+  clear_has_last();
+}
+inline double LegItem::last() const {
+  return last_;
+}
+inline void LegItem::set_last(double value) {
+  set_has_last();
+  last_ = value;
 }
 
 // -------------------------------------------------------------------

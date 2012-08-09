@@ -46,8 +46,12 @@ public:
 	// Need to be done before remove from manager
 	void Cleanup();
 
+	double Difference(){ return m_innerItem->diff(); }
+
 private:
 	void SetItem(entity::PortfolioItem* pPortfItem);
+
+	void PushUpdate();
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;

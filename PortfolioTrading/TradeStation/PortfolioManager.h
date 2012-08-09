@@ -6,10 +6,12 @@
 #include <string>
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <boost/function.hpp>
 
 using namespace std;
 
 typedef boost::shared_ptr<CPortfolio> PortfolioPtr;
+typedef boost::function<void(entity::PortfolioItem*)> PushPorfolioFunc;
 
 class CPortfolioManager
 {
@@ -28,6 +30,18 @@ public:
 	CPortfolio* Get(const string& portfId);
 	void Remove(const string& portfId);
 
+	void PublishPortfolioUpdate(entity::PortfolioItem* pPortfolio)
+	{
+		if(!m_pushPortfolioFunc.empty())
+		{
+			m_pushPortfolioFunc(pPortfolio);
+		}
+	}
+	void SetPushPortfolioFunc(PushPorfolioFunc funcPushPortf)
+	{
+		m_pushPortfolioFunc = funcPushPortf;
+	}
+
 private:
 
 	typedef map<string, PortfolioPtr> PortfolioMap;
@@ -36,6 +50,7 @@ private:
 	PortfolioMap m_mapPortfolios;
 
 	CQuoteAggregator* m_quoteAggregator;
-	
+
+	PushPorfolioFunc m_pushPortfolioFunc;
 };
 
