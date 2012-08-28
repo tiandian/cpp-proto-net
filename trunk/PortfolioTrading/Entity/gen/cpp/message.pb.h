@@ -33,15 +33,185 @@ void  protobuf_AddDesc_message_2eproto();
 void protobuf_AssignDesc_message_2eproto();
 void protobuf_ShutdownFile_message_2eproto();
 
+class StringParam;
+class IntParam;
 class LegItem;
 class PortfolioItem;
 class ConnectParam;
 class OperationReturn;
 class LoginParam;
 class RegQuoteParam;
-class PorfOpenPositionParam;
+class PorfChgPosiParam;
 
 // ===================================================================
+
+class StringParam : public ::google::protobuf::Message {
+ public:
+  StringParam();
+  virtual ~StringParam();
+  
+  StringParam(const StringParam& from);
+  
+  inline StringParam& operator=(const StringParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StringParam& default_instance();
+  
+  void Swap(StringParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StringParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StringParam& from);
+  void MergeFrom(const StringParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string Data = 1;
+  inline bool has_data() const;
+  inline void clear_data();
+  static const int kDataFieldNumber = 1;
+  inline const ::std::string& data() const;
+  inline void set_data(const ::std::string& value);
+  inline void set_data(const char* value);
+  inline void set_data(const char* value, size_t size);
+  inline ::std::string* mutable_data();
+  inline ::std::string* release_data();
+  
+  // @@protoc_insertion_point(class_scope:entity.StringParam)
+ private:
+  inline void set_has_data();
+  inline void clear_has_data();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* data_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static StringParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class IntParam : public ::google::protobuf::Message {
+ public:
+  IntParam();
+  virtual ~IntParam();
+  
+  IntParam(const IntParam& from);
+  
+  inline IntParam& operator=(const IntParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const IntParam& default_instance();
+  
+  void Swap(IntParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  IntParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const IntParam& from);
+  void MergeFrom(const IntParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required int32 Data = 2;
+  inline bool has_data() const;
+  inline void clear_data();
+  static const int kDataFieldNumber = 2;
+  inline ::google::protobuf::int32 data() const;
+  inline void set_data(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:entity.IntParam)
+ private:
+  inline void set_has_data();
+  inline void clear_has_data();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::int32 data_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static IntParam* default_instance_;
+};
+// -------------------------------------------------------------------
 
 class LegItem : public ::google::protobuf::Message {
  public:
@@ -707,14 +877,14 @@ class RegQuoteParam : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class PorfOpenPositionParam : public ::google::protobuf::Message {
+class PorfChgPosiParam : public ::google::protobuf::Message {
  public:
-  PorfOpenPositionParam();
-  virtual ~PorfOpenPositionParam();
+  PorfChgPosiParam();
+  virtual ~PorfChgPosiParam();
   
-  PorfOpenPositionParam(const PorfOpenPositionParam& from);
+  PorfChgPosiParam(const PorfChgPosiParam& from);
   
-  inline PorfOpenPositionParam& operator=(const PorfOpenPositionParam& from) {
+  inline PorfChgPosiParam& operator=(const PorfChgPosiParam& from) {
     CopyFrom(from);
     return *this;
   }
@@ -728,17 +898,17 @@ class PorfOpenPositionParam : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const PorfOpenPositionParam& default_instance();
+  static const PorfChgPosiParam& default_instance();
   
-  void Swap(PorfOpenPositionParam* other);
+  void Swap(PorfChgPosiParam* other);
   
   // implements Message ----------------------------------------------
   
-  PorfOpenPositionParam* New() const;
+  PorfChgPosiParam* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const PorfOpenPositionParam& from);
-  void MergeFrom(const PorfOpenPositionParam& from);
+  void CopyFrom(const PorfChgPosiParam& from);
+  void MergeFrom(const PorfChgPosiParam& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -779,7 +949,7 @@ class PorfOpenPositionParam : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 quantity() const;
   inline void set_quantity(::google::protobuf::int32 value);
   
-  // @@protoc_insertion_point(class_scope:entity.PorfOpenPositionParam)
+  // @@protoc_insertion_point(class_scope:entity.PorfChgPosiParam)
  private:
   inline void set_has_portfid();
   inline void clear_has_portfid();
@@ -799,12 +969,100 @@ class PorfOpenPositionParam : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_message_2eproto();
   
   void InitAsDefaultInstance();
-  static PorfOpenPositionParam* default_instance_;
+  static PorfChgPosiParam* default_instance_;
 };
 // ===================================================================
 
 
 // ===================================================================
+
+// StringParam
+
+// required string Data = 1;
+inline bool StringParam::has_data() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void StringParam::set_has_data() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void StringParam::clear_has_data() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void StringParam::clear_data() {
+  if (data_ != &::google::protobuf::internal::kEmptyString) {
+    data_->clear();
+  }
+  clear_has_data();
+}
+inline const ::std::string& StringParam::data() const {
+  return *data_;
+}
+inline void StringParam::set_data(const ::std::string& value) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(value);
+}
+inline void StringParam::set_data(const char* value) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(value);
+}
+inline void StringParam::set_data(const char* value, size_t size) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StringParam::mutable_data() {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  return data_;
+}
+inline ::std::string* StringParam::release_data() {
+  clear_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = data_;
+    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// IntParam
+
+// required int32 Data = 2;
+inline bool IntParam::has_data() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void IntParam::set_has_data() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void IntParam::clear_has_data() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void IntParam::clear_data() {
+  data_ = 0;
+  clear_has_data();
+}
+inline ::google::protobuf::int32 IntParam::data() const {
+  return data_;
+}
+inline void IntParam::set_data(::google::protobuf::int32 value) {
+  set_has_data();
+  data_ = value;
+}
+
+// -------------------------------------------------------------------
 
 // LegItem
 
@@ -1563,56 +1821,56 @@ RegQuoteParam::mutable_symbols() {
 
 // -------------------------------------------------------------------
 
-// PorfOpenPositionParam
+// PorfChgPosiParam
 
 // required string PortfId = 1;
-inline bool PorfOpenPositionParam::has_portfid() const {
+inline bool PorfChgPosiParam::has_portfid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void PorfOpenPositionParam::set_has_portfid() {
+inline void PorfChgPosiParam::set_has_portfid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void PorfOpenPositionParam::clear_has_portfid() {
+inline void PorfChgPosiParam::clear_has_portfid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void PorfOpenPositionParam::clear_portfid() {
+inline void PorfChgPosiParam::clear_portfid() {
   if (portfid_ != &::google::protobuf::internal::kEmptyString) {
     portfid_->clear();
   }
   clear_has_portfid();
 }
-inline const ::std::string& PorfOpenPositionParam::portfid() const {
+inline const ::std::string& PorfChgPosiParam::portfid() const {
   return *portfid_;
 }
-inline void PorfOpenPositionParam::set_portfid(const ::std::string& value) {
+inline void PorfChgPosiParam::set_portfid(const ::std::string& value) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(value);
 }
-inline void PorfOpenPositionParam::set_portfid(const char* value) {
+inline void PorfChgPosiParam::set_portfid(const char* value) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(value);
 }
-inline void PorfOpenPositionParam::set_portfid(const char* value, size_t size) {
+inline void PorfChgPosiParam::set_portfid(const char* value, size_t size) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* PorfOpenPositionParam::mutable_portfid() {
+inline ::std::string* PorfChgPosiParam::mutable_portfid() {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   return portfid_;
 }
-inline ::std::string* PorfOpenPositionParam::release_portfid() {
+inline ::std::string* PorfChgPosiParam::release_portfid() {
   clear_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1624,23 +1882,23 @@ inline ::std::string* PorfOpenPositionParam::release_portfid() {
 }
 
 // required int32 Quantity = 2;
-inline bool PorfOpenPositionParam::has_quantity() const {
+inline bool PorfChgPosiParam::has_quantity() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void PorfOpenPositionParam::set_has_quantity() {
+inline void PorfChgPosiParam::set_has_quantity() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void PorfOpenPositionParam::clear_has_quantity() {
+inline void PorfChgPosiParam::clear_has_quantity() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void PorfOpenPositionParam::clear_quantity() {
+inline void PorfChgPosiParam::clear_quantity() {
   quantity_ = 0;
   clear_has_quantity();
 }
-inline ::google::protobuf::int32 PorfOpenPositionParam::quantity() const {
+inline ::google::protobuf::int32 PorfChgPosiParam::quantity() const {
   return quantity_;
 }
-inline void PorfOpenPositionParam::set_quantity(::google::protobuf::int32 value) {
+inline void PorfChgPosiParam::set_quantity(::google::protobuf::int32 value) {
   set_has_quantity();
   quantity_ = value;
 }

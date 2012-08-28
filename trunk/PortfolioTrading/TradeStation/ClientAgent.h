@@ -32,8 +32,10 @@ public:
 	void Remove(const string& pid);
 	void RegQuote(vector<string>& symbols);
 	void PortfolioOpenPosition(const string& pid, int quantity);
+	void PortfolioClosePosition(const string& pid, int quantity);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
+	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);
 
 	std::string QuoteAddress() const { return m_quoteAddress; }
 	boost::tuple<bool, string> QuoteConnect(const std::string& address, const std::string& streamDir);
@@ -48,9 +50,6 @@ public:
 
 	boost::tuple<bool, string> QuoteLogin(const string& brokerId, const string& userId, const string& password);
 	void QuoteLogout();
-
-	void OpenPosition(const string& pid){}
-	void ClosePosition(const string& pid){}
 
 private:
 

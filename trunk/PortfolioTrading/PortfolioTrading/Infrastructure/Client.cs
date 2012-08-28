@@ -70,14 +70,32 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("AddPortf", portf_data);
         }
 
+        public void RemovePortf(string portfId)
+        {
+            StringParam strParam = new StringParam() { Data = portfId };
+            byte[] param_data = DataTranslater.Serialize(strParam);
+
+            byte[] ret_data = Request("RemovePortf", param_data);
+        }
+
         public void PorfOpenPosition(string pid, int quantity)
         {
-            PorfOpenPositionParam opParam = new PorfOpenPositionParam();
+            PorfChgPosiParam opParam = new PorfChgPosiParam();
             opParam.PortfId = pid;
             opParam.Quantity = quantity;
 
             byte[] param_data = DataTranslater.Serialize(opParam);
             byte[] ret_data = Request("PorfOpenPosition", param_data);
+        }
+
+        public void PortfClosePosition(string pid, int quantity)
+        {
+            PorfChgPosiParam opParam = new PorfChgPosiParam();
+            opParam.PortfId = pid;
+            opParam.Quantity = quantity;
+
+            byte[] param_data = DataTranslater.Serialize(opParam);
+            byte[] ret_data = Request("PorfClosePosition", param_data);
         }
 
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
@@ -148,6 +166,7 @@ namespace PortfolioTrading.Infrastructure
         }
 
         public event Action<Quote> OnQuoteReceived;
+        public event Action<PortfolioItem> OnPortfolioItemUpdated;
 
         protected override void DispatchCallback(string method, byte[] paramData)
         {
@@ -157,6 +176,14 @@ namespace PortfolioTrading.Infrastructure
                 {
                     Quote quoteData = DataTranslater.Deserialize<Quote>(paramData);
                     OnQuoteReceived(quoteData);
+                }
+            }
+            if (method == "PortfolioPush")
+            {
+                if (OnPortfolioItemUpdated != null)
+                {
+                    PortfolioItem porfItem = DataTranslater.Deserialize<PortfolioItem>(paramData);
+                    OnPortfolioItemUpdated(porfItem);
                 }
             }
         }

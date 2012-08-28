@@ -10,6 +10,7 @@ m_clientConnected(false)
 {
 	m_quoteAggregator.Initialize(&m_quoteAgent);
 	m_portfolioMgr.SetQuoteAggregator(&m_quoteAggregator);
+	m_portfolioMgr.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnPortfolioUpdated, this, _1));
 	m_strategyMgr.SetQuoteAggregator(&m_quoteAggregator);
 }
 
@@ -105,9 +106,27 @@ void CClientAgent::PortfolioOpenPosition( const string& pid, int quantity )
 	// build order
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	PlaceOrderContext placeOrderCtx;
+	
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOrder(portf, &placeOrderCtx));
 	// send to order processor
 	m_orderProcessor.OpenOrder(multilegOrder);
+}
+
+void CClientAgent::PortfolioClosePosition( const string& pid, int quantity )
+{
+	// build order
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
+	PlaceOrderContext placeOrderCtx;
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOrder(portf, &placeOrderCtx));
+	// send to order processor
+	m_orderProcessor.OpenOrder(multilegOrder);
+}
+
+void CClientAgent::OnPortfolioUpdated(entity::PortfolioItem* portfolioItem)
+{
+	std::string callbackData;
+	portfolioItem->SerializeToString(&callbackData);
+	m_pSession->BeginCallback("PortfolioPush", callbackData);
 }
 
 
