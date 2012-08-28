@@ -232,11 +232,11 @@ namespace PortfolioTrading
 
             if (tradeConnResult.Success)
             {
-                OutputMessage("Quote connected");
+                OutputMessage("Trade connected");
             }
             else
             {
-                OutputMessage("Connecting quote failed due to " + tradeConnResult.ErrorMessage);
+                OutputMessage("Connecting trade failed due to " + tradeConnResult.ErrorMessage);
                 return;
             }
 
@@ -244,11 +244,11 @@ namespace PortfolioTrading
 
             if (tradeLoginResult.Success)
             {
-                OutputMessage("Quote logged in");
+                OutputMessage("Trade logged in");
             }
             else
             {
-                OutputMessage("Logging in quote failed due to " + tradeLoginResult.ErrorMessage);
+                OutputMessage("Logging in trade failed due to " + tradeLoginResult.ErrorMessage);
                 return;
             }
 
