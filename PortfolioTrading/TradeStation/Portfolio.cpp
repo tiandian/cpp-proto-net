@@ -12,13 +12,14 @@ m_porfMgr(NULL)
 
 CPortfolio::~CPortfolio(void)
 {
+	Cleanup();
 }
 
-CLeg* CPortfolio::AddLeg(entity::LegItem* pLegItem)
+CLeg* CPortfolio::AddLeg(entity::LegItem* legItem)
 {
 	int legCount = m_vecLegs.size();
 	LegPtr leg(new CLeg(legCount + 1));
-	leg->SetItem(pLegItem);
+	leg->SetInnerItem(legItem);
 	m_vecLegs.push_back(leg);
 	return leg.get();
 }
@@ -34,33 +35,55 @@ CLeg* CPortfolio::GetLeg( int legId )
 		return m_vecLegs[legId - 1].get();
 }
 
+void CLeg::SetInnerItem(entity::LegItem* pItem)
+{
+	m_pInnerItem = pItem;
+}
+
 void CPortfolio::SetItem( entity::PortfolioItem* pPortfItem )
 {
 	m_innerItem = PortfItemPtr(pPortfItem);
+	
+	// backup current legs given by initialization
 	google::protobuf::RepeatedPtrField< ::entity::LegItem > legs = pPortfItem->legs();
-	for (google::protobuf::RepeatedPtrField< ::entity::LegItem >::iterator legIter = legs.begin();
-		legIter != legs.end(); ++legIter)
+	
+	// clear generated legs and set my own legs that works normally
+	pPortfItem->clear_legs();
+
+	for(google::protobuf::RepeatedPtrField< ::entity::LegItem >::iterator iter = legs.begin();
+		iter != legs.end(); ++iter)
 	{
-		AddLeg(&(*legIter));
+		entity::LegItem* nl = pPortfItem->add_legs();
+		nl->set_symbol(iter->symbol());
+		nl->set_ratio(iter->ratio());
+		nl->set_side(iter->side());
+		nl->set_last(iter->last());
+		nl->set_status(iter->status());
+
+		AddLeg(nl);
 	}
 }
 
 void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 {
+	// update last
+	for(vector<LegPtr>::iterator iter = m_vecLegs.begin(); iter != m_vecLegs.end(); ++iter)
+	{
+		if((*iter)->Symbol() == pQuote->symbol())
+		{
+			(*iter)->UpdateLast(pQuote->last());
+			break;
+		}
+	}
+
+	// calculate the diff
 	double diff = 0;
 	for(vector<LegPtr>::iterator iter = m_vecLegs.begin(); iter != m_vecLegs.end(); ++iter)
 	{
-		entity::LegItem* leg = iter->get()->Item();
-		
-		if(leg->symbol() == pQuote->symbol())
-		{
-			leg->set_last(pQuote->last());
-		}
-
-		double legPrice = leg->last();
+		double legPrice = (*iter)->Last();
 		if(legPrice > 0)
 		{
-			if(leg->side() == entity::LONG)
+			if((*iter)->Side() == entity::LONG)
 			{
 				diff +=	legPrice;
 			}
@@ -98,3 +121,4 @@ void CPortfolio::PushUpdate()
 {
 	m_porfMgr->PublishPortfolioUpdate(m_innerItem.get());
 }
+

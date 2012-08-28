@@ -35,7 +35,7 @@ public:
 	int Count();
 	const string& ID(){ return m_innerItem->id(); }
 
-	CLeg* AddLeg(entity::LegItem* pLegItem);
+	CLeg* AddLeg(entity::LegItem* legItem);
 
 	CLeg* GetLeg(int legId);
 
@@ -61,27 +61,35 @@ private:
 
 class CLeg
 {
-	CLeg(int legId) : m_legId(legId)
+	CLeg(int legId) : 
+		m_legId(legId)
 	{}
 
 public:
 	~CLeg(){}
 
-	friend CLeg* CPortfolio::AddLeg(entity::LegItem* pLegItem);
+	friend CLeg* CPortfolio::AddLeg(entity::LegItem* legItem);
 
 	int Id() { return m_legId; }
 
-	const string& Symbol(){ return m_symbol; }
-	void SetSymbol(const string& symb) { m_symbol = symb; }
+	const string& Symbol() { return m_pInnerItem->symbol(); }
+	entity::PosiDirectionType Side(){ return m_pInnerItem->side(); }
+	int Ratio(){ return m_pInnerItem->ratio(); }
 
-	entity::LegItem* Item(){ return m_pInnerItem; }
+	double Last(){ return m_pInnerItem->last(); }
+	void UpdateLast(double last){ m_pInnerItem->set_last(last); }
+
+	entity::LegStatus Status(){ return m_pInnerItem->status(); }
+	void UpdateStatus(entity::LegStatus status){ m_pInnerItem->set_status(status); }
+
+	entity::LegItem* InnerItem(){ return m_pInnerItem; }
 
 private:
-	void SetItem(entity::LegItem* pLegItem){ m_pInnerItem = pLegItem; }
+	void SetInnerItem(entity::LegItem* pItem);
 
-	string m_symbol;
 	int m_legId;
 	entity::LegItem* m_pInnerItem;
+	
 };
 
 

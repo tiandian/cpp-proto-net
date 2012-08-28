@@ -82,6 +82,9 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("TradeLogout", boost::bind(&CClientManager::TradeLogout, this, _1, _2, _3)));
 
 	m_reqTransMap.insert(make_pair("AddPortf", boost::bind(&CClientManager::AddPorf, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("RemovePortf", boost::bind(&CClientManager::RemovePorf, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("PorfOpenPosition", boost::bind(&CClientManager::PorfOpenPosition, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("PorfClosePosition", boost::bind(&CClientManager::PorfClosePosition, this, _1, _2, _3)));
 }
 
 void CClientManager::QuoteConnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
@@ -179,12 +182,28 @@ void CClientManager::AddPorf( CClientAgent* pClientAgent, const string& in_data,
 	pClientAgent->Add(portfItem);
 }
 
+
+void CClientManager::RemovePorf( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::StringParam strParam;
+	strParam.ParseFromString(in_data);
+	pClientAgent->Remove(strParam.data());
+}
+
 void CClientManager::PorfOpenPosition( CClientAgent* pClientAgent, const string& in_data, string& out_data )
 {
-	entity::PorfOpenPositionParam opParam;
+	entity::PorfChgPosiParam opParam;
 	opParam.ParseFromString(in_data);
 
 	pClientAgent->PortfolioOpenPosition(opParam.portfid(), opParam.quantity());
+}
+
+void CClientManager::PorfClosePosition( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::PorfChgPosiParam cpParam;
+	cpParam.ParseFromString(in_data);
+
+	pClientAgent->PortfolioClosePosition(cpParam.portfid(), cpParam.quantity());
 }
 
 

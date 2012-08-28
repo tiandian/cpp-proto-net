@@ -27,12 +27,21 @@ namespace PortfolioTrading
         public MainWindow()
         {
             _host = new NativeHost();
+            
 
             _client = new Client();
             _client.OnError += new Action<string>(_client_OnError);
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
+            _client.OnPortfolioItemUpdated += new Action<entity.PortfolioItem>(_client_OnPortfolioItemUpdated);
 
             InitializeComponent();
+        }
+
+        void _client_OnPortfolioItemUpdated(entity.PortfolioItem obj)
+        {
+            string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, obj.Diff);
+            Debug.WriteLine(info);
+            OutputMessage(info);
         }
 
         void _client_OnQuoteReceived(entity.Quote obj)
@@ -144,13 +153,13 @@ namespace PortfolioTrading
             portfolioItem.Quantity = 1;
 
             entity.LegItem leg1 = new entity.LegItem();
-            leg1.Symbol = "cu1208";
+            leg1.Symbol = "cu1209";
             leg1.Side = entity.PosiDirectionType.LONG;
             leg1.Ratio = 1;
             portfolioItem.Legs.Add(leg1);
 
             entity.LegItem leg2 = new entity.LegItem();
-            leg2.Symbol = "cu1209";
+            leg2.Symbol = "cu1210";
             leg2.Side = entity.PosiDirectionType.SHORT;
             leg2.Ratio = 1;
             portfolioItem.Legs.Add(leg2);
@@ -162,6 +171,93 @@ namespace PortfolioTrading
         private void btnOpenPosi_Click(object sender, RoutedEventArgs e)
         {
             _client.PorfOpenPosition(portfolioItem.ID, 1);
+        }
+
+        private void btnRemovePortf_Click(object sender, RoutedEventArgs e)
+        {
+            _client.RemovePortf(portfolioItem.ID);
+        }
+
+        private void btnClosePosi_Click(object sender, RoutedEventArgs e)
+        {
+            _client.PortfClosePosition(portfolioItem.ID, 1);
+        }
+
+        private void btnStartup_Click(object sender, RoutedEventArgs e)
+        {
+            _client.ConnectAsync("127.0.0.1", 16168, (b, t) =>
+            {
+                string txt = "Connect trade station ";
+                if (b)
+                {
+                    txt += "succeeded";
+                }
+                else
+                {
+                    txt += "failed due to " + t;
+                }
+                OutputMessage(txt);
+                new Action(ClientReady).BeginInvoke(null, null);
+            });
+        }
+
+        private void ClientReady()
+        {
+            OperationResult quoteConnResult = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
+                                                          "0240005010");
+            if (quoteConnResult.Success)
+            {
+                OutputMessage("Quote connected");
+            }
+            else
+            {
+                OutputMessage("Connecting quote failed due to " + quoteConnResult.ErrorMessage);
+                return;
+            }
+
+            OperationResult quoteLoginResult = _client.QuoteLogin("2030", "00092", "888888");
+
+            if (quoteLoginResult.Success)
+            {
+                OutputMessage("Quote logged in");
+            }
+            else
+            {
+                OutputMessage("Logging in quote failed due to " + quoteLoginResult.ErrorMessage);
+                return;
+            }
+
+            OperationResult tradeConnResult = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
+                                                          "0240005010");
+
+            if (tradeConnResult.Success)
+            {
+                OutputMessage("Quote connected");
+            }
+            else
+            {
+                OutputMessage("Connecting quote failed due to " + tradeConnResult.ErrorMessage);
+                return;
+            }
+
+            OperationResult tradeLoginResult = _client.TradeLogin("0240", "0240050005", "888888");
+
+            if (tradeLoginResult.Success)
+            {
+                OutputMessage("Quote logged in");
+            }
+            else
+            {
+                OutputMessage("Logging in quote failed due to " + tradeLoginResult.ErrorMessage);
+                return;
+            }
+
+        }
+
+        private void OutputMessage(string msg)
+        {
+            this.Dispatcher.BeginInvoke(new Action(
+                    () => this.txtOutput.AppendText(msg + "\n")));
         }
     }
 }

@@ -16,8 +16,8 @@ trade::MultiLegOrder* BuildOrder(CPortfolio* portfolio, PlaceOrderContext* place
 		order->set_investorid(placeOrderCtx->investorId);
 		order->set_instrumentid(leg->Symbol());
 		//order->set_orderref(NextOrderRef());
-		entity::LegStatus status = leg->Item()->status();
-		entity::PosiDirectionType side = leg->Item()->side();
+		entity::LegStatus status = leg->Status();
+		entity::PosiDirectionType side = leg->Side();
 		static char CombOffset[1];
 		if(status == entity::UNOPENED)
 		{
@@ -74,7 +74,7 @@ trade::MultiLegOrder* BuildOrder(CPortfolio* portfolio, PlaceOrderContext* place
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		// 	order->set_limitprice(0);
-		int qty = pMultiLegOrder->quantity() * leg->Item()->ratio();
+		int qty = pMultiLegOrder->quantity() * leg->Ratio();
 		order->set_volumetotaloriginal(qty);
 
 		if(order->orderpricetype() == trade::ANY_PRICE)

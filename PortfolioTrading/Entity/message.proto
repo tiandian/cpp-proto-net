@@ -2,6 +2,16 @@ import "enum.proto";
 
 package entity;
 
+message StringParam
+{
+	required string Data = 1;
+}
+
+message IntParam
+{
+	required int32 Data = 2;
+}
+
 message LegItem
 {
 	required string Symbol = 1;
@@ -45,7 +55,7 @@ message RegQuoteParam
 	repeated string Symbols = 1;
 }
 
-message PorfOpenPositionParam
+message PorfChgPosiParam
 {
 	required string PortfId = 1;
 	required int32 Quantity = 2;

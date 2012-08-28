@@ -11,6 +11,40 @@
 // Note: requires additional types generated from: enum.proto
 namespace entity
 {
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"StringParam")]
+  public partial class StringParam : global::ProtoBuf.IExtensible
+  {
+    public StringParam() {}
+    
+    private string _Data;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"Data", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string Data
+    {
+      get { return _Data; }
+      set { _Data = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"IntParam")]
+  public partial class IntParam : global::ProtoBuf.IExtensible
+  {
+    public IntParam() {}
+    
+    private int _Data;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Data", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int Data
+    {
+      get { return _Data; }
+      set { _Data = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"LegItem")]
   public partial class LegItem : global::ProtoBuf.IExtensible
   {
@@ -204,10 +238,10 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PorfOpenPositionParam")]
-  public partial class PorfOpenPositionParam : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PorfChgPosiParam")]
+  public partial class PorfChgPosiParam : global::ProtoBuf.IExtensible
   {
-    public PorfOpenPositionParam() {}
+    public PorfChgPosiParam() {}
     
     private string _PortfId;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"PortfId", DataFormat = global::ProtoBuf.DataFormat.Default)]
