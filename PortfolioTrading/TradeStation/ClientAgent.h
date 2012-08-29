@@ -36,6 +36,7 @@ public:
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);
+	void OnMultiLegOrderUpdated(trade::MultiLegOrder* order);
 
 	std::string QuoteAddress() const { return m_quoteAddress; }
 	boost::tuple<bool, string> QuoteConnect(const std::string& address, const std::string& streamDir);
@@ -65,6 +66,8 @@ private:
 
 	string m_quoteAddress;
 	string m_tradeAddress;
+	string m_brokerId;
+	string m_userId;
 
 	Session* m_pSession;
 

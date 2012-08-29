@@ -1733,7 +1733,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_orderref();
   inline ::std::string* release_orderref();
   
-  // required string UserID = 5;
+  // optional string UserID = 5;
   inline bool has_userid() const;
   inline void clear_userid();
   static const int kUserIDFieldNumber = 5;
@@ -1801,7 +1801,7 @@ class Order : public ::google::protobuf::Message {
   inline trade::TimeConditionType timecondition() const;
   inline void set_timecondition(trade::TimeConditionType value);
   
-  // required string GTDDate = 13;
+  // optional string GTDDate = 13;
   inline bool has_gtddate() const;
   inline void clear_gtddate();
   static const int kGTDDateFieldNumber = 13;
@@ -1833,7 +1833,7 @@ class Order : public ::google::protobuf::Message {
   inline trade::ContingentConditionType contingentcondition() const;
   inline void set_contingentcondition(trade::ContingentConditionType value);
   
-  // required double StopPrice = 17;
+  // optional double StopPrice = 17;
   inline bool has_stopprice() const;
   inline void clear_stopprice();
   static const int kStopPriceFieldNumber = 17;
@@ -1854,7 +1854,7 @@ class Order : public ::google::protobuf::Message {
   inline bool isautosuspend() const;
   inline void set_isautosuspend(bool value);
   
-  // required string BusinessUnit = 20;
+  // optional string BusinessUnit = 20;
   inline bool has_businessunit() const;
   inline void clear_businessunit();
   static const int kBusinessUnitFieldNumber = 20;
@@ -1865,14 +1865,14 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_businessunit();
   inline ::std::string* release_businessunit();
   
-  // required int32 RequestID = 21;
+  // optional int32 RequestID = 21;
   inline bool has_requestid() const;
   inline void clear_requestid();
   static const int kRequestIDFieldNumber = 21;
   inline ::google::protobuf::int32 requestid() const;
   inline void set_requestid(::google::protobuf::int32 value);
   
-  // required string OrderLocalID = 22;
+  // optional string OrderLocalID = 22;
   inline bool has_orderlocalid() const;
   inline void clear_orderlocalid();
   static const int kOrderLocalIDFieldNumber = 22;
@@ -1883,7 +1883,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_orderlocalid();
   inline ::std::string* release_orderlocalid();
   
-  // required string ExchangeID = 23;
+  // optional string ExchangeID = 23;
   inline bool has_exchangeid() const;
   inline void clear_exchangeid();
   static const int kExchangeIDFieldNumber = 23;
@@ -1894,7 +1894,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_exchangeid();
   inline ::std::string* release_exchangeid();
   
-  // required string ParticipantID = 24;
+  // optional string ParticipantID = 24;
   inline bool has_participantid() const;
   inline void clear_participantid();
   static const int kParticipantIDFieldNumber = 24;
@@ -1905,7 +1905,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_participantid();
   inline ::std::string* release_participantid();
   
-  // required string ClientID = 25;
+  // optional string ClientID = 25;
   inline bool has_clientid() const;
   inline void clear_clientid();
   static const int kClientIDFieldNumber = 25;
@@ -1916,7 +1916,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_clientid();
   inline ::std::string* release_clientid();
   
-  // required string ExchangeInstID = 26;
+  // optional string ExchangeInstID = 26;
   inline bool has_exchangeinstid() const;
   inline void clear_exchangeinstid();
   static const int kExchangeInstIDFieldNumber = 26;
@@ -1927,7 +1927,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_exchangeinstid();
   inline ::std::string* release_exchangeinstid();
   
-  // required string TraderID = 27;
+  // optional string TraderID = 27;
   inline bool has_traderid() const;
   inline void clear_traderid();
   static const int kTraderIDFieldNumber = 27;
@@ -1938,28 +1938,28 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_traderid();
   inline ::std::string* release_traderid();
   
-  // required int32 InstallID = 28;
+  // optional int32 InstallID = 28;
   inline bool has_installid() const;
   inline void clear_installid();
   static const int kInstallIDFieldNumber = 28;
   inline ::google::protobuf::int32 installid() const;
   inline void set_installid(::google::protobuf::int32 value);
   
-  // required .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
+  // optional .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
   inline bool has_ordersubmitstatus() const;
   inline void clear_ordersubmitstatus();
   static const int kOrderSubmitStatusFieldNumber = 29;
   inline trade::OrderSubmitStatusType ordersubmitstatus() const;
   inline void set_ordersubmitstatus(trade::OrderSubmitStatusType value);
   
-  // required int32 NotifySequence = 30;
+  // optional int32 NotifySequence = 30;
   inline bool has_notifysequence() const;
   inline void clear_notifysequence();
   static const int kNotifySequenceFieldNumber = 30;
   inline ::google::protobuf::int32 notifysequence() const;
   inline void set_notifysequence(::google::protobuf::int32 value);
   
-  // required string TradingDay = 31;
+  // optional string TradingDay = 31;
   inline bool has_tradingday() const;
   inline void clear_tradingday();
   static const int kTradingDayFieldNumber = 31;
@@ -1970,14 +1970,14 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_tradingday();
   inline ::std::string* release_tradingday();
   
-  // required int32 SettlementID = 32;
+  // optional int32 SettlementID = 32;
   inline bool has_settlementid() const;
   inline void clear_settlementid();
   static const int kSettlementIDFieldNumber = 32;
   inline ::google::protobuf::int32 settlementid() const;
   inline void set_settlementid(::google::protobuf::int32 value);
   
-  // required string OrderSysID = 33;
+  // optional string OrderSysID = 33;
   inline bool has_ordersysid() const;
   inline void clear_ordersysid();
   static const int kOrderSysIDFieldNumber = 33;
@@ -1988,42 +1988,42 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_ordersysid();
   inline ::std::string* release_ordersysid();
   
-  // required .trade.OrderSourceType OrderSource = 34;
+  // optional .trade.OrderSourceType OrderSource = 34;
   inline bool has_ordersource() const;
   inline void clear_ordersource();
   static const int kOrderSourceFieldNumber = 34;
   inline trade::OrderSourceType ordersource() const;
   inline void set_ordersource(trade::OrderSourceType value);
   
-  // required .trade.OrderStatusType OrderStatus = 35;
+  // optional .trade.OrderStatusType OrderStatus = 35;
   inline bool has_orderstatus() const;
   inline void clear_orderstatus();
   static const int kOrderStatusFieldNumber = 35;
   inline trade::OrderStatusType orderstatus() const;
   inline void set_orderstatus(trade::OrderStatusType value);
   
-  // required .trade.OrderTypeType OrderType = 36;
+  // optional .trade.OrderTypeType OrderType = 36;
   inline bool has_ordertype() const;
   inline void clear_ordertype();
   static const int kOrderTypeFieldNumber = 36;
   inline trade::OrderTypeType ordertype() const;
   inline void set_ordertype(trade::OrderTypeType value);
   
-  // required int32 VolumeTraded = 37;
+  // optional int32 VolumeTraded = 37;
   inline bool has_volumetraded() const;
   inline void clear_volumetraded();
   static const int kVolumeTradedFieldNumber = 37;
   inline ::google::protobuf::int32 volumetraded() const;
   inline void set_volumetraded(::google::protobuf::int32 value);
   
-  // required int32 VolumeTotal = 38;
+  // optional int32 VolumeTotal = 38;
   inline bool has_volumetotal() const;
   inline void clear_volumetotal();
   static const int kVolumeTotalFieldNumber = 38;
   inline ::google::protobuf::int32 volumetotal() const;
   inline void set_volumetotal(::google::protobuf::int32 value);
   
-  // required string InsertDate = 39;
+  // optional string InsertDate = 39;
   inline bool has_insertdate() const;
   inline void clear_insertdate();
   static const int kInsertDateFieldNumber = 39;
@@ -2034,7 +2034,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_insertdate();
   inline ::std::string* release_insertdate();
   
-  // required string InsertTime = 40;
+  // optional string InsertTime = 40;
   inline bool has_inserttime() const;
   inline void clear_inserttime();
   static const int kInsertTimeFieldNumber = 40;
@@ -2045,7 +2045,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_inserttime();
   inline ::std::string* release_inserttime();
   
-  // required string ActiveTime = 41;
+  // optional string ActiveTime = 41;
   inline bool has_activetime() const;
   inline void clear_activetime();
   static const int kActiveTimeFieldNumber = 41;
@@ -2056,7 +2056,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_activetime();
   inline ::std::string* release_activetime();
   
-  // required string SuspendTime = 42;
+  // optional string SuspendTime = 42;
   inline bool has_suspendtime() const;
   inline void clear_suspendtime();
   static const int kSuspendTimeFieldNumber = 42;
@@ -2067,7 +2067,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_suspendtime();
   inline ::std::string* release_suspendtime();
   
-  // required string UpdateTime = 43;
+  // optional string UpdateTime = 43;
   inline bool has_updatetime() const;
   inline void clear_updatetime();
   static const int kUpdateTimeFieldNumber = 43;
@@ -2078,7 +2078,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_updatetime();
   inline ::std::string* release_updatetime();
   
-  // required string CancelTime = 44;
+  // optional string CancelTime = 44;
   inline bool has_canceltime() const;
   inline void clear_canceltime();
   static const int kCancelTimeFieldNumber = 44;
@@ -2089,7 +2089,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_canceltime();
   inline ::std::string* release_canceltime();
   
-  // required string ActiveTraderID = 45;
+  // optional string ActiveTraderID = 45;
   inline bool has_activetraderid() const;
   inline void clear_activetraderid();
   static const int kActiveTraderIDFieldNumber = 45;
@@ -2100,7 +2100,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_activetraderid();
   inline ::std::string* release_activetraderid();
   
-  // required string ClearingPartID = 46;
+  // optional string ClearingPartID = 46;
   inline bool has_clearingpartid() const;
   inline void clear_clearingpartid();
   static const int kClearingPartIDFieldNumber = 46;
@@ -2111,28 +2111,28 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_clearingpartid();
   inline ::std::string* release_clearingpartid();
   
-  // required int32 SequenceNo = 47;
+  // optional int32 SequenceNo = 47;
   inline bool has_sequenceno() const;
   inline void clear_sequenceno();
   static const int kSequenceNoFieldNumber = 47;
   inline ::google::protobuf::int32 sequenceno() const;
   inline void set_sequenceno(::google::protobuf::int32 value);
   
-  // required int32 FrontID = 48;
+  // optional int32 FrontID = 48;
   inline bool has_frontid() const;
   inline void clear_frontid();
   static const int kFrontIDFieldNumber = 48;
   inline ::google::protobuf::int32 frontid() const;
   inline void set_frontid(::google::protobuf::int32 value);
   
-  // required int32 SessionID = 49;
+  // optional int32 SessionID = 49;
   inline bool has_sessionid() const;
   inline void clear_sessionid();
   static const int kSessionIDFieldNumber = 49;
   inline ::google::protobuf::int32 sessionid() const;
   inline void set_sessionid(::google::protobuf::int32 value);
   
-  // required string UserProductInfo = 50;
+  // optional string UserProductInfo = 50;
   inline bool has_userproductinfo() const;
   inline void clear_userproductinfo();
   static const int kUserProductInfoFieldNumber = 50;
@@ -2143,7 +2143,7 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_userproductinfo();
   inline ::std::string* release_userproductinfo();
   
-  // required string StatusMsg = 51;
+  // optional string StatusMsg = 51;
   inline bool has_statusmsg() const;
   inline void clear_statusmsg();
   static const int kStatusMsgFieldNumber = 51;
@@ -2154,14 +2154,14 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_statusmsg();
   inline ::std::string* release_statusmsg();
   
-  // required bool UserForceClose = 52;
+  // optional bool UserForceClose = 52;
   inline bool has_userforceclose() const;
   inline void clear_userforceclose();
   static const int kUserForceCloseFieldNumber = 52;
   inline bool userforceclose() const;
   inline void set_userforceclose(bool value);
   
-  // required string ActiveUserID = 53;
+  // optional string ActiveUserID = 53;
   inline bool has_activeuserid() const;
   inline void clear_activeuserid();
   static const int kActiveUserIDFieldNumber = 53;
@@ -2172,14 +2172,14 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_activeuserid();
   inline ::std::string* release_activeuserid();
   
-  // required int32 BrokerOrderSeq = 54;
+  // optional int32 BrokerOrderSeq = 54;
   inline bool has_brokerorderseq() const;
   inline void clear_brokerorderseq();
   static const int kBrokerOrderSeqFieldNumber = 54;
   inline ::google::protobuf::int32 brokerorderseq() const;
   inline void set_brokerorderseq(::google::protobuf::int32 value);
   
-  // required string RelativeOrderSysID = 55;
+  // optional string RelativeOrderSysID = 55;
   inline bool has_relativeordersysid() const;
   inline void clear_relativeordersysid();
   static const int kRelativeOrderSysIDFieldNumber = 55;
@@ -6063,7 +6063,7 @@ inline ::std::string* Order::release_orderref() {
   }
 }
 
-// required string UserID = 5;
+// optional string UserID = 5;
 inline bool Order::has_userid() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
@@ -6350,7 +6350,7 @@ inline void Order::set_timecondition(trade::TimeConditionType value) {
   timecondition_ = value;
 }
 
-// required string GTDDate = 13;
+// optional string GTDDate = 13;
 inline bool Order::has_gtddate() const {
   return (_has_bits_[0] & 0x00001000u) != 0;
 }
@@ -6476,7 +6476,7 @@ inline void Order::set_contingentcondition(trade::ContingentConditionType value)
   contingentcondition_ = value;
 }
 
-// required double StopPrice = 17;
+// optional double StopPrice = 17;
 inline bool Order::has_stopprice() const {
   return (_has_bits_[0] & 0x00010000u) != 0;
 }
@@ -6543,7 +6543,7 @@ inline void Order::set_isautosuspend(bool value) {
   isautosuspend_ = value;
 }
 
-// required string BusinessUnit = 20;
+// optional string BusinessUnit = 20;
 inline bool Order::has_businessunit() const {
   return (_has_bits_[0] & 0x00080000u) != 0;
 }
@@ -6601,7 +6601,7 @@ inline ::std::string* Order::release_businessunit() {
   }
 }
 
-// required int32 RequestID = 21;
+// optional int32 RequestID = 21;
 inline bool Order::has_requestid() const {
   return (_has_bits_[0] & 0x00100000u) != 0;
 }
@@ -6623,7 +6623,7 @@ inline void Order::set_requestid(::google::protobuf::int32 value) {
   requestid_ = value;
 }
 
-// required string OrderLocalID = 22;
+// optional string OrderLocalID = 22;
 inline bool Order::has_orderlocalid() const {
   return (_has_bits_[0] & 0x00200000u) != 0;
 }
@@ -6681,7 +6681,7 @@ inline ::std::string* Order::release_orderlocalid() {
   }
 }
 
-// required string ExchangeID = 23;
+// optional string ExchangeID = 23;
 inline bool Order::has_exchangeid() const {
   return (_has_bits_[0] & 0x00400000u) != 0;
 }
@@ -6739,7 +6739,7 @@ inline ::std::string* Order::release_exchangeid() {
   }
 }
 
-// required string ParticipantID = 24;
+// optional string ParticipantID = 24;
 inline bool Order::has_participantid() const {
   return (_has_bits_[0] & 0x00800000u) != 0;
 }
@@ -6797,7 +6797,7 @@ inline ::std::string* Order::release_participantid() {
   }
 }
 
-// required string ClientID = 25;
+// optional string ClientID = 25;
 inline bool Order::has_clientid() const {
   return (_has_bits_[0] & 0x01000000u) != 0;
 }
@@ -6855,7 +6855,7 @@ inline ::std::string* Order::release_clientid() {
   }
 }
 
-// required string ExchangeInstID = 26;
+// optional string ExchangeInstID = 26;
 inline bool Order::has_exchangeinstid() const {
   return (_has_bits_[0] & 0x02000000u) != 0;
 }
@@ -6913,7 +6913,7 @@ inline ::std::string* Order::release_exchangeinstid() {
   }
 }
 
-// required string TraderID = 27;
+// optional string TraderID = 27;
 inline bool Order::has_traderid() const {
   return (_has_bits_[0] & 0x04000000u) != 0;
 }
@@ -6971,7 +6971,7 @@ inline ::std::string* Order::release_traderid() {
   }
 }
 
-// required int32 InstallID = 28;
+// optional int32 InstallID = 28;
 inline bool Order::has_installid() const {
   return (_has_bits_[0] & 0x08000000u) != 0;
 }
@@ -6993,7 +6993,7 @@ inline void Order::set_installid(::google::protobuf::int32 value) {
   installid_ = value;
 }
 
-// required .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
+// optional .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
 inline bool Order::has_ordersubmitstatus() const {
   return (_has_bits_[0] & 0x10000000u) != 0;
 }
@@ -7016,7 +7016,7 @@ inline void Order::set_ordersubmitstatus(trade::OrderSubmitStatusType value) {
   ordersubmitstatus_ = value;
 }
 
-// required int32 NotifySequence = 30;
+// optional int32 NotifySequence = 30;
 inline bool Order::has_notifysequence() const {
   return (_has_bits_[0] & 0x20000000u) != 0;
 }
@@ -7038,7 +7038,7 @@ inline void Order::set_notifysequence(::google::protobuf::int32 value) {
   notifysequence_ = value;
 }
 
-// required string TradingDay = 31;
+// optional string TradingDay = 31;
 inline bool Order::has_tradingday() const {
   return (_has_bits_[0] & 0x40000000u) != 0;
 }
@@ -7096,7 +7096,7 @@ inline ::std::string* Order::release_tradingday() {
   }
 }
 
-// required int32 SettlementID = 32;
+// optional int32 SettlementID = 32;
 inline bool Order::has_settlementid() const {
   return (_has_bits_[0] & 0x80000000u) != 0;
 }
@@ -7118,7 +7118,7 @@ inline void Order::set_settlementid(::google::protobuf::int32 value) {
   settlementid_ = value;
 }
 
-// required string OrderSysID = 33;
+// optional string OrderSysID = 33;
 inline bool Order::has_ordersysid() const {
   return (_has_bits_[1] & 0x00000001u) != 0;
 }
@@ -7176,7 +7176,7 @@ inline ::std::string* Order::release_ordersysid() {
   }
 }
 
-// required .trade.OrderSourceType OrderSource = 34;
+// optional .trade.OrderSourceType OrderSource = 34;
 inline bool Order::has_ordersource() const {
   return (_has_bits_[1] & 0x00000002u) != 0;
 }
@@ -7199,7 +7199,7 @@ inline void Order::set_ordersource(trade::OrderSourceType value) {
   ordersource_ = value;
 }
 
-// required .trade.OrderStatusType OrderStatus = 35;
+// optional .trade.OrderStatusType OrderStatus = 35;
 inline bool Order::has_orderstatus() const {
   return (_has_bits_[1] & 0x00000004u) != 0;
 }
@@ -7222,7 +7222,7 @@ inline void Order::set_orderstatus(trade::OrderStatusType value) {
   orderstatus_ = value;
 }
 
-// required .trade.OrderTypeType OrderType = 36;
+// optional .trade.OrderTypeType OrderType = 36;
 inline bool Order::has_ordertype() const {
   return (_has_bits_[1] & 0x00000008u) != 0;
 }
@@ -7245,7 +7245,7 @@ inline void Order::set_ordertype(trade::OrderTypeType value) {
   ordertype_ = value;
 }
 
-// required int32 VolumeTraded = 37;
+// optional int32 VolumeTraded = 37;
 inline bool Order::has_volumetraded() const {
   return (_has_bits_[1] & 0x00000010u) != 0;
 }
@@ -7267,7 +7267,7 @@ inline void Order::set_volumetraded(::google::protobuf::int32 value) {
   volumetraded_ = value;
 }
 
-// required int32 VolumeTotal = 38;
+// optional int32 VolumeTotal = 38;
 inline bool Order::has_volumetotal() const {
   return (_has_bits_[1] & 0x00000020u) != 0;
 }
@@ -7289,7 +7289,7 @@ inline void Order::set_volumetotal(::google::protobuf::int32 value) {
   volumetotal_ = value;
 }
 
-// required string InsertDate = 39;
+// optional string InsertDate = 39;
 inline bool Order::has_insertdate() const {
   return (_has_bits_[1] & 0x00000040u) != 0;
 }
@@ -7347,7 +7347,7 @@ inline ::std::string* Order::release_insertdate() {
   }
 }
 
-// required string InsertTime = 40;
+// optional string InsertTime = 40;
 inline bool Order::has_inserttime() const {
   return (_has_bits_[1] & 0x00000080u) != 0;
 }
@@ -7405,7 +7405,7 @@ inline ::std::string* Order::release_inserttime() {
   }
 }
 
-// required string ActiveTime = 41;
+// optional string ActiveTime = 41;
 inline bool Order::has_activetime() const {
   return (_has_bits_[1] & 0x00000100u) != 0;
 }
@@ -7463,7 +7463,7 @@ inline ::std::string* Order::release_activetime() {
   }
 }
 
-// required string SuspendTime = 42;
+// optional string SuspendTime = 42;
 inline bool Order::has_suspendtime() const {
   return (_has_bits_[1] & 0x00000200u) != 0;
 }
@@ -7521,7 +7521,7 @@ inline ::std::string* Order::release_suspendtime() {
   }
 }
 
-// required string UpdateTime = 43;
+// optional string UpdateTime = 43;
 inline bool Order::has_updatetime() const {
   return (_has_bits_[1] & 0x00000400u) != 0;
 }
@@ -7579,7 +7579,7 @@ inline ::std::string* Order::release_updatetime() {
   }
 }
 
-// required string CancelTime = 44;
+// optional string CancelTime = 44;
 inline bool Order::has_canceltime() const {
   return (_has_bits_[1] & 0x00000800u) != 0;
 }
@@ -7637,7 +7637,7 @@ inline ::std::string* Order::release_canceltime() {
   }
 }
 
-// required string ActiveTraderID = 45;
+// optional string ActiveTraderID = 45;
 inline bool Order::has_activetraderid() const {
   return (_has_bits_[1] & 0x00001000u) != 0;
 }
@@ -7695,7 +7695,7 @@ inline ::std::string* Order::release_activetraderid() {
   }
 }
 
-// required string ClearingPartID = 46;
+// optional string ClearingPartID = 46;
 inline bool Order::has_clearingpartid() const {
   return (_has_bits_[1] & 0x00002000u) != 0;
 }
@@ -7753,7 +7753,7 @@ inline ::std::string* Order::release_clearingpartid() {
   }
 }
 
-// required int32 SequenceNo = 47;
+// optional int32 SequenceNo = 47;
 inline bool Order::has_sequenceno() const {
   return (_has_bits_[1] & 0x00004000u) != 0;
 }
@@ -7775,7 +7775,7 @@ inline void Order::set_sequenceno(::google::protobuf::int32 value) {
   sequenceno_ = value;
 }
 
-// required int32 FrontID = 48;
+// optional int32 FrontID = 48;
 inline bool Order::has_frontid() const {
   return (_has_bits_[1] & 0x00008000u) != 0;
 }
@@ -7797,7 +7797,7 @@ inline void Order::set_frontid(::google::protobuf::int32 value) {
   frontid_ = value;
 }
 
-// required int32 SessionID = 49;
+// optional int32 SessionID = 49;
 inline bool Order::has_sessionid() const {
   return (_has_bits_[1] & 0x00010000u) != 0;
 }
@@ -7819,7 +7819,7 @@ inline void Order::set_sessionid(::google::protobuf::int32 value) {
   sessionid_ = value;
 }
 
-// required string UserProductInfo = 50;
+// optional string UserProductInfo = 50;
 inline bool Order::has_userproductinfo() const {
   return (_has_bits_[1] & 0x00020000u) != 0;
 }
@@ -7877,7 +7877,7 @@ inline ::std::string* Order::release_userproductinfo() {
   }
 }
 
-// required string StatusMsg = 51;
+// optional string StatusMsg = 51;
 inline bool Order::has_statusmsg() const {
   return (_has_bits_[1] & 0x00040000u) != 0;
 }
@@ -7935,7 +7935,7 @@ inline ::std::string* Order::release_statusmsg() {
   }
 }
 
-// required bool UserForceClose = 52;
+// optional bool UserForceClose = 52;
 inline bool Order::has_userforceclose() const {
   return (_has_bits_[1] & 0x00080000u) != 0;
 }
@@ -7957,7 +7957,7 @@ inline void Order::set_userforceclose(bool value) {
   userforceclose_ = value;
 }
 
-// required string ActiveUserID = 53;
+// optional string ActiveUserID = 53;
 inline bool Order::has_activeuserid() const {
   return (_has_bits_[1] & 0x00100000u) != 0;
 }
@@ -8015,7 +8015,7 @@ inline ::std::string* Order::release_activeuserid() {
   }
 }
 
-// required int32 BrokerOrderSeq = 54;
+// optional int32 BrokerOrderSeq = 54;
 inline bool Order::has_brokerorderseq() const {
   return (_has_bits_[1] & 0x00200000u) != 0;
 }
@@ -8037,7 +8037,7 @@ inline void Order::set_brokerorderseq(::google::protobuf::int32 value) {
   brokerorderseq_ = value;
 }
 
-// required string RelativeOrderSysID = 55;
+// optional string RelativeOrderSysID = 55;
 inline bool Order::has_relativeordersysid() const {
   return (_has_bits_[1] & 0x00400000u) != 0;
 }

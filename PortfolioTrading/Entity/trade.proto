@@ -429,7 +429,7 @@ message Order
 	///报单引用
 	required string	OrderRef = 4;
 	///用户代码
-	required string	UserID = 5;
+	optional string	UserID = 5;
 	///报单价格条件
 	required OrderPriceTypeType	OrderPriceType = 6;
 	///买卖方向
@@ -445,7 +445,7 @@ message Order
 	///有效期类型
 	required TimeConditionType	TimeCondition = 12;
 	///GTD日期
-	required string	GTDDate = 13;
+	optional string	GTDDate = 13;
 	///成交量类型
 	required VolumeConditionType	VolumeCondition = 14;
 	///最小成交量
@@ -453,86 +453,86 @@ message Order
 	///触发条件
 	required ContingentConditionType	ContingentCondition = 16;
 	///止损价
-	required double	StopPrice = 17;
+	optional double	StopPrice = 17;
 	///强平原因
 	required ForceCloseReasonType	ForceCloseReason = 18;
 	///自动挂起标志
 	required bool	IsAutoSuspend = 19;
 	///业务单元
-	required string	BusinessUnit = 20;
+	optional string	BusinessUnit = 20;
 	///请求编号
-	required int32	RequestID = 21;
+	optional int32	RequestID = 21;
 	// Above fields are same as InputOrder's
 	////////////////////////////////////////////////////////////////////
 
 	///本地报单编号
-	required string	OrderLocalID = 22;
+	optional string	OrderLocalID = 22;
 	///交易所代码
-	required string	ExchangeID = 23;
+	optional string	ExchangeID = 23;
 	///会员代码
-	required string	ParticipantID = 24;
+	optional string	ParticipantID = 24;
 	///客户代码
-	required string	ClientID = 25;
+	optional string	ClientID = 25;
 	///合约在交易所的代码
-	required string	ExchangeInstID = 26;
+	optional string	ExchangeInstID = 26;
 	///交易所交易员代码
-	required string	TraderID = 27;
+	optional string	TraderID = 27;
 	///安装编号
-	required int32	InstallID = 28;
+	optional int32	InstallID = 28;
 	///报单提交状态
-	required OrderSubmitStatusType	OrderSubmitStatus = 29;
+	optional OrderSubmitStatusType	OrderSubmitStatus = 29;
 	///报单提示序号
-	required int32	NotifySequence = 30;
+	optional int32	NotifySequence = 30;
 	///交易日
-	required string	TradingDay = 31;
+	optional string	TradingDay = 31;
 	///结算编号
-	required int32	SettlementID = 32;
+	optional int32	SettlementID = 32;
 	///报单编号
-	required string	OrderSysID = 33;
+	optional string	OrderSysID = 33;
 	///报单来源
-	required OrderSourceType	OrderSource = 34;
+	optional OrderSourceType	OrderSource = 34;
 	///报单状态
-	required OrderStatusType	OrderStatus = 35;
+	optional OrderStatusType	OrderStatus = 35;
 	///报单类型
-	required OrderTypeType	OrderType = 36;
+	optional OrderTypeType	OrderType = 36;
 	///今成交数量
-	required int32	VolumeTraded = 37;
+	optional int32	VolumeTraded = 37;
 	///剩余数量
-	required int32	VolumeTotal = 38;
+	optional int32	VolumeTotal = 38;
 	///报单日期
-	required string	InsertDate = 39;
+	optional string	InsertDate = 39;
 	///委托时间
-	required string	InsertTime = 40;
+	optional string	InsertTime = 40;
 	///激活时间
-	required string	ActiveTime = 41;
+	optional string	ActiveTime = 41;
 	///挂起时间
-	required string	SuspendTime = 42;
+	optional string	SuspendTime = 42;
 	///最后修改时间
-	required string	UpdateTime = 43;
+	optional string	UpdateTime = 43;
 	///撤销时间
-	required string	CancelTime = 44;
+	optional string	CancelTime = 44;
 	///最后修改交易所交易员代码
-	required string	ActiveTraderID = 45;
+	optional string	ActiveTraderID = 45;
 	///结算会员编号
-	required string	ClearingPartID = 46;
+	optional string	ClearingPartID = 46;
 	///序号
-	required int32	SequenceNo = 47;
+	optional int32	SequenceNo = 47;
 	///前置编号
-	required int32	FrontID = 48;
+	optional int32	FrontID = 48;
 	///会话编号
-	required int32	SessionID = 49;
+	optional int32	SessionID = 49;
 	///用户端产品信息
-	required string	UserProductInfo = 50;
+	optional string	UserProductInfo = 50;
 	///状态信息
-	required string	StatusMsg = 51;
+	optional string	StatusMsg = 51;
 	///用户强评标志
-	required bool	UserForceClose = 52;
+	optional bool	UserForceClose = 52;
 	///操作用户代码
-	required string	ActiveUserID = 53;
+	optional string	ActiveUserID = 53;
 	///经纪公司报单编号
-	required int32	BrokerOrderSeq = 54;
+	optional int32	BrokerOrderSeq = 54;
 	///相关报单
-	required string	RelativeOrderSysID = 55;
+	optional string	RelativeOrderSysID = 55;
 };
 
 ///TFtdcTradingRoleType是一个交易角色类型

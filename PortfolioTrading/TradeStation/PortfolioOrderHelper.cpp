@@ -3,7 +3,7 @@
 #include <boost/foreach.hpp>
 
 
-trade::MultiLegOrder* BuildOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx)
+trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx)
 {
 	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
 	pMultiLegOrder->set_quantity(placeOrderCtx->quantity);
@@ -16,58 +16,41 @@ trade::MultiLegOrder* BuildOrder(CPortfolio* portfolio, PlaceOrderContext* place
 		order->set_investorid(placeOrderCtx->investorId);
 		order->set_instrumentid(leg->Symbol());
 		//order->set_orderref(NextOrderRef());
-		entity::LegStatus status = leg->Status();
+		
 		entity::PosiDirectionType side = leg->Side();
-		static char CombOffset[1];
-		if(status == entity::UNOPENED)
+		
+		double limitPrice = 0;
+		// in case wanna open position
+		if(side == entity::LONG)
 		{
-			// in case wanna open position
-			if(side == entity::LONG)
-			{
-				// open long position
-				order->set_direction(trade::BUY);
-			}
-			else if(side == entity::SHORT)
-			{
-				order->set_direction(trade::SELL);
-			}
-			else
-			{
-				throw std::exception("unexpected leg side");
-			}
-			order->set_orderpricetype(placeOrderCtx->orderPriceType);
-			order->set_limitprice(placeOrderCtx->limitPrice);
-			CombOffset[0] = trade::OF_OPEN;
+			// open long position
+			order->set_direction(trade::BUY);
+			limitPrice = leg->Ask();
 		}
-		else if(status == entity::OPENED)
+		else if(side == entity::SHORT)
 		{
-			// in case wanna close position
-			if(side == entity::LONG)
-			{
-				order->set_direction(trade::SELL);
-			}
-			else if(side == entity::SHORT)
-			{
-				order->set_direction(trade::BUY);
-			}
-			else
-			{
-				throw std::exception("unexpected leg side");
-			}
-			order->set_orderpricetype(placeOrderCtx->orderPriceType);
-			order->set_limitprice(placeOrderCtx->limitPrice);
-			CombOffset[0] = trade::OF_CLOSE_TODAY;
+			order->set_direction(trade::SELL);
+			limitPrice = leg->Bid();
 		}
 		else
 		{
-			assert(false);	// leg status is incorret
+			throw std::exception("unexpected leg side");
 		}
+
+		if(placeOrderCtx->limitPriceType == entity::Last)
+			limitPrice = leg->Last();
+
+		order->set_orderpricetype(placeOrderCtx->orderPriceType);
+		order->set_limitprice(limitPrice);
 
 		//order->set_orderpricetype(protoc::LIMIT_PRICE);
 
 		//order->set_direction(leg->GetSide() == protoc::LONG ? protoc::BUY : protoc::SELL);
 
-		// 	char CombOffset[] = { static_cast<char>(protoc::OF_OPEN) };
+		//char CombOffset[] = { static_cast<char>(protoc::OF_OPEN) };
+		static char CombOffset[1];
+		CombOffset[0] = trade::OF_OPEN;
+
 		order->set_comboffsetflag(std::string(CombOffset));
 
 		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };

@@ -95,6 +95,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="..\Entity\gen\cpp\quote.pb.h" />
     <ClInclude Include="..\Entity\gen\cpp\trade.pb.h" />
     <ClInclude Include="BufferRunner.h" />
+    <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Configuration.h" />
@@ -131,6 +132,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClCompile Include="..\Entity\gen\cpp\trade.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ClientManager.cpp" />
     <ClCompile Include="Configuration.cpp" />

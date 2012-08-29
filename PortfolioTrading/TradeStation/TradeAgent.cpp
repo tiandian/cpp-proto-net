@@ -279,6 +279,8 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		ss << "FFEX time: " << pRspUserLogin->FFEXTime << endl;
 
 		logger.Info(ss.str());
+
+		ReqSettlementInfoConfirm();
 	}
 	else
 	{
@@ -399,7 +401,7 @@ void CTradeAgent::OnHeartBeatWarning( int nTimeLapse )
 
 int CTradeAgent::RequestIDIncrement()
 {
-	boost::mutex::scoped_lock lock(m_mutex);
+	boost::mutex::scoped_lock lock(m_mutReqIdInc);
 	return ++m_iRequestID;
 }
 
@@ -408,9 +410,9 @@ bool CTradeAgent::SubmitOrder( trade::InputOrder* pInputOrder )
 	CThostFtdcInputOrderField req;
 	memset(&req, 0, sizeof(req));
 	///经纪公司代码
-	strcpy_s(req.BrokerID, m_brokerID.c_str());
+	strcpy_s(req.BrokerID, pInputOrder->brokerid().c_str());
 	///投资者代码
-	strcpy_s(req.InvestorID, m_userID.c_str());
+	strcpy_s(req.InvestorID, pInputOrder->investorid().c_str());
 	///合约代码
 	strcpy_s(req.InstrumentID, pInputOrder->instrumentid().c_str());
 	///报单引用

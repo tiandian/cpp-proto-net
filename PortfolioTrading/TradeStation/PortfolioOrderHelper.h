@@ -13,10 +13,10 @@ public:
 	std::string brokerId;
 	std::string investorId;
 	trade::OrderPriceTypeType orderPriceType;
-	double limitPrice;
+	entity::LimitPriceType limitPriceType;
 	int quantity;
 };
 
-trade::MultiLegOrder* BuildOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx);
+trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx);
 
 int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders);

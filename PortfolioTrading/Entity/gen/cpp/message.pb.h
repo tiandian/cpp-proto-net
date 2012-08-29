@@ -306,6 +306,20 @@ class LegItem : public ::google::protobuf::Message {
   inline double last() const;
   inline void set_last(double value);
   
+  // required double Ask = 6;
+  inline bool has_ask() const;
+  inline void clear_ask();
+  static const int kAskFieldNumber = 6;
+  inline double ask() const;
+  inline void set_ask(double value);
+  
+  // required double Bid = 7;
+  inline bool has_bid() const;
+  inline void clear_bid();
+  static const int kBidFieldNumber = 7;
+  inline double bid() const;
+  inline void set_bid(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.LegItem)
  private:
   inline void set_has_symbol();
@@ -318,6 +332,10 @@ class LegItem : public ::google::protobuf::Message {
   inline void clear_has_status();
   inline void set_has_last();
   inline void clear_has_last();
+  inline void set_has_ask();
+  inline void clear_has_ask();
+  inline void set_has_bid();
+  inline void clear_has_bid();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -325,10 +343,12 @@ class LegItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 ratio_;
   int side_;
   double last_;
+  double ask_;
+  double bid_;
   int status_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -1212,6 +1232,50 @@ inline double LegItem::last() const {
 inline void LegItem::set_last(double value) {
   set_has_last();
   last_ = value;
+}
+
+// required double Ask = 6;
+inline bool LegItem::has_ask() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void LegItem::set_has_ask() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void LegItem::clear_has_ask() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void LegItem::clear_ask() {
+  ask_ = 0;
+  clear_has_ask();
+}
+inline double LegItem::ask() const {
+  return ask_;
+}
+inline void LegItem::set_ask(double value) {
+  set_has_ask();
+  ask_ = value;
+}
+
+// required double Bid = 7;
+inline bool LegItem::has_bid() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void LegItem::set_has_bid() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void LegItem::clear_has_bid() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void LegItem::clear_bid() {
+  bid_ = 0;
+  clear_has_bid();
+}
+inline double LegItem::bid() const {
+  return bid_;
+}
+inline void LegItem::set_bid(double value) {
+  set_has_bid();
+  bid_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -75,6 +75,25 @@ inline bool LegStatus_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<LegStatus>(
     LegStatus_descriptor(), name, value);
 }
+enum LimitPriceType {
+  Last = 0,
+  Opposite = 1
+};
+bool LimitPriceType_IsValid(int value);
+const LimitPriceType LimitPriceType_MIN = Last;
+const LimitPriceType LimitPriceType_MAX = Opposite;
+const int LimitPriceType_ARRAYSIZE = LimitPriceType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* LimitPriceType_descriptor();
+inline const ::std::string& LimitPriceType_Name(LimitPriceType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    LimitPriceType_descriptor(), value);
+}
+inline bool LimitPriceType_Parse(
+    const ::std::string& name, LimitPriceType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<LimitPriceType>(
+    LimitPriceType_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -99,6 +118,10 @@ inline const EnumDescriptor* GetEnumDescriptor< entity::PosiDirectionType>() {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::LegStatus>() {
   return entity::LegStatus_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< entity::LimitPriceType>() {
+  return entity::LimitPriceType_descriptor();
 }
 
 }  // namespace google

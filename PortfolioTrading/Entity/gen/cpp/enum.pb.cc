@@ -19,6 +19,7 @@ namespace {
 
 const ::google::protobuf::EnumDescriptor* PosiDirectionType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* LegStatus_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* LimitPriceType_descriptor_ = NULL;
 
 }  // namespace
 
@@ -31,6 +32,7 @@ void protobuf_AssignDesc_enum_2eproto() {
   GOOGLE_CHECK(file != NULL);
   PosiDirectionType_descriptor_ = file->enum_type(0);
   LegStatus_descriptor_ = file->enum_type(1);
+  LimitPriceType_descriptor_ = file->enum_type(2);
 }
 
 namespace {
@@ -60,7 +62,8 @@ void protobuf_AddDesc_enum_2eproto() {
     "\n\nenum.proto\022\006entity*1\n\021PosiDirectionTyp"
     "e\022\007\n\003NET\0201\022\010\n\004LONG\0202\022\t\n\005SHORT\0203*Q\n\tLegSt"
     "atus\022\014\n\010UNOPENED\020\000\022\016\n\nIS_OPENING\020\001\022\n\n\006OP"
-    "ENED\020\002\022\016\n\nIS_CLOSING\020\003\022\n\n\006CLOSED\020\004", 154);
+    "ENED\020\002\022\016\n\nIS_CLOSING\020\003\022\n\n\006CLOSED\020\004*(\n\016Li"
+    "mitPriceType\022\010\n\004Last\020\000\022\014\n\010Opposite\020\001", 196);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "enum.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_enum_2eproto);
@@ -99,6 +102,20 @@ bool LegStatus_IsValid(int value) {
     case 2:
     case 3:
     case 4:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* LimitPriceType_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return LimitPriceType_descriptor_;
+}
+bool LimitPriceType_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
       return true;
     default:
       return false;
