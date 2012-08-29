@@ -169,6 +169,7 @@ namespace PortfolioTrading.Infrastructure
         public event Action<Quote> OnQuoteReceived;
         public event Action<PortfolioItem> OnPortfolioItemUpdated;
         public event Action<MultiLegOrder> OnMultiLegOrderUpdated;
+        public event Action<Trade> OnTradeUpdated;
 
         protected override void DispatchCallback(string method, byte[] paramData)
         {
@@ -194,6 +195,14 @@ namespace PortfolioTrading.Infrastructure
                 {
                     MultiLegOrder mlOrder = DataTranslater.Deserialize<MultiLegOrder>(paramData);
                     OnMultiLegOrderUpdated(mlOrder);
+                }
+            }
+            else if (method == "TradePush")
+            {
+                if (OnTradeUpdated != null)
+                {
+                    Trade trade = DataTranslater.Deserialize<Trade>(paramData);
+                    OnTradeUpdated(trade);
                 }
             }
         }

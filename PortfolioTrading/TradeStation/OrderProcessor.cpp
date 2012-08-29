@@ -200,4 +200,9 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 	}
 }
 
+void COrderProcessor::OnRtnTrade( trade::Trade* pTrade )
+{
+	PublishTradeUpdate(pTrade);
+}
+
 

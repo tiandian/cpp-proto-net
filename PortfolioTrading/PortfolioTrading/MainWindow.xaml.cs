@@ -34,8 +34,15 @@ namespace PortfolioTrading
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
             _client.OnPortfolioItemUpdated += new Action<entity.PortfolioItem>(_client_OnPortfolioItemUpdated);
             _client.OnMultiLegOrderUpdated += new Action<trade.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
+            _client.OnTradeUpdated += new Action<trade.Trade>(_client_OnTradeUpdated);
 
             InitializeComponent();
+        }
+
+        void _client_OnTradeUpdated(trade.Trade obj)
+        {
+            string info = string.Format("trade: {0}\t{1}\t{2}", obj.InstrumentID, obj.Price, obj.TradeTime);
+            OutputMessage(info);
         }
 
         void _client_OnMultiLegOrderUpdated(trade.MultiLegOrder obj)
