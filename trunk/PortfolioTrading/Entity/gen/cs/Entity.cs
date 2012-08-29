@@ -85,6 +85,20 @@ namespace entity
       get { return _Last; }
       set { _Last = value; }
     }
+    private double _Ask;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"Ask", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double Ask
+    {
+      get { return _Ask; }
+      set { _Ask = value; }
+    }
+    private double _Bid;
+    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"Bid", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double Bid
+    {
+      get { return _Bid; }
+      set { _Bid = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

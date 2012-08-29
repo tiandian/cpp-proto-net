@@ -79,6 +79,12 @@ public:
 	double Last(){ return m_pInnerItem->last(); }
 	void UpdateLast(double last){ m_pInnerItem->set_last(last); }
 
+	double Ask(){ return m_pInnerItem->ask(); }
+	void UpdateAsk(double ask){ m_pInnerItem->set_ask(ask); }
+
+	double Bid(){ return m_pInnerItem->bid(); }
+	void UpdateBid(double bid){ m_pInnerItem->set_bid(bid); }
+
 	entity::LegStatus Status(){ return m_pInnerItem->status(); }
 	void UpdateStatus(entity::LegStatus status){ m_pInnerItem->set_status(status); }
 

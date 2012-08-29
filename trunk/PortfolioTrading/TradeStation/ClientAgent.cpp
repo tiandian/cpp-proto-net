@@ -9,9 +9,14 @@ CClientAgent::CClientAgent(void):
 m_clientConnected(false)
 {
 	m_quoteAggregator.Initialize(&m_quoteAgent);
+	
 	m_portfolioMgr.SetQuoteAggregator(&m_quoteAggregator);
 	m_portfolioMgr.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnPortfolioUpdated, this, _1));
+	
 	m_strategyMgr.SetQuoteAggregator(&m_quoteAggregator);
+	
+	m_orderProcessor.Initialize(&m_tradeAgent);
+	m_orderProcessor.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnMultiLegOrderUpdated, this, _1));
 }
 
 CClientAgent::~CClientAgent(void)
@@ -38,6 +43,8 @@ boost::tuple<bool, string> CClientAgent::TradeConnect( const std::string& addres
 
 boost::tuple<bool, string> CClientAgent::TradeLogin( const string& brokerId, const string& userId, const string& password )
 {
+	m_brokerId = brokerId;
+	m_userId = userId;
 	return m_tradeAgent.Login(brokerId, userId, password);
 }
 
@@ -106,8 +113,13 @@ void CClientAgent::PortfolioOpenPosition( const string& pid, int quantity )
 	// build order
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	PlaceOrderContext placeOrderCtx;
+	placeOrderCtx.quantity = quantity;
+	placeOrderCtx.brokerId = m_brokerId;
+	placeOrderCtx.investorId = m_userId;
+	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
+	placeOrderCtx.limitPriceType = entity::Opposite;
 	
-	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOrder(portf, &placeOrderCtx));
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, &placeOrderCtx));
 	// send to order processor
 	m_orderProcessor.OpenOrder(multilegOrder);
 }
@@ -117,7 +129,7 @@ void CClientAgent::PortfolioClosePosition( const string& pid, int quantity )
 	// build order
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	PlaceOrderContext placeOrderCtx;
-	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOrder(portf, &placeOrderCtx));
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, &placeOrderCtx));
 	// send to order processor
 	m_orderProcessor.OpenOrder(multilegOrder);
 }
@@ -126,7 +138,18 @@ void CClientAgent::OnPortfolioUpdated(entity::PortfolioItem* portfolioItem)
 {
 	std::string callbackData;
 	portfolioItem->SerializeToString(&callbackData);
-	m_pSession->BeginCallback("PortfolioPush", callbackData);
+	if(m_pSession != NULL)
+		m_pSession->BeginCallback("PortfolioPush", callbackData);
 }
+
+void CClientAgent::OnMultiLegOrderUpdated( trade::MultiLegOrder* order )
+{
+	std::string callbackData;
+	order->SerializeToString(&callbackData);
+	if(m_pSession != NULL)
+		m_pSession->BeginCallback("MultiLegOrderPush", callbackData);
+}
+
+
 
 

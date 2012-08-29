@@ -487,41 +487,41 @@ void protobuf_AddDesc_trade_2eproto() {
     "\022\026\n\016UserForceClose\030\026 \002(\010\"\263\013\n\005Order\022\020\n\010Br"
     "okerID\030\001 \002(\t\022\022\n\nInvestorID\030\002 \002(\t\022\024\n\014Inst"
     "rumentID\030\003 \002(\t\022\020\n\010OrderRef\030\004 \002(\t\022\016\n\006User"
-    "ID\030\005 \002(\t\0221\n\016OrderPriceType\030\006 \002(\0162\031.trade"
+    "ID\030\005 \001(\t\0221\n\016OrderPriceType\030\006 \002(\0162\031.trade"
     ".OrderPriceTypeType\022,\n\tDirection\030\007 \002(\0162\031"
     ".trade.TradeDirectionType\022\026\n\016CombOffsetF"
     "lag\030\010 \002(\t\022\025\n\rCombHedgeFlag\030\t \002(\t\022\022\n\nLimi"
     "tPrice\030\n \002(\001\022\033\n\023VolumeTotalOriginal\030\013 \002("
     "\005\022/\n\rTimeCondition\030\014 \002(\0162\030.trade.TimeCon"
-    "ditionType\022\017\n\007GTDDate\030\r \002(\t\0223\n\017VolumeCon"
+    "ditionType\022\017\n\007GTDDate\030\r \001(\t\0223\n\017VolumeCon"
     "dition\030\016 \002(\0162\032.trade.VolumeConditionType"
     "\022\021\n\tMinVolume\030\017 \002(\005\022;\n\023ContingentConditi"
     "on\030\020 \002(\0162\036.trade.ContingentConditionType"
-    "\022\021\n\tStopPrice\030\021 \002(\001\0225\n\020ForceCloseReason\030"
+    "\022\021\n\tStopPrice\030\021 \001(\001\0225\n\020ForceCloseReason\030"
     "\022 \002(\0162\033.trade.ForceCloseReasonType\022\025\n\rIs"
-    "AutoSuspend\030\023 \002(\010\022\024\n\014BusinessUnit\030\024 \002(\t\022"
-    "\021\n\tRequestID\030\025 \002(\005\022\024\n\014OrderLocalID\030\026 \002(\t"
-    "\022\022\n\nExchangeID\030\027 \002(\t\022\025\n\rParticipantID\030\030 "
-    "\002(\t\022\020\n\010ClientID\030\031 \002(\t\022\026\n\016ExchangeInstID\030"
-    "\032 \002(\t\022\020\n\010TraderID\030\033 \002(\t\022\021\n\tInstallID\030\034 \002"
-    "(\005\0227\n\021OrderSubmitStatus\030\035 \002(\0162\034.trade.Or"
+    "AutoSuspend\030\023 \002(\010\022\024\n\014BusinessUnit\030\024 \001(\t\022"
+    "\021\n\tRequestID\030\025 \001(\005\022\024\n\014OrderLocalID\030\026 \001(\t"
+    "\022\022\n\nExchangeID\030\027 \001(\t\022\025\n\rParticipantID\030\030 "
+    "\001(\t\022\020\n\010ClientID\030\031 \001(\t\022\026\n\016ExchangeInstID\030"
+    "\032 \001(\t\022\020\n\010TraderID\030\033 \001(\t\022\021\n\tInstallID\030\034 \001"
+    "(\005\0227\n\021OrderSubmitStatus\030\035 \001(\0162\034.trade.Or"
     "derSubmitStatusType\022\026\n\016NotifySequence\030\036 "
-    "\002(\005\022\022\n\nTradingDay\030\037 \002(\t\022\024\n\014SettlementID\030"
-    "  \002(\005\022\022\n\nOrderSysID\030! \002(\t\022+\n\013OrderSource"
-    "\030\" \002(\0162\026.trade.OrderSourceType\022+\n\013OrderS"
-    "tatus\030# \002(\0162\026.trade.OrderStatusType\022\'\n\tO"
-    "rderType\030$ \002(\0162\024.trade.OrderTypeType\022\024\n\014"
-    "VolumeTraded\030% \002(\005\022\023\n\013VolumeTotal\030& \002(\005\022"
-    "\022\n\nInsertDate\030\' \002(\t\022\022\n\nInsertTime\030( \002(\t\022"
-    "\022\n\nActiveTime\030) \002(\t\022\023\n\013SuspendTime\030* \002(\t"
-    "\022\022\n\nUpdateTime\030+ \002(\t\022\022\n\nCancelTime\030, \002(\t"
-    "\022\026\n\016ActiveTraderID\030- \002(\t\022\026\n\016ClearingPart"
-    "ID\030. \002(\t\022\022\n\nSequenceNo\030/ \002(\005\022\017\n\007FrontID\030"
-    "0 \002(\005\022\021\n\tSessionID\0301 \002(\005\022\027\n\017UserProductI"
-    "nfo\0302 \002(\t\022\021\n\tStatusMsg\0303 \002(\t\022\026\n\016UserForc"
-    "eClose\0304 \002(\010\022\024\n\014ActiveUserID\0305 \002(\t\022\026\n\016Br"
-    "okerOrderSeq\0306 \002(\005\022\032\n\022RelativeOrderSysID"
-    "\0307 \002(\t\"\325\005\n\005Trade\022\020\n\010BrokerID\030\001 \002(\t\022\022\n\nIn"
+    "\001(\005\022\022\n\nTradingDay\030\037 \001(\t\022\024\n\014SettlementID\030"
+    "  \001(\005\022\022\n\nOrderSysID\030! \001(\t\022+\n\013OrderSource"
+    "\030\" \001(\0162\026.trade.OrderSourceType\022+\n\013OrderS"
+    "tatus\030# \001(\0162\026.trade.OrderStatusType\022\'\n\tO"
+    "rderType\030$ \001(\0162\024.trade.OrderTypeType\022\024\n\014"
+    "VolumeTraded\030% \001(\005\022\023\n\013VolumeTotal\030& \001(\005\022"
+    "\022\n\nInsertDate\030\' \001(\t\022\022\n\nInsertTime\030( \001(\t\022"
+    "\022\n\nActiveTime\030) \001(\t\022\023\n\013SuspendTime\030* \001(\t"
+    "\022\022\n\nUpdateTime\030+ \001(\t\022\022\n\nCancelTime\030, \001(\t"
+    "\022\026\n\016ActiveTraderID\030- \001(\t\022\026\n\016ClearingPart"
+    "ID\030. \001(\t\022\022\n\nSequenceNo\030/ \001(\005\022\017\n\007FrontID\030"
+    "0 \001(\005\022\021\n\tSessionID\0301 \001(\005\022\027\n\017UserProductI"
+    "nfo\0302 \001(\t\022\021\n\tStatusMsg\0303 \001(\t\022\026\n\016UserForc"
+    "eClose\0304 \001(\010\022\024\n\014ActiveUserID\0305 \001(\t\022\026\n\016Br"
+    "okerOrderSeq\0306 \001(\005\022\032\n\022RelativeOrderSysID"
+    "\0307 \001(\t\"\325\005\n\005Trade\022\020\n\010BrokerID\030\001 \002(\t\022\022\n\nIn"
     "vestorID\030\002 \002(\t\022\024\n\014InstrumentID\030\003 \002(\t\022\020\n\010"
     "OrderRef\030\004 \002(\t\022\016\n\006UserID\030\005 \002(\t\022\022\n\nExchan"
     "geID\030\006 \002(\t\022\017\n\007TradeID\030\007 \002(\t\022,\n\tDirection"
@@ -5930,7 +5930,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string UserID = 5;
+      // optional string UserID = 5;
       case 5: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6076,7 +6076,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string GTDDate = 13;
+      // optional string GTDDate = 13;
       case 13: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6151,7 +6151,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required double StopPrice = 17;
+      // optional double StopPrice = 17;
       case 17: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
@@ -6204,7 +6204,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string BusinessUnit = 20;
+      // optional string BusinessUnit = 20;
       case 20: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6221,7 +6221,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 RequestID = 21;
+      // optional int32 RequestID = 21;
       case 21: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6237,7 +6237,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string OrderLocalID = 22;
+      // optional string OrderLocalID = 22;
       case 22: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6254,7 +6254,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string ExchangeID = 23;
+      // optional string ExchangeID = 23;
       case 23: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6271,7 +6271,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string ParticipantID = 24;
+      // optional string ParticipantID = 24;
       case 24: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6288,7 +6288,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string ClientID = 25;
+      // optional string ClientID = 25;
       case 25: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6305,7 +6305,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string ExchangeInstID = 26;
+      // optional string ExchangeInstID = 26;
       case 26: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6322,7 +6322,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string TraderID = 27;
+      // optional string TraderID = 27;
       case 27: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6339,7 +6339,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 InstallID = 28;
+      // optional int32 InstallID = 28;
       case 28: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6355,7 +6355,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
+      // optional .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
       case 29: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6376,7 +6376,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 NotifySequence = 30;
+      // optional int32 NotifySequence = 30;
       case 30: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6392,7 +6392,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string TradingDay = 31;
+      // optional string TradingDay = 31;
       case 31: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6409,7 +6409,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 SettlementID = 32;
+      // optional int32 SettlementID = 32;
       case 32: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6425,7 +6425,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string OrderSysID = 33;
+      // optional string OrderSysID = 33;
       case 33: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6442,7 +6442,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required .trade.OrderSourceType OrderSource = 34;
+      // optional .trade.OrderSourceType OrderSource = 34;
       case 34: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6463,7 +6463,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required .trade.OrderStatusType OrderStatus = 35;
+      // optional .trade.OrderStatusType OrderStatus = 35;
       case 35: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6484,7 +6484,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required .trade.OrderTypeType OrderType = 36;
+      // optional .trade.OrderTypeType OrderType = 36;
       case 36: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6505,7 +6505,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 VolumeTraded = 37;
+      // optional int32 VolumeTraded = 37;
       case 37: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6521,7 +6521,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 VolumeTotal = 38;
+      // optional int32 VolumeTotal = 38;
       case 38: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6537,7 +6537,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string InsertDate = 39;
+      // optional string InsertDate = 39;
       case 39: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6554,7 +6554,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string InsertTime = 40;
+      // optional string InsertTime = 40;
       case 40: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6571,7 +6571,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string ActiveTime = 41;
+      // optional string ActiveTime = 41;
       case 41: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6588,7 +6588,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string SuspendTime = 42;
+      // optional string SuspendTime = 42;
       case 42: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6605,7 +6605,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string UpdateTime = 43;
+      // optional string UpdateTime = 43;
       case 43: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6622,7 +6622,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string CancelTime = 44;
+      // optional string CancelTime = 44;
       case 44: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6639,7 +6639,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string ActiveTraderID = 45;
+      // optional string ActiveTraderID = 45;
       case 45: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6656,7 +6656,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string ClearingPartID = 46;
+      // optional string ClearingPartID = 46;
       case 46: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6673,7 +6673,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 SequenceNo = 47;
+      // optional int32 SequenceNo = 47;
       case 47: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6689,7 +6689,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 FrontID = 48;
+      // optional int32 FrontID = 48;
       case 48: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6705,7 +6705,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 SessionID = 49;
+      // optional int32 SessionID = 49;
       case 49: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6721,7 +6721,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string UserProductInfo = 50;
+      // optional string UserProductInfo = 50;
       case 50: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6738,7 +6738,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string StatusMsg = 51;
+      // optional string StatusMsg = 51;
       case 51: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6755,7 +6755,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required bool UserForceClose = 52;
+      // optional bool UserForceClose = 52;
       case 52: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6771,7 +6771,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string ActiveUserID = 53;
+      // optional string ActiveUserID = 53;
       case 53: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6788,7 +6788,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 BrokerOrderSeq = 54;
+      // optional int32 BrokerOrderSeq = 54;
       case 54: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -6804,7 +6804,7 @@ bool Order::MergePartialFromCodedStream(
         break;
       }
       
-      // required string RelativeOrderSysID = 55;
+      // optional string RelativeOrderSysID = 55;
       case 55: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
@@ -6875,7 +6875,7 @@ void Order::SerializeWithCachedSizes(
       4, this->orderref(), output);
   }
   
-  // required string UserID = 5;
+  // optional string UserID = 5;
   if (has_userid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->userid().data(), this->userid().length(),
@@ -6930,7 +6930,7 @@ void Order::SerializeWithCachedSizes(
       12, this->timecondition(), output);
   }
   
-  // required string GTDDate = 13;
+  // optional string GTDDate = 13;
   if (has_gtddate()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->gtddate().data(), this->gtddate().length(),
@@ -6956,7 +6956,7 @@ void Order::SerializeWithCachedSizes(
       16, this->contingentcondition(), output);
   }
   
-  // required double StopPrice = 17;
+  // optional double StopPrice = 17;
   if (has_stopprice()) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(17, this->stopprice(), output);
   }
@@ -6972,7 +6972,7 @@ void Order::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(19, this->isautosuspend(), output);
   }
   
-  // required string BusinessUnit = 20;
+  // optional string BusinessUnit = 20;
   if (has_businessunit()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->businessunit().data(), this->businessunit().length(),
@@ -6981,12 +6981,12 @@ void Order::SerializeWithCachedSizes(
       20, this->businessunit(), output);
   }
   
-  // required int32 RequestID = 21;
+  // optional int32 RequestID = 21;
   if (has_requestid()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(21, this->requestid(), output);
   }
   
-  // required string OrderLocalID = 22;
+  // optional string OrderLocalID = 22;
   if (has_orderlocalid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->orderlocalid().data(), this->orderlocalid().length(),
@@ -6995,7 +6995,7 @@ void Order::SerializeWithCachedSizes(
       22, this->orderlocalid(), output);
   }
   
-  // required string ExchangeID = 23;
+  // optional string ExchangeID = 23;
   if (has_exchangeid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->exchangeid().data(), this->exchangeid().length(),
@@ -7004,7 +7004,7 @@ void Order::SerializeWithCachedSizes(
       23, this->exchangeid(), output);
   }
   
-  // required string ParticipantID = 24;
+  // optional string ParticipantID = 24;
   if (has_participantid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->participantid().data(), this->participantid().length(),
@@ -7013,7 +7013,7 @@ void Order::SerializeWithCachedSizes(
       24, this->participantid(), output);
   }
   
-  // required string ClientID = 25;
+  // optional string ClientID = 25;
   if (has_clientid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->clientid().data(), this->clientid().length(),
@@ -7022,7 +7022,7 @@ void Order::SerializeWithCachedSizes(
       25, this->clientid(), output);
   }
   
-  // required string ExchangeInstID = 26;
+  // optional string ExchangeInstID = 26;
   if (has_exchangeinstid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->exchangeinstid().data(), this->exchangeinstid().length(),
@@ -7031,7 +7031,7 @@ void Order::SerializeWithCachedSizes(
       26, this->exchangeinstid(), output);
   }
   
-  // required string TraderID = 27;
+  // optional string TraderID = 27;
   if (has_traderid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->traderid().data(), this->traderid().length(),
@@ -7040,23 +7040,23 @@ void Order::SerializeWithCachedSizes(
       27, this->traderid(), output);
   }
   
-  // required int32 InstallID = 28;
+  // optional int32 InstallID = 28;
   if (has_installid()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(28, this->installid(), output);
   }
   
-  // required .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
+  // optional .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
   if (has_ordersubmitstatus()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       29, this->ordersubmitstatus(), output);
   }
   
-  // required int32 NotifySequence = 30;
+  // optional int32 NotifySequence = 30;
   if (has_notifysequence()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(30, this->notifysequence(), output);
   }
   
-  // required string TradingDay = 31;
+  // optional string TradingDay = 31;
   if (has_tradingday()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->tradingday().data(), this->tradingday().length(),
@@ -7065,12 +7065,12 @@ void Order::SerializeWithCachedSizes(
       31, this->tradingday(), output);
   }
   
-  // required int32 SettlementID = 32;
+  // optional int32 SettlementID = 32;
   if (has_settlementid()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(32, this->settlementid(), output);
   }
   
-  // required string OrderSysID = 33;
+  // optional string OrderSysID = 33;
   if (has_ordersysid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->ordersysid().data(), this->ordersysid().length(),
@@ -7079,35 +7079,35 @@ void Order::SerializeWithCachedSizes(
       33, this->ordersysid(), output);
   }
   
-  // required .trade.OrderSourceType OrderSource = 34;
+  // optional .trade.OrderSourceType OrderSource = 34;
   if (has_ordersource()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       34, this->ordersource(), output);
   }
   
-  // required .trade.OrderStatusType OrderStatus = 35;
+  // optional .trade.OrderStatusType OrderStatus = 35;
   if (has_orderstatus()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       35, this->orderstatus(), output);
   }
   
-  // required .trade.OrderTypeType OrderType = 36;
+  // optional .trade.OrderTypeType OrderType = 36;
   if (has_ordertype()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
       36, this->ordertype(), output);
   }
   
-  // required int32 VolumeTraded = 37;
+  // optional int32 VolumeTraded = 37;
   if (has_volumetraded()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(37, this->volumetraded(), output);
   }
   
-  // required int32 VolumeTotal = 38;
+  // optional int32 VolumeTotal = 38;
   if (has_volumetotal()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(38, this->volumetotal(), output);
   }
   
-  // required string InsertDate = 39;
+  // optional string InsertDate = 39;
   if (has_insertdate()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->insertdate().data(), this->insertdate().length(),
@@ -7116,7 +7116,7 @@ void Order::SerializeWithCachedSizes(
       39, this->insertdate(), output);
   }
   
-  // required string InsertTime = 40;
+  // optional string InsertTime = 40;
   if (has_inserttime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->inserttime().data(), this->inserttime().length(),
@@ -7125,7 +7125,7 @@ void Order::SerializeWithCachedSizes(
       40, this->inserttime(), output);
   }
   
-  // required string ActiveTime = 41;
+  // optional string ActiveTime = 41;
   if (has_activetime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->activetime().data(), this->activetime().length(),
@@ -7134,7 +7134,7 @@ void Order::SerializeWithCachedSizes(
       41, this->activetime(), output);
   }
   
-  // required string SuspendTime = 42;
+  // optional string SuspendTime = 42;
   if (has_suspendtime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->suspendtime().data(), this->suspendtime().length(),
@@ -7143,7 +7143,7 @@ void Order::SerializeWithCachedSizes(
       42, this->suspendtime(), output);
   }
   
-  // required string UpdateTime = 43;
+  // optional string UpdateTime = 43;
   if (has_updatetime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->updatetime().data(), this->updatetime().length(),
@@ -7152,7 +7152,7 @@ void Order::SerializeWithCachedSizes(
       43, this->updatetime(), output);
   }
   
-  // required string CancelTime = 44;
+  // optional string CancelTime = 44;
   if (has_canceltime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->canceltime().data(), this->canceltime().length(),
@@ -7161,7 +7161,7 @@ void Order::SerializeWithCachedSizes(
       44, this->canceltime(), output);
   }
   
-  // required string ActiveTraderID = 45;
+  // optional string ActiveTraderID = 45;
   if (has_activetraderid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->activetraderid().data(), this->activetraderid().length(),
@@ -7170,7 +7170,7 @@ void Order::SerializeWithCachedSizes(
       45, this->activetraderid(), output);
   }
   
-  // required string ClearingPartID = 46;
+  // optional string ClearingPartID = 46;
   if (has_clearingpartid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->clearingpartid().data(), this->clearingpartid().length(),
@@ -7179,22 +7179,22 @@ void Order::SerializeWithCachedSizes(
       46, this->clearingpartid(), output);
   }
   
-  // required int32 SequenceNo = 47;
+  // optional int32 SequenceNo = 47;
   if (has_sequenceno()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(47, this->sequenceno(), output);
   }
   
-  // required int32 FrontID = 48;
+  // optional int32 FrontID = 48;
   if (has_frontid()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(48, this->frontid(), output);
   }
   
-  // required int32 SessionID = 49;
+  // optional int32 SessionID = 49;
   if (has_sessionid()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(49, this->sessionid(), output);
   }
   
-  // required string UserProductInfo = 50;
+  // optional string UserProductInfo = 50;
   if (has_userproductinfo()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->userproductinfo().data(), this->userproductinfo().length(),
@@ -7203,7 +7203,7 @@ void Order::SerializeWithCachedSizes(
       50, this->userproductinfo(), output);
   }
   
-  // required string StatusMsg = 51;
+  // optional string StatusMsg = 51;
   if (has_statusmsg()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->statusmsg().data(), this->statusmsg().length(),
@@ -7212,12 +7212,12 @@ void Order::SerializeWithCachedSizes(
       51, this->statusmsg(), output);
   }
   
-  // required bool UserForceClose = 52;
+  // optional bool UserForceClose = 52;
   if (has_userforceclose()) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(52, this->userforceclose(), output);
   }
   
-  // required string ActiveUserID = 53;
+  // optional string ActiveUserID = 53;
   if (has_activeuserid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->activeuserid().data(), this->activeuserid().length(),
@@ -7226,12 +7226,12 @@ void Order::SerializeWithCachedSizes(
       53, this->activeuserid(), output);
   }
   
-  // required int32 BrokerOrderSeq = 54;
+  // optional int32 BrokerOrderSeq = 54;
   if (has_brokerorderseq()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(54, this->brokerorderseq(), output);
   }
   
-  // required string RelativeOrderSysID = 55;
+  // optional string RelativeOrderSysID = 55;
   if (has_relativeordersysid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->relativeordersysid().data(), this->relativeordersysid().length(),
@@ -7288,7 +7288,7 @@ void Order::SerializeWithCachedSizes(
         4, this->orderref(), target);
   }
   
-  // required string UserID = 5;
+  // optional string UserID = 5;
   if (has_userid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->userid().data(), this->userid().length(),
@@ -7346,7 +7346,7 @@ void Order::SerializeWithCachedSizes(
       12, this->timecondition(), target);
   }
   
-  // required string GTDDate = 13;
+  // optional string GTDDate = 13;
   if (has_gtddate()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->gtddate().data(), this->gtddate().length(),
@@ -7373,7 +7373,7 @@ void Order::SerializeWithCachedSizes(
       16, this->contingentcondition(), target);
   }
   
-  // required double StopPrice = 17;
+  // optional double StopPrice = 17;
   if (has_stopprice()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(17, this->stopprice(), target);
   }
@@ -7389,7 +7389,7 @@ void Order::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(19, this->isautosuspend(), target);
   }
   
-  // required string BusinessUnit = 20;
+  // optional string BusinessUnit = 20;
   if (has_businessunit()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->businessunit().data(), this->businessunit().length(),
@@ -7399,12 +7399,12 @@ void Order::SerializeWithCachedSizes(
         20, this->businessunit(), target);
   }
   
-  // required int32 RequestID = 21;
+  // optional int32 RequestID = 21;
   if (has_requestid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(21, this->requestid(), target);
   }
   
-  // required string OrderLocalID = 22;
+  // optional string OrderLocalID = 22;
   if (has_orderlocalid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->orderlocalid().data(), this->orderlocalid().length(),
@@ -7414,7 +7414,7 @@ void Order::SerializeWithCachedSizes(
         22, this->orderlocalid(), target);
   }
   
-  // required string ExchangeID = 23;
+  // optional string ExchangeID = 23;
   if (has_exchangeid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->exchangeid().data(), this->exchangeid().length(),
@@ -7424,7 +7424,7 @@ void Order::SerializeWithCachedSizes(
         23, this->exchangeid(), target);
   }
   
-  // required string ParticipantID = 24;
+  // optional string ParticipantID = 24;
   if (has_participantid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->participantid().data(), this->participantid().length(),
@@ -7434,7 +7434,7 @@ void Order::SerializeWithCachedSizes(
         24, this->participantid(), target);
   }
   
-  // required string ClientID = 25;
+  // optional string ClientID = 25;
   if (has_clientid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->clientid().data(), this->clientid().length(),
@@ -7444,7 +7444,7 @@ void Order::SerializeWithCachedSizes(
         25, this->clientid(), target);
   }
   
-  // required string ExchangeInstID = 26;
+  // optional string ExchangeInstID = 26;
   if (has_exchangeinstid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->exchangeinstid().data(), this->exchangeinstid().length(),
@@ -7454,7 +7454,7 @@ void Order::SerializeWithCachedSizes(
         26, this->exchangeinstid(), target);
   }
   
-  // required string TraderID = 27;
+  // optional string TraderID = 27;
   if (has_traderid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->traderid().data(), this->traderid().length(),
@@ -7464,23 +7464,23 @@ void Order::SerializeWithCachedSizes(
         27, this->traderid(), target);
   }
   
-  // required int32 InstallID = 28;
+  // optional int32 InstallID = 28;
   if (has_installid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(28, this->installid(), target);
   }
   
-  // required .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
+  // optional .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
   if (has_ordersubmitstatus()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       29, this->ordersubmitstatus(), target);
   }
   
-  // required int32 NotifySequence = 30;
+  // optional int32 NotifySequence = 30;
   if (has_notifysequence()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(30, this->notifysequence(), target);
   }
   
-  // required string TradingDay = 31;
+  // optional string TradingDay = 31;
   if (has_tradingday()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->tradingday().data(), this->tradingday().length(),
@@ -7490,12 +7490,12 @@ void Order::SerializeWithCachedSizes(
         31, this->tradingday(), target);
   }
   
-  // required int32 SettlementID = 32;
+  // optional int32 SettlementID = 32;
   if (has_settlementid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(32, this->settlementid(), target);
   }
   
-  // required string OrderSysID = 33;
+  // optional string OrderSysID = 33;
   if (has_ordersysid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->ordersysid().data(), this->ordersysid().length(),
@@ -7505,35 +7505,35 @@ void Order::SerializeWithCachedSizes(
         33, this->ordersysid(), target);
   }
   
-  // required .trade.OrderSourceType OrderSource = 34;
+  // optional .trade.OrderSourceType OrderSource = 34;
   if (has_ordersource()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       34, this->ordersource(), target);
   }
   
-  // required .trade.OrderStatusType OrderStatus = 35;
+  // optional .trade.OrderStatusType OrderStatus = 35;
   if (has_orderstatus()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       35, this->orderstatus(), target);
   }
   
-  // required .trade.OrderTypeType OrderType = 36;
+  // optional .trade.OrderTypeType OrderType = 36;
   if (has_ordertype()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       36, this->ordertype(), target);
   }
   
-  // required int32 VolumeTraded = 37;
+  // optional int32 VolumeTraded = 37;
   if (has_volumetraded()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(37, this->volumetraded(), target);
   }
   
-  // required int32 VolumeTotal = 38;
+  // optional int32 VolumeTotal = 38;
   if (has_volumetotal()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(38, this->volumetotal(), target);
   }
   
-  // required string InsertDate = 39;
+  // optional string InsertDate = 39;
   if (has_insertdate()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->insertdate().data(), this->insertdate().length(),
@@ -7543,7 +7543,7 @@ void Order::SerializeWithCachedSizes(
         39, this->insertdate(), target);
   }
   
-  // required string InsertTime = 40;
+  // optional string InsertTime = 40;
   if (has_inserttime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->inserttime().data(), this->inserttime().length(),
@@ -7553,7 +7553,7 @@ void Order::SerializeWithCachedSizes(
         40, this->inserttime(), target);
   }
   
-  // required string ActiveTime = 41;
+  // optional string ActiveTime = 41;
   if (has_activetime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->activetime().data(), this->activetime().length(),
@@ -7563,7 +7563,7 @@ void Order::SerializeWithCachedSizes(
         41, this->activetime(), target);
   }
   
-  // required string SuspendTime = 42;
+  // optional string SuspendTime = 42;
   if (has_suspendtime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->suspendtime().data(), this->suspendtime().length(),
@@ -7573,7 +7573,7 @@ void Order::SerializeWithCachedSizes(
         42, this->suspendtime(), target);
   }
   
-  // required string UpdateTime = 43;
+  // optional string UpdateTime = 43;
   if (has_updatetime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->updatetime().data(), this->updatetime().length(),
@@ -7583,7 +7583,7 @@ void Order::SerializeWithCachedSizes(
         43, this->updatetime(), target);
   }
   
-  // required string CancelTime = 44;
+  // optional string CancelTime = 44;
   if (has_canceltime()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->canceltime().data(), this->canceltime().length(),
@@ -7593,7 +7593,7 @@ void Order::SerializeWithCachedSizes(
         44, this->canceltime(), target);
   }
   
-  // required string ActiveTraderID = 45;
+  // optional string ActiveTraderID = 45;
   if (has_activetraderid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->activetraderid().data(), this->activetraderid().length(),
@@ -7603,7 +7603,7 @@ void Order::SerializeWithCachedSizes(
         45, this->activetraderid(), target);
   }
   
-  // required string ClearingPartID = 46;
+  // optional string ClearingPartID = 46;
   if (has_clearingpartid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->clearingpartid().data(), this->clearingpartid().length(),
@@ -7613,22 +7613,22 @@ void Order::SerializeWithCachedSizes(
         46, this->clearingpartid(), target);
   }
   
-  // required int32 SequenceNo = 47;
+  // optional int32 SequenceNo = 47;
   if (has_sequenceno()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(47, this->sequenceno(), target);
   }
   
-  // required int32 FrontID = 48;
+  // optional int32 FrontID = 48;
   if (has_frontid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(48, this->frontid(), target);
   }
   
-  // required int32 SessionID = 49;
+  // optional int32 SessionID = 49;
   if (has_sessionid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(49, this->sessionid(), target);
   }
   
-  // required string UserProductInfo = 50;
+  // optional string UserProductInfo = 50;
   if (has_userproductinfo()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->userproductinfo().data(), this->userproductinfo().length(),
@@ -7638,7 +7638,7 @@ void Order::SerializeWithCachedSizes(
         50, this->userproductinfo(), target);
   }
   
-  // required string StatusMsg = 51;
+  // optional string StatusMsg = 51;
   if (has_statusmsg()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->statusmsg().data(), this->statusmsg().length(),
@@ -7648,12 +7648,12 @@ void Order::SerializeWithCachedSizes(
         51, this->statusmsg(), target);
   }
   
-  // required bool UserForceClose = 52;
+  // optional bool UserForceClose = 52;
   if (has_userforceclose()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(52, this->userforceclose(), target);
   }
   
-  // required string ActiveUserID = 53;
+  // optional string ActiveUserID = 53;
   if (has_activeuserid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->activeuserid().data(), this->activeuserid().length(),
@@ -7663,12 +7663,12 @@ void Order::SerializeWithCachedSizes(
         53, this->activeuserid(), target);
   }
   
-  // required int32 BrokerOrderSeq = 54;
+  // optional int32 BrokerOrderSeq = 54;
   if (has_brokerorderseq()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(54, this->brokerorderseq(), target);
   }
   
-  // required string RelativeOrderSysID = 55;
+  // optional string RelativeOrderSysID = 55;
   if (has_relativeordersysid()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->relativeordersysid().data(), this->relativeordersysid().length(),
@@ -7717,7 +7717,7 @@ int Order::ByteSize() const {
           this->orderref());
     }
     
-    // required string UserID = 5;
+    // optional string UserID = 5;
     if (has_userid()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -7770,7 +7770,7 @@ int Order::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->timecondition());
     }
     
-    // required string GTDDate = 13;
+    // optional string GTDDate = 13;
     if (has_gtddate()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -7798,7 +7798,7 @@ int Order::ByteSize() const {
     
   }
   if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
-    // required double StopPrice = 17;
+    // optional double StopPrice = 17;
     if (has_stopprice()) {
       total_size += 2 + 8;
     }
@@ -7814,35 +7814,35 @@ int Order::ByteSize() const {
       total_size += 2 + 1;
     }
     
-    // required string BusinessUnit = 20;
+    // optional string BusinessUnit = 20;
     if (has_businessunit()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->businessunit());
     }
     
-    // required int32 RequestID = 21;
+    // optional int32 RequestID = 21;
     if (has_requestid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->requestid());
     }
     
-    // required string OrderLocalID = 22;
+    // optional string OrderLocalID = 22;
     if (has_orderlocalid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->orderlocalid());
     }
     
-    // required string ExchangeID = 23;
+    // optional string ExchangeID = 23;
     if (has_exchangeid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->exchangeid());
     }
     
-    // required string ParticipantID = 24;
+    // optional string ParticipantID = 24;
     if (has_participantid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -7851,55 +7851,55 @@ int Order::ByteSize() const {
     
   }
   if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
-    // required string ClientID = 25;
+    // optional string ClientID = 25;
     if (has_clientid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->clientid());
     }
     
-    // required string ExchangeInstID = 26;
+    // optional string ExchangeInstID = 26;
     if (has_exchangeinstid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->exchangeinstid());
     }
     
-    // required string TraderID = 27;
+    // optional string TraderID = 27;
     if (has_traderid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->traderid());
     }
     
-    // required int32 InstallID = 28;
+    // optional int32 InstallID = 28;
     if (has_installid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->installid());
     }
     
-    // required .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
+    // optional .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
     if (has_ordersubmitstatus()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->ordersubmitstatus());
     }
     
-    // required int32 NotifySequence = 30;
+    // optional int32 NotifySequence = 30;
     if (has_notifysequence()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->notifysequence());
     }
     
-    // required string TradingDay = 31;
+    // optional string TradingDay = 31;
     if (has_tradingday()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->tradingday());
     }
     
-    // required int32 SettlementID = 32;
+    // optional int32 SettlementID = 32;
     if (has_settlementid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -7908,53 +7908,53 @@ int Order::ByteSize() const {
     
   }
   if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
-    // required string OrderSysID = 33;
+    // optional string OrderSysID = 33;
     if (has_ordersysid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->ordersysid());
     }
     
-    // required .trade.OrderSourceType OrderSource = 34;
+    // optional .trade.OrderSourceType OrderSource = 34;
     if (has_ordersource()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->ordersource());
     }
     
-    // required .trade.OrderStatusType OrderStatus = 35;
+    // optional .trade.OrderStatusType OrderStatus = 35;
     if (has_orderstatus()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->orderstatus());
     }
     
-    // required .trade.OrderTypeType OrderType = 36;
+    // optional .trade.OrderTypeType OrderType = 36;
     if (has_ordertype()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->ordertype());
     }
     
-    // required int32 VolumeTraded = 37;
+    // optional int32 VolumeTraded = 37;
     if (has_volumetraded()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->volumetraded());
     }
     
-    // required int32 VolumeTotal = 38;
+    // optional int32 VolumeTotal = 38;
     if (has_volumetotal()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->volumetotal());
     }
     
-    // required string InsertDate = 39;
+    // optional string InsertDate = 39;
     if (has_insertdate()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->insertdate());
     }
     
-    // required string InsertTime = 40;
+    // optional string InsertTime = 40;
     if (has_inserttime()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -7963,56 +7963,56 @@ int Order::ByteSize() const {
     
   }
   if (_has_bits_[40 / 32] & (0xffu << (40 % 32))) {
-    // required string ActiveTime = 41;
+    // optional string ActiveTime = 41;
     if (has_activetime()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->activetime());
     }
     
-    // required string SuspendTime = 42;
+    // optional string SuspendTime = 42;
     if (has_suspendtime()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->suspendtime());
     }
     
-    // required string UpdateTime = 43;
+    // optional string UpdateTime = 43;
     if (has_updatetime()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->updatetime());
     }
     
-    // required string CancelTime = 44;
+    // optional string CancelTime = 44;
     if (has_canceltime()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->canceltime());
     }
     
-    // required string ActiveTraderID = 45;
+    // optional string ActiveTraderID = 45;
     if (has_activetraderid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->activetraderid());
     }
     
-    // required string ClearingPartID = 46;
+    // optional string ClearingPartID = 46;
     if (has_clearingpartid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->clearingpartid());
     }
     
-    // required int32 SequenceNo = 47;
+    // optional int32 SequenceNo = 47;
     if (has_sequenceno()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->sequenceno());
     }
     
-    // required int32 FrontID = 48;
+    // optional int32 FrontID = 48;
     if (has_frontid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
@@ -8021,47 +8021,47 @@ int Order::ByteSize() const {
     
   }
   if (_has_bits_[48 / 32] & (0xffu << (48 % 32))) {
-    // required int32 SessionID = 49;
+    // optional int32 SessionID = 49;
     if (has_sessionid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->sessionid());
     }
     
-    // required string UserProductInfo = 50;
+    // optional string UserProductInfo = 50;
     if (has_userproductinfo()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->userproductinfo());
     }
     
-    // required string StatusMsg = 51;
+    // optional string StatusMsg = 51;
     if (has_statusmsg()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->statusmsg());
     }
     
-    // required bool UserForceClose = 52;
+    // optional bool UserForceClose = 52;
     if (has_userforceclose()) {
       total_size += 2 + 1;
     }
     
-    // required string ActiveUserID = 53;
+    // optional string ActiveUserID = 53;
     if (has_activeuserid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->activeuserid());
     }
     
-    // required int32 BrokerOrderSeq = 54;
+    // optional int32 BrokerOrderSeq = 54;
     if (has_brokerorderseq()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->brokerorderseq());
     }
     
-    // required string RelativeOrderSysID = 55;
+    // optional string RelativeOrderSysID = 55;
     if (has_relativeordersysid()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -8289,8 +8289,7 @@ void Order::CopyFrom(const Order& from) {
 }
 
 bool Order::IsInitialized() const {
-  if ((_has_bits_[0] & 0xffffffff) != 0xffffffff) return false;
-  if ((_has_bits_[1] & 0x007fffff) != 0x007fffff) return false;
+  if ((_has_bits_[0] & 0x0006efef) != 0x0006efef) return false;
   
   return true;
 }

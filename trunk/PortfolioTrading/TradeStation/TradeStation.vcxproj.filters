@@ -117,6 +117,9 @@
     <ClInclude Include="PortfolioOrderHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="charsetconvert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -180,6 +183,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PortfolioOrderHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="charsetconvert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

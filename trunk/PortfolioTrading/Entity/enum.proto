@@ -15,3 +15,9 @@ enum LegStatus
 	IS_CLOSING = 3;
 	CLOSED = 4; 
 }
+
+enum LimitPriceType
+{
+	Last = 0;
+	Opposite = 1;
+}

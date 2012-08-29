@@ -58,6 +58,8 @@ void CPortfolio::SetItem( entity::PortfolioItem* pPortfItem )
 		nl->set_ratio(iter->ratio());
 		nl->set_side(iter->side());
 		nl->set_last(iter->last());
+		nl->set_ask(iter->ask());
+		nl->set_bid(iter->bid());
 		nl->set_status(iter->status());
 
 		AddLeg(nl);
@@ -72,6 +74,8 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 		if((*iter)->Symbol() == pQuote->symbol())
 		{
 			(*iter)->UpdateLast(pQuote->last());
+			(*iter)->UpdateAsk(pQuote->ask());
+			(*iter)->UpdateBid(pQuote->bid());
 			break;
 		}
 	}

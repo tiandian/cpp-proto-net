@@ -5,6 +5,7 @@ using System.Text;
 using APInvokeManaged;
 using entity;
 using System.Diagnostics;
+using trade;
 
 namespace PortfolioTrading.Infrastructure
 {
@@ -167,6 +168,7 @@ namespace PortfolioTrading.Infrastructure
 
         public event Action<Quote> OnQuoteReceived;
         public event Action<PortfolioItem> OnPortfolioItemUpdated;
+        public event Action<MultiLegOrder> OnMultiLegOrderUpdated;
 
         protected override void DispatchCallback(string method, byte[] paramData)
         {
@@ -178,12 +180,20 @@ namespace PortfolioTrading.Infrastructure
                     OnQuoteReceived(quoteData);
                 }
             }
-            if (method == "PortfolioPush")
+            else if (method == "PortfolioPush")
             {
                 if (OnPortfolioItemUpdated != null)
                 {
                     PortfolioItem porfItem = DataTranslater.Deserialize<PortfolioItem>(paramData);
                     OnPortfolioItemUpdated(porfItem);
+                }
+            }
+            else if (method == "MultiLegOrderPush")
+            {
+                if (OnMultiLegOrderUpdated != null)
+                {
+                    MultiLegOrder mlOrder = DataTranslater.Deserialize<MultiLegOrder>(paramData);
+                    OnMultiLegOrderUpdated(mlOrder);
                 }
             }
         }

@@ -717,8 +717,10 @@ namespace trade
       get { return _OrderRef; }
       set { _OrderRef = value; }
     }
-    private string _UserID;
-    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"UserID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _UserID = "";
+    [global::ProtoBuf.ProtoMember(5, IsRequired = false, Name=@"UserID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string UserID
     {
       get { return _UserID; }
@@ -773,8 +775,10 @@ namespace trade
       get { return _TimeCondition; }
       set { _TimeCondition = value; }
     }
-    private string _GTDDate;
-    [global::ProtoBuf.ProtoMember(13, IsRequired = true, Name=@"GTDDate", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _GTDDate = "";
+    [global::ProtoBuf.ProtoMember(13, IsRequired = false, Name=@"GTDDate", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string GTDDate
     {
       get { return _GTDDate; }
@@ -801,8 +805,10 @@ namespace trade
       get { return _ContingentCondition; }
       set { _ContingentCondition = value; }
     }
-    private double _StopPrice;
-    [global::ProtoBuf.ProtoMember(17, IsRequired = true, Name=@"StopPrice", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private double _StopPrice = default(double);
+    [global::ProtoBuf.ProtoMember(17, IsRequired = false, Name=@"StopPrice", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(double))]
     public double StopPrice
     {
       get { return _StopPrice; }
@@ -822,253 +828,325 @@ namespace trade
       get { return _IsAutoSuspend; }
       set { _IsAutoSuspend = value; }
     }
-    private string _BusinessUnit;
-    [global::ProtoBuf.ProtoMember(20, IsRequired = true, Name=@"BusinessUnit", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _BusinessUnit = "";
+    [global::ProtoBuf.ProtoMember(20, IsRequired = false, Name=@"BusinessUnit", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string BusinessUnit
     {
       get { return _BusinessUnit; }
       set { _BusinessUnit = value; }
     }
-    private int _RequestID;
-    [global::ProtoBuf.ProtoMember(21, IsRequired = true, Name=@"RequestID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _RequestID = default(int);
+    [global::ProtoBuf.ProtoMember(21, IsRequired = false, Name=@"RequestID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int RequestID
     {
       get { return _RequestID; }
       set { _RequestID = value; }
     }
-    private string _OrderLocalID;
-    [global::ProtoBuf.ProtoMember(22, IsRequired = true, Name=@"OrderLocalID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _OrderLocalID = "";
+    [global::ProtoBuf.ProtoMember(22, IsRequired = false, Name=@"OrderLocalID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string OrderLocalID
     {
       get { return _OrderLocalID; }
       set { _OrderLocalID = value; }
     }
-    private string _ExchangeID;
-    [global::ProtoBuf.ProtoMember(23, IsRequired = true, Name=@"ExchangeID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _ExchangeID = "";
+    [global::ProtoBuf.ProtoMember(23, IsRequired = false, Name=@"ExchangeID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string ExchangeID
     {
       get { return _ExchangeID; }
       set { _ExchangeID = value; }
     }
-    private string _ParticipantID;
-    [global::ProtoBuf.ProtoMember(24, IsRequired = true, Name=@"ParticipantID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _ParticipantID = "";
+    [global::ProtoBuf.ProtoMember(24, IsRequired = false, Name=@"ParticipantID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string ParticipantID
     {
       get { return _ParticipantID; }
       set { _ParticipantID = value; }
     }
-    private string _ClientID;
-    [global::ProtoBuf.ProtoMember(25, IsRequired = true, Name=@"ClientID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _ClientID = "";
+    [global::ProtoBuf.ProtoMember(25, IsRequired = false, Name=@"ClientID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string ClientID
     {
       get { return _ClientID; }
       set { _ClientID = value; }
     }
-    private string _ExchangeInstID;
-    [global::ProtoBuf.ProtoMember(26, IsRequired = true, Name=@"ExchangeInstID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _ExchangeInstID = "";
+    [global::ProtoBuf.ProtoMember(26, IsRequired = false, Name=@"ExchangeInstID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string ExchangeInstID
     {
       get { return _ExchangeInstID; }
       set { _ExchangeInstID = value; }
     }
-    private string _TraderID;
-    [global::ProtoBuf.ProtoMember(27, IsRequired = true, Name=@"TraderID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _TraderID = "";
+    [global::ProtoBuf.ProtoMember(27, IsRequired = false, Name=@"TraderID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string TraderID
     {
       get { return _TraderID; }
       set { _TraderID = value; }
     }
-    private int _InstallID;
-    [global::ProtoBuf.ProtoMember(28, IsRequired = true, Name=@"InstallID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _InstallID = default(int);
+    [global::ProtoBuf.ProtoMember(28, IsRequired = false, Name=@"InstallID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int InstallID
     {
       get { return _InstallID; }
       set { _InstallID = value; }
     }
-    private trade.OrderSubmitStatusType _OrderSubmitStatus;
-    [global::ProtoBuf.ProtoMember(29, IsRequired = true, Name=@"OrderSubmitStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private trade.OrderSubmitStatusType _OrderSubmitStatus = trade.OrderSubmitStatusType.INSERT_SUBMITTED;
+    [global::ProtoBuf.ProtoMember(29, IsRequired = false, Name=@"OrderSubmitStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(trade.OrderSubmitStatusType.INSERT_SUBMITTED)]
     public trade.OrderSubmitStatusType OrderSubmitStatus
     {
       get { return _OrderSubmitStatus; }
       set { _OrderSubmitStatus = value; }
     }
-    private int _NotifySequence;
-    [global::ProtoBuf.ProtoMember(30, IsRequired = true, Name=@"NotifySequence", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _NotifySequence = default(int);
+    [global::ProtoBuf.ProtoMember(30, IsRequired = false, Name=@"NotifySequence", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int NotifySequence
     {
       get { return _NotifySequence; }
       set { _NotifySequence = value; }
     }
-    private string _TradingDay;
-    [global::ProtoBuf.ProtoMember(31, IsRequired = true, Name=@"TradingDay", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _TradingDay = "";
+    [global::ProtoBuf.ProtoMember(31, IsRequired = false, Name=@"TradingDay", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string TradingDay
     {
       get { return _TradingDay; }
       set { _TradingDay = value; }
     }
-    private int _SettlementID;
-    [global::ProtoBuf.ProtoMember(32, IsRequired = true, Name=@"SettlementID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _SettlementID = default(int);
+    [global::ProtoBuf.ProtoMember(32, IsRequired = false, Name=@"SettlementID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int SettlementID
     {
       get { return _SettlementID; }
       set { _SettlementID = value; }
     }
-    private string _OrderSysID;
-    [global::ProtoBuf.ProtoMember(33, IsRequired = true, Name=@"OrderSysID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _OrderSysID = "";
+    [global::ProtoBuf.ProtoMember(33, IsRequired = false, Name=@"OrderSysID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string OrderSysID
     {
       get { return _OrderSysID; }
       set { _OrderSysID = value; }
     }
-    private trade.OrderSourceType _OrderSource;
-    [global::ProtoBuf.ProtoMember(34, IsRequired = true, Name=@"OrderSource", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private trade.OrderSourceType _OrderSource = trade.OrderSourceType.PARTICIPANT;
+    [global::ProtoBuf.ProtoMember(34, IsRequired = false, Name=@"OrderSource", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(trade.OrderSourceType.PARTICIPANT)]
     public trade.OrderSourceType OrderSource
     {
       get { return _OrderSource; }
       set { _OrderSource = value; }
     }
-    private trade.OrderStatusType _OrderStatus;
-    [global::ProtoBuf.ProtoMember(35, IsRequired = true, Name=@"OrderStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private trade.OrderStatusType _OrderStatus = trade.OrderStatusType.ALL_TRADED;
+    [global::ProtoBuf.ProtoMember(35, IsRequired = false, Name=@"OrderStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(trade.OrderStatusType.ALL_TRADED)]
     public trade.OrderStatusType OrderStatus
     {
       get { return _OrderStatus; }
       set { _OrderStatus = value; }
     }
-    private trade.OrderTypeType _OrderType;
-    [global::ProtoBuf.ProtoMember(36, IsRequired = true, Name=@"OrderType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private trade.OrderTypeType _OrderType = trade.OrderTypeType.NORMAL_ORDER;
+    [global::ProtoBuf.ProtoMember(36, IsRequired = false, Name=@"OrderType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(trade.OrderTypeType.NORMAL_ORDER)]
     public trade.OrderTypeType OrderType
     {
       get { return _OrderType; }
       set { _OrderType = value; }
     }
-    private int _VolumeTraded;
-    [global::ProtoBuf.ProtoMember(37, IsRequired = true, Name=@"VolumeTraded", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _VolumeTraded = default(int);
+    [global::ProtoBuf.ProtoMember(37, IsRequired = false, Name=@"VolumeTraded", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int VolumeTraded
     {
       get { return _VolumeTraded; }
       set { _VolumeTraded = value; }
     }
-    private int _VolumeTotal;
-    [global::ProtoBuf.ProtoMember(38, IsRequired = true, Name=@"VolumeTotal", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _VolumeTotal = default(int);
+    [global::ProtoBuf.ProtoMember(38, IsRequired = false, Name=@"VolumeTotal", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int VolumeTotal
     {
       get { return _VolumeTotal; }
       set { _VolumeTotal = value; }
     }
-    private string _InsertDate;
-    [global::ProtoBuf.ProtoMember(39, IsRequired = true, Name=@"InsertDate", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _InsertDate = "";
+    [global::ProtoBuf.ProtoMember(39, IsRequired = false, Name=@"InsertDate", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string InsertDate
     {
       get { return _InsertDate; }
       set { _InsertDate = value; }
     }
-    private string _InsertTime;
-    [global::ProtoBuf.ProtoMember(40, IsRequired = true, Name=@"InsertTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _InsertTime = "";
+    [global::ProtoBuf.ProtoMember(40, IsRequired = false, Name=@"InsertTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string InsertTime
     {
       get { return _InsertTime; }
       set { _InsertTime = value; }
     }
-    private string _ActiveTime;
-    [global::ProtoBuf.ProtoMember(41, IsRequired = true, Name=@"ActiveTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _ActiveTime = "";
+    [global::ProtoBuf.ProtoMember(41, IsRequired = false, Name=@"ActiveTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string ActiveTime
     {
       get { return _ActiveTime; }
       set { _ActiveTime = value; }
     }
-    private string _SuspendTime;
-    [global::ProtoBuf.ProtoMember(42, IsRequired = true, Name=@"SuspendTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _SuspendTime = "";
+    [global::ProtoBuf.ProtoMember(42, IsRequired = false, Name=@"SuspendTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string SuspendTime
     {
       get { return _SuspendTime; }
       set { _SuspendTime = value; }
     }
-    private string _UpdateTime;
-    [global::ProtoBuf.ProtoMember(43, IsRequired = true, Name=@"UpdateTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _UpdateTime = "";
+    [global::ProtoBuf.ProtoMember(43, IsRequired = false, Name=@"UpdateTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string UpdateTime
     {
       get { return _UpdateTime; }
       set { _UpdateTime = value; }
     }
-    private string _CancelTime;
-    [global::ProtoBuf.ProtoMember(44, IsRequired = true, Name=@"CancelTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _CancelTime = "";
+    [global::ProtoBuf.ProtoMember(44, IsRequired = false, Name=@"CancelTime", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string CancelTime
     {
       get { return _CancelTime; }
       set { _CancelTime = value; }
     }
-    private string _ActiveTraderID;
-    [global::ProtoBuf.ProtoMember(45, IsRequired = true, Name=@"ActiveTraderID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _ActiveTraderID = "";
+    [global::ProtoBuf.ProtoMember(45, IsRequired = false, Name=@"ActiveTraderID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string ActiveTraderID
     {
       get { return _ActiveTraderID; }
       set { _ActiveTraderID = value; }
     }
-    private string _ClearingPartID;
-    [global::ProtoBuf.ProtoMember(46, IsRequired = true, Name=@"ClearingPartID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _ClearingPartID = "";
+    [global::ProtoBuf.ProtoMember(46, IsRequired = false, Name=@"ClearingPartID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string ClearingPartID
     {
       get { return _ClearingPartID; }
       set { _ClearingPartID = value; }
     }
-    private int _SequenceNo;
-    [global::ProtoBuf.ProtoMember(47, IsRequired = true, Name=@"SequenceNo", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _SequenceNo = default(int);
+    [global::ProtoBuf.ProtoMember(47, IsRequired = false, Name=@"SequenceNo", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int SequenceNo
     {
       get { return _SequenceNo; }
       set { _SequenceNo = value; }
     }
-    private int _FrontID;
-    [global::ProtoBuf.ProtoMember(48, IsRequired = true, Name=@"FrontID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _FrontID = default(int);
+    [global::ProtoBuf.ProtoMember(48, IsRequired = false, Name=@"FrontID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int FrontID
     {
       get { return _FrontID; }
       set { _FrontID = value; }
     }
-    private int _SessionID;
-    [global::ProtoBuf.ProtoMember(49, IsRequired = true, Name=@"SessionID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _SessionID = default(int);
+    [global::ProtoBuf.ProtoMember(49, IsRequired = false, Name=@"SessionID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int SessionID
     {
       get { return _SessionID; }
       set { _SessionID = value; }
     }
-    private string _UserProductInfo;
-    [global::ProtoBuf.ProtoMember(50, IsRequired = true, Name=@"UserProductInfo", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _UserProductInfo = "";
+    [global::ProtoBuf.ProtoMember(50, IsRequired = false, Name=@"UserProductInfo", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string UserProductInfo
     {
       get { return _UserProductInfo; }
       set { _UserProductInfo = value; }
     }
-    private string _StatusMsg;
-    [global::ProtoBuf.ProtoMember(51, IsRequired = true, Name=@"StatusMsg", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _StatusMsg = "";
+    [global::ProtoBuf.ProtoMember(51, IsRequired = false, Name=@"StatusMsg", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string StatusMsg
     {
       get { return _StatusMsg; }
       set { _StatusMsg = value; }
     }
-    private bool _UserForceClose;
-    [global::ProtoBuf.ProtoMember(52, IsRequired = true, Name=@"UserForceClose", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private bool _UserForceClose = default(bool);
+    [global::ProtoBuf.ProtoMember(52, IsRequired = false, Name=@"UserForceClose", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
     public bool UserForceClose
     {
       get { return _UserForceClose; }
       set { _UserForceClose = value; }
     }
-    private string _ActiveUserID;
-    [global::ProtoBuf.ProtoMember(53, IsRequired = true, Name=@"ActiveUserID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _ActiveUserID = "";
+    [global::ProtoBuf.ProtoMember(53, IsRequired = false, Name=@"ActiveUserID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string ActiveUserID
     {
       get { return _ActiveUserID; }
       set { _ActiveUserID = value; }
     }
-    private int _BrokerOrderSeq;
-    [global::ProtoBuf.ProtoMember(54, IsRequired = true, Name=@"BrokerOrderSeq", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+
+    private int _BrokerOrderSeq = default(int);
+    [global::ProtoBuf.ProtoMember(54, IsRequired = false, Name=@"BrokerOrderSeq", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(int))]
     public int BrokerOrderSeq
     {
       get { return _BrokerOrderSeq; }
       set { _BrokerOrderSeq = value; }
     }
-    private string _RelativeOrderSysID;
-    [global::ProtoBuf.ProtoMember(55, IsRequired = true, Name=@"RelativeOrderSysID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+
+    private string _RelativeOrderSysID = "";
+    [global::ProtoBuf.ProtoMember(55, IsRequired = false, Name=@"RelativeOrderSysID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
     public string RelativeOrderSysID
     {
       get { return _RelativeOrderSysID; }

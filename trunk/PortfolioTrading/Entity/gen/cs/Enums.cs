@@ -44,4 +44,15 @@ namespace entity
       CLOSED = 4
     }
   
+    [global::ProtoBuf.ProtoContract(Name=@"LimitPriceType")]
+    public enum LimitPriceType
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"Last", Value=0)]
+      Last = 0,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"Opposite", Value=1)]
+      Opposite = 1
+    }
+  
 }

@@ -7,10 +7,13 @@
 #include <string>
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <boost/function.hpp>
+#include <boost/thread.hpp>
 
 using namespace std;
 
 typedef boost::shared_ptr<trade::MultiLegOrder> MultiLegOrderPtr;
+typedef boost::function<void(trade::MultiLegOrder*)> PushMultiLegOrderFunc;
 
 class COrderProcessor : public CTradeAgentCallback
 {
@@ -31,13 +34,13 @@ public:
 	virtual void OnRspUserLogin(bool succ, std::string& msg, int initOrderRefID);
 
 	///报单录入请求响应
-	virtual void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg){}
+	virtual void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg);
 
 	///报单操作请求响应
 	virtual void OnRspOrderAction(bool succ, const std::string& orderRef, const std::string& msg){}
 
 	///报单通知
-	virtual void OnRtnOrder(trade::Order* order){}
+	virtual void OnRtnOrder(trade::Order* order);
 
 	///成交通知
 	virtual void OnRtnTrade(trade::Trade* pTrade){}
@@ -56,11 +59,33 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////
 
-private:
-	map<string, MultiLegOrderPtr> m_pendingMultiLegOrders;
+	void PublishMultiLegOrderUpdate(trade::MultiLegOrder* pOrder)
+	{
+		if(!m_pushMultiOrdFunc.empty())
+		{
+			m_pushMultiOrdFunc(pOrder);
+		}
+	}
+	void SetPushPortfolioFunc(PushMultiLegOrderFunc funcPushMLOrder)
+	{
+		m_pushMultiOrdFunc = funcPushMLOrder;
+	}
 
-	map<int, string> m_pendingTicketOrderMap;
+private:
+	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
+	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
+
+	map<string, MultiLegOrderPtr> m_pendingMultiLegOrders;
+	typedef map<string, MultiLegOrderPtr>::iterator MultiLegOrderIter;
+	map<string /* orderRef */, string /* mlOrderId */> m_pendingTicketOrderMap;
+	typedef map<string, string>::iterator PendingTktOrdMapIter;
+	boost::mutex m_mutTicketOrderMap;
 	 
 	CTradeAgent* m_pTradeAgent;
+
+	PushMultiLegOrderFunc m_pushMultiOrdFunc;
+
+	int m_maxOrderRef;
+	boost::mutex m_mutOrdRefIncr;
 };
 
