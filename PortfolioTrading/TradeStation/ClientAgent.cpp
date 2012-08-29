@@ -125,14 +125,9 @@ void CClientAgent::PortfolioOpenPosition( const string& pid, int quantity )
 	m_orderProcessor.OpenOrder(multilegOrder);
 }
 
-void CClientAgent::PortfolioClosePosition( const string& pid, int quantity )
+void CClientAgent::ClosePosition( const string& mlOrderId, const string& legOrdRef, string& msg)
 {
-	// build order
-	CPortfolio* portf = m_portfolioMgr.Get(pid);
-	PlaceOrderContext placeOrderCtx;
-	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, &placeOrderCtx));
-	// send to order processor
-	m_orderProcessor.OpenOrder(multilegOrder);
+	m_orderProcessor.CloseOrder(mlOrderId, legOrdRef, msg);
 }
 
 void CClientAgent::OnPortfolioUpdated(entity::PortfolioItem* portfolioItem)

@@ -32,7 +32,7 @@ public:
 	void Remove(const string& pid);
 	void RegQuote(vector<string>& symbols);
 	void PortfolioOpenPosition(const string& pid, int quantity);
-	void PortfolioClosePosition(const string& pid, int quantity);
+	void ClosePosition(const string& mlOrderId, const string& legOrdRef, string& msg);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);

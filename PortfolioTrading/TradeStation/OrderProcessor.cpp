@@ -59,9 +59,34 @@ void COrderProcessor::OpenOrder( MultiLegOrderPtr multilegOrder )
 	}
 }
 
-void COrderProcessor::CloseOrder( const string& orderId )
+void COrderProcessor::CloseOrder( const string& orderId, const string& legRef, string& msg )
 {
+	MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(orderId);
+	if(iterOrd != m_pendingMultiLegOrders.end())
+	{
+		const MultiLegOrderPtr& mlOrder = iterOrd->second;
 
+		if(legRef.empty())
+		{
+			boost::shared_ptr<trade::InputOrder> inputOrder = GetCloseInputOrder(mlOrder.get(), legRef);
+			m_pTradeAgent->SubmitOrder(inputOrder.get());
+		}
+		else
+		{
+			std::vector<boost::shared_ptr<trade::InputOrder>> vecInputOrders;
+			int ordCount = GetCloseInputOrders(mlOrder.get(), &vecInputOrders);
+
+			BOOST_FOREACH(const boost::shared_ptr<trade::InputOrder>& iOrd, vecInputOrders)
+			{
+				m_pTradeAgent->SubmitOrder(iOrd.get());
+
+			}
+		}
+	}
+	else
+	{
+		msg = boost::str(boost::format("Cannot find order ('%s')") % orderId.c_str());
+	}
 }
 
 void COrderProcessor::CancelOrder( const string& orderId )
