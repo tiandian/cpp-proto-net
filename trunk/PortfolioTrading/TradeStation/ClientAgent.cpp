@@ -17,6 +17,7 @@ m_clientConnected(false)
 	
 	m_orderProcessor.Initialize(&m_tradeAgent);
 	m_orderProcessor.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnMultiLegOrderUpdated, this, _1));
+	m_orderProcessor.SetPushTradeFunc(boost::bind(&CClientAgent::OnTradeUpdated, this, _1));
 }
 
 CClientAgent::~CClientAgent(void)
@@ -148,6 +149,14 @@ void CClientAgent::OnMultiLegOrderUpdated( trade::MultiLegOrder* order )
 	order->SerializeToString(&callbackData);
 	if(m_pSession != NULL)
 		m_pSession->BeginCallback("MultiLegOrderPush", callbackData);
+}
+
+void CClientAgent::OnTradeUpdated( trade::Trade* trade )
+{
+	std::string callbackData;
+	trade->SerializeToString(&callbackData);
+	if(m_pSession != NULL)
+		m_pSession->BeginCallback("TradePush", callbackData);
 }
 
 

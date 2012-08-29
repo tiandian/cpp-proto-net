@@ -14,6 +14,7 @@ using namespace std;
 
 typedef boost::shared_ptr<trade::MultiLegOrder> MultiLegOrderPtr;
 typedef boost::function<void(trade::MultiLegOrder*)> PushMultiLegOrderFunc;
+typedef boost::function<void(trade::Trade*)> PushTradeFunc;
 
 class COrderProcessor : public CTradeAgentCallback
 {
@@ -43,7 +44,7 @@ public:
 	virtual void OnRtnOrder(trade::Order* order);
 
 	///成交通知
-	virtual void OnRtnTrade(trade::Trade* pTrade){}
+	virtual void OnRtnTrade(trade::Trade* pTrade);
 
 	///投资者结算结果确认响应
 	virtual void OnRspSettlementInfoConfirm(){}
@@ -71,6 +72,18 @@ public:
 		m_pushMultiOrdFunc = funcPushMLOrder;
 	}
 
+	void PublishTradeUpdate(trade::Trade* pTrade)
+	{
+		if(!m_pushTradeFunc.empty())
+		{
+			m_pushTradeFunc(pTrade);
+		}
+	}
+	void SetPushTradeFunc(PushTradeFunc funcPushTrade)
+	{
+		m_pushTradeFunc = funcPushTrade;
+	}
+
 private:
 	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
 	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
@@ -84,6 +97,7 @@ private:
 	CTradeAgent* m_pTradeAgent;
 
 	PushMultiLegOrderFunc m_pushMultiOrdFunc;
+	PushTradeFunc m_pushTradeFunc;
 
 	int m_maxOrderRef;
 	boost::mutex m_mutOrdRefIncr;

@@ -37,6 +37,7 @@ public:
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);
 	void OnMultiLegOrderUpdated(trade::MultiLegOrder* order);
+	void OnTradeUpdated(trade::Trade* trade);
 
 	std::string QuoteAddress() const { return m_quoteAddress; }
 	boost::tuple<bool, string> QuoteConnect(const std::string& address, const std::string& streamDir);
