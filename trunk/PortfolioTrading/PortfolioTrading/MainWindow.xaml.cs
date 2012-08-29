@@ -194,7 +194,7 @@ namespace PortfolioTrading
 
         private void btnClosePosi_Click(object sender, RoutedEventArgs e)
         {
-            _client.PortfClosePosition(portfolioItem.ID, 1);
+            //_client.PortfClosePosition(portfolioItem.ID, 1);
         }
 
         private void btnStartup_Click(object sender, RoutedEventArgs e)

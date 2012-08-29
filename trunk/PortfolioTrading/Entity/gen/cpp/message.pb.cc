@@ -41,9 +41,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* RegQuoteParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   RegQuoteParam_reflection_ = NULL;
-const ::google::protobuf::Descriptor* PorfChgPosiParam_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* PorfOpenPosiParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  PorfChgPosiParam_reflection_ = NULL;
+  PorfOpenPosiParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ClosePositionParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ClosePositionParam_reflection_ = NULL;
 
 }  // namespace
 
@@ -189,22 +192,38 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RegQuoteParam));
-  PorfChgPosiParam_descriptor_ = file->message_type(8);
-  static const int PorfChgPosiParam_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfChgPosiParam, portfid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfChgPosiParam, quantity_),
+  PorfOpenPosiParam_descriptor_ = file->message_type(8);
+  static const int PorfOpenPosiParam_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, portfid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, quantity_),
   };
-  PorfChgPosiParam_reflection_ =
+  PorfOpenPosiParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      PorfChgPosiParam_descriptor_,
-      PorfChgPosiParam::default_instance_,
-      PorfChgPosiParam_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfChgPosiParam, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfChgPosiParam, _unknown_fields_),
+      PorfOpenPosiParam_descriptor_,
+      PorfOpenPosiParam::default_instance_,
+      PorfOpenPosiParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(PorfChgPosiParam));
+      sizeof(PorfOpenPosiParam));
+  ClosePositionParam_descriptor_ = file->message_type(9);
+  static const int ClosePositionParam_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, multilegorderid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, legordref_),
+  };
+  ClosePositionParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ClosePositionParam_descriptor_,
+      ClosePositionParam::default_instance_,
+      ClosePositionParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ClosePositionParam));
 }
 
 namespace {
@@ -234,7 +253,9 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     RegQuoteParam_descriptor_, &RegQuoteParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    PorfChgPosiParam_descriptor_, &PorfChgPosiParam::default_instance());
+    PorfOpenPosiParam_descriptor_, &PorfOpenPosiParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ClosePositionParam_descriptor_, &ClosePositionParam::default_instance());
 }
 
 }  // namespace
@@ -256,8 +277,10 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete LoginParam_reflection_;
   delete RegQuoteParam::default_instance_;
   delete RegQuoteParam_reflection_;
-  delete PorfChgPosiParam::default_instance_;
-  delete PorfChgPosiParam_reflection_;
+  delete PorfOpenPosiParam::default_instance_;
+  delete PorfOpenPosiParam_reflection_;
+  delete ClosePositionParam::default_instance_;
+  delete ClosePositionParam_reflection_;
 }
 
 void protobuf_AddDesc_message_2eproto() {
@@ -282,9 +305,10 @@ void protobuf_AddDesc_message_2eproto() {
     "\n\017OperationReturn\022\017\n\007Success\030\001 \002(\010\022\024\n\014Er"
     "rorMessage\030\002 \002(\t\"@\n\nLoginParam\022\020\n\010Broker"
     "Id\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Password\030\003 \002"
-    "(\t\" \n\rRegQuoteParam\022\017\n\007Symbols\030\001 \003(\t\"5\n\020"
-    "PorfChgPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Qua"
-    "ntity\030\002 \002(\005", 651);
+    "(\t\" \n\rRegQuoteParam\022\017\n\007Symbols\030\001 \003(\t\"6\n\021"
+    "PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Qu"
+    "antity\030\002 \002(\005\"@\n\022ClosePositionParam\022\027\n\017Mu"
+    "ltiLegOrderId\030\001 \002(\t\022\021\n\tLegOrdRef\030\002 \001(\t", 718);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -295,7 +319,8 @@ void protobuf_AddDesc_message_2eproto() {
   OperationReturn::default_instance_ = new OperationReturn();
   LoginParam::default_instance_ = new LoginParam();
   RegQuoteParam::default_instance_ = new RegQuoteParam();
-  PorfChgPosiParam::default_instance_ = new PorfChgPosiParam();
+  PorfOpenPosiParam::default_instance_ = new PorfOpenPosiParam();
+  ClosePositionParam::default_instance_ = new ClosePositionParam();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
   LegItem::default_instance_->InitAsDefaultInstance();
@@ -304,7 +329,8 @@ void protobuf_AddDesc_message_2eproto() {
   OperationReturn::default_instance_->InitAsDefaultInstance();
   LoginParam::default_instance_->InitAsDefaultInstance();
   RegQuoteParam::default_instance_->InitAsDefaultInstance();
-  PorfChgPosiParam::default_instance_->InitAsDefaultInstance();
+  PorfOpenPosiParam::default_instance_->InitAsDefaultInstance();
+  ClosePositionParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
 
@@ -2738,36 +2764,36 @@ void RegQuoteParam::Swap(RegQuoteParam* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int PorfChgPosiParam::kPortfIdFieldNumber;
-const int PorfChgPosiParam::kQuantityFieldNumber;
+const int PorfOpenPosiParam::kPortfIdFieldNumber;
+const int PorfOpenPosiParam::kQuantityFieldNumber;
 #endif  // !_MSC_VER
 
-PorfChgPosiParam::PorfChgPosiParam()
+PorfOpenPosiParam::PorfOpenPosiParam()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void PorfChgPosiParam::InitAsDefaultInstance() {
+void PorfOpenPosiParam::InitAsDefaultInstance() {
 }
 
-PorfChgPosiParam::PorfChgPosiParam(const PorfChgPosiParam& from)
+PorfOpenPosiParam::PorfOpenPosiParam(const PorfOpenPosiParam& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void PorfChgPosiParam::SharedCtor() {
+void PorfOpenPosiParam::SharedCtor() {
   _cached_size_ = 0;
   portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   quantity_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-PorfChgPosiParam::~PorfChgPosiParam() {
+PorfOpenPosiParam::~PorfOpenPosiParam() {
   SharedDtor();
 }
 
-void PorfChgPosiParam::SharedDtor() {
+void PorfOpenPosiParam::SharedDtor() {
   if (portfid_ != &::google::protobuf::internal::kEmptyString) {
     delete portfid_;
   }
@@ -2775,27 +2801,27 @@ void PorfChgPosiParam::SharedDtor() {
   }
 }
 
-void PorfChgPosiParam::SetCachedSize(int size) const {
+void PorfOpenPosiParam::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* PorfChgPosiParam::descriptor() {
+const ::google::protobuf::Descriptor* PorfOpenPosiParam::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return PorfChgPosiParam_descriptor_;
+  return PorfOpenPosiParam_descriptor_;
 }
 
-const PorfChgPosiParam& PorfChgPosiParam::default_instance() {
+const PorfOpenPosiParam& PorfOpenPosiParam::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
 }
 
-PorfChgPosiParam* PorfChgPosiParam::default_instance_ = NULL;
+PorfOpenPosiParam* PorfOpenPosiParam::default_instance_ = NULL;
 
-PorfChgPosiParam* PorfChgPosiParam::New() const {
-  return new PorfChgPosiParam;
+PorfOpenPosiParam* PorfOpenPosiParam::New() const {
+  return new PorfOpenPosiParam;
 }
 
-void PorfChgPosiParam::Clear() {
+void PorfOpenPosiParam::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_portfid()) {
       if (portfid_ != &::google::protobuf::internal::kEmptyString) {
@@ -2808,7 +2834,7 @@ void PorfChgPosiParam::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool PorfChgPosiParam::MergePartialFromCodedStream(
+bool PorfOpenPosiParam::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -2862,7 +2888,7 @@ bool PorfChgPosiParam::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void PorfChgPosiParam::SerializeWithCachedSizes(
+void PorfOpenPosiParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required string PortfId = 1;
   if (has_portfid()) {
@@ -2884,7 +2910,7 @@ void PorfChgPosiParam::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* PorfChgPosiParam::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* PorfOpenPosiParam::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required string PortfId = 1;
   if (has_portfid()) {
@@ -2908,7 +2934,7 @@ void PorfChgPosiParam::SerializeWithCachedSizes(
   return target;
 }
 
-int PorfChgPosiParam::ByteSize() const {
+int PorfOpenPosiParam::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -2938,10 +2964,10 @@ int PorfChgPosiParam::ByteSize() const {
   return total_size;
 }
 
-void PorfChgPosiParam::MergeFrom(const ::google::protobuf::Message& from) {
+void PorfOpenPosiParam::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const PorfChgPosiParam* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const PorfChgPosiParam*>(
+  const PorfOpenPosiParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const PorfOpenPosiParam*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -2950,7 +2976,7 @@ void PorfChgPosiParam::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void PorfChgPosiParam::MergeFrom(const PorfChgPosiParam& from) {
+void PorfOpenPosiParam::MergeFrom(const PorfOpenPosiParam& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_portfid()) {
@@ -2963,25 +2989,25 @@ void PorfChgPosiParam::MergeFrom(const PorfChgPosiParam& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void PorfChgPosiParam::CopyFrom(const ::google::protobuf::Message& from) {
+void PorfOpenPosiParam::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void PorfChgPosiParam::CopyFrom(const PorfChgPosiParam& from) {
+void PorfOpenPosiParam::CopyFrom(const PorfOpenPosiParam& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool PorfChgPosiParam::IsInitialized() const {
+bool PorfOpenPosiParam::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   
   return true;
 }
 
-void PorfChgPosiParam::Swap(PorfChgPosiParam* other) {
+void PorfOpenPosiParam::Swap(PorfOpenPosiParam* other) {
   if (other != this) {
     std::swap(portfid_, other->portfid_);
     std::swap(quantity_, other->quantity_);
@@ -2991,11 +3017,293 @@ void PorfChgPosiParam::Swap(PorfChgPosiParam* other) {
   }
 }
 
-::google::protobuf::Metadata PorfChgPosiParam::GetMetadata() const {
+::google::protobuf::Metadata PorfOpenPosiParam::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = PorfChgPosiParam_descriptor_;
-  metadata.reflection = PorfChgPosiParam_reflection_;
+  metadata.descriptor = PorfOpenPosiParam_descriptor_;
+  metadata.reflection = PorfOpenPosiParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ClosePositionParam::kMultiLegOrderIdFieldNumber;
+const int ClosePositionParam::kLegOrdRefFieldNumber;
+#endif  // !_MSC_VER
+
+ClosePositionParam::ClosePositionParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ClosePositionParam::InitAsDefaultInstance() {
+}
+
+ClosePositionParam::ClosePositionParam(const ClosePositionParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ClosePositionParam::SharedCtor() {
+  _cached_size_ = 0;
+  multilegorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  legordref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ClosePositionParam::~ClosePositionParam() {
+  SharedDtor();
+}
+
+void ClosePositionParam::SharedDtor() {
+  if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
+    delete multilegorderid_;
+  }
+  if (legordref_ != &::google::protobuf::internal::kEmptyString) {
+    delete legordref_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void ClosePositionParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ClosePositionParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ClosePositionParam_descriptor_;
+}
+
+const ClosePositionParam& ClosePositionParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+ClosePositionParam* ClosePositionParam::default_instance_ = NULL;
+
+ClosePositionParam* ClosePositionParam::New() const {
+  return new ClosePositionParam;
+}
+
+void ClosePositionParam::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_multilegorderid()) {
+      if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
+        multilegorderid_->clear();
+      }
+    }
+    if (has_legordref()) {
+      if (legordref_ != &::google::protobuf::internal::kEmptyString) {
+        legordref_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ClosePositionParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string MultiLegOrderId = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_multilegorderid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->multilegorderid().data(), this->multilegorderid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_LegOrdRef;
+        break;
+      }
+      
+      // optional string LegOrdRef = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_LegOrdRef:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_legordref()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->legordref().data(), this->legordref().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ClosePositionParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string MultiLegOrderId = 1;
+  if (has_multilegorderid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->multilegorderid().data(), this->multilegorderid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->multilegorderid(), output);
+  }
+  
+  // optional string LegOrdRef = 2;
+  if (has_legordref()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->legordref().data(), this->legordref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->legordref(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ClosePositionParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string MultiLegOrderId = 1;
+  if (has_multilegorderid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->multilegorderid().data(), this->multilegorderid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->multilegorderid(), target);
+  }
+  
+  // optional string LegOrdRef = 2;
+  if (has_legordref()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->legordref().data(), this->legordref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->legordref(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ClosePositionParam::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string MultiLegOrderId = 1;
+    if (has_multilegorderid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->multilegorderid());
+    }
+    
+    // optional string LegOrdRef = 2;
+    if (has_legordref()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->legordref());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ClosePositionParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ClosePositionParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ClosePositionParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ClosePositionParam::MergeFrom(const ClosePositionParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_multilegorderid()) {
+      set_multilegorderid(from.multilegorderid());
+    }
+    if (from.has_legordref()) {
+      set_legordref(from.legordref());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ClosePositionParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ClosePositionParam::CopyFrom(const ClosePositionParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ClosePositionParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  
+  return true;
+}
+
+void ClosePositionParam::Swap(ClosePositionParam* other) {
+  if (other != this) {
+    std::swap(multilegorderid_, other->multilegorderid_);
+    std::swap(legordref_, other->legordref_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ClosePositionParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ClosePositionParam_descriptor_;
+  metadata.reflection = ClosePositionParam_reflection_;
   return metadata;
 }
 

@@ -118,3 +118,13 @@ int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::share
 
 	return genInputOrders->size();
 }
+
+int GetCloseInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders)
+{
+	return 0;
+}
+
+boost::shared_ptr<trade::InputOrder> GetCloseInputOrder(trade::MultiLegOrder* multilegOrder, const string& legOrdRef)
+{
+	return boost::shared_ptr<trade::InputOrder>();
+}

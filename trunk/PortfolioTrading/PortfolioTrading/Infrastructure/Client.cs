@@ -81,7 +81,7 @@ namespace PortfolioTrading.Infrastructure
 
         public void PorfOpenPosition(string pid, int quantity)
         {
-            PorfChgPosiParam opParam = new PorfChgPosiParam();
+            PorfOpenPosiParam opParam = new PorfOpenPosiParam();
             opParam.PortfId = pid;
             opParam.Quantity = quantity;
 
@@ -89,14 +89,14 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("PorfOpenPosition", param_data);
         }
 
-        public void PortfClosePosition(string pid, int quantity)
+        public void PortfClosePosition(string mlOrderId, string legRef)
         {
-            PorfChgPosiParam opParam = new PorfChgPosiParam();
-            opParam.PortfId = pid;
-            opParam.Quantity = quantity;
+            ClosePositionParam cpParam = new ClosePositionParam();
+            cpParam.MultiLegOrderId = mlOrderId;
+            cpParam.LegOrdRef = legRef;
 
-            byte[] param_data = DataTranslater.Serialize(opParam);
-            byte[] ret_data = Request("PorfClosePosition", param_data);
+            byte[] param_data = DataTranslater.Serialize(cpParam);
+            byte[] ret_data = Request("ClosePosition", param_data);
         }
 
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)

@@ -41,7 +41,8 @@ class ConnectParam;
 class OperationReturn;
 class LoginParam;
 class RegQuoteParam;
-class PorfChgPosiParam;
+class PorfOpenPosiParam;
+class ClosePositionParam;
 
 // ===================================================================
 
@@ -897,14 +898,14 @@ class RegQuoteParam : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class PorfChgPosiParam : public ::google::protobuf::Message {
+class PorfOpenPosiParam : public ::google::protobuf::Message {
  public:
-  PorfChgPosiParam();
-  virtual ~PorfChgPosiParam();
+  PorfOpenPosiParam();
+  virtual ~PorfOpenPosiParam();
   
-  PorfChgPosiParam(const PorfChgPosiParam& from);
+  PorfOpenPosiParam(const PorfOpenPosiParam& from);
   
-  inline PorfChgPosiParam& operator=(const PorfChgPosiParam& from) {
+  inline PorfOpenPosiParam& operator=(const PorfOpenPosiParam& from) {
     CopyFrom(from);
     return *this;
   }
@@ -918,17 +919,17 @@ class PorfChgPosiParam : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const PorfChgPosiParam& default_instance();
+  static const PorfOpenPosiParam& default_instance();
   
-  void Swap(PorfChgPosiParam* other);
+  void Swap(PorfOpenPosiParam* other);
   
   // implements Message ----------------------------------------------
   
-  PorfChgPosiParam* New() const;
+  PorfOpenPosiParam* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const PorfChgPosiParam& from);
-  void MergeFrom(const PorfChgPosiParam& from);
+  void CopyFrom(const PorfOpenPosiParam& from);
+  void MergeFrom(const PorfOpenPosiParam& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -969,7 +970,7 @@ class PorfChgPosiParam : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 quantity() const;
   inline void set_quantity(::google::protobuf::int32 value);
   
-  // @@protoc_insertion_point(class_scope:entity.PorfChgPosiParam)
+  // @@protoc_insertion_point(class_scope:entity.PorfOpenPosiParam)
  private:
   inline void set_has_portfid();
   inline void clear_has_portfid();
@@ -989,7 +990,107 @@ class PorfChgPosiParam : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_message_2eproto();
   
   void InitAsDefaultInstance();
-  static PorfChgPosiParam* default_instance_;
+  static PorfOpenPosiParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ClosePositionParam : public ::google::protobuf::Message {
+ public:
+  ClosePositionParam();
+  virtual ~ClosePositionParam();
+  
+  ClosePositionParam(const ClosePositionParam& from);
+  
+  inline ClosePositionParam& operator=(const ClosePositionParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ClosePositionParam& default_instance();
+  
+  void Swap(ClosePositionParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ClosePositionParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ClosePositionParam& from);
+  void MergeFrom(const ClosePositionParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string MultiLegOrderId = 1;
+  inline bool has_multilegorderid() const;
+  inline void clear_multilegorderid();
+  static const int kMultiLegOrderIdFieldNumber = 1;
+  inline const ::std::string& multilegorderid() const;
+  inline void set_multilegorderid(const ::std::string& value);
+  inline void set_multilegorderid(const char* value);
+  inline void set_multilegorderid(const char* value, size_t size);
+  inline ::std::string* mutable_multilegorderid();
+  inline ::std::string* release_multilegorderid();
+  
+  // optional string LegOrdRef = 2;
+  inline bool has_legordref() const;
+  inline void clear_legordref();
+  static const int kLegOrdRefFieldNumber = 2;
+  inline const ::std::string& legordref() const;
+  inline void set_legordref(const ::std::string& value);
+  inline void set_legordref(const char* value);
+  inline void set_legordref(const char* value, size_t size);
+  inline ::std::string* mutable_legordref();
+  inline ::std::string* release_legordref();
+  
+  // @@protoc_insertion_point(class_scope:entity.ClosePositionParam)
+ private:
+  inline void set_has_multilegorderid();
+  inline void clear_has_multilegorderid();
+  inline void set_has_legordref();
+  inline void clear_has_legordref();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* multilegorderid_;
+  ::std::string* legordref_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ClosePositionParam* default_instance_;
 };
 // ===================================================================
 
@@ -1885,56 +1986,56 @@ RegQuoteParam::mutable_symbols() {
 
 // -------------------------------------------------------------------
 
-// PorfChgPosiParam
+// PorfOpenPosiParam
 
 // required string PortfId = 1;
-inline bool PorfChgPosiParam::has_portfid() const {
+inline bool PorfOpenPosiParam::has_portfid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void PorfChgPosiParam::set_has_portfid() {
+inline void PorfOpenPosiParam::set_has_portfid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void PorfChgPosiParam::clear_has_portfid() {
+inline void PorfOpenPosiParam::clear_has_portfid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void PorfChgPosiParam::clear_portfid() {
+inline void PorfOpenPosiParam::clear_portfid() {
   if (portfid_ != &::google::protobuf::internal::kEmptyString) {
     portfid_->clear();
   }
   clear_has_portfid();
 }
-inline const ::std::string& PorfChgPosiParam::portfid() const {
+inline const ::std::string& PorfOpenPosiParam::portfid() const {
   return *portfid_;
 }
-inline void PorfChgPosiParam::set_portfid(const ::std::string& value) {
+inline void PorfOpenPosiParam::set_portfid(const ::std::string& value) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(value);
 }
-inline void PorfChgPosiParam::set_portfid(const char* value) {
+inline void PorfOpenPosiParam::set_portfid(const char* value) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(value);
 }
-inline void PorfChgPosiParam::set_portfid(const char* value, size_t size) {
+inline void PorfOpenPosiParam::set_portfid(const char* value, size_t size) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* PorfChgPosiParam::mutable_portfid() {
+inline ::std::string* PorfOpenPosiParam::mutable_portfid() {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   return portfid_;
 }
-inline ::std::string* PorfChgPosiParam::release_portfid() {
+inline ::std::string* PorfOpenPosiParam::release_portfid() {
   clear_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1946,25 +2047,145 @@ inline ::std::string* PorfChgPosiParam::release_portfid() {
 }
 
 // required int32 Quantity = 2;
-inline bool PorfChgPosiParam::has_quantity() const {
+inline bool PorfOpenPosiParam::has_quantity() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void PorfChgPosiParam::set_has_quantity() {
+inline void PorfOpenPosiParam::set_has_quantity() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void PorfChgPosiParam::clear_has_quantity() {
+inline void PorfOpenPosiParam::clear_has_quantity() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void PorfChgPosiParam::clear_quantity() {
+inline void PorfOpenPosiParam::clear_quantity() {
   quantity_ = 0;
   clear_has_quantity();
 }
-inline ::google::protobuf::int32 PorfChgPosiParam::quantity() const {
+inline ::google::protobuf::int32 PorfOpenPosiParam::quantity() const {
   return quantity_;
 }
-inline void PorfChgPosiParam::set_quantity(::google::protobuf::int32 value) {
+inline void PorfOpenPosiParam::set_quantity(::google::protobuf::int32 value) {
   set_has_quantity();
   quantity_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ClosePositionParam
+
+// required string MultiLegOrderId = 1;
+inline bool ClosePositionParam::has_multilegorderid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ClosePositionParam::set_has_multilegorderid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ClosePositionParam::clear_has_multilegorderid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ClosePositionParam::clear_multilegorderid() {
+  if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_->clear();
+  }
+  clear_has_multilegorderid();
+}
+inline const ::std::string& ClosePositionParam::multilegorderid() const {
+  return *multilegorderid_;
+}
+inline void ClosePositionParam::set_multilegorderid(const ::std::string& value) {
+  set_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_ = new ::std::string;
+  }
+  multilegorderid_->assign(value);
+}
+inline void ClosePositionParam::set_multilegorderid(const char* value) {
+  set_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_ = new ::std::string;
+  }
+  multilegorderid_->assign(value);
+}
+inline void ClosePositionParam::set_multilegorderid(const char* value, size_t size) {
+  set_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_ = new ::std::string;
+  }
+  multilegorderid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ClosePositionParam::mutable_multilegorderid() {
+  set_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_ = new ::std::string;
+  }
+  return multilegorderid_;
+}
+inline ::std::string* ClosePositionParam::release_multilegorderid() {
+  clear_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = multilegorderid_;
+    multilegorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// optional string LegOrdRef = 2;
+inline bool ClosePositionParam::has_legordref() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ClosePositionParam::set_has_legordref() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ClosePositionParam::clear_has_legordref() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ClosePositionParam::clear_legordref() {
+  if (legordref_ != &::google::protobuf::internal::kEmptyString) {
+    legordref_->clear();
+  }
+  clear_has_legordref();
+}
+inline const ::std::string& ClosePositionParam::legordref() const {
+  return *legordref_;
+}
+inline void ClosePositionParam::set_legordref(const ::std::string& value) {
+  set_has_legordref();
+  if (legordref_ == &::google::protobuf::internal::kEmptyString) {
+    legordref_ = new ::std::string;
+  }
+  legordref_->assign(value);
+}
+inline void ClosePositionParam::set_legordref(const char* value) {
+  set_has_legordref();
+  if (legordref_ == &::google::protobuf::internal::kEmptyString) {
+    legordref_ = new ::std::string;
+  }
+  legordref_->assign(value);
+}
+inline void ClosePositionParam::set_legordref(const char* value, size_t size) {
+  set_has_legordref();
+  if (legordref_ == &::google::protobuf::internal::kEmptyString) {
+    legordref_ = new ::std::string;
+  }
+  legordref_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ClosePositionParam::mutable_legordref() {
+  set_has_legordref();
+  if (legordref_ == &::google::protobuf::internal::kEmptyString) {
+    legordref_ = new ::std::string;
+  }
+  return legordref_;
+}
+inline ::std::string* ClosePositionParam::release_legordref() {
+  clear_has_legordref();
+  if (legordref_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = legordref_;
+    legordref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
 
