@@ -136,6 +136,7 @@
     <Compile Include="ShellViewModel.cs" />
     <Compile Include="Utils\ILog.cs" />
     <Compile Include="Utils\Log4netLogger.cs" />
+    <Compile Include="Utils\SideBindingSource.cs" />
     <Compile Include="ViewModels\AccountMgrVM.cs" />
     <Page Include="BureauBlue.xaml">
       <Generator>MSBuild:Compile</Generator>

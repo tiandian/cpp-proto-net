@@ -40,7 +40,7 @@ namespace PortfolioTrading.ViewModels
         private DelegateCommand _addAccountCommand;
         private DelegateCommand<XamDataTree> _editAccountCommand;
         private DelegateCommand<XamDataTree> _removeAccountCommand;
-
+        
         public AccountMgrVM()
         {
             _addAccountCommand = new DelegateCommand(OnAddAccount);
@@ -109,5 +109,6 @@ namespace PortfolioTrading.ViewModels
             this._editAccountCommand.RaiseCanExecuteChanged();
             this._removeAccountCommand.RaiseCanExecuteChanged();
         }
+
     }
 }
