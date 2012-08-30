@@ -9,7 +9,34 @@
         xmlns:src="clr-namespace:PortfolioTrading"
         Height="700" Width="1024" Title="Shell" WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" Loaded="Window_Loaded">
-    <Grid>
-        
-    </Grid>
+    <DockPanel>
+        <igDock:XamDockManager Theme="Office2k7Blue" LayoutMode="FillContainer">
+            <igDock:XamDockManager.Panes>
+                <igDock:SplitPane Width="200" SplitterOrientation="Horizontal" 
+                                  igDock:XamDockManager.InitialLocation="DockedLeft">
+                    <igDock:ContentPane Header="帐户管理" 
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.AccountMgrRegion}" />
+                    <igDock:ContentPane Header="帐户信息" 
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.AccountInfoRegion}" />
+                </igDock:SplitPane>
+
+                <igDock:SplitPane Height="250" igDock:XamDockManager.InitialLocation="DockedTop">
+                    <igDock:ContentPane Header="组合一览" 
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.PortfolioViewRegion}"/>
+                    <igDock:SplitPane>
+                        <igDock:ContentPane Header="组合设置"
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.PortfolioSettingsRegion}"/>
+                    </igDock:SplitPane>
+                    
+                </igDock:SplitPane>
+                <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedBottom">
+                    <igDock:ContentPane Header="组合下单" 
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.OrdersRegion}"/>
+                    <igDock:ContentPane Header="成交明细"
+                                    cal:RegionManager.RegionName="{x:Static src:RegionNames.TimeNSalesRegion}"/>
+                </igDock:SplitPane>
+
+            </igDock:XamDockManager.Panes>
+        </igDock:XamDockManager>
+    </DockPanel>
 </Window>
