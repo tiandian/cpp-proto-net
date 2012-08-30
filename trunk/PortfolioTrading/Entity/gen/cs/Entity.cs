@@ -252,10 +252,10 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
-  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PorfChgPosiParam")]
-  public partial class PorfChgPosiParam : global::ProtoBuf.IExtensible
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PorfOpenPosiParam")]
+  public partial class PorfOpenPosiParam : global::ProtoBuf.IExtensible
   {
-    public PorfChgPosiParam() {}
+    public PorfOpenPosiParam() {}
     
     private string _PortfId;
     [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"PortfId", DataFormat = global::ProtoBuf.DataFormat.Default)]
@@ -270,6 +270,32 @@ namespace entity
     {
       get { return _Quantity; }
       set { _Quantity = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ClosePositionParam")]
+  public partial class ClosePositionParam : global::ProtoBuf.IExtensible
+  {
+    public ClosePositionParam() {}
+    
+    private string _MultiLegOrderId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"MultiLegOrderId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string MultiLegOrderId
+    {
+      get { return _MultiLegOrderId; }
+      set { _MultiLegOrderId = value; }
+    }
+
+    private string _LegOrdRef = "";
+    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"LegOrdRef", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string LegOrdRef
+    {
+      get { return _LegOrdRef; }
+      set { _LegOrdRef = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
