@@ -16,7 +16,29 @@
         </DockPanel>
         <ig:XamDataTree Name="xamDataTreeAccount" Margin="4,0,4,4" ItemsSource="{Binding Accounts}" NodeLineVisibility="Visible" >
             <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="Account" TargetTypeName="AccountVM" DisplayMemberPath="InvestorId"/>
+                <ig:NodeLayout Key="Account" TargetTypeName="AccountVM" >
+                    <ig:NodeLayout.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Width="150">
+                                <Button DockPanel.Dock="Right"
+                                        Command="{Binding Data.AddPortfolioCommand}"
+                                        CommandParameter="{Binding Data}">+组合
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Node.IsActive}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                                <TextBlock Text="{Binding Data.InvestorId}" VerticalAlignment="Center"></TextBlock>
+                            </DockPanel>
+                        </DataTemplate>
+                    </ig:NodeLayout.ItemTemplate>
+                </ig:NodeLayout>
                 <ig:NodeLayout Key="Portfolio" TargetTypeName="PortfolioVM" DisplayMemberPath="Id"/>
             </ig:XamDataTree.GlobalNodeLayouts>
         </ig:XamDataTree>

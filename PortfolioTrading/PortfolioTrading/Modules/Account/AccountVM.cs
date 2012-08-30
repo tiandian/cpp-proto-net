@@ -4,12 +4,19 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Microsoft.Practices.Prism.Commands;
 
 namespace PortfolioTrading.Modules.Account
 {
     public class AccountVM : NotificationObject
     {
         private ObservableCollection<PortfolioVM> _acctPortfolios = new ObservableCollection<PortfolioVM>();
+
+        public AccountVM()
+        {
+            AddPortfolioCommand = new DelegateCommand<AccountVM>(OnAddPortfolio);
+        }
 
         public string Id
         {
@@ -70,6 +77,45 @@ namespace PortfolioTrading.Modules.Account
         public IEnumerable<PortfolioVM> Portfolios
         {
             get { return _acctPortfolios; }
+        }
+
+        public ICommand AddPortfolioCommand
+        {
+            get;
+            private set;
+        }
+
+        private void OnAddPortfolio(AccountVM acct)
+        {
+            /*
+            PortfolioVM portf = new PortfolioVM();
+
+            portf.Id = "haha";
+
+            portf.Quantity = 1;
+            portf.AddLeg(new LegVM() 
+            {
+                Symbol = "cu1209",
+                Side = entity.PosiDirectionType.LONG,
+                Ratio = 1
+            });
+            portf.AddLeg(new LegVM()
+            {
+                Symbol = "cu1210",
+                Side = entity.PosiDirectionType.SHORT,
+                Ratio = 1
+            });
+            */
+
+            EditPortfolioDlg dlg = new EditPortfolioDlg();
+            dlg.Owner = System.Windows.Application.Current.MainWindow;
+            bool? res = dlg.ShowDialog();
+            if (res ?? false)
+            {
+                PortfolioVM portf = dlg.Portfolio;
+                _acctPortfolios.Add(portf);
+            }
+            
         }
     }
 }

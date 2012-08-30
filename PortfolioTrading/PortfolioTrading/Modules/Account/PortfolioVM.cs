@@ -100,5 +100,10 @@ namespace PortfolioTrading.Modules.Account
         {
             get { return _legs; }
         }
+
+        public void AddLeg(LegVM leg)
+        {
+            _legs.Add(leg);
+        }
     }
 }
