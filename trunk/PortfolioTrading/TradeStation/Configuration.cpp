@@ -48,7 +48,9 @@ bool CConfiguration::Load( int argc, _TCHAR* argv[] )
 
 		po::options_description conn("Connection");
 		conn.add_options()
-			("port", po::value<unsigned short>(&m_port)->default_value(16168),
+			("port", po::value<string>(&m_port)->default_value("16168"),
+			"listening port")
+			("addr", po::value<string>(&m_addr)->default_value(""),
 			"listening port");
 
 		po::options_description cmdline_options;
@@ -98,9 +100,13 @@ severity_level CConfiguration::GetLogLevel()
 	return m_logLevel;
 }
 
-unsigned short CConfiguration::GetPort()
+const string& CConfiguration::GetPort()
 {
 	return m_port;
 }
 
+const string& CConfiguration::GetAddr()
+{
+	return m_addr;
+}
 

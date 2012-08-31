@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
+using System.Net;
 
 namespace PortfolioTrading.Infrastructure
 {
@@ -12,11 +13,25 @@ namespace PortfolioTrading.Infrastructure
 
         private Process _hostProc;
 
+        private static string GetLocalIP()
+        {
+            IPHostEntry ipEntry = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var addr in ipEntry.AddressList)
+            {
+                if(addr.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                return addr.ToString();
+            }
+
+            return "127.0.0.1";
+        }
+
         public bool Startup(int port, bool showConsole = true)
         {
             _hostProc = new Process();
             _hostProc.StartInfo.FileName = HostName;
-            _hostProc.StartInfo.Arguments = "--port " + port.ToString();
+            string addr = GetLocalIP();
+            _hostProc.StartInfo.Arguments =
+                string.Format("--addr {0} --port {1}", addr, port.ToString());
 
             if (!showConsole)
             {
@@ -49,8 +64,8 @@ namespace PortfolioTrading.Infrastructure
             // let server process quit
             if (_hostProc.StartInfo.RedirectStandardInput)
                 _hostProc.StandardInput.WriteLine("q");
-            else
-                _hostProc.Kill();
+           
+            _hostProc.Kill();
         }
     }
 }

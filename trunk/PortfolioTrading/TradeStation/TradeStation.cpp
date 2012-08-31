@@ -37,9 +37,10 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	boost::shared_ptr<SessionManager> pSessionManager(SessionManager::Create());
 	pSessionManager->RegisterHandler(&g_ClientManager);
-	unsigned short usPort = config.GetPort();
-	pSessionManager->Listen(usPort);
-	logger.Info(boost::str(boost::format("Start listening at %d") % usPort));
+	const string& sAddr = config.GetAddr();
+	const string& sPort = config.GetPort();
+	pSessionManager->Listen(sAddr, sPort);
+	logger.Info(boost::str(boost::format("Start listening at %s:%s") %sAddr.c_str() % sPort.c_str()));
 
 	bool exit = false;
 	while(!exit)

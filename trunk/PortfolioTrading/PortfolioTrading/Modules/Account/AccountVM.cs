@@ -7,6 +7,9 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
 using System.Xml.Linq;
+using PortfolioTrading.Infrastructure;
+using System.Threading;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -14,9 +17,25 @@ namespace PortfolioTrading.Modules.Account
     {
         private ObservableCollection<PortfolioVM> _acctPortfolios = new ObservableCollection<PortfolioVM>();
 
+        private Client _client;
+        private NativeHost _host;
+
+        private static int HostPortSeed = 16180;
+
         public AccountVM()
         {
             AddPortfolioCommand = new DelegateCommand<AccountVM>(OnAddPortfolio);
+            ConnectCommand = new DelegateCommand<AccountVM>(OnConnectHost);
+
+            _host = new NativeHost();
+
+
+            _client = new Client();
+            _client.OnError += new Action<string>(_client_OnError);
+            _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
+            _client.OnPortfolioItemUpdated += new Action<entity.PortfolioItem>(_client_OnPortfolioItemUpdated);
+            _client.OnMultiLegOrderUpdated += new Action<trade.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
+            _client.OnTradeUpdated += new Action<trade.Trade>(_client_OnTradeUpdated);
         }
 
         public string Id
@@ -75,12 +94,53 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region HostPort
+        private int _hostPort;
+
+        public int HostPort
+        {
+            get { return _hostPort; }
+            set
+            {
+                if (_hostPort != value)
+                {
+                    _hostPort = value;
+                    RaisePropertyChanged("HostPort");
+                }
+            }
+        }
+        #endregion
+
+        #region Status
+        private string _status = "未连接";
+
+        public string Status
+        {
+            get { return _status; }
+            set
+            {
+                if (_status != value)
+                {
+                    _status = value;
+                    RaisePropertyChanged("Status");
+                }
+            }
+        }
+        #endregion
+
+
         public IEnumerable<PortfolioVM> Portfolios
         {
             get { return _acctPortfolios; }
         }
 
         public ICommand AddPortfolioCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ConnectCommand
         {
             get;
             private set;
@@ -117,6 +177,156 @@ namespace PortfolioTrading.Modules.Account
                 _acctPortfolios.Add(portf);
             }
             
+        }
+
+        private int _connectTimes;
+
+        private void OnConnectHost(AccountVM acct)
+        {
+            Status = "连接中...";
+
+            SynchronizationContext uiContext = SynchronizationContext.Current;
+
+            HostPort = Interlocked.Increment(ref HostPortSeed);
+            
+            EventLogger.Write(string.Format("正在为{0}建立交易终端...", acct.InvestorId));
+
+            Func<int, bool, bool> funcLaunch = new Func<int, bool, bool>(_host.Startup);
+            funcLaunch.BeginInvoke(HostPort, false, 
+                delegate(IAsyncResult arLaunch)
+                {
+                    bool succ = funcLaunch.EndInvoke(arLaunch);
+
+                    if(!succ)
+                    {
+                        LogManager.Logger.Warn("Launch trade station failed");
+                        return;
+                    }
+
+                    Action<int> actionLoopConnect = null;
+                    _connectTimes = 1;
+
+                    Action<bool, string> actionClntConnectDone = null;
+                    actionClntConnectDone = (b, t) =>
+                    {
+                        string txt = string.Format("连接交易终端(第{0}次)", _connectTimes);
+                        if (b)
+                        {
+                            txt += "成功";
+                        }
+                        else
+                        {
+                            txt += "失败 (" + t + ")";
+                        }
+                        EventLogger.Write(txt);
+
+                        if (b)
+                        {
+                            Func<AccountVM, bool> actionReady = new Func<AccountVM, bool>(HaveTradeStationReady);
+                            actionReady.BeginInvoke(
+                                acct,
+                                new AsyncCallback(
+                                    delegate(IAsyncResult ar)
+                                    {
+                                        try
+                                        {
+                                            bool ok = actionReady.EndInvoke(ar);
+                                            if (ok)
+                                            {
+                                                uiContext.Send(o => Status = "已连接", null);
+                                                EventLogger.Write(string.Format("{0}准备就绪", acct.InvestorId));
+                                            }
+                                            else
+                                            {
+                                                uiContext.Send(o => Status = "连接失败", null);
+                                                EventLogger.Write(string.Format("{0}发生错误", acct.InvestorId));
+                                                _host.Exit();
+                                            }
+                                        }
+                                        catch (System.Exception ex)
+                                        {
+                                            EventLogger.Write("初始化交易终端发生错误");
+                                            LogManager.Logger.Error(ex.Message);
+                                            _host.Exit();
+                                        }
+
+                                    }),
+                                null);
+                            LogManager.Logger.Info(txt);
+                        }
+                        else
+                        {
+                            LogManager.Logger.Warn(txt);
+                            if (_connectTimes < 10 && actionLoopConnect != null)
+                                actionLoopConnect.Invoke(++_connectTimes);
+                        }
+                    };
+
+                    actionLoopConnect = new Action<int>(delegate(int times)
+                    {
+                        Thread.Sleep(3000);
+                        _client.ConnectAsync("127.0.0.1", HostPort, actionClntConnectDone);
+                    });
+
+                    actionLoopConnect.Invoke(_connectTimes);
+                }, null);
+
+            //_host.Startup(HostPort);
+        }
+
+        private bool HaveTradeStationReady(AccountVM acct)
+        {
+            OperationResult quoteConnResult = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
+                                                          acct.InvestorId);
+            if (quoteConnResult.Success)
+            {
+                EventLogger.Write("行情连接成功");
+            }
+            else
+            {
+                EventLogger.Write("行情连接失败 (" + quoteConnResult.ErrorMessage + ")");
+                return false;
+            }
+
+            OperationResult quoteLoginResult = _client.QuoteLogin("2030", "00092", "888888");
+
+            if (quoteLoginResult.Success)
+            {
+                EventLogger.Write("行情登录成功");
+            }
+            else
+            {
+                EventLogger.Write("行情登录失败 (" + quoteLoginResult.ErrorMessage + ")");
+                return false;
+            }
+
+            OperationResult tradeConnResult = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
+                                                          "0240005010");
+
+            if (tradeConnResult.Success)
+            {
+                EventLogger.Write("交易连接成功");
+            }
+            else
+            {
+                EventLogger.Write("交易连接失败 (" + tradeConnResult.ErrorMessage + ")");
+                return false;
+            }
+
+            OperationResult tradeLoginResult = _client.TradeLogin(acct.BrokerId, 
+                acct.InvestorId, acct.Password);
+
+            if (tradeLoginResult.Success)
+            {
+                EventLogger.Write("交易登录成功");
+            }
+            else
+            {
+                EventLogger.Write("交易登录失败 (" + tradeLoginResult.ErrorMessage + ")");
+                return false;
+            }
+
+            return true;
         }
 
         public static AccountVM Load(XElement xmlElement)
@@ -160,5 +370,33 @@ namespace PortfolioTrading.Modules.Account
 
             return elem;
         }
+
+        #region Client event handlers
+
+        void _client_OnTradeUpdated(trade.Trade obj)
+        {
+            string info = string.Format("trade: {0}\t{1}\t{2}", obj.InstrumentID, obj.Price, obj.TradeTime);
+        }
+
+        void _client_OnMultiLegOrderUpdated(trade.MultiLegOrder obj)
+        {
+            string info = string.Format("mlOrder: {0}\t{1}\t{2}", obj.OrderId, obj.PortfolioId, obj.Quantity);
+        }
+
+        void _client_OnPortfolioItemUpdated(entity.PortfolioItem obj)
+        {
+            string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, obj.Diff);
+        }
+
+        void _client_OnQuoteReceived(entity.Quote obj)
+        {
+            string info = (string.Format("{0}\t{1}\t{2}", obj.symbol, obj.last, obj.update_time));
+        }
+
+        void _client_OnError(string err)
+        {
+            
+        }
+#endregion
     }
 }

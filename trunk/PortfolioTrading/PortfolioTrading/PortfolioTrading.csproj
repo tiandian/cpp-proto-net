@@ -97,6 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Events\OutputEvent.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="Modules\Account\AccountVM.cs" />
     <Compile Include="Modules\Account\AccountInfoView.xaml.cs">
@@ -137,6 +138,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShellViewModel.cs" />
+    <Compile Include="Utils\EventLogger.cs" />
     <Compile Include="Utils\ILog.cs" />
     <Compile Include="Utils\Log4netLogger.cs" />
     <Compile Include="Utils\SideBindingSource.cs" />
@@ -243,9 +245,7 @@
       <Name>APInvokeManaged</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
