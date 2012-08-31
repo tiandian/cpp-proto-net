@@ -4,6 +4,8 @@
 
 #include "LogSeverityLevel.h"
 
+using namespace std;
+
 class CConfiguration
 {
 public:
@@ -16,7 +18,8 @@ public:
 	const char* GetLogFilePath();
 	severity_level GetLogLevel();
 
-	unsigned short GetPort();
+	const string& GetPort();
+	const string& GetAddr();
 
 private:
 	// Logging
@@ -25,7 +28,8 @@ private:
 	severity_level m_logLevel;
 
 	// Connection
-	unsigned short m_port;
+	std::string m_addr;
+	std::string m_port;
 
 };
 

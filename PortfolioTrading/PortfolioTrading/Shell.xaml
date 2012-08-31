@@ -32,8 +32,13 @@
                 <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedBottom">
                     <igDock:ContentPane Header="组合下单" 
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.OrdersRegion}"/>
-                    <igDock:ContentPane Header="成交明细"
+                    <igDock:TabGroupPane>
+                        <igDock:ContentPane Header="成交明细"
                                     cal:RegionManager.RegionName="{x:Static src:RegionNames.TimeNSalesRegion}"/>
+                        <igDock:ContentPane Header="运行日志"
+                                    cal:RegionManager.RegionName="{x:Static src:RegionNames.OperationsRegion}"/>
+                    </igDock:TabGroupPane>
+                   
                 </igDock:SplitPane>
 
             </igDock:XamDockManager.Panes>

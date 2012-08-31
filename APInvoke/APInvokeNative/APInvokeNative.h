@@ -72,7 +72,7 @@ public:
 
 	virtual void RegisterHandler(SessionManagerHandler* handler) = 0;
 
-	virtual bool Listen(unsigned int nPort) = 0;
+	virtual bool Listen(const string& sAddr, const string& sPort) = 0;
 
 	virtual void Close() = 0;
 

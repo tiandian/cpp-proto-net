@@ -86,7 +86,7 @@ public:
 
 	void RegisterHandler(SessionManagerHandler* handler);
 
-	bool Listen(unsigned int nPort);
+	bool Listen(const string& sAddr, const string& sPort);
 
 	void Close();
 

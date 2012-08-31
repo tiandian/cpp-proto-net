@@ -257,8 +257,6 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 
 	if(m_loginSuccess)
 	{
-		m_condLogin.notify_one();
-
 		// 保存会话参数
 		FRONT_ID = pRspUserLogin->FrontID;
 		SESSION_ID = pRspUserLogin->SessionID;
@@ -287,6 +285,8 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		m_sLoginError = pRspInfo->ErrorMsg;
 		logger.Error(boost::str(boost::format("Error Message:%s") % pRspInfo->ErrorMsg));
 	}
+
+	m_condLogin.notify_one();
 }
 
 void CTradeAgent::ReqSettlementInfoConfirm()

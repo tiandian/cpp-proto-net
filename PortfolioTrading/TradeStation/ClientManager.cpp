@@ -2,6 +2,7 @@
 #include "ClientManager.h"
 #include "globalmembers.h"
 #include "../Entity/gen/cpp/message.pb.h"
+#include "charsetconvert.h"
 
 #include <boost/format.hpp>
 #include <boost/bind.hpp>
@@ -155,7 +156,9 @@ void CClientManager::TradeLogin( CClientAgent* pClientAgent, const string& in_da
 
 	entity::OperationReturn operRet;
 	operRet.set_success(boost::get<0>(ret));
-	operRet.set_errormessage(boost::get<1>(ret));
+	string utf8Msg;
+	GB2312ToUTF_8(utf8Msg, boost::get<1>(ret).c_str());
+	operRet.set_errormessage(utf8Msg);
 
 	operRet.SerializeToString(&out_data);
 }

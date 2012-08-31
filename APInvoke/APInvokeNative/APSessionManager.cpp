@@ -29,9 +29,9 @@ APSessionManager::~APSessionManager(void)
 {
 }
 
-bool APSessionManager::Listen( unsigned int nPort )
+bool APSessionManager::Listen( const string& sAddr, const string& sPort )
 {
-	m_server = boost::shared_ptr<server>(new server(string("192.168.2.100"), string("16168")));
+	m_server = boost::shared_ptr<server>(new server(sAddr, sPort));
 	m_server->set_accept_handler(boost::bind(&APSessionManager::OnClientAccepted, this, _1));
 	m_server->run();
 	return true;

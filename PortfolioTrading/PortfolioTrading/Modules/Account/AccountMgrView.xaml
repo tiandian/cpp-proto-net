@@ -21,8 +21,8 @@
                         <DataTemplate>
                             <DockPanel Width="150">
                                 <Button DockPanel.Dock="Right"
-                                        Command="{Binding Data.AddPortfolioCommand}"
-                                        CommandParameter="{Binding Data}">+组合
+                                        Command="{Binding Data.ConnectCommand}"
+                                        CommandParameter="{Binding Data}">连接
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Visibility" Value="Hidden"/>
@@ -34,6 +34,8 @@
                                         </Style>
                                     </Button.Style>
                                 </Button>
+                                <TextBlock Name="txtStatus" Text="{Binding Data.Status}" Margin="2" 
+                                           DockPanel.Dock="Bottom" FontSize="9" Opacity="0.8" />
                                 <TextBlock Text="{Binding Data.InvestorId}" VerticalAlignment="Center"></TextBlock>
                             </DockPanel>
                         </DataTemplate>

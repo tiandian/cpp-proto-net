@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel.Composition;
+using Microsoft.Practices.Prism.Events;
+using PortfolioTrading.Events;
 
 namespace PortfolioTrading.Modules.Watching
 {
@@ -21,9 +23,17 @@ namespace PortfolioTrading.Modules.Watching
     [Export]
     public partial class OutputView : UserControl
     {
-        public OutputView()
+        [ImportingConstructor]
+        public OutputView(IEventAggregator evtAgg)
         {
             InitializeComponent();
+            evtAgg.GetEvent<OutputEvent>().Subscribe(PrintMessage, ThreadOption.UIThread);
+        } 
+
+        private void PrintMessage(string message)
+        {
+            string txt = string.Format("{0} {1}\n", DateTime.Now.ToLongTimeString(), message);
+            this.txtOutput.AppendText(txt);
         }
     }
 }
