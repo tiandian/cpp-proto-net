@@ -9,6 +9,9 @@ using Microsoft.Practices.Prism.Commands;
 using System.Windows.Input;
 using System.Windows;
 using Infragistics.Controls.Menus;
+using System.Xml.Linq;
+using System.Reflection;
+using System.IO;
 
 namespace PortfolioTrading.ViewModels
 {
@@ -47,6 +50,8 @@ namespace PortfolioTrading.ViewModels
             _editAccountCommand = new DelegateCommand<XamDataTree>(OnEditAccount);
             _removeAccountCommand = new DelegateCommand<XamDataTree>(OnRemoveAccount);
             //_accounts.Add(new AccountVM() { BrokerId="0240", InvestorId="0240050008", Password="888888" });
+
+            Load();
         }
 
         private void OnAddAccount()
@@ -60,6 +65,8 @@ namespace PortfolioTrading.ViewModels
             {
                 _accounts.Add(acct);
                 //CheckCanExecute();
+
+                Persist();
             }
         }
 
@@ -72,6 +79,8 @@ namespace PortfolioTrading.ViewModels
             addAcctDlg.Owner = Application.Current.MainWindow;
             addAcctDlg.ViewModel = acct;
             bool? ret = addAcctDlg.ShowDialog();
+            if (ret ?? false)
+                Persist();
         }
 
         private bool CanEditAccount(XamDataTree dataTree)
@@ -90,6 +99,7 @@ namespace PortfolioTrading.ViewModels
             if (res == MessageBoxResult.Yes)
             {
                 this._accounts.Remove(acct);
+                Persist();
             }
         }
 
@@ -110,5 +120,43 @@ namespace PortfolioTrading.ViewModels
             this._removeAccountCommand.RaiseCanExecuteChanged();
         }
 
+        private const string AccountsFile = "accts.xml";
+
+        private void Persist()
+        {
+            XElement acctsElem = new XElement("accounts");
+
+            foreach (var acct in _accounts)
+            {
+                XElement acctElem = acct.Persist();
+                acctsElem.Add(acctElem);
+            }
+            
+            acctsElem.Save(PeristFilePath);
+        }
+
+        private string PeristFilePath
+        {
+            get
+            {
+                string loc = Assembly.GetExecutingAssembly().Location;
+                string dir = Path.GetDirectoryName(loc);
+                return Path.Combine(dir, AccountsFile);
+            }
+        }
+
+        private void Load()
+        {
+            string filePath = PeristFilePath;
+            if (File.Exists(filePath))
+            {
+                XElement acctsElem = XElement.Load(filePath);
+                foreach (var acctElem in acctsElem.Elements("account"))
+                {
+                    AccountVM acctVm = AccountVM.Load(acctElem);
+                    _accounts.Add(acctVm);
+                }
+            }
+        }
     }
 }

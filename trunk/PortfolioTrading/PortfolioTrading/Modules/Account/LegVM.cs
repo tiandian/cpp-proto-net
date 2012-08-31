@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using entity;
+using System.Xml.Linq;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -128,6 +129,37 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        public static LegVM Load(XElement xmlElement)
+        {
+            LegVM leg = new LegVM();
+
+            XAttribute attr = xmlElement.Attribute("symbol");
+            if (attr != null)
+                leg.Symbol = attr.Value;
+
+            attr = xmlElement.Attribute("ratio");
+            if (attr != null)
+            {
+                leg.Ratio = int.Parse(attr.Value);
+            }
+
+            attr = xmlElement.Attribute("side");
+            if (attr != null)
+            {
+                leg.Side = (PosiDirectionType)Enum.Parse(typeof(PosiDirectionType), attr.Value);
+            }
+
+            return leg;
+        }
+
+        public XElement Persist()
+        {
+            XElement elem = new XElement("leg");
+            elem.Add(new XAttribute("symbol", _symbol));
+            elem.Add(new XAttribute("ratio", _ratio));
+            elem.Add(new XAttribute("side", _side.ToString()));
+            return elem;
+        }
     }
 
 }
