@@ -6,6 +6,7 @@ using Microsoft.Practices.Prism.ViewModel;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
+using System.Xml.Linq;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -116,6 +117,48 @@ namespace PortfolioTrading.Modules.Account
                 _acctPortfolios.Add(portf);
             }
             
+        }
+
+        public static AccountVM Load(XElement xmlElement)
+        {
+            AccountVM acct = new AccountVM();
+
+            XAttribute attrBrokerId = xmlElement.Attribute("brokerId");
+            if (attrBrokerId != null)
+                acct.BrokerId = attrBrokerId.Value;
+
+            XAttribute attrInvestorId = xmlElement.Attribute("investorId");
+            if (attrInvestorId != null)
+                acct.InvestorId = attrInvestorId.Value;
+
+            XAttribute attrPwd = xmlElement.Attribute("password");
+            if (attrPwd != null)
+                acct.Password = attrPwd.Value;
+
+            foreach(var portfElem in xmlElement.Element("portfolios").Elements("portfolio"))
+            {
+                PortfolioVM porfVm = PortfolioVM.Load(portfElem);
+                acct._acctPortfolios.Add(porfVm);
+            }
+
+            return acct;
+        }
+
+        public XElement Persist()
+        {
+            XElement elem = new XElement("account");
+            elem.Add(new XAttribute("brokerId", _brokerId));
+            elem.Add(new XAttribute("investorId", _investorId));
+            elem.Add(new XAttribute("password", _password));
+
+            XElement elemPortfs = new XElement("portfolios");
+            foreach (var portf in Portfolios)
+            {
+                elemPortfs.Add(portf.Persist());
+            }
+            elem.Add(elemPortfs);
+
+            return elem;
         }
     }
 }

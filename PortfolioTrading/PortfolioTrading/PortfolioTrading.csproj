@@ -124,6 +124,9 @@
     <Compile Include="Modules\Portfolio\PortfoliosView.xaml.cs">
       <DependentUpon>PortfoliosView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Watching\OutputView.xaml.cs">
+      <DependentUpon>OutputView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Watching\TimeNSalesView.xaml.cs">
       <DependentUpon>TimeNSalesView.xaml</DependentUpon>
     </Compile>
@@ -193,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Portfolio\PortfoliosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Watching\OutputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

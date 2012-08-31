@@ -19,6 +19,8 @@ namespace PortfolioTrading.Modules.Watching
             IRegionManager regionMgr = ServiceLocator.Current.GetInstance<IRegionManager>();
             regionMgr.RegisterViewWithRegion(RegionNames.TimeNSalesRegion,
                 () => ServiceLocator.Current.GetInstance<TimeNSalesView>());
+            regionMgr.RegisterViewWithRegion(RegionNames.OperationsRegion,
+                () => ServiceLocator.Current.GetInstance<OutputView>());
         }
     }
 }
