@@ -97,8 +97,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Events\AccountChangedEvent.cs" />
+    <Compile Include="Events\AccountSelectedEvent.cs" />
     <Compile Include="Events\AppShutDown.cs" />
     <Compile Include="Events\OutputEvent.cs" />
+    <Compile Include="Events\PortfolioSelectedEvent.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="Modules\Account\AccountVM.cs" />
     <Compile Include="Modules\Account\AccountInfoView.xaml.cs">

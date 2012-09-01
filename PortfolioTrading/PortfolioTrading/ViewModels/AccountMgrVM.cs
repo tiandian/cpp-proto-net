@@ -46,13 +46,11 @@ namespace PortfolioTrading.ViewModels
         private DelegateCommand<XamDataTree> _editAccountCommand;
         private DelegateCommand<XamDataTree> _removeAccountCommand;
 
-        private IEventAggregator EventAggregator { get; set; }
-
         [ImportingConstructor]
         public AccountMgrVM(IEventAggregator evtAgg)
         {
-            EventAggregator = evtAgg;
-            EventAggregator.GetEvent<AppShutDown>().Subscribe(OnAppShutDown);
+            evtAgg.GetEvent<AppShutDown>().Subscribe(OnAppShutDown);
+            evtAgg.GetEvent<AccountChangedEvent>().Subscribe(OnCertainAccountChanged);
 
             _addAccountCommand = new DelegateCommand(OnAddAccount);
             _editAccountCommand = new DelegateCommand<XamDataTree>(OnEditAccount);
@@ -60,6 +58,11 @@ namespace PortfolioTrading.ViewModels
             //_accounts.Add(new AccountVM() { BrokerId="0240", InvestorId="0240050008", Password="888888" });
 
             Load();
+        }
+
+        private void OnCertainAccountChanged(AccountVM acctVm)
+        {
+            Persist();
         }
 
         private void OnAddAccount()

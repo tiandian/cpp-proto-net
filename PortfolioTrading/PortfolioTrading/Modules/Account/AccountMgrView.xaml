@@ -14,9 +14,10 @@
             <Button Width="50" Margin="4, 0" Command="{Binding RemoveAccountCommand}"
                     CommandParameter="{Binding ElementName=xamDataTreeAccount}">删除</Button>
         </DockPanel>
-        <ig:XamDataTree Name="xamDataTreeAccount" Margin="4,0,4,4" ItemsSource="{Binding Accounts}" NodeLineVisibility="Visible" >
+        <ig:XamDataTree Name="xamDataTreeAccount" Margin="4,0,4,4" ItemsSource="{Binding Accounts}" 
+                        SelectedNodesCollectionChanged="xamDataTreeAccount_SelectedNodesCollectionChanged">
             <ig:XamDataTree.GlobalNodeLayouts>
-                <ig:NodeLayout Key="Account" TargetTypeName="AccountVM" >
+                <ig:NodeLayout Key="Account" TargetTypeName="AccountVM" IsExpandedMemberPath="IsExpanded">
                     <ig:NodeLayout.ItemTemplate>
                         <DataTemplate>
                             <DockPanel Width="150">
@@ -41,7 +42,7 @@
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
                 </ig:NodeLayout>
-                <ig:NodeLayout Key="Portfolio" TargetTypeName="PortfolioVM" DisplayMemberPath="Id"/>
+                <ig:NodeLayout Key="Portfolio" TargetTypeName="PortfolioVM" DisplayMemberPath="DisplayText"/>
             </ig:XamDataTree.GlobalNodeLayouts>
         </ig:XamDataTree>
     </DockPanel>

@@ -97,6 +97,78 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region OpenTimes
+        private int _openTimes;
+
+        public int OpenTimes
+        {
+            get { return _openTimes; }
+            set
+            {
+                if (_openTimes != value)
+                {
+                    _openTimes = value;
+                    RaisePropertyChanged("OpenTimes");
+                }
+            }
+        }
+        #endregion
+
+        #region DoneTimes
+        private int _doneTimes;
+
+        public int DoneTimes
+        {
+            get { return _doneTimes; }
+            set
+            {
+                if (_doneTimes != value)
+                {
+                    _doneTimes = value;
+                    RaisePropertyChanged("DoneTimes");
+                }
+            }
+        }
+        #endregion
+
+        #region Gain
+        private double _gain;
+
+        public double Gain
+        {
+            get { return _gain; }
+            set
+            {
+                if (_gain != value)
+                {
+                    _gain = value;
+                    RaisePropertyChanged("Gain");
+                }
+            }
+        }
+        #endregion
+
+        public string DisplayText
+        {
+            get
+            {
+                StringBuilder txt = new StringBuilder();
+                txt.AppendFormat("{0}: ", Id);
+                for (int i = 0; i < _legs.Count; ++i)
+                {
+                    if (i > 0)
+                        txt.Append(" - ");
+
+                    var l = _legs[i];
+                    txt.AppendFormat("{0}({1})", l.Name, 
+                        l.Side == entity.PosiDirectionType.LONG ? "多" : "空");
+                }
+
+                return txt.ToString();
+            }
+        }
+
+
         public IEnumerable<LegVM> Legs
         {
             get { return _legs; }
@@ -105,6 +177,24 @@ namespace PortfolioTrading.Modules.Account
         public void AddLeg(LegVM leg)
         {
             _legs.Add(leg);
+        }
+
+        public int LegCount
+        {
+            get
+            {
+                return _legs.Count;
+            }
+        }
+
+        public LegVM GetLeg(int idx)
+        {
+            if (idx < _legs.Count && idx > -1)
+            {
+                return _legs[idx];
+            }
+
+            return null;
         }
 
         public static PortfolioVM Load(XElement xmlElement)
@@ -157,6 +247,36 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(elemLegs);
 
             return elem;
+        }
+
+        public entity.PortfolioItem GetEntity()
+        {
+            entity.PortfolioItem portfolioItem = new entity.PortfolioItem();
+            portfolioItem.ID = Id;
+            portfolioItem.AutoOpen = AutoOpen;
+            portfolioItem.Diff = Diff;
+            portfolioItem.Quantity = Quantity;
+
+            foreach (var legVm in _legs)
+            {
+                entity.LegItem leg = new entity.LegItem();
+                leg.Symbol = legVm.Symbol;
+                leg.Side = legVm.Side;
+                leg.Ratio = legVm.Ratio;
+                portfolioItem.Legs.Add(leg);
+            }
+
+            return portfolioItem;
+        }
+
+        public void Update(entity.PortfolioItem item)
+        {
+            Diff = item.Diff;
+
+            for (int i = 0; i < item.Legs.Count; ++i )
+            {
+                _legs[i].Update(item.Legs[i]);
+            }
         }
     }
 }
