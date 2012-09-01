@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel.Composition;
+using Microsoft.Practices.Prism.Events;
+using PortfolioTrading.Events;
 
 namespace PortfolioTrading
 {
@@ -20,8 +22,12 @@ namespace PortfolioTrading
     [Export]
     public partial class Shell : Window
     {
-        public Shell()
+        private IEventAggregator EventAggregator { get; set; }
+
+        [ImportingConstructor]
+        public Shell(IEventAggregator evtAgg)
         {
+            EventAggregator = evtAgg;
             InitializeComponent();
         }
        
@@ -32,7 +38,7 @@ namespace PortfolioTrading
 
         private void Window_Closed(object sender, EventArgs e)
         {
-
+            EventAggregator.GetEvent<AppShutDown>().Publish("");
         }
 
     }
