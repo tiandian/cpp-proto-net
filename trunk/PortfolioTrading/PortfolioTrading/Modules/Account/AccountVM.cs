@@ -10,6 +10,10 @@ using System.Xml.Linq;
 using PortfolioTrading.Infrastructure;
 using System.Threading;
 using PortfolioTrading.Utils;
+using System.Diagnostics;
+using Microsoft.Practices.Prism.Events;
+using Microsoft.Practices.ServiceLocation;
+using PortfolioTrading.Events;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -123,6 +127,7 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _status = value;
                     RaisePropertyChanged("Status");
+                    RaisePropertyChanged("IsConnected");
                 }
             }
         }
@@ -132,6 +137,12 @@ namespace PortfolioTrading.Modules.Account
         public IEnumerable<PortfolioVM> Portfolios
         {
             get { return _acctPortfolios; }
+        }
+
+        public PortfolioVM Get(string pid)
+        {
+            int id = int.Parse(pid);
+            return _acctPortfolios[id - 1];
         }
 
         public ICommand AddPortfolioCommand
@@ -148,40 +159,41 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnAddPortfolio(AccountVM acct)
         {
-            /*
             PortfolioVM portf = new PortfolioVM();
-
-            portf.Id = "haha";
-
-            portf.Quantity = 1;
-            portf.AddLeg(new LegVM() 
-            {
-                Symbol = "cu1209",
-                Side = entity.PosiDirectionType.LONG,
-                Ratio = 1
-            });
-            portf.AddLeg(new LegVM()
-            {
-                Symbol = "cu1210",
-                Side = entity.PosiDirectionType.SHORT,
-                Ratio = 1
-            });
-            */
+            portf.Id = (_acctPortfolios.Count + 1).ToString();
 
             EditPortfolioDlg dlg = new EditPortfolioDlg();
             dlg.Owner = System.Windows.Application.Current.MainWindow;
+            dlg.Portfolio = portf;
             bool? res = dlg.ShowDialog();
             if (res ?? false)
             {
-                PortfolioVM portf = dlg.Portfolio;
+                entity.PortfolioItem portfolioItem = dlg.Portfolio.GetEntity();
+                _client.AddPortf(portfolioItem);
                 _acctPortfolios.Add(portf);
+
+                PublishChanged(this);
             }
-            
+        }
+
+        private void SyncToHost()
+        {
+            foreach (var portf in _acctPortfolios)
+            {
+                entity.PortfolioItem portfolioItem = portf.GetEntity();
+                _client.AddPortf(portfolioItem);
+            }
         }
 
         public bool IsConnected
         {
             get { return _status == "已连接"; }
+        }
+
+        public bool IsExpanded
+        {
+            get { return true; }
+            set { }
         }
 
         public void Close()
@@ -246,6 +258,7 @@ namespace PortfolioTrading.Modules.Account
                                             {
                                                 uiContext.Send(o => Status = "已连接", null);
                                                 EventLogger.Write(string.Format("{0}准备就绪", acct.InvestorId));
+                                                SyncToHost();
                                             }
                                             else
                                             {
@@ -397,6 +410,9 @@ namespace PortfolioTrading.Modules.Account
         void _client_OnPortfolioItemUpdated(entity.PortfolioItem obj)
         {
             string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, obj.Diff);
+            Debug.WriteLine(info);
+            var portf = Get(obj.ID);
+            portf.Update(obj);
         }
 
         void _client_OnQuoteReceived(entity.Quote obj)
@@ -409,5 +425,11 @@ namespace PortfolioTrading.Modules.Account
             
         }
         #endregion
+        
+        private static void PublishChanged(AccountVM acct)
+        {
+            IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            evtAgg.GetEvent<AccountChangedEvent>().Publish(acct);
+        }
     }
 }

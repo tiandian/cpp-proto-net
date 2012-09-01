@@ -22,10 +22,16 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _symbol = value;
                     RaisePropertyChanged("Symbol");
+                    RaisePropertyChanged("Name");
                 }
             }
         }
         #endregion
+
+        public string Name
+        {
+            get { return _symbol; }
+        }
 
         #region Ratio
         private int _ratio;
@@ -159,6 +165,14 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("ratio", _ratio));
             elem.Add(new XAttribute("side", _side.ToString()));
             return elem;
+        }
+
+        public void Update(entity.LegItem item)
+        {
+            Status = item.Status;
+            Last = item.Last;
+            Ask = item.Ask == double.MaxValue ? 0 : item.Ask;
+            Bid = item.Bid == double.MaxValue ? 0 : item.Bid;
         }
     }
 

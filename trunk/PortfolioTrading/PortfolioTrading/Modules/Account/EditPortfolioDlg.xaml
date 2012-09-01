@@ -2,13 +2,15 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:utils="clr-namespace:PortfolioTrading.Utils"
+        xmlns:local="clr-namespace:PortfolioTrading.Modules.Account"
         Title="EditPortfolioDlg" Height="300" Width="300"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
+    <Window.Resources>
+        <utils:SideBindingSource x:Key="sideSource" />
+        <local:EditPortfolioVM x:Key="editPortfolioVM" />
+    </Window.Resources>
     <DockPanel>
-        <DockPanel.Resources>
-            <utils:SideBindingSource x:Key="sideSource" />
-        </DockPanel.Resources>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -25,29 +27,31 @@
                     <TextBlock Text="{Binding DisplayText}"></TextBlock>
                 </DataTemplate>
             </StackPanel.Resources>
-            <DockPanel Margin="2">
-                <CheckBox DockPanel.Dock="Top" Margin="2" IsChecked="True" Name="chkFirstLeg">第一腿</CheckBox>
+            <DockPanel Margin="2" DataContext="{StaticResource editPortfolioVM}">
+                <CheckBox DockPanel.Dock="Top" Margin="2" IsChecked="{Binding Leg1}" Name="chkFirstLeg">第一腿</CheckBox>
                 <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
                     <TextBlock>商品</TextBlock>
-                    <TextBox Width="60"></TextBox>
+                    <TextBox Width="60" Text="{Binding Symbol1}"></TextBox>
                     <TextBlock>多空</TextBlock>
                     <ComboBox Width="60" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
-                              ItemTemplate="{StaticResource sideItemTempl}">
+                              ItemTemplate="{StaticResource sideItemTempl}"
+                              SelectedValuePath="Side" SelectedValue="{Binding Side1}">
                     </ComboBox>
                     <TextBlock>比率</TextBlock>
-                    
+                    <TextBox Text="{Binding Ratio1}" TextAlignment="Right"></TextBox>
                 </DockPanel>
             </DockPanel>
-            <DockPanel Margin="2">
-                <CheckBox DockPanel.Dock="Top" Margin="2" IsChecked="True" Name="chkSecondLeg">第二腿</CheckBox>
+            <DockPanel Margin="2" DataContext="{StaticResource editPortfolioVM}">
+                <CheckBox DockPanel.Dock="Top" Margin="2" IsChecked="{Binding Leg2}" Name="chkSecondLeg">第二腿</CheckBox>
                 <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkSecondLeg}">
                     <TextBlock>商品</TextBlock>
-                    <TextBox Width="60"></TextBox>
+                    <TextBox Width="60" Text="{Binding Symbol2}"></TextBox>
                     <TextBlock>多空</TextBlock>
                     <ComboBox Width="60" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
-                              ItemTemplate="{StaticResource sideItemTempl}"></ComboBox>
+                              ItemTemplate="{StaticResource sideItemTempl}"
+                              SelectedValuePath="Side" SelectedValue="{Binding Side2}"></ComboBox>
                     <TextBlock>比率</TextBlock>
-
+                    <TextBox Text="{Binding Ratio2}" TextAlignment="Right"></TextBox>
                 </DockPanel>
             </DockPanel>
         </StackPanel>

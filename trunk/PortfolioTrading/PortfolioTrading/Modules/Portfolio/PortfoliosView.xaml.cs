@@ -12,6 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel.Composition;
+using Microsoft.Practices.Prism.Events;
+using PortfolioTrading.Events;
+using PortfolioTrading.Modules.Account;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -21,9 +24,16 @@ namespace PortfolioTrading.Modules.Portfolio
     [Export]
     public partial class PortfoliosView : UserControl
     {
-        public PortfoliosView()
+        [ImportingConstructor]
+        public PortfoliosView(IEventAggregator evtAgg)
         {
+            evtAgg.GetEvent<AccountSelectedEvent>().Subscribe(OnAccountSelected, ThreadOption.UIThread);
             InitializeComponent();
+        }
+
+        public void OnAccountSelected(AccountVM accountVm)
+        {
+            this.DataContext = accountVm;
         }
     }
 }

@@ -13,6 +13,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel.Composition;
 using PortfolioTrading.ViewModels;
+using Microsoft.Practices.Prism.Events;
+using PortfolioTrading.Events;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -23,14 +25,25 @@ namespace PortfolioTrading.Modules.Account
     public partial class AccountMgrView : UserControl
     {
         private AccountMgrVM ViewModel { get; set; }
-
+        private IEventAggregator EventAggregator { get; set; }
         [ImportingConstructor]
-        public AccountMgrView(AccountMgrVM viewModel)
+        public AccountMgrView(AccountMgrVM viewModel, IEventAggregator evtAgg)
         {
             ViewModel = viewModel;
             this.DataContext = ViewModel;
 
+            EventAggregator = evtAgg;
             InitializeComponent();
+        }
+
+        private void xamDataTreeAccount_SelectedNodesCollectionChanged(object sender, Infragistics.Controls.Menus.NodeSelectionEventArgs e)
+        {
+            if (e.CurrentSelectedNodes.Count > 0)
+            {
+                AccountVM acctVm = e.CurrentSelectedNodes[0].Data as AccountVM;
+                if(acctVm != null)
+                    EventAggregator.GetEvent<AccountSelectedEvent>().Publish(acctVm);
+            }
         }
     }
 }
