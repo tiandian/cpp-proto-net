@@ -12,6 +12,8 @@ using Infragistics.Controls.Menus;
 using System.Xml.Linq;
 using System.Reflection;
 using System.IO;
+using Microsoft.Practices.Prism.Events;
+using PortfolioTrading.Events;
 
 namespace PortfolioTrading.ViewModels
 {
@@ -43,9 +45,15 @@ namespace PortfolioTrading.ViewModels
         private DelegateCommand _addAccountCommand;
         private DelegateCommand<XamDataTree> _editAccountCommand;
         private DelegateCommand<XamDataTree> _removeAccountCommand;
-        
-        public AccountMgrVM()
+
+        private IEventAggregator EventAggregator { get; set; }
+
+        [ImportingConstructor]
+        public AccountMgrVM(IEventAggregator evtAgg)
         {
+            EventAggregator = evtAgg;
+            EventAggregator.GetEvent<AppShutDown>().Subscribe(OnAppShutDown);
+
             _addAccountCommand = new DelegateCommand(OnAddAccount);
             _editAccountCommand = new DelegateCommand<XamDataTree>(OnEditAccount);
             _removeAccountCommand = new DelegateCommand<XamDataTree>(OnRemoveAccount);
@@ -156,6 +164,15 @@ namespace PortfolioTrading.ViewModels
                     AccountVM acctVm = AccountVM.Load(acctElem);
                     _accounts.Add(acctVm);
                 }
+            }
+        }
+
+        private void OnAppShutDown(string msg)
+        {
+            foreach (var acct in _accounts)
+            {
+                if (acct.IsConnected)
+                    acct.Close();
             }
         }
     }

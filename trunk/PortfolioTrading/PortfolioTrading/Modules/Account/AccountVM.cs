@@ -179,6 +179,17 @@ namespace PortfolioTrading.Modules.Account
             
         }
 
+        public bool IsConnected
+        {
+            get { return _status == "已连接"; }
+        }
+
+        public void Close()
+        {
+            _client.Disconnect();
+            _host.Exit();
+        }
+
         private int _connectTimes;
 
         private void OnConnectHost(AccountVM acct)
@@ -192,7 +203,7 @@ namespace PortfolioTrading.Modules.Account
             EventLogger.Write(string.Format("正在为{0}建立交易终端...", acct.InvestorId));
 
             Func<int, bool, bool> funcLaunch = new Func<int, bool, bool>(_host.Startup);
-            funcLaunch.BeginInvoke(HostPort, false, 
+            funcLaunch.BeginInvoke(HostPort, true, 
                 delegate(IAsyncResult arLaunch)
                 {
                     bool succ = funcLaunch.EndInvoke(arLaunch);
@@ -397,6 +408,6 @@ namespace PortfolioTrading.Modules.Account
         {
             
         }
-#endregion
+        #endregion
     }
 }

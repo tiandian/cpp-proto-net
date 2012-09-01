@@ -97,6 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Events\AppShutDown.cs" />
     <Compile Include="Events\OutputEvent.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="Modules\Account\AccountVM.cs" />
