@@ -101,8 +101,10 @@
     <Compile Include="Events\AccountChangedEvent.cs" />
     <Compile Include="Events\AccountSelectedEvent.cs" />
     <Compile Include="Events\AppShutDown.cs" />
+    <Compile Include="Events\MultiLegOrderUpdatedEvent.cs" />
     <Compile Include="Events\OutputEvent.cs" />
     <Compile Include="Events\PortfolioSelectedEvent.cs" />
+    <Compile Include="Events\TradeUpdatedEvent.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="Modules\Account\AccountVM.cs" />
     <Compile Include="Modules\Account\AccountInfoView.xaml.cs">
@@ -120,6 +122,8 @@
     </Compile>
     <Compile Include="Modules\Account\LegVM.cs" />
     <Compile Include="Modules\Account\PortfolioVM.cs" />
+    <Compile Include="Modules\Portfolio\MultiLegOrderVM.cs" />
+    <Compile Include="Modules\Portfolio\OrderVM.cs" />
     <Compile Include="Modules\Portfolio\PortfolioModule.cs" />
     <Compile Include="Modules\Portfolio\PortfolioOrdersView.xaml.cs">
       <DependentUpon>PortfolioOrdersView.xaml</DependentUpon>
@@ -130,6 +134,7 @@
     <Compile Include="Modules\Portfolio\PortfoliosView.xaml.cs">
       <DependentUpon>PortfoliosView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Portfolio\TradeVM.cs" />
     <Compile Include="Modules\Watching\OutputView.xaml.cs">
       <DependentUpon>OutputView.xaml</DependentUpon>
     </Compile>

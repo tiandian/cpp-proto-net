@@ -26,6 +26,8 @@ namespace PortfolioTrading.Modules.Account
 
         private static int HostPortSeed = 16180;
 
+        private IEventAggregator EventAggregator { get; set; }
+
         public AccountVM()
         {
             AddPortfolioCommand = new DelegateCommand<AccountVM>(OnAddPortfolio);
@@ -33,6 +35,7 @@ namespace PortfolioTrading.Modules.Account
 
             _host = new NativeHost();
 
+            EventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
 
             _client = new Client();
             _client.OnError += new Action<string>(_client_OnError);
@@ -400,11 +403,13 @@ namespace PortfolioTrading.Modules.Account
         void _client_OnTradeUpdated(trade.Trade obj)
         {
             string info = string.Format("trade: {0}\t{1}\t{2}", obj.InstrumentID, obj.Price, obj.TradeTime);
+            EventAggregator.GetEvent<TradeUpdatedEvent>().Publish(obj);
         }
 
         void _client_OnMultiLegOrderUpdated(trade.MultiLegOrder obj)
         {
             string info = string.Format("mlOrder: {0}\t{1}\t{2}", obj.OrderId, obj.PortfolioId, obj.Quantity);
+            EventAggregator.GetEvent<MultiLegOrderUpdatedEvent>().Publish(obj);
         }
 
         void _client_OnPortfolioItemUpdated(entity.PortfolioItem obj)
