@@ -97,6 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\PortfMonTemplateSelector.cs" />
     <Compile Include="Events\AccountChangedEvent.cs" />
     <Compile Include="Events\AccountSelectedEvent.cs" />
     <Compile Include="Events\AppShutDown.cs" />
@@ -136,6 +137,8 @@
       <DependentUpon>TimeNSalesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Watching\WatchingModule.cs" />
+    <Compile Include="Controls\PositionOperPanel.cs" />
+    <Compile Include="Controls\PortfMonitorPanel.cs" />
     <Compile Include="PtBootstrapper.cs" />
     <Compile Include="RegionNames.cs" />
     <Compile Include="Shell.xaml.cs">
@@ -216,6 +219,10 @@
     <Page Include="Shell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

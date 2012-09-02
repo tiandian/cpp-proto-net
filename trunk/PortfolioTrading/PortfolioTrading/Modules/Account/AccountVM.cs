@@ -159,7 +159,7 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnAddPortfolio(AccountVM acct)
         {
-            PortfolioVM portf = new PortfolioVM();
+            PortfolioVM portf = new PortfolioVM(this);
             portf.Id = (_acctPortfolios.Count + 1).ToString();
 
             EditPortfolioDlg dlg = new EditPortfolioDlg();
@@ -371,7 +371,7 @@ namespace PortfolioTrading.Modules.Account
 
             foreach(var portfElem in xmlElement.Element("portfolios").Elements("portfolio"))
             {
-                PortfolioVM porfVm = PortfolioVM.Load(portfElem);
+                PortfolioVM porfVm = PortfolioVM.Load(acct, portfElem);
                 acct._acctPortfolios.Add(porfVm);
             }
 
@@ -430,6 +430,11 @@ namespace PortfolioTrading.Modules.Account
         {
             IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
             evtAgg.GetEvent<AccountChangedEvent>().Publish(acct);
+        }
+
+        internal Client Host
+        {
+            get { return _client; }
         }
     }
 }

@@ -10,9 +10,19 @@
         Height="700" Width="1024" Title="Shell" WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" Loaded="Window_Loaded">
     <DockPanel>
-        <igDock:XamDockManager Theme="Office2k7Blue" LayoutMode="FillContainer">
+        <igDock:XamDockManager Theme="Office2k7Blue">
+            <igDock:DocumentContentHost>
+                <igDock:SplitPane>
+                    <igDock:TabGroupPane>
+                        <igDock:ContentPane Header="组合一览"
+                                            cal:RegionManager.RegionName="{x:Static src:RegionNames.PortfolioViewRegion}">
+                            
+                        </igDock:ContentPane>
+                    </igDock:TabGroupPane>
+                </igDock:SplitPane>
+            </igDock:DocumentContentHost>
             <igDock:XamDockManager.Panes>
-                <igDock:SplitPane Width="200" SplitterOrientation="Horizontal" 
+                <igDock:SplitPane Width="260" SplitterOrientation="Horizontal" 
                                   igDock:XamDockManager.InitialLocation="DockedLeft">
                     <igDock:ContentPane Header="帐户管理" 
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.AccountMgrRegion}" />
@@ -20,27 +30,26 @@
                                         cal:RegionManager.RegionName="{x:Static src:RegionNames.AccountInfoRegion}" />
                 </igDock:SplitPane>
 
-                <igDock:SplitPane Height="250" igDock:XamDockManager.InitialLocation="DockedTop">
-                    <igDock:ContentPane Header="组合一览" 
-                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.PortfolioViewRegion}"/>
-                    <igDock:SplitPane>
-                        <igDock:ContentPane Header="组合设置"
-                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.PortfolioSettingsRegion}"/>
-                    </igDock:SplitPane>
-                    
-                </igDock:SplitPane>
-                <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedBottom">
-                    <igDock:ContentPane Header="组合下单" 
-                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.OrdersRegion}"/>
+                
+                <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedBottom" Height="250">
                     <igDock:TabGroupPane>
+                        <igDock:ContentPane Header="组合下单" 
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.OrdersRegion}"/>
+
                         <igDock:ContentPane Header="成交明细"
                                     cal:RegionManager.RegionName="{x:Static src:RegionNames.TimeNSalesRegion}"/>
-                        <igDock:ContentPane Header="运行日志"
-                                    cal:RegionManager.RegionName="{x:Static src:RegionNames.OperationsRegion}"/>
                     </igDock:TabGroupPane>
-                   
-                </igDock:SplitPane>
 
+                    <igDock:ContentPane Header="运行日志"
+                                    cal:RegionManager.RegionName="{x:Static src:RegionNames.OperationsRegion}"/>
+                </igDock:SplitPane>
+                <igDock:SplitPane igDock:XamDockManager.InitialLocation="DockedRight">
+                    <igDock:SplitPane>
+                        <igDock:ContentPane Header="组合设置" Width="260"
+                                        cal:RegionManager.RegionName="{x:Static src:RegionNames.PortfolioSettingsRegion}"/>
+                    </igDock:SplitPane>
+
+                </igDock:SplitPane>
             </igDock:XamDockManager.Panes>
         </igDock:XamDockManager>
     </DockPanel>
