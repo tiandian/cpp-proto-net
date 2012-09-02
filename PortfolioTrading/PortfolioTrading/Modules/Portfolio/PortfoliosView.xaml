@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:igDP="http://infragistics.com/DataPresenter"
+             xmlns:ctrls="clr-namespace:PortfolioTrading.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
     <DockPanel>
@@ -101,7 +102,10 @@
                             <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
                                 <Border Height="75" Margin="4, 4, 0, 4" BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 3">
                                     <DockPanel>
-                                        
+                                        <TextBlock DockPanel.Dock="Left">监控</TextBlock>
+                                        <ctrls:PositionOperPanel DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
+                                                                 Width="220" DockPanel.Dock="Right"/>
+                                        <ctrls:PortfMonitorPanel DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
                                     </DockPanel>
                                 </Border>
                             </ControlTemplate>

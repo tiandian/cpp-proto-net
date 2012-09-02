@@ -5,12 +5,23 @@ using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
+using System.Windows.Input;
+using Microsoft.Practices.Prism.Commands;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Account
 {
     public class PortfolioVM : NotificationObject
     {
+        private readonly AccountVM _accountVm;
         private ObservableCollection<LegVM> _legs = new ObservableCollection<LegVM>();
+
+        public PortfolioVM(AccountVM accountVm)
+        {
+            _accountVm = accountVm;
+            OpenPositionCommand = new DelegateCommand(OnOpenPosition);
+            ClosePositionCommand = new DelegateCommand(OnClosePosition);
+        }
 
         #region Id
         private string _id;
@@ -168,6 +179,8 @@ namespace PortfolioTrading.Modules.Account
             }
         }
 
+        public ICommand OpenPositionCommand { get; private set; }
+        public ICommand ClosePositionCommand { get; private set; }
 
         public IEnumerable<LegVM> Legs
         {
@@ -197,9 +210,9 @@ namespace PortfolioTrading.Modules.Account
             return null;
         }
 
-        public static PortfolioVM Load(XElement xmlElement)
+        public static PortfolioVM Load(AccountVM acct, XElement xmlElement)
         {
-            PortfolioVM portf = new PortfolioVM();
+            PortfolioVM portf = new PortfolioVM(acct);
 
             XAttribute attr = xmlElement.Attribute("id");
             if (attr != null)
@@ -254,6 +267,7 @@ namespace PortfolioTrading.Modules.Account
             entity.PortfolioItem portfolioItem = new entity.PortfolioItem();
             portfolioItem.ID = Id;
             portfolioItem.AutoOpen = AutoOpen;
+            portfolioItem.AutoClose = AutoClose;
             portfolioItem.Diff = Diff;
             portfolioItem.Quantity = Quantity;
 
@@ -277,6 +291,17 @@ namespace PortfolioTrading.Modules.Account
             {
                 _legs[i].Update(item.Legs[i]);
             }
+        }
+
+        private void OnOpenPosition()
+        {
+            _accountVm.Host.PorfOpenPosition(Id, Quantity);
+            EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, Quantity);
+        }
+
+        private void OnClosePosition()
+        {
+            
         }
     }
 }
