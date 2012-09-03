@@ -81,6 +81,7 @@ namespace PortfolioTrading.Modules.Account
 
         public void To(PortfolioVM portf)
         {
+            portf.Quantity = this.Quantity;
             if (Leg1)
             {
                 LegVM leg;
@@ -128,6 +129,23 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _portfId = value;
                     RaisePropertyChanged("PortfId");
+                }
+            }
+        }
+        #endregion
+
+        #region Quantity
+        private int _qty = 1;
+
+        public int Quantity
+        {
+            get { return _qty; }
+            set
+            {
+                if (_qty != value)
+                {
+                    _qty = value;
+                    RaisePropertyChanged("Quantity");
                 }
             }
         }
