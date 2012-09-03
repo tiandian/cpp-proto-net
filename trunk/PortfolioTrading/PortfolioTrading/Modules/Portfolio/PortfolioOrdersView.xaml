@@ -4,11 +4,222 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:igDP="http://infragistics.com/DataPresenter"
+             xmlns:conv="clr-namespace:PortfolioTrading.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <igDP:XamDataGrid Name="xamDG_MlOrders" DataSource="{Binding Portfolios}" AutoFit="True"
+        <igDP:XamDataGrid Name="xamDG_MlOrders" DataSource="{Binding }" AutoFit="True"
                               GroupByAreaLocation="None">
+            <igDP:XamDataGrid.Resources>
+                <!-- HeaderLabelArea style -->
+                <Style x:Key="shrinkHeaderLabelArea" TargetType="igDP:HeaderLabelArea">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="igDP:HeaderLabelArea">
+                                <Grid Height="24">
+                                    <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}"/>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- OrderId column style -->
+                <Style x:Key="orderIdColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <TextBlock DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <Run Text="{Binding PortfolioId}"/> - <Run Text="{Binding OrderId}"/>
+                                </TextBlock>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Code and Name column style -->
+                <Style x:Key="codeColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Symbol}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Direction column style -->
+                <Style x:Key="directColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Direction}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Open/Close column style -->
+                <Style x:Key="ocColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding OCFlag}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <conv:OrderPriceTypeConverter x:Key="priceTypeConv" />
+                
+                <!-- Price column style -->
+                <Style x:Key="priceStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <TextBlock.Text>
+                                                    <MultiBinding Converter="{StaticResource priceTypeConv}">
+                                                      <Binding Path="OrderPriceType"/>
+                                                      <Binding Path="LimitPrice"/>
+                                                    </MultiBinding>
+                                                </TextBlock.Text>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Vol column style -->
+                <Style x:Key="volStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run Text="{Binding Volume}"/> (<Run Text="{Binding VolTraded}"/>)
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Status column style -->
+                <Style x:Key="statusColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding StatusMsg}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Insert time column style -->
+                <Style x:Key="timeColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding InsertTime}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </igDP:XamDataGrid.Resources>
+            <igDP:XamDataGrid.FieldLayouts>
+                <igDP:FieldLayout>
+                    <igDP:Field Name="OrderId" Label="编号">
+                        <igDP:Field.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource orderIdColStyle}"/>
+                        </igDP:Field.Settings>
+                    </igDP:Field>
+                    <igDP:Field Name="Quantity" Label="组合数量" />
+                    <igDP:UnboundField Name="Symbol" Label="代码" >
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource codeColStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+                    <igDP:UnboundField Name="Direction" Label="买卖" >
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource directColStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+                    <igDP:UnboundField Name="OCFlag" Label="开平"  >
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource ocColStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+                    <igDP:UnboundField Name="OrderPriceType" Label="价格"  >
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource priceStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+                    <igDP:UnboundField Name="Volume" Label="数量(成交)"  >
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource volStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+                    <igDP:UnboundField Name="StatusMsg" Label="状态"  >
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource statusColStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+                    <igDP:UnboundField Name="InsertTime" Label="下单时间" >
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource timeColStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+                </igDP:FieldLayout>
+            </igDP:XamDataGrid.FieldLayouts>
+            <igDP:XamDataGrid.FieldSettings>
+                <igDP:FieldSettings AllowEdit="False" Width="Auto"/>
+            </igDP:XamDataGrid.FieldSettings>
+            <igDP:XamDataGrid.FieldLayoutSettings>
+                <igDP:FieldLayoutSettings AutoGenerateFields="False" RecordSelectorLocation="None"
+                                          HeaderLabelAreaStyle="{StaticResource shrinkHeaderLabelArea}"
+                                          />
+            </igDP:XamDataGrid.FieldLayoutSettings>
         </igDP:XamDataGrid>
     </Grid>
 </UserControl>

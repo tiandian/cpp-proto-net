@@ -164,11 +164,12 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public void From(trade.Order order)
         {
-            Symbol = order.InvestorID;
+            Symbol = order.InstrumentID;
             Direction = GetDirection(order.Direction);
             OCFlag = GetOCFlag(order.CombOffsetFlag);
             StatusMsg = GetStatus(order.OrderSubmitStatus, order.OrderStatus);
-            InsertTime = DateTime.Parse(order.InsertTime);
+            if(!string.IsNullOrEmpty(order.InsertTime))
+                InsertTime = DateTime.Parse(order.InsertTime);
             Volume = order.VolumeTotalOriginal;
             VolTraded = order.VolumeTraded;
             OrderPriceType = GetPriceType(order.OrderPriceType);

@@ -21,13 +21,18 @@
             <Button IsDefault="True" Name="btnOK" Click="btnOK_Click">确定</Button>
             <Button IsCancel="True" Name="btnCancel" Click="btnCancel_Click">取消</Button>
         </StackPanel>
-        <StackPanel VerticalAlignment="Center">
+        <StackPanel VerticalAlignment="Center" DataContext="{StaticResource editPortfolioVM}">
             <StackPanel.Resources>
                 <DataTemplate x:Key="sideItemTempl">
                     <TextBlock Text="{Binding DisplayText}"></TextBlock>
                 </DataTemplate>
             </StackPanel.Resources>
-            <DockPanel Margin="2" DataContext="{StaticResource editPortfolioVM}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>组合编号</TextBlock>
+                <TextBlock Text="{Binding PortfId}" Margin="10, 2"/>
+            </StackPanel>
+
+            <DockPanel Margin="2">
                 <CheckBox DockPanel.Dock="Top" Margin="2" IsChecked="{Binding Leg1}" Name="chkFirstLeg">第一腿</CheckBox>
                 <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
                     <TextBlock>商品</TextBlock>
@@ -41,7 +46,7 @@
                     <TextBox Text="{Binding Ratio1}" TextAlignment="Right"></TextBox>
                 </DockPanel>
             </DockPanel>
-            <DockPanel Margin="2" DataContext="{StaticResource editPortfolioVM}">
+            <DockPanel Margin="2">
                 <CheckBox DockPanel.Dock="Top" Margin="2" IsChecked="{Binding Leg2}" Name="chkSecondLeg">第二腿</CheckBox>
                 <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkSecondLeg}">
                     <TextBlock>商品</TextBlock>
@@ -54,6 +59,11 @@
                     <TextBox Text="{Binding Ratio2}" TextAlignment="Right"></TextBox>
                 </DockPanel>
             </DockPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>组合数量</TextBlock>
+                <TextBox Width="30" TextAlignment="Right"  Text="{Binding Quantity}"/>
+            </StackPanel>
         </StackPanel>
     </DockPanel>
 </Window>
