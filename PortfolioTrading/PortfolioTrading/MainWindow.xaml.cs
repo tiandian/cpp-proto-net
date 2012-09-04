@@ -24,6 +24,8 @@ namespace PortfolioTrading
         private Client _client;
         private NativeHost _host;
 
+        private const string AccountId = "0240050006";
+
         public MainWindow()
         {
             _host = new NativeHost();
@@ -88,7 +90,7 @@ namespace PortfolioTrading
         {
             
             OperationResult result = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
-                                                          "0240005010");
+                                                          AccountId);
             MessageBox.Show(this, string.Format("Connect: {0}. {1}", result.Success, result.ErrorMessage));
         }
 
@@ -122,7 +124,7 @@ namespace PortfolioTrading
         private void btnTradeConn_Click(object sender, RoutedEventArgs e)
         {
             OperationResult result = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
-                                                          "0240005010");
+                                                          AccountId);
         }
 
         private void btnTradeClose_Click(object sender, RoutedEventArgs e)
@@ -132,7 +134,7 @@ namespace PortfolioTrading
 
         private void btnTradeLogin_Click(object sender, RoutedEventArgs e)
         {
-            OperationResult result = _client.TradeLogin("0240", "0240050005", "888888");
+            OperationResult result = _client.TradeLogin("0240", AccountId, "888888");
         }
 
         private void btnTradeLogout_Click(object sender, RoutedEventArgs e)
@@ -167,13 +169,13 @@ namespace PortfolioTrading
             portfolioItem.Quantity = 1;
 
             entity.LegItem leg1 = new entity.LegItem();
-            leg1.Symbol = "cu1209";
+            leg1.Symbol = "cu1212";
             leg1.Side = entity.PosiDirectionType.LONG;
             leg1.Ratio = 1;
             portfolioItem.Legs.Add(leg1);
 
             entity.LegItem leg2 = new entity.LegItem();
-            leg2.Symbol = "cu1210";
+            leg2.Symbol = "cu1301";
             leg2.Side = entity.PosiDirectionType.SHORT;
             leg2.Ratio = 1;
             portfolioItem.Legs.Add(leg2);
@@ -218,7 +220,7 @@ namespace PortfolioTrading
         private void ClientReady()
         {
             OperationResult quoteConnResult = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
-                                                          "0240005010");
+                                                          AccountId);
             if (quoteConnResult.Success)
             {
                 OutputMessage("Quote connected");
@@ -242,7 +244,7 @@ namespace PortfolioTrading
             }
 
             OperationResult tradeConnResult = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
-                                                          "0240005010");
+                                                          AccountId);
 
             if (tradeConnResult.Success)
             {
@@ -254,7 +256,7 @@ namespace PortfolioTrading
                 return;
             }
 
-            OperationResult tradeLoginResult = _client.TradeLogin("0240", "0240050005", "888888");
+            OperationResult tradeLoginResult = _client.TradeLogin("0240", AccountId, "888888");
 
             if (tradeLoginResult.Success)
             {

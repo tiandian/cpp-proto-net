@@ -15,6 +15,7 @@ using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
 using System.Collections.ObjectModel;
+using Microsoft.Practices.Prism.Commands;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -25,7 +26,9 @@ namespace PortfolioTrading.Modules.Portfolio
     public partial class PortfolioOrdersView : UserControl
     {
         private MultiLegOrderRepositry _ordersRepo = new MultiLegOrderRepositry();
- 
+
+        public static readonly ICommand ClosePorfOrderCommand = new DelegateCommand<MultiLegOrderVM>(OnClosePorfOrder);
+
         [ImportingConstructor]
         public PortfolioOrdersView(IEventAggregator evtAgg)
         {
@@ -39,6 +42,11 @@ namespace PortfolioTrading.Modules.Portfolio
         public void OnMultiLegOrderUpdated(trade.MultiLegOrder mlOrder)
         {
             _ordersRepo.Update(mlOrder);
+        }
+
+        private static void OnClosePorfOrder(MultiLegOrderVM mlOrderVm)
+        {
+
         }
     }
 

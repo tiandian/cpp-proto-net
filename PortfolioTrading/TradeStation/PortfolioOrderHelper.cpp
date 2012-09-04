@@ -6,12 +6,15 @@
 trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx)
 {
 	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
+	string mOrderId;
+	portfolio->NewOrderId(mOrderId);
+	pMultiLegOrder->set_orderid(mOrderId);
 	pMultiLegOrder->set_quantity(placeOrderCtx->quantity);
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
 	{
 		trade::Order* order = pMultiLegOrder->add_legs();
-
+		
 		order->set_brokerid(placeOrderCtx->brokerId);
 		order->set_investorid(placeOrderCtx->investorId);
 		order->set_instrumentid(leg->Symbol());

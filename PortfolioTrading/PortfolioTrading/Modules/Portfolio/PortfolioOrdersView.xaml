@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:igDP="http://infragistics.com/DataPresenter"
              xmlns:conv="clr-namespace:PortfolioTrading.Converters"
+             xmlns:local="clr-namespace:PortfolioTrading.Modules.Portfolio"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -16,7 +17,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="igDP:HeaderLabelArea">
-                                <Grid Height="24">
+                                <Grid Height="48">
                                     <ContentPresenter Grid.Row="1" Content="{TemplateBinding Content}"/>
                                 </Grid>
                             </ControlTemplate>
@@ -30,7 +31,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
                                 <TextBlock DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                    <Run Text="{Binding PortfolioId}"/> - <Run Text="{Binding OrderId}"/>
+                                    <Run Text="{Binding OrderId}"/>
                                 </TextBlock>
                             </ControlTemplate>
                         </Setter.Value>
@@ -158,7 +159,7 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding InsertTime}"/>
+                                            <TextBlock Text="{Binding InsertTime, StringFormat=T, FallbackValue=--:--:--}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -166,46 +167,72 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
+
+                <!-- close order column style -->
+                <Style x:Key="closeOrdStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <Button Command="{x:Static local:PortfolioOrdersView.ClosePorfOrderCommand}" 
+                                        CommandParameter="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}">平仓</Button>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+                <!-- Hidden colume header style -->
+                <Style TargetType="igDP:LabelPresenter" x:Key="hiddenHeaderStyle">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
             </igDP:XamDataGrid.Resources>
             <igDP:XamDataGrid.FieldLayouts>
                 <igDP:FieldLayout>
-                    <igDP:Field Name="OrderId" Label="编号">
+                    <igDP:Field Name="OrderId" Label="编号" Row="0" Column="0" ColumnSpan="2">
                         <igDP:Field.Settings>
-                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource orderIdColStyle}"/>
+                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource orderIdColStyle}"/>
                         </igDP:Field.Settings>
                     </igDP:Field>
-                    <igDP:Field Name="Quantity" Label="组合数量" />
-                    <igDP:UnboundField Name="Symbol" Label="代码" >
+                    <igDP:Field Name="Quantity" Label="组合数量" Row="0" Column="2">
+                        <igDP:Field.Settings>
+                            <igDP:FieldSettings />
+                        </igDP:Field.Settings>
+                    </igDP:Field>
+                    <igDP:UnboundField Name="CloseOrder" Label="组合平仓" Row="0" Column="3" ColumnSpan="4">
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource closeOrdStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+                    <igDP:UnboundField Name="Symbol" Label="代码" Row="1" Column="0">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource codeColStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
-                    <igDP:UnboundField Name="Direction" Label="买卖" >
+                    <igDP:UnboundField Name="Direction" Label="买卖" Row="1" Column="1">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource directColStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
-                    <igDP:UnboundField Name="OCFlag" Label="开平"  >
+                    <igDP:UnboundField Name="OCFlag" Label="开平" Row="1" Column="2">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource ocColStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
-                    <igDP:UnboundField Name="OrderPriceType" Label="价格"  >
+                    <igDP:UnboundField Name="OrderPriceType" Label="价格" Row="1" Column="3">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource priceStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
-                    <igDP:UnboundField Name="Volume" Label="数量(成交)"  >
+                    <igDP:UnboundField Name="Volume" Label="数量(成交)" Row="1" Column="4">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource volStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
-                    <igDP:UnboundField Name="StatusMsg" Label="状态"  >
+                    <igDP:UnboundField Name="StatusMsg" Label="状态" Row="1" Column="5">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource statusColStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
-                    <igDP:UnboundField Name="InsertTime" Label="下单时间" >
+                    <igDP:UnboundField Name="InsertTime" Label="下单时间" Row="1" Column="6">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource timeColStyle}"/>
                         </igDP:UnboundField.Settings>
@@ -216,7 +243,7 @@
                 <igDP:FieldSettings AllowEdit="False" Width="Auto"/>
             </igDP:XamDataGrid.FieldSettings>
             <igDP:XamDataGrid.FieldLayoutSettings>
-                <igDP:FieldLayoutSettings AutoGenerateFields="False" RecordSelectorLocation="None"
+                <igDP:FieldLayoutSettings AutoGenerateFields="False" AutoArrangeCells="Never" RecordSelectorLocation="None"
                                           HeaderLabelAreaStyle="{StaticResource shrinkHeaderLabelArea}"
                                           />
             </igDP:XamDataGrid.FieldLayoutSettings>

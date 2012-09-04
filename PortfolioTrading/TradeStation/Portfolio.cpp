@@ -3,9 +3,11 @@
 #include "PortfolioManager.h"
 
 #include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 CPortfolio::CPortfolio(void):
-m_porfMgr(NULL)
+m_porfMgr(NULL),
+m_openedOrderCount(0)
 {
 }
 
@@ -124,5 +126,12 @@ void CPortfolio::Cleanup()
 void CPortfolio::PushUpdate()
 {
 	m_porfMgr->PublishPortfolioUpdate(m_innerItem.get());
+}
+
+int CPortfolio::NewOrderId(string& newId)
+{
+	boost::mutex::scoped_lock lock(m_mut);
+	newId = boost::str(boost::format("%s-%d") % ID().c_str() % ++m_openedOrderCount);
+	return m_openedOrderCount;
 }
 

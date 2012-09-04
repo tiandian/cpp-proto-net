@@ -31,17 +31,17 @@ void PrintRtnOrder(CThostFtdcOrderField* pOrder)
 {
 	ostringstream oss;
 	oss << "\n///////////////////////\n";
-	oss << "合约代码\t" << pOrder->InstrumentID << "\n";
-	oss << "报单引用\t" << pOrder->OrderRef << "\n";
-	oss << "报单价格条件\t" << pOrder->OrderPriceType << "\n";	
-	oss << "买卖方向\t" << pOrder->Direction << "\n";	
-	oss << "组合开平标志\t" << pOrder->CombOffsetFlag << "\n";
+	oss << "合约代码      \t" << pOrder->InstrumentID << "\n";
+	oss << "报单引用      \t" << pOrder->OrderRef << "\n";
+	oss << "报单价格条件   \t" << pOrder->OrderPriceType << "\n";	
+	oss << "买卖方向      \t" << pOrder->Direction << "\n";	
+	oss << "组合开平标志   \t" << pOrder->CombOffsetFlag << "\n";
 	oss << "组合投机套保标志\t" << pOrder->CombHedgeFlag << "\n";
-	oss << "价格\t" << pOrder->LimitPrice << "\n";
-	oss << "数量\t" << pOrder->VolumeTotalOriginal << "\n";
-	oss << "有效期类型\t" << pOrder->TimeCondition << "\n";
-	oss << "成交量类型\t" << pOrder->VolumeCondition << "\n";
-	oss << "请求编号\t" << pOrder->RequestID << "\n";
+	oss << "价格          \t" << pOrder->LimitPrice << "\n";
+	oss << "数量          \t" << pOrder->VolumeTotalOriginal << "\n";
+	oss << "有效期类型     \t" << pOrder->TimeCondition << "\n";
+	oss << "成交量类型     \t" << pOrder->VolumeCondition << "\n";
+	oss << "请求编号       \t" << pOrder->RequestID << "\n";
 	oss << "///////////////////////\n";
 
 	logger.Debug(oss.str());
