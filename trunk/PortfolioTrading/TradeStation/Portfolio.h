@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include <boost/shared_ptr.hpp>
-
+#include <boost/thread.hpp>
 
 using namespace std;
 
@@ -48,6 +48,8 @@ public:
 
 	double Difference(){ return m_innerItem->diff(); }
 
+	int NewOrderId(string& newId);
+
 private:
 	void SetItem(entity::PortfolioItem* pPortfItem);
 
@@ -57,6 +59,9 @@ private:
 	PortfItemPtr m_innerItem;
 
 	CPortfolioManager* m_porfMgr;
+
+	int m_openedOrderCount;
+	boost::mutex m_mut;
 };
 
 class CLeg
@@ -95,7 +100,7 @@ private:
 
 	int m_legId;
 	entity::LegItem* m_pInnerItem;
-	
+
 };
 
 

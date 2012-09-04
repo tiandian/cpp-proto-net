@@ -41,8 +41,8 @@ void COrderProcessor::OpenOrder( MultiLegOrderPtr multilegOrder )
 	boost::mutex::scoped_lock lock(m_mutTicketOrderMap);
 
 	int count = m_pendingMultiLegOrders.size();
-	string mOrderId = boost::str(boost::format("%d") % count);
-	multilegOrder->set_orderid(mOrderId);
+	const string& mOrderId = multilegOrder->orderid();
+	
 	m_maxOrderRef = IncrementalOrderRef(multilegOrder.get(), m_maxOrderRef);
 
 	m_pendingMultiLegOrders.insert(make_pair(mOrderId, multilegOrder));
@@ -211,8 +211,11 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 			const MultiLegOrderPtr& mlOrder = iterOrd->second;
 			trade::Order* pOrd = GetOrderByRef(mlOrder.get(), orderRef);
 
+			string ordStatusMsg;
+			GB2312ToUTF_8(ordStatusMsg, msg.c_str());
+
 			// set error message
-			pOrd->set_statusmsg(msg);
+			pOrd->set_statusmsg(ordStatusMsg);
 			
 			// publish order updated
 			PublishMultiLegOrderUpdate(mlOrder.get());
