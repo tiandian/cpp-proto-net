@@ -65,6 +65,7 @@ message PorfOpenPosiParam
 
 message ClosePositionParam
 {
-	required string MultiLegOrderId = 1;
-	optional string LegOrdRef = 2;
+	required string PortfolioId = 1;
+	required string MultiLegOrderId = 2;
+	optional string LegOrdRef = 3;
 }

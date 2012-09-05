@@ -533,6 +533,10 @@ message Order
 	optional int32	BrokerOrderSeq = 54;
 	///相关报单
 	optional string	RelativeOrderSysID = 55;
+
+	/// 附加标识
+	optional bool SubmitSuccess = 56;
+	optional string SubmitError = 57;
 };
 
 ///TFtdcTradingRoleType是一个交易角色类型
@@ -707,4 +711,5 @@ message MultiLegOrder
 	required int32 Quantity = 3;
 	
 	repeated Order Legs = 4;
+	required string OpenOrderId = 5;
 }

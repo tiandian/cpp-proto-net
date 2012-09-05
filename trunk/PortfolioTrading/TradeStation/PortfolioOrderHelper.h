@@ -18,6 +18,7 @@ public:
 };
 
 trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx);
+trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, trade::MultiLegOrder* multilegOrder, PlaceOrderContext* placeOrderCtx);
 
 int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders);
 

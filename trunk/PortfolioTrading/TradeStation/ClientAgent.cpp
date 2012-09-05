@@ -125,8 +125,9 @@ void CClientAgent::PortfolioOpenPosition( const string& pid, int quantity )
 	m_orderProcessor.OpenOrder(multilegOrder);
 }
 
-void CClientAgent::ClosePosition( const string& mlOrderId, const string& legOrdRef, string& msg)
+void CClientAgent::ClosePosition( const string& porfId, const string& mlOrderId, const string& legOrdRef, string& msg)
 {
+	CPortfolio* portf = m_portfolioMgr.Get(porfId);
 	m_orderProcessor.CloseOrder(mlOrderId, legOrdRef, msg);
 }
 

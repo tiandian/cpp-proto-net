@@ -167,7 +167,7 @@ namespace PortfolioTrading.Modules.Portfolio
             Symbol = order.InstrumentID;
             Direction = GetDirection(order.Direction);
             OCFlag = GetOCFlag(order.CombOffsetFlag);
-            StatusMsg = GetStatus(order.OrderSubmitStatus, order.OrderStatus);
+            StatusMsg = GetStatus(order.SubmitSuccess, order.OrderSubmitStatus, order.OrderStatus);
             if(!string.IsNullOrEmpty(order.InsertTime))
                 InsertTime = DateTime.Parse(order.InsertTime);
             Volume = order.VolumeTotalOriginal;
@@ -201,10 +201,14 @@ namespace PortfolioTrading.Modules.Portfolio
             }
         }
 
-        public static string GetStatus(trade.OrderSubmitStatusType submitStatus,
+        public static string GetStatus(bool submitSuccess,
+                                       trade.OrderSubmitStatusType submitStatus,
                                        trade.OrderStatusType statusType)
         {
             string status = "未知";
+
+            if (!submitSuccess)
+                return "委托被拒绝";
             
             switch (submitStatus)
             {

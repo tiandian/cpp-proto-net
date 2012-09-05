@@ -207,7 +207,7 @@ void CClientManager::ClosePosition( CClientAgent* pClientAgent, const string& in
 	cpParam.ParseFromString(in_data);
 
 	string message;
-	pClientAgent->ClosePosition(cpParam.multilegorderid(), cpParam.legordref(), message);
+	pClientAgent->ClosePosition(cpParam.portfolioid(), cpParam.multilegorderid(), cpParam.legordref(), message);
 	entity::StringParam retParam;
 	retParam.set_data(message);
 	retParam.SerializeToString(&out_data);

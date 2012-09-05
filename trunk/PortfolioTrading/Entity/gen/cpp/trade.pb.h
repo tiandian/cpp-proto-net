@@ -2190,6 +2190,24 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_relativeordersysid();
   inline ::std::string* release_relativeordersysid();
   
+  // optional bool SubmitSuccess = 56;
+  inline bool has_submitsuccess() const;
+  inline void clear_submitsuccess();
+  static const int kSubmitSuccessFieldNumber = 56;
+  inline bool submitsuccess() const;
+  inline void set_submitsuccess(bool value);
+  
+  // optional string SubmitError = 57;
+  inline bool has_submiterror() const;
+  inline void clear_submiterror();
+  static const int kSubmitErrorFieldNumber = 57;
+  inline const ::std::string& submiterror() const;
+  inline void set_submiterror(const ::std::string& value);
+  inline void set_submiterror(const char* value);
+  inline void set_submiterror(const char* value, size_t size);
+  inline ::std::string* mutable_submiterror();
+  inline ::std::string* release_submiterror();
+  
   // @@protoc_insertion_point(class_scope:trade.Order)
  private:
   inline void set_has_brokerid();
@@ -2302,6 +2320,10 @@ class Order : public ::google::protobuf::Message {
   inline void clear_has_brokerorderseq();
   inline void set_has_relativeordersysid();
   inline void clear_has_relativeordersysid();
+  inline void set_has_submitsuccess();
+  inline void clear_has_submitsuccess();
+  inline void set_has_submiterror();
+  inline void clear_has_submiterror();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2339,17 +2361,18 @@ class Order : public ::google::protobuf::Message {
   int ordersource_;
   ::std::string* ordersysid_;
   int orderstatus_;
-  bool isautosuspend_;
-  bool userforceclose_;
   int ordertype_;
   ::google::protobuf::int32 volumetraded_;
+  ::google::protobuf::int32 volumetotal_;
   ::std::string* insertdate_;
   ::std::string* inserttime_;
   ::std::string* activetime_;
   ::std::string* suspendtime_;
-  ::google::protobuf::int32 volumetotal_;
-  ::google::protobuf::int32 sequenceno_;
   ::std::string* updatetime_;
+  bool isautosuspend_;
+  bool userforceclose_;
+  bool submitsuccess_;
+  ::google::protobuf::int32 sequenceno_;
   ::std::string* canceltime_;
   ::std::string* activetraderid_;
   ::std::string* clearingpartid_;
@@ -2359,10 +2382,11 @@ class Order : public ::google::protobuf::Message {
   ::std::string* statusmsg_;
   ::std::string* activeuserid_;
   ::std::string* relativeordersysid_;
+  ::std::string* submiterror_;
   ::google::protobuf::int32 brokerorderseq_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(55 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(57 + 31) / 32];
   
   friend void  protobuf_AddDesc_trade_2eproto();
   friend void protobuf_AssignDesc_trade_2eproto();
@@ -3142,6 +3166,17 @@ class MultiLegOrder : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::trade::Order >*
       mutable_legs();
   
+  // required string OpenOrderId = 5;
+  inline bool has_openorderid() const;
+  inline void clear_openorderid();
+  static const int kOpenOrderIdFieldNumber = 5;
+  inline const ::std::string& openorderid() const;
+  inline void set_openorderid(const ::std::string& value);
+  inline void set_openorderid(const char* value);
+  inline void set_openorderid(const char* value, size_t size);
+  inline ::std::string* mutable_openorderid();
+  inline ::std::string* release_openorderid();
+  
   // @@protoc_insertion_point(class_scope:trade.MultiLegOrder)
  private:
   inline void set_has_orderid();
@@ -3150,16 +3185,19 @@ class MultiLegOrder : public ::google::protobuf::Message {
   inline void clear_has_portfolioid();
   inline void set_has_quantity();
   inline void clear_has_quantity();
+  inline void set_has_openorderid();
+  inline void clear_has_openorderid();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* orderid_;
   ::std::string* portfolioid_;
   ::google::protobuf::RepeatedPtrField< ::trade::Order > legs_;
+  ::std::string* openorderid_;
   ::google::protobuf::int32 quantity_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_trade_2eproto();
   friend void protobuf_AssignDesc_trade_2eproto();
@@ -8095,6 +8133,86 @@ inline ::std::string* Order::release_relativeordersysid() {
   }
 }
 
+// optional bool SubmitSuccess = 56;
+inline bool Order::has_submitsuccess() const {
+  return (_has_bits_[1] & 0x00800000u) != 0;
+}
+inline void Order::set_has_submitsuccess() {
+  _has_bits_[1] |= 0x00800000u;
+}
+inline void Order::clear_has_submitsuccess() {
+  _has_bits_[1] &= ~0x00800000u;
+}
+inline void Order::clear_submitsuccess() {
+  submitsuccess_ = false;
+  clear_has_submitsuccess();
+}
+inline bool Order::submitsuccess() const {
+  return submitsuccess_;
+}
+inline void Order::set_submitsuccess(bool value) {
+  set_has_submitsuccess();
+  submitsuccess_ = value;
+}
+
+// optional string SubmitError = 57;
+inline bool Order::has_submiterror() const {
+  return (_has_bits_[1] & 0x01000000u) != 0;
+}
+inline void Order::set_has_submiterror() {
+  _has_bits_[1] |= 0x01000000u;
+}
+inline void Order::clear_has_submiterror() {
+  _has_bits_[1] &= ~0x01000000u;
+}
+inline void Order::clear_submiterror() {
+  if (submiterror_ != &::google::protobuf::internal::kEmptyString) {
+    submiterror_->clear();
+  }
+  clear_has_submiterror();
+}
+inline const ::std::string& Order::submiterror() const {
+  return *submiterror_;
+}
+inline void Order::set_submiterror(const ::std::string& value) {
+  set_has_submiterror();
+  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
+    submiterror_ = new ::std::string;
+  }
+  submiterror_->assign(value);
+}
+inline void Order::set_submiterror(const char* value) {
+  set_has_submiterror();
+  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
+    submiterror_ = new ::std::string;
+  }
+  submiterror_->assign(value);
+}
+inline void Order::set_submiterror(const char* value, size_t size) {
+  set_has_submiterror();
+  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
+    submiterror_ = new ::std::string;
+  }
+  submiterror_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* Order::mutable_submiterror() {
+  set_has_submiterror();
+  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
+    submiterror_ = new ::std::string;
+  }
+  return submiterror_;
+}
+inline ::std::string* Order::release_submiterror() {
+  clear_has_submiterror();
+  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = submiterror_;
+    submiterror_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
 // -------------------------------------------------------------------
 
 // Trade
@@ -10121,6 +10239,64 @@ MultiLegOrder::legs() const {
 inline ::google::protobuf::RepeatedPtrField< ::trade::Order >*
 MultiLegOrder::mutable_legs() {
   return &legs_;
+}
+
+// required string OpenOrderId = 5;
+inline bool MultiLegOrder::has_openorderid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void MultiLegOrder::set_has_openorderid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void MultiLegOrder::clear_has_openorderid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void MultiLegOrder::clear_openorderid() {
+  if (openorderid_ != &::google::protobuf::internal::kEmptyString) {
+    openorderid_->clear();
+  }
+  clear_has_openorderid();
+}
+inline const ::std::string& MultiLegOrder::openorderid() const {
+  return *openorderid_;
+}
+inline void MultiLegOrder::set_openorderid(const ::std::string& value) {
+  set_has_openorderid();
+  if (openorderid_ == &::google::protobuf::internal::kEmptyString) {
+    openorderid_ = new ::std::string;
+  }
+  openorderid_->assign(value);
+}
+inline void MultiLegOrder::set_openorderid(const char* value) {
+  set_has_openorderid();
+  if (openorderid_ == &::google::protobuf::internal::kEmptyString) {
+    openorderid_ = new ::std::string;
+  }
+  openorderid_->assign(value);
+}
+inline void MultiLegOrder::set_openorderid(const char* value, size_t size) {
+  set_has_openorderid();
+  if (openorderid_ == &::google::protobuf::internal::kEmptyString) {
+    openorderid_ = new ::std::string;
+  }
+  openorderid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* MultiLegOrder::mutable_openorderid() {
+  set_has_openorderid();
+  if (openorderid_ == &::google::protobuf::internal::kEmptyString) {
+    openorderid_ = new ::std::string;
+  }
+  return openorderid_;
+}
+inline ::std::string* MultiLegOrder::release_openorderid() {
+  clear_has_openorderid();
+  if (openorderid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = openorderid_;
+    openorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
 

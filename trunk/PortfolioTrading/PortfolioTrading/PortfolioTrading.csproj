@@ -102,6 +102,7 @@
     <Compile Include="Events\AccountChangedEvent.cs" />
     <Compile Include="Events\AccountSelectedEvent.cs" />
     <Compile Include="Events\AppShutDown.cs" />
+    <Compile Include="Events\CloseMlOrderEvent.cs" />
     <Compile Include="Events\MultiLegOrderUpdatedEvent.cs" />
     <Compile Include="Events\OutputEvent.cs" />
     <Compile Include="Events\PortfolioSelectedEvent.cs" />

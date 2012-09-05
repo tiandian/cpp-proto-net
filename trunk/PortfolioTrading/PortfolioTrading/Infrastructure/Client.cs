@@ -89,7 +89,7 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("PorfOpenPosition", param_data);
         }
 
-        public void PortfClosePosition(string mlOrderId, string legRef)
+        public string PortfClosePosition(string mlOrderId, string legRef)
         {
             ClosePositionParam cpParam = new ClosePositionParam();
             cpParam.MultiLegOrderId = mlOrderId;
@@ -97,6 +97,9 @@ namespace PortfolioTrading.Infrastructure
 
             byte[] param_data = DataTranslater.Serialize(cpParam);
             byte[] ret_data = Request("ClosePosition", param_data);
+
+            StringParam strReturn = DataTranslater.Deserialize<StringParam>(ret_data);
+            return strReturn.Data;
         }
 
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
