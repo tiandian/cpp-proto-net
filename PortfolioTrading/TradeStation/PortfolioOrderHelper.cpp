@@ -85,6 +85,11 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 	return pMultiLegOrder;
 }
 
+trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, trade::MultiLegOrder* multilegOrder, PlaceOrderContext* placeOrderCtx)
+{
+	return NULL;
+}
+
 int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders)
 {
 	assert(genInputOrders != NULL);
@@ -124,7 +129,39 @@ int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::share
 
 int GetCloseInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders)
 {
-	return 0;
+	assert(genInputOrders != NULL);
+
+	BOOST_FOREACH(const trade::Order& o, multilegOrder->legs())
+	{
+		boost::shared_ptr<trade::InputOrder> inputOrder(new trade::InputOrder);
+
+		inputOrder->set_brokerid(o.brokerid());
+		inputOrder->set_investorid(o.investorid());
+		inputOrder->set_instrumentid(o.instrumentid());
+		inputOrder->set_orderref(o.orderref());
+		inputOrder->set_userid(o.userid());
+		inputOrder->set_orderpricetype(o.orderpricetype());
+		inputOrder->set_direction(o.direction());
+		inputOrder->set_combhedgeflag(o.combhedgeflag());
+		inputOrder->set_comboffsetflag(o.comboffsetflag());
+		inputOrder->set_limitprice(o.limitprice());
+		inputOrder->set_volumetotaloriginal(o.volumetotaloriginal());
+		inputOrder->set_timecondition(o.timecondition());
+		inputOrder->set_gtddate(o.gtddate());
+		inputOrder->set_volumecondition(	o.volumecondition());
+		inputOrder->set_minvolume(o.minvolume());
+		inputOrder->set_contingentcondition(	o.contingentcondition());
+		inputOrder->set_stopprice(o.stopprice());
+		inputOrder->set_forceclosereason(o.forceclosereason());
+		inputOrder->set_isautosuspend(o.isautosuspend());
+		inputOrder->set_businessunit(o.businessunit());
+		inputOrder->set_requestid(o.requestid());
+		inputOrder->set_userforceclose(o.userforceclose());
+
+		genInputOrders->push_back(inputOrder);
+	}
+
+	return genInputOrders->size();
 }
 
 boost::shared_ptr<trade::InputOrder> GetCloseInputOrder(trade::MultiLegOrder* multilegOrder, const string& legOrdRef)

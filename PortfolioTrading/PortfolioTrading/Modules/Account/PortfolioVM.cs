@@ -8,6 +8,9 @@ using System.Xml.Linq;
 using System.Windows.Input;
 using Microsoft.Practices.Prism.Commands;
 using PortfolioTrading.Utils;
+using PortfolioTrading.Events;
+using Microsoft.Practices.Prism.Events;
+using Microsoft.Practices.ServiceLocation;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -20,7 +23,9 @@ namespace PortfolioTrading.Modules.Account
         {
             _accountVm = accountVm;
             OpenPositionCommand = new DelegateCommand(OnOpenPosition);
-            ClosePositionCommand = new DelegateCommand(OnClosePosition);
+
+            IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            evtAgg.GetEvent<CloseMlOrderEvent>().Subscribe(OnClosePosition);
         }
 
         #region Id
@@ -180,8 +185,7 @@ namespace PortfolioTrading.Modules.Account
         }
 
         public ICommand OpenPositionCommand { get; private set; }
-        public ICommand ClosePositionCommand { get; private set; }
-
+        
         public IEnumerable<LegVM> Legs
         {
             get { return _legs; }
@@ -299,9 +303,10 @@ namespace PortfolioTrading.Modules.Account
             EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, Quantity);
         }
 
-        private void OnClosePosition()
+        private void OnClosePosition(CloseMlOrderArgs closeArgs)
         {
-            
+            _accountVm.Host.PortfClosePosition(closeArgs.MlOrderId, closeArgs.LegOrderRef);
+            EventLogger.Write("组合委托{1} 平仓", closeArgs.MlOrderId);
         }
     }
 }

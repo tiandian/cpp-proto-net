@@ -180,6 +180,8 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 			const MultiLegOrderPtr& mlOrder = iterOrd->second;
 			trade::Order* pOrd = GetOrderByRef(mlOrder.get(), ordRef);
 			
+			pOrd->set_submitsuccess(true);
+			
 			string ordStatusMsg;
 			GB2312ToUTF_8(ordStatusMsg, order->statusmsg().c_str());
 			
@@ -211,11 +213,13 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 			const MultiLegOrderPtr& mlOrder = iterOrd->second;
 			trade::Order* pOrd = GetOrderByRef(mlOrder.get(), orderRef);
 
+			pOrd->set_submitsuccess(false);
+
 			string ordStatusMsg;
 			GB2312ToUTF_8(ordStatusMsg, msg.c_str());
 
 			// set error message
-			pOrd->set_statusmsg(ordStatusMsg);
+			pOrd->set_submiterror(ordStatusMsg);
 			
 			// publish order updated
 			PublishMultiLegOrderUpdate(mlOrder.get());

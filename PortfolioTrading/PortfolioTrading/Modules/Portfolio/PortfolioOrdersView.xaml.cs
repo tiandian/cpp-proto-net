@@ -16,6 +16,7 @@ using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
 using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.Commands;
+using Microsoft.Practices.ServiceLocation;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -46,7 +47,9 @@ namespace PortfolioTrading.Modules.Portfolio
 
         private static void OnClosePorfOrder(MultiLegOrderVM mlOrderVm)
         {
-
+            IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            evtAgg.GetEvent<CloseMlOrderEvent>().Publish(
+                new CloseMlOrderArgs { MlOrderId = mlOrderVm.OrderId });
         }
     }
 
