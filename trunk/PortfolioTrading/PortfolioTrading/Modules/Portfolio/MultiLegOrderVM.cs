@@ -12,6 +12,8 @@ namespace PortfolioTrading.Modules.Portfolio
     {
         private ObservableCollection<OrderVM> _orders = new ObservableCollection<OrderVM>();
 
+        public trade.MultiLegOrder LastOrder { get; private set; }
+
         #region OrderId
         private string _orderId;
 
@@ -70,6 +72,8 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public void From(trade.MultiLegOrder mlOrder)
         {
+            LastOrder = mlOrder;
+
             OrderId = mlOrder.OrderId;
             PortfolioId = mlOrder.PortfolioId;
             Quantity = mlOrder.Quantity;
@@ -86,6 +90,11 @@ namespace PortfolioTrading.Modules.Portfolio
                 {
                     var o = _orders[i];
                     EventLogger.Write("{0} {1} 被拒绝 -({2})", o.Direction, o.Symbol, legOrder.SubmitError);
+                }
+                else if (legOrder.OrderSubmitStatus > trade.OrderSubmitStatusType.ACCEPTED)
+                {
+                    var o = _orders[i];
+                    EventLogger.Write("{0} {1} 被拒绝 -({2})", o.Direction, o.Symbol, legOrder.StatusMsg);
                 }
             }
         }

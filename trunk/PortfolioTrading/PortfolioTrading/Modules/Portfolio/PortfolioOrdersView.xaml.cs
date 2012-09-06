@@ -49,7 +49,7 @@ namespace PortfolioTrading.Modules.Portfolio
         {
             IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
             evtAgg.GetEvent<CloseMlOrderEvent>().Publish(
-                new CloseMlOrderArgs { MlOrderId = mlOrderVm.OrderId });
+                new CloseMlOrderArgs { MlOrder = mlOrderVm.LastOrder });
         }
     }
 

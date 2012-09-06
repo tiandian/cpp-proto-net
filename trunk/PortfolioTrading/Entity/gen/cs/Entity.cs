@@ -9,6 +9,7 @@
 
 // Generated from: message.proto
 // Note: requires additional types generated from: enum.proto
+// Note: requires additional types generated from: trade.proto
 namespace entity
 {
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"StringParam")]
@@ -281,12 +282,12 @@ namespace entity
   {
     public ClosePositionParam() {}
     
-    private string _MultiLegOrderId;
-    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"MultiLegOrderId", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public string MultiLegOrderId
+    private trade.MultiLegOrder _MultiLegOrder;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"MultiLegOrder", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public trade.MultiLegOrder MultiLegOrder
     {
-      get { return _MultiLegOrderId; }
-      set { _MultiLegOrderId = value; }
+      get { return _MultiLegOrder; }
+      set { _MultiLegOrder = value; }
     }
 
     private string _LegOrdRef = "";

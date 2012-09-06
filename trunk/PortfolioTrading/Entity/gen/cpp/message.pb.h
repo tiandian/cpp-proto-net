@@ -24,6 +24,7 @@
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
 #include "enum.pb.h"
+#include "trade.pb.h"
 // @@protoc_insertion_point(includes)
 
 namespace entity {
@@ -1048,32 +1049,18 @@ class ClosePositionParam : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string PortfolioId = 1;
-  inline bool has_portfolioid() const;
-  inline void clear_portfolioid();
-  static const int kPortfolioIdFieldNumber = 1;
-  inline const ::std::string& portfolioid() const;
-  inline void set_portfolioid(const ::std::string& value);
-  inline void set_portfolioid(const char* value);
-  inline void set_portfolioid(const char* value, size_t size);
-  inline ::std::string* mutable_portfolioid();
-  inline ::std::string* release_portfolioid();
+  // required .trade.MultiLegOrder MultiLegOrder = 1;
+  inline bool has_multilegorder() const;
+  inline void clear_multilegorder();
+  static const int kMultiLegOrderFieldNumber = 1;
+  inline const ::trade::MultiLegOrder& multilegorder() const;
+  inline ::trade::MultiLegOrder* mutable_multilegorder();
+  inline ::trade::MultiLegOrder* release_multilegorder();
   
-  // required string MultiLegOrderId = 2;
-  inline bool has_multilegorderid() const;
-  inline void clear_multilegorderid();
-  static const int kMultiLegOrderIdFieldNumber = 2;
-  inline const ::std::string& multilegorderid() const;
-  inline void set_multilegorderid(const ::std::string& value);
-  inline void set_multilegorderid(const char* value);
-  inline void set_multilegorderid(const char* value, size_t size);
-  inline ::std::string* mutable_multilegorderid();
-  inline ::std::string* release_multilegorderid();
-  
-  // optional string LegOrdRef = 3;
+  // optional string LegOrdRef = 2;
   inline bool has_legordref() const;
   inline void clear_legordref();
-  static const int kLegOrdRefFieldNumber = 3;
+  static const int kLegOrdRefFieldNumber = 2;
   inline const ::std::string& legordref() const;
   inline void set_legordref(const ::std::string& value);
   inline void set_legordref(const char* value);
@@ -1083,21 +1070,18 @@ class ClosePositionParam : public ::google::protobuf::Message {
   
   // @@protoc_insertion_point(class_scope:entity.ClosePositionParam)
  private:
-  inline void set_has_portfolioid();
-  inline void clear_has_portfolioid();
-  inline void set_has_multilegorderid();
-  inline void clear_has_multilegorderid();
+  inline void set_has_multilegorder();
+  inline void clear_has_multilegorder();
   inline void set_has_legordref();
   inline void clear_has_legordref();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::std::string* portfolioid_;
-  ::std::string* multilegorderid_;
+  ::trade::MultiLegOrder* multilegorder_;
   ::std::string* legordref_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2086,131 +2070,44 @@ inline void PorfOpenPosiParam::set_quantity(::google::protobuf::int32 value) {
 
 // ClosePositionParam
 
-// required string PortfolioId = 1;
-inline bool ClosePositionParam::has_portfolioid() const {
+// required .trade.MultiLegOrder MultiLegOrder = 1;
+inline bool ClosePositionParam::has_multilegorder() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ClosePositionParam::set_has_portfolioid() {
+inline void ClosePositionParam::set_has_multilegorder() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ClosePositionParam::clear_has_portfolioid() {
+inline void ClosePositionParam::clear_has_multilegorder() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ClosePositionParam::clear_portfolioid() {
-  if (portfolioid_ != &::google::protobuf::internal::kEmptyString) {
-    portfolioid_->clear();
-  }
-  clear_has_portfolioid();
+inline void ClosePositionParam::clear_multilegorder() {
+  if (multilegorder_ != NULL) multilegorder_->::trade::MultiLegOrder::Clear();
+  clear_has_multilegorder();
 }
-inline const ::std::string& ClosePositionParam::portfolioid() const {
-  return *portfolioid_;
+inline const ::trade::MultiLegOrder& ClosePositionParam::multilegorder() const {
+  return multilegorder_ != NULL ? *multilegorder_ : *default_instance_->multilegorder_;
 }
-inline void ClosePositionParam::set_portfolioid(const ::std::string& value) {
-  set_has_portfolioid();
-  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
-    portfolioid_ = new ::std::string;
-  }
-  portfolioid_->assign(value);
+inline ::trade::MultiLegOrder* ClosePositionParam::mutable_multilegorder() {
+  set_has_multilegorder();
+  if (multilegorder_ == NULL) multilegorder_ = new ::trade::MultiLegOrder;
+  return multilegorder_;
 }
-inline void ClosePositionParam::set_portfolioid(const char* value) {
-  set_has_portfolioid();
-  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
-    portfolioid_ = new ::std::string;
-  }
-  portfolioid_->assign(value);
-}
-inline void ClosePositionParam::set_portfolioid(const char* value, size_t size) {
-  set_has_portfolioid();
-  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
-    portfolioid_ = new ::std::string;
-  }
-  portfolioid_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* ClosePositionParam::mutable_portfolioid() {
-  set_has_portfolioid();
-  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
-    portfolioid_ = new ::std::string;
-  }
-  return portfolioid_;
-}
-inline ::std::string* ClosePositionParam::release_portfolioid() {
-  clear_has_portfolioid();
-  if (portfolioid_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = portfolioid_;
-    portfolioid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
+inline ::trade::MultiLegOrder* ClosePositionParam::release_multilegorder() {
+  clear_has_multilegorder();
+  ::trade::MultiLegOrder* temp = multilegorder_;
+  multilegorder_ = NULL;
+  return temp;
 }
 
-// required string MultiLegOrderId = 2;
-inline bool ClosePositionParam::has_multilegorderid() const {
+// optional string LegOrdRef = 2;
+inline bool ClosePositionParam::has_legordref() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ClosePositionParam::set_has_multilegorderid() {
+inline void ClosePositionParam::set_has_legordref() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ClosePositionParam::clear_has_multilegorderid() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void ClosePositionParam::clear_multilegorderid() {
-  if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
-    multilegorderid_->clear();
-  }
-  clear_has_multilegorderid();
-}
-inline const ::std::string& ClosePositionParam::multilegorderid() const {
-  return *multilegorderid_;
-}
-inline void ClosePositionParam::set_multilegorderid(const ::std::string& value) {
-  set_has_multilegorderid();
-  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
-    multilegorderid_ = new ::std::string;
-  }
-  multilegorderid_->assign(value);
-}
-inline void ClosePositionParam::set_multilegorderid(const char* value) {
-  set_has_multilegorderid();
-  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
-    multilegorderid_ = new ::std::string;
-  }
-  multilegorderid_->assign(value);
-}
-inline void ClosePositionParam::set_multilegorderid(const char* value, size_t size) {
-  set_has_multilegorderid();
-  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
-    multilegorderid_ = new ::std::string;
-  }
-  multilegorderid_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* ClosePositionParam::mutable_multilegorderid() {
-  set_has_multilegorderid();
-  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
-    multilegorderid_ = new ::std::string;
-  }
-  return multilegorderid_;
-}
-inline ::std::string* ClosePositionParam::release_multilegorderid() {
-  clear_has_multilegorderid();
-  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = multilegorderid_;
-    multilegorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-
-// optional string LegOrdRef = 3;
-inline bool ClosePositionParam::has_legordref() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void ClosePositionParam::set_has_legordref() {
-  _has_bits_[0] |= 0x00000004u;
-}
 inline void ClosePositionParam::clear_has_legordref() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void ClosePositionParam::clear_legordref() {
   if (legordref_ != &::google::protobuf::internal::kEmptyString) {

@@ -36,7 +36,7 @@ COrderProcessor::~COrderProcessor(void)
 {
 }
 
-void COrderProcessor::OpenOrder( MultiLegOrderPtr multilegOrder )
+void COrderProcessor::SubmitOrder( MultiLegOrderPtr multilegOrder )
 {
 	boost::mutex::scoped_lock lock(m_mutTicketOrderMap);
 
@@ -47,7 +47,7 @@ void COrderProcessor::OpenOrder( MultiLegOrderPtr multilegOrder )
 
 	m_pendingMultiLegOrders.insert(make_pair(mOrderId, multilegOrder));
 
-	PublishMultiLegOrderUpdate(multilegOrder.get());
+	//PublishMultiLegOrderUpdate(multilegOrder.get());
 
 	std::vector<boost::shared_ptr<trade::InputOrder>> vecInputOrders;
 	int ordCount = GetInputOrders(multilegOrder.get(), &vecInputOrders);
@@ -56,36 +56,6 @@ void COrderProcessor::OpenOrder( MultiLegOrderPtr multilegOrder )
 	{
 		m_pTradeAgent->SubmitOrder(iOrd.get());
 		m_pendingTicketOrderMap.insert(make_pair(iOrd->orderref(), multilegOrder->orderid()));
-	}
-}
-
-void COrderProcessor::CloseOrder( const string& orderId, const string& legRef, string& msg )
-{
-	MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(orderId);
-	if(iterOrd != m_pendingMultiLegOrders.end())
-	{
-		const MultiLegOrderPtr& mlOrder = iterOrd->second;
-
-		if(legRef.empty())
-		{
-			boost::shared_ptr<trade::InputOrder> inputOrder = GetCloseInputOrder(mlOrder.get(), legRef);
-			m_pTradeAgent->SubmitOrder(inputOrder.get());
-		}
-		else
-		{
-			std::vector<boost::shared_ptr<trade::InputOrder>> vecInputOrders;
-			int ordCount = GetCloseInputOrders(mlOrder.get(), &vecInputOrders);
-
-			BOOST_FOREACH(const boost::shared_ptr<trade::InputOrder>& iOrd, vecInputOrders)
-			{
-				m_pTradeAgent->SubmitOrder(iOrd.get());
-
-			}
-		}
-	}
-	else
-	{
-		msg = boost::str(boost::format("Cannot find order ('%s')") % orderId.c_str());
 	}
 }
 
@@ -180,12 +150,11 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 			const MultiLegOrderPtr& mlOrder = iterOrd->second;
 			trade::Order* pOrd = GetOrderByRef(mlOrder.get(), ordRef);
 			
+			pOrd->CopyFrom(*order);
 			pOrd->set_submitsuccess(true);
-			
+
 			string ordStatusMsg;
 			GB2312ToUTF_8(ordStatusMsg, order->statusmsg().c_str());
-			
-			pOrd->CopyFrom(*order);
 			pOrd->set_statusmsg(ordStatusMsg);
 
 			// publish order updated
