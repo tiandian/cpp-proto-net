@@ -193,7 +193,7 @@ namespace PortfolioTrading.Modules.Portfolio
                 case 52:
                     return "平昨";
                 case 53:
-                    return "强关";
+                    return "强减";
                 case 54:
                     return "本地强平";
                 default:

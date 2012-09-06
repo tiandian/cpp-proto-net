@@ -12,7 +12,7 @@ namespace PortfolioTrading.Events
 
     public class CloseMlOrderArgs
     {
-        public string MlOrderId { get; set; }
+        public trade.MultiLegOrder MlOrder { get; set; }
         public string LegOrderRef { get; set; }
     }
 }

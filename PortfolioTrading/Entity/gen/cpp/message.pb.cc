@@ -209,9 +209,8 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PorfOpenPosiParam));
   ClosePositionParam_descriptor_ = file->message_type(9);
-  static const int ClosePositionParam_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, portfolioid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, multilegorderid_),
+  static const int ClosePositionParam_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, multilegorder_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, legordref_),
   };
   ClosePositionParam_reflection_ =
@@ -291,26 +290,27 @@ void protobuf_AddDesc_message_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   ::entity::protobuf_AddDesc_enum_2eproto();
+  ::trade::protobuf_AddDesc_trade_2eproto();
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-    "\n\rmessage.proto\022\006entity\032\nenum.proto\"\033\n\013S"
-    "tringParam\022\014\n\004Data\030\001 \002(\t\"\030\n\010IntParam\022\014\n\004"
-    "Data\030\002 \002(\005\"\234\001\n\007LegItem\022\016\n\006Symbol\030\001 \002(\t\022\r"
-    "\n\005Ratio\030\002 \002(\005\022\'\n\004Side\030\003 \002(\0162\031.entity.Pos"
-    "iDirectionType\022!\n\006Status\030\004 \002(\0162\021.entity."
-    "LegStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003Ask\030\006 \002(\001\022\013\n\003"
-    "Bid\030\007 \002(\001\"\177\n\rPortfolioItem\022\n\n\002ID\030\001 \002(\t\022\020"
-    "\n\010Quantity\030\002 \002(\005\022\014\n\004Diff\030\003 \002(\001\022\020\n\010AutoOp"
-    "en\030\004 \002(\010\022\021\n\tAutoClose\030\005 \002(\010\022\035\n\004Legs\030\006 \003("
-    "\0132\017.entity.LegItem\":\n\014ConnectParam\022\024\n\014Qu"
-    "oteAddress\030\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8"
-    "\n\017OperationReturn\022\017\n\007Success\030\001 \002(\010\022\024\n\014Er"
-    "rorMessage\030\002 \002(\t\"@\n\nLoginParam\022\020\n\010Broker"
-    "Id\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Password\030\003 \002"
-    "(\t\" \n\rRegQuoteParam\022\017\n\007Symbols\030\001 \003(\t\"6\n\021"
-    "PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Qu"
-    "antity\030\002 \002(\005\"U\n\022ClosePositionParam\022\023\n\013Po"
-    "rtfolioId\030\001 \002(\t\022\027\n\017MultiLegOrderId\030\002 \002(\t"
-    "\022\021\n\tLegOrdRef\030\003 \001(\t", 739);
+    "\n\rmessage.proto\022\006entity\032\nenum.proto\032\013tra"
+    "de.proto\"\033\n\013StringParam\022\014\n\004Data\030\001 \002(\t\"\030\n"
+    "\010IntParam\022\014\n\004Data\030\002 \002(\005\"\234\001\n\007LegItem\022\016\n\006S"
+    "ymbol\030\001 \002(\t\022\r\n\005Ratio\030\002 \002(\005\022\'\n\004Side\030\003 \002(\016"
+    "2\031.entity.PosiDirectionType\022!\n\006Status\030\004 "
+    "\002(\0162\021.entity.LegStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003"
+    "Ask\030\006 \002(\001\022\013\n\003Bid\030\007 \002(\001\"\177\n\rPortfolioItem\022"
+    "\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\014\n\004Diff\030\003 "
+    "\002(\001\022\020\n\010AutoOpen\030\004 \002(\010\022\021\n\tAutoClose\030\005 \002(\010"
+    "\022\035\n\004Legs\030\006 \003(\0132\017.entity.LegItem\":\n\014Conne"
+    "ctParam\022\024\n\014QuoteAddress\030\001 \002(\t\022\024\n\014StreamF"
+    "older\030\002 \002(\t\"8\n\017OperationReturn\022\017\n\007Succes"
+    "s\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t\"@\n\nLoginPa"
+    "ram\022\020\n\010BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n"
+    "\010Password\030\003 \002(\t\" \n\rRegQuoteParam\022\017\n\007Symb"
+    "ols\030\001 \003(\t\"6\n\021PorfOpenPosiParam\022\017\n\007PortfI"
+    "d\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\"T\n\022ClosePositi"
+    "onParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024.trade.M"
+    "ultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t", 751);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -3031,8 +3031,7 @@ void PorfOpenPosiParam::Swap(PorfOpenPosiParam* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int ClosePositionParam::kPortfolioIdFieldNumber;
-const int ClosePositionParam::kMultiLegOrderIdFieldNumber;
+const int ClosePositionParam::kMultiLegOrderFieldNumber;
 const int ClosePositionParam::kLegOrdRefFieldNumber;
 #endif  // !_MSC_VER
 
@@ -3042,6 +3041,7 @@ ClosePositionParam::ClosePositionParam()
 }
 
 void ClosePositionParam::InitAsDefaultInstance() {
+  multilegorder_ = const_cast< ::trade::MultiLegOrder*>(&::trade::MultiLegOrder::default_instance());
 }
 
 ClosePositionParam::ClosePositionParam(const ClosePositionParam& from)
@@ -3052,8 +3052,7 @@ ClosePositionParam::ClosePositionParam(const ClosePositionParam& from)
 
 void ClosePositionParam::SharedCtor() {
   _cached_size_ = 0;
-  portfolioid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  multilegorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  multilegorder_ = NULL;
   legordref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -3063,16 +3062,11 @@ ClosePositionParam::~ClosePositionParam() {
 }
 
 void ClosePositionParam::SharedDtor() {
-  if (portfolioid_ != &::google::protobuf::internal::kEmptyString) {
-    delete portfolioid_;
-  }
-  if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
-    delete multilegorderid_;
-  }
   if (legordref_ != &::google::protobuf::internal::kEmptyString) {
     delete legordref_;
   }
   if (this != default_instance_) {
+    delete multilegorder_;
   }
 }
 
@@ -3098,15 +3092,8 @@ ClosePositionParam* ClosePositionParam::New() const {
 
 void ClosePositionParam::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_portfolioid()) {
-      if (portfolioid_ != &::google::protobuf::internal::kEmptyString) {
-        portfolioid_->clear();
-      }
-    }
-    if (has_multilegorderid()) {
-      if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
-        multilegorderid_->clear();
-      }
+    if (has_multilegorder()) {
+      if (multilegorder_ != NULL) multilegorder_->::trade::MultiLegOrder::Clear();
     }
     if (has_legordref()) {
       if (legordref_ != &::google::protobuf::internal::kEmptyString) {
@@ -3124,41 +3111,21 @@ bool ClosePositionParam::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required string PortfolioId = 1;
+      // required .trade.MultiLegOrder MultiLegOrder = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_portfolioid()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->portfolioid().data(), this->portfolioid().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_multilegorder()));
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_MultiLegOrderId;
+        if (input->ExpectTag(18)) goto parse_LegOrdRef;
         break;
       }
       
-      // required string MultiLegOrderId = 2;
+      // optional string LegOrdRef = 2;
       case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_MultiLegOrderId:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_multilegorderid()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->multilegorderid().data(), this->multilegorderid().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(26)) goto parse_LegOrdRef;
-        break;
-      }
-      
-      // optional string LegOrdRef = 3;
-      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_LegOrdRef:
@@ -3192,31 +3159,19 @@ bool ClosePositionParam::MergePartialFromCodedStream(
 
 void ClosePositionParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required string PortfolioId = 1;
-  if (has_portfolioid()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->portfolioid().data(), this->portfolioid().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      1, this->portfolioid(), output);
+  // required .trade.MultiLegOrder MultiLegOrder = 1;
+  if (has_multilegorder()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->multilegorder(), output);
   }
   
-  // required string MultiLegOrderId = 2;
-  if (has_multilegorderid()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->multilegorderid().data(), this->multilegorderid().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->multilegorderid(), output);
-  }
-  
-  // optional string LegOrdRef = 3;
+  // optional string LegOrdRef = 2;
   if (has_legordref()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->legordref().data(), this->legordref().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->legordref(), output);
+      2, this->legordref(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -3227,34 +3182,21 @@ void ClosePositionParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* ClosePositionParam::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required string PortfolioId = 1;
-  if (has_portfolioid()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->portfolioid().data(), this->portfolioid().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        1, this->portfolioid(), target);
+  // required .trade.MultiLegOrder MultiLegOrder = 1;
+  if (has_multilegorder()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->multilegorder(), target);
   }
   
-  // required string MultiLegOrderId = 2;
-  if (has_multilegorderid()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->multilegorderid().data(), this->multilegorderid().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->multilegorderid(), target);
-  }
-  
-  // optional string LegOrdRef = 3;
+  // optional string LegOrdRef = 2;
   if (has_legordref()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->legordref().data(), this->legordref().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->legordref(), target);
+        2, this->legordref(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3268,21 +3210,14 @@ int ClosePositionParam::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required string PortfolioId = 1;
-    if (has_portfolioid()) {
+    // required .trade.MultiLegOrder MultiLegOrder = 1;
+    if (has_multilegorder()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->portfolioid());
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->multilegorder());
     }
     
-    // required string MultiLegOrderId = 2;
-    if (has_multilegorderid()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->multilegorderid());
-    }
-    
-    // optional string LegOrdRef = 3;
+    // optional string LegOrdRef = 2;
     if (has_legordref()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -3316,11 +3251,8 @@ void ClosePositionParam::MergeFrom(const ::google::protobuf::Message& from) {
 void ClosePositionParam::MergeFrom(const ClosePositionParam& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_portfolioid()) {
-      set_portfolioid(from.portfolioid());
-    }
-    if (from.has_multilegorderid()) {
-      set_multilegorderid(from.multilegorderid());
+    if (from.has_multilegorder()) {
+      mutable_multilegorder()->::trade::MultiLegOrder::MergeFrom(from.multilegorder());
     }
     if (from.has_legordref()) {
       set_legordref(from.legordref());
@@ -3342,15 +3274,17 @@ void ClosePositionParam::CopyFrom(const ClosePositionParam& from) {
 }
 
 bool ClosePositionParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
+  if (has_multilegorder()) {
+    if (!this->multilegorder().IsInitialized()) return false;
+  }
   return true;
 }
 
 void ClosePositionParam::Swap(ClosePositionParam* other) {
   if (other != this) {
-    std::swap(portfolioid_, other->portfolioid_);
-    std::swap(multilegorderid_, other->multilegorderid_);
+    std::swap(multilegorder_, other->multilegorder_);
     std::swap(legordref_, other->legordref_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

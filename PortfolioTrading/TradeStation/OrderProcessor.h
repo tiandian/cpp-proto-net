@@ -24,8 +24,7 @@ public:
 
 	void Initialize(CTradeAgent* pTradeAgent);
 
-	void OpenOrder(MultiLegOrderPtr multilegOrder);
-	void CloseOrder(const string& orderId, const string& legRef, string& msg);
+	void SubmitOrder(MultiLegOrderPtr multilegOrder);
 	void CancelOrder(const string& orderId);
 
 	//////////////////////////////////////////////////////////////////////////

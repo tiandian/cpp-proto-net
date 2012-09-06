@@ -89,10 +89,10 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("PorfOpenPosition", param_data);
         }
 
-        public string PortfClosePosition(string mlOrderId, string legRef)
+        public string PortfClosePosition(trade.MultiLegOrder mlOrder, string legRef)
         {
             ClosePositionParam cpParam = new ClosePositionParam();
-            cpParam.MultiLegOrderId = mlOrderId;
+            cpParam.MultiLegOrder = mlOrder;
             cpParam.LegOrdRef = legRef;
 
             byte[] param_data = DataTranslater.Serialize(cpParam);

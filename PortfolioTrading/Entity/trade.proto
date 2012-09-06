@@ -712,4 +712,5 @@ message MultiLegOrder
 	
 	repeated Order Legs = 4;
 	required string OpenOrderId = 5;
+	required string OpenDate = 6;
 }

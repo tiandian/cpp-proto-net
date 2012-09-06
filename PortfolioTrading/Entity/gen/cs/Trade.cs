@@ -1152,6 +1152,24 @@ namespace trade
       get { return _RelativeOrderSysID; }
       set { _RelativeOrderSysID = value; }
     }
+
+    private bool _SubmitSuccess = default(bool);
+    [global::ProtoBuf.ProtoMember(56, IsRequired = false, Name=@"SubmitSuccess", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool SubmitSuccess
+    {
+      get { return _SubmitSuccess; }
+      set { _SubmitSuccess = value; }
+    }
+
+    private string _SubmitError = "";
+    [global::ProtoBuf.ProtoMember(57, IsRequired = false, Name=@"SubmitError", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue("")]
+    public string SubmitError
+    {
+      get { return _SubmitError; }
+      set { _SubmitError = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -1511,6 +1529,20 @@ namespace trade
       get { return _Legs; }
     }
   
+    private string _OpenOrderId;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"OpenOrderId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string OpenOrderId
+    {
+      get { return _OpenOrderId; }
+      set { _OpenOrderId = value; }
+    }
+    private string _OpenDate;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"OpenDate", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string OpenDate
+    {
+      get { return _OpenDate; }
+      set { _OpenDate = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
