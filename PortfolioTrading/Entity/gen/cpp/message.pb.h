@@ -44,6 +44,7 @@ class LoginParam;
 class RegQuoteParam;
 class PorfOpenPosiParam;
 class ClosePositionParam;
+class LegOrderUpdateParam;
 
 // ===================================================================
 
@@ -1089,6 +1090,131 @@ class ClosePositionParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ClosePositionParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class LegOrderUpdateParam : public ::google::protobuf::Message {
+ public:
+  LegOrderUpdateParam();
+  virtual ~LegOrderUpdateParam();
+  
+  LegOrderUpdateParam(const LegOrderUpdateParam& from);
+  
+  inline LegOrderUpdateParam& operator=(const LegOrderUpdateParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const LegOrderUpdateParam& default_instance();
+  
+  void Swap(LegOrderUpdateParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  LegOrderUpdateParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const LegOrderUpdateParam& from);
+  void MergeFrom(const LegOrderUpdateParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string PortfId = 1;
+  inline bool has_portfid() const;
+  inline void clear_portfid();
+  static const int kPortfIdFieldNumber = 1;
+  inline const ::std::string& portfid() const;
+  inline void set_portfid(const ::std::string& value);
+  inline void set_portfid(const char* value);
+  inline void set_portfid(const char* value, size_t size);
+  inline ::std::string* mutable_portfid();
+  inline ::std::string* release_portfid();
+  
+  // required string MultiLegOrderId = 2;
+  inline bool has_multilegorderid() const;
+  inline void clear_multilegorderid();
+  static const int kMultiLegOrderIdFieldNumber = 2;
+  inline const ::std::string& multilegorderid() const;
+  inline void set_multilegorderid(const ::std::string& value);
+  inline void set_multilegorderid(const char* value);
+  inline void set_multilegorderid(const char* value, size_t size);
+  inline ::std::string* mutable_multilegorderid();
+  inline ::std::string* release_multilegorderid();
+  
+  // required string LegOrderRef = 3;
+  inline bool has_legorderref() const;
+  inline void clear_legorderref();
+  static const int kLegOrderRefFieldNumber = 3;
+  inline const ::std::string& legorderref() const;
+  inline void set_legorderref(const ::std::string& value);
+  inline void set_legorderref(const char* value);
+  inline void set_legorderref(const char* value, size_t size);
+  inline ::std::string* mutable_legorderref();
+  inline ::std::string* release_legorderref();
+  
+  // required .trade.Order LegOrder = 4;
+  inline bool has_legorder() const;
+  inline void clear_legorder();
+  static const int kLegOrderFieldNumber = 4;
+  inline const ::trade::Order& legorder() const;
+  inline ::trade::Order* mutable_legorder();
+  inline ::trade::Order* release_legorder();
+  
+  // @@protoc_insertion_point(class_scope:entity.LegOrderUpdateParam)
+ private:
+  inline void set_has_portfid();
+  inline void clear_has_portfid();
+  inline void set_has_multilegorderid();
+  inline void clear_has_multilegorderid();
+  inline void set_has_legorderref();
+  inline void clear_has_legorderref();
+  inline void set_has_legorder();
+  inline void clear_has_legorder();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* portfid_;
+  ::std::string* multilegorderid_;
+  ::std::string* legorderref_;
+  ::trade::Order* legorder_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static LegOrderUpdateParam* default_instance_;
 };
 // ===================================================================
 
@@ -2155,6 +2281,213 @@ inline ::std::string* ClosePositionParam::release_legordref() {
     legordref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// -------------------------------------------------------------------
+
+// LegOrderUpdateParam
+
+// required string PortfId = 1;
+inline bool LegOrderUpdateParam::has_portfid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void LegOrderUpdateParam::set_has_portfid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void LegOrderUpdateParam::clear_has_portfid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void LegOrderUpdateParam::clear_portfid() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    portfid_->clear();
+  }
+  clear_has_portfid();
+}
+inline const ::std::string& LegOrderUpdateParam::portfid() const {
+  return *portfid_;
+}
+inline void LegOrderUpdateParam::set_portfid(const ::std::string& value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void LegOrderUpdateParam::set_portfid(const char* value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void LegOrderUpdateParam::set_portfid(const char* value, size_t size) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* LegOrderUpdateParam::mutable_portfid() {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  return portfid_;
+}
+inline ::std::string* LegOrderUpdateParam::release_portfid() {
+  clear_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = portfid_;
+    portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string MultiLegOrderId = 2;
+inline bool LegOrderUpdateParam::has_multilegorderid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void LegOrderUpdateParam::set_has_multilegorderid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void LegOrderUpdateParam::clear_has_multilegorderid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void LegOrderUpdateParam::clear_multilegorderid() {
+  if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_->clear();
+  }
+  clear_has_multilegorderid();
+}
+inline const ::std::string& LegOrderUpdateParam::multilegorderid() const {
+  return *multilegorderid_;
+}
+inline void LegOrderUpdateParam::set_multilegorderid(const ::std::string& value) {
+  set_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_ = new ::std::string;
+  }
+  multilegorderid_->assign(value);
+}
+inline void LegOrderUpdateParam::set_multilegorderid(const char* value) {
+  set_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_ = new ::std::string;
+  }
+  multilegorderid_->assign(value);
+}
+inline void LegOrderUpdateParam::set_multilegorderid(const char* value, size_t size) {
+  set_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_ = new ::std::string;
+  }
+  multilegorderid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* LegOrderUpdateParam::mutable_multilegorderid() {
+  set_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    multilegorderid_ = new ::std::string;
+  }
+  return multilegorderid_;
+}
+inline ::std::string* LegOrderUpdateParam::release_multilegorderid() {
+  clear_has_multilegorderid();
+  if (multilegorderid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = multilegorderid_;
+    multilegorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string LegOrderRef = 3;
+inline bool LegOrderUpdateParam::has_legorderref() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void LegOrderUpdateParam::set_has_legorderref() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void LegOrderUpdateParam::clear_has_legorderref() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void LegOrderUpdateParam::clear_legorderref() {
+  if (legorderref_ != &::google::protobuf::internal::kEmptyString) {
+    legorderref_->clear();
+  }
+  clear_has_legorderref();
+}
+inline const ::std::string& LegOrderUpdateParam::legorderref() const {
+  return *legorderref_;
+}
+inline void LegOrderUpdateParam::set_legorderref(const ::std::string& value) {
+  set_has_legorderref();
+  if (legorderref_ == &::google::protobuf::internal::kEmptyString) {
+    legorderref_ = new ::std::string;
+  }
+  legorderref_->assign(value);
+}
+inline void LegOrderUpdateParam::set_legorderref(const char* value) {
+  set_has_legorderref();
+  if (legorderref_ == &::google::protobuf::internal::kEmptyString) {
+    legorderref_ = new ::std::string;
+  }
+  legorderref_->assign(value);
+}
+inline void LegOrderUpdateParam::set_legorderref(const char* value, size_t size) {
+  set_has_legorderref();
+  if (legorderref_ == &::google::protobuf::internal::kEmptyString) {
+    legorderref_ = new ::std::string;
+  }
+  legorderref_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* LegOrderUpdateParam::mutable_legorderref() {
+  set_has_legorderref();
+  if (legorderref_ == &::google::protobuf::internal::kEmptyString) {
+    legorderref_ = new ::std::string;
+  }
+  return legorderref_;
+}
+inline ::std::string* LegOrderUpdateParam::release_legorderref() {
+  clear_has_legorderref();
+  if (legorderref_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = legorderref_;
+    legorderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .trade.Order LegOrder = 4;
+inline bool LegOrderUpdateParam::has_legorder() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void LegOrderUpdateParam::set_has_legorder() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void LegOrderUpdateParam::clear_has_legorder() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void LegOrderUpdateParam::clear_legorder() {
+  if (legorder_ != NULL) legorder_->::trade::Order::Clear();
+  clear_has_legorder();
+}
+inline const ::trade::Order& LegOrderUpdateParam::legorder() const {
+  return legorder_ != NULL ? *legorder_ : *default_instance_->legorder_;
+}
+inline ::trade::Order* LegOrderUpdateParam::mutable_legorder() {
+  set_has_legorder();
+  if (legorder_ == NULL) legorder_ = new ::trade::Order;
+  return legorder_;
+}
+inline ::trade::Order* LegOrderUpdateParam::release_legorder() {
+  clear_has_legorder();
+  ::trade::Order* temp = legorder_;
+  legorder_ = NULL;
+  return temp;
 }
 
 

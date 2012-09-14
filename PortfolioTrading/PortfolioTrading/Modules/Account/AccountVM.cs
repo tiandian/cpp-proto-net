@@ -42,6 +42,7 @@ namespace PortfolioTrading.Modules.Account
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
             _client.OnPortfolioItemUpdated += new Action<entity.PortfolioItem>(_client_OnPortfolioItemUpdated);
             _client.OnMultiLegOrderUpdated += new Action<trade.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
+            _client.OnLegOrderUpdated += new Action<string, string, string, trade.Order>(_client_OnLegOrderUpdated);
             _client.OnTradeUpdated += new Action<trade.Trade>(_client_OnTradeUpdated);
         }
 
@@ -411,6 +412,19 @@ namespace PortfolioTrading.Modules.Account
         {
             string info = string.Format("mlOrder: {0}\t{1}\t{2}", obj.OrderId, obj.PortfolioId, obj.Quantity);
             EventAggregator.GetEvent<MultiLegOrderUpdatedEvent>().Publish(obj);
+        }
+
+
+        void _client_OnLegOrderUpdated(string portfId, string mlOrderId, string legOrdRef, trade.Order legOrder)
+        {
+            OrderUpdateArgs args = new OrderUpdateArgs
+                                    {
+                                        PortfolioId = portfId,
+                                        MlOrderId = mlOrderId,
+                                        LegOrderRef = legOrdRef,
+                                        LegOrder = legOrder
+                                    };
+            EventAggregator.GetEvent<IndividualOrderUpdatedEvent>().Publish(args);
         }
 
         void _client_OnPortfolioItemUpdated(entity.PortfolioItem obj)

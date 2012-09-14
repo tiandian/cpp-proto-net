@@ -480,7 +480,7 @@ message Order
 	///安装编号
 	optional int32	InstallID = 28;
 	///报单提交状态
-	optional OrderSubmitStatusType	OrderSubmitStatus = 29;
+	required OrderSubmitStatusType	OrderSubmitStatus = 29;
 	///报单提示序号
 	optional int32	NotifySequence = 30;
 	///交易日
@@ -492,7 +492,7 @@ message Order
 	///报单来源
 	optional OrderSourceType	OrderSource = 34;
 	///报单状态
-	optional OrderStatusType	OrderStatus = 35;
+	required OrderStatusType	OrderStatus = 35;
 	///报单类型
 	optional OrderTypeType	OrderType = 36;
 	///今成交数量
@@ -533,10 +533,6 @@ message Order
 	optional int32	BrokerOrderSeq = 54;
 	///相关报单
 	optional string	RelativeOrderSysID = 55;
-
-	/// 附加标识
-	optional bool SubmitSuccess = 56;
-	optional string SubmitError = 57;
 };
 
 ///TFtdcTradingRoleType是一个交易角色类型

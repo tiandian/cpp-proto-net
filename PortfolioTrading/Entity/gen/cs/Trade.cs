@@ -909,10 +909,8 @@ namespace trade
       get { return _InstallID; }
       set { _InstallID = value; }
     }
-
-    private trade.OrderSubmitStatusType _OrderSubmitStatus = trade.OrderSubmitStatusType.INSERT_SUBMITTED;
-    [global::ProtoBuf.ProtoMember(29, IsRequired = false, Name=@"OrderSubmitStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(trade.OrderSubmitStatusType.INSERT_SUBMITTED)]
+    private trade.OrderSubmitStatusType _OrderSubmitStatus;
+    [global::ProtoBuf.ProtoMember(29, IsRequired = true, Name=@"OrderSubmitStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public trade.OrderSubmitStatusType OrderSubmitStatus
     {
       get { return _OrderSubmitStatus; }
@@ -963,10 +961,8 @@ namespace trade
       get { return _OrderSource; }
       set { _OrderSource = value; }
     }
-
-    private trade.OrderStatusType _OrderStatus = trade.OrderStatusType.ALL_TRADED;
-    [global::ProtoBuf.ProtoMember(35, IsRequired = false, Name=@"OrderStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(trade.OrderStatusType.ALL_TRADED)]
+    private trade.OrderStatusType _OrderStatus;
+    [global::ProtoBuf.ProtoMember(35, IsRequired = true, Name=@"OrderStatus", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public trade.OrderStatusType OrderStatus
     {
       get { return _OrderStatus; }
@@ -1151,24 +1147,6 @@ namespace trade
     {
       get { return _RelativeOrderSysID; }
       set { _RelativeOrderSysID = value; }
-    }
-
-    private bool _SubmitSuccess = default(bool);
-    [global::ProtoBuf.ProtoMember(56, IsRequired = false, Name=@"SubmitSuccess", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue(default(bool))]
-    public bool SubmitSuccess
-    {
-      get { return _SubmitSuccess; }
-      set { _SubmitSuccess = value; }
-    }
-
-    private string _SubmitError = "";
-    [global::ProtoBuf.ProtoMember(57, IsRequired = false, Name=@"SubmitError", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    [global::System.ComponentModel.DefaultValue("")]
-    public string SubmitError
-    {
-      get { return _SubmitError; }
-      set { _SubmitError = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

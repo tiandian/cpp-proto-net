@@ -163,6 +163,22 @@ void CClientAgent::OnTradeUpdated( trade::Trade* trade )
 		m_pSession->BeginCallback("TradePush", callbackData);
 }
 
+void CClientAgent::OnLegOrderUpdated( const string& portfId, const string& mlOrderId, trade::Order* legOrd )
+{
+	entity::LegOrderUpdateParam orderUpdate;
+	orderUpdate.set_portfid(portfId);
+	orderUpdate.set_multilegorderid(mlOrderId);
+	orderUpdate.set_legorderref(legOrd->orderref());
+	
+	trade::Order* pOrd = orderUpdate.mutable_legorder();
+	pOrd->CopyFrom(*legOrd);
+	    
+	std::string callbackData;
+	orderUpdate.SerializeToString(&callbackData);
+	if(m_pSession != NULL)
+		m_pSession->BeginCallback("LegOrderPush", callbackData);
+}
+
 
 
 

@@ -47,6 +47,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ClosePositionParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ClosePositionParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* LegOrderUpdateParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  LegOrderUpdateParam_reflection_ = NULL;
 
 }  // namespace
 
@@ -224,6 +227,24 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ClosePositionParam));
+  LegOrderUpdateParam_descriptor_ = file->message_type(10);
+  static const int LegOrderUpdateParam_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, portfid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, multilegorderid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, legorderref_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, legorder_),
+  };
+  LegOrderUpdateParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      LegOrderUpdateParam_descriptor_,
+      LegOrderUpdateParam::default_instance_,
+      LegOrderUpdateParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(LegOrderUpdateParam));
 }
 
 namespace {
@@ -256,6 +277,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     PorfOpenPosiParam_descriptor_, &PorfOpenPosiParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ClosePositionParam_descriptor_, &ClosePositionParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    LegOrderUpdateParam_descriptor_, &LegOrderUpdateParam::default_instance());
 }
 
 }  // namespace
@@ -281,6 +304,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete PorfOpenPosiParam_reflection_;
   delete ClosePositionParam::default_instance_;
   delete ClosePositionParam_reflection_;
+  delete LegOrderUpdateParam::default_instance_;
+  delete LegOrderUpdateParam_reflection_;
 }
 
 void protobuf_AddDesc_message_2eproto() {
@@ -310,7 +335,10 @@ void protobuf_AddDesc_message_2eproto() {
     "ols\030\001 \003(\t\"6\n\021PorfOpenPosiParam\022\017\n\007PortfI"
     "d\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\"T\n\022ClosePositi"
     "onParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024.trade.M"
-    "ultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t", 751);
+    "ultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t\n\023LegOr"
+    "derUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017Multi"
+    "LegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036\n"
+    "\010LegOrder\030\004 \002(\0132\014.trade.Order", 869);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -323,6 +351,7 @@ void protobuf_AddDesc_message_2eproto() {
   RegQuoteParam::default_instance_ = new RegQuoteParam();
   PorfOpenPosiParam::default_instance_ = new PorfOpenPosiParam();
   ClosePositionParam::default_instance_ = new ClosePositionParam();
+  LegOrderUpdateParam::default_instance_ = new LegOrderUpdateParam();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
   LegItem::default_instance_->InitAsDefaultInstance();
@@ -333,6 +362,7 @@ void protobuf_AddDesc_message_2eproto() {
   RegQuoteParam::default_instance_->InitAsDefaultInstance();
   PorfOpenPosiParam::default_instance_->InitAsDefaultInstance();
   ClosePositionParam::default_instance_->InitAsDefaultInstance();
+  LegOrderUpdateParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
 
@@ -3297,6 +3327,393 @@ void ClosePositionParam::Swap(ClosePositionParam* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = ClosePositionParam_descriptor_;
   metadata.reflection = ClosePositionParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int LegOrderUpdateParam::kPortfIdFieldNumber;
+const int LegOrderUpdateParam::kMultiLegOrderIdFieldNumber;
+const int LegOrderUpdateParam::kLegOrderRefFieldNumber;
+const int LegOrderUpdateParam::kLegOrderFieldNumber;
+#endif  // !_MSC_VER
+
+LegOrderUpdateParam::LegOrderUpdateParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void LegOrderUpdateParam::InitAsDefaultInstance() {
+  legorder_ = const_cast< ::trade::Order*>(&::trade::Order::default_instance());
+}
+
+LegOrderUpdateParam::LegOrderUpdateParam(const LegOrderUpdateParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void LegOrderUpdateParam::SharedCtor() {
+  _cached_size_ = 0;
+  portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  multilegorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  legorderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  legorder_ = NULL;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+LegOrderUpdateParam::~LegOrderUpdateParam() {
+  SharedDtor();
+}
+
+void LegOrderUpdateParam::SharedDtor() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    delete portfid_;
+  }
+  if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
+    delete multilegorderid_;
+  }
+  if (legorderref_ != &::google::protobuf::internal::kEmptyString) {
+    delete legorderref_;
+  }
+  if (this != default_instance_) {
+    delete legorder_;
+  }
+}
+
+void LegOrderUpdateParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* LegOrderUpdateParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return LegOrderUpdateParam_descriptor_;
+}
+
+const LegOrderUpdateParam& LegOrderUpdateParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+LegOrderUpdateParam* LegOrderUpdateParam::default_instance_ = NULL;
+
+LegOrderUpdateParam* LegOrderUpdateParam::New() const {
+  return new LegOrderUpdateParam;
+}
+
+void LegOrderUpdateParam::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_portfid()) {
+      if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+        portfid_->clear();
+      }
+    }
+    if (has_multilegorderid()) {
+      if (multilegorderid_ != &::google::protobuf::internal::kEmptyString) {
+        multilegorderid_->clear();
+      }
+    }
+    if (has_legorderref()) {
+      if (legorderref_ != &::google::protobuf::internal::kEmptyString) {
+        legorderref_->clear();
+      }
+    }
+    if (has_legorder()) {
+      if (legorder_ != NULL) legorder_->::trade::Order::Clear();
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool LegOrderUpdateParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string PortfId = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_portfid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->portfid().data(), this->portfid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_MultiLegOrderId;
+        break;
+      }
+      
+      // required string MultiLegOrderId = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_MultiLegOrderId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_multilegorderid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->multilegorderid().data(), this->multilegorderid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_LegOrderRef;
+        break;
+      }
+      
+      // required string LegOrderRef = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_LegOrderRef:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_legorderref()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->legorderref().data(), this->legorderref().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_LegOrder;
+        break;
+      }
+      
+      // required .trade.Order LegOrder = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_LegOrder:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_legorder()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void LegOrderUpdateParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string PortfId = 1;
+  if (has_portfid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->portfid().data(), this->portfid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->portfid(), output);
+  }
+  
+  // required string MultiLegOrderId = 2;
+  if (has_multilegorderid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->multilegorderid().data(), this->multilegorderid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->multilegorderid(), output);
+  }
+  
+  // required string LegOrderRef = 3;
+  if (has_legorderref()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->legorderref().data(), this->legorderref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->legorderref(), output);
+  }
+  
+  // required .trade.Order LegOrder = 4;
+  if (has_legorder()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, this->legorder(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* LegOrderUpdateParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string PortfId = 1;
+  if (has_portfid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->portfid().data(), this->portfid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->portfid(), target);
+  }
+  
+  // required string MultiLegOrderId = 2;
+  if (has_multilegorderid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->multilegorderid().data(), this->multilegorderid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->multilegorderid(), target);
+  }
+  
+  // required string LegOrderRef = 3;
+  if (has_legorderref()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->legorderref().data(), this->legorderref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->legorderref(), target);
+  }
+  
+  // required .trade.Order LegOrder = 4;
+  if (has_legorder()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        4, this->legorder(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int LegOrderUpdateParam::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string PortfId = 1;
+    if (has_portfid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->portfid());
+    }
+    
+    // required string MultiLegOrderId = 2;
+    if (has_multilegorderid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->multilegorderid());
+    }
+    
+    // required string LegOrderRef = 3;
+    if (has_legorderref()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->legorderref());
+    }
+    
+    // required .trade.Order LegOrder = 4;
+    if (has_legorder()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->legorder());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void LegOrderUpdateParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const LegOrderUpdateParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const LegOrderUpdateParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void LegOrderUpdateParam::MergeFrom(const LegOrderUpdateParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_portfid()) {
+      set_portfid(from.portfid());
+    }
+    if (from.has_multilegorderid()) {
+      set_multilegorderid(from.multilegorderid());
+    }
+    if (from.has_legorderref()) {
+      set_legorderref(from.legorderref());
+    }
+    if (from.has_legorder()) {
+      mutable_legorder()->::trade::Order::MergeFrom(from.legorder());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void LegOrderUpdateParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void LegOrderUpdateParam::CopyFrom(const LegOrderUpdateParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool LegOrderUpdateParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  
+  if (has_legorder()) {
+    if (!this->legorder().IsInitialized()) return false;
+  }
+  return true;
+}
+
+void LegOrderUpdateParam::Swap(LegOrderUpdateParam* other) {
+  if (other != this) {
+    std::swap(portfid_, other->portfid_);
+    std::swap(multilegorderid_, other->multilegorderid_);
+    std::swap(legorderref_, other->legorderref_);
+    std::swap(legorder_, other->legorder_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata LegOrderUpdateParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = LegOrderUpdateParam_descriptor_;
+  metadata.reflection = LegOrderUpdateParam_reflection_;
   return metadata;
 }
 
