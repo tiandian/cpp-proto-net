@@ -69,3 +69,11 @@ message ClosePositionParam
 	required trade.MultiLegOrder MultiLegOrder = 1;
 	optional string LegOrdRef = 2;
 }
+
+message LegOrderUpdateParam
+{
+	required string PortfId = 1;
+	required string MultiLegOrderId = 2;
+	required string LegOrderRef = 3;
+	required trade.Order LegOrder = 4;
+}

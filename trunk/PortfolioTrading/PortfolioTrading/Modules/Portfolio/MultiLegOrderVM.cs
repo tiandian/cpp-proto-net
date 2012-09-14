@@ -86,15 +86,22 @@ namespace PortfolioTrading.Modules.Portfolio
                 var legOrder = mlOrder.Legs[i];
                 _orders[i].From(legOrder);
 
-                if (!legOrder.SubmitSuccess)
-                {
-                    var o = _orders[i];
-                    EventLogger.Write("{0} {1} 被拒绝 -({2})", o.Direction, o.Symbol, legOrder.SubmitError);
-                }
-                else if (legOrder.OrderSubmitStatus > trade.OrderSubmitStatusType.ACCEPTED)
+                if (legOrder.OrderSubmitStatus > trade.OrderSubmitStatusType.ACCEPTED)
                 {
                     var o = _orders[i];
                     EventLogger.Write("{0} {1} 被拒绝 -({2})", o.Direction, o.Symbol, legOrder.StatusMsg);
+                }
+            }
+        }
+
+        public void From(string ordRef, trade.Order order)
+        {
+            foreach (var oVm in _orders)
+            {
+                if (oVm.OrderRef == ordRef)
+                {
+                    oVm.From(order);
+                    break;
                 }
             }
         }

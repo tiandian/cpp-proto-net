@@ -17,6 +17,7 @@ using PortfolioTrading.Events;
 using System.Collections.ObjectModel;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.ServiceLocation;
+using System.Diagnostics;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -34,6 +35,7 @@ namespace PortfolioTrading.Modules.Portfolio
         public PortfolioOrdersView(IEventAggregator evtAgg)
         {
             evtAgg.GetEvent<MultiLegOrderUpdatedEvent>().Subscribe(OnMultiLegOrderUpdated, ThreadOption.UIThread);
+            evtAgg.GetEvent<IndividualOrderUpdatedEvent>().Subscribe(OnIndividualOrderUpdated, ThreadOption.UIThread);
 
             this.DataContext = _ordersRepo;
 
@@ -43,6 +45,11 @@ namespace PortfolioTrading.Modules.Portfolio
         public void OnMultiLegOrderUpdated(trade.MultiLegOrder mlOrder)
         {
             _ordersRepo.Update(mlOrder);
+        }
+
+        public void OnIndividualOrderUpdated(OrderUpdateArgs args)
+        {
+            _ordersRepo.Update(args);
         }
 
         private static void OnClosePorfOrder(MultiLegOrderVM mlOrderVm)
@@ -72,6 +79,19 @@ namespace PortfolioTrading.Modules.Portfolio
                     mlOrderVm.From(mlOrder);
                     this.Add(mlOrderVm);
                 }
+            }
+        }
+
+        public void Update(OrderUpdateArgs orderUpdateArgs)
+        {
+            MultiLegOrderVM mlOrderVm = this.SingleOrDefault(vm => vm.OrderId == orderUpdateArgs.MlOrderId);
+            Debug.Assert(mlOrderVm != null, 
+                string.Format("Cannot find parent multileg order({0}) when update individual order",
+                             orderUpdateArgs.MlOrderId));
+            
+            if (mlOrderVm != null)
+            {
+                mlOrderVm.From(orderUpdateArgs.LegOrderRef, orderUpdateArgs.LegOrder);
             }
         }
     }

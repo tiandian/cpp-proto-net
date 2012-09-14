@@ -47,8 +47,6 @@ void COrderProcessor::SubmitOrder( MultiLegOrderPtr multilegOrder )
 
 	m_pendingMultiLegOrders.insert(make_pair(mOrderId, multilegOrder));
 
-	//PublishMultiLegOrderUpdate(multilegOrder.get());
-
 	std::vector<boost::shared_ptr<trade::InputOrder>> vecInputOrders;
 	int ordCount = GetInputOrders(multilegOrder.get(), &vecInputOrders);
 	
@@ -57,6 +55,9 @@ void COrderProcessor::SubmitOrder( MultiLegOrderPtr multilegOrder )
 		m_pTradeAgent->SubmitOrder(iOrd.get());
 		m_pendingTicketOrderMap.insert(make_pair(iOrd->orderref(), multilegOrder->orderid()));
 	}
+
+	// Publish order sent
+	PublishMultiLegOrderUpdate(multilegOrder.get());
 }
 
 void COrderProcessor::CancelOrder( const string& orderId )
@@ -151,14 +152,13 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 			trade::Order* pOrd = GetOrderByRef(mlOrder.get(), ordRef);
 			
 			pOrd->CopyFrom(*order);
-			pOrd->set_submitsuccess(true);
-
+			
 			string ordStatusMsg;
 			GB2312ToUTF_8(ordStatusMsg, order->statusmsg().c_str());
 			pOrd->set_statusmsg(ordStatusMsg);
 
 			// publish order updated
-			PublishMultiLegOrderUpdate(mlOrder.get());
+			PublishOrderUpdate(mlOrder->portfolioid(), mlOrder->orderid(), pOrd);
 
 			if(IsMultiLegOrderDone(mlOrder.get()))
 			{
@@ -182,16 +182,16 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 			const MultiLegOrderPtr& mlOrder = iterOrd->second;
 			trade::Order* pOrd = GetOrderByRef(mlOrder.get(), orderRef);
 
-			pOrd->set_submitsuccess(false);
+			pOrd->set_ordersubmitstatus(trade::INSERT_REJECTED);
 
 			string ordStatusMsg;
 			GB2312ToUTF_8(ordStatusMsg, msg.c_str());
 
 			// set error message
-			pOrd->set_submiterror(ordStatusMsg);
+			pOrd->set_statusmsg(ordStatusMsg);
 			
 			// publish order updated
-			PublishMultiLegOrderUpdate(mlOrder.get());
+			PublishOrderUpdate(mlOrder->portfolioid(), mlOrder->orderid(), pOrd);
 
 			if(IsMultiLegOrderDone(mlOrder.get()))
 			{

@@ -1945,7 +1945,7 @@ class Order : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 installid() const;
   inline void set_installid(::google::protobuf::int32 value);
   
-  // optional .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
+  // required .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
   inline bool has_ordersubmitstatus() const;
   inline void clear_ordersubmitstatus();
   static const int kOrderSubmitStatusFieldNumber = 29;
@@ -1995,7 +1995,7 @@ class Order : public ::google::protobuf::Message {
   inline trade::OrderSourceType ordersource() const;
   inline void set_ordersource(trade::OrderSourceType value);
   
-  // optional .trade.OrderStatusType OrderStatus = 35;
+  // required .trade.OrderStatusType OrderStatus = 35;
   inline bool has_orderstatus() const;
   inline void clear_orderstatus();
   static const int kOrderStatusFieldNumber = 35;
@@ -2190,24 +2190,6 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_relativeordersysid();
   inline ::std::string* release_relativeordersysid();
   
-  // optional bool SubmitSuccess = 56;
-  inline bool has_submitsuccess() const;
-  inline void clear_submitsuccess();
-  static const int kSubmitSuccessFieldNumber = 56;
-  inline bool submitsuccess() const;
-  inline void set_submitsuccess(bool value);
-  
-  // optional string SubmitError = 57;
-  inline bool has_submiterror() const;
-  inline void clear_submiterror();
-  static const int kSubmitErrorFieldNumber = 57;
-  inline const ::std::string& submiterror() const;
-  inline void set_submiterror(const ::std::string& value);
-  inline void set_submiterror(const char* value);
-  inline void set_submiterror(const char* value, size_t size);
-  inline ::std::string* mutable_submiterror();
-  inline ::std::string* release_submiterror();
-  
   // @@protoc_insertion_point(class_scope:trade.Order)
  private:
   inline void set_has_brokerid();
@@ -2320,10 +2302,6 @@ class Order : public ::google::protobuf::Message {
   inline void clear_has_brokerorderseq();
   inline void set_has_relativeordersysid();
   inline void clear_has_relativeordersysid();
-  inline void set_has_submitsuccess();
-  inline void clear_has_submitsuccess();
-  inline void set_has_submiterror();
-  inline void clear_has_submiterror();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2361,18 +2339,17 @@ class Order : public ::google::protobuf::Message {
   int ordersource_;
   ::std::string* ordersysid_;
   int orderstatus_;
+  bool isautosuspend_;
+  bool userforceclose_;
   int ordertype_;
   ::google::protobuf::int32 volumetraded_;
-  ::google::protobuf::int32 volumetotal_;
   ::std::string* insertdate_;
   ::std::string* inserttime_;
   ::std::string* activetime_;
   ::std::string* suspendtime_;
-  ::std::string* updatetime_;
-  bool isautosuspend_;
-  bool userforceclose_;
-  bool submitsuccess_;
+  ::google::protobuf::int32 volumetotal_;
   ::google::protobuf::int32 sequenceno_;
+  ::std::string* updatetime_;
   ::std::string* canceltime_;
   ::std::string* activetraderid_;
   ::std::string* clearingpartid_;
@@ -2382,11 +2359,10 @@ class Order : public ::google::protobuf::Message {
   ::std::string* statusmsg_;
   ::std::string* activeuserid_;
   ::std::string* relativeordersysid_;
-  ::std::string* submiterror_;
   ::google::protobuf::int32 brokerorderseq_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(57 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(55 + 31) / 32];
   
   friend void  protobuf_AddDesc_trade_2eproto();
   friend void protobuf_AssignDesc_trade_2eproto();
@@ -7045,7 +7021,7 @@ inline void Order::set_installid(::google::protobuf::int32 value) {
   installid_ = value;
 }
 
-// optional .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
+// required .trade.OrderSubmitStatusType OrderSubmitStatus = 29;
 inline bool Order::has_ordersubmitstatus() const {
   return (_has_bits_[0] & 0x10000000u) != 0;
 }
@@ -7251,7 +7227,7 @@ inline void Order::set_ordersource(trade::OrderSourceType value) {
   ordersource_ = value;
 }
 
-// optional .trade.OrderStatusType OrderStatus = 35;
+// required .trade.OrderStatusType OrderStatus = 35;
 inline bool Order::has_orderstatus() const {
   return (_has_bits_[1] & 0x00000004u) != 0;
 }
@@ -8143,86 +8119,6 @@ inline ::std::string* Order::release_relativeordersysid() {
   } else {
     ::std::string* temp = relativeordersysid_;
     relativeordersysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-
-// optional bool SubmitSuccess = 56;
-inline bool Order::has_submitsuccess() const {
-  return (_has_bits_[1] & 0x00800000u) != 0;
-}
-inline void Order::set_has_submitsuccess() {
-  _has_bits_[1] |= 0x00800000u;
-}
-inline void Order::clear_has_submitsuccess() {
-  _has_bits_[1] &= ~0x00800000u;
-}
-inline void Order::clear_submitsuccess() {
-  submitsuccess_ = false;
-  clear_has_submitsuccess();
-}
-inline bool Order::submitsuccess() const {
-  return submitsuccess_;
-}
-inline void Order::set_submitsuccess(bool value) {
-  set_has_submitsuccess();
-  submitsuccess_ = value;
-}
-
-// optional string SubmitError = 57;
-inline bool Order::has_submiterror() const {
-  return (_has_bits_[1] & 0x01000000u) != 0;
-}
-inline void Order::set_has_submiterror() {
-  _has_bits_[1] |= 0x01000000u;
-}
-inline void Order::clear_has_submiterror() {
-  _has_bits_[1] &= ~0x01000000u;
-}
-inline void Order::clear_submiterror() {
-  if (submiterror_ != &::google::protobuf::internal::kEmptyString) {
-    submiterror_->clear();
-  }
-  clear_has_submiterror();
-}
-inline const ::std::string& Order::submiterror() const {
-  return *submiterror_;
-}
-inline void Order::set_submiterror(const ::std::string& value) {
-  set_has_submiterror();
-  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
-    submiterror_ = new ::std::string;
-  }
-  submiterror_->assign(value);
-}
-inline void Order::set_submiterror(const char* value) {
-  set_has_submiterror();
-  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
-    submiterror_ = new ::std::string;
-  }
-  submiterror_->assign(value);
-}
-inline void Order::set_submiterror(const char* value, size_t size) {
-  set_has_submiterror();
-  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
-    submiterror_ = new ::std::string;
-  }
-  submiterror_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* Order::mutable_submiterror() {
-  set_has_submiterror();
-  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
-    submiterror_ = new ::std::string;
-  }
-  return submiterror_;
-}
-inline ::std::string* Order::release_submiterror() {
-  clear_has_submiterror();
-  if (submiterror_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = submiterror_;
-    submiterror_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }

@@ -8,6 +8,8 @@ namespace PortfolioTrading.Modules.Portfolio
 {
     public class OrderVM : NotificationObject
     {
+        public string OrderRef { get; set; }
+
         #region Symbol
         private string _symbol;
 
@@ -164,10 +166,12 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public void From(trade.Order order)
         {
+            OrderRef = order.OrderRef;
+
             Symbol = order.InstrumentID;
             Direction = GetDirection(order.Direction);
             OCFlag = GetOCFlag(order.CombOffsetFlag);
-            StatusMsg = GetStatus(order.SubmitSuccess, order.OrderSubmitStatus, order.OrderStatus);
+            StatusMsg = GetStatus(order.OrderSubmitStatus, order.OrderStatus);
             if(!string.IsNullOrEmpty(order.InsertTime))
                 InsertTime = DateTime.Parse(order.InsertTime);
             Volume = order.VolumeTotalOriginal;
@@ -201,15 +205,11 @@ namespace PortfolioTrading.Modules.Portfolio
             }
         }
 
-        public static string GetStatus(bool submitSuccess,
-                                       trade.OrderSubmitStatusType submitStatus,
+        public static string GetStatus(trade.OrderSubmitStatusType submitStatus,
                                        trade.OrderStatusType statusType)
         {
             string status = "未知";
 
-            if (!submitSuccess)
-                return "委托被拒绝";
-            
             switch (submitStatus)
             {
                 case trade.OrderSubmitStatusType.INSERT_SUBMITTED:

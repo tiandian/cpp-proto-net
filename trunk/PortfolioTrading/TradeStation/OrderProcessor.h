@@ -14,6 +14,7 @@ using namespace std;
 
 typedef boost::shared_ptr<trade::MultiLegOrder> MultiLegOrderPtr;
 typedef boost::function<void(trade::MultiLegOrder*)> PushMultiLegOrderFunc;
+typedef boost::function<void( const string&, const string&, trade::Order* legOrd)> PushLegOrderFunc;
 typedef boost::function<void(trade::Trade*)> PushTradeFunc;
 
 class COrderProcessor : public CTradeAgentCallback
@@ -71,6 +72,19 @@ public:
 		m_pushMultiOrdFunc = funcPushMLOrder;
 	}
 
+	void SetPushOrderFunc(PushLegOrderFunc funcPushOrder)
+	{
+		m_pushLegOrderFunc = funcPushOrder;
+	}
+
+	void PublishOrderUpdate(const string& portfId, const string& mlOrderId, trade::Order* legOrd)
+	{
+		if(!m_pushLegOrderFunc.empty())
+		{
+			m_pushLegOrderFunc(portfId, mlOrderId, legOrd);
+		}
+	}
+
 	void PublishTradeUpdate(trade::Trade* pTrade)
 	{
 		if(!m_pushTradeFunc.empty())
@@ -96,6 +110,7 @@ private:
 	CTradeAgent* m_pTradeAgent;
 
 	PushMultiLegOrderFunc m_pushMultiOrdFunc;
+	PushLegOrderFunc m_pushLegOrderFunc;
 	PushTradeFunc m_pushTradeFunc;
 
 	int m_maxOrderRef;

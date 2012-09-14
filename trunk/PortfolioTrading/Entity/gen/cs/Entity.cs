@@ -303,4 +303,42 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"LegOrderUpdateParam")]
+  public partial class LegOrderUpdateParam : global::ProtoBuf.IExtensible
+  {
+    public LegOrderUpdateParam() {}
+    
+    private string _PortfId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"PortfId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string PortfId
+    {
+      get { return _PortfId; }
+      set { _PortfId = value; }
+    }
+    private string _MultiLegOrderId;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"MultiLegOrderId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string MultiLegOrderId
+    {
+      get { return _MultiLegOrderId; }
+      set { _MultiLegOrderId = value; }
+    }
+    private string _LegOrderRef;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"LegOrderRef", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string LegOrderRef
+    {
+      get { return _LegOrderRef; }
+      set { _LegOrderRef = value; }
+    }
+    private trade.Order _LegOrder;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"LegOrder", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public trade.Order LegOrder
+    {
+      get { return _LegOrder; }
+      set { _LegOrder = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }
