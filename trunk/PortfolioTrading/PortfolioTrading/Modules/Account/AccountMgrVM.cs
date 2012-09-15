@@ -15,7 +15,7 @@ using System.IO;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
 
-namespace PortfolioTrading.ViewModels
+namespace PortfolioTrading.Modules.Account
 {
     [Export]
     public class AccountMgrVM

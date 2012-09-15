@@ -21,8 +21,10 @@ namespace PortfolioTrading.Modules.Account
     [Export]
     public partial class AccountInfoView : UserControl
     {
-        public AccountInfoView()
+        [ImportingConstructor]
+        public AccountInfoView(AccountInfoVM viewModel)
         {
+            this.DataContext = viewModel;
             InitializeComponent();
         }
     }

@@ -140,6 +140,12 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
+bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)
+{
+	bool succ = m_orderProcessor.QueryAccountInfo(serializedAcctInfo);
+	return succ;
+}
+
 void CClientAgent::OnPortfolioUpdated(entity::PortfolioItem* portfolioItem)
 {
 	std::string callbackData;
@@ -179,6 +185,7 @@ void CClientAgent::OnLegOrderUpdated( const string& portfId, const string& mlOrd
 	if(m_pSession != NULL)
 		m_pSession->BeginCallback("LegOrderPush", callbackData);
 }
+
 
 
 

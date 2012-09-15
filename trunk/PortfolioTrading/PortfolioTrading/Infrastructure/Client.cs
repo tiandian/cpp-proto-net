@@ -102,6 +102,13 @@ namespace PortfolioTrading.Infrastructure
             return strReturn.Data;
         }
 
+        public trade.AccountInfo QueryAccountInfo()
+        {
+            byte[] ret_data = Request("QueryAccountInfo", new byte[]{});
+
+            return DataTranslater.Deserialize<trade.AccountInfo>(ret_data);
+        }
+
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
         {
             ConnectParam connParam = new ConnectParam()

@@ -56,6 +56,7 @@ private:
 	void PorfOpenPosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void ClosePosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
+	void QueryAccountInfo(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
 	ReqTranslatorMap m_reqTransMap;
 	ClientMap m_clients;

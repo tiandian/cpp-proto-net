@@ -33,6 +33,7 @@ public:
 	void RegQuote(vector<string>& symbols);
 	void PortfolioOpenPosition(const string& pid, int quantity);
 	void ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, string& msg);
+	bool QueryAccountInfo(string* serializedAcctInfo);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);

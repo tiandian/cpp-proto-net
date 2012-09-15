@@ -161,6 +161,17 @@ namespace PortfolioTrading.Modules.Account
             private set;
         }
 
+        public void QueryAccountInfo(Action<trade.AccountInfo> accountInfoCallback)
+        {
+            Func<trade.AccountInfo> funcQryAcctInfo = _client.QueryAccountInfo;
+            funcQryAcctInfo.BeginInvoke(ar =>
+            {
+                trade.AccountInfo acctInfo = funcQryAcctInfo.EndInvoke(ar);
+                if (accountInfoCallback != null)
+                    accountInfoCallback(acctInfo);
+            }, null);
+        }
+
         private void OnAddPortfolio(AccountVM acct)
         {
             PortfolioVM portf = new PortfolioVM(this);
@@ -203,6 +214,7 @@ namespace PortfolioTrading.Modules.Account
 
         public void Close()
         {
+            TradeStaionCutDown();
             _client.Disconnect();
             _host.Exit();
         }
@@ -356,6 +368,14 @@ namespace PortfolioTrading.Modules.Account
             }
 
             return true;
+        }
+
+        public void TradeStaionCutDown()
+        {
+            _client.TradeLogout();
+            _client.QuoteLogout();
+            _client.TradeDisconnect();
+            _client.QuoteDisconnect();
         }
 
         public static AccountVM Load(XElement xmlElement)

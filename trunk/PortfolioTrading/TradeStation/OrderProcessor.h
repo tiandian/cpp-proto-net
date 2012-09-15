@@ -28,6 +28,8 @@ public:
 	void SubmitOrder(MultiLegOrderPtr multilegOrder);
 	void CancelOrder(const string& orderId);
 
+	bool QueryAccountInfo(string* outSerializedAcctInfo);
+
 	//////////////////////////////////////////////////////////////////////////
 	// Below methods are callbacks for CTradeAgent 
 
@@ -53,7 +55,7 @@ public:
 	virtual void OnRspQryInstrument(){}
 
 	///请求查询资金账户响应
-	virtual void OnRspQryTradingAccount(){}
+	virtual void OnRspQryTradingAccount(const trade::AccountInfo& accountInfo);
 
 	///请求查询投资者持仓响应
 	virtual void OnRspQryInvestorPosition(){}
@@ -115,5 +117,9 @@ private:
 
 	int m_maxOrderRef;
 	boost::mutex m_mutOrdRefIncr;
+
+	boost::condition_variable m_condQryAcct;
+	boost::mutex m_mutQryAcct;
+	string m_serializedQryAcctInfo;
 };
 

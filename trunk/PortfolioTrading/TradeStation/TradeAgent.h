@@ -28,6 +28,11 @@ public:
 
 	void ReqSettlementInfoConfirm();
 
+	void QueryAccount();
+	void QueryOrders(const std::string& symbol);
+	void QueryPositions();
+	void QueryPositionDetails(const std::string& symbol);
+
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
 

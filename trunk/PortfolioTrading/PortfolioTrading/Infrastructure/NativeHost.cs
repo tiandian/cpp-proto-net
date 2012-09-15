@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Net;
+using System.Threading;
 
 namespace PortfolioTrading.Infrastructure
 {
@@ -63,7 +64,9 @@ namespace PortfolioTrading.Infrastructure
 
             // let server process quit
             if (_hostProc.StartInfo.RedirectStandardInput)
+            {
                 _hostProc.StandardInput.WriteLine("q");
+            }
            
             _hostProc.Kill();
         }

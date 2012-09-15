@@ -86,6 +86,8 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("RemovePortf", boost::bind(&CClientManager::RemovePorf, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PorfOpenPosition", boost::bind(&CClientManager::PorfOpenPosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ClosePosition", boost::bind(&CClientManager::ClosePosition, this, _1, _2, _3)));
+
+	m_reqTransMap.insert(make_pair("QueryAccountInfo", boost::bind(&CClientManager::QueryAccountInfo, this, _1, _2, _3)));
 }
 
 void CClientManager::QuoteConnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
@@ -213,6 +215,11 @@ void CClientManager::ClosePosition( CClientAgent* pClientAgent, const string& in
 	entity::StringParam retParam;
 	retParam.set_data(message);
 	retParam.SerializeToString(&out_data);
+}
+
+void CClientManager::QueryAccountInfo( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	pClientAgent->QueryAccountInfo(&out_data);
 }
 
 
