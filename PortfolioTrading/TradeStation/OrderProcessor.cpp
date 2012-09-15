@@ -206,4 +206,27 @@ void COrderProcessor::OnRtnTrade( trade::Trade* pTrade )
 	PublishTradeUpdate(pTrade);
 }
 
+void COrderProcessor::OnRspQryTradingAccount( const trade::AccountInfo& accountInfo )
+{
+	boost::mutex::scoped_lock lock(m_mutQryAcct);
+	accountInfo.SerializeToString(&m_serializedQryAcctInfo);
+	m_condQryAcct.notify_one();
+}
+
+bool COrderProcessor::QueryAccountInfo(string* outSerializedAcctInfo)
+{
+	bool ret = false;
+	boost::unique_lock<boost::mutex> lock(m_mutQryAcct);
+	m_serializedQryAcctInfo.clear();
+	m_pTradeAgent->QueryAccount();
+
+	if(m_condQryAcct.timed_wait(lock, boost::posix_time::seconds(15)))
+	{
+		*outSerializedAcctInfo = m_serializedQryAcctInfo;
+		ret = true;
+	}
+
+	return ret;
+}
+
 

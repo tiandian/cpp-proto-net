@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.ComponentModel.Composition;
-using PortfolioTrading.ViewModels;
+using PortfolioTrading.Modules.Account;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
 

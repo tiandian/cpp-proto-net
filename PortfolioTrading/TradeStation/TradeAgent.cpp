@@ -378,9 +378,74 @@ void CTradeAgent::OnRspQryInstrument( CThostFtdcInstrumentField *pInstrument, CT
 
 }
 
+void CTradeAgent::QueryAccount()
+{
+	_ASSERT(!m_brokerID.empty(), "Broker Id cannot be empty");
+	_ASSERT(!m_userID.empty(), "Account Id cannot be empty");
+
+	if(m_brokerID.empty() || m_userID.empty())
+		return;
+
+	CThostFtdcQryTradingAccountField req;
+	memset(&req, 0, sizeof(req));
+	strcpy_s(req.BrokerID, m_brokerID.c_str());
+	strcpy_s(req.InvestorID, m_userID.c_str());
+	while (true)
+	{
+		int iResult = m_pUserApi->ReqQryTradingAccount(&req, RequestIDIncrement());
+		if (!IsFlowControl(iResult))
+		{
+			std::string infoText = boost::str(boost::format("Query trading account: %d, %s") % iResult % ((iResult == 0) ? ", 成功" : ", 失败"));
+			logger.Info(infoText);
+			break;
+		}
+		else
+		{
+			logger.Warning(boost::str(boost::format("--->>> Query trading account: %d, 受到流控") % iResult));
+			boost::this_thread::sleep(boost::posix_time::seconds(1)); 
+		}
+	} // while
+}
+
 void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-
+	cerr << "--->>> " << "OnRspQryTradingAccount" << endl;
+	if (bIsLast && !IsErrorRspInfo(pRspInfo))
+	{
+		trade::AccountInfo account;
+		account.set_brokerid(pTradingAccount->BrokerID);
+		account.set_accountid(pTradingAccount->AccountID);
+		account.set_premortgage(pTradingAccount->PreMortgage);
+		account.set_precredit(pTradingAccount->PreCredit);
+		account.set_predeposit(pTradingAccount->PreDeposit);
+		account.set_prebalance(pTradingAccount->PreBalance);
+		account.set_premargin(pTradingAccount->PreMargin);
+		account.set_interestbase(pTradingAccount->InterestBase);
+		account.set_interest(pTradingAccount->Interest);
+		account.set_deposit(pTradingAccount->Deposit);
+		account.set_withdraw(pTradingAccount->Withdraw);
+		account.set_frozenmargin(pTradingAccount->FrozenMargin);
+		account.set_frozencash(pTradingAccount->FrozenCash);
+		account.set_frozencommission(pTradingAccount->FrozenCommission);
+		account.set_currmargin(pTradingAccount->CurrMargin);
+		account.set_cashin(pTradingAccount->CashIn);
+		account.set_commission(pTradingAccount->Commission);
+		account.set_closeprofit(pTradingAccount->CloseProfit);
+		account.set_positionprofit(pTradingAccount->PositionProfit);
+		account.set_balance(pTradingAccount->Balance);
+		account.set_available(pTradingAccount->Available);
+		account.set_withdrawquota(pTradingAccount->WithdrawQuota);
+		account.set_reserve(pTradingAccount->Reserve);
+		account.set_tradingday(pTradingAccount->TradingDay);
+		account.set_settlementid(pTradingAccount->SettlementID);
+		account.set_credit(pTradingAccount->Credit);
+		account.set_mortgage(pTradingAccount->Mortgage);
+		account.set_exchangemargin(pTradingAccount->ExchangeMargin);
+		account.set_deliverymargin(pTradingAccount->DeliveryMargin);
+		account.set_exchangedeliverymargin(pTradingAccount->ExchangeDeliveryMargin);
+		
+		m_pCallback->OnRspQryTradingAccount(account);
+	}
 }
 
 void CTradeAgent::OnRspQryInvestorPosition( CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )

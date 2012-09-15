@@ -32,7 +32,7 @@ public:
 	virtual void OnRspQryInstrument(){}
 
 	///请求查询资金账户响应
-	virtual void OnRspQryTradingAccount(){}
+	virtual void OnRspQryTradingAccount(const trade::AccountInfo& accountInfo){}
 
 	///请求查询投资者持仓响应
 	virtual void OnRspQryInvestorPosition(){}
