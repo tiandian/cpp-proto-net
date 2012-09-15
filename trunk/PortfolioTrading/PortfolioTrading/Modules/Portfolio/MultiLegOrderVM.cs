@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using System.Collections.ObjectModel;
-using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -85,12 +84,6 @@ namespace PortfolioTrading.Modules.Portfolio
 
                 var legOrder = mlOrder.Legs[i];
                 _orders[i].From(legOrder);
-
-                if (legOrder.OrderSubmitStatus > trade.OrderSubmitStatusType.ACCEPTED)
-                {
-                    var o = _orders[i];
-                    EventLogger.Write("{0} {1} 被拒绝 -({2})", o.Direction, o.Symbol, legOrder.StatusMsg);
-                }
             }
         }
 

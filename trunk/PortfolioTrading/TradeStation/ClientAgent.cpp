@@ -18,6 +18,7 @@ m_clientConnected(false)
 	m_orderProcessor.Initialize(&m_tradeAgent);
 	m_orderProcessor.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnMultiLegOrderUpdated, this, _1));
 	m_orderProcessor.SetPushTradeFunc(boost::bind(&CClientAgent::OnTradeUpdated, this, _1));
+	m_orderProcessor.SetPushOrderFunc(boost::bind(&CClientAgent::OnLegOrderUpdated, this, _1, _2, _3));
 }
 
 CClientAgent::~CClientAgent(void)

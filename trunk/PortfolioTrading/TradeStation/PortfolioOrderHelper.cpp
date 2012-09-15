@@ -82,6 +82,9 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 		order->set_forceclosereason(trade::NOT_FORCE_CLOSE);
 		order->set_isautosuspend(false);
 		order->set_userforceclose(false);
+
+		order->set_ordersubmitstatus(trade::INSERT_SUBMITTED);
+		order->set_orderstatus(trade::STATUS_UNKNOWN);
 	}
 	
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
