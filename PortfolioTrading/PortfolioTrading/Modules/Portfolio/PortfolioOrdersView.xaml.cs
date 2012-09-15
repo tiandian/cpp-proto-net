@@ -56,7 +56,11 @@ namespace PortfolioTrading.Modules.Portfolio
         {
             IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
             evtAgg.GetEvent<CloseMlOrderEvent>().Publish(
-                new CloseMlOrderArgs { MlOrder = mlOrderVm.LastOrder });
+                new CloseMlOrderArgs 
+                { 
+                    MlOrder = mlOrderVm.LastOrder,
+                    LegOrderRef = ""
+                });
         }
     }
 

@@ -98,7 +98,7 @@ trade::OffsetFlagType GetCloseFlag(const string& symbol, const string& openDate)
 	int pos = symbol.find("cu");
 	if(pos == 0)
 	{
-		boost::gregorian::date od = boost::gregorian::from_simple_string(openDate);
+		boost::gregorian::date od = boost::gregorian::from_undelimited_string(openDate);
 		boost::gregorian::date cd = boost::gregorian::day_clock::local_day();
 		if(cd > od)
 			return trade::OF_CLOSE_YESTERDAY;
@@ -185,6 +185,9 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 		order->set_ordersubmitstatus(trade::INSERT_SUBMITTED);
 		order->set_orderstatus(trade::STATUS_UNKNOWN);
 	}
+
+	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
+	pMultiLegOrder->set_opendate(boost::gregorian::to_iso_string(d));
 
 	return pMultiLegOrder;
 }

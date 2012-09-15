@@ -306,7 +306,7 @@ namespace PortfolioTrading.Modules.Account
         private void OnClosePosition(CloseMlOrderArgs closeArgs)
         {
             _accountVm.Host.PortfClosePosition(closeArgs.MlOrder, closeArgs.LegOrderRef);
-            EventLogger.Write("组合委托{1} 平仓", closeArgs.MlOrder.OrderId);
+            EventLogger.Write("组合委托{0} 平仓", closeArgs.MlOrder.OrderId);
         }
     }
 }
