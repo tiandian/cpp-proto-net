@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -178,6 +179,11 @@ namespace PortfolioTrading.Modules.Portfolio
             VolTraded = order.VolumeTraded;
             OrderPriceType = GetPriceType(order.OrderPriceType);
             LimitPrice = order.LimitPrice;
+
+            if (order.OrderSubmitStatus > trade.OrderSubmitStatusType.ACCEPTED)
+            {
+                EventLogger.Write("{0} {1} 被拒绝 -({2})", Direction, Symbol, order.StatusMsg);
+            }
         }
 
         public static string GetOCFlag(string offsetFlag)
