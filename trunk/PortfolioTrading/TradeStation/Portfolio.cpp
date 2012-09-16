@@ -101,6 +101,8 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 	}
 
 	m_innerItem->set_diff(diff);
+
+	
 	PushUpdate();
 }
 

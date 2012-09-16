@@ -94,6 +94,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="..\Entity\gen\cpp\message.pb.h" />
     <ClInclude Include="..\Entity\gen\cpp\quote.pb.h" />
     <ClInclude Include="..\Entity\gen\cpp\trade.pb.h" />
+    <ClInclude Include="ArbitrageStrategy.h" />
     <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientAgent.h" />
@@ -114,6 +115,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="QuoteListener.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Strategy.h" />
     <ClInclude Include="StrategyManager.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
@@ -132,6 +134,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClCompile Include="..\Entity\gen\cpp\trade.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ArbitrageStrategy.cpp" />
     <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ClientManager.cpp" />
