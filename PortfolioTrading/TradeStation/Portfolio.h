@@ -2,6 +2,7 @@
 
 #include "QuoteListener.h"
 #include "../Entity/gen/cpp/message.pb.h"
+#include "ArbitrageStrategy.h"
 
 #include <string>
 #include <vector>
@@ -50,6 +51,8 @@ public:
 
 	int NewOrderId(string& newId);
 
+	CArbitrageStrategy& Strategy(){ return m_strategy; }
+
 private:
 	void SetItem(entity::PortfolioItem* pPortfItem);
 
@@ -62,6 +65,9 @@ private:
 
 	int m_openedOrderCount;
 	boost::mutex m_mut;
+
+	CArbitrageStrategy m_strategy;
+
 };
 
 class CLeg
