@@ -102,7 +102,16 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 
 	m_innerItem->set_diff(diff);
 
-	
+	POSI_OPER poOp = m_strategy.Test(diff);
+	if(poOp == OPEN_POSI)
+	{
+		m_porfMgr->NotifyOpenPosition(this, Quantity());
+	}
+	else if(poOp == CLOSE_POSI)
+	{
+
+	}
+
 	PushUpdate();
 }
 

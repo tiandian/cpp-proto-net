@@ -341,4 +341,76 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ModifyStrategyParam")]
+  public partial class ModifyStrategyParam : global::ProtoBuf.IExtensible
+  {
+    public ModifyStrategyParam() {}
+    
+    private string _PortfId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"PortfId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string PortfId
+    {
+      get { return _PortfId; }
+      set { _PortfId = value; }
+    }
+    private bool _Enabled;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Enabled", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool Enabled
+    {
+      get { return _Enabled; }
+      set { _Enabled = value; }
+    }
+    private string _IsAutoOpen;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"IsAutoOpen", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string IsAutoOpen
+    {
+      get { return _IsAutoOpen; }
+      set { _IsAutoOpen = value; }
+    }
+    private string _IsAutoClose;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"IsAutoClose", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string IsAutoClose
+    {
+      get { return _IsAutoClose; }
+      set { _IsAutoClose = value; }
+    }
+    private entity.PosiDirectionType _Side;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"Side", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.PosiDirectionType Side
+    {
+      get { return _Side; }
+      set { _Side = value; }
+    }
+
+    private double _OpenPosiThreshold = default(double);
+    [global::ProtoBuf.ProtoMember(6, IsRequired = false, Name=@"OpenPosiThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(double))]
+    public double OpenPosiThreshold
+    {
+      get { return _OpenPosiThreshold; }
+      set { _OpenPosiThreshold = value; }
+    }
+
+    private double _StopGainThreshold = default(double);
+    [global::ProtoBuf.ProtoMember(7, IsRequired = false, Name=@"StopGainThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(double))]
+    public double StopGainThreshold
+    {
+      get { return _StopGainThreshold; }
+      set { _StopGainThreshold = value; }
+    }
+
+    private double _StopLossThreshold = default(double);
+    [global::ProtoBuf.ProtoMember(8, IsRequired = false, Name=@"StopLossThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::System.ComponentModel.DefaultValue(default(double))]
+    public double StopLossThreshold
+    {
+      get { return _StopLossThreshold; }
+      set { _StopLossThreshold = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }
