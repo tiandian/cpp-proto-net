@@ -48,9 +48,6 @@
     <ClInclude Include="ClientManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StrategyManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PortfolioManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -138,9 +135,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ClientManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StrategyManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PortfolioManager.cpp">

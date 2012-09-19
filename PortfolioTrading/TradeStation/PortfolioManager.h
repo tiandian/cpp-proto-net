@@ -13,6 +13,8 @@ using namespace std;
 typedef boost::shared_ptr<CPortfolio> PortfolioPtr;
 typedef boost::function<void(entity::PortfolioItem*)> PushPorfolioFunc;
 
+typedef boost::function<void(CPortfolio*, int)> NotifiyPortfolioOpenPosiFunc;
+
 class CPortfolioManager
 {
 public:
@@ -42,6 +44,19 @@ public:
 		m_pushPortfolioFunc = funcPushPortf;
 	}
 
+	void NotifyOpenPosition(CPortfolio* portf, int qty)
+	{
+		if(!m_portfOpenPosiFunc.empty())
+		{
+			m_portfOpenPosiFunc(portf, qty);
+		}
+	}
+
+	void SetOpenPortfolioFunc(NotifiyPortfolioOpenPosiFunc funcOpenPosi)
+	{
+		m_portfOpenPosiFunc = funcOpenPosi;
+	}
+
 private:
 
 	typedef map<string, PortfolioPtr> PortfolioMap;
@@ -52,5 +67,6 @@ private:
 	CQuoteAggregator* m_quoteAggregator;
 
 	PushPorfolioFunc m_pushPortfolioFunc;
+	NotifiyPortfolioOpenPosiFunc m_portfOpenPosiFunc;
 };
 

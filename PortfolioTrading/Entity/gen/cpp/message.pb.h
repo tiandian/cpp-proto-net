@@ -45,6 +45,7 @@ class RegQuoteParam;
 class PorfOpenPosiParam;
 class ClosePositionParam;
 class LegOrderUpdateParam;
+class ModifyStrategyParam;
 
 // ===================================================================
 
@@ -1215,6 +1216,170 @@ class LegOrderUpdateParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static LegOrderUpdateParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ModifyStrategyParam : public ::google::protobuf::Message {
+ public:
+  ModifyStrategyParam();
+  virtual ~ModifyStrategyParam();
+  
+  ModifyStrategyParam(const ModifyStrategyParam& from);
+  
+  inline ModifyStrategyParam& operator=(const ModifyStrategyParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyStrategyParam& default_instance();
+  
+  void Swap(ModifyStrategyParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ModifyStrategyParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ModifyStrategyParam& from);
+  void MergeFrom(const ModifyStrategyParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string PortfId = 1;
+  inline bool has_portfid() const;
+  inline void clear_portfid();
+  static const int kPortfIdFieldNumber = 1;
+  inline const ::std::string& portfid() const;
+  inline void set_portfid(const ::std::string& value);
+  inline void set_portfid(const char* value);
+  inline void set_portfid(const char* value, size_t size);
+  inline ::std::string* mutable_portfid();
+  inline ::std::string* release_portfid();
+  
+  // required bool Enabled = 2;
+  inline bool has_enabled() const;
+  inline void clear_enabled();
+  static const int kEnabledFieldNumber = 2;
+  inline bool enabled() const;
+  inline void set_enabled(bool value);
+  
+  // required string IsAutoOpen = 3;
+  inline bool has_isautoopen() const;
+  inline void clear_isautoopen();
+  static const int kIsAutoOpenFieldNumber = 3;
+  inline const ::std::string& isautoopen() const;
+  inline void set_isautoopen(const ::std::string& value);
+  inline void set_isautoopen(const char* value);
+  inline void set_isautoopen(const char* value, size_t size);
+  inline ::std::string* mutable_isautoopen();
+  inline ::std::string* release_isautoopen();
+  
+  // required string IsAutoClose = 4;
+  inline bool has_isautoclose() const;
+  inline void clear_isautoclose();
+  static const int kIsAutoCloseFieldNumber = 4;
+  inline const ::std::string& isautoclose() const;
+  inline void set_isautoclose(const ::std::string& value);
+  inline void set_isautoclose(const char* value);
+  inline void set_isautoclose(const char* value, size_t size);
+  inline ::std::string* mutable_isautoclose();
+  inline ::std::string* release_isautoclose();
+  
+  // required .entity.PosiDirectionType Side = 5;
+  inline bool has_side() const;
+  inline void clear_side();
+  static const int kSideFieldNumber = 5;
+  inline entity::PosiDirectionType side() const;
+  inline void set_side(entity::PosiDirectionType value);
+  
+  // optional double OpenPosiThreshold = 6;
+  inline bool has_openposithreshold() const;
+  inline void clear_openposithreshold();
+  static const int kOpenPosiThresholdFieldNumber = 6;
+  inline double openposithreshold() const;
+  inline void set_openposithreshold(double value);
+  
+  // optional double StopGainThreshold = 7;
+  inline bool has_stopgainthreshold() const;
+  inline void clear_stopgainthreshold();
+  static const int kStopGainThresholdFieldNumber = 7;
+  inline double stopgainthreshold() const;
+  inline void set_stopgainthreshold(double value);
+  
+  // optional double StopLossThreshold = 8;
+  inline bool has_stoplossthreshold() const;
+  inline void clear_stoplossthreshold();
+  static const int kStopLossThresholdFieldNumber = 8;
+  inline double stoplossthreshold() const;
+  inline void set_stoplossthreshold(double value);
+  
+  // @@protoc_insertion_point(class_scope:entity.ModifyStrategyParam)
+ private:
+  inline void set_has_portfid();
+  inline void clear_has_portfid();
+  inline void set_has_enabled();
+  inline void clear_has_enabled();
+  inline void set_has_isautoopen();
+  inline void clear_has_isautoopen();
+  inline void set_has_isautoclose();
+  inline void clear_has_isautoclose();
+  inline void set_has_side();
+  inline void clear_has_side();
+  inline void set_has_openposithreshold();
+  inline void clear_has_openposithreshold();
+  inline void set_has_stopgainthreshold();
+  inline void clear_has_stopgainthreshold();
+  inline void set_has_stoplossthreshold();
+  inline void clear_has_stoplossthreshold();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* portfid_;
+  ::std::string* isautoopen_;
+  bool enabled_;
+  int side_;
+  ::std::string* isautoclose_;
+  double openposithreshold_;
+  double stopgainthreshold_;
+  double stoplossthreshold_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ModifyStrategyParam* default_instance_;
 };
 // ===================================================================
 
@@ -2488,6 +2653,295 @@ inline ::trade::Order* LegOrderUpdateParam::release_legorder() {
   ::trade::Order* temp = legorder_;
   legorder_ = NULL;
   return temp;
+}
+
+// -------------------------------------------------------------------
+
+// ModifyStrategyParam
+
+// required string PortfId = 1;
+inline bool ModifyStrategyParam::has_portfid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ModifyStrategyParam::set_has_portfid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ModifyStrategyParam::clear_has_portfid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ModifyStrategyParam::clear_portfid() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    portfid_->clear();
+  }
+  clear_has_portfid();
+}
+inline const ::std::string& ModifyStrategyParam::portfid() const {
+  return *portfid_;
+}
+inline void ModifyStrategyParam::set_portfid(const ::std::string& value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void ModifyStrategyParam::set_portfid(const char* value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void ModifyStrategyParam::set_portfid(const char* value, size_t size) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ModifyStrategyParam::mutable_portfid() {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  return portfid_;
+}
+inline ::std::string* ModifyStrategyParam::release_portfid() {
+  clear_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = portfid_;
+    portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required bool Enabled = 2;
+inline bool ModifyStrategyParam::has_enabled() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ModifyStrategyParam::set_has_enabled() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ModifyStrategyParam::clear_has_enabled() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ModifyStrategyParam::clear_enabled() {
+  enabled_ = false;
+  clear_has_enabled();
+}
+inline bool ModifyStrategyParam::enabled() const {
+  return enabled_;
+}
+inline void ModifyStrategyParam::set_enabled(bool value) {
+  set_has_enabled();
+  enabled_ = value;
+}
+
+// required string IsAutoOpen = 3;
+inline bool ModifyStrategyParam::has_isautoopen() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ModifyStrategyParam::set_has_isautoopen() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ModifyStrategyParam::clear_has_isautoopen() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ModifyStrategyParam::clear_isautoopen() {
+  if (isautoopen_ != &::google::protobuf::internal::kEmptyString) {
+    isautoopen_->clear();
+  }
+  clear_has_isautoopen();
+}
+inline const ::std::string& ModifyStrategyParam::isautoopen() const {
+  return *isautoopen_;
+}
+inline void ModifyStrategyParam::set_isautoopen(const ::std::string& value) {
+  set_has_isautoopen();
+  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
+    isautoopen_ = new ::std::string;
+  }
+  isautoopen_->assign(value);
+}
+inline void ModifyStrategyParam::set_isautoopen(const char* value) {
+  set_has_isautoopen();
+  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
+    isautoopen_ = new ::std::string;
+  }
+  isautoopen_->assign(value);
+}
+inline void ModifyStrategyParam::set_isautoopen(const char* value, size_t size) {
+  set_has_isautoopen();
+  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
+    isautoopen_ = new ::std::string;
+  }
+  isautoopen_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ModifyStrategyParam::mutable_isautoopen() {
+  set_has_isautoopen();
+  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
+    isautoopen_ = new ::std::string;
+  }
+  return isautoopen_;
+}
+inline ::std::string* ModifyStrategyParam::release_isautoopen() {
+  clear_has_isautoopen();
+  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = isautoopen_;
+    isautoopen_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string IsAutoClose = 4;
+inline bool ModifyStrategyParam::has_isautoclose() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ModifyStrategyParam::set_has_isautoclose() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ModifyStrategyParam::clear_has_isautoclose() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ModifyStrategyParam::clear_isautoclose() {
+  if (isautoclose_ != &::google::protobuf::internal::kEmptyString) {
+    isautoclose_->clear();
+  }
+  clear_has_isautoclose();
+}
+inline const ::std::string& ModifyStrategyParam::isautoclose() const {
+  return *isautoclose_;
+}
+inline void ModifyStrategyParam::set_isautoclose(const ::std::string& value) {
+  set_has_isautoclose();
+  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
+    isautoclose_ = new ::std::string;
+  }
+  isautoclose_->assign(value);
+}
+inline void ModifyStrategyParam::set_isautoclose(const char* value) {
+  set_has_isautoclose();
+  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
+    isautoclose_ = new ::std::string;
+  }
+  isautoclose_->assign(value);
+}
+inline void ModifyStrategyParam::set_isautoclose(const char* value, size_t size) {
+  set_has_isautoclose();
+  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
+    isautoclose_ = new ::std::string;
+  }
+  isautoclose_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ModifyStrategyParam::mutable_isautoclose() {
+  set_has_isautoclose();
+  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
+    isautoclose_ = new ::std::string;
+  }
+  return isautoclose_;
+}
+inline ::std::string* ModifyStrategyParam::release_isautoclose() {
+  clear_has_isautoclose();
+  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = isautoclose_;
+    isautoclose_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .entity.PosiDirectionType Side = 5;
+inline bool ModifyStrategyParam::has_side() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void ModifyStrategyParam::set_has_side() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void ModifyStrategyParam::clear_has_side() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void ModifyStrategyParam::clear_side() {
+  side_ = 49;
+  clear_has_side();
+}
+inline entity::PosiDirectionType ModifyStrategyParam::side() const {
+  return static_cast< entity::PosiDirectionType >(side_);
+}
+inline void ModifyStrategyParam::set_side(entity::PosiDirectionType value) {
+  GOOGLE_DCHECK(entity::PosiDirectionType_IsValid(value));
+  set_has_side();
+  side_ = value;
+}
+
+// optional double OpenPosiThreshold = 6;
+inline bool ModifyStrategyParam::has_openposithreshold() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void ModifyStrategyParam::set_has_openposithreshold() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void ModifyStrategyParam::clear_has_openposithreshold() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void ModifyStrategyParam::clear_openposithreshold() {
+  openposithreshold_ = 0;
+  clear_has_openposithreshold();
+}
+inline double ModifyStrategyParam::openposithreshold() const {
+  return openposithreshold_;
+}
+inline void ModifyStrategyParam::set_openposithreshold(double value) {
+  set_has_openposithreshold();
+  openposithreshold_ = value;
+}
+
+// optional double StopGainThreshold = 7;
+inline bool ModifyStrategyParam::has_stopgainthreshold() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void ModifyStrategyParam::set_has_stopgainthreshold() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void ModifyStrategyParam::clear_has_stopgainthreshold() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void ModifyStrategyParam::clear_stopgainthreshold() {
+  stopgainthreshold_ = 0;
+  clear_has_stopgainthreshold();
+}
+inline double ModifyStrategyParam::stopgainthreshold() const {
+  return stopgainthreshold_;
+}
+inline void ModifyStrategyParam::set_stopgainthreshold(double value) {
+  set_has_stopgainthreshold();
+  stopgainthreshold_ = value;
+}
+
+// optional double StopLossThreshold = 8;
+inline bool ModifyStrategyParam::has_stoplossthreshold() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void ModifyStrategyParam::set_has_stoplossthreshold() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void ModifyStrategyParam::clear_has_stoplossthreshold() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void ModifyStrategyParam::clear_stoplossthreshold() {
+  stoplossthreshold_ = 0;
+  clear_has_stoplossthreshold();
+}
+inline double ModifyStrategyParam::stoplossthreshold() const {
+  return stoplossthreshold_;
+}
+inline void ModifyStrategyParam::set_stoplossthreshold(double value) {
+  set_has_stoplossthreshold();
+  stoplossthreshold_ = value;
 }
 
 

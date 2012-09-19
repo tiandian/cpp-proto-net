@@ -3,7 +3,6 @@
 #include "QuoteAgent.h"
 #include "TradeAgent.h"
 #include "QuoteAggregator.h"
-#include "StrategyManager.h"
 #include "PortfolioManager.h"
 #include "ManualOrderPlacer.h"
 #include "OrderProcessor.h"
@@ -59,10 +58,11 @@ private:
 
 	void SetClientStatus(bool connected) { m_clientConnected = connected; }
 
+	void OpenPosition(CPortfolio* portf, int qty);
+
 	CQuoteAgent			m_quoteAgent;
 	CQuoteAggregator	m_quoteAggregator;
 	CTradeAgent			m_tradeAgent;
-	CStrategyManager	m_strategyMgr;
 	CPortfolioManager	m_portfolioMgr;
 	CManualOrderPlacer	m_orderPlacer;
 	COrderProcessor		m_orderProcessor;

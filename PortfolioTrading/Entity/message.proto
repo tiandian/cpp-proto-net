@@ -77,3 +77,15 @@ message LegOrderUpdateParam
 	required string LegOrderRef = 3;
 	required trade.Order LegOrder = 4;
 }
+
+message ModifyStrategyParam
+{
+	required string PortfId = 1;
+	required bool Enabled = 2;
+	required string IsAutoOpen = 3;
+	required string IsAutoClose = 4;
+	required PosiDirectionType Side = 5;
+	optional double OpenPosiThreshold = 6;
+	optional double StopGainThreshold = 7;
+	optional double StopLossThreshold = 8; 
+}

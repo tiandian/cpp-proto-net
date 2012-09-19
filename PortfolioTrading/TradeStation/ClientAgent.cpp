@@ -12,8 +12,7 @@ m_clientConnected(false)
 	
 	m_portfolioMgr.SetQuoteAggregator(&m_quoteAggregator);
 	m_portfolioMgr.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnPortfolioUpdated, this, _1));
-	
-	m_strategyMgr.SetQuoteAggregator(&m_quoteAggregator);
+	m_portfolioMgr.SetOpenPortfolioFunc(boost::bind(&CClientAgent::OpenPosition, this, _1, _2));
 	
 	m_orderProcessor.Initialize(&m_tradeAgent);
 	m_orderProcessor.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnMultiLegOrderUpdated, this, _1));
@@ -114,13 +113,19 @@ void CClientAgent::PortfolioOpenPosition( const string& pid, int quantity )
 {
 	// build order
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
+	OpenPosition(portf, quantity);
+}
+
+
+void CClientAgent::OpenPosition( CPortfolio* portf, int qty )
+{
 	PlaceOrderContext placeOrderCtx;
-	placeOrderCtx.quantity = quantity;
+	placeOrderCtx.quantity = qty;
 	placeOrderCtx.brokerId = m_brokerId;
 	placeOrderCtx.investorId = m_userId;
 	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
 	placeOrderCtx.limitPriceType = entity::Opposite;
-	
+
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, &placeOrderCtx));
 	// send to order processor
 	m_orderProcessor.SubmitOrder(multilegOrder);
@@ -185,6 +190,7 @@ void CClientAgent::OnLegOrderUpdated( const string& portfId, const string& mlOrd
 	if(m_pSession != NULL)
 		m_pSession->BeginCallback("LegOrderPush", callbackData);
 }
+
 
 
 

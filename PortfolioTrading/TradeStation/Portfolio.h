@@ -51,6 +51,8 @@ public:
 
 	int NewOrderId(string& newId);
 
+	int Quantity() { return m_innerItem->quantity(); }
+
 	CArbitrageStrategy& Strategy(){ return m_strategy; }
 
 private:
