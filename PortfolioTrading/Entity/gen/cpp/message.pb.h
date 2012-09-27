@@ -45,6 +45,7 @@ class RegQuoteParam;
 class PorfOpenPosiParam;
 class ClosePositionParam;
 class LegOrderUpdateParam;
+class ArbitrageStrategySettings;
 class ModifyStrategyParam;
 
 // ===================================================================
@@ -468,6 +469,28 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::entity::LegItem >*
       mutable_legs();
   
+  // required string StrategyName = 7;
+  inline bool has_strategyname() const;
+  inline void clear_strategyname();
+  static const int kStrategyNameFieldNumber = 7;
+  inline const ::std::string& strategyname() const;
+  inline void set_strategyname(const ::std::string& value);
+  inline void set_strategyname(const char* value);
+  inline void set_strategyname(const char* value, size_t size);
+  inline ::std::string* mutable_strategyname();
+  inline ::std::string* release_strategyname();
+  
+  // required bytes StrategyData = 8;
+  inline bool has_strategydata() const;
+  inline void clear_strategydata();
+  static const int kStrategyDataFieldNumber = 8;
+  inline const ::std::string& strategydata() const;
+  inline void set_strategydata(const ::std::string& value);
+  inline void set_strategydata(const char* value);
+  inline void set_strategydata(const void* value, size_t size);
+  inline ::std::string* mutable_strategydata();
+  inline ::std::string* release_strategydata();
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioItem)
  private:
   inline void set_has_id();
@@ -480,6 +503,10 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline void clear_has_autoopen();
   inline void set_has_autoclose();
   inline void clear_has_autoclose();
+  inline void set_has_strategyname();
+  inline void clear_has_strategyname();
+  inline void set_has_strategydata();
+  inline void clear_has_strategydata();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -489,9 +516,11 @@ class PortfolioItem : public ::google::protobuf::Message {
   bool autoopen_;
   bool autoclose_;
   ::google::protobuf::RepeatedPtrField< ::entity::LegItem > legs_;
+  ::std::string* strategyname_;
+  ::std::string* strategydata_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -1219,6 +1248,118 @@ class LegOrderUpdateParam : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class ArbitrageStrategySettings : public ::google::protobuf::Message {
+ public:
+  ArbitrageStrategySettings();
+  virtual ~ArbitrageStrategySettings();
+  
+  ArbitrageStrategySettings(const ArbitrageStrategySettings& from);
+  
+  inline ArbitrageStrategySettings& operator=(const ArbitrageStrategySettings& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ArbitrageStrategySettings& default_instance();
+  
+  void Swap(ArbitrageStrategySettings* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ArbitrageStrategySettings* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ArbitrageStrategySettings& from);
+  void MergeFrom(const ArbitrageStrategySettings& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required .entity.PosiDirectionType Side = 1;
+  inline bool has_side() const;
+  inline void clear_side();
+  static const int kSideFieldNumber = 1;
+  inline entity::PosiDirectionType side() const;
+  inline void set_side(entity::PosiDirectionType value);
+  
+  // optional double OpenPosiThreshold = 2;
+  inline bool has_openposithreshold() const;
+  inline void clear_openposithreshold();
+  static const int kOpenPosiThresholdFieldNumber = 2;
+  inline double openposithreshold() const;
+  inline void set_openposithreshold(double value);
+  
+  // optional double StopGainThreshold = 3;
+  inline bool has_stopgainthreshold() const;
+  inline void clear_stopgainthreshold();
+  static const int kStopGainThresholdFieldNumber = 3;
+  inline double stopgainthreshold() const;
+  inline void set_stopgainthreshold(double value);
+  
+  // optional double StopLossThreshold = 4;
+  inline bool has_stoplossthreshold() const;
+  inline void clear_stoplossthreshold();
+  static const int kStopLossThresholdFieldNumber = 4;
+  inline double stoplossthreshold() const;
+  inline void set_stoplossthreshold(double value);
+  
+  // @@protoc_insertion_point(class_scope:entity.ArbitrageStrategySettings)
+ private:
+  inline void set_has_side();
+  inline void clear_has_side();
+  inline void set_has_openposithreshold();
+  inline void clear_has_openposithreshold();
+  inline void set_has_stopgainthreshold();
+  inline void clear_has_stopgainthreshold();
+  inline void set_has_stoplossthreshold();
+  inline void clear_has_stoplossthreshold();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  double openposithreshold_;
+  double stopgainthreshold_;
+  double stoplossthreshold_;
+  int side_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ArbitrageStrategySettings* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class ModifyStrategyParam : public ::google::protobuf::Message {
  public:
   ModifyStrategyParam();
@@ -1291,55 +1432,41 @@ class ModifyStrategyParam : public ::google::protobuf::Message {
   inline bool enabled() const;
   inline void set_enabled(bool value);
   
-  // required string IsAutoOpen = 3;
+  // required bool IsAutoOpen = 3;
   inline bool has_isautoopen() const;
   inline void clear_isautoopen();
   static const int kIsAutoOpenFieldNumber = 3;
-  inline const ::std::string& isautoopen() const;
-  inline void set_isautoopen(const ::std::string& value);
-  inline void set_isautoopen(const char* value);
-  inline void set_isautoopen(const char* value, size_t size);
-  inline ::std::string* mutable_isautoopen();
-  inline ::std::string* release_isautoopen();
+  inline bool isautoopen() const;
+  inline void set_isautoopen(bool value);
   
-  // required string IsAutoClose = 4;
+  // required bool IsAutoClose = 4;
   inline bool has_isautoclose() const;
   inline void clear_isautoclose();
   static const int kIsAutoCloseFieldNumber = 4;
-  inline const ::std::string& isautoclose() const;
-  inline void set_isautoclose(const ::std::string& value);
-  inline void set_isautoclose(const char* value);
-  inline void set_isautoclose(const char* value, size_t size);
-  inline ::std::string* mutable_isautoclose();
-  inline ::std::string* release_isautoclose();
+  inline bool isautoclose() const;
+  inline void set_isautoclose(bool value);
   
-  // required .entity.PosiDirectionType Side = 5;
-  inline bool has_side() const;
-  inline void clear_side();
-  static const int kSideFieldNumber = 5;
-  inline entity::PosiDirectionType side() const;
-  inline void set_side(entity::PosiDirectionType value);
+  // optional string StrategyName = 5;
+  inline bool has_strategyname() const;
+  inline void clear_strategyname();
+  static const int kStrategyNameFieldNumber = 5;
+  inline const ::std::string& strategyname() const;
+  inline void set_strategyname(const ::std::string& value);
+  inline void set_strategyname(const char* value);
+  inline void set_strategyname(const char* value, size_t size);
+  inline ::std::string* mutable_strategyname();
+  inline ::std::string* release_strategyname();
   
-  // optional double OpenPosiThreshold = 6;
-  inline bool has_openposithreshold() const;
-  inline void clear_openposithreshold();
-  static const int kOpenPosiThresholdFieldNumber = 6;
-  inline double openposithreshold() const;
-  inline void set_openposithreshold(double value);
-  
-  // optional double StopGainThreshold = 7;
-  inline bool has_stopgainthreshold() const;
-  inline void clear_stopgainthreshold();
-  static const int kStopGainThresholdFieldNumber = 7;
-  inline double stopgainthreshold() const;
-  inline void set_stopgainthreshold(double value);
-  
-  // optional double StopLossThreshold = 8;
-  inline bool has_stoplossthreshold() const;
-  inline void clear_stoplossthreshold();
-  static const int kStopLossThresholdFieldNumber = 8;
-  inline double stoplossthreshold() const;
-  inline void set_stoplossthreshold(double value);
+  // optional bytes StrategyData = 6;
+  inline bool has_strategydata() const;
+  inline void clear_strategydata();
+  static const int kStrategyDataFieldNumber = 6;
+  inline const ::std::string& strategydata() const;
+  inline void set_strategydata(const ::std::string& value);
+  inline void set_strategydata(const char* value);
+  inline void set_strategydata(const void* value, size_t size);
+  inline ::std::string* mutable_strategydata();
+  inline ::std::string* release_strategydata();
   
   // @@protoc_insertion_point(class_scope:entity.ModifyStrategyParam)
  private:
@@ -1351,28 +1478,22 @@ class ModifyStrategyParam : public ::google::protobuf::Message {
   inline void clear_has_isautoopen();
   inline void set_has_isautoclose();
   inline void clear_has_isautoclose();
-  inline void set_has_side();
-  inline void clear_has_side();
-  inline void set_has_openposithreshold();
-  inline void clear_has_openposithreshold();
-  inline void set_has_stopgainthreshold();
-  inline void clear_has_stopgainthreshold();
-  inline void set_has_stoplossthreshold();
-  inline void clear_has_stoplossthreshold();
+  inline void set_has_strategyname();
+  inline void clear_has_strategyname();
+  inline void set_has_strategydata();
+  inline void clear_has_strategydata();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* portfid_;
-  ::std::string* isautoopen_;
+  ::std::string* strategyname_;
+  ::std::string* strategydata_;
   bool enabled_;
-  int side_;
-  ::std::string* isautoclose_;
-  double openposithreshold_;
-  double stopgainthreshold_;
-  double stoplossthreshold_;
+  bool isautoopen_;
+  bool isautoclose_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -1841,6 +1962,122 @@ PortfolioItem::legs() const {
 inline ::google::protobuf::RepeatedPtrField< ::entity::LegItem >*
 PortfolioItem::mutable_legs() {
   return &legs_;
+}
+
+// required string StrategyName = 7;
+inline bool PortfolioItem::has_strategyname() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void PortfolioItem::set_has_strategyname() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void PortfolioItem::clear_has_strategyname() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void PortfolioItem::clear_strategyname() {
+  if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
+    strategyname_->clear();
+  }
+  clear_has_strategyname();
+}
+inline const ::std::string& PortfolioItem::strategyname() const {
+  return *strategyname_;
+}
+inline void PortfolioItem::set_strategyname(const ::std::string& value) {
+  set_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    strategyname_ = new ::std::string;
+  }
+  strategyname_->assign(value);
+}
+inline void PortfolioItem::set_strategyname(const char* value) {
+  set_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    strategyname_ = new ::std::string;
+  }
+  strategyname_->assign(value);
+}
+inline void PortfolioItem::set_strategyname(const char* value, size_t size) {
+  set_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    strategyname_ = new ::std::string;
+  }
+  strategyname_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PortfolioItem::mutable_strategyname() {
+  set_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    strategyname_ = new ::std::string;
+  }
+  return strategyname_;
+}
+inline ::std::string* PortfolioItem::release_strategyname() {
+  clear_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = strategyname_;
+    strategyname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required bytes StrategyData = 8;
+inline bool PortfolioItem::has_strategydata() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void PortfolioItem::set_has_strategydata() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void PortfolioItem::clear_has_strategydata() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void PortfolioItem::clear_strategydata() {
+  if (strategydata_ != &::google::protobuf::internal::kEmptyString) {
+    strategydata_->clear();
+  }
+  clear_has_strategydata();
+}
+inline const ::std::string& PortfolioItem::strategydata() const {
+  return *strategydata_;
+}
+inline void PortfolioItem::set_strategydata(const ::std::string& value) {
+  set_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    strategydata_ = new ::std::string;
+  }
+  strategydata_->assign(value);
+}
+inline void PortfolioItem::set_strategydata(const char* value) {
+  set_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    strategydata_ = new ::std::string;
+  }
+  strategydata_->assign(value);
+}
+inline void PortfolioItem::set_strategydata(const void* value, size_t size) {
+  set_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    strategydata_ = new ::std::string;
+  }
+  strategydata_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PortfolioItem::mutable_strategydata() {
+  set_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    strategydata_ = new ::std::string;
+  }
+  return strategydata_;
+}
+inline ::std::string* PortfolioItem::release_strategydata() {
+  clear_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = strategydata_;
+    strategydata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
 // -------------------------------------------------------------------
@@ -2657,6 +2894,99 @@ inline ::trade::Order* LegOrderUpdateParam::release_legorder() {
 
 // -------------------------------------------------------------------
 
+// ArbitrageStrategySettings
+
+// required .entity.PosiDirectionType Side = 1;
+inline bool ArbitrageStrategySettings::has_side() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ArbitrageStrategySettings::set_has_side() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ArbitrageStrategySettings::clear_has_side() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ArbitrageStrategySettings::clear_side() {
+  side_ = 49;
+  clear_has_side();
+}
+inline entity::PosiDirectionType ArbitrageStrategySettings::side() const {
+  return static_cast< entity::PosiDirectionType >(side_);
+}
+inline void ArbitrageStrategySettings::set_side(entity::PosiDirectionType value) {
+  GOOGLE_DCHECK(entity::PosiDirectionType_IsValid(value));
+  set_has_side();
+  side_ = value;
+}
+
+// optional double OpenPosiThreshold = 2;
+inline bool ArbitrageStrategySettings::has_openposithreshold() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ArbitrageStrategySettings::set_has_openposithreshold() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ArbitrageStrategySettings::clear_has_openposithreshold() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ArbitrageStrategySettings::clear_openposithreshold() {
+  openposithreshold_ = 0;
+  clear_has_openposithreshold();
+}
+inline double ArbitrageStrategySettings::openposithreshold() const {
+  return openposithreshold_;
+}
+inline void ArbitrageStrategySettings::set_openposithreshold(double value) {
+  set_has_openposithreshold();
+  openposithreshold_ = value;
+}
+
+// optional double StopGainThreshold = 3;
+inline bool ArbitrageStrategySettings::has_stopgainthreshold() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ArbitrageStrategySettings::set_has_stopgainthreshold() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ArbitrageStrategySettings::clear_has_stopgainthreshold() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ArbitrageStrategySettings::clear_stopgainthreshold() {
+  stopgainthreshold_ = 0;
+  clear_has_stopgainthreshold();
+}
+inline double ArbitrageStrategySettings::stopgainthreshold() const {
+  return stopgainthreshold_;
+}
+inline void ArbitrageStrategySettings::set_stopgainthreshold(double value) {
+  set_has_stopgainthreshold();
+  stopgainthreshold_ = value;
+}
+
+// optional double StopLossThreshold = 4;
+inline bool ArbitrageStrategySettings::has_stoplossthreshold() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ArbitrageStrategySettings::set_has_stoplossthreshold() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ArbitrageStrategySettings::clear_has_stoplossthreshold() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ArbitrageStrategySettings::clear_stoplossthreshold() {
+  stoplossthreshold_ = 0;
+  clear_has_stoplossthreshold();
+}
+inline double ArbitrageStrategySettings::stoplossthreshold() const {
+  return stoplossthreshold_;
+}
+inline void ArbitrageStrategySettings::set_stoplossthreshold(double value) {
+  set_has_stoplossthreshold();
+  stoplossthreshold_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // ModifyStrategyParam
 
 // required string PortfId = 1;
@@ -2739,7 +3069,7 @@ inline void ModifyStrategyParam::set_enabled(bool value) {
   enabled_ = value;
 }
 
-// required string IsAutoOpen = 3;
+// required bool IsAutoOpen = 3;
 inline bool ModifyStrategyParam::has_isautoopen() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -2750,54 +3080,18 @@ inline void ModifyStrategyParam::clear_has_isautoopen() {
   _has_bits_[0] &= ~0x00000004u;
 }
 inline void ModifyStrategyParam::clear_isautoopen() {
-  if (isautoopen_ != &::google::protobuf::internal::kEmptyString) {
-    isautoopen_->clear();
-  }
+  isautoopen_ = false;
   clear_has_isautoopen();
 }
-inline const ::std::string& ModifyStrategyParam::isautoopen() const {
-  return *isautoopen_;
-}
-inline void ModifyStrategyParam::set_isautoopen(const ::std::string& value) {
-  set_has_isautoopen();
-  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
-    isautoopen_ = new ::std::string;
-  }
-  isautoopen_->assign(value);
-}
-inline void ModifyStrategyParam::set_isautoopen(const char* value) {
-  set_has_isautoopen();
-  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
-    isautoopen_ = new ::std::string;
-  }
-  isautoopen_->assign(value);
-}
-inline void ModifyStrategyParam::set_isautoopen(const char* value, size_t size) {
-  set_has_isautoopen();
-  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
-    isautoopen_ = new ::std::string;
-  }
-  isautoopen_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* ModifyStrategyParam::mutable_isautoopen() {
-  set_has_isautoopen();
-  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
-    isautoopen_ = new ::std::string;
-  }
+inline bool ModifyStrategyParam::isautoopen() const {
   return isautoopen_;
 }
-inline ::std::string* ModifyStrategyParam::release_isautoopen() {
-  clear_has_isautoopen();
-  if (isautoopen_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = isautoopen_;
-    isautoopen_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
+inline void ModifyStrategyParam::set_isautoopen(bool value) {
+  set_has_isautoopen();
+  isautoopen_ = value;
 }
 
-// required string IsAutoClose = 4;
+// required bool IsAutoClose = 4;
 inline bool ModifyStrategyParam::has_isautoclose() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
@@ -2808,140 +3102,131 @@ inline void ModifyStrategyParam::clear_has_isautoclose() {
   _has_bits_[0] &= ~0x00000008u;
 }
 inline void ModifyStrategyParam::clear_isautoclose() {
-  if (isautoclose_ != &::google::protobuf::internal::kEmptyString) {
-    isautoclose_->clear();
-  }
+  isautoclose_ = false;
   clear_has_isautoclose();
 }
-inline const ::std::string& ModifyStrategyParam::isautoclose() const {
-  return *isautoclose_;
-}
-inline void ModifyStrategyParam::set_isautoclose(const ::std::string& value) {
-  set_has_isautoclose();
-  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
-    isautoclose_ = new ::std::string;
-  }
-  isautoclose_->assign(value);
-}
-inline void ModifyStrategyParam::set_isautoclose(const char* value) {
-  set_has_isautoclose();
-  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
-    isautoclose_ = new ::std::string;
-  }
-  isautoclose_->assign(value);
-}
-inline void ModifyStrategyParam::set_isautoclose(const char* value, size_t size) {
-  set_has_isautoclose();
-  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
-    isautoclose_ = new ::std::string;
-  }
-  isautoclose_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* ModifyStrategyParam::mutable_isautoclose() {
-  set_has_isautoclose();
-  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
-    isautoclose_ = new ::std::string;
-  }
+inline bool ModifyStrategyParam::isautoclose() const {
   return isautoclose_;
 }
-inline ::std::string* ModifyStrategyParam::release_isautoclose() {
-  clear_has_isautoclose();
-  if (isautoclose_ == &::google::protobuf::internal::kEmptyString) {
+inline void ModifyStrategyParam::set_isautoclose(bool value) {
+  set_has_isautoclose();
+  isautoclose_ = value;
+}
+
+// optional string StrategyName = 5;
+inline bool ModifyStrategyParam::has_strategyname() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void ModifyStrategyParam::set_has_strategyname() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void ModifyStrategyParam::clear_has_strategyname() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void ModifyStrategyParam::clear_strategyname() {
+  if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
+    strategyname_->clear();
+  }
+  clear_has_strategyname();
+}
+inline const ::std::string& ModifyStrategyParam::strategyname() const {
+  return *strategyname_;
+}
+inline void ModifyStrategyParam::set_strategyname(const ::std::string& value) {
+  set_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    strategyname_ = new ::std::string;
+  }
+  strategyname_->assign(value);
+}
+inline void ModifyStrategyParam::set_strategyname(const char* value) {
+  set_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    strategyname_ = new ::std::string;
+  }
+  strategyname_->assign(value);
+}
+inline void ModifyStrategyParam::set_strategyname(const char* value, size_t size) {
+  set_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    strategyname_ = new ::std::string;
+  }
+  strategyname_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ModifyStrategyParam::mutable_strategyname() {
+  set_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
+    strategyname_ = new ::std::string;
+  }
+  return strategyname_;
+}
+inline ::std::string* ModifyStrategyParam::release_strategyname() {
+  clear_has_strategyname();
+  if (strategyname_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = isautoclose_;
-    isautoclose_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = strategyname_;
+    strategyname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
 
-// required .entity.PosiDirectionType Side = 5;
-inline bool ModifyStrategyParam::has_side() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
-}
-inline void ModifyStrategyParam::set_has_side() {
-  _has_bits_[0] |= 0x00000010u;
-}
-inline void ModifyStrategyParam::clear_has_side() {
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline void ModifyStrategyParam::clear_side() {
-  side_ = 49;
-  clear_has_side();
-}
-inline entity::PosiDirectionType ModifyStrategyParam::side() const {
-  return static_cast< entity::PosiDirectionType >(side_);
-}
-inline void ModifyStrategyParam::set_side(entity::PosiDirectionType value) {
-  GOOGLE_DCHECK(entity::PosiDirectionType_IsValid(value));
-  set_has_side();
-  side_ = value;
-}
-
-// optional double OpenPosiThreshold = 6;
-inline bool ModifyStrategyParam::has_openposithreshold() const {
+// optional bytes StrategyData = 6;
+inline bool ModifyStrategyParam::has_strategydata() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void ModifyStrategyParam::set_has_openposithreshold() {
+inline void ModifyStrategyParam::set_has_strategydata() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void ModifyStrategyParam::clear_has_openposithreshold() {
+inline void ModifyStrategyParam::clear_has_strategydata() {
   _has_bits_[0] &= ~0x00000020u;
 }
-inline void ModifyStrategyParam::clear_openposithreshold() {
-  openposithreshold_ = 0;
-  clear_has_openposithreshold();
+inline void ModifyStrategyParam::clear_strategydata() {
+  if (strategydata_ != &::google::protobuf::internal::kEmptyString) {
+    strategydata_->clear();
+  }
+  clear_has_strategydata();
 }
-inline double ModifyStrategyParam::openposithreshold() const {
-  return openposithreshold_;
+inline const ::std::string& ModifyStrategyParam::strategydata() const {
+  return *strategydata_;
 }
-inline void ModifyStrategyParam::set_openposithreshold(double value) {
-  set_has_openposithreshold();
-  openposithreshold_ = value;
+inline void ModifyStrategyParam::set_strategydata(const ::std::string& value) {
+  set_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    strategydata_ = new ::std::string;
+  }
+  strategydata_->assign(value);
 }
-
-// optional double StopGainThreshold = 7;
-inline bool ModifyStrategyParam::has_stopgainthreshold() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+inline void ModifyStrategyParam::set_strategydata(const char* value) {
+  set_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    strategydata_ = new ::std::string;
+  }
+  strategydata_->assign(value);
 }
-inline void ModifyStrategyParam::set_has_stopgainthreshold() {
-  _has_bits_[0] |= 0x00000040u;
+inline void ModifyStrategyParam::set_strategydata(const void* value, size_t size) {
+  set_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    strategydata_ = new ::std::string;
+  }
+  strategydata_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline void ModifyStrategyParam::clear_has_stopgainthreshold() {
-  _has_bits_[0] &= ~0x00000040u;
+inline ::std::string* ModifyStrategyParam::mutable_strategydata() {
+  set_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    strategydata_ = new ::std::string;
+  }
+  return strategydata_;
 }
-inline void ModifyStrategyParam::clear_stopgainthreshold() {
-  stopgainthreshold_ = 0;
-  clear_has_stopgainthreshold();
-}
-inline double ModifyStrategyParam::stopgainthreshold() const {
-  return stopgainthreshold_;
-}
-inline void ModifyStrategyParam::set_stopgainthreshold(double value) {
-  set_has_stopgainthreshold();
-  stopgainthreshold_ = value;
-}
-
-// optional double StopLossThreshold = 8;
-inline bool ModifyStrategyParam::has_stoplossthreshold() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void ModifyStrategyParam::set_has_stoplossthreshold() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void ModifyStrategyParam::clear_has_stoplossthreshold() {
-  _has_bits_[0] &= ~0x00000080u;
-}
-inline void ModifyStrategyParam::clear_stoplossthreshold() {
-  stoplossthreshold_ = 0;
-  clear_has_stoplossthreshold();
-}
-inline double ModifyStrategyParam::stoplossthreshold() const {
-  return stoplossthreshold_;
-}
-inline void ModifyStrategyParam::set_stoplossthreshold(double value) {
-  set_has_stoplossthreshold();
-  stoplossthreshold_ = value;
+inline ::std::string* ModifyStrategyParam::release_strategydata() {
+  clear_has_strategydata();
+  if (strategydata_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = strategydata_;
+    strategydata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
 

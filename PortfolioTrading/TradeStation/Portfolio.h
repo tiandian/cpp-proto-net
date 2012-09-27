@@ -55,6 +55,13 @@ public:
 
 	CArbitrageStrategy& Strategy(){ return m_strategy; }
 
+	void EnableStrategy(bool isAutoOpen, bool isAutoClose) 
+	{
+		m_isAutoOpen = isAutoOpen;
+		m_isAutoClose = isAutoClose;
+	}
+	void ApplyStrategySetting(const string& name, const string& data);
+
 private:
 	void SetItem(entity::PortfolioItem* pPortfItem);
 
@@ -69,7 +76,8 @@ private:
 	boost::mutex m_mut;
 
 	CArbitrageStrategy m_strategy;
-
+	bool m_isAutoOpen;
+	bool m_isAutoClose;
 };
 
 class CLeg

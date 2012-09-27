@@ -50,6 +50,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* LegOrderUpdateParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   LegOrderUpdateParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ArbitrageStrategySettings_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ArbitrageStrategySettings_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ModifyStrategyParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModifyStrategyParam_reflection_ = NULL;
@@ -115,13 +118,15 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegItem));
   PortfolioItem_descriptor_ = file->message_type(3);
-  static const int PortfolioItem_offsets_[6] = {
+  static const int PortfolioItem_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, quantity_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, diff_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autoopen_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autoclose_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, legs_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategyname_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategydata_),
   };
   PortfolioItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -248,16 +253,32 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegOrderUpdateParam));
-  ModifyStrategyParam_descriptor_ = file->message_type(11);
-  static const int ModifyStrategyParam_offsets_[8] = {
+  ArbitrageStrategySettings_descriptor_ = file->message_type(11);
+  static const int ArbitrageStrategySettings_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, side_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, openposithreshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, stopgainthreshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, stoplossthreshold_),
+  };
+  ArbitrageStrategySettings_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ArbitrageStrategySettings_descriptor_,
+      ArbitrageStrategySettings::default_instance_,
+      ArbitrageStrategySettings_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ArbitrageStrategySettings));
+  ModifyStrategyParam_descriptor_ = file->message_type(12);
+  static const int ModifyStrategyParam_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, enabled_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, isautoopen_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, isautoclose_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, side_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, openposithreshold_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, stopgainthreshold_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, stoplossthreshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, strategyname_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, strategydata_),
   };
   ModifyStrategyParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -305,6 +326,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     LegOrderUpdateParam_descriptor_, &LegOrderUpdateParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ArbitrageStrategySettings_descriptor_, &ArbitrageStrategySettings::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyStrategyParam_descriptor_, &ModifyStrategyParam::default_instance());
 }
 
@@ -333,6 +356,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ClosePositionParam_reflection_;
   delete LegOrderUpdateParam::default_instance_;
   delete LegOrderUpdateParam_reflection_;
+  delete ArbitrageStrategySettings::default_instance_;
+  delete ArbitrageStrategySettings_reflection_;
   delete ModifyStrategyParam::default_instance_;
   delete ModifyStrategyParam_reflection_;
 }
@@ -352,28 +377,31 @@ void protobuf_AddDesc_message_2eproto() {
     "ymbol\030\001 \002(\t\022\r\n\005Ratio\030\002 \002(\005\022\'\n\004Side\030\003 \002(\016"
     "2\031.entity.PosiDirectionType\022!\n\006Status\030\004 "
     "\002(\0162\021.entity.LegStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003"
-    "Ask\030\006 \002(\001\022\013\n\003Bid\030\007 \002(\001\"\177\n\rPortfolioItem\022"
-    "\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\014\n\004Diff\030\003 "
-    "\002(\001\022\020\n\010AutoOpen\030\004 \002(\010\022\021\n\tAutoClose\030\005 \002(\010"
-    "\022\035\n\004Legs\030\006 \003(\0132\017.entity.LegItem\":\n\014Conne"
-    "ctParam\022\024\n\014QuoteAddress\030\001 \002(\t\022\024\n\014StreamF"
-    "older\030\002 \002(\t\"8\n\017OperationReturn\022\017\n\007Succes"
-    "s\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t\"@\n\nLoginPa"
-    "ram\022\020\n\010BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n"
-    "\010Password\030\003 \002(\t\" \n\rRegQuoteParam\022\017\n\007Symb"
-    "ols\030\001 \003(\t\"6\n\021PorfOpenPosiParam\022\017\n\007PortfI"
-    "d\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\"T\n\022ClosePositi"
-    "onParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024.trade.M"
-    "ultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t\n\023LegOr"
-    "derUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017Multi"
-    "LegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036\n"
-    "\010LegOrder\030\004 \002(\0132\014.trade.Order\"\332\001\n\023Modify"
-    "StrategyParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enable"
-    "d\030\002 \002(\010\022\022\n\nIsAutoOpen\030\003 \002(\t\022\023\n\013IsAutoClo"
-    "se\030\004 \002(\t\022\'\n\004Side\030\005 \002(\0162\031.entity.PosiDire"
-    "ctionType\022\031\n\021OpenPosiThreshold\030\006 \001(\001\022\031\n\021"
-    "StopGainThreshold\030\007 \001(\001\022\031\n\021StopLossThres"
-    "hold\030\010 \001(\001", 1090);
+    "Ask\030\006 \002(\001\022\013\n\003Bid\030\007 \002(\001\"\253\001\n\rPortfolioItem"
+    "\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\014\n\004Diff\030\003"
+    " \002(\001\022\020\n\010AutoOpen\030\004 \002(\010\022\021\n\tAutoClose\030\005 \002("
+    "\010\022\035\n\004Legs\030\006 \003(\0132\017.entity.LegItem\022\024\n\014Stra"
+    "tegyName\030\007 \002(\t\022\024\n\014StrategyData\030\010 \002(\014\":\n\014"
+    "ConnectParam\022\024\n\014QuoteAddress\030\001 \002(\t\022\024\n\014St"
+    "reamFolder\030\002 \002(\t\"8\n\017OperationReturn\022\017\n\007S"
+    "uccess\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t\"@\n\nLo"
+    "ginParam\022\020\n\010BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002"
+    "(\t\022\020\n\010Password\030\003 \002(\t\" \n\rRegQuoteParam\022\017\n"
+    "\007Symbols\030\001 \003(\t\"6\n\021PorfOpenPosiParam\022\017\n\007P"
+    "ortfId\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\"T\n\022CloseP"
+    "ositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024.tr"
+    "ade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t\n\023"
+    "LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017"
+    "MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 \002"
+    "(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\225\001\n\031A"
+    "rbitrageStrategySettings\022\'\n\004Side\030\001 \002(\0162\031"
+    ".entity.PosiDirectionType\022\031\n\021OpenPosiThr"
+    "eshold\030\002 \001(\001\022\031\n\021StopGainThreshold\030\003 \001(\001\022"
+    "\031\n\021StopLossThreshold\030\004 \001(\001\"\214\001\n\023ModifyStr"
+    "ategyParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002"
+    " \002(\010\022\022\n\nIsAutoOpen\030\003 \002(\010\022\023\n\013IsAutoClose\030"
+    "\004 \002(\010\022\024\n\014StrategyName\030\005 \001(\t\022\024\n\014StrategyD"
+    "ata\030\006 \001(\014", 1209);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -387,6 +415,7 @@ void protobuf_AddDesc_message_2eproto() {
   PorfOpenPosiParam::default_instance_ = new PorfOpenPosiParam();
   ClosePositionParam::default_instance_ = new ClosePositionParam();
   LegOrderUpdateParam::default_instance_ = new LegOrderUpdateParam();
+  ArbitrageStrategySettings::default_instance_ = new ArbitrageStrategySettings();
   ModifyStrategyParam::default_instance_ = new ModifyStrategyParam();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
@@ -399,6 +428,7 @@ void protobuf_AddDesc_message_2eproto() {
   PorfOpenPosiParam::default_instance_->InitAsDefaultInstance();
   ClosePositionParam::default_instance_->InitAsDefaultInstance();
   LegOrderUpdateParam::default_instance_->InitAsDefaultInstance();
+  ArbitrageStrategySettings::default_instance_->InitAsDefaultInstance();
   ModifyStrategyParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
@@ -1324,6 +1354,8 @@ const int PortfolioItem::kDiffFieldNumber;
 const int PortfolioItem::kAutoOpenFieldNumber;
 const int PortfolioItem::kAutoCloseFieldNumber;
 const int PortfolioItem::kLegsFieldNumber;
+const int PortfolioItem::kStrategyNameFieldNumber;
+const int PortfolioItem::kStrategyDataFieldNumber;
 #endif  // !_MSC_VER
 
 PortfolioItem::PortfolioItem()
@@ -1347,6 +1379,8 @@ void PortfolioItem::SharedCtor() {
   diff_ = 0;
   autoopen_ = false;
   autoclose_ = false;
+  strategyname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  strategydata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1357,6 +1391,12 @@ PortfolioItem::~PortfolioItem() {
 void PortfolioItem::SharedDtor() {
   if (id_ != &::google::protobuf::internal::kEmptyString) {
     delete id_;
+  }
+  if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
+    delete strategyname_;
+  }
+  if (strategydata_ != &::google::protobuf::internal::kEmptyString) {
+    delete strategydata_;
   }
   if (this != default_instance_) {
   }
@@ -1393,6 +1433,16 @@ void PortfolioItem::Clear() {
     diff_ = 0;
     autoopen_ = false;
     autoclose_ = false;
+    if (has_strategyname()) {
+      if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
+        strategyname_->clear();
+      }
+    }
+    if (has_strategydata()) {
+      if (strategydata_ != &::google::protobuf::internal::kEmptyString) {
+        strategydata_->clear();
+      }
+    }
   }
   legs_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1496,6 +1546,37 @@ bool PortfolioItem::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(50)) goto parse_Legs;
+        if (input->ExpectTag(58)) goto parse_StrategyName;
+        break;
+      }
+      
+      // required string StrategyName = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_StrategyName:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_strategyname()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->strategyname().data(), this->strategyname().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(66)) goto parse_StrategyData;
+        break;
+      }
+      
+      // required bytes StrategyData = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_StrategyData:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_strategydata()));
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -1553,6 +1634,21 @@ void PortfolioItem::SerializeWithCachedSizes(
       6, this->legs(i), output);
   }
   
+  // required string StrategyName = 7;
+  if (has_strategyname()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->strategyname().data(), this->strategyname().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      7, this->strategyname(), output);
+  }
+  
+  // required bytes StrategyData = 8;
+  if (has_strategydata()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      8, this->strategydata(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1598,6 +1694,23 @@ void PortfolioItem::SerializeWithCachedSizes(
         6, this->legs(i), target);
   }
   
+  // required string StrategyName = 7;
+  if (has_strategyname()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->strategyname().data(), this->strategyname().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->strategyname(), target);
+  }
+  
+  // required bytes StrategyData = 8;
+  if (has_strategydata()) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        8, this->strategydata(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1636,6 +1749,20 @@ int PortfolioItem::ByteSize() const {
     // required bool AutoClose = 5;
     if (has_autoclose()) {
       total_size += 1 + 1;
+    }
+    
+    // required string StrategyName = 7;
+    if (has_strategyname()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->strategyname());
+    }
+    
+    // required bytes StrategyData = 8;
+    if (has_strategydata()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->strategydata());
     }
     
   }
@@ -1689,6 +1816,12 @@ void PortfolioItem::MergeFrom(const PortfolioItem& from) {
     if (from.has_autoclose()) {
       set_autoclose(from.autoclose());
     }
+    if (from.has_strategyname()) {
+      set_strategyname(from.strategyname());
+    }
+    if (from.has_strategydata()) {
+      set_strategydata(from.strategydata());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1706,7 +1839,7 @@ void PortfolioItem::CopyFrom(const PortfolioItem& from) {
 }
 
 bool PortfolioItem::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x000000df) != 0x000000df) return false;
   
   for (int i = 0; i < legs_size(); i++) {
     if (!this->legs(i).IsInitialized()) return false;
@@ -1722,6 +1855,8 @@ void PortfolioItem::Swap(PortfolioItem* other) {
     std::swap(autoopen_, other->autoopen_);
     std::swap(autoclose_, other->autoclose_);
     legs_.Swap(&other->legs_);
+    std::swap(strategyname_, other->strategyname_);
+    std::swap(strategydata_, other->strategydata_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3758,14 +3893,340 @@ void LegOrderUpdateParam::Swap(LegOrderUpdateParam* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int ArbitrageStrategySettings::kSideFieldNumber;
+const int ArbitrageStrategySettings::kOpenPosiThresholdFieldNumber;
+const int ArbitrageStrategySettings::kStopGainThresholdFieldNumber;
+const int ArbitrageStrategySettings::kStopLossThresholdFieldNumber;
+#endif  // !_MSC_VER
+
+ArbitrageStrategySettings::ArbitrageStrategySettings()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ArbitrageStrategySettings::InitAsDefaultInstance() {
+}
+
+ArbitrageStrategySettings::ArbitrageStrategySettings(const ArbitrageStrategySettings& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ArbitrageStrategySettings::SharedCtor() {
+  _cached_size_ = 0;
+  side_ = 49;
+  openposithreshold_ = 0;
+  stopgainthreshold_ = 0;
+  stoplossthreshold_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ArbitrageStrategySettings::~ArbitrageStrategySettings() {
+  SharedDtor();
+}
+
+void ArbitrageStrategySettings::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void ArbitrageStrategySettings::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ArbitrageStrategySettings::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ArbitrageStrategySettings_descriptor_;
+}
+
+const ArbitrageStrategySettings& ArbitrageStrategySettings::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+ArbitrageStrategySettings* ArbitrageStrategySettings::default_instance_ = NULL;
+
+ArbitrageStrategySettings* ArbitrageStrategySettings::New() const {
+  return new ArbitrageStrategySettings;
+}
+
+void ArbitrageStrategySettings::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    side_ = 49;
+    openposithreshold_ = 0;
+    stopgainthreshold_ = 0;
+    stoplossthreshold_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ArbitrageStrategySettings::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required .entity.PosiDirectionType Side = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::PosiDirectionType_IsValid(value)) {
+            set_side(static_cast< entity::PosiDirectionType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(1, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(17)) goto parse_OpenPosiThreshold;
+        break;
+      }
+      
+      // optional double OpenPosiThreshold = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_OpenPosiThreshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &openposithreshold_)));
+          set_has_openposithreshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(25)) goto parse_StopGainThreshold;
+        break;
+      }
+      
+      // optional double StopGainThreshold = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_StopGainThreshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &stopgainthreshold_)));
+          set_has_stopgainthreshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(33)) goto parse_StopLossThreshold;
+        break;
+      }
+      
+      // optional double StopLossThreshold = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_StopLossThreshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &stoplossthreshold_)));
+          set_has_stoplossthreshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ArbitrageStrategySettings::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required .entity.PosiDirectionType Side = 1;
+  if (has_side()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->side(), output);
+  }
+  
+  // optional double OpenPosiThreshold = 2;
+  if (has_openposithreshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->openposithreshold(), output);
+  }
+  
+  // optional double StopGainThreshold = 3;
+  if (has_stopgainthreshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->stopgainthreshold(), output);
+  }
+  
+  // optional double StopLossThreshold = 4;
+  if (has_stoplossthreshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->stoplossthreshold(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ArbitrageStrategySettings::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required .entity.PosiDirectionType Side = 1;
+  if (has_side()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->side(), target);
+  }
+  
+  // optional double OpenPosiThreshold = 2;
+  if (has_openposithreshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->openposithreshold(), target);
+  }
+  
+  // optional double StopGainThreshold = 3;
+  if (has_stopgainthreshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->stopgainthreshold(), target);
+  }
+  
+  // optional double StopLossThreshold = 4;
+  if (has_stoplossthreshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->stoplossthreshold(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ArbitrageStrategySettings::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required .entity.PosiDirectionType Side = 1;
+    if (has_side()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->side());
+    }
+    
+    // optional double OpenPosiThreshold = 2;
+    if (has_openposithreshold()) {
+      total_size += 1 + 8;
+    }
+    
+    // optional double StopGainThreshold = 3;
+    if (has_stopgainthreshold()) {
+      total_size += 1 + 8;
+    }
+    
+    // optional double StopLossThreshold = 4;
+    if (has_stoplossthreshold()) {
+      total_size += 1 + 8;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ArbitrageStrategySettings::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ArbitrageStrategySettings* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ArbitrageStrategySettings*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ArbitrageStrategySettings::MergeFrom(const ArbitrageStrategySettings& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_side()) {
+      set_side(from.side());
+    }
+    if (from.has_openposithreshold()) {
+      set_openposithreshold(from.openposithreshold());
+    }
+    if (from.has_stopgainthreshold()) {
+      set_stopgainthreshold(from.stopgainthreshold());
+    }
+    if (from.has_stoplossthreshold()) {
+      set_stoplossthreshold(from.stoplossthreshold());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ArbitrageStrategySettings::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ArbitrageStrategySettings::CopyFrom(const ArbitrageStrategySettings& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ArbitrageStrategySettings::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  
+  return true;
+}
+
+void ArbitrageStrategySettings::Swap(ArbitrageStrategySettings* other) {
+  if (other != this) {
+    std::swap(side_, other->side_);
+    std::swap(openposithreshold_, other->openposithreshold_);
+    std::swap(stopgainthreshold_, other->stopgainthreshold_);
+    std::swap(stoplossthreshold_, other->stoplossthreshold_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ArbitrageStrategySettings::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ArbitrageStrategySettings_descriptor_;
+  metadata.reflection = ArbitrageStrategySettings_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int ModifyStrategyParam::kPortfIdFieldNumber;
 const int ModifyStrategyParam::kEnabledFieldNumber;
 const int ModifyStrategyParam::kIsAutoOpenFieldNumber;
 const int ModifyStrategyParam::kIsAutoCloseFieldNumber;
-const int ModifyStrategyParam::kSideFieldNumber;
-const int ModifyStrategyParam::kOpenPosiThresholdFieldNumber;
-const int ModifyStrategyParam::kStopGainThresholdFieldNumber;
-const int ModifyStrategyParam::kStopLossThresholdFieldNumber;
+const int ModifyStrategyParam::kStrategyNameFieldNumber;
+const int ModifyStrategyParam::kStrategyDataFieldNumber;
 #endif  // !_MSC_VER
 
 ModifyStrategyParam::ModifyStrategyParam()
@@ -3786,12 +4247,10 @@ void ModifyStrategyParam::SharedCtor() {
   _cached_size_ = 0;
   portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   enabled_ = false;
-  isautoopen_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  isautoclose_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  side_ = 49;
-  openposithreshold_ = 0;
-  stopgainthreshold_ = 0;
-  stoplossthreshold_ = 0;
+  isautoopen_ = false;
+  isautoclose_ = false;
+  strategyname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  strategydata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3803,11 +4262,11 @@ void ModifyStrategyParam::SharedDtor() {
   if (portfid_ != &::google::protobuf::internal::kEmptyString) {
     delete portfid_;
   }
-  if (isautoopen_ != &::google::protobuf::internal::kEmptyString) {
-    delete isautoopen_;
+  if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
+    delete strategyname_;
   }
-  if (isautoclose_ != &::google::protobuf::internal::kEmptyString) {
-    delete isautoclose_;
+  if (strategydata_ != &::google::protobuf::internal::kEmptyString) {
+    delete strategydata_;
   }
   if (this != default_instance_) {
   }
@@ -3841,20 +4300,18 @@ void ModifyStrategyParam::Clear() {
       }
     }
     enabled_ = false;
-    if (has_isautoopen()) {
-      if (isautoopen_ != &::google::protobuf::internal::kEmptyString) {
-        isautoopen_->clear();
+    isautoopen_ = false;
+    isautoclose_ = false;
+    if (has_strategyname()) {
+      if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
+        strategyname_->clear();
       }
     }
-    if (has_isautoclose()) {
-      if (isautoclose_ != &::google::protobuf::internal::kEmptyString) {
-        isautoclose_->clear();
+    if (has_strategydata()) {
+      if (strategydata_ != &::google::protobuf::internal::kEmptyString) {
+        strategydata_->clear();
       }
     }
-    side_ = 49;
-    openposithreshold_ = 0;
-    stopgainthreshold_ = 0;
-    stoplossthreshold_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -3894,106 +4351,66 @@ bool ModifyStrategyParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(26)) goto parse_IsAutoOpen;
+        if (input->ExpectTag(24)) goto parse_IsAutoOpen;
         break;
       }
       
-      // required string IsAutoOpen = 3;
+      // required bool IsAutoOpen = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_IsAutoOpen:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_isautoopen()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->isautoopen().data(), this->isautoopen().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isautoopen_)));
+          set_has_isautoopen();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(34)) goto parse_IsAutoClose;
+        if (input->ExpectTag(32)) goto parse_IsAutoClose;
         break;
       }
       
-      // required string IsAutoClose = 4;
+      // required bool IsAutoClose = 4;
       case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_IsAutoClose:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isautoclose_)));
+          set_has_isautoclose();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(42)) goto parse_StrategyName;
+        break;
+      }
+      
+      // optional string StrategyName = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_StrategyName:
           DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_isautoclose()));
+                input, this->mutable_strategyname()));
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->isautoclose().data(), this->isautoclose().length(),
+            this->strategyname().data(), this->strategyname().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_Side;
+        if (input->ExpectTag(50)) goto parse_StrategyData;
         break;
       }
       
-      // required .entity.PosiDirectionType Side = 5;
-      case 5: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_Side:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (entity::PosiDirectionType_IsValid(value)) {
-            set_side(static_cast< entity::PosiDirectionType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(5, value);
-          }
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(49)) goto parse_OpenPosiThreshold;
-        break;
-      }
-      
-      // optional double OpenPosiThreshold = 6;
+      // optional bytes StrategyData = 6;
       case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
-         parse_OpenPosiThreshold:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &openposithreshold_)));
-          set_has_openposithreshold();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(57)) goto parse_StopGainThreshold;
-        break;
-      }
-      
-      // optional double StopGainThreshold = 7;
-      case 7: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
-         parse_StopGainThreshold:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &stopgainthreshold_)));
-          set_has_stopgainthreshold();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(65)) goto parse_StopLossThreshold;
-        break;
-      }
-      
-      // optional double StopLossThreshold = 8;
-      case 8: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
-         parse_StopLossThreshold:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &stoplossthreshold_)));
-          set_has_stoplossthreshold();
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_StrategyData:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
+                input, this->mutable_strategydata()));
         } else {
           goto handle_uninterpreted;
         }
@@ -4033,43 +4450,29 @@ void ModifyStrategyParam::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->enabled(), output);
   }
   
-  // required string IsAutoOpen = 3;
+  // required bool IsAutoOpen = 3;
   if (has_isautoopen()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->isautoopen().data(), this->isautoopen().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
-      3, this->isautoopen(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->isautoopen(), output);
   }
   
-  // required string IsAutoClose = 4;
+  // required bool IsAutoClose = 4;
   if (has_isautoclose()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->isautoclose(), output);
+  }
+  
+  // optional string StrategyName = 5;
+  if (has_strategyname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->isautoclose().data(), this->isautoclose().length(),
+      this->strategyname().data(), this->strategyname().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      4, this->isautoclose(), output);
+      5, this->strategyname(), output);
   }
   
-  // required .entity.PosiDirectionType Side = 5;
-  if (has_side()) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      5, this->side(), output);
-  }
-  
-  // optional double OpenPosiThreshold = 6;
-  if (has_openposithreshold()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->openposithreshold(), output);
-  }
-  
-  // optional double StopGainThreshold = 7;
-  if (has_stopgainthreshold()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(7, this->stopgainthreshold(), output);
-  }
-  
-  // optional double StopLossThreshold = 8;
-  if (has_stoplossthreshold()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(8, this->stoplossthreshold(), output);
+  // optional bytes StrategyData = 6;
+  if (has_strategydata()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBytes(
+      6, this->strategydata(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -4095,45 +4498,31 @@ void ModifyStrategyParam::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->enabled(), target);
   }
   
-  // required string IsAutoOpen = 3;
+  // required bool IsAutoOpen = 3;
   if (has_isautoopen()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->isautoopen().data(), this->isautoopen().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        3, this->isautoopen(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->isautoopen(), target);
   }
   
-  // required string IsAutoClose = 4;
+  // required bool IsAutoClose = 4;
   if (has_isautoclose()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->isautoclose(), target);
+  }
+  
+  // optional string StrategyName = 5;
+  if (has_strategyname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->isautoclose().data(), this->isautoclose().length(),
+      this->strategyname().data(), this->strategyname().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        4, this->isautoclose(), target);
+        5, this->strategyname(), target);
   }
   
-  // required .entity.PosiDirectionType Side = 5;
-  if (has_side()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      5, this->side(), target);
-  }
-  
-  // optional double OpenPosiThreshold = 6;
-  if (has_openposithreshold()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->openposithreshold(), target);
-  }
-  
-  // optional double StopGainThreshold = 7;
-  if (has_stopgainthreshold()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(7, this->stopgainthreshold(), target);
-  }
-  
-  // optional double StopLossThreshold = 8;
-  if (has_stoplossthreshold()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(8, this->stoplossthreshold(), target);
+  // optional bytes StrategyData = 6;
+  if (has_strategydata()) {
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
+        6, this->strategydata(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4159,39 +4548,28 @@ int ModifyStrategyParam::ByteSize() const {
       total_size += 1 + 1;
     }
     
-    // required string IsAutoOpen = 3;
+    // required bool IsAutoOpen = 3;
     if (has_isautoopen()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->isautoopen());
+      total_size += 1 + 1;
     }
     
-    // required string IsAutoClose = 4;
+    // required bool IsAutoClose = 4;
     if (has_isautoclose()) {
+      total_size += 1 + 1;
+    }
+    
+    // optional string StrategyName = 5;
+    if (has_strategyname()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
-          this->isautoclose());
+          this->strategyname());
     }
     
-    // required .entity.PosiDirectionType Side = 5;
-    if (has_side()) {
+    // optional bytes StrategyData = 6;
+    if (has_strategydata()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->side());
-    }
-    
-    // optional double OpenPosiThreshold = 6;
-    if (has_openposithreshold()) {
-      total_size += 1 + 8;
-    }
-    
-    // optional double StopGainThreshold = 7;
-    if (has_stopgainthreshold()) {
-      total_size += 1 + 8;
-    }
-    
-    // optional double StopLossThreshold = 8;
-    if (has_stoplossthreshold()) {
-      total_size += 1 + 8;
+        ::google::protobuf::internal::WireFormatLite::BytesSize(
+          this->strategydata());
     }
     
   }
@@ -4233,17 +4611,11 @@ void ModifyStrategyParam::MergeFrom(const ModifyStrategyParam& from) {
     if (from.has_isautoclose()) {
       set_isautoclose(from.isautoclose());
     }
-    if (from.has_side()) {
-      set_side(from.side());
+    if (from.has_strategyname()) {
+      set_strategyname(from.strategyname());
     }
-    if (from.has_openposithreshold()) {
-      set_openposithreshold(from.openposithreshold());
-    }
-    if (from.has_stopgainthreshold()) {
-      set_stopgainthreshold(from.stopgainthreshold());
-    }
-    if (from.has_stoplossthreshold()) {
-      set_stoplossthreshold(from.stoplossthreshold());
+    if (from.has_strategydata()) {
+      set_strategydata(from.strategydata());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -4262,7 +4634,7 @@ void ModifyStrategyParam::CopyFrom(const ModifyStrategyParam& from) {
 }
 
 bool ModifyStrategyParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   
   return true;
 }
@@ -4273,10 +4645,8 @@ void ModifyStrategyParam::Swap(ModifyStrategyParam* other) {
     std::swap(enabled_, other->enabled_);
     std::swap(isautoopen_, other->isautoopen_);
     std::swap(isautoclose_, other->isautoclose_);
-    std::swap(side_, other->side_);
-    std::swap(openposithreshold_, other->openposithreshold_);
-    std::swap(stopgainthreshold_, other->stopgainthreshold_);
-    std::swap(stoplossthreshold_, other->stoplossthreshold_);
+    std::swap(strategyname_, other->strategyname_);
+    std::swap(strategydata_, other->strategydata_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

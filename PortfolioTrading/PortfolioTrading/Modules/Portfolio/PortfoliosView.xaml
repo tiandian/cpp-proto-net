@@ -16,7 +16,7 @@
             <TextBlock DockPanel.Dock="Right" Text="{Binding InvestorId}"/>
         </DockPanel>
         <igDP:XamDataGrid Name="xamDG_Portfolio" DataSource="{Binding Portfolios}" AutoFit="True"
-                              GroupByAreaLocation="None">
+                              GroupByAreaLocation="None" RecordActivated="xamDG_Portfolio_RecordActivated">
             <igDP:XamDataGrid.Resources>
                 <!-- HeaderLabelArea style -->
                 <Style x:Key="shrinkHeaderLabelArea" TargetType="igDP:HeaderLabelArea">

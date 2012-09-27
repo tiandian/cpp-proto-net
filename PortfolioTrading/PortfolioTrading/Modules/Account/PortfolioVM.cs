@@ -11,6 +11,7 @@ using PortfolioTrading.Utils;
 using PortfolioTrading.Events;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.ServiceLocation;
+using PortfolioTrading.Modules.Portfolio.Strategy;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -164,6 +165,8 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        public StrategySetting StrategySetting { get; set; }
+
         public string DisplayText
         {
             get
@@ -245,6 +248,12 @@ namespace PortfolioTrading.Modules.Account
                 LegVM legVm = LegVM.Load(legElem);
                 portf._legs.Add(legVm);
             }
+
+            XElement xmlSetting = xmlElement.Element("setting");
+            string strategyName = xmlSetting.Attribute("name").Value;
+            string strategyXmlText = xmlSetting.Value;
+
+            portf.StrategySetting = StrategySetting.Load(strategyName, strategyXmlText);
             return portf;
         }
 
@@ -262,6 +271,11 @@ namespace PortfolioTrading.Modules.Account
                 elemLegs.Add(l.Persist());
             }
             elem.Add(elemLegs);
+
+            XElement settingElem = new XElement("setting", new XAttribute("name", StrategySetting.Name));
+            settingElem.Add(new XCData(StrategySetting.Persist()));
+
+            elem.Add(settingElem);
 
             return elem;
         }
@@ -283,6 +297,9 @@ namespace PortfolioTrading.Modules.Account
                 leg.Ratio = legVm.Ratio;
                 portfolioItem.Legs.Add(leg);
             }
+
+            portfolioItem.StrategyName = StrategySetting.Name;
+            portfolioItem.StrategyData = StrategySetting.Serialize();
 
             return portfolioItem;
         }
@@ -307,6 +324,13 @@ namespace PortfolioTrading.Modules.Account
         {
             _accountVm.Host.PortfClosePosition(closeArgs.MlOrder, closeArgs.LegOrderRef);
             EventLogger.Write("组合委托{0} 平仓", closeArgs.MlOrder.OrderId);
+        }
+
+        public void ApplyStrategySettings()
+        {
+            _accountVm.Host.PortfApplyStrategySettings(this.Id,
+                true, AutoOpen, AutoClose, 
+                StrategySetting.Name, StrategySetting.Serialize());
         }
     }
 }

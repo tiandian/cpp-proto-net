@@ -15,6 +15,7 @@ using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
 using PortfolioTrading.Modules.Account;
+using Infragistics.Windows.DataPresenter;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -24,9 +25,12 @@ namespace PortfolioTrading.Modules.Portfolio
     [Export]
     public partial class PortfoliosView : UserControl
     {
+        private IEventAggregator EventAgg { get; set; }
+
         [ImportingConstructor]
         public PortfoliosView(IEventAggregator evtAgg)
         {
+            EventAgg = evtAgg;
             evtAgg.GetEvent<AccountSelectedEvent>().Subscribe(OnAccountSelected, ThreadOption.UIThread);
             InitializeComponent();
         }
@@ -34,6 +38,16 @@ namespace PortfolioTrading.Modules.Portfolio
         public void OnAccountSelected(AccountVM accountVm)
         {
             this.DataContext = accountVm;
+        }
+
+        private void xamDG_Portfolio_RecordActivated(object sender, Infragistics.Windows.DataPresenter.Events.RecordActivatedEventArgs e)
+        {
+            if (e.Record.IsDataRecord)
+            {
+                DataRecord dr = e.Record as DataRecord;
+                PortfolioVM portf = dr.DataItem as PortfolioVM;
+                EventAgg.GetEvent<PortfolioSelectedEvent>().Publish(portf);
+            }
         }
     }
 }
