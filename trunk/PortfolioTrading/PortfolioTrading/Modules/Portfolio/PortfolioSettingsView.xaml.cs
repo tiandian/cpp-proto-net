@@ -21,9 +21,11 @@ namespace PortfolioTrading.Modules.Portfolio
     [Export]
     public partial class PortfolioSettingsView : UserControl
     {
-        public PortfolioSettingsView()
+        [ImportingConstructor]
+        public PortfolioSettingsView(PortfSettingsVM viewModel)
         {
             InitializeComponent();
+            this.DataContext = viewModel;
         }
     }
 }

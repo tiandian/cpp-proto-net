@@ -102,6 +102,19 @@ namespace PortfolioTrading.Infrastructure
             return strReturn.Data;
         }
 
+        public void PortfApplyStrategySettings(string portfId, bool isEnabled, 
+            bool isAutoOpen, bool isAutoClose, string strategyName, byte[] strategyData)
+        {
+            entity.ModifyStrategyParam modifyParam = new entity.ModifyStrategyParam();
+            modifyParam.PortfId = portfId;
+            modifyParam.Enabled = isEnabled;
+            modifyParam.IsAutoOpen = isAutoOpen;
+            modifyParam.IsAutoClose = isAutoClose;
+
+            byte[] param_data = DataTranslater.Serialize(modifyParam);
+            byte[] ret_data = Request("ApplyStrategySettings", param_data);
+        }
+
         public trade.AccountInfo QueryAccountInfo()
         {
             byte[] ret_data = Request("QueryAccountInfo", new byte[]{});

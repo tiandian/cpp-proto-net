@@ -14,6 +14,7 @@ using System.Diagnostics;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.ServiceLocation;
 using PortfolioTrading.Events;
+using PortfolioTrading.Modules.Portfolio.Strategy;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -36,7 +37,7 @@ namespace PortfolioTrading.Modules.Account
             _host = new NativeHost();
 
             EventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-
+            
             _client = new Client();
             _client.OnError += new Action<string>(_client_OnError);
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
@@ -176,6 +177,7 @@ namespace PortfolioTrading.Modules.Account
         {
             PortfolioVM portf = new PortfolioVM(this);
             portf.Id = (_acctPortfolios.Count + 1).ToString();
+            portf.StrategySetting = StrategySetting.Create(StrategySetting.ArbitrageStrategyName);
 
             EditPortfolioDlg dlg = new EditPortfolioDlg();
             dlg.Owner = System.Windows.Application.Current.MainWindow;

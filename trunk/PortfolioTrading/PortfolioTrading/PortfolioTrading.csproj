@@ -118,6 +118,7 @@
       <DependentUpon>AccountMgrView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Account\AccountModule.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ArbitrageStrategySetting.cs" />
     <Compile Include="Modules\Account\EditAccountDlg.xaml.cs">
       <DependentUpon>EditAccountDlg.xaml</DependentUpon>
     </Compile>
@@ -138,6 +139,8 @@
     <Compile Include="Modules\Portfolio\PortfoliosView.xaml.cs">
       <DependentUpon>PortfoliosView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Portfolio\PortfSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\StrategySetting.cs" />
     <Compile Include="Modules\Portfolio\TradeVM.cs" />
     <Compile Include="Modules\Watching\OutputView.xaml.cs">
       <DependentUpon>OutputView.xaml</DependentUpon>

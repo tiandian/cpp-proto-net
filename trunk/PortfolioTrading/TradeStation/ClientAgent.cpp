@@ -191,6 +191,20 @@ void CClientAgent::OnLegOrderUpdated( const string& portfId, const string& mlOrd
 		m_pSession->BeginCallback("LegOrderPush", callbackData);
 }
 
+void CClientAgent::ApplyStrategySetting( const entity::ModifyStrategyParam& settings )
+{
+	const string& portfId = settings.portfid();
+	CPortfolio* portf = m_portfolioMgr.Get(portfId);
+	if(portf != NULL)
+	{
+		portf->EnableStrategy(settings.isautoopen(), settings.isautoclose());
+		if(settings.has_strategyname() && settings.has_strategydata())
+		{
+			portf->ApplyStrategySetting(settings.strategyname(), settings.strategydata());
+		}
+	}
+}
+
 
 
 

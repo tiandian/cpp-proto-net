@@ -32,6 +32,8 @@ message PortfolioItem
 	required bool AutoOpen = 4;
 	required bool AutoClose = 5;
 	repeated LegItem Legs = 6; 
+	required string StrategyName = 7;
+	required bytes StrategyData = 8; 
 }
 
 message ConnectParam
@@ -78,14 +80,21 @@ message LegOrderUpdateParam
 	required trade.Order LegOrder = 4;
 }
 
+message ArbitrageStrategySettings
+{
+	required PosiDirectionType Side = 1;
+	optional double OpenPosiThreshold = 2;
+	optional double StopGainThreshold = 3;
+	optional double StopLossThreshold = 4;
+}
+
 message ModifyStrategyParam
 {
 	required string PortfId = 1;
 	required bool Enabled = 2;
-	required string IsAutoOpen = 3;
-	required string IsAutoClose = 4;
-	required PosiDirectionType Side = 5;
-	optional double OpenPosiThreshold = 6;
-	optional double StopGainThreshold = 7;
-	optional double StopLossThreshold = 8; 
+	required bool IsAutoOpen = 3;
+	required bool IsAutoClose = 4;
+	
+	optional string StrategyName = 5;
+	optional bytes StrategyData = 6;
 }

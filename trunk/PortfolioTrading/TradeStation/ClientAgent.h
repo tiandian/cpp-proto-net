@@ -33,13 +33,14 @@ public:
 	void PortfolioOpenPosition(const string& pid, int quantity);
 	void ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, string& msg);
 	bool QueryAccountInfo(string* serializedAcctInfo);
+	void ApplyStrategySetting(const entity::ModifyStrategyParam& settings);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);
 	void OnMultiLegOrderUpdated(trade::MultiLegOrder* order);
 	void OnLegOrderUpdated(const string& portfId, const string& mlOrderId, trade::Order* legOrd);
 	void OnTradeUpdated(trade::Trade* trade);
-
+	
 	std::string QuoteAddress() const { return m_quoteAddress; }
 	boost::tuple<bool, string> QuoteConnect(const std::string& address, const std::string& streamDir);
 	void QuoteDisconnect();

@@ -7,7 +7,9 @@
 
 CPortfolio::CPortfolio(void):
 m_porfMgr(NULL),
-m_openedOrderCount(0)
+m_openedOrderCount(0),
+m_isAutoOpen(false),
+m_isAutoClose(false)
 {
 }
 
@@ -103,11 +105,11 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 	m_innerItem->set_diff(diff);
 
 	POSI_OPER poOp = m_strategy.Test(diff);
-	if(poOp == OPEN_POSI)
+	if(poOp == OPEN_POSI && m_isAutoOpen)
 	{
 		m_porfMgr->NotifyOpenPosition(this, Quantity());
 	}
-	else if(poOp == CLOSE_POSI)
+	else if(poOp == CLOSE_POSI && m_isAutoClose)
 	{
 
 	}
@@ -144,5 +146,18 @@ int CPortfolio::NewOrderId(string& newId)
 	boost::mutex::scoped_lock lock(m_mut);
 	newId = boost::str(boost::format("%s-%d") % ID().c_str() % ++m_openedOrderCount);
 	return m_openedOrderCount;
+}
+
+void CPortfolio::ApplyStrategySetting( const string& name, const string& data )
+{
+	if(name == "ArbitrageStrategy")
+	{
+		entity::ArbitrageStrategySettings arbitrageSettings;
+		arbitrageSettings.ParseFromString(data);
+
+		m_strategy.SetOpenPosiCond(GREATER_EQUAL_THAN, arbitrageSettings.openposithreshold());
+		m_strategy.SetStopGainCond(GREATER_EQUAL_THAN, arbitrageSettings.stopgainthreshold());
+		m_strategy.SetStopLossCond(GREATER_EQUAL_THAN, arbitrageSettings.stoplossthreshold());
+	}
 }
 
