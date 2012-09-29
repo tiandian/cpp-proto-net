@@ -53,7 +53,7 @@ namespace PortfolioTrading.Modules.Portfolio
             strategySettings.Direction = this.PositionDirection;
             strategySettings.OpenThreshold = this.OpenThreshold;
             strategySettings.StopGainThreshold = this.StopGainThreshold;
-            strategySettings.StopGainThreshold = this.StopLossThreshold;
+            strategySettings.StopLossThreshold = this.StopLossThreshold;
 
             _lastPortfVm.ApplyStrategySettings();
         }

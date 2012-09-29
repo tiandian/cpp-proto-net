@@ -18,7 +18,9 @@
         </StackPanel.Resources>
         <DockPanel LastChildFill="False">
             <TextBlock Margin="4" >套利策略设置</TextBlock>
-            <TextBlock Margin="4" DockPanel.Dock="Right">组合编号 1</TextBlock>
+            <TextBlock Margin="2, 2, 8, 2" DockPanel.Dock="Right" VerticalAlignment="Center"
+                       Text="{Binding PortfolioID, FallbackValue=1}"/>
+            <TextBlock Margin="4" DockPanel.Dock="Right">组合编号</TextBlock>
         </DockPanel>
         
         <Grid>
@@ -33,7 +35,8 @@
         <Border CornerRadius="4">
             <DockPanel>
                 <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
-                <ComboBox SelectedIndex="0" Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}">
+                <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
+                          SelectedValuePath="Direction" SelectedValue="{Binding PositionDirection, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding DisplayText}"/>
@@ -73,7 +76,7 @@
                     </DockPanel>
                     <DockPanel Margin="4">
                         <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
-                        <igEditor:XamTextEditor Value="{Binding OpenThreshold, FallbackValue=20, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                        <igEditor:XamTextEditor Value="{Binding StopGainThreshold, FallbackValue=20, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
                     </DockPanel>
                 </DockPanel>
             </DockPanel>
@@ -92,7 +95,7 @@
                     </DockPanel>
                     <DockPanel Margin="4">
                         <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
-                        <igEditor:XamTextEditor Value="{Binding OpenThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                        <igEditor:XamTextEditor Value="{Binding StopLossThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
                     </DockPanel>
                 </DockPanel>
             </DockPanel>
