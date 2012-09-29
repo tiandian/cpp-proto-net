@@ -28,19 +28,37 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 if (attr != null)
                     setting.Direction = (entity.PosiDirectionType)Enum.Parse(typeof(entity.PosiDirectionType), attr.Value);
 
-                attr = elem.Attribute("open");
+                XElement elemOpen = elem.Element("open");
+                attr = elemOpen.Attribute("condition");
+                if (attr != null)
+                {
+                    setting.OpenCondition = (CompareCondition)Enum.Parse(typeof(CompareCondition), attr.Value);
+                }
+                attr = elemOpen.Attribute("threshold");
                 if (attr != null)
                 {
                     setting.OpenThreshold = double.Parse(attr.Value);
                 }
 
-                attr = elem.Attribute("stopGain");
+                XElement elemStopGain = elem.Element("stopGain");
+                attr = elemStopGain.Attribute("condition");
+                if (attr != null)
+                {
+                    setting.StopGainCondition = (CompareCondition)Enum.Parse(typeof(CompareCondition), attr.Value);
+                }
+                attr = elemStopGain.Attribute("threshold");
                 if (attr != null)
                 {
                     setting.StopGainThreshold = double.Parse(attr.Value);
                 }
 
-                attr = elem.Attribute("stopLoss");
+                XElement elemStopLoss = elem.Element("stopLoss");
+                attr = elemStopLoss.Attribute("condition");
+                if (attr != null)
+                {
+                    setting.StopLossCondition = (CompareCondition)Enum.Parse(typeof(CompareCondition), attr.Value);
+                }
+                attr = elemStopLoss.Attribute("threshold");
                 if (attr != null)
                 {
                     setting.StopLossThreshold = double.Parse(attr.Value);

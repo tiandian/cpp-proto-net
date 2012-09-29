@@ -80,10 +80,31 @@
     </Style>
 
     <DataTemplate x:Key="arbitrageTemplate">
-        <DockPanel>
-            <TextBlock>差价:</TextBlock>
-            <TextBlock Text="{Binding Diff}"></TextBlock>
-        </DockPanel>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>差价:</TextBlock>
+                    <TextBlock Text="{Binding Diff}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>止盈:</TextBlock>
+                    <TextBlock Text="{Binding StrategySetting.StopGainCondition}" />
+                    <TextBlock Text="{Binding StrategySetting.StopGainThreshold}" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>开仓:</TextBlock>
+                    <TextBlock Text="{Binding StrategySetting.OpenCondition}" />
+                    <TextBlock Text="{Binding StrategySetting.OpenThreshold}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>止损:</TextBlock>
+                    <TextBlock Text="{Binding StrategySetting.StopLossCondition}" />
+                    <TextBlock Text="{Binding StrategySetting.StopLossThreshold}" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
     </DataTemplate>
     
     <DataTemplate x:Key="boxBreakTemplate">

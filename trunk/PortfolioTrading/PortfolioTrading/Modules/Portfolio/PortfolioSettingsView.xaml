@@ -15,6 +15,11 @@
                 <Setter Property="Padding" Value="4"/>
                 <Setter Property="BorderBrush" Value="Green" />
             </Style>
+
+            <DataTemplate x:Key="combItemTemplate">
+                <TextBlock Text="{Binding DisplayText}"/>
+            </DataTemplate>
+            
         </StackPanel.Resources>
         <DockPanel LastChildFill="False">
             <TextBlock Margin="4" >套利策略设置</TextBlock>
@@ -36,12 +41,8 @@
             <DockPanel>
                 <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
                 <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
-                          SelectedValuePath="Direction" SelectedValue="{Binding PositionDirection, Mode=TwoWay}">
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding DisplayText}"/>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
+                          SelectedValuePath="Direction" SelectedValue="{Binding PositionDirection, Mode=TwoWay}"
+                          ItemTemplate="{StaticResource combItemTemplate}">
                 </ComboBox>
             </DockPanel>
         </Border>
@@ -51,9 +52,9 @@
                 <DockPanel Margin="12, 0, 6, 4">
                     <DockPanel >
                         <TextBlock VerticalAlignment="Center" Margin="4">价差</TextBlock>
-                        <ComboBox SelectedIndex="0" Margin="4" Width="80">
-                            <ComboBoxItem>大于等于</ComboBoxItem>
-                            <ComboBoxItem>大于</ComboBoxItem>
+                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding OpenCondition, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource combItemTemplate}">
                         </ComboBox>
                     </DockPanel>
                     <DockPanel Margin="4">
@@ -69,9 +70,9 @@
                 <DockPanel Margin="12, 0, 6, 4">
                     <DockPanel>
                         <TextBlock VerticalAlignment="Center" Margin="4" >盈利</TextBlock>
-                        <ComboBox SelectedIndex="0" Margin="4" Width="80">
-                            <ComboBoxItem>大于等于</ComboBoxItem>
-                            <ComboBoxItem>大于</ComboBoxItem>
+                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding StopGainCondition, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource combItemTemplate}">
                         </ComboBox>
                     </DockPanel>
                     <DockPanel Margin="4">
@@ -88,9 +89,9 @@
                 <DockPanel Margin="12, 0, 6, 4">
                     <DockPanel>
                         <TextBlock VerticalAlignment="Center" Margin="4">亏损</TextBlock>
-                        <ComboBox SelectedIndex="0" Margin="4" Width="80">
-                            <ComboBoxItem>大于等于</ComboBoxItem>
-                            <ComboBoxItem>大于</ComboBoxItem>
+                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding StopLossCondition, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource combItemTemplate}">
                         </ComboBox>
                     </DockPanel>
                     <DockPanel Margin="4">
