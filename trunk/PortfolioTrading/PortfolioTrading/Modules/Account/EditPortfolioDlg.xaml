@@ -21,13 +21,13 @@
             <Button IsDefault="True" Name="btnOK" Click="btnOK_Click">确定</Button>
             <Button IsCancel="True" Name="btnCancel" Click="btnCancel_Click">取消</Button>
         </StackPanel>
-        <StackPanel VerticalAlignment="Center" DataContext="{StaticResource editPortfolioVM}">
+        <StackPanel DataContext="{StaticResource editPortfolioVM}" Margin="4">
             <StackPanel.Resources>
                 <DataTemplate x:Key="sideItemTempl">
                     <TextBlock Text="{Binding DisplayText}"></TextBlock>
                 </DataTemplate>
             </StackPanel.Resources>
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="4">
                 <TextBlock>组合编号</TextBlock>
                 <TextBlock Text="{Binding PortfId}" Margin="10, 2"/>
             </StackPanel>
@@ -60,9 +60,16 @@
                 </DockPanel>
             </DockPanel>
 
-            <StackPanel Orientation="Horizontal">
-                <TextBlock>组合数量</TextBlock>
-                <TextBox Width="30" TextAlignment="Right"  Text="{Binding Quantity}"/>
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <TextBlock VerticalAlignment="Center">组合数量</TextBlock>
+                <TextBox Width="50" TextAlignment="Right"  Text="{Binding Quantity}" Margin="2"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <TextBlock VerticalAlignment="Center">组合策略</TextBlock>
+                <ComboBox Width="80" SelectedIndex="0">
+                    <ComboBoxItem>套利</ComboBoxItem>
+                </ComboBox>
             </StackPanel>
         </StackPanel>
     </DockPanel>
