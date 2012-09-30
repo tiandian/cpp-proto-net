@@ -7,100 +7,119 @@
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="300">
-    <StackPanel>
-        <StackPanel.Resources>
-            <Style TargetType="Border">
-                <Setter Property="Margin" Value="4"/>
-                <Setter Property="BorderThickness" Value="2"/>
-                <Setter Property="Padding" Value="4"/>
-                <Setter Property="BorderBrush" Value="Green" />
-            </Style>
-
-            <DataTemplate x:Key="combItemTemplate">
-                <TextBlock Text="{Binding DisplayText}"/>
-            </DataTemplate>
-            
-        </StackPanel.Resources>
-        <DockPanel LastChildFill="False">
+    <DockPanel>
+        <DockPanel LastChildFill="False" DockPanel.Dock="Top">
             <TextBlock Margin="4" >套利策略设置</TextBlock>
             <TextBlock Margin="2, 2, 8, 2" DockPanel.Dock="Right" VerticalAlignment="Center"
                        Text="{Binding PortfolioID, FallbackValue=1}"/>
             <TextBlock Margin="4" DockPanel.Dock="Right">组合编号</TextBlock>
         </DockPanel>
-        
         <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Button Margin="8" Command="{Binding ApplyCommand}">应用</Button>
-            <Button Grid.Column="1" Margin="8" Command="{Binding ResetCommand}">重置</Button>
-        </Grid>
+            <StackPanel>
+                <StackPanel.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="Margin" Value="4"/>
+                        <Setter Property="BorderThickness" Value="2"/>
+                        <Setter Property="Padding" Value="4"/>
+                        <Setter Property="BorderBrush" Value="Green" />
+                    </Style>
 
-        <Border CornerRadius="4">
-            <DockPanel>
-                <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
-                <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
+                    <DataTemplate x:Key="combItemTemplate">
+                        <TextBlock Text="{Binding DisplayText}"/>
+                    </DataTemplate>
+
+                </StackPanel.Resources>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Margin="8" Command="{Binding ApplyCommand}">应用</Button>
+                    <Button Grid.Column="1" Margin="8" Command="{Binding ResetCommand}">重置</Button>
+                </Grid>
+
+                <Border CornerRadius="4">
+                    <DockPanel>
+                        <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
+                        <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
                           SelectedValuePath="Direction" SelectedValue="{Binding PositionDirection, Mode=TwoWay}"
                           ItemTemplate="{StaticResource combItemTemplate}">
-                </ComboBox>
-            </DockPanel>
-        </Border>
-        <Border CornerRadius="4">
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">开仓条件</TextBlock>
-                <DockPanel Margin="12, 0, 6, 4">
-                    <DockPanel >
-                        <TextBlock VerticalAlignment="Center" Margin="4">价差</TextBlock>
-                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
+                        </ComboBox>
+                    </DockPanel>
+                </Border>
+                <Border CornerRadius="4">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">开仓条件</TextBlock>
+                        <DockPanel Margin="12, 0, 6, 4">
+                            <DockPanel >
+                                <TextBlock VerticalAlignment="Center" Margin="4">价差</TextBlock>
+                                <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding OpenCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
-                        </ComboBox>
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="4">
+                                <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
+                                <igEditor:XamTextEditor Value="{Binding OpenThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                            </DockPanel>
+                        </DockPanel>
                     </DockPanel>
-                    <DockPanel Margin="4">
-                        <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
-                        <igEditor:XamTextEditor Value="{Binding OpenThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
-                    </DockPanel>
-                </DockPanel>
-            </DockPanel>
-        </Border>
-        <Border CornerRadius="4">
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">止盈条件</TextBlock>
-                <DockPanel Margin="12, 0, 6, 4">
+                </Border>
+                <Border CornerRadius="4">
                     <DockPanel>
-                        <TextBlock VerticalAlignment="Center" Margin="4" >盈利</TextBlock>
-                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
+                        <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">止盈条件</TextBlock>
+                        <DockPanel Margin="12, 0, 6, 4">
+                            <DockPanel>
+                                <TextBlock VerticalAlignment="Center" Margin="4" >盈利</TextBlock>
+                                <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding StopGainCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
-                        </ComboBox>
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="4">
+                                <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
+                                <igEditor:XamTextEditor Value="{Binding StopGainThreshold, FallbackValue=20, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                            </DockPanel>
+                        </DockPanel>
                     </DockPanel>
-                    <DockPanel Margin="4">
-                        <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
-                        <igEditor:XamTextEditor Value="{Binding StopGainThreshold, FallbackValue=20, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
-                    </DockPanel>
-                </DockPanel>
-            </DockPanel>
-        </Border>
+                </Border>
 
-        <Border CornerRadius="4">
-            <DockPanel>
-                <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">止损条件</TextBlock>
-                <DockPanel Margin="12, 0, 6, 4">
+                <Border CornerRadius="4">
                     <DockPanel>
-                        <TextBlock VerticalAlignment="Center" Margin="4">亏损</TextBlock>
-                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
+                        <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">止损条件</TextBlock>
+                        <DockPanel Margin="12, 0, 6, 4">
+                            <DockPanel>
+                                <TextBlock VerticalAlignment="Center" Margin="4">亏损</TextBlock>
+                                <ComboBox Margin="4" Width="80" ItemsSource="{Binding CompareItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding StopLossCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
-                        </ComboBox>
+                                </ComboBox>
+                            </DockPanel>
+                            <DockPanel Margin="4">
+                                <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
+                                <igEditor:XamTextEditor Value="{Binding StopLossThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                            </DockPanel>
+                        </DockPanel>
                     </DockPanel>
-                    <DockPanel Margin="4">
-                        <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
-                        <igEditor:XamTextEditor Value="{Binding StopLossThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
-                    </DockPanel>
-                </DockPanel>
-            </DockPanel>
-        </Border>
+                </Border>
 
-    </StackPanel>
+            </StackPanel>
+            <Border Background="LightSteelBlue">
+                <Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding PortfolioID}" Value="{x:Null}">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                请选择一个组合
+                </TextBlock>
+            </Border>
+        </Grid>
+    </DockPanel>
 </UserControl>

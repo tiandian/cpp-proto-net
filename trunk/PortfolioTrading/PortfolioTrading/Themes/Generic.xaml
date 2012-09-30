@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:PortfolioTrading.Controls">
+    xmlns:local="clr-namespace:PortfolioTrading.Controls"
+    xmlns:conv="clr-namespace:PortfolioTrading.Converters">
 
 
     <!-- Position Operation Panel style -->
@@ -22,28 +23,10 @@
                                 <Style TargetType="Button" x:Key="operBtnStyle">
                                     <Setter Property="Width" Value="60" />
                                     <Setter Property="Height" Value="24" />
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="VerticalAlignment" Value="Center" />
                                 </Style>
-                                
-                                <Style TargetType="Button" BasedOn="{StaticResource operBtnStyle}" x:Key="openBtnStyle">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsChecked, ElementName=chkAutoOpen}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-
-                                <Style TargetType="Button" BasedOn="{StaticResource operBtnStyle}" x:Key="closeBtnStyle">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsChecked, ElementName=chkAutoClose}" Value="True">
-                                            <Setter Property="IsEnabled" Value="False" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
+                               
                             </Grid.Resources>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
@@ -52,59 +35,67 @@
                                 <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Grid.Column="0">策略</TextBlock>
+                            <TextBlock Grid.Row="0" Grid.Column="1">手动</TextBlock>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Grid.RowSpan="2"
+                                        Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Name="btnStart" Margin="6" Width="40">启动</Button>
+                                <Button Name="btnStop"  Margin="6" Width="40">停止</Button>
+                            </StackPanel>
 
-                            <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-                                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                                    <Button Name="btnStart">启动</Button>
-                                    <Button Name="btnStop">停止</Button>
-                                </StackPanel>
-                                <TextBlock >策略</TextBlock>
-                            </DockPanel>
-                            <TextBlock Grid.Row="0" Grid.Column="2">手动</TextBlock>
-
-                            <TextBlock Grid.Row="1" Grid.Column="0" Text="开仓"></TextBlock>
-                            <CheckBox Grid.Row="1" Grid.Column="1" Name="chkAutoOpen" VerticalAlignment="Center"
-                                      IsChecked="{Binding AutoOpen, Mode=TwoWay}">自动</CheckBox>
-                            <Button Grid.Row="1" Grid.Column="2" Style="{StaticResource openBtnStyle}"
+                            <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource operBtnStyle}"
                                     Command="{Binding OpenPositionCommand}">开仓</Button>
+                            <Button Grid.Row="2" Grid.Column="1" Style="{StaticResource operBtnStyle}"
+                                    >平仓</Button>
 
-                            <TextBlock Grid.Row="2" Grid.Column="0">平仓</TextBlock>
-                            <CheckBox Grid.Row="2" Grid.Column="1" Name="chkAutoClose" VerticalAlignment="Center"
-                                      IsChecked="{Binding AutoClose, Mode=TwoWay}">自动</CheckBox>
-                            <Button Grid.Row="2" Grid.Column="2" Style="{StaticResource closeBtnStyle}">平仓</Button>
                         </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <conv:CompareConditionDisplayConverter x:Key="condDisplayConverter" />
 
     <DataTemplate x:Key="arbitrageTemplate">
-        <StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>差价:</TextBlock>
-                    <TextBlock Text="{Binding Diff}"></TextBlock>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>止盈:</TextBlock>
-                    <TextBlock Text="{Binding StrategySetting.StopGainCondition}" />
-                    <TextBlock Text="{Binding StrategySetting.StopGainThreshold}" />
-                </StackPanel>
+        <Grid ShowGridLines="True">
+            <Grid.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="4"/>
+                </Style>
+                
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
+                <TextBlock >差价:</TextBlock>
+                <TextBlock Text="{Binding Diff}" Width="60"></TextBlock>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>开仓:</TextBlock>
-                    <TextBlock Text="{Binding StrategySetting.OpenCondition}" />
-                    <TextBlock Text="{Binding StrategySetting.OpenThreshold}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock>止损:</TextBlock>
-                    <TextBlock Text="{Binding StrategySetting.StopLossCondition}" />
-                    <TextBlock Text="{Binding StrategySetting.StopLossThreshold}" />
-                </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                <TextBlock>止盈:</TextBlock>
+                <TextBlock Width="60" Text="{Binding StrategySetting.StopGainCondition, Converter={StaticResource condDisplayConverter}}" />
+                <TextBlock Width="60" Text="{Binding StrategySetting.StopGainThreshold}" />
+                <CheckBox VerticalAlignment="Center">自动</CheckBox>
             </StackPanel>
-        </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
+                <TextBlock>开仓:</TextBlock>
+                <TextBlock Width="60" Text="{Binding StrategySetting.OpenCondition, Converter={StaticResource condDisplayConverter}}" />
+                <TextBlock Width="60" Text="{Binding StrategySetting.OpenThreshold}" />
+                <CheckBox VerticalAlignment="Center">自动</CheckBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
+                <TextBlock>止损:</TextBlock>
+                <TextBlock Width="60" Text="{Binding StrategySetting.StopLossCondition, Converter={StaticResource condDisplayConverter}}" />
+                <TextBlock Width="60" Text="{Binding StrategySetting.StopLossThreshold}" />
+                <CheckBox VerticalAlignment="Center">自动</CheckBox>
+            </StackPanel>
+        </Grid>
     </DataTemplate>
     
     <DataTemplate x:Key="boxBreakTemplate">

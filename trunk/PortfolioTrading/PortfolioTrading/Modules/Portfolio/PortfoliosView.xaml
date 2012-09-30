@@ -55,6 +55,22 @@
                     </Setter>
                 </Style>
 
+                <Style x:Key="preferColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <RadioButton HorizontalAlignment="Center" GroupName="PreferDeal"></RadioButton>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
                 <!-- Last column style -->
                 <Style x:Key="lastColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
                     <Setter Property="Template">
@@ -129,15 +145,21 @@
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="OpenClose" Label="开仓/平仓" Row="0" Column="3">
+                    <igDP:UnboundField Name="Prefer" Label="优先成交" Column="3">
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource preferColStyle}"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+
+                    <igDP:UnboundField Name="OpenClose" Label="开仓/平仓" Row="0" Column="4">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource openColStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:Field Name="Gain" Label="盈利" Row="0" Column="4" />
+                    <igDP:Field Name="Gain" Label="盈利" Row="0" Column="5" />
 
-                    <igDP:UnboundField Name="Opertaion" Label="操作" Row="1"  Column="0" ColumnSpan="5">
+                    <igDP:UnboundField Name="Opertaion" Label="操作" Row="1"  Column="0" ColumnSpan="6">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource operationColStyle}" LabelHeight="0">
                                 <igDP:FieldSettings.LabelPresenterStyle>
