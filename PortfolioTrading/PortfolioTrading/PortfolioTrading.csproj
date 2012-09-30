@@ -98,6 +98,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\PortfMonTemplateSelector.cs" />
+    <Compile Include="Converters\CompareConditionDisplayConverter.cs" />
     <Compile Include="Converters\OrderPriceTypeConverter.cs" />
     <Compile Include="Events\AccountChangedEvent.cs" />
     <Compile Include="Events\AccountSelectedEvent.cs" />
