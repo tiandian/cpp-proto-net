@@ -135,6 +135,34 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region IsPreferred
+        private bool _isPreferred = false;
+
+        public bool IsPreferred
+        {
+            get { return _isPreferred; }
+            set
+            {
+                if (_isPreferred != value)
+                {
+                    _isPreferred = value;
+                    RaisePropertyChanged("IsPreferred");
+
+                    if(_isPreferred)
+                        RaiseIsPreferredChanged(_isPreferred);
+                }
+            }
+        }
+        #endregion
+
+        public event Action<LegVM, bool> OnIsPreferredChanged;
+
+        private void RaiseIsPreferredChanged(bool newVal)
+        {
+            if (OnIsPreferredChanged != null)
+                OnIsPreferredChanged(this, newVal);
+        }
+
         public static LegVM Load(XElement xmlElement)
         {
             LegVM leg = new LegVM();
@@ -155,6 +183,12 @@ namespace PortfolioTrading.Modules.Account
                 leg.Side = (PosiDirectionType)Enum.Parse(typeof(PosiDirectionType), attr.Value);
             }
 
+            attr = xmlElement.Attribute("isPreferred");
+            if (attr != null)
+            {
+                leg.IsPreferred = bool.Parse(attr.Value);
+            }
+
             return leg;
         }
 
@@ -164,6 +198,7 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("symbol", _symbol));
             elem.Add(new XAttribute("ratio", _ratio));
             elem.Add(new XAttribute("side", _side.ToString()));
+            elem.Add(new XAttribute("isPreferred", _isPreferred.ToString()));
             return elem;
         }
 

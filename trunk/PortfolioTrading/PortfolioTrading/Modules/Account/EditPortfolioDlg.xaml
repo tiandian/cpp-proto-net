@@ -33,7 +33,12 @@
             </StackPanel>
 
             <DockPanel Margin="2">
-                <CheckBox DockPanel.Dock="Top" Margin="2" IsChecked="{Binding Leg1}" Name="chkFirstLeg">第一腿</CheckBox>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <CheckBox Margin="2" IsChecked="{Binding Leg1}" Name="chkFirstLeg">第一腿</CheckBox>
+                    <RadioButton VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
+                                 IsChecked="{Binding PreferLeg1, Mode=TwoWay}">优先成交</RadioButton>
+                </StackPanel>
+                
                 <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
                     <TextBlock>商品</TextBlock>
                     <TextBox Width="60" Text="{Binding Symbol1}"></TextBox>
@@ -47,7 +52,12 @@
                 </DockPanel>
             </DockPanel>
             <DockPanel Margin="2">
-                <CheckBox DockPanel.Dock="Top" Margin="2" IsChecked="{Binding Leg2}" Name="chkSecondLeg">第二腿</CheckBox>
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <CheckBox Margin="2" IsChecked="{Binding Leg2}" Name="chkSecondLeg">第二腿</CheckBox>
+                    <RadioButton VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
+                                 IsChecked="{Binding PreferLeg2, Mode=TwoWay}">优先成交</RadioButton>
+                </StackPanel>
+                
                 <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkSecondLeg}">
                     <TextBlock>商品</TextBlock>
                     <TextBox Width="60" Text="{Binding Symbol2}"></TextBox>

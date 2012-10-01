@@ -87,6 +87,8 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("PorfOpenPosition", boost::bind(&CClientManager::PorfOpenPosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ClosePosition", boost::bind(&CClientManager::ClosePosition, this, _1, _2, _3)));
 
+	m_reqTransMap.insert(make_pair("PortfSetPreferredLeg", boost::bind(&CClientManager::PortfSetPreferredLeg, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("PortfTurnSwitches", boost::bind(&CClientManager::PortfTurnSwitches, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ApplyStrategySettings", boost::bind(&CClientManager::ApplyStrategySettings, this, _1, _2, _3)));
 
 	m_reqTransMap.insert(make_pair("QueryAccountInfo", boost::bind(&CClientManager::QueryAccountInfo, this, _1, _2, _3)));
@@ -230,4 +232,20 @@ void CClientManager::ApplyStrategySettings( CClientAgent* pClientAgent, const st
 	modifyParam.ParseFromString(in_data);
 
 	pClientAgent->ApplyStrategySetting(modifyParam);
+}
+
+void CClientManager::PortfSetPreferredLeg( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::ModifyPortfolioPreferredLegParam legParam;
+	legParam.ParseFromString(in_data);
+
+	pClientAgent->SetPorfPreferredLeg(legParam);
+}
+
+void CClientManager::PortfTurnSwitches( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::ModifyPortfolioSwitchParam switchesParam;
+	switchesParam.ParseFromString(in_data);
+
+	pClientAgent->TurnPortfSwitches(switchesParam);
 }

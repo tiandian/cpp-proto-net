@@ -33,6 +33,8 @@ public:
 	void PortfolioOpenPosition(const string& pid, int quantity);
 	void ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, string& msg);
 	bool QueryAccountInfo(string* serializedAcctInfo);
+	void SetPorfPreferredLeg(const entity::ModifyPortfolioPreferredLegParam& preferredLegParam);
+	void TurnPortfSwitches(const entity::ModifyPortfolioSwitchParam& switchesParam);
 	void ApplyStrategySetting(const entity::ModifyStrategyParam& settings);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);

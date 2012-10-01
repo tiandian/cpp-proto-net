@@ -15,7 +15,7 @@
             </StackPanel>
             <TextBlock DockPanel.Dock="Right" Text="{Binding InvestorId}"/>
         </DockPanel>
-        <igDP:XamDataGrid Name="xamDG_Portfolio" DataSource="{Binding Portfolios}" AutoFit="True"
+        <igDP:XamDataGrid Name="xamDG_Portfolio" DataSource="{Binding Portfolios}"
                               GroupByAreaLocation="None" RecordActivated="xamDG_Portfolio_RecordActivated">
             <igDP:XamDataGrid.Resources>
                 <!-- HeaderLabelArea style -->
@@ -31,6 +31,23 @@
                     </Setter>
                 </Style>
 
+                <Style x:Key="codeColHeaderSytle" TargetType="{x:Type igDP:LabelPresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:LabelPresenter}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0">代码</TextBlock>
+                                    <TextBlock Grid.Column="1">名称</TextBlock>
+                                </Grid>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
                 <!-- Code and Name column style -->
                 <Style x:Key="codeColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
                     <Setter Property="Template">
@@ -39,7 +56,7 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid>
+                                            <Grid Margin="2">
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition />
                                                     <ColumnDefinition />
@@ -54,7 +71,7 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-
+                
                 <Style x:Key="preferColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
                     <Setter Property="Template">
                         <Setter.Value>
@@ -62,10 +79,30 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <RadioButton HorizontalAlignment="Center" GroupName="PreferDeal"></RadioButton>
+                                            <ctrls:RadioButtonExtended Margin="4" HorizontalAlignment="Center" GroupName="PreferDeal"
+                                                                       IsCheckedReal="{Binding IsPreferred, Mode=TwoWay}" />
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+                <Style x:Key="lastColHeaderSytle" TargetType="{x:Type igDP:LabelPresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:LabelPresenter}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" TextAlignment="Right">最新 |</TextBlock>
+                                    <TextBlock Grid.Column="1" TextAlignment="Right">卖一 |</TextBlock>
+                                    <TextBlock Grid.Column="2" TextAlignment="Right" Margin="0, 0, 6, 0">买一</TextBlock>
+                                </Grid>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
@@ -79,15 +116,15 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid>
+                                            <Grid Margin="2" >
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition />
                                                     <ColumnDefinition />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0"  Text="{Binding Last}" TextAlignment="Right"/>
-                                                <TextBlock Grid.Column="1"  Text="{Binding Ask}" TextAlignment="Right" Margin="2,0"/>
-                                                <TextBlock Grid.Column="2"  Text="{Binding Bid}" TextAlignment="Right"/>
+                                                <TextBlock Grid.Column="0"  Text="{Binding Last}" TextAlignment="Right" Margin="4,0"/>
+                                                <TextBlock Grid.Column="1"  Text="{Binding Ask}" TextAlignment="Right" Margin="4,0"/>
+                                                <TextBlock Grid.Column="2"  Text="{Binding Bid}" TextAlignment="Right" Margin="4,0"/>
                                             </Grid>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
@@ -133,15 +170,17 @@
                 <igDP:FieldLayout>
                     <igDP:Field Name="Id" Label="编号" Row="0" Column="0" />
                     
-                    <igDP:UnboundField Name="Code" Label="代码 | 名称" Row="0" Column="1">
+                    <igDP:UnboundField Name="Code" Row="0" Column="1" Width="120">
                         <igDP:UnboundField.Settings>
-                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource codeColStyle}"/>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource codeColStyle}"
+                                                 LabelPresenterStyle="{StaticResource codeColHeaderSytle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="Last" Label="最新 | 卖一 | 买一" Row="0" Column="2">
+                    <igDP:UnboundField Name="Last" Row="0" Column="2" Width="240">
                         <igDP:UnboundField.Settings>
-                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource lastColStyle}"/>
+                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource lastColStyle}"
+                                                LabelPresenterStyle="{StaticResource lastColHeaderSytle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 

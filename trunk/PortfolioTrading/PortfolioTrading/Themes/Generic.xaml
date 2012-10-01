@@ -39,8 +39,30 @@
                             <TextBlock Grid.Row="0" Grid.Column="1">手动</TextBlock>
                             <StackPanel Grid.Row="1" Grid.Column="0" Grid.RowSpan="2"
                                         Orientation="Horizontal" HorizontalAlignment="Center">
-                                <Button Name="btnStart" Margin="6" Width="40">启动</Button>
-                                <Button Name="btnStop"  Margin="6" Width="40">停止</Button>
+                                <Button Name="btnStart" Margin="6" Width="40" Command="{Binding StartCommand}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsRunning}" Value="True">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    启动
+                                </Button>
+                                <Button Name="btnStop"  Margin="6" Width="40" Command="{Binding StopCommand}">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsRunning}" Value="False">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                    停止
+                                </Button>
                             </StackPanel>
 
                             <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource operBtnStyle}"
@@ -81,19 +103,19 @@
                 <TextBlock>止盈:</TextBlock>
                 <TextBlock Width="60" Text="{Binding StrategySetting.StopGainCondition, Converter={StaticResource condDisplayConverter}}" />
                 <TextBlock Width="60" Text="{Binding StrategySetting.StopGainThreshold}" />
-                <CheckBox VerticalAlignment="Center">自动</CheckBox>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoStopGain, Mode=TwoWay}">自动</CheckBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
                 <TextBlock>开仓:</TextBlock>
                 <TextBlock Width="60" Text="{Binding StrategySetting.OpenCondition, Converter={StaticResource condDisplayConverter}}" />
                 <TextBlock Width="60" Text="{Binding StrategySetting.OpenThreshold}" />
-                <CheckBox VerticalAlignment="Center">自动</CheckBox>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoOpen, Mode=TwoWay}">自动</CheckBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
                 <TextBlock>止损:</TextBlock>
                 <TextBlock Width="60" Text="{Binding StrategySetting.StopLossCondition, Converter={StaticResource condDisplayConverter}}" />
                 <TextBlock Width="60" Text="{Binding StrategySetting.StopLossThreshold}" />
-                <CheckBox VerticalAlignment="Center">自动</CheckBox>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoStopLoss, Mode=TwoWay}">自动</CheckBox>
             </StackPanel>
         </Grid>
     </DataTemplate>

@@ -8,8 +8,10 @@
 CPortfolio::CPortfolio(void):
 m_porfMgr(NULL),
 m_openedOrderCount(0),
+m_strategyEnabled(false),
 m_isAutoOpen(false),
-m_isAutoClose(false)
+m_isAutoStopGain(false),
+m_isAutoStopLoss(false)
 {
 }
 
@@ -104,16 +106,25 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 
 	m_innerItem->set_diff(diff);
 
-	POSI_OPER poOp = m_strategy.Test(diff);
-	if(poOp == OPEN_POSI && m_isAutoOpen)
+	if(m_strategyEnabled)
 	{
-		m_porfMgr->NotifyOpenPosition(this, Quantity());
-	}
-	else if(poOp == CLOSE_POSI && m_isAutoClose)
-	{
+		POSI_OPER poOp = m_strategy.Test(diff);
+		if(poOp == OPEN_POSI && m_isAutoOpen)
+		{
+			m_porfMgr->NotifyOpenPosition(this, Quantity());
+		}
+		else if(poOp == CLOSE_POSI)
+		{
+			if(m_isAutoStopGain)
+			{
 
-	}
+			}
+			else if(m_isAutoStopLoss)
+			{
 
+			}
+		}
+	}
 	PushUpdate();
 }
 

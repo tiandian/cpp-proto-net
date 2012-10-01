@@ -4,6 +4,7 @@
 #include "PortfolioOrderHelper.h"
 
 #include <boost/shared_ptr.hpp>
+#include <boost/foreach.hpp>
 
 CClientAgent::CClientAgent(void):
 m_clientConnected(false)
@@ -197,16 +198,37 @@ void CClientAgent::ApplyStrategySetting( const entity::ModifyStrategyParam& sett
 	CPortfolio* portf = m_portfolioMgr.Get(portfId);
 	if(portf != NULL)
 	{
-		portf->EnableStrategy(settings.isautoopen(), settings.isautoclose());
-		if(settings.has_strategyname() && settings.has_strategydata())
-		{
-			portf->ApplyStrategySetting(settings.strategyname(), settings.strategydata());
-		}
+		portf->ApplyStrategySetting(settings.strategyname(), settings.strategydata());
 	}
 }
 
+void CClientAgent::TurnPortfSwitches( const entity::ModifyPortfolioSwitchParam& switchesParam )
+{
+	const string& portfId = switchesParam.portfid();
+	CPortfolio* portf = m_portfolioMgr.Get(portfId);
+	if(portf != NULL)
+	{
+		bool isEnabled = switchesParam.enabled();
+		portf->EnableStrategy(isEnabled);
+		if(isEnabled)
+			portf->TurnSwitches(switchesParam.autoopen(),
+			switchesParam.autostopgain(), switchesParam.autostoploss());
+	}
+}
 
-
-
-
-
+void CClientAgent::SetPorfPreferredLeg( const entity::ModifyPortfolioPreferredLegParam& preferredLegParam )
+{
+	const string& portfId = preferredLegParam.portfid();
+	CPortfolio* portf = m_portfolioMgr.Get(portfId);
+	const string& legName = preferredLegParam.legsymbol();
+	if(portf != NULL)
+	{
+		BOOST_FOREACH(const LegPtr& l, portf->Legs())
+		{
+			if(l->Symbol() == legName)
+				l->IsPreferred(true);
+			else
+				l->IsPreferred(false);
+		}
+	}
+}
