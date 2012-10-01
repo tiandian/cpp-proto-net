@@ -97,6 +97,7 @@ namespace PortfolioTrading.Modules.Account
                 leg.Symbol = Symbol1;
                 leg.Side = Side1;
                 leg.Ratio = Ratio1;
+                leg.IsPreferred = PreferLeg1;
             }
 
             if (Leg2)
@@ -114,6 +115,7 @@ namespace PortfolioTrading.Modules.Account
                 leg.Symbol = Symbol2;
                 leg.Side = Side2;
                 leg.Ratio = Ratio2;
+                leg.IsPreferred = PreferLeg2;
             }
         }
 
@@ -220,6 +222,23 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region PreferLeg1
+        private bool _preferLeg1;
+
+        public bool PreferLeg1
+        {
+            get { return _preferLeg1; }
+            set
+            {
+                if (_preferLeg1 != value)
+                {
+                    _preferLeg1 = value;
+                    RaisePropertyChanged("PreferLeg1");
+                }
+            }
+        }
+        #endregion
+        
 
         #region Leg2
         private bool _leg2;
@@ -284,6 +303,23 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _ratio2 = value;
                     RaisePropertyChanged("Ratio2");
+                }
+            }
+        }
+        #endregion
+
+        #region PreferLeg2
+        private bool _preferLeg2;
+
+        public bool PreferLeg2
+        {
+            get { return _preferLeg2; }
+            set
+            {
+                if (_preferLeg2 != value)
+                {
+                    _preferLeg2 = value;
+                    RaisePropertyChanged("PreferLeg2");
                 }
             }
         }

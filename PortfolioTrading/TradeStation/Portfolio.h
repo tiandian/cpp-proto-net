@@ -55,10 +55,13 @@ public:
 
 	CArbitrageStrategy& Strategy(){ return m_strategy; }
 
-	void EnableStrategy(bool isAutoOpen, bool isAutoClose) 
+	void EnableStrategy(bool isEnabled) { m_strategyEnabled = isEnabled; }
+
+	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss) 
 	{
 		m_isAutoOpen = isAutoOpen;
-		m_isAutoClose = isAutoClose;
+		m_isAutoStopGain = isAutoStopGain;
+		m_isAutoStopLoss = isAutoStopLoss;
 	}
 	void ApplyStrategySetting(const string& name, const string& data);
 
@@ -76,8 +79,11 @@ private:
 	boost::mutex m_mut;
 
 	CArbitrageStrategy m_strategy;
+	bool m_strategyEnabled;
 	bool m_isAutoOpen;
-	bool m_isAutoClose;
+	bool m_isAutoStopGain;
+	bool m_isAutoStopLoss;
+		
 };
 
 class CLeg
@@ -109,7 +115,11 @@ public:
 	entity::LegStatus Status(){ return m_pInnerItem->status(); }
 	void UpdateStatus(entity::LegStatus status){ m_pInnerItem->set_status(status); }
 
+	bool IsPreferred() { return m_pInnerItem->ispreferred(); }
+	void IsPreferred(bool val) { m_pInnerItem->set_ispreferred(val); }
+
 	entity::LegItem* InnerItem(){ return m_pInnerItem; }
+	
 
 private:
 	void SetInnerItem(entity::LegItem* pItem);

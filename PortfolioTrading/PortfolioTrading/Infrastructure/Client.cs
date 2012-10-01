@@ -102,18 +102,39 @@ namespace PortfolioTrading.Infrastructure
             return strReturn.Data;
         }
 
-        public void PortfApplyStrategySettings(string portfId, bool isEnabled, 
-            bool isAutoOpen, bool isAutoClose, string strategyName, byte[] strategyData)
+        public void PortfSetPreferredLeg(string portfId, string legName)
+        {
+            entity.ModifyPortfolioPreferredLegParam modifyParam = new entity.ModifyPortfolioPreferredLegParam();
+            modifyParam.PortfId = portfId;
+            modifyParam.LegSymbol = legName;
+
+            byte[] param_data = DataTranslater.Serialize(modifyParam);
+            byte[] ret_data = Request("PortfSetPreferredLeg", param_data);
+        }
+
+        public void PortfTurnSwitches(string portfId, bool isEnabled, bool autoOpen, bool autoStopGain, bool autoStopLoss)
+        {
+            entity.ModifyPortfolioSwitchParam modifyParam = new entity.ModifyPortfolioSwitchParam();
+            modifyParam.PortfId = portfId;
+            modifyParam.Enabled = isEnabled;
+            modifyParam.AutoOpen = autoOpen;
+            modifyParam.AutoStopGain = autoStopGain;
+            modifyParam.AutoStopLoss = autoStopLoss;
+
+            byte[] param_data = DataTranslater.Serialize(modifyParam);
+            byte[] ret_data = Request("PortfTurnSwitches", param_data);
+        }
+
+        public void PortfApplyStrategySettings(string portfId, string strategyName, byte[] strategyData)
         {
             entity.ModifyStrategyParam modifyParam = new entity.ModifyStrategyParam();
             modifyParam.PortfId = portfId;
-            modifyParam.Enabled = isEnabled;
-            modifyParam.IsAutoOpen = isAutoOpen;
-            modifyParam.IsAutoClose = isAutoClose;
 
             byte[] param_data = DataTranslater.Serialize(modifyParam);
             byte[] ret_data = Request("ApplyStrategySettings", param_data);
         }
+
+        //public void PortfSetPreferLeg(string portfId, string legId, )
 
         public trade.AccountInfo QueryAccountInfo()
         {

@@ -22,6 +22,7 @@ message LegItem
 	required double Last = 5;
 	required double Ask = 6;
 	required double Bid = 7;
+	required bool IsPreferred = 8;
 }
 
 message PortfolioItem
@@ -91,10 +92,21 @@ message ArbitrageStrategySettings
 message ModifyStrategyParam
 {
 	required string PortfId = 1;
+	required string StrategyName = 2;
+	required bytes StrategyData = 3;
+}
+
+message ModifyPortfolioSwitchParam
+{
+	required string PortfId = 1;
 	required bool Enabled = 2;
-	required bool IsAutoOpen = 3;
-	required bool IsAutoClose = 4;
-	
-	optional string StrategyName = 5;
-	optional bytes StrategyData = 6;
+	required bool AutoOpen = 3;
+	required bool AutoStopGain = 4;
+	required bool AutoStopLoss = 5;
+}
+
+message ModifyPortfolioPreferredLegParam
+{
+	required string PortfId = 1;
+	required string LegSymbol = 2;
 }

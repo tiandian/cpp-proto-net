@@ -24,6 +24,8 @@ namespace PortfolioTrading.Modules.Account
         {
             _accountVm = accountVm;
             OpenPositionCommand = new DelegateCommand(OnOpenPosition);
+            StartCommand = new DelegateCommand(OnStart);
+            StopCommand = new DelegateCommand(OnStop);
 
             IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
             evtAgg.GetEvent<CloseMlOrderEvent>().Subscribe(OnClosePosition);
@@ -92,23 +94,43 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _autoOpen = value;
                     RaisePropertyChanged("AutoOpen");
+                    OnSwitchChanged();
                 }
             }
         }
         #endregion
 
-        #region AutoClose
-        private bool _autoClose;
+        #region AutoStopGain
+        private bool _autoStopGain;
 
-        public bool AutoClose
+        public bool AutoStopGain
         {
-            get { return _autoClose; }
+            get { return _autoStopGain; }
             set
             {
-                if (_autoClose != value)
+                if (_autoStopGain != value)
                 {
-                    _autoClose = value;
-                    RaisePropertyChanged("AutoClose");
+                    _autoStopGain = value;
+                    RaisePropertyChanged("AutoStopGain");
+                    OnSwitchChanged();
+                }
+            }
+        }
+        #endregion
+
+        #region AutoStopLoss
+        private bool _autoStopLoss;
+
+        public bool AutoStopLoss
+        {
+            get { return _autoStopLoss; }
+            set
+            {
+                if (_autoStopLoss != value)
+                {
+                    _autoStopLoss = value;
+                    RaisePropertyChanged("AutoStopLoss");
+                    OnSwitchChanged();
                 }
             }
         }
@@ -165,6 +187,24 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region IsRunning
+        private bool _isRunning;
+
+        public bool IsRunning
+        {
+            get { return _isRunning; }
+            set
+            {
+                if (_isRunning != value)
+                {
+                    _isRunning = value;
+                    RaisePropertyChanged("IsRunning");
+                }
+            }
+        }
+        #endregion
+
+
         public StrategySetting StrategySetting { get; set; }
 
         public string DisplayText
@@ -188,6 +228,10 @@ namespace PortfolioTrading.Modules.Account
         }
 
         public ICommand OpenPositionCommand { get; private set; }
+        public ICommand ClosePositionCommand { get; private set; }
+
+        public ICommand StartCommand { get; private set; }
+        public ICommand StopCommand { get; private set; }
         
         public IEnumerable<LegVM> Legs
         {
@@ -197,6 +241,12 @@ namespace PortfolioTrading.Modules.Account
         public void AddLeg(LegVM leg)
         {
             _legs.Add(leg);
+            leg.OnIsPreferredChanged += new Action<LegVM, bool>(OnModifyPreferredLeg);
+        }
+
+        void OnModifyPreferredLeg(LegVM leg, bool obj)
+        {
+            this._accountVm.Host.PortfSetPreferredLeg(this.Id, leg.Name);
         }
 
         public int LegCount
@@ -237,16 +287,22 @@ namespace PortfolioTrading.Modules.Account
                 portf.AutoOpen = attr.Value == bool.TrueString;
             }
 
-            attr = xmlElement.Attribute("autoClose");
+            attr = xmlElement.Attribute("autoStopGain");
             if (attr != null)
             {
-                portf.AutoClose = attr.Value == bool.TrueString;
+                portf.AutoStopGain = attr.Value == bool.TrueString;
+            }
+
+            attr = xmlElement.Attribute("autoStopLoss");
+            if (attr != null)
+            {
+                portf.AutoStopLoss = attr.Value == bool.TrueString;
             }
 
             foreach (var legElem in xmlElement.Element("legs").Elements("leg"))
             {
                 LegVM legVm = LegVM.Load(legElem);
-                portf._legs.Add(legVm);
+                portf.AddLeg(legVm);
             }
 
             XElement xmlSetting = xmlElement.Element("setting");
@@ -263,7 +319,8 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("id", _id));
             elem.Add(new XAttribute("quantity", _qty));
             elem.Add(new XAttribute("autoOpen", _autoOpen.ToString()));
-            elem.Add(new XAttribute("autoClose", _autoClose.ToString()));
+            elem.Add(new XAttribute("autoStopGain", _autoStopGain.ToString()));
+            elem.Add(new XAttribute("autoStopLoss", _autoStopLoss.ToString()));
 
             XElement elemLegs = new XElement("legs");
             foreach (var l in _legs)
@@ -285,7 +342,7 @@ namespace PortfolioTrading.Modules.Account
             entity.PortfolioItem portfolioItem = new entity.PortfolioItem();
             portfolioItem.ID = Id;
             portfolioItem.AutoOpen = AutoOpen;
-            portfolioItem.AutoClose = AutoClose;
+            portfolioItem.AutoClose = AutoStopGain;
             portfolioItem.Diff = Diff;
             portfolioItem.Quantity = Quantity;
 
@@ -295,6 +352,7 @@ namespace PortfolioTrading.Modules.Account
                 leg.Symbol = legVm.Symbol;
                 leg.Side = legVm.Side;
                 leg.Ratio = legVm.Ratio;
+                leg.IsPreferred = legVm.IsPreferred;
                 portfolioItem.Legs.Add(leg);
             }
 
@@ -326,11 +384,31 @@ namespace PortfolioTrading.Modules.Account
             EventLogger.Write("组合委托{0} 平仓", closeArgs.MlOrder.OrderId);
         }
 
+        private void OnStart()
+        {
+            IsRunning = true;
+            OnSwitchChanged();
+        }
+
+        private void OnStop()
+        {
+            IsRunning = false;
+            OnSwitchChanged();
+        }
+
+        private void OnSwitchChanged()
+        {
+            if (_accountVm.IsConnected)
+            {
+                //_accountVm.Host.PortfTurnSwitches(this.Id, IsRunning, AutoOpen, AutoStopGain, AutoStopLoss);
+            }
+        }
+
         public void ApplyStrategySettings()
         {
             _accountVm.Host.PortfApplyStrategySettings(this.Id,
-                true, AutoOpen, AutoClose, 
                 StrategySetting.Name, StrategySetting.Serialize());
         }
+
     }
 }
