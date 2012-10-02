@@ -36,14 +36,11 @@ namespace PortfolioTrading.Modules.Account
             InitializeComponent();
         }
 
-        private void xamDataTreeAccount_SelectedNodesCollectionChanged(object sender, Infragistics.Controls.Menus.NodeSelectionEventArgs e)
+        private void xamDataTreeAccount_ActiveNodeChanged(object sender, Infragistics.Controls.Menus.ActiveNodeChangedEventArgs e)
         {
-            if (e.CurrentSelectedNodes.Count > 0)
-            {
-                AccountVM acctVm = e.CurrentSelectedNodes[0].Data as AccountVM;
-                if(acctVm != null)
-                    EventAggregator.GetEvent<AccountSelectedEvent>().Publish(acctVm);
-            }
+            AccountVM acctVm = e.NewActiveTreeNode.Data as AccountVM;
+            if (acctVm != null)
+                EventAggregator.GetEvent<AccountSelectedEvent>().Publish(acctVm);
         }
     }
 }

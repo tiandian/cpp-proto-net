@@ -15,7 +15,7 @@
                     CommandParameter="{Binding ElementName=xamDataTreeAccount}">删除</Button>
         </DockPanel>
         <ig:XamDataTree Name="xamDataTreeAccount" Margin="4,0,4,4" ItemsSource="{Binding Accounts}" 
-                        SelectedNodesCollectionChanged="xamDataTreeAccount_SelectedNodesCollectionChanged">
+                        ActiveNodeChanged="xamDataTreeAccount_ActiveNodeChanged">
             <ig:XamDataTree.GlobalNodeLayouts>
                 <ig:NodeLayout Key="Account" TargetTypeName="AccountVM" IsExpandedMemberPath="IsExpanded">
                     <ig:NodeLayout.ItemTemplate>

@@ -120,6 +120,7 @@
       <DependentUpon>AccountMgrView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Account\AccountModule.cs" />
+    <Compile Include="Modules\Portfolio\PortfolioContentPane.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ArbitrageStrategySetting.cs" />
     <Compile Include="Modules\Account\EditAccountDlg.xaml.cs">
       <DependentUpon>EditAccountDlg.xaml</DependentUpon>
