@@ -150,6 +150,11 @@ namespace PortfolioTrading.Modules.Account
             return _acctPortfolios[id - 1];
         }
 
+        public void AddPorfolio(PortfolioVM porfVm)
+        {
+            _acctPortfolios.Add(porfVm);
+        }
+
         public ICommand AddPortfolioCommand
         {
             get;
@@ -399,7 +404,7 @@ namespace PortfolioTrading.Modules.Account
             foreach(var portfElem in xmlElement.Element("portfolios").Elements("portfolio"))
             {
                 PortfolioVM porfVm = PortfolioVM.Load(acct, portfElem);
-                acct._acctPortfolios.Add(porfVm);
+                acct.AddPorfolio(porfVm);
             }
 
             return acct;

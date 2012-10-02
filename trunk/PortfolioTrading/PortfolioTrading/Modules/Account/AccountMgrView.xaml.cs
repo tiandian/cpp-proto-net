@@ -15,6 +15,9 @@ using System.ComponentModel.Composition;
 using PortfolioTrading.Modules.Account;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
+using System.Xml.Linq;
+using Infragistics.DragDrop;
+using Infragistics.Controls.Menus;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -41,6 +44,28 @@ namespace PortfolioTrading.Modules.Account
             AccountVM acctVm = e.NewActiveTreeNode.Data as AccountVM;
             if (acctVm != null)
                 EventAggregator.GetEvent<AccountSelectedEvent>().Publish(acctVm);
+        }
+
+        private void xamDataTreeAccount_NodeDragEnd(object sender, Infragistics.DragDrop.DragDropEventArgs e)
+        {
+            if (e.OperationType != null && e.OperationType == OperationType.Copy)
+            {
+                XamDataTreeNode origNode = e.Data as XamDataTreeNode;
+                if (origNode == null) return;
+                PortfolioVM porfVm = origNode.Data as PortfolioVM;
+                if (porfVm == null) return;
+
+                XamDataTreeNodeControl treeNodeCtrl = e.DropTarget as XamDataTreeNodeControl;
+                if (treeNodeCtrl == null) return;
+                AccountVM acctVm = treeNodeCtrl.Node.Data as AccountVM;
+                if (acctVm == null) return;
+
+                XElement portfElem = porfVm.Persist();
+                var cloned = PortfolioVM.Load(acctVm, portfElem);
+                acctVm.AddPorfolio(cloned);
+
+                ViewModel.Persist();
+            }
         }
     }
 }

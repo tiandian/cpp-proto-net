@@ -133,7 +133,7 @@ namespace PortfolioTrading.Modules.Account
 
         private const string AccountsFile = "accts.xml";
 
-        private void Persist()
+        public void Persist()
         {
             XElement acctsElem = new XElement("accounts");
 
