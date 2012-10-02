@@ -21,11 +21,36 @@ namespace PortfolioTrading.Modules.Portfolio
     [Export]
     public partial class PortfolioSettingsView : UserControl
     {
+        private PortfSettingsVM ViewModel { get; set; }
+
         [ImportingConstructor]
         public PortfolioSettingsView(PortfSettingsVM viewModel)
         {
             InitializeComponent();
-            this.DataContext = viewModel;
+            this.DataContext = ViewModel = viewModel;
+        }
+
+        private void combArbitrageDirection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                DirectionItem directItem = e.AddedItems[0] as DirectionItem;
+                if (directItem != null)
+                {
+                    entity.PosiDirectionType direction = directItem.Direction;
+                    
+                    if (direction == entity.PosiDirectionType.LONG)
+                    {
+                        this.combOpenCond.ItemsSource = ViewModel.GreaterItemsSource;
+                        ViewModel.OpenCondition = Strategy.CompareCondition.GREATER_THAN;
+                    }
+                    else if (direction == entity.PosiDirectionType.SHORT)
+                    {
+                        this.combOpenCond.ItemsSource = ViewModel.LessItemsSource;
+                        ViewModel.OpenCondition = Strategy.CompareCondition.LESS_THAN;
+                    }
+                }
+            }
         }
     }
 }
