@@ -23,6 +23,7 @@ namespace PortfolioTrading.Modules.Portfolio
     /// Interaction logic for PortfoliosView.xaml
     /// </summary>
     [Export]
+    [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class PortfoliosView : UserControl
     {
         private IEventAggregator EventAgg { get; set; }
@@ -31,11 +32,10 @@ namespace PortfolioTrading.Modules.Portfolio
         public PortfoliosView(IEventAggregator evtAgg)
         {
             EventAgg = evtAgg;
-            evtAgg.GetEvent<AccountSelectedEvent>().Subscribe(OnAccountSelected, ThreadOption.UIThread);
             InitializeComponent();
         }
 
-        public void OnAccountSelected(AccountVM accountVm)
+        public void SetAccount(AccountVM accountVm)
         {
             this.DataContext = accountVm;
         }

@@ -13,11 +13,7 @@
         <igDock:XamDockManager Theme="Office2k7Blue">
             <igDock:DocumentContentHost>
                 <igDock:SplitPane>
-                    <igDock:TabGroupPane>
-                        <igDock:ContentPane Header="组合一览"
-                                            cal:RegionManager.RegionName="{x:Static src:RegionNames.PortfolioViewRegion}">
-                            
-                        </igDock:ContentPane>
+                    <igDock:TabGroupPane cal:RegionManager.RegionName="{x:Static src:RegionNames.PortfolioViewRegion}">
                     </igDock:TabGroupPane>
                 </igDock:SplitPane>
             </igDock:DocumentContentHost>
