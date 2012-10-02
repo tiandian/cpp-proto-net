@@ -103,19 +103,19 @@
                 <TextBlock>止盈:</TextBlock>
                 <TextBlock Width="60" Text="{Binding StrategySetting.StopGainCondition, Converter={StaticResource condDisplayConverter}}" />
                 <TextBlock Width="60" Text="{Binding StrategySetting.StopGainThreshold}" />
-                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoStopGain, Mode=TwoWay}">自动</CheckBox>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoStopGain, Mode=TwoWay}" Margin="4, 0">自动</CheckBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0">
                 <TextBlock>开仓:</TextBlock>
                 <TextBlock Width="60" Text="{Binding StrategySetting.OpenCondition, Converter={StaticResource condDisplayConverter}}" />
                 <TextBlock Width="60" Text="{Binding StrategySetting.OpenThreshold}" />
-                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoOpen, Mode=TwoWay}">自动</CheckBox>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoOpen, Mode=TwoWay}" Margin="4, 0">自动</CheckBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1">
                 <TextBlock>止损:</TextBlock>
                 <TextBlock Width="60" Text="{Binding StrategySetting.StopLossCondition, Converter={StaticResource condDisplayConverter}}" />
                 <TextBlock Width="60" Text="{Binding StrategySetting.StopLossThreshold}" />
-                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoStopLoss, Mode=TwoWay}">自动</CheckBox>
+                <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoStopLoss, Mode=TwoWay}" Margin="4, 0">自动</CheckBox>
             </StackPanel>
         </Grid>
     </DataTemplate>

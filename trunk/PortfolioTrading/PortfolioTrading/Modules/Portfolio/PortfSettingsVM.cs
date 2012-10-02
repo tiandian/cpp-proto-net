@@ -16,7 +16,8 @@ namespace PortfolioTrading.Modules.Portfolio
     public class PortfSettingsVM : NotificationObject
     {
         private List<DirectionItem> _directionItems = new List<DirectionItem>();
-        private List<CompareCondItem> _conditionItems = new List<CompareCondItem>();
+        private List<CompareCondItem> _greaterCondItems = new List<CompareCondItem>();
+        private List<CompareCondItem> _lessCondItems = new List<CompareCondItem>();
         private PortfolioVM _lastPortfVm;
 
         [ImportingConstructor]
@@ -36,25 +37,25 @@ namespace PortfolioTrading.Modules.Portfolio
                 DisplayText = "空头"
             });
 
-            _conditionItems.Add(new CompareCondItem
+            _greaterCondItems.Add(new CompareCondItem
             {
                 Condition = CompareCondition.GREATER_EQUAL_THAN,
                 DisplayText = "大于等于"
             });
 
-            _conditionItems.Add(new CompareCondItem
+            _greaterCondItems.Add(new CompareCondItem
             {
                 Condition = CompareCondition.GREATER_THAN,
                 DisplayText = "大于"
             });
 
-            _conditionItems.Add(new CompareCondItem
+            _lessCondItems.Add(new CompareCondItem
             {
                 Condition = CompareCondition.LESS_EQUAL_THAN,
                 DisplayText = "小于等于"
             });
 
-            _conditionItems.Add(new CompareCondItem
+            _lessCondItems.Add(new CompareCondItem
             {
                 Condition = CompareCondition.LESS_THAN,
                 DisplayText = "小于"
@@ -69,9 +70,14 @@ namespace PortfolioTrading.Modules.Portfolio
             get { return _directionItems; }
         }
 
-        public IEnumerable<CompareCondItem> CompareItemsSource
+        public IEnumerable<CompareCondItem> GreaterItemsSource
         {
-            get { return _conditionItems; }
+            get { return _greaterCondItems; }
+        }
+
+        public IEnumerable<CompareCondItem> LessItemsSource
+        {
+            get { return _lessCondItems; }
         }
         
         public DelegateCommand ApplyCommand { get; private set; }

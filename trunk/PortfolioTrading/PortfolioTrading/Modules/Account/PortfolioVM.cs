@@ -246,7 +246,8 @@ namespace PortfolioTrading.Modules.Account
 
         void OnModifyPreferredLeg(LegVM leg, bool obj)
         {
-            this._accountVm.Host.PortfSetPreferredLeg(this.Id, leg.Name);
+            if(this._accountVm.IsConnected)
+                this._accountVm.Host.PortfSetPreferredLeg(this.Id, leg.Name);
         }
 
         public int LegCount
