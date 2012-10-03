@@ -94,7 +94,7 @@ namespace PortfolioTrading.Modules.Portfolio
             strategySettings.StopLossCondition = this.StopLossCondition;
             strategySettings.StopLossThreshold = this.StopLossThreshold;
 
-            //_lastPortfVm.ApplyStrategySettings();
+            _lastPortfVm.ApplyStrategySettings();
         }
 
         private void OnResetSetting()
@@ -104,6 +104,7 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public void SetPortfolio(PortfolioVM portfVm)
         {
+            this.AccountId = portfVm.AccountId;
             this.PortfolioID = portfVm.Id;
             if (portfVm.StrategySetting.Name == StrategySetting.ArbitrageStrategyName)
             {
@@ -120,6 +121,23 @@ namespace PortfolioTrading.Modules.Portfolio
             }
             
         }
+
+        #region AccountId
+        private string _acctId;
+
+        public string AccountId
+        {
+            get { return _acctId; }
+            set
+            {
+                if (_acctId != value)
+                {
+                    _acctId = value;
+                    RaisePropertyChanged("AccountId");
+                }
+            }
+        }
+        #endregion
 
         #region PortfolioID
         private string _portfId;

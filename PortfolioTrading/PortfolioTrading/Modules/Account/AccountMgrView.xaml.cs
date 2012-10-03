@@ -42,6 +42,7 @@ namespace PortfolioTrading.Modules.Account
         private void xamDataTreeAccount_ActiveNodeChanged(object sender, Infragistics.Controls.Menus.ActiveNodeChangedEventArgs e)
         {
             AccountVM acctVm = e.NewActiveTreeNode.Data as AccountVM;
+            
             if (acctVm != null)
                 EventAggregator.GetEvent<AccountSelectedEvent>().Publish(acctVm);
         }

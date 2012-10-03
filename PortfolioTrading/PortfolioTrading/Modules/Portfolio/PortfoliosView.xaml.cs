@@ -40,13 +40,40 @@ namespace PortfolioTrading.Modules.Portfolio
             this.DataContext = accountVm;
         }
 
+        public void OnViewSelected()
+        {
+            if (this.xamDG_Portfolio.ActiveRecord != null)
+            {
+                if (this.xamDG_Portfolio.ActiveRecord.IsDataRecord)
+                {
+                    PublishPortfolioSelected(this.xamDG_Portfolio.ActiveRecord as DataRecord);
+                }
+            }
+        }
+
         private void xamDG_Portfolio_RecordActivated(object sender, Infragistics.Windows.DataPresenter.Events.RecordActivatedEventArgs e)
         {
             if (e.Record.IsDataRecord)
             {
-                DataRecord dr = e.Record as DataRecord;
+                PublishPortfolioSelected(e.Record as DataRecord);
+            }
+        }
+
+        private void PublishPortfolioSelected(DataRecord dr)
+        {
+            if (dr != null)
+            {
                 PortfolioVM portf = dr.DataItem as PortfolioVM;
                 EventAgg.GetEvent<PortfolioSelectedEvent>().Publish(portf);
+            }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            if(this.xamDG_Portfolio.ActiveRecord == null)
+            {
+                if (this.xamDG_Portfolio.Records.Count > 0)
+                    this.xamDG_Portfolio.Records[0].IsActive = true;
             }
         }
     }

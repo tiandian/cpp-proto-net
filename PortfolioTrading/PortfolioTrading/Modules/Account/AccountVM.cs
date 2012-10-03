@@ -473,7 +473,7 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
         
-        private static void PublishChanged(AccountVM acct)
+        public static void PublishChanged(AccountVM acct)
         {
             IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
             evtAgg.GetEvent<AccountChangedEvent>().Publish(acct);

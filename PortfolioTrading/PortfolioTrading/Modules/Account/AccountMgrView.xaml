@@ -44,7 +44,23 @@
                         </DataTemplate>
                     </ig:NodeLayout.ItemTemplate>
                 </ig:NodeLayout>
-                <ig:NodeLayout Key="Portfolio" TargetTypeName="PortfolioVM" DisplayMemberPath="DisplayText"/>
+                <ig:NodeLayout Key="Portfolio" TargetTypeName="PortfolioVM" DisplayMemberPath="DisplayText">
+                    <ig:NodeLayout.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Data.DisplayText}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Data.IsRunning}" Value="True">
+                                                <Setter Property="Background" Value="LightGreen"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ig:NodeLayout.ItemTemplate>
+                </ig:NodeLayout>
             </ig:XamDataTree.GlobalNodeLayouts>
         </ig:XamDataTree>
     </DockPanel>

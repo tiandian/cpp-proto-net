@@ -6,7 +6,7 @@
              xmlns:igDP="http://infragistics.com/DataPresenter"
              xmlns:ctrls="clr-namespace:PortfolioTrading.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="400">
+             d:DesignHeight="300" d:DesignWidth="400" Loaded="UserControl_Loaded">
     <DockPanel>
         <DockPanel LastChildFill="False" DockPanel.Dock="Top">
             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Margin="4">
@@ -16,7 +16,7 @@
             <TextBlock DockPanel.Dock="Right" Text="{Binding InvestorId}"/>
         </DockPanel>
         <igDP:XamDataGrid Name="xamDG_Portfolio" DataSource="{Binding Portfolios}"
-                              GroupByAreaLocation="None" RecordActivated="xamDG_Portfolio_RecordActivated">
+                          GroupByAreaLocation="None" RecordActivated="xamDG_Portfolio_RecordActivated">
             <igDP:XamDataGrid.Resources>
                 <!-- HeaderLabelArea style -->
                 <Style x:Key="shrinkHeaderLabelArea" TargetType="igDP:HeaderLabelArea">

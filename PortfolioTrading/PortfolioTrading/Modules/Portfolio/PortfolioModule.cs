@@ -55,6 +55,7 @@ namespace PortfolioTrading.Modules.Portfolio
                 pane.Content = portfoliosView;
                 //pane.CloseAction = Infragistics.Windows.DockManager.PaneCloseAction.RemovePane;
                 pane.Closed += new EventHandler<Infragistics.Windows.DockManager.Events.PaneClosedEventArgs>(pane_Closed);
+                pane.Loaded += (s, e) => portfoliosView.OnViewSelected();
                 
                 RegionManager.RegisterViewWithRegion(RegionNames.PortfolioViewRegion,
                                                     () => pane);
