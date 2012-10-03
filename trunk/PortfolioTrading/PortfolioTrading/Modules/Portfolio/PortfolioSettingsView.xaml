@@ -8,11 +8,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="300">
     <DockPanel>
-        <DockPanel LastChildFill="False" DockPanel.Dock="Top">
+        <StackPanel DockPanel.Dock="Top">
             <TextBlock Margin="4" >套利策略设置</TextBlock>
-            <TextBlock Margin="2, 2, 8, 2" DockPanel.Dock="Right" VerticalAlignment="Center"
-                       Text="{Binding PortfolioID, FallbackValue=1}"/>
-            <TextBlock Margin="4" DockPanel.Dock="Right">组合编号</TextBlock>
+        </StackPanel>
+        <DockPanel LastChildFill="False" DockPanel.Dock="Top">
+            <TextBlock VerticalAlignment="Center" Margin="2">[
+                    <Run Text="{Binding AccountId, FallbackValue=-}"/> ]
+            </TextBlock>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <TextBlock Margin="4" DockPanel.Dock="Right">组合编号</TextBlock>
+                <TextBlock Margin="2, 2, 8, 2" VerticalAlignment="Center" Text="{Binding PortfolioID, FallbackValue=-}"/>
+            </StackPanel>
         </DockPanel>
         <Grid>
             <StackPanel>

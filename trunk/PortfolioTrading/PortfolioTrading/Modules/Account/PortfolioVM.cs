@@ -31,6 +31,11 @@ namespace PortfolioTrading.Modules.Account
             evtAgg.GetEvent<CloseMlOrderEvent>().Subscribe(OnClosePosition);
         }
 
+        public string AccountId
+        {
+            get { return _accountVm.Id; }
+        }
+
         #region Id
         private string _id;
 
@@ -402,13 +407,17 @@ namespace PortfolioTrading.Modules.Account
             if (_accountVm.IsConnected)
             {
                 //_accountVm.Host.PortfTurnSwitches(this.Id, IsRunning, AutoOpen, AutoStopGain, AutoStopLoss);
+
+                AccountVM.PublishChanged(_accountVm);
             }
         }
 
         public void ApplyStrategySettings()
         {
-            _accountVm.Host.PortfApplyStrategySettings(this.Id,
-                StrategySetting.Name, StrategySetting.Serialize());
+            //_accountVm.Host.PortfApplyStrategySettings(this.Id,
+            //    StrategySetting.Name, StrategySetting.Serialize());
+
+            AccountVM.PublishChanged(_accountVm);
         }
 
     }
