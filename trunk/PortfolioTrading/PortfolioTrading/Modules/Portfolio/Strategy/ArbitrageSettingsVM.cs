@@ -5,26 +5,21 @@ using System.Text;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.ViewModel;
 using Microsoft.Practices.Prism.Commands;
-using PortfolioTrading.Modules.Portfolio.Strategy;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Modules.Account;
 using PortfolioTrading.Events;
 
-namespace PortfolioTrading.Modules.Portfolio
+namespace PortfolioTrading.Modules.Portfolio.Strategy
 {
     [Export]
-    public class PortfSettingsVM : NotificationObject
+    public class ArbitrageSettingsVM : StrategySettingVM
     {
         private List<DirectionItem> _directionItems = new List<DirectionItem>();
         private List<CompareCondItem> _greaterCondItems = new List<CompareCondItem>();
         private List<CompareCondItem> _lessCondItems = new List<CompareCondItem>();
-        private PortfolioVM _lastPortfVm;
-
-        [ImportingConstructor]
-        public PortfSettingsVM(IEventAggregator evtAgg)
+        
+        public ArbitrageSettingsVM()
         {
-            evtAgg.GetEvent<PortfolioSelectedEvent>().Subscribe(SetPortfolio);
-
             _directionItems.Add(new DirectionItem 
             { 
                 Direction = entity.PosiDirectionType.LONG,
@@ -61,8 +56,6 @@ namespace PortfolioTrading.Modules.Portfolio
                 DisplayText = "小于"
             });
 
-            ApplyCommand = new DelegateCommand(OnApplySetting);
-            ResetCommand = new DelegateCommand(OnResetSetting);
         }
 
         public IEnumerable<DirectionItem> DirectionItemsSource
@@ -79,13 +72,17 @@ namespace PortfolioTrading.Modules.Portfolio
         {
             get { return _lessCondItems; }
         }
-        
-        public DelegateCommand ApplyCommand { get; private set; }
-        public DelegateCommand ResetCommand { get; private set; }
 
-        private void OnApplySetting()
+        public IEnumerable<CompareCondItem> OpenCondItemsSource
         {
-            ArbitrageStrategySetting strategySettings = _lastPortfVm.StrategySetting as ArbitrageStrategySetting;
+            get;
+            set;
+        }
+
+        protected override void OnApplySetting()
+        {
+            ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)_lastPortfVm.StrategySetting;
+
             strategySettings.Direction = this.PositionDirection;
             strategySettings.OpenCondition = this.OpenCondition;
             strategySettings.OpenThreshold = this.OpenThreshold;
@@ -94,67 +91,27 @@ namespace PortfolioTrading.Modules.Portfolio
             strategySettings.StopLossCondition = this.StopLossCondition;
             strategySettings.StopLossThreshold = this.StopLossThreshold;
 
-            _lastPortfVm.ApplyStrategySettings();
+            base.OnApplySetting();
         }
 
-        private void OnResetSetting()
+        private bool _isInitializing = false;
+
+        protected override void OnSetPortfolio(PortfolioVM portfVm)
         {
-            SetPortfolio(_lastPortfVm);
+           
+            ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)portfVm.StrategySetting;
+            _isInitializing = true;
+            this.PositionDirection = strategySettings.Direction;
+            this.OpenCondition = strategySettings.OpenCondition;
+            this.OpenThreshold = strategySettings.OpenThreshold;
+            this.StopGainCondition = strategySettings.StopGainCondition;
+            this.StopGainThreshold = strategySettings.StopGainThreshold;
+            this.StopLossCondition = strategySettings.StopLossCondition;
+            this.StopLossThreshold = strategySettings.StopLossThreshold;
+            _isInitializing = false;
         }
-
-        public void SetPortfolio(PortfolioVM portfVm)
-        {
-            this.AccountId = portfVm.AccountId;
-            this.PortfolioID = portfVm.Id;
-            if (portfVm.StrategySetting.Name == StrategySetting.ArbitrageStrategyName)
-            {
-                ArbitrageStrategySetting strategySettings = portfVm.StrategySetting as ArbitrageStrategySetting;
-                this.PositionDirection = strategySettings.Direction;
-                this.OpenCondition = strategySettings.OpenCondition;
-                this.OpenThreshold = strategySettings.OpenThreshold;
-                this.StopGainCondition = strategySettings.StopGainCondition;
-                this.StopGainThreshold = strategySettings.StopGainThreshold;
-                this.StopLossCondition = strategySettings.StopLossCondition;
-                this.StopLossThreshold = strategySettings.StopLossThreshold;
-
-                this._lastPortfVm = portfVm;
-            }
-            
-        }
-
-        #region AccountId
-        private string _acctId;
-
-        public string AccountId
-        {
-            get { return _acctId; }
-            set
-            {
-                if (_acctId != value)
-                {
-                    _acctId = value;
-                    RaisePropertyChanged("AccountId");
-                }
-            }
-        }
-        #endregion
-
-        #region PortfolioID
-        private string _portfId;
-
-        public string PortfolioID
-        {
-            get { return _portfId; }
-            set
-            {
-                if (_portfId != value)
-                {
-                    _portfId = value;
-                    RaisePropertyChanged("PortfolioID");
-                }
-            }
-        }
-        #endregion
+        
+        
 
         #region PositionDirection
         private entity.PosiDirectionType _direction;
@@ -168,6 +125,22 @@ namespace PortfolioTrading.Modules.Portfolio
                 {
                     _direction = value;
                     RaisePropertyChanged("PositionDirection");
+
+                    if (_direction == entity.PosiDirectionType.LONG)
+                    {
+                        OpenCondItemsSource = GreaterItemsSource;
+                        RaisePropertyChanged("OpenCondItemsSource");
+                        if(!_isInitializing)
+                            OpenCondition = Strategy.CompareCondition.GREATER_THAN;
+                    }
+                    else if (_direction == entity.PosiDirectionType.SHORT)
+                    {
+                        OpenCondItemsSource = LessItemsSource;
+                        RaisePropertyChanged("OpenCondItemsSource");
+                        if (!_isInitializing)
+                            OpenCondition = Strategy.CompareCondition.LESS_THAN;
+                    }
+                    
                 }
             }
         }

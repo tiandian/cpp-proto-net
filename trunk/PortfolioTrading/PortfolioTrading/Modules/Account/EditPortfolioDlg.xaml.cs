@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Practices.Prism.ViewModel;
+using PortfolioTrading.Modules.Portfolio.Strategy;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -54,12 +55,29 @@ namespace PortfolioTrading.Modules.Account
 
     public class EditPortfolioVM : NotificationObject
     {
-        public void From(PortfolioVM porf)
+        public EditPortfolioVM()
         {
-            PortfId = porf.Id;
+            this.StrategyItemsSource = new List<StrategyItem>();
+            this.StrategyItemsSource.Add(new StrategyItem
+            {
+                Name = StrategySetting.ArbitrageStrategyName,
+                DisplayName = "套利"
+            });
+            this.StrategyItemsSource.Add(new StrategyItem
+            {
+                Name = StrategySetting.ChangePositionStrategyName,
+                DisplayName = "移仓"
+            });
+        }
+
+        public List<StrategyItem> StrategyItemsSource { get; private set; }
+        
+        public void From(PortfolioVM portf)
+        {
+            PortfId = portf.Id;
 
             int legIdx = 0;
-            foreach (var leg in porf.Legs)
+            foreach (var leg in portf.Legs)
             {
                 ++legIdx;
                 if(legIdx == 1)
@@ -77,6 +95,9 @@ namespace PortfolioTrading.Modules.Account
                     Ratio2 = leg.Ratio;
                 }
             }
+
+            if(portf.StrategySetting != null)
+                StrategyName = portf.StrategySetting.Name;
         }
 
         public void To(PortfolioVM portf)
@@ -117,7 +138,26 @@ namespace PortfolioTrading.Modules.Account
                 leg.Ratio = Ratio2;
                 leg.IsPreferred = PreferLeg2;
             }
+
+            portf.StrategySetting = StrategySetting.Create(StrategyName);
         }
+
+        #region StrategyName
+        private string _strategyName = StrategySetting.ArbitrageStrategyName;
+
+        public string StrategyName
+        {
+            get { return _strategyName; }
+            set
+            {
+                if (_strategyName != value)
+                {
+                    _strategyName = value;
+                    RaisePropertyChanged("StrategyName");
+                }
+            }
+        }
+        #endregion
 
         #region PortfId
         private string _portfId;
@@ -152,7 +192,6 @@ namespace PortfolioTrading.Modules.Account
             }
         }
         #endregion
-
 
         #region Leg1
         private bool _leg1 = true;
@@ -238,8 +277,7 @@ namespace PortfolioTrading.Modules.Account
             }
         }
         #endregion
-        
-
+   
         #region Leg2
         private bool _leg2;
 
@@ -325,5 +363,11 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+    }
+
+    public class StrategyItem
+    {
+        public string Name { get; set; }
+        public string DisplayName { get; set; }
     }
 }

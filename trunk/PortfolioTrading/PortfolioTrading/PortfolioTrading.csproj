@@ -98,6 +98,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\PortfMonTemplateSelector.cs" />
+    <Compile Include="Controls\PortfSettingTemplateSelector.cs" />
     <Compile Include="Controls\RadioButtonExtended.cs" />
     <Compile Include="Converters\CompareConditionDisplayConverter.cs" />
     <Compile Include="Converters\OrderPriceTypeConverter.cs" />
@@ -142,8 +143,11 @@
     <Compile Include="Modules\Portfolio\PortfoliosView.xaml.cs">
       <DependentUpon>PortfoliosView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Modules\Portfolio\PortfSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ArbitrageSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ChangePositionSetting.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ChangePositionSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\StrategySetting.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\StrategySettingVM.cs" />
     <Compile Include="Modules\Portfolio\TradeVM.cs" />
     <Compile Include="Modules\Watching\OutputView.xaml.cs">
       <DependentUpon>OutputView.xaml</DependentUpon>

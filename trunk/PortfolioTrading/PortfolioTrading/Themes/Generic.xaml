@@ -120,12 +120,17 @@
         </Grid>
     </DataTemplate>
     
+    <DataTemplate x:Key="changePositionTemplate">
+        <TextBlock>移仓监视</TextBlock>
+    </DataTemplate>
+    
     <DataTemplate x:Key="boxBreakTemplate">
         <TextBlock>箱体突破监视</TextBlock>
     </DataTemplate>
     
     <local:PortfMonTemplateSelector x:Key="portfMonSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageTemplate}"
+                                    ChangePositionTemplate="{StaticResource changePositionTemplate}"
                                     BoxBreakTemplate="{StaticResource boxBreakTemplate}"/>
     
     <Style TargetType="{x:Type local:PortfMonitorPanel}">

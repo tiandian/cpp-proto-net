@@ -10,7 +10,7 @@
         <utils:SideBindingSource x:Key="sideSource" />
         <local:EditPortfolioVM x:Key="editPortfolioVM" />
     </Window.Resources>
-    <DockPanel>
+    <DockPanel DataContext="{StaticResource editPortfolioVM}" >
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -21,7 +21,7 @@
             <Button IsDefault="True" Name="btnOK" Click="btnOK_Click">确定</Button>
             <Button IsCancel="True" Name="btnCancel" Click="btnCancel_Click">取消</Button>
         </StackPanel>
-        <StackPanel DataContext="{StaticResource editPortfolioVM}" Margin="4">
+        <StackPanel Margin="4">
             <StackPanel.Resources>
                 <DataTemplate x:Key="sideItemTempl">
                     <TextBlock Text="{Binding DisplayText}"></TextBlock>
@@ -77,8 +77,13 @@
 
             <StackPanel Orientation="Horizontal" Margin="4">
                 <TextBlock VerticalAlignment="Center">组合策略</TextBlock>
-                <ComboBox Width="80" SelectedIndex="0">
-                    <ComboBoxItem>套利</ComboBoxItem>
+                <ComboBox Width="80" SelectedIndex="0" ItemsSource="{Binding StrategyItemsSource}"
+                          SelectedValuePath="Name" SelectedValue="{Binding StrategyName, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayName}"/>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
                 </ComboBox>
             </StackPanel>
         </StackPanel>
