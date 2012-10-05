@@ -182,8 +182,7 @@ namespace PortfolioTrading.Modules.Account
         {
             PortfolioVM portf = new PortfolioVM(this);
             portf.Id = (_acctPortfolios.Count + 1).ToString();
-            portf.StrategySetting = StrategySetting.Create(StrategySetting.ArbitrageStrategyName);
-
+            
             EditPortfolioDlg dlg = new EditPortfolioDlg();
             dlg.Owner = System.Windows.Application.Current.MainWindow;
             dlg.Portfolio = portf;

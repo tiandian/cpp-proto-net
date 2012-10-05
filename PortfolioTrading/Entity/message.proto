@@ -89,6 +89,12 @@ message ArbitrageStrategySettings
 	optional double StopLossThreshold = 4;
 }
 
+message ChangePosiStrategySettings
+{
+	required string CloseLeg = 1;
+	required double Threshold = 2;
+}
+
 message ModifyStrategyParam
 {
 	required string PortfId = 1;

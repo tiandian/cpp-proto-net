@@ -9,6 +9,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
     public abstract class StrategySetting
     {
         public const string ArbitrageStrategyName = "ArbitrageStrategy";
+        public const string ChangePositionStrategyName = "ChangePosition";
 
         public abstract string Name { get; }
 
@@ -66,18 +67,55 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
                 return setting;
             }
+            else if (name == ChangePositionStrategyName)
+            {
+                ChangePositionSetting setting = new ChangePositionSetting();
+
+                XElement elem = XElement.Parse(xmlText);
+
+                XAttribute attr = elem.Attribute("closeLeg");
+                if (attr != null)
+                    setting.CloseLeg = attr.Value;
+
+                attr = elem.Attribute("triggerCondition");
+                if (attr != null)
+                {
+                    setting.TriggerCondition = (CompareCondition)Enum.Parse(typeof(CompareCondition), attr.Value);
+                }
+
+                attr = elem.Attribute("threshold");
+                if (attr != null)
+                {
+                    setting.Threshold = double.Parse(attr.Value);
+                }
+
+                return setting;
+            }
             else
                 throw new ArgumentException(string.Format("Unexpected strategy setting ({0})", name));
         }
 
         public static StrategySetting Create(string name)
         {
-            ArbitrageStrategySetting setting = new ArbitrageStrategySetting();
-            setting.Direction = entity.PosiDirectionType.LONG;
-            setting.OpenThreshold = 100;
-            setting.StopGainThreshold = 20;
-            setting.StopLossThreshold = 100;
-            return setting;
+            if (name == ArbitrageStrategyName)
+            {
+                ArbitrageStrategySetting setting = new ArbitrageStrategySetting();
+                setting.Direction = entity.PosiDirectionType.LONG;
+                setting.OpenThreshold = 100;
+                setting.StopGainThreshold = 20;
+                setting.StopLossThreshold = 100;
+                return setting;
+            }
+            else if(name == ChangePositionStrategyName)
+            {
+                ChangePositionSetting setting = new ChangePositionSetting();
+                setting.TriggerCondition = CompareCondition.GREATER_EQUAL_THAN;
+                setting.Threshold = 100;
+                setting.CloseLeg = "cu1212";
+                return setting;
+            }
+            else
+                throw new ArgumentException(string.Format("Unexpected strategy type - {0}", name));
         }
     }
 }
