@@ -348,7 +348,7 @@ namespace PortfolioTrading.Modules.Account
             }
 
             OperationResult tradeConnResult = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
-                                                          "0240005010");
+                                                          acct.InvestorId);
 
             if (tradeConnResult.Success)
             {

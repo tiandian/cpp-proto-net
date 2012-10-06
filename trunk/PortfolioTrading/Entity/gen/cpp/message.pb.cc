@@ -53,6 +53,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ArbitrageStrategySettings_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ArbitrageStrategySettings_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ChangePosiStrategySettings_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ChangePosiStrategySettings_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ModifyStrategyParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModifyStrategyParam_reflection_ = NULL;
@@ -278,7 +281,23 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ArbitrageStrategySettings));
-  ModifyStrategyParam_descriptor_ = file->message_type(12);
+  ChangePosiStrategySettings_descriptor_ = file->message_type(12);
+  static const int ChangePosiStrategySettings_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, closeleg_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, threshold_),
+  };
+  ChangePosiStrategySettings_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ChangePosiStrategySettings_descriptor_,
+      ChangePosiStrategySettings::default_instance_,
+      ChangePosiStrategySettings_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ChangePosiStrategySettings));
+  ModifyStrategyParam_descriptor_ = file->message_type(13);
   static const int ModifyStrategyParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, strategyname_),
@@ -295,7 +314,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyStrategyParam));
-  ModifyPortfolioSwitchParam_descriptor_ = file->message_type(13);
+  ModifyPortfolioSwitchParam_descriptor_ = file->message_type(14);
   static const int ModifyPortfolioSwitchParam_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, enabled_),
@@ -314,7 +333,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioSwitchParam));
-  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(14);
+  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(15);
   static const int ModifyPortfolioPreferredLegParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, legsymbol_),
@@ -367,6 +386,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ArbitrageStrategySettings_descriptor_, &ArbitrageStrategySettings::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ChangePosiStrategySettings_descriptor_, &ChangePosiStrategySettings::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyStrategyParam_descriptor_, &ModifyStrategyParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyPortfolioSwitchParam_descriptor_, &ModifyPortfolioSwitchParam::default_instance());
@@ -401,6 +422,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete LegOrderUpdateParam_reflection_;
   delete ArbitrageStrategySettings::default_instance_;
   delete ArbitrageStrategySettings_reflection_;
+  delete ChangePosiStrategySettings::default_instance_;
+  delete ChangePosiStrategySettings_reflection_;
   delete ModifyStrategyParam::default_instance_;
   delete ModifyStrategyParam_reflection_;
   delete ModifyPortfolioSwitchParam::default_instance_;
@@ -445,14 +468,15 @@ void protobuf_AddDesc_message_2eproto() {
     "tings\022\'\n\004Side\030\001 \002(\0162\031.entity.PosiDirecti"
     "onType\022\031\n\021OpenPosiThreshold\030\002 \001(\001\022\031\n\021Sto"
     "pGainThreshold\030\003 \001(\001\022\031\n\021StopLossThreshol"
-    "d\030\004 \001(\001\"R\n\023ModifyStrategyParam\022\017\n\007PortfI"
-    "d\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n\014Strateg"
-    "yData\030\003 \002(\014\"|\n\032ModifyPortfolioSwitchPara"
-    "m\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\022\020\n\010A"
-    "utoOpen\030\003 \002(\010\022\024\n\014AutoStopGain\030\004 \002(\010\022\024\n\014A"
-    "utoStopLoss\030\005 \002(\010\"F\n ModifyPortfolioPref"
-    "erredLegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSym"
-    "bol\030\002 \002(\t", 1369);
+    "d\030\004 \001(\001\"A\n\032ChangePosiStrategySettings\022\020\n"
+    "\010CloseLeg\030\001 \002(\t\022\021\n\tThreshold\030\002 \002(\001\"R\n\023Mo"
+    "difyStrategyParam\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014St"
+    "rategyName\030\002 \002(\t\022\024\n\014StrategyData\030\003 \002(\014\"|"
+    "\n\032ModifyPortfolioSwitchParam\022\017\n\007PortfId\030"
+    "\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\022\020\n\010AutoOpen\030\003 \002(\010"
+    "\022\024\n\014AutoStopGain\030\004 \002(\010\022\024\n\014AutoStopLoss\030\005"
+    " \002(\010\"F\n ModifyPortfolioPreferredLegParam"
+    "\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t", 1436);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -467,6 +491,7 @@ void protobuf_AddDesc_message_2eproto() {
   ClosePositionParam::default_instance_ = new ClosePositionParam();
   LegOrderUpdateParam::default_instance_ = new LegOrderUpdateParam();
   ArbitrageStrategySettings::default_instance_ = new ArbitrageStrategySettings();
+  ChangePosiStrategySettings::default_instance_ = new ChangePosiStrategySettings();
   ModifyStrategyParam::default_instance_ = new ModifyStrategyParam();
   ModifyPortfolioSwitchParam::default_instance_ = new ModifyPortfolioSwitchParam();
   ModifyPortfolioPreferredLegParam::default_instance_ = new ModifyPortfolioPreferredLegParam();
@@ -482,6 +507,7 @@ void protobuf_AddDesc_message_2eproto() {
   ClosePositionParam::default_instance_->InitAsDefaultInstance();
   LegOrderUpdateParam::default_instance_->InitAsDefaultInstance();
   ArbitrageStrategySettings::default_instance_->InitAsDefaultInstance();
+  ChangePosiStrategySettings::default_instance_->InitAsDefaultInstance();
   ModifyStrategyParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioSwitchParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioPreferredLegParam::default_instance_->InitAsDefaultInstance();
@@ -4307,6 +4333,269 @@ void ArbitrageStrategySettings::Swap(ArbitrageStrategySettings* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = ArbitrageStrategySettings_descriptor_;
   metadata.reflection = ArbitrageStrategySettings_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ChangePosiStrategySettings::kCloseLegFieldNumber;
+const int ChangePosiStrategySettings::kThresholdFieldNumber;
+#endif  // !_MSC_VER
+
+ChangePosiStrategySettings::ChangePosiStrategySettings()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ChangePosiStrategySettings::InitAsDefaultInstance() {
+}
+
+ChangePosiStrategySettings::ChangePosiStrategySettings(const ChangePosiStrategySettings& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ChangePosiStrategySettings::SharedCtor() {
+  _cached_size_ = 0;
+  closeleg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  threshold_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ChangePosiStrategySettings::~ChangePosiStrategySettings() {
+  SharedDtor();
+}
+
+void ChangePosiStrategySettings::SharedDtor() {
+  if (closeleg_ != &::google::protobuf::internal::kEmptyString) {
+    delete closeleg_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void ChangePosiStrategySettings::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ChangePosiStrategySettings::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ChangePosiStrategySettings_descriptor_;
+}
+
+const ChangePosiStrategySettings& ChangePosiStrategySettings::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+ChangePosiStrategySettings* ChangePosiStrategySettings::default_instance_ = NULL;
+
+ChangePosiStrategySettings* ChangePosiStrategySettings::New() const {
+  return new ChangePosiStrategySettings;
+}
+
+void ChangePosiStrategySettings::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_closeleg()) {
+      if (closeleg_ != &::google::protobuf::internal::kEmptyString) {
+        closeleg_->clear();
+      }
+    }
+    threshold_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ChangePosiStrategySettings::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string CloseLeg = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_closeleg()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->closeleg().data(), this->closeleg().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(17)) goto parse_Threshold;
+        break;
+      }
+      
+      // required double Threshold = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_Threshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &threshold_)));
+          set_has_threshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ChangePosiStrategySettings::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string CloseLeg = 1;
+  if (has_closeleg()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->closeleg().data(), this->closeleg().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->closeleg(), output);
+  }
+  
+  // required double Threshold = 2;
+  if (has_threshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->threshold(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ChangePosiStrategySettings::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string CloseLeg = 1;
+  if (has_closeleg()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->closeleg().data(), this->closeleg().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->closeleg(), target);
+  }
+  
+  // required double Threshold = 2;
+  if (has_threshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->threshold(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ChangePosiStrategySettings::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string CloseLeg = 1;
+    if (has_closeleg()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->closeleg());
+    }
+    
+    // required double Threshold = 2;
+    if (has_threshold()) {
+      total_size += 1 + 8;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ChangePosiStrategySettings::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ChangePosiStrategySettings* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ChangePosiStrategySettings*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ChangePosiStrategySettings::MergeFrom(const ChangePosiStrategySettings& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_closeleg()) {
+      set_closeleg(from.closeleg());
+    }
+    if (from.has_threshold()) {
+      set_threshold(from.threshold());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ChangePosiStrategySettings::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ChangePosiStrategySettings::CopyFrom(const ChangePosiStrategySettings& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ChangePosiStrategySettings::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  
+  return true;
+}
+
+void ChangePosiStrategySettings::Swap(ChangePosiStrategySettings* other) {
+  if (other != this) {
+    std::swap(closeleg_, other->closeleg_);
+    std::swap(threshold_, other->threshold_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ChangePosiStrategySettings::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ChangePosiStrategySettings_descriptor_;
+  metadata.reflection = ChangePosiStrategySettings_reflection_;
   return metadata;
 }
 
