@@ -14,63 +14,10 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
     [Export]
     public class ArbitrageSettingsVM : StrategySettingVM
     {
-        private List<DirectionItem> _directionItems = new List<DirectionItem>();
-        private List<CompareCondItem> _greaterCondItems = new List<CompareCondItem>();
-        private List<CompareCondItem> _lessCondItems = new List<CompareCondItem>();
-        
         public ArbitrageSettingsVM()
         {
-            _directionItems.Add(new DirectionItem 
-            { 
-                Direction = entity.PosiDirectionType.LONG,
-                DisplayText = "多头"
-            });
+            
 
-            _directionItems.Add(new DirectionItem 
-            {
-                Direction = entity.PosiDirectionType.SHORT,
-                DisplayText = "空头"
-            });
-
-            _greaterCondItems.Add(new CompareCondItem
-            {
-                Condition = CompareCondition.GREATER_EQUAL_THAN,
-                DisplayText = "大于等于"
-            });
-
-            _greaterCondItems.Add(new CompareCondItem
-            {
-                Condition = CompareCondition.GREATER_THAN,
-                DisplayText = "大于"
-            });
-
-            _lessCondItems.Add(new CompareCondItem
-            {
-                Condition = CompareCondition.LESS_EQUAL_THAN,
-                DisplayText = "小于等于"
-            });
-
-            _lessCondItems.Add(new CompareCondItem
-            {
-                Condition = CompareCondition.LESS_THAN,
-                DisplayText = "小于"
-            });
-
-        }
-
-        public IEnumerable<DirectionItem> DirectionItemsSource
-        {
-            get { return _directionItems; }
-        }
-
-        public IEnumerable<CompareCondItem> GreaterItemsSource
-        {
-            get { return _greaterCondItems; }
-        }
-
-        public IEnumerable<CompareCondItem> LessItemsSource
-        {
-            get { return _lessCondItems; }
         }
 
         public IEnumerable<CompareCondItem> OpenCondItemsSource

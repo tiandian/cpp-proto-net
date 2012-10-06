@@ -10,6 +10,10 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 {
     public class StrategySettingVM : NotificationObject
     {
+        private List<DirectionItem> _directionItems = new List<DirectionItem>();
+        private List<CompareCondItem> _greaterCondItems = new List<CompareCondItem>();
+        private List<CompareCondItem> _lessCondItems = new List<CompareCondItem>();
+
         protected PortfolioVM _lastPortfVm;
 
         public DelegateCommand ApplyCommand { get; private set; }
@@ -17,8 +21,59 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         public StrategySettingVM()
         {
+            _directionItems.Add(new DirectionItem
+            {
+                Direction = entity.PosiDirectionType.LONG,
+                DisplayText = "多头"
+            });
+
+            _directionItems.Add(new DirectionItem
+            {
+                Direction = entity.PosiDirectionType.SHORT,
+                DisplayText = "空头"
+            });
+
+            _greaterCondItems.Add(new CompareCondItem
+            {
+                Condition = CompareCondition.GREATER_EQUAL_THAN,
+                DisplayText = "大于等于"
+            });
+
+            _greaterCondItems.Add(new CompareCondItem
+            {
+                Condition = CompareCondition.GREATER_THAN,
+                DisplayText = "大于"
+            });
+
+            _lessCondItems.Add(new CompareCondItem
+            {
+                Condition = CompareCondition.LESS_EQUAL_THAN,
+                DisplayText = "小于等于"
+            });
+
+            _lessCondItems.Add(new CompareCondItem
+            {
+                Condition = CompareCondition.LESS_THAN,
+                DisplayText = "小于"
+            });
+
             ApplyCommand = new DelegateCommand(OnApplySetting);
             ResetCommand = new DelegateCommand(OnResetSetting);
+        }
+
+        public IEnumerable<DirectionItem> DirectionItemsSource
+        {
+            get { return _directionItems; }
+        }
+
+        public IEnumerable<CompareCondItem> GreaterItemsSource
+        {
+            get { return _greaterCondItems; }
+        }
+
+        public IEnumerable<CompareCondItem> LessItemsSource
+        {
+            get { return _lessCondItems; }
         }
 
         #region AccountId
@@ -55,6 +110,24 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region StrategyType
+        private string _strategyType;
+
+        public string StrategyType
+        {
+            get { return _strategyType; }
+            set
+            {
+                if (_strategyType != value)
+                {
+                    _strategyType = value;
+                    RaisePropertyChanged("StrategyType");
+                }
+            }
+        }
+        #endregion
+
+
         protected virtual void OnApplySetting()
         {
             _lastPortfVm.ApplyStrategySettings();
@@ -69,6 +142,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             this.AccountId = portfVm.AccountId;
             this.PortfolioID = portfVm.Id;
+            this.StrategyType = GetStrategyDisplayName(portfVm.StrategySetting.Name);
 
             OnSetPortfolio(portfVm);
 
@@ -78,6 +152,14 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         protected virtual void OnSetPortfolio(PortfolioVM portfVm)
         { }
 
-        
+        private static string GetStrategyDisplayName(string name)
+        {
+            if (name == StrategySetting.ArbitrageStrategyName)
+                return "套利";
+            else if (name == StrategySetting.ChangePositionStrategyName)
+                return "移仓";
+            else
+                return "未知";
+        }
     }
 }
