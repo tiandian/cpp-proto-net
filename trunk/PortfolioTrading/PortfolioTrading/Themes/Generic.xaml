@@ -137,13 +137,15 @@
                 </StackPanel>
             </Border>
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
-                <TextBlock>移仓: </TextBlock>
-                <TextBlock> cu1301 => cu1303 </TextBlock>
+                <TextBlock Margin="4" VerticalAlignment="Center">平仓: </TextBlock>
+                <TextBlock Margin="4" VerticalAlignment="Center" Text="{Binding StrategySetting.CloseLeg}"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
-                <TextBlock>触发: </TextBlock>
-                <TextBlock Width="60" Text="{Binding StrategySetting.TriggerCondition, Converter={StaticResource condDisplayConverter}}" />
-                <TextBlock Width="60" Text="{Binding StrategySetting.Threshold}" />
+                <TextBlock Margin="4" VerticalAlignment="Center">触发: </TextBlock>
+                <TextBlock Width="60" Text="{Binding StrategySetting.TriggerCondition, Converter={StaticResource condDisplayConverter}}" 
+                           Margin="4" VerticalAlignment="Center"/>
+                <TextBlock Width="60" Text="{Binding StrategySetting.Threshold}" 
+                           Margin="4" VerticalAlignment="Center"/>
             </StackPanel>
         </Grid>
     </DataTemplate>
