@@ -46,6 +46,7 @@ class PorfOpenPosiParam;
 class ClosePositionParam;
 class LegOrderUpdateParam;
 class ArbitrageStrategySettings;
+class ChangePosiStrategySettings;
 class ModifyStrategyParam;
 class ModifyPortfolioSwitchParam;
 class ModifyPortfolioPreferredLegParam;
@@ -1369,6 +1370,102 @@ class ArbitrageStrategySettings : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ArbitrageStrategySettings* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ChangePosiStrategySettings : public ::google::protobuf::Message {
+ public:
+  ChangePosiStrategySettings();
+  virtual ~ChangePosiStrategySettings();
+  
+  ChangePosiStrategySettings(const ChangePosiStrategySettings& from);
+  
+  inline ChangePosiStrategySettings& operator=(const ChangePosiStrategySettings& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ChangePosiStrategySettings& default_instance();
+  
+  void Swap(ChangePosiStrategySettings* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ChangePosiStrategySettings* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ChangePosiStrategySettings& from);
+  void MergeFrom(const ChangePosiStrategySettings& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string CloseLeg = 1;
+  inline bool has_closeleg() const;
+  inline void clear_closeleg();
+  static const int kCloseLegFieldNumber = 1;
+  inline const ::std::string& closeleg() const;
+  inline void set_closeleg(const ::std::string& value);
+  inline void set_closeleg(const char* value);
+  inline void set_closeleg(const char* value, size_t size);
+  inline ::std::string* mutable_closeleg();
+  inline ::std::string* release_closeleg();
+  
+  // required double Threshold = 2;
+  inline bool has_threshold() const;
+  inline void clear_threshold();
+  static const int kThresholdFieldNumber = 2;
+  inline double threshold() const;
+  inline void set_threshold(double value);
+  
+  // @@protoc_insertion_point(class_scope:entity.ChangePosiStrategySettings)
+ private:
+  inline void set_has_closeleg();
+  inline void clear_has_closeleg();
+  inline void set_has_threshold();
+  inline void clear_has_threshold();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* closeleg_;
+  double threshold_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ChangePosiStrategySettings* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -3213,6 +3310,90 @@ inline double ArbitrageStrategySettings::stoplossthreshold() const {
 inline void ArbitrageStrategySettings::set_stoplossthreshold(double value) {
   set_has_stoplossthreshold();
   stoplossthreshold_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ChangePosiStrategySettings
+
+// required string CloseLeg = 1;
+inline bool ChangePosiStrategySettings::has_closeleg() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ChangePosiStrategySettings::set_has_closeleg() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ChangePosiStrategySettings::clear_has_closeleg() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ChangePosiStrategySettings::clear_closeleg() {
+  if (closeleg_ != &::google::protobuf::internal::kEmptyString) {
+    closeleg_->clear();
+  }
+  clear_has_closeleg();
+}
+inline const ::std::string& ChangePosiStrategySettings::closeleg() const {
+  return *closeleg_;
+}
+inline void ChangePosiStrategySettings::set_closeleg(const ::std::string& value) {
+  set_has_closeleg();
+  if (closeleg_ == &::google::protobuf::internal::kEmptyString) {
+    closeleg_ = new ::std::string;
+  }
+  closeleg_->assign(value);
+}
+inline void ChangePosiStrategySettings::set_closeleg(const char* value) {
+  set_has_closeleg();
+  if (closeleg_ == &::google::protobuf::internal::kEmptyString) {
+    closeleg_ = new ::std::string;
+  }
+  closeleg_->assign(value);
+}
+inline void ChangePosiStrategySettings::set_closeleg(const char* value, size_t size) {
+  set_has_closeleg();
+  if (closeleg_ == &::google::protobuf::internal::kEmptyString) {
+    closeleg_ = new ::std::string;
+  }
+  closeleg_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ChangePosiStrategySettings::mutable_closeleg() {
+  set_has_closeleg();
+  if (closeleg_ == &::google::protobuf::internal::kEmptyString) {
+    closeleg_ = new ::std::string;
+  }
+  return closeleg_;
+}
+inline ::std::string* ChangePosiStrategySettings::release_closeleg() {
+  clear_has_closeleg();
+  if (closeleg_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = closeleg_;
+    closeleg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required double Threshold = 2;
+inline bool ChangePosiStrategySettings::has_threshold() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ChangePosiStrategySettings::set_has_threshold() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ChangePosiStrategySettings::clear_has_threshold() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ChangePosiStrategySettings::clear_threshold() {
+  threshold_ = 0;
+  clear_has_threshold();
+}
+inline double ChangePosiStrategySettings::threshold() const {
+  return threshold_;
+}
+inline void ChangePosiStrategySettings::set_threshold(double value) {
+  set_has_threshold();
+  threshold_ = value;
 }
 
 // -------------------------------------------------------------------
