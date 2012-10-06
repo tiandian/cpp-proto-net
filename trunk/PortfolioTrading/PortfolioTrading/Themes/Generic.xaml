@@ -121,7 +121,31 @@
     </DataTemplate>
     
     <DataTemplate x:Key="changePositionTemplate">
-        <TextBlock>移仓监视</TextBlock>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="100" CornerRadius="4" BorderBrush="Chocolate" BorderThickness="2">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock>价差</TextBlock>
+                    <TextBlock Text="{Binding Diff}"/>
+                </StackPanel>
+            </Border>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
+                <TextBlock>移仓: </TextBlock>
+                <TextBlock> cu1301 => cu1303 </TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                <TextBlock>触发: </TextBlock>
+                <TextBlock Width="60" Text="{Binding StrategySetting.TriggerCondition, Converter={StaticResource condDisplayConverter}}" />
+                <TextBlock Width="60" Text="{Binding StrategySetting.Threshold}" />
+            </StackPanel>
+        </Grid>
     </DataTemplate>
     
     <DataTemplate x:Key="boxBreakTemplate">

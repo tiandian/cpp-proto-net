@@ -406,6 +406,30 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ChangePosiStrategySettings")]
+  public partial class ChangePosiStrategySettings : global::ProtoBuf.IExtensible
+  {
+    public ChangePosiStrategySettings() {}
+    
+    private string _CloseLeg;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"CloseLeg", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string CloseLeg
+    {
+      get { return _CloseLeg; }
+      set { _CloseLeg = value; }
+    }
+    private double _Threshold;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Threshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double Threshold
+    {
+      get { return _Threshold; }
+      set { _Threshold = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ModifyStrategyParam")]
   public partial class ModifyStrategyParam : global::ProtoBuf.IExtensible
   {

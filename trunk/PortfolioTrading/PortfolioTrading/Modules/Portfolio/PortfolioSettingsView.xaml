@@ -9,8 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="300">
     <DockPanel>
-        <StackPanel DockPanel.Dock="Top">
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
             <TextBlock Margin="4" >套利策略设置</TextBlock>
+            <TextBlock Margin="4">(<Run Text="{Binding StrategyType}"/>)</TextBlock>
         </StackPanel>
         <DockPanel LastChildFill="False" DockPanel.Dock="Top">
             <TextBlock VerticalAlignment="Center" Margin="2">[
@@ -23,6 +24,10 @@
         </DockPanel>
         <Grid>
             <Grid.Resources>
+                <DataTemplate x:Key="combItemTemplate">
+                    <TextBlock Text="{Binding DisplayText}"/>
+                </DataTemplate>
+
                 <DataTemplate x:Key="arbitrageSettingTemplate">
                     <StackPanel>
                         <StackPanel.Resources>
@@ -32,11 +37,6 @@
                                 <Setter Property="Padding" Value="4"/>
                                 <Setter Property="BorderBrush" Value="Green" />
                             </Style>
-
-                            <DataTemplate x:Key="combItemTemplate">
-                                <TextBlock Text="{Binding DisplayText}"/>
-                            </DataTemplate>
-
                         </StackPanel.Resources>
 
                         <Grid>
@@ -115,9 +115,57 @@
                         </Border>
                     </StackPanel>
                 </DataTemplate>
+                
                 <DataTemplate x:Key="changePositionSettingTemplate">
-                    <TextBlock Text="{Binding }"></TextBlock>
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Margin" Value="4"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                                <Setter Property="Padding" Value="4"/>
+                                <Setter Property="BorderBrush" Value="Green" />
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Margin="8" Command="{Binding ApplyCommand}">应用</Button>
+                            <Button Grid.Column="1" Margin="8" Command="{Binding ResetCommand}">重置</Button>
+                        </Grid>
+
+                        <Border CornerRadius="4">
+                            <DockPanel>
+                                <TextBlock VerticalAlignment="Center" Margin="4">平仓合约</TextBlock>
+                                <ComboBox Margin="4, 0" SelectedValue="{Binding CloseLeg, Mode=TwoWay}"
+                                          ItemsSource="{Binding OptionalLegs}">
+                                </ComboBox>
+                            </DockPanel>
+                        </Border>
+                        
+                        <Border CornerRadius="4">
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">触发条件</TextBlock>
+                                <DockPanel Margin="12, 0, 6, 4">
+                                    <DockPanel >
+                                        <TextBlock VerticalAlignment="Center" Margin="4">价差</TextBlock>
+                                        <ComboBox Margin="4" Width="80" Name="combOpenCond" ItemsSource="{Binding ConditionItemsSource}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding TriggerCondition, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource combItemTemplate}">
+                                        </ComboBox>
+                                    </DockPanel>
+                                    <DockPanel Margin="4">
+                                        <TextBlock DockPanel.Dock="Right" Margin="4">点</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding Threshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
                 </DataTemplate>
+                
                 <local:PortfSettingTemplateSelector x:Key="strategySettingSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageSettingTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionSettingTemplate}"/>
