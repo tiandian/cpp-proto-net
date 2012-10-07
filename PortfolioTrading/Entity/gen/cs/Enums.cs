@@ -55,4 +55,21 @@ namespace entity
       Opposite = 1
     }
   
+    [global::ProtoBuf.ProtoContract(Name=@"CompareCondition")]
+    public enum CompareCondition
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"GREATER_THAN", Value=0)]
+      GREATER_THAN = 0,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"GREATER_EQUAL_THAN", Value=1)]
+      GREATER_EQUAL_THAN = 1,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"LESS_THAN", Value=2)]
+      LESS_THAN = 2,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"LESS_EQUAL_THAN", Value=3)]
+      LESS_EQUAL_THAN = 3
+    }
+  
 }

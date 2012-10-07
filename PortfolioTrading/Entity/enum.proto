@@ -21,3 +21,11 @@ enum LimitPriceType
 	Last = 0;
 	Opposite = 1;
 }
+
+enum CompareCondition
+{
+	GREATER_THAN = 0;
+    GREATER_EQUAL_THAN = 1;
+    LESS_THAN = 2;
+    LESS_EQUAL_THAN = 3;
+}

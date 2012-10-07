@@ -374,28 +374,43 @@ namespace entity
       get { return _Side; }
       set { _Side = value; }
     }
-
-    private double _OpenPosiThreshold = default(double);
-    [global::ProtoBuf.ProtoMember(2, IsRequired = false, Name=@"OpenPosiThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(double))]
+    private entity.CompareCondition _OpenCondition;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"OpenCondition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.CompareCondition OpenCondition
+    {
+      get { return _OpenCondition; }
+      set { _OpenCondition = value; }
+    }
+    private double _OpenPosiThreshold;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"OpenPosiThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public double OpenPosiThreshold
     {
       get { return _OpenPosiThreshold; }
       set { _OpenPosiThreshold = value; }
     }
-
-    private double _StopGainThreshold = default(double);
-    [global::ProtoBuf.ProtoMember(3, IsRequired = false, Name=@"StopGainThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(double))]
+    private entity.CompareCondition _StopGainCondition;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"StopGainCondition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.CompareCondition StopGainCondition
+    {
+      get { return _StopGainCondition; }
+      set { _StopGainCondition = value; }
+    }
+    private double _StopGainThreshold;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"StopGainThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public double StopGainThreshold
     {
       get { return _StopGainThreshold; }
       set { _StopGainThreshold = value; }
     }
-
-    private double _StopLossThreshold = default(double);
-    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"StopLossThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    [global::System.ComponentModel.DefaultValue(default(double))]
+    private entity.CompareCondition _StopLossCondition;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"StopLossCondition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.CompareCondition StopLossCondition
+    {
+      get { return _StopLossCondition; }
+      set { _StopLossCondition = value; }
+    }
+    private double _StopLossThreshold;
+    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"StopLossThreshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public double StopLossThreshold
     {
       get { return _StopLossThreshold; }
@@ -418,8 +433,15 @@ namespace entity
       get { return _CloseLeg; }
       set { _CloseLeg = value; }
     }
+    private entity.CompareCondition _TriggerCondition;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"TriggerCondition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.CompareCondition TriggerCondition
+    {
+      get { return _TriggerCondition; }
+      set { _TriggerCondition = value; }
+    }
     private double _Threshold;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Threshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"Threshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public double Threshold
     {
       get { return _Threshold; }

@@ -1322,24 +1322,45 @@ class ArbitrageStrategySettings : public ::google::protobuf::Message {
   inline entity::PosiDirectionType side() const;
   inline void set_side(entity::PosiDirectionType value);
   
-  // optional double OpenPosiThreshold = 2;
+  // required .entity.CompareCondition OpenCondition = 2;
+  inline bool has_opencondition() const;
+  inline void clear_opencondition();
+  static const int kOpenConditionFieldNumber = 2;
+  inline entity::CompareCondition opencondition() const;
+  inline void set_opencondition(entity::CompareCondition value);
+  
+  // required double OpenPosiThreshold = 3;
   inline bool has_openposithreshold() const;
   inline void clear_openposithreshold();
-  static const int kOpenPosiThresholdFieldNumber = 2;
+  static const int kOpenPosiThresholdFieldNumber = 3;
   inline double openposithreshold() const;
   inline void set_openposithreshold(double value);
   
-  // optional double StopGainThreshold = 3;
+  // required .entity.CompareCondition StopGainCondition = 4;
+  inline bool has_stopgaincondition() const;
+  inline void clear_stopgaincondition();
+  static const int kStopGainConditionFieldNumber = 4;
+  inline entity::CompareCondition stopgaincondition() const;
+  inline void set_stopgaincondition(entity::CompareCondition value);
+  
+  // required double StopGainThreshold = 5;
   inline bool has_stopgainthreshold() const;
   inline void clear_stopgainthreshold();
-  static const int kStopGainThresholdFieldNumber = 3;
+  static const int kStopGainThresholdFieldNumber = 5;
   inline double stopgainthreshold() const;
   inline void set_stopgainthreshold(double value);
   
-  // optional double StopLossThreshold = 4;
+  // required .entity.CompareCondition StopLossCondition = 6;
+  inline bool has_stoplosscondition() const;
+  inline void clear_stoplosscondition();
+  static const int kStopLossConditionFieldNumber = 6;
+  inline entity::CompareCondition stoplosscondition() const;
+  inline void set_stoplosscondition(entity::CompareCondition value);
+  
+  // required double StopLossThreshold = 7;
   inline bool has_stoplossthreshold() const;
   inline void clear_stoplossthreshold();
-  static const int kStopLossThresholdFieldNumber = 4;
+  static const int kStopLossThresholdFieldNumber = 7;
   inline double stoplossthreshold() const;
   inline void set_stoplossthreshold(double value);
   
@@ -1347,22 +1368,31 @@ class ArbitrageStrategySettings : public ::google::protobuf::Message {
  private:
   inline void set_has_side();
   inline void clear_has_side();
+  inline void set_has_opencondition();
+  inline void clear_has_opencondition();
   inline void set_has_openposithreshold();
   inline void clear_has_openposithreshold();
+  inline void set_has_stopgaincondition();
+  inline void clear_has_stopgaincondition();
   inline void set_has_stopgainthreshold();
   inline void clear_has_stopgainthreshold();
+  inline void set_has_stoplosscondition();
+  inline void clear_has_stoplosscondition();
   inline void set_has_stoplossthreshold();
   inline void clear_has_stoplossthreshold();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
+  int side_;
+  int opencondition_;
   double openposithreshold_;
   double stopgainthreshold_;
+  int stopgaincondition_;
+  int stoplosscondition_;
   double stoplossthreshold_;
-  int side_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -1438,10 +1468,17 @@ class ChangePosiStrategySettings : public ::google::protobuf::Message {
   inline ::std::string* mutable_closeleg();
   inline ::std::string* release_closeleg();
   
-  // required double Threshold = 2;
+  // required .entity.CompareCondition TriggerCondition = 2;
+  inline bool has_triggercondition() const;
+  inline void clear_triggercondition();
+  static const int kTriggerConditionFieldNumber = 2;
+  inline entity::CompareCondition triggercondition() const;
+  inline void set_triggercondition(entity::CompareCondition value);
+  
+  // required double Threshold = 3;
   inline bool has_threshold() const;
   inline void clear_threshold();
-  static const int kThresholdFieldNumber = 2;
+  static const int kThresholdFieldNumber = 3;
   inline double threshold() const;
   inline void set_threshold(double value);
   
@@ -1449,6 +1486,8 @@ class ChangePosiStrategySettings : public ::google::protobuf::Message {
  private:
   inline void set_has_closeleg();
   inline void clear_has_closeleg();
+  inline void set_has_triggercondition();
+  inline void clear_has_triggercondition();
   inline void set_has_threshold();
   inline void clear_has_threshold();
   
@@ -1456,9 +1495,10 @@ class ChangePosiStrategySettings : public ::google::protobuf::Message {
   
   ::std::string* closeleg_;
   double threshold_;
+  int triggercondition_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3246,15 +3286,38 @@ inline void ArbitrageStrategySettings::set_side(entity::PosiDirectionType value)
   side_ = value;
 }
 
-// optional double OpenPosiThreshold = 2;
-inline bool ArbitrageStrategySettings::has_openposithreshold() const {
+// required .entity.CompareCondition OpenCondition = 2;
+inline bool ArbitrageStrategySettings::has_opencondition() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ArbitrageStrategySettings::set_has_openposithreshold() {
+inline void ArbitrageStrategySettings::set_has_opencondition() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ArbitrageStrategySettings::clear_has_openposithreshold() {
+inline void ArbitrageStrategySettings::clear_has_opencondition() {
   _has_bits_[0] &= ~0x00000002u;
+}
+inline void ArbitrageStrategySettings::clear_opencondition() {
+  opencondition_ = 0;
+  clear_has_opencondition();
+}
+inline entity::CompareCondition ArbitrageStrategySettings::opencondition() const {
+  return static_cast< entity::CompareCondition >(opencondition_);
+}
+inline void ArbitrageStrategySettings::set_opencondition(entity::CompareCondition value) {
+  GOOGLE_DCHECK(entity::CompareCondition_IsValid(value));
+  set_has_opencondition();
+  opencondition_ = value;
+}
+
+// required double OpenPosiThreshold = 3;
+inline bool ArbitrageStrategySettings::has_openposithreshold() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ArbitrageStrategySettings::set_has_openposithreshold() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ArbitrageStrategySettings::clear_has_openposithreshold() {
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void ArbitrageStrategySettings::clear_openposithreshold() {
   openposithreshold_ = 0;
@@ -3268,15 +3331,38 @@ inline void ArbitrageStrategySettings::set_openposithreshold(double value) {
   openposithreshold_ = value;
 }
 
-// optional double StopGainThreshold = 3;
+// required .entity.CompareCondition StopGainCondition = 4;
+inline bool ArbitrageStrategySettings::has_stopgaincondition() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ArbitrageStrategySettings::set_has_stopgaincondition() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ArbitrageStrategySettings::clear_has_stopgaincondition() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ArbitrageStrategySettings::clear_stopgaincondition() {
+  stopgaincondition_ = 0;
+  clear_has_stopgaincondition();
+}
+inline entity::CompareCondition ArbitrageStrategySettings::stopgaincondition() const {
+  return static_cast< entity::CompareCondition >(stopgaincondition_);
+}
+inline void ArbitrageStrategySettings::set_stopgaincondition(entity::CompareCondition value) {
+  GOOGLE_DCHECK(entity::CompareCondition_IsValid(value));
+  set_has_stopgaincondition();
+  stopgaincondition_ = value;
+}
+
+// required double StopGainThreshold = 5;
 inline bool ArbitrageStrategySettings::has_stopgainthreshold() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void ArbitrageStrategySettings::set_has_stopgainthreshold() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void ArbitrageStrategySettings::clear_has_stopgainthreshold() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void ArbitrageStrategySettings::clear_stopgainthreshold() {
   stopgainthreshold_ = 0;
@@ -3290,15 +3376,38 @@ inline void ArbitrageStrategySettings::set_stopgainthreshold(double value) {
   stopgainthreshold_ = value;
 }
 
-// optional double StopLossThreshold = 4;
+// required .entity.CompareCondition StopLossCondition = 6;
+inline bool ArbitrageStrategySettings::has_stoplosscondition() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void ArbitrageStrategySettings::set_has_stoplosscondition() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void ArbitrageStrategySettings::clear_has_stoplosscondition() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void ArbitrageStrategySettings::clear_stoplosscondition() {
+  stoplosscondition_ = 0;
+  clear_has_stoplosscondition();
+}
+inline entity::CompareCondition ArbitrageStrategySettings::stoplosscondition() const {
+  return static_cast< entity::CompareCondition >(stoplosscondition_);
+}
+inline void ArbitrageStrategySettings::set_stoplosscondition(entity::CompareCondition value) {
+  GOOGLE_DCHECK(entity::CompareCondition_IsValid(value));
+  set_has_stoplosscondition();
+  stoplosscondition_ = value;
+}
+
+// required double StopLossThreshold = 7;
 inline bool ArbitrageStrategySettings::has_stoplossthreshold() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void ArbitrageStrategySettings::set_has_stoplossthreshold() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void ArbitrageStrategySettings::clear_has_stoplossthreshold() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void ArbitrageStrategySettings::clear_stoplossthreshold() {
   stoplossthreshold_ = 0;
@@ -3374,15 +3483,38 @@ inline ::std::string* ChangePosiStrategySettings::release_closeleg() {
   }
 }
 
-// required double Threshold = 2;
-inline bool ChangePosiStrategySettings::has_threshold() const {
+// required .entity.CompareCondition TriggerCondition = 2;
+inline bool ChangePosiStrategySettings::has_triggercondition() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ChangePosiStrategySettings::set_has_threshold() {
+inline void ChangePosiStrategySettings::set_has_triggercondition() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ChangePosiStrategySettings::clear_has_threshold() {
+inline void ChangePosiStrategySettings::clear_has_triggercondition() {
   _has_bits_[0] &= ~0x00000002u;
+}
+inline void ChangePosiStrategySettings::clear_triggercondition() {
+  triggercondition_ = 0;
+  clear_has_triggercondition();
+}
+inline entity::CompareCondition ChangePosiStrategySettings::triggercondition() const {
+  return static_cast< entity::CompareCondition >(triggercondition_);
+}
+inline void ChangePosiStrategySettings::set_triggercondition(entity::CompareCondition value) {
+  GOOGLE_DCHECK(entity::CompareCondition_IsValid(value));
+  set_has_triggercondition();
+  triggercondition_ = value;
+}
+
+// required double Threshold = 3;
+inline bool ChangePosiStrategySettings::has_threshold() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ChangePosiStrategySettings::set_has_threshold() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ChangePosiStrategySettings::clear_has_threshold() {
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void ChangePosiStrategySettings::clear_threshold() {
   threshold_ = 0;

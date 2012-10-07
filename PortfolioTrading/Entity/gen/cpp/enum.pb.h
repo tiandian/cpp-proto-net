@@ -94,6 +94,27 @@ inline bool LimitPriceType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<LimitPriceType>(
     LimitPriceType_descriptor(), name, value);
 }
+enum CompareCondition {
+  GREATER_THAN = 0,
+  GREATER_EQUAL_THAN = 1,
+  LESS_THAN = 2,
+  LESS_EQUAL_THAN = 3
+};
+bool CompareCondition_IsValid(int value);
+const CompareCondition CompareCondition_MIN = GREATER_THAN;
+const CompareCondition CompareCondition_MAX = LESS_EQUAL_THAN;
+const int CompareCondition_ARRAYSIZE = CompareCondition_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* CompareCondition_descriptor();
+inline const ::std::string& CompareCondition_Name(CompareCondition value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    CompareCondition_descriptor(), value);
+}
+inline bool CompareCondition_Parse(
+    const ::std::string& name, CompareCondition* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<CompareCondition>(
+    CompareCondition_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -122,6 +143,10 @@ inline const EnumDescriptor* GetEnumDescriptor< entity::LegStatus>() {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::LimitPriceType>() {
   return entity::LimitPriceType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< entity::CompareCondition>() {
+  return entity::CompareCondition_descriptor();
 }
 
 }  // namespace google
