@@ -66,6 +66,7 @@ void CPortfolio::SetItem( entity::PortfolioItem* pPortfItem )
 		nl->set_last(iter->last());
 		nl->set_ask(iter->ask());
 		nl->set_bid(iter->bid());
+		nl->set_ispreferred(iter->ispreferred());
 		nl->set_status(iter->status());
 
 		AddLeg(nl);

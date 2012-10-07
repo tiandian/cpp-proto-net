@@ -79,7 +79,7 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <ctrls:RadioButtonExtended Margin="4" HorizontalAlignment="Center" GroupName="PreferDeal"
+                                            <ctrls:RadioButtonExtended Margin="4" HorizontalAlignment="Center" GroupName="{Binding PortfolioId}"
                                                                        IsCheckedReal="{Binding IsPreferred, Mode=TwoWay}" />
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
