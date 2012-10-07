@@ -155,6 +155,8 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        public string PortfolioId { get; set; }
+
         public event Action<LegVM, bool> OnIsPreferredChanged;
 
         private void RaiseIsPreferredChanged(bool newVal)

@@ -246,6 +246,7 @@ namespace PortfolioTrading.Modules.Account
         public void AddLeg(LegVM leg)
         {
             _legs.Add(leg);
+            leg.PortfolioId = Id;
             leg.OnIsPreferredChanged += new Action<LegVM, bool>(OnModifyPreferredLeg);
         }
 

@@ -190,9 +190,9 @@ namespace PortfolioTrading.Modules.Account
             if (res ?? false)
             {
                 entity.PortfolioItem portfolioItem = dlg.Portfolio.GetEntity();
+                _acctPortfolios.Add(portf);
                 if(_client.IsConnected)
                     _client.AddPortf(portfolioItem);
-                _acctPortfolios.Add(portf);
 
                 PublishChanged(this);
             }
