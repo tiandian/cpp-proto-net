@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Strategy.h"
+#include "DiffStrategy.h"
 
 #define DOUBLE_COMPARSION_PRECISION (0.01)
 
@@ -52,7 +52,7 @@ private:
 	
 };
 
-class CArbitrageStrategy : public CStrategy<double>
+class CArbitrageStrategy : public CDiffStrategy
 {
 public:
 	CArbitrageStrategy(void);
@@ -75,6 +75,8 @@ public:
 		m_stopLossChecker.Comparsion(op);
 		m_stopLossChecker.TargetVal(targetVal);
 	}
+
+	void ApplySettings(const std::string& settingData);
 
 protected:
 

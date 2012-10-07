@@ -100,6 +100,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ClientManager.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="DiffStrategy.h" />
     <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
     <ClInclude Include="LogManager.h" />
@@ -116,6 +117,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategy.h" />
+    <ClInclude Include="StrategyFactory.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
     <ClInclude Include="TradeAgentCallback.h" />
@@ -154,6 +156,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StrategyFactory.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeStation.cpp" />
   </ItemGroup>
