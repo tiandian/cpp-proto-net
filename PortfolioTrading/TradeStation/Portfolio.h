@@ -2,7 +2,7 @@
 
 #include "QuoteListener.h"
 #include "../Entity/gen/cpp/message.pb.h"
-#include "ArbitrageStrategy.h"
+#include "DiffStrategy.h"
 
 #include <string>
 #include <vector>
@@ -53,8 +53,8 @@ public:
 
 	int Quantity() { return m_innerItem->quantity(); }
 
-	CArbitrageStrategy& Strategy(){ return m_strategy; }
-
+	CDiffStrategy* Strategy(){ return m_strategy.get(); }
+	
 	void EnableStrategy(bool isEnabled) { m_strategyEnabled = isEnabled; }
 
 	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss) 
@@ -78,7 +78,7 @@ private:
 	int m_openedOrderCount;
 	boost::mutex m_mut;
 
-	CArbitrageStrategy m_strategy;
+	boost::shared_ptr<CDiffStrategy> m_strategy;
 	bool m_strategyEnabled;
 	bool m_isAutoOpen;
 	bool m_isAutoStopGain;

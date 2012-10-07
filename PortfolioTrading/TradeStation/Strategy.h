@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 
 enum POSI_OPER
 {
@@ -67,6 +68,8 @@ public:
 	}
 
 	void TestFor(POSI_OPER posiOperation){ m_testingFor = DO_NOTHING; }
+
+	virtual void ApplySettings(const std::string& settingData) = 0;
 
 protected:
 	virtual CConditionChecker<T>& GetOpenPosiCond() = 0;

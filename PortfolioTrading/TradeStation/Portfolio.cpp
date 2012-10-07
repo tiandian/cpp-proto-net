@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "Portfolio.h"
 #include "PortfolioManager.h"
+#include "StrategyFactory.h"
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
@@ -71,6 +72,9 @@ void CPortfolio::SetItem( entity::PortfolioItem* pPortfItem )
 
 		AddLeg(nl);
 	}
+
+	boost::shared_ptr<CDiffStrategy> strategy(CreateStrategy(pPortfItem->strategyname(), pPortfItem->strategydata()));
+	m_strategy = strategy;
 }
 
 void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
@@ -109,7 +113,7 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 
 	if(m_strategyEnabled)
 	{
-		POSI_OPER poOp = m_strategy.Test(diff);
+		POSI_OPER poOp = m_strategy->Test(diff);
 		if(poOp == OPEN_POSI && m_isAutoOpen)
 		{
 			m_porfMgr->NotifyOpenPosition(this, Quantity());
@@ -162,14 +166,6 @@ int CPortfolio::NewOrderId(string& newId)
 
 void CPortfolio::ApplyStrategySetting( const string& name, const string& data )
 {
-	if(name == "ArbitrageStrategy")
-	{
-		entity::ArbitrageStrategySettings arbitrageSettings;
-		arbitrageSettings.ParseFromString(data);
-
-		m_strategy.SetOpenPosiCond(GREATER_EQUAL_THAN, arbitrageSettings.openposithreshold());
-		m_strategy.SetStopGainCond(GREATER_EQUAL_THAN, arbitrageSettings.stopgainthreshold());
-		m_strategy.SetStopLossCond(GREATER_EQUAL_THAN, arbitrageSettings.stoplossthreshold());
-	}
+	m_strategy->ApplySettings(data);
 }
 
