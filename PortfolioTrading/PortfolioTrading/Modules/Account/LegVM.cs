@@ -135,6 +135,11 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        internal void SetIsPreferred(bool val)
+        {
+            _isPreferred = val;
+        }
+
         #region IsPreferred
         private bool _isPreferred = false;
 

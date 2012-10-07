@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:utils="clr-namespace:PortfolioTrading.Utils"
         xmlns:local="clr-namespace:PortfolioTrading.Modules.Account"
+        xmlns:ctrls="clr-namespace:PortfolioTrading.Controls"
         Title="EditPortfolioDlg" Height="300" Width="300"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
@@ -35,8 +36,8 @@
             <DockPanel Margin="2">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <CheckBox Margin="2" IsChecked="{Binding Leg1}" Name="chkFirstLeg">第一腿</CheckBox>
-                    <RadioButton VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
-                                 IsChecked="{Binding PreferLeg1, Mode=TwoWay}">优先成交</RadioButton>
+                    <ctrls:RadioButtonExtended VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
+                                 IsCheckedReal="{Binding PreferLeg1, Mode=TwoWay}">优先成交</ctrls:RadioButtonExtended>
                 </StackPanel>
                 
                 <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
@@ -54,8 +55,8 @@
             <DockPanel Margin="2">
                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
                     <CheckBox Margin="2" IsChecked="{Binding Leg2}" Name="chkSecondLeg">第二腿</CheckBox>
-                    <RadioButton VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
-                                 IsChecked="{Binding PreferLeg2, Mode=TwoWay}">优先成交</RadioButton>
+                    <ctrls:RadioButtonExtended VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
+                                 IsCheckedReal="{Binding PreferLeg2, Mode=TwoWay}">优先成交</ctrls:RadioButtonExtended>
                 </StackPanel>
                 
                 <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkSecondLeg}">

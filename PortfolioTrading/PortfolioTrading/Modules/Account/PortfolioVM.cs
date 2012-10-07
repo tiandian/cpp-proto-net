@@ -36,6 +36,8 @@ namespace PortfolioTrading.Modules.Account
             get { return _accountVm.Id; }
         }
 
+        private bool IsLoading { get; set; }
+
         #region Id
         private string _id;
 
@@ -254,6 +256,8 @@ namespace PortfolioTrading.Modules.Account
         {
             if(this._accountVm.IsConnected)
                 this._accountVm.Host.PortfSetPreferredLeg(this.Id, leg.Name);
+
+            _accountVm.PublishChanged();
         }
 
         public int LegCount
@@ -277,7 +281,7 @@ namespace PortfolioTrading.Modules.Account
         public static PortfolioVM Load(AccountVM acct, XElement xmlElement)
         {
             PortfolioVM portf = new PortfolioVM(acct);
-
+            portf.IsLoading = true;
             XAttribute attr = xmlElement.Attribute("id");
             if (attr != null)
                 portf.Id = attr.Value;
@@ -311,12 +315,13 @@ namespace PortfolioTrading.Modules.Account
                 LegVM legVm = LegVM.Load(legElem);
                 portf.AddLeg(legVm);
             }
-
+            
             XElement xmlSetting = xmlElement.Element("setting");
             string strategyName = xmlSetting.Attribute("name").Value;
             string strategyXmlText = xmlSetting.Value;
 
             portf.StrategySetting = StrategySetting.Load(strategyName, strategyXmlText);
+            portf.IsLoading = false;
             return portf;
         }
 
@@ -409,8 +414,11 @@ namespace PortfolioTrading.Modules.Account
             {
                 //_accountVm.Host.PortfTurnSwitches(this.Id, IsRunning, AutoOpen, AutoStopGain, AutoStopLoss);
 
-                AccountVM.PublishChanged(_accountVm);
             }
+
+            if(!IsLoading)
+                _accountVm.PublishChanged();
+
         }
 
         public void ApplyStrategySettings()
@@ -418,7 +426,7 @@ namespace PortfolioTrading.Modules.Account
             //_accountVm.Host.PortfApplyStrategySettings(this.Id,
             //    StrategySetting.Name, StrategySetting.Serialize());
 
-            AccountVM.PublishChanged(_accountVm);
+            _accountVm.PublishChanged();
         }
 
     }
