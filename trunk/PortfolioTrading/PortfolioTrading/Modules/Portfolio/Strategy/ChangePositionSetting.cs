@@ -91,6 +91,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             entity.ChangePosiStrategySettings settings = new entity.ChangePosiStrategySettings();
             settings.CloseLeg = CloseLeg;
+            settings.TriggerCondition = (entity.CompareCondition)TriggerCondition;
             settings.Threshold = Threshold;
 
             return DataTranslater.Serialize<entity.ChangePosiStrategySettings>(settings);

@@ -166,8 +166,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             entity.ArbitrageStrategySettings entitySettings = new entity.ArbitrageStrategySettings();
             entitySettings.Side = Direction;
+            entitySettings.OpenCondition = (entity.CompareCondition)OpenCondition;
             entitySettings.OpenPosiThreshold = OpenThreshold;
+            entitySettings.StopGainCondition = (entity.CompareCondition)StopGainCondition;
             entitySettings.StopGainThreshold = StopGainThreshold;
+            entitySettings.StopLossCondition = (entity.CompareCondition)StopLossCondition;
             entitySettings.StopLossThreshold = StopLossThreshold;
             return DataTranslater.Serialize(entitySettings);
         }

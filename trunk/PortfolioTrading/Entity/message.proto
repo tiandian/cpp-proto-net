@@ -84,15 +84,19 @@ message LegOrderUpdateParam
 message ArbitrageStrategySettings
 {
 	required PosiDirectionType Side = 1;
-	optional double OpenPosiThreshold = 2;
-	optional double StopGainThreshold = 3;
-	optional double StopLossThreshold = 4;
+	required CompareCondition OpenCondition = 2;
+	required double OpenPosiThreshold = 3;
+	required CompareCondition StopGainCondition = 4;
+	required double StopGainThreshold = 5;
+	required CompareCondition StopLossCondition = 6;
+	required double StopLossThreshold = 7;
 }
 
 message ChangePosiStrategySettings
 {
 	required string CloseLeg = 1;
-	required double Threshold = 2;
+	required CompareCondition TriggerCondition = 2;
+	required double Threshold = 3;
 }
 
 message ModifyStrategyParam
