@@ -15,6 +15,8 @@ using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.ServiceLocation;
 using PortfolioTrading.Events;
 using PortfolioTrading.Modules.Portfolio.Strategy;
+using Infragistics.Windows.DataPresenter;
+using System.Windows;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -33,6 +35,7 @@ namespace PortfolioTrading.Modules.Account
         {
             AddPortfolioCommand = new DelegateCommand<AccountVM>(OnAddPortfolio);
             ConnectCommand = new DelegateCommand<AccountVM>(OnConnectHost);
+            RemovePortfolioCommand = new DelegateCommand<XamDataGrid>(OnRemovePortfolio);
 
             _host = new NativeHost();
 
@@ -161,6 +164,12 @@ namespace PortfolioTrading.Modules.Account
             private set;
         }
 
+        public ICommand RemovePortfolioCommand
+        {
+            get;
+            private set;
+        }
+
         public ICommand ConnectCommand
         {
             get;
@@ -194,8 +203,38 @@ namespace PortfolioTrading.Modules.Account
                 if(_client.IsConnected)
                     _client.AddPortf(portfolioItem);
 
-                PublishChanged(this);
+                PublishChanged();
             }
+        }
+
+        private void OnRemovePortfolio(XamDataGrid dataGrid)
+        {
+            if (dataGrid == null) return;
+
+            DataRecord dr = dataGrid.ActiveRecord as DataRecord;
+            if (dr != null)
+            {
+                PortfolioVM portfVm = dr.DataItem as PortfolioVM;
+                if (portfVm != null)
+                {
+                    MessageBoxResult res = MessageBox.Show(Application.Current.MainWindow,
+                        string.Format("删除帐户[{0}]的组合 {1}", portfVm.AccountId, portfVm.DisplayText),
+                        "删除确认", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if (res == MessageBoxResult.Yes)
+                    {
+                        _acctPortfolios.Remove(portfVm);
+                        if (_client.IsConnected)
+                            _client.RemovePortf(portfVm.Id);
+
+                        PublishChanged();
+                    }
+                }
+            }
+        }
+
+        private bool CanRemovePortfolio(XamDataGrid dataGrid)
+        {
+            return (dataGrid != null && dataGrid.ActiveRecord != null && dataGrid.ActiveRecord.IsDataRecord);
         }
 
         private void SyncToHost()
@@ -472,10 +511,9 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
         
-        public static void PublishChanged(AccountVM acct)
+        public void PublishChanged()
         {
-            IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
-            evtAgg.GetEvent<AccountChangedEvent>().Publish(acct);
+            EventAggregator.GetEvent<AccountChangedEvent>().Publish(this);
         }
 
         internal Client Host

@@ -118,7 +118,7 @@ namespace PortfolioTrading.Modules.Account
                 leg.Symbol = Symbol1;
                 leg.Side = Side1;
                 leg.Ratio = Ratio1;
-                leg.IsPreferred = PreferLeg1;
+                leg.SetIsPreferred(PreferLeg1);
             }
 
             if (Leg2)
@@ -262,7 +262,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region PreferLeg1
-        private bool _preferLeg1;
+        private bool _preferLeg1 = true;
 
         public bool PreferLeg1
         {
