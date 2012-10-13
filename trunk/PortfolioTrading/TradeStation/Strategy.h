@@ -1,6 +1,18 @@
 #pragma once
 
 #include <string>
+#include "../Entity/gen/cpp/message.pb.h"
+
+#define DOUBLE_COMPARSION_PRECISION (0.01)
+
+enum COMPARE_OP
+{
+	NOT_COMPARE,
+	GREATER_THAN,
+	GREATER_EQUAL_THAN,
+	LESS_THAN,
+	LESS_EQUAL_THAN
+};
 
 enum POSI_OPER
 {
@@ -8,6 +20,11 @@ enum POSI_OPER
 	OPEN_POSI, 
 	CLOSE_POSI
 };
+
+bool DoubleGreaterEqual(double a, double b);
+COMPARE_OP ConvertCompareCondition(entity::CompareCondition compareCond);
+
+
 template <typename T>
 class CConditionChecker
 {

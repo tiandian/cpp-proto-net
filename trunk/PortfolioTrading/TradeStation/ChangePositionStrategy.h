@@ -1,29 +1,19 @@
 #pragma once
-
 #include "DiffStrategy.h"
 
-class CArbitrageStrategy : public CDiffStrategy
+class CChangePositionStrategy : public CDiffStrategy
 {
 public:
-	CArbitrageStrategy(void);
-	~CArbitrageStrategy(void);
+	CChangePositionStrategy(void);
+	~CChangePositionStrategy(void);
+
+	std::string CloseLeg() const { return m_closeLeg; }
+	void CloseLeg(std::string val) { m_closeLeg = val; }
 
 	void SetOpenPosiCond(COMPARE_OP op, double targetVal)
 	{
 		m_openPosiChecker.Comparsion(op);
 		m_openPosiChecker.TargetVal(targetVal);
-	}
-
-	void SetStopGainCond(COMPARE_OP op, double targetVal)
-	{
-		m_stopGainChecker.Comparsion(op);
-		m_stopGainChecker.TargetVal(targetVal);
-	}
-
-	void SetStopLossCond(COMPARE_OP op, double targetVal)
-	{
-		m_stopLossChecker.Comparsion(op);
-		m_stopLossChecker.TargetVal(targetVal);
 	}
 
 	void ApplySettings(const std::string& settingData);
@@ -36,7 +26,10 @@ protected:
 
 private:
 	CValueChecker m_openPosiChecker;
-	CValueChecker m_stopGainChecker;
-	CValueChecker m_stopLossChecker;
+	CNonUseChecker m_stopGainChecker;
+	CNonUseChecker m_stopLossChecker;
+
+	std::string m_closeLeg;
+
 };
 
