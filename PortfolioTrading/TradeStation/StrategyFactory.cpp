@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "StrategyFactory.h"
 #include "ArbitrageStrategy.h"
+#include "ChangePositionStrategy.h"
 
 CDiffStrategy* CreateStrategy( const string& name, const string& data )
 {
@@ -9,9 +10,9 @@ CDiffStrategy* CreateStrategy( const string& name, const string& data )
 	{
 		pStrategy = new CArbitrageStrategy();
 	}
-	else if(name == "")
+	else if(name == "ChangePosition")
 	{
-
+		pStrategy = new CChangePositionStrategy();
 	}
 	
 	pStrategy->ApplySettings(data);
