@@ -2,6 +2,8 @@
 #include "Portfolio.h"
 #include "PortfolioManager.h"
 #include "StrategyFactory.h"
+#include "DiffStrategy.h"
+#include "globalmembers.h"
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
@@ -9,10 +11,7 @@
 CPortfolio::CPortfolio(void):
 m_porfMgr(NULL),
 m_openedOrderCount(0),
-m_strategyEnabled(false),
-m_isAutoOpen(false),
-m_isAutoStopGain(false),
-m_isAutoStopLoss(false)
+m_openOnce(true)
 {
 }
 
@@ -47,7 +46,7 @@ void CLeg::SetInnerItem(entity::LegItem* pItem)
 	m_pInnerItem = pItem;
 }
 
-void CPortfolio::SetItem( entity::PortfolioItem* pPortfItem )
+void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem )
 {
 	m_innerItem = PortfItemPtr(pPortfItem);
 	
@@ -74,6 +73,8 @@ void CPortfolio::SetItem( entity::PortfolioItem* pPortfItem )
 	}
 
 	boost::shared_ptr<CDiffStrategy> strategy(CreateStrategy(pPortfItem->strategyname(), pPortfItem->strategydata()));
+	strategy->Client(pClient);
+	strategy->Portfolio(this);
 	m_strategy = strategy;
 }
 
@@ -111,25 +112,15 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 
 	m_innerItem->set_diff(diff);
 
-	if(m_strategyEnabled)
+	POSI_OPER strategyOperation = m_strategy->Test(diff);
+	logger.Info(boost::str(boost::format("Portfolio (%s) %s") % ID() % StrategyOpertaionText(strategyOperation)));
+
+	if(m_openOnce)
 	{
-		POSI_OPER poOp = m_strategy->Test(diff);
-		if(poOp == OPEN_POSI && m_isAutoOpen)
-		{
-			m_porfMgr->NotifyOpenPosition(this, Quantity());
-		}
-		else if(poOp == CLOSE_POSI)
-		{
-			if(m_isAutoStopGain)
-			{
-
-			}
-			else if(m_isAutoStopLoss)
-			{
-
-			}
-		}
+		POSI_OPER oper = NextOperation(strategyOperation);
+		m_strategy->TestFor(oper);
 	}
+	
 	PushUpdate();
 }
 
@@ -167,5 +158,29 @@ int CPortfolio::NewOrderId(string& newId)
 void CPortfolio::ApplyStrategySetting( const string& name, const string& data )
 {
 	m_strategy->ApplySettings(data);
+}
+
+CPortfolio* CPortfolio::Create( CClientAgent* pClient, entity::PortfolioItem* pPortfItem )
+{
+	CPortfolio* pPortf = new CPortfolio();
+	pPortf->SetItem(pClient, pPortfItem);
+	return pPortf;
+}
+
+void CPortfolio::TurnSwitches( bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss )
+{
+	m_strategy->SetAutoOpen(isAutoOpen);
+	m_strategy->SetStopGain(isAutoStopGain);
+	m_strategy->SetStopLoss(isAutoStopLoss);
+}
+
+void CPortfolio::EnableStrategy( bool isEnabled )
+{
+	if(isEnabled)
+	{
+		m_strategy->Start();
+	}
+	else
+		m_strategy->Stop();
 }
 

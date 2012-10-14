@@ -28,7 +28,7 @@ CClientAgent::~CClientAgent(void)
 void CClientAgent::Add( entity::PortfolioItem* portfolioItem )
 {
 	// let CPortfolio wrap and hold entity::PortfolioItem instance
-	CPortfolio* pPortf = CPortfolio::Create(portfolioItem); 
+	CPortfolio* pPortf = CPortfolio::Create(this, portfolioItem); 
 	m_portfolioMgr.Add(pPortf);
 }
 
@@ -209,10 +209,13 @@ void CClientAgent::TurnPortfSwitches( const entity::ModifyPortfolioSwitchParam& 
 	if(portf != NULL)
 	{
 		bool isEnabled = switchesParam.enabled();
-		portf->EnableStrategy(isEnabled);
 		if(isEnabled)
+		{
 			portf->TurnSwitches(switchesParam.autoopen(),
-			switchesParam.autostopgain(), switchesParam.autostoploss());
+				switchesParam.autostopgain(), switchesParam.autostoploss());
+		}
+		
+		portf->EnableStrategy(isEnabled);
 	}
 }
 

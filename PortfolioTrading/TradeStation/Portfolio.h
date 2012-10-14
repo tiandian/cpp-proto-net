@@ -2,7 +2,6 @@
 
 #include "QuoteListener.h"
 #include "../Entity/gen/cpp/message.pb.h"
-#include "DiffStrategy.h"
 
 #include <string>
 #include <vector>
@@ -13,6 +12,8 @@ using namespace std;
 
 class CLeg;
 class CPortfolioManager;
+class CClientAgent;
+class CDiffStrategy;
 
 typedef boost::shared_ptr<entity::PortfolioItem> PortfItemPtr;
 typedef boost::shared_ptr<CLeg> LegPtr;
@@ -24,12 +25,7 @@ class CPortfolio : public CQuoteListener
 public:
 	~CPortfolio(void);
 
-	static CPortfolio* Create(entity::PortfolioItem* pPortfItem)
-	{
-		CPortfolio* pPortf = new CPortfolio();
-		pPortf->SetItem(pPortfItem);
-		return pPortf;
-	}
+	static CPortfolio* Create(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
 	void SetManager(CPortfolioManager* parentMgr);
 
@@ -55,18 +51,13 @@ public:
 
 	CDiffStrategy* Strategy(){ return m_strategy.get(); }
 	
-	void EnableStrategy(bool isEnabled) { m_strategyEnabled = isEnabled; }
+	void EnableStrategy(bool isEnabled);
 
-	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss) 
-	{
-		m_isAutoOpen = isAutoOpen;
-		m_isAutoStopGain = isAutoStopGain;
-		m_isAutoStopLoss = isAutoStopLoss;
-	}
+	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss);
 	void ApplyStrategySetting(const string& name, const string& data);
 
 private:
-	void SetItem(entity::PortfolioItem* pPortfItem);
+	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
 	void PushUpdate();
 
@@ -79,11 +70,8 @@ private:
 	boost::mutex m_mut;
 
 	boost::shared_ptr<CDiffStrategy> m_strategy;
-	bool m_strategyEnabled;
-	bool m_isAutoOpen;
-	bool m_isAutoStopGain;
-	bool m_isAutoStopLoss;
 		
+	bool m_openOnce;
 };
 
 class CLeg

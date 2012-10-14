@@ -37,6 +37,8 @@ public:
 	void TurnPortfSwitches(const entity::ModifyPortfolioSwitchParam& switchesParam);
 	void ApplyStrategySetting(const entity::ModifyStrategyParam& settings);
 
+	void OpenPosition(CPortfolio* portf, int qty);
+
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);
 	void OnMultiLegOrderUpdated(trade::MultiLegOrder* order);
@@ -61,7 +63,6 @@ private:
 
 	void SetClientStatus(bool connected) { m_clientConnected = connected; }
 
-	void OpenPosition(CPortfolio* portf, int qty);
 
 	CQuoteAgent			m_quoteAgent;
 	CQuoteAggregator	m_quoteAggregator;
