@@ -184,3 +184,21 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 		m_strategy->Stop();
 }
 
+void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
+{
+	const string& mOrderId = openOrder->orderid();
+
+	m_openedPosition.insert(make_pair(mOrderId, openOrder));
+}
+
+void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
+{
+	const string& mOrderId = closeOrder->openorderid();
+
+	map<string, MultiLegOrderPtr>::iterator iter = m_openedPosition.find(mOrderId);
+	if(iter != m_openedPosition.end())
+	{
+		m_openedPosition.erase(iter);
+	}
+}
+

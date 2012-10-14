@@ -2,9 +2,11 @@
 
 #include "QuoteListener.h"
 #include "../Entity/gen/cpp/message.pb.h"
+#include "multilegorderptr.h"
 
 #include <string>
 #include <vector>
+#include <map>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
 
@@ -56,6 +58,9 @@ public:
 	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss);
 	void ApplyStrategySetting(const string& name, const string& data);
 
+	void AddPosition(const MultiLegOrderPtr& openOrder);
+	void RemovePosition(const MultiLegOrderPtr& closeOrder);
+
 private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
@@ -63,6 +68,7 @@ private:
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;
+	map<string, MultiLegOrderPtr> m_openedPosition;
 
 	CPortfolioManager* m_porfMgr;
 

@@ -132,6 +132,9 @@
     <ClInclude Include="ChangePositionStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="multilegorderptr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

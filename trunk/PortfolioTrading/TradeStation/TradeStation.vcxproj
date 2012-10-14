@@ -106,6 +106,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="globalmembers.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
+    <ClInclude Include="multilegorderptr.h" />
     <ClInclude Include="PortfolioOrderHelper.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="ManualOrderPlacer.h" />

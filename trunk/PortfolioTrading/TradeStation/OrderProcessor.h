@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Entity/gen/cpp/trade.pb.h"
 #include "TradeAgentCallback.h"
 #include "TradeAgent.h"
+#include "multilegorderptr.h"
 
 #include <string>
 #include <map>
@@ -12,10 +12,10 @@
 
 using namespace std;
 
-typedef boost::shared_ptr<trade::MultiLegOrder> MultiLegOrderPtr;
 typedef boost::function<void(trade::MultiLegOrder*)> PushMultiLegOrderFunc;
 typedef boost::function<void( const string&, const string&, trade::Order* legOrd)> PushLegOrderFunc;
 typedef boost::function<void(trade::Trade*)> PushTradeFunc;
+typedef boost::function<void(const MultiLegOrderPtr&)> PushPortfolioPositionChangeFunc;
 
 class COrderProcessor : public CTradeAgentCallback
 {
@@ -99,6 +99,19 @@ public:
 		m_pushTradeFunc = funcPushTrade;
 	}
 
+	void OnPortfolioPositionChanged(const MultiLegOrderPtr& multilegOrder)
+	{
+		if(!m_pushPortfPosiChangeFunc.empty())
+		{
+			m_pushPortfPosiChangeFunc(multilegOrder);
+		}
+	}
+
+	void SetPushPositionChangeFunc(PushPortfolioPositionChangeFunc funcPushPosiChange)
+	{
+		m_pushPortfPosiChangeFunc = funcPushPosiChange;
+	}
+
 private:
 	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
 	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
@@ -114,6 +127,7 @@ private:
 	PushMultiLegOrderFunc m_pushMultiOrdFunc;
 	PushLegOrderFunc m_pushLegOrderFunc;
 	PushTradeFunc m_pushTradeFunc;
+	PushPortfolioPositionChangeFunc m_pushPortfPosiChangeFunc;
 
 	int m_maxOrderRef;
 	boost::mutex m_mutOrdRefIncr;
