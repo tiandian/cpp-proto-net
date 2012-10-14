@@ -37,3 +37,20 @@ void CPortfolioManager::Remove( const string& portfId )
 {
 	m_mapPortfolios.erase(portfId);
 }
+
+void CPortfolioManager::PortfolioPositionChange( const MultiLegOrderPtr& multiLegOrder )
+{
+	CPortfolio* pPortf = Get(multiLegOrder->portfolioid());
+	if(pPortf != NULL)
+	{
+		if(multiLegOrder->orderid() == multiLegOrder->openorderid())
+		{
+			// the order is to open position
+			pPortf->AddPosition(multiLegOrder);
+		}
+		else
+		{
+			pPortf->RemovePosition(multiLegOrder);
+		}
+	}
+}

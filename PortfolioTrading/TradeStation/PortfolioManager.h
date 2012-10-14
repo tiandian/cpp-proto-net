@@ -2,6 +2,7 @@
 
 #include "Portfolio.h"
 #include "QuoteAggregator.h"
+#include "multilegorderptr.h"
 
 #include <string>
 #include <map>
@@ -31,6 +32,8 @@ public:
 	void Add(CPortfolio* portfolio);
 	CPortfolio* Get(const string& portfId);
 	void Remove(const string& portfId);
+
+	void PortfolioPositionChange(const MultiLegOrderPtr& multiLegOrder);
 
 	void PublishPortfolioUpdate(entity::PortfolioItem* pPortfolio)
 	{

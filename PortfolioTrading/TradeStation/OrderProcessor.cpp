@@ -163,6 +163,7 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 			if(IsMultiLegOrderDone(mlOrder.get()))
 			{
 				RemoveFromPending(mlOrder.get());
+				OnPortfolioPositionChanged(mlOrder);
 			}
 		}
 	}
