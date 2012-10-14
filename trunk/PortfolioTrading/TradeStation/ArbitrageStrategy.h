@@ -34,6 +34,10 @@ protected:
 	CConditionChecker<double>& GetStopGainCond(){ return m_stopGainChecker; }
 	CConditionChecker<double>& GetStopLossCond(){ return m_stopLossChecker; }
 
+	void DoOpenPostion();
+	void DoStopGain(){}
+	void DoStopLoss(){}
+
 private:
 	CValueChecker m_openPosiChecker;
 	CValueChecker m_stopGainChecker;
