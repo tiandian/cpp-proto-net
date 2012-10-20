@@ -8,6 +8,65 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
+enum DIFF_TYPE 
+{
+	LAST_DIFF, LONG_DIFF, SHORT_DIFF
+};
+
+double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType)
+{
+	// calculate the diff
+	double diff = 0;
+	for(vector<LegPtr>::iterator iter = legs.begin(); iter != legs.end(); ++iter)
+	{
+		entity::PosiDirectionType legSide = (*iter)->Side();
+		double legPrice = 0;
+		if(legSide == entity::LONG)
+		{
+			switch(diffType)
+			{
+			case LONG_DIFF:
+				legPrice = (*iter)->Ask();
+				break;
+			case SHORT_DIFF:
+				legPrice = (*iter)->Bid();
+				break;
+			case LAST_DIFF:
+			default:
+				legPrice = (*iter)->Last();
+			}
+		}
+		else if(legPrice == entity::SHORT)
+		{
+			switch(diffType)
+			{
+			case LONG_DIFF:
+				legPrice = (*iter)->Bid();
+				break;
+			case SHORT_DIFF:
+				legPrice = (*iter)->Ask();
+				break;
+			case LAST_DIFF:
+			default:
+				legPrice = (*iter)->Last();
+			}
+		}
+
+		if(legPrice > 0)
+		{
+			if((*iter)->Side() == entity::LONG)
+			{
+				diff +=	legPrice;
+			}
+			else
+				diff -= legPrice;
+		}
+		else	// if one of legs has no price, set diff 0 anyway
+			diff = 0;
+	}
+	return diff;
+}
+
 CPortfolio::CPortfolio(void):
 m_porfMgr(NULL),
 m_openedOrderCount(0),
@@ -75,7 +134,32 @@ void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfIte
 	boost::shared_ptr<CDiffStrategy> strategy(CreateStrategy(pPortfItem->strategyname(), pPortfItem->strategydata()));
 	strategy->Client(pClient);
 	strategy->Portfolio(this);
+	strategy->SetAutoOpen(pPortfItem->autoopen());
+	strategy->SetStopGain(pPortfItem->autostopgain());
+	strategy->SetStopLoss(pPortfItem->autostoploss());
 	m_strategy = strategy;
+}
+
+double CalcDiff(vector<LegPtr>& legs)
+{
+	// calculate the diff
+	double diff = 0;
+	for(vector<LegPtr>::iterator iter = legs.begin(); iter != legs.end(); ++iter)
+	{
+		double legPrice = (*iter)->Last();
+		if(legPrice > 0)
+		{
+			if((*iter)->Side() == entity::LONG)
+			{
+				diff +=	legPrice;
+			}
+			else
+				diff -= legPrice;
+		}
+		else	// if one of legs has no price, set diff 0 anyway
+			diff = 0;
+	}
+	return diff;
 }
 
 void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
@@ -91,35 +175,14 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 			break;
 		}
 	}
+	double lastDiff = CalcDiff(m_vecLegs, LAST_DIFF);
+	m_innerItem->set_diff(lastDiff);
+	double longDiff = CalcDiff(m_vecLegs, LONG_DIFF);
+	m_innerItem->set_longdiff(longDiff);
+	double shortDiff = CalcDiff(m_vecLegs, SHORT_DIFF);
+	m_innerItem->set_shortdiff(shortDiff);
 
-	// calculate the diff
-	double diff = 0;
-	for(vector<LegPtr>::iterator iter = m_vecLegs.begin(); iter != m_vecLegs.end(); ++iter)
-	{
-		double legPrice = (*iter)->Last();
-		if(legPrice > 0)
-		{
-			if((*iter)->Side() == entity::LONG)
-			{
-				diff +=	legPrice;
-			}
-			else
-				diff -= legPrice;
-		}
-		else	// if one of legs has no price, set diff 0 anyway
-			diff = 0;
-	}
-
-	m_innerItem->set_diff(diff);
-
-	POSI_OPER strategyOperation = m_strategy->Test(diff);
-	logger.Debug(boost::str(boost::format("Portfolio (%s) %s") % ID() % StrategyOpertaionText(strategyOperation)));
-
-	if(m_openOnce && strategyOperation != DO_NOTHING)
-	{
-		POSI_OPER oper = NextOperation(strategyOperation);
-		m_strategy->TestFor(oper);
-	}
+	m_strategy->Test(lastDiff);
 	
 	PushUpdate();
 }
@@ -192,6 +255,7 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 		logger.Info(boost::str(boost::format("Portf (%s) STOP strategy <<<") % ID().c_str()));
 		m_strategy->Stop();
 	}
+	m_innerItem->set_strategyrunning(isEnabled);
 }
 
 void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )

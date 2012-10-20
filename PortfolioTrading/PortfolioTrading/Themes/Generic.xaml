@@ -98,6 +98,10 @@
             <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0">
                 <TextBlock >差价:</TextBlock>
                 <TextBlock Text="{Binding Diff}" Width="60"></TextBlock>
+                <TextBlock >多差:</TextBlock>
+                <TextBlock Text="{Binding LongDiff}"></TextBlock>
+                <TextBlock >空差:</TextBlock>
+                <TextBlock Text="{Binding ShortDiff}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
                 <TextBlock>止盈:</TextBlock>

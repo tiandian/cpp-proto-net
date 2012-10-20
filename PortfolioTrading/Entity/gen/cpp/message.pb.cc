@@ -62,6 +62,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ModifyPortfolioSwitchParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModifyPortfolioSwitchParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ModifyRunningStatusParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ModifyRunningStatusParam_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ModifyPortfolioPreferredLegParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModifyPortfolioPreferredLegParam_reflection_ = NULL;
@@ -128,15 +131,19 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegItem));
   PortfolioItem_descriptor_ = file->message_type(3);
-  static const int PortfolioItem_offsets_[8] = {
+  static const int PortfolioItem_offsets_[12] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, quantity_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, diff_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, longdiff_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, shortdiff_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autoopen_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autoclose_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autostopgain_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autostoploss_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, legs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategyname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategydata_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategyrunning_),
   };
   PortfolioItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -319,9 +326,8 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyStrategyParam));
   ModifyPortfolioSwitchParam_descriptor_ = file->message_type(14);
-  static const int ModifyPortfolioSwitchParam_offsets_[5] = {
+  static const int ModifyPortfolioSwitchParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, portfid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, enabled_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autoopen_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autostopgain_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autostoploss_),
@@ -337,7 +343,23 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioSwitchParam));
-  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(15);
+  ModifyRunningStatusParam_descriptor_ = file->message_type(15);
+  static const int ModifyRunningStatusParam_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, portfid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, enabled_),
+  };
+  ModifyRunningStatusParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ModifyRunningStatusParam_descriptor_,
+      ModifyRunningStatusParam::default_instance_,
+      ModifyRunningStatusParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ModifyRunningStatusParam));
+  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(16);
   static const int ModifyPortfolioPreferredLegParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, legsymbol_),
@@ -396,6 +418,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyPortfolioSwitchParam_descriptor_, &ModifyPortfolioSwitchParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ModifyRunningStatusParam_descriptor_, &ModifyRunningStatusParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyPortfolioPreferredLegParam_descriptor_, &ModifyPortfolioPreferredLegParam::default_instance());
 }
 
@@ -432,6 +456,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ModifyStrategyParam_reflection_;
   delete ModifyPortfolioSwitchParam::default_instance_;
   delete ModifyPortfolioSwitchParam_reflection_;
+  delete ModifyRunningStatusParam::default_instance_;
+  delete ModifyRunningStatusParam_reflection_;
   delete ModifyPortfolioPreferredLegParam::default_instance_;
   delete ModifyPortfolioPreferredLegParam_reflection_;
 }
@@ -452,41 +478,44 @@ void protobuf_AddDesc_message_2eproto() {
     "2\031.entity.PosiDirectionType\022!\n\006Status\030\004 "
     "\002(\0162\021.entity.LegStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003"
     "Ask\030\006 \002(\001\022\013\n\003Bid\030\007 \002(\001\022\023\n\013IsPreferred\030\010 "
-    "\002(\010\"\253\001\n\rPortfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Qua"
-    "ntity\030\002 \002(\005\022\014\n\004Diff\030\003 \002(\001\022\020\n\010AutoOpen\030\004 "
-    "\002(\010\022\021\n\tAutoClose\030\005 \002(\010\022\035\n\004Legs\030\006 \003(\0132\017.e"
-    "ntity.LegItem\022\024\n\014StrategyName\030\007 \002(\t\022\024\n\014S"
-    "trategyData\030\010 \002(\014\":\n\014ConnectParam\022\024\n\014Quo"
-    "teAddress\030\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n"
-    "\017OperationReturn\022\017\n\007Success\030\001 \002(\010\022\024\n\014Err"
-    "orMessage\030\002 \002(\t\"@\n\nLoginParam\022\020\n\010BrokerI"
-    "d\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Password\030\003 \002("
-    "\t\" \n\rRegQuoteParam\022\017\n\007Symbols\030\001 \003(\t\"6\n\021P"
-    "orfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Qua"
-    "ntity\030\002 \002(\005\"T\n\022ClosePositionParam\022+\n\rMul"
-    "tiLegOrder\030\001 \002(\0132\024.trade.MultiLegOrder\022\021"
-    "\n\tLegOrdRef\030\002 \001(\t\"t\n\023LegOrderUpdateParam"
-    "\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017MultiLegOrderId\030\002 \002"
-    "(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036\n\010LegOrder\030\004 \002("
-    "\0132\014.trade.Order\"\260\002\n\031ArbitrageStrategySet"
-    "tings\022\'\n\004Side\030\001 \002(\0162\031.entity.PosiDirecti"
-    "onType\022/\n\rOpenCondition\030\002 \002(\0162\030.entity.C"
-    "ompareCondition\022\031\n\021OpenPosiThreshold\030\003 \002"
-    "(\001\0223\n\021StopGainCondition\030\004 \002(\0162\030.entity.C"
-    "ompareCondition\022\031\n\021StopGainThreshold\030\005 \002"
-    "(\001\0223\n\021StopLossCondition\030\006 \002(\0162\030.entity.C"
-    "ompareCondition\022\031\n\021StopLossThreshold\030\007 \002"
-    "(\001\"u\n\032ChangePosiStrategySettings\022\020\n\010Clos"
-    "eLeg\030\001 \002(\t\0222\n\020TriggerCondition\030\002 \002(\0162\030.e"
-    "ntity.CompareCondition\022\021\n\tThreshold\030\003 \002("
-    "\001\"R\n\023ModifyStrategyParam\022\017\n\007PortfId\030\001 \002("
-    "\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n\014StrategyData\030"
-    "\003 \002(\014\"|\n\032ModifyPortfolioSwitchParam\022\017\n\007P"
-    "ortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\022\020\n\010AutoOpe"
-    "n\030\003 \002(\010\022\024\n\014AutoStopGain\030\004 \002(\010\022\024\n\014AutoSto"
-    "pLoss\030\005 \002(\010\"F\n ModifyPortfolioPreferredL"
-    "egParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 "
-    "\002(\t", 1643);
+    "\002(\010\"\202\002\n\rPortfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Qua"
+    "ntity\030\002 \002(\005\022\014\n\004Diff\030\003 \002(\001\022\020\n\010LongDiff\030\004 "
+    "\002(\001\022\021\n\tShortDiff\030\005 \002(\001\022\020\n\010AutoOpen\030\006 \002(\010"
+    "\022\024\n\014AutoStopGain\030\007 \002(\010\022\024\n\014AutoStopLoss\030\010"
+    " \002(\010\022\035\n\004Legs\030\t \003(\0132\017.entity.LegItem\022\024\n\014S"
+    "trategyName\030\n \002(\t\022\024\n\014StrategyData\030\013 \002(\014\022"
+    "\027\n\017StrategyRunning\030\014 \002(\010\":\n\014ConnectParam"
+    "\022\024\n\014QuoteAddress\030\001 \002(\t\022\024\n\014StreamFolder\030\002"
+    " \002(\t\"8\n\017OperationReturn\022\017\n\007Success\030\001 \002(\010"
+    "\022\024\n\014ErrorMessage\030\002 \002(\t\"@\n\nLoginParam\022\020\n\010"
+    "BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Passwo"
+    "rd\030\003 \002(\t\" \n\rRegQuoteParam\022\017\n\007Symbols\030\001 \003"
+    "(\t\"6\n\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t"
+    "\022\020\n\010Quantity\030\002 \002(\005\"T\n\022ClosePositionParam"
+    "\022+\n\rMultiLegOrder\030\001 \002(\0132\024.trade.MultiLeg"
+    "Order\022\021\n\tLegOrdRef\030\002 \001(\t\"t\n\023LegOrderUpda"
+    "teParam\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017MultiLegOrde"
+    "rId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036\n\010LegOrd"
+    "er\030\004 \002(\0132\014.trade.Order\"\260\002\n\031ArbitrageStra"
+    "tegySettings\022\'\n\004Side\030\001 \002(\0162\031.entity.Posi"
+    "DirectionType\022/\n\rOpenCondition\030\002 \002(\0162\030.e"
+    "ntity.CompareCondition\022\031\n\021OpenPosiThresh"
+    "old\030\003 \002(\001\0223\n\021StopGainCondition\030\004 \002(\0162\030.e"
+    "ntity.CompareCondition\022\031\n\021StopGainThresh"
+    "old\030\005 \002(\001\0223\n\021StopLossCondition\030\006 \002(\0162\030.e"
+    "ntity.CompareCondition\022\031\n\021StopLossThresh"
+    "old\030\007 \002(\001\"u\n\032ChangePosiStrategySettings\022"
+    "\020\n\010CloseLeg\030\001 \002(\t\0222\n\020TriggerCondition\030\002 "
+    "\002(\0162\030.entity.CompareCondition\022\021\n\tThresho"
+    "ld\030\003 \002(\001\"R\n\023ModifyStrategyParam\022\017\n\007Portf"
+    "Id\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n\014Strate"
+    "gyData\030\003 \002(\014\"k\n\032ModifyPortfolioSwitchPar"
+    "am\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024\n"
+    "\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStopLoss\030\004 \002("
+    "\010\"<\n\030ModifyRunningStatusParam\022\017\n\007PortfId"
+    "\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n ModifyPortfol"
+    "ioPreferredLegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\t"
+    "LegSymbol\030\002 \002(\t", 1775);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -504,6 +533,7 @@ void protobuf_AddDesc_message_2eproto() {
   ChangePosiStrategySettings::default_instance_ = new ChangePosiStrategySettings();
   ModifyStrategyParam::default_instance_ = new ModifyStrategyParam();
   ModifyPortfolioSwitchParam::default_instance_ = new ModifyPortfolioSwitchParam();
+  ModifyRunningStatusParam::default_instance_ = new ModifyRunningStatusParam();
   ModifyPortfolioPreferredLegParam::default_instance_ = new ModifyPortfolioPreferredLegParam();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
@@ -520,6 +550,7 @@ void protobuf_AddDesc_message_2eproto() {
   ChangePosiStrategySettings::default_instance_->InitAsDefaultInstance();
   ModifyStrategyParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioSwitchParam::default_instance_->InitAsDefaultInstance();
+  ModifyRunningStatusParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioPreferredLegParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
@@ -1480,11 +1511,15 @@ void LegItem::Swap(LegItem* other) {
 const int PortfolioItem::kIDFieldNumber;
 const int PortfolioItem::kQuantityFieldNumber;
 const int PortfolioItem::kDiffFieldNumber;
+const int PortfolioItem::kLongDiffFieldNumber;
+const int PortfolioItem::kShortDiffFieldNumber;
 const int PortfolioItem::kAutoOpenFieldNumber;
-const int PortfolioItem::kAutoCloseFieldNumber;
+const int PortfolioItem::kAutoStopGainFieldNumber;
+const int PortfolioItem::kAutoStopLossFieldNumber;
 const int PortfolioItem::kLegsFieldNumber;
 const int PortfolioItem::kStrategyNameFieldNumber;
 const int PortfolioItem::kStrategyDataFieldNumber;
+const int PortfolioItem::kStrategyRunningFieldNumber;
 #endif  // !_MSC_VER
 
 PortfolioItem::PortfolioItem()
@@ -1506,10 +1541,14 @@ void PortfolioItem::SharedCtor() {
   id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   quantity_ = 0;
   diff_ = 0;
+  longdiff_ = 0;
+  shortdiff_ = 0;
   autoopen_ = false;
-  autoclose_ = false;
+  autostopgain_ = false;
+  autostoploss_ = false;
   strategyname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   strategydata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  strategyrunning_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1560,8 +1599,13 @@ void PortfolioItem::Clear() {
     }
     quantity_ = 0;
     diff_ = 0;
+    longdiff_ = 0;
+    shortdiff_ = 0;
     autoopen_ = false;
-    autoclose_ = false;
+    autostopgain_ = false;
+    autostoploss_ = false;
+  }
+  if (_has_bits_[9 / 32] & (0xffu << (9 % 32))) {
     if (has_strategyname()) {
       if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
         strategyname_->clear();
@@ -1572,6 +1616,7 @@ void PortfolioItem::Clear() {
         strategydata_->clear();
       }
     }
+    strategyrunning_ = false;
   }
   legs_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1628,12 +1673,44 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_AutoOpen;
+        if (input->ExpectTag(33)) goto parse_LongDiff;
         break;
       }
       
-      // required bool AutoOpen = 4;
+      // required double LongDiff = 4;
       case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_LongDiff:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &longdiff_)));
+          set_has_longdiff();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(41)) goto parse_ShortDiff;
+        break;
+      }
+      
+      // required double ShortDiff = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_ShortDiff:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &shortdiff_)));
+          set_has_shortdiff();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(48)) goto parse_AutoOpen;
+        break;
+      }
+      
+      // required bool AutoOpen = 6;
+      case 6: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_AutoOpen:
@@ -1644,28 +1721,44 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_AutoClose;
+        if (input->ExpectTag(56)) goto parse_AutoStopGain;
         break;
       }
       
-      // required bool AutoClose = 5;
-      case 5: {
+      // required bool AutoStopGain = 7;
+      case 7: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_AutoClose:
+         parse_AutoStopGain:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &autoclose_)));
-          set_has_autoclose();
+                 input, &autostopgain_)));
+          set_has_autostopgain();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_Legs;
+        if (input->ExpectTag(64)) goto parse_AutoStopLoss;
         break;
       }
       
-      // repeated .entity.LegItem Legs = 6;
-      case 6: {
+      // required bool AutoStopLoss = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_AutoStopLoss:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &autostoploss_)));
+          set_has_autostoploss();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(74)) goto parse_Legs;
+        break;
+      }
+      
+      // repeated .entity.LegItem Legs = 9;
+      case 9: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_Legs:
@@ -1674,13 +1767,13 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(50)) goto parse_Legs;
-        if (input->ExpectTag(58)) goto parse_StrategyName;
+        if (input->ExpectTag(74)) goto parse_Legs;
+        if (input->ExpectTag(82)) goto parse_StrategyName;
         break;
       }
       
-      // required string StrategyName = 7;
-      case 7: {
+      // required string StrategyName = 10;
+      case 10: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_StrategyName:
@@ -1692,17 +1785,33 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(66)) goto parse_StrategyData;
+        if (input->ExpectTag(90)) goto parse_StrategyData;
         break;
       }
       
-      // required bytes StrategyData = 8;
-      case 8: {
+      // required bytes StrategyData = 11;
+      case 11: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_StrategyData:
           DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
                 input, this->mutable_strategydata()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(96)) goto parse_StrategyRunning;
+        break;
+      }
+      
+      // required bool StrategyRunning = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_StrategyRunning:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &strategyrunning_)));
+          set_has_strategyrunning();
         } else {
           goto handle_uninterpreted;
         }
@@ -1747,35 +1856,55 @@ void PortfolioItem::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->diff(), output);
   }
   
-  // required bool AutoOpen = 4;
+  // required double LongDiff = 4;
+  if (has_longdiff()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->longdiff(), output);
+  }
+  
+  // required double ShortDiff = 5;
+  if (has_shortdiff()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->shortdiff(), output);
+  }
+  
+  // required bool AutoOpen = 6;
   if (has_autoopen()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->autoopen(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->autoopen(), output);
   }
   
-  // required bool AutoClose = 5;
-  if (has_autoclose()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->autoclose(), output);
+  // required bool AutoStopGain = 7;
+  if (has_autostopgain()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(7, this->autostopgain(), output);
   }
   
-  // repeated .entity.LegItem Legs = 6;
+  // required bool AutoStopLoss = 8;
+  if (has_autostoploss()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(8, this->autostoploss(), output);
+  }
+  
+  // repeated .entity.LegItem Legs = 9;
   for (int i = 0; i < this->legs_size(); i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      6, this->legs(i), output);
+      9, this->legs(i), output);
   }
   
-  // required string StrategyName = 7;
+  // required string StrategyName = 10;
   if (has_strategyname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->strategyname().data(), this->strategyname().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      7, this->strategyname(), output);
+      10, this->strategyname(), output);
   }
   
-  // required bytes StrategyData = 8;
+  // required bytes StrategyData = 11;
   if (has_strategydata()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      8, this->strategydata(), output);
+      11, this->strategydata(), output);
+  }
+  
+  // required bool StrategyRunning = 12;
+  if (has_strategyrunning()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(12, this->strategyrunning(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -1806,38 +1935,58 @@ void PortfolioItem::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->diff(), target);
   }
   
-  // required bool AutoOpen = 4;
+  // required double LongDiff = 4;
+  if (has_longdiff()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->longdiff(), target);
+  }
+  
+  // required double ShortDiff = 5;
+  if (has_shortdiff()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->shortdiff(), target);
+  }
+  
+  // required bool AutoOpen = 6;
   if (has_autoopen()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->autoopen(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->autoopen(), target);
   }
   
-  // required bool AutoClose = 5;
-  if (has_autoclose()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->autoclose(), target);
+  // required bool AutoStopGain = 7;
+  if (has_autostopgain()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(7, this->autostopgain(), target);
   }
   
-  // repeated .entity.LegItem Legs = 6;
+  // required bool AutoStopLoss = 8;
+  if (has_autostoploss()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(8, this->autostoploss(), target);
+  }
+  
+  // repeated .entity.LegItem Legs = 9;
   for (int i = 0; i < this->legs_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        6, this->legs(i), target);
+        9, this->legs(i), target);
   }
   
-  // required string StrategyName = 7;
+  // required string StrategyName = 10;
   if (has_strategyname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->strategyname().data(), this->strategyname().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        7, this->strategyname(), target);
+        10, this->strategyname(), target);
   }
   
-  // required bytes StrategyData = 8;
+  // required bytes StrategyData = 11;
   if (has_strategydata()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        8, this->strategydata(), target);
+        11, this->strategydata(), target);
+  }
+  
+  // required bool StrategyRunning = 12;
+  if (has_strategyrunning()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(12, this->strategyrunning(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -1870,32 +2019,54 @@ int PortfolioItem::ByteSize() const {
       total_size += 1 + 8;
     }
     
-    // required bool AutoOpen = 4;
+    // required double LongDiff = 4;
+    if (has_longdiff()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double ShortDiff = 5;
+    if (has_shortdiff()) {
+      total_size += 1 + 8;
+    }
+    
+    // required bool AutoOpen = 6;
     if (has_autoopen()) {
       total_size += 1 + 1;
     }
     
-    // required bool AutoClose = 5;
-    if (has_autoclose()) {
+    // required bool AutoStopGain = 7;
+    if (has_autostopgain()) {
       total_size += 1 + 1;
     }
     
-    // required string StrategyName = 7;
+    // required bool AutoStopLoss = 8;
+    if (has_autostoploss()) {
+      total_size += 1 + 1;
+    }
+    
+  }
+  if (_has_bits_[9 / 32] & (0xffu << (9 % 32))) {
+    // required string StrategyName = 10;
     if (has_strategyname()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->strategyname());
     }
     
-    // required bytes StrategyData = 8;
+    // required bytes StrategyData = 11;
     if (has_strategydata()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->strategydata());
     }
     
+    // required bool StrategyRunning = 12;
+    if (has_strategyrunning()) {
+      total_size += 1 + 1;
+    }
+    
   }
-  // repeated .entity.LegItem Legs = 6;
+  // repeated .entity.LegItem Legs = 9;
   total_size += 1 * this->legs_size();
   for (int i = 0; i < this->legs_size(); i++) {
     total_size +=
@@ -1939,17 +2110,31 @@ void PortfolioItem::MergeFrom(const PortfolioItem& from) {
     if (from.has_diff()) {
       set_diff(from.diff());
     }
+    if (from.has_longdiff()) {
+      set_longdiff(from.longdiff());
+    }
+    if (from.has_shortdiff()) {
+      set_shortdiff(from.shortdiff());
+    }
     if (from.has_autoopen()) {
       set_autoopen(from.autoopen());
     }
-    if (from.has_autoclose()) {
-      set_autoclose(from.autoclose());
+    if (from.has_autostopgain()) {
+      set_autostopgain(from.autostopgain());
     }
+    if (from.has_autostoploss()) {
+      set_autostoploss(from.autostoploss());
+    }
+  }
+  if (from._has_bits_[9 / 32] & (0xffu << (9 % 32))) {
     if (from.has_strategyname()) {
       set_strategyname(from.strategyname());
     }
     if (from.has_strategydata()) {
       set_strategydata(from.strategydata());
+    }
+    if (from.has_strategyrunning()) {
+      set_strategyrunning(from.strategyrunning());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -1968,7 +2153,7 @@ void PortfolioItem::CopyFrom(const PortfolioItem& from) {
 }
 
 bool PortfolioItem::IsInitialized() const {
-  if ((_has_bits_[0] & 0x000000df) != 0x000000df) return false;
+  if ((_has_bits_[0] & 0x00000eff) != 0x00000eff) return false;
   
   for (int i = 0; i < legs_size(); i++) {
     if (!this->legs(i).IsInitialized()) return false;
@@ -1981,11 +2166,15 @@ void PortfolioItem::Swap(PortfolioItem* other) {
     std::swap(id_, other->id_);
     std::swap(quantity_, other->quantity_);
     std::swap(diff_, other->diff_);
+    std::swap(longdiff_, other->longdiff_);
+    std::swap(shortdiff_, other->shortdiff_);
     std::swap(autoopen_, other->autoopen_);
-    std::swap(autoclose_, other->autoclose_);
+    std::swap(autostopgain_, other->autostopgain_);
+    std::swap(autostoploss_, other->autostoploss_);
     legs_.Swap(&other->legs_);
     std::swap(strategyname_, other->strategyname_);
     std::swap(strategydata_, other->strategydata_);
+    std::swap(strategyrunning_, other->strategyrunning_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -5128,7 +5317,6 @@ void ModifyStrategyParam::Swap(ModifyStrategyParam* other) {
 
 #ifndef _MSC_VER
 const int ModifyPortfolioSwitchParam::kPortfIdFieldNumber;
-const int ModifyPortfolioSwitchParam::kEnabledFieldNumber;
 const int ModifyPortfolioSwitchParam::kAutoOpenFieldNumber;
 const int ModifyPortfolioSwitchParam::kAutoStopGainFieldNumber;
 const int ModifyPortfolioSwitchParam::kAutoStopLossFieldNumber;
@@ -5151,7 +5339,6 @@ ModifyPortfolioSwitchParam::ModifyPortfolioSwitchParam(const ModifyPortfolioSwit
 void ModifyPortfolioSwitchParam::SharedCtor() {
   _cached_size_ = 0;
   portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  enabled_ = false;
   autoopen_ = false;
   autostopgain_ = false;
   autostoploss_ = false;
@@ -5197,7 +5384,6 @@ void ModifyPortfolioSwitchParam::Clear() {
         portfid_->clear();
       }
     }
-    enabled_ = false;
     autoopen_ = false;
     autostopgain_ = false;
     autostoploss_ = false;
@@ -5224,28 +5410,12 @@ bool ModifyPortfolioSwitchParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_Enabled;
+        if (input->ExpectTag(16)) goto parse_AutoOpen;
         break;
       }
       
-      // required bool Enabled = 2;
+      // required bool AutoOpen = 2;
       case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_Enabled:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
-                 input, &enabled_)));
-          set_has_enabled();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(24)) goto parse_AutoOpen;
-        break;
-      }
-      
-      // required bool AutoOpen = 3;
-      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_AutoOpen:
@@ -5256,12 +5426,12 @@ bool ModifyPortfolioSwitchParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_AutoStopGain;
+        if (input->ExpectTag(24)) goto parse_AutoStopGain;
         break;
       }
       
-      // required bool AutoStopGain = 4;
-      case 4: {
+      // required bool AutoStopGain = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_AutoStopGain:
@@ -5272,12 +5442,12 @@ bool ModifyPortfolioSwitchParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_AutoStopLoss;
+        if (input->ExpectTag(32)) goto parse_AutoStopLoss;
         break;
       }
       
-      // required bool AutoStopLoss = 5;
-      case 5: {
+      // required bool AutoStopLoss = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_AutoStopLoss:
@@ -5319,24 +5489,19 @@ void ModifyPortfolioSwitchParam::SerializeWithCachedSizes(
       1, this->portfid(), output);
   }
   
-  // required bool Enabled = 2;
-  if (has_enabled()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->enabled(), output);
-  }
-  
-  // required bool AutoOpen = 3;
+  // required bool AutoOpen = 2;
   if (has_autoopen()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->autoopen(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->autoopen(), output);
   }
   
-  // required bool AutoStopGain = 4;
+  // required bool AutoStopGain = 3;
   if (has_autostopgain()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->autostopgain(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->autostopgain(), output);
   }
   
-  // required bool AutoStopLoss = 5;
+  // required bool AutoStopLoss = 4;
   if (has_autostoploss()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->autostoploss(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->autostoploss(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -5357,24 +5522,19 @@ void ModifyPortfolioSwitchParam::SerializeWithCachedSizes(
         1, this->portfid(), target);
   }
   
-  // required bool Enabled = 2;
-  if (has_enabled()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->enabled(), target);
-  }
-  
-  // required bool AutoOpen = 3;
+  // required bool AutoOpen = 2;
   if (has_autoopen()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->autoopen(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->autoopen(), target);
   }
   
-  // required bool AutoStopGain = 4;
+  // required bool AutoStopGain = 3;
   if (has_autostopgain()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->autostopgain(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->autostopgain(), target);
   }
   
-  // required bool AutoStopLoss = 5;
+  // required bool AutoStopLoss = 4;
   if (has_autostoploss()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->autostoploss(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->autostoploss(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -5395,22 +5555,17 @@ int ModifyPortfolioSwitchParam::ByteSize() const {
           this->portfid());
     }
     
-    // required bool Enabled = 2;
-    if (has_enabled()) {
-      total_size += 1 + 1;
-    }
-    
-    // required bool AutoOpen = 3;
+    // required bool AutoOpen = 2;
     if (has_autoopen()) {
       total_size += 1 + 1;
     }
     
-    // required bool AutoStopGain = 4;
+    // required bool AutoStopGain = 3;
     if (has_autostopgain()) {
       total_size += 1 + 1;
     }
     
-    // required bool AutoStopLoss = 5;
+    // required bool AutoStopLoss = 4;
     if (has_autostoploss()) {
       total_size += 1 + 1;
     }
@@ -5445,9 +5600,6 @@ void ModifyPortfolioSwitchParam::MergeFrom(const ModifyPortfolioSwitchParam& fro
     if (from.has_portfid()) {
       set_portfid(from.portfid());
     }
-    if (from.has_enabled()) {
-      set_enabled(from.enabled());
-    }
     if (from.has_autoopen()) {
       set_autoopen(from.autoopen());
     }
@@ -5474,7 +5626,7 @@ void ModifyPortfolioSwitchParam::CopyFrom(const ModifyPortfolioSwitchParam& from
 }
 
 bool ModifyPortfolioSwitchParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   
   return true;
 }
@@ -5482,7 +5634,6 @@ bool ModifyPortfolioSwitchParam::IsInitialized() const {
 void ModifyPortfolioSwitchParam::Swap(ModifyPortfolioSwitchParam* other) {
   if (other != this) {
     std::swap(portfid_, other->portfid_);
-    std::swap(enabled_, other->enabled_);
     std::swap(autoopen_, other->autoopen_);
     std::swap(autostopgain_, other->autostopgain_);
     std::swap(autostoploss_, other->autostoploss_);
@@ -5497,6 +5648,269 @@ void ModifyPortfolioSwitchParam::Swap(ModifyPortfolioSwitchParam* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = ModifyPortfolioSwitchParam_descriptor_;
   metadata.reflection = ModifyPortfolioSwitchParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ModifyRunningStatusParam::kPortfIdFieldNumber;
+const int ModifyRunningStatusParam::kEnabledFieldNumber;
+#endif  // !_MSC_VER
+
+ModifyRunningStatusParam::ModifyRunningStatusParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ModifyRunningStatusParam::InitAsDefaultInstance() {
+}
+
+ModifyRunningStatusParam::ModifyRunningStatusParam(const ModifyRunningStatusParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ModifyRunningStatusParam::SharedCtor() {
+  _cached_size_ = 0;
+  portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  enabled_ = false;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ModifyRunningStatusParam::~ModifyRunningStatusParam() {
+  SharedDtor();
+}
+
+void ModifyRunningStatusParam::SharedDtor() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    delete portfid_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void ModifyRunningStatusParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ModifyRunningStatusParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ModifyRunningStatusParam_descriptor_;
+}
+
+const ModifyRunningStatusParam& ModifyRunningStatusParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+ModifyRunningStatusParam* ModifyRunningStatusParam::default_instance_ = NULL;
+
+ModifyRunningStatusParam* ModifyRunningStatusParam::New() const {
+  return new ModifyRunningStatusParam;
+}
+
+void ModifyRunningStatusParam::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_portfid()) {
+      if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+        portfid_->clear();
+      }
+    }
+    enabled_ = false;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ModifyRunningStatusParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string PortfId = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_portfid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->portfid().data(), this->portfid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_Enabled;
+        break;
+      }
+      
+      // required bool Enabled = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Enabled:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &enabled_)));
+          set_has_enabled();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ModifyRunningStatusParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string PortfId = 1;
+  if (has_portfid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->portfid().data(), this->portfid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->portfid(), output);
+  }
+  
+  // required bool Enabled = 2;
+  if (has_enabled()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->enabled(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ModifyRunningStatusParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string PortfId = 1;
+  if (has_portfid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->portfid().data(), this->portfid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->portfid(), target);
+  }
+  
+  // required bool Enabled = 2;
+  if (has_enabled()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->enabled(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ModifyRunningStatusParam::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string PortfId = 1;
+    if (has_portfid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->portfid());
+    }
+    
+    // required bool Enabled = 2;
+    if (has_enabled()) {
+      total_size += 1 + 1;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ModifyRunningStatusParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ModifyRunningStatusParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ModifyRunningStatusParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ModifyRunningStatusParam::MergeFrom(const ModifyRunningStatusParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_portfid()) {
+      set_portfid(from.portfid());
+    }
+    if (from.has_enabled()) {
+      set_enabled(from.enabled());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ModifyRunningStatusParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ModifyRunningStatusParam::CopyFrom(const ModifyRunningStatusParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ModifyRunningStatusParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  
+  return true;
+}
+
+void ModifyRunningStatusParam::Swap(ModifyRunningStatusParam* other) {
+  if (other != this) {
+    std::swap(portfid_, other->portfid_);
+    std::swap(enabled_, other->enabled_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ModifyRunningStatusParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ModifyRunningStatusParam_descriptor_;
+  metadata.reflection = ModifyRunningStatusParam_reflection_;
   return metadata;
 }
 

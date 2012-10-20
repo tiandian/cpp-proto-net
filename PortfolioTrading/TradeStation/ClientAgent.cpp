@@ -202,20 +202,25 @@ void CClientAgent::ApplyStrategySetting( const entity::ModifyStrategyParam& sett
 	}
 }
 
+void CClientAgent::EnableStrategy(const entity::ModifyRunningStatusParam& runningStatusParam)
+{
+	const string& portfId = runningStatusParam.portfid();
+	CPortfolio* portf = m_portfolioMgr.Get(portfId);
+	if(portf != NULL)
+	{
+		bool isEnabled = runningStatusParam.enabled();
+		portf->EnableStrategy(isEnabled);
+	}
+}
+
 void CClientAgent::TurnPortfSwitches( const entity::ModifyPortfolioSwitchParam& switchesParam )
 {
 	const string& portfId = switchesParam.portfid();
 	CPortfolio* portf = m_portfolioMgr.Get(portfId);
 	if(portf != NULL)
 	{
-		bool isEnabled = switchesParam.enabled();
-		if(isEnabled)
-		{
-			portf->TurnSwitches(switchesParam.autoopen(),
-				switchesParam.autostopgain(), switchesParam.autostoploss());
-		}
-		
-		portf->EnableStrategy(isEnabled);
+		portf->TurnSwitches(switchesParam.autoopen(),
+			switchesParam.autostopgain(), switchesParam.autostoploss());
 	}
 }
 

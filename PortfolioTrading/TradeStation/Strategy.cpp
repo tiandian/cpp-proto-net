@@ -23,16 +23,3 @@ const char* StrategyOpertaionText(POSI_OPER oper)
 	else if(oper == CLOSE_POSI) return ST_CLOSE_POSI;
 	else return ST_DO_NOTHING;
 }
-
-POSI_OPER NextOperation(POSI_OPER oper)
-{
-	switch (oper)
-	{
-	case OPEN_POSI:
-		return CLOSE_POSI;
-	case CLOSE_POSI:
-		return OPEN_POSI;
-	default:
-		return DO_NOTHING;
-	}
-}

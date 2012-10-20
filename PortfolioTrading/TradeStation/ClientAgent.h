@@ -33,6 +33,7 @@ public:
 	
 	bool QueryAccountInfo(string* serializedAcctInfo);
 	void SetPorfPreferredLeg(const entity::ModifyPortfolioPreferredLegParam& preferredLegParam);
+	void EnableStrategy(const entity::ModifyRunningStatusParam& runningStatusParam);
 	void TurnPortfSwitches(const entity::ModifyPortfolioSwitchParam& switchesParam);
 	void ApplyStrategySetting(const entity::ModifyStrategyParam& settings);
 

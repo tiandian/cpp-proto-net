@@ -87,6 +87,7 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("PorfOpenPosition", boost::bind(&CClientManager::PorfOpenPosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ClosePosition", boost::bind(&CClientManager::ClosePosition, this, _1, _2, _3)));
 
+	m_reqTransMap.insert(make_pair("PortfEnableStrategy", boost::bind(&CClientManager::PortfEnableStrategy, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PortfSetPreferredLeg", boost::bind(&CClientManager::PortfSetPreferredLeg, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PortfTurnSwitches", boost::bind(&CClientManager::PortfTurnSwitches, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ApplyStrategySettings", boost::bind(&CClientManager::ApplyStrategySettings, this, _1, _2, _3)));
@@ -248,4 +249,12 @@ void CClientManager::PortfTurnSwitches( CClientAgent* pClientAgent, const string
 	switchesParam.ParseFromString(in_data);
 
 	pClientAgent->TurnPortfSwitches(switchesParam);
+}
+
+void CClientManager::PortfEnableStrategy( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::ModifyRunningStatusParam runningParam;
+	runningParam.ParseFromString(in_data);
+
+	pClientAgent->EnableStrategy(runningParam);
 }

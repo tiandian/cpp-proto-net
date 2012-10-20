@@ -59,3 +59,16 @@ void CArbitrageStrategy::CloseAllPosition()
 		}
 	}
 }
+
+POSI_OPER CArbitrageStrategy::NextOperation( POSI_OPER oper )
+{
+	switch (oper)
+	{
+	case OPEN_POSI:
+		return CLOSE_POSI;
+	case CLOSE_POSI:
+		return DO_NOTHING;
+	default:
+		return DO_NOTHING;
+	}
+}
