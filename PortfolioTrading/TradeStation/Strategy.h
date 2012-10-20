@@ -1,9 +1,12 @@
 #pragma once
 
-#include <string>
 #include "../Entity/gen/cpp/message.pb.h"
 #include "ClientAgent.h"
 #include "Portfolio.h"
+#include "globalmembers.h"
+
+#include <string>
+#include <boost/format.hpp>
 
 #define DOUBLE_COMPARSION_PRECISION (0.01)
 
@@ -85,7 +88,10 @@ public:
 	POSI_OPER Test(T valueToTest)
 	{
 		if(m_isRunning)
-		{
+		{				
+			logger.Info(boost::str(boost::format("Test for %s") 
+						% StrategyOpertaionText(m_testingFor)));
+
 			if(m_testingFor == OPEN_POSI && m_isAutoOpen)
 			{
 				bool succ = GetOpenPosiCond().Test(valueToTest);
@@ -101,20 +107,20 @@ public:
 				{
 					bool succ = GetStopGainCond().Test(valueToTest);
 					if(succ)
+					{
 						DoStopGain();
+						return CLOSE_POSI;
+					}
 				}
 				else if(m_isStopLoss)
 				{
 					bool succ = GetStopLossCond().Test(valueToTest);
 					if(succ)
+					{
 						DoStopLoss();
+						return CLOSE_POSI;
+					}
 				}
-				else
-				{
-					return DO_NOTHING;
-				}
-
-				return CLOSE_POSI;
 			}
 			else
 			{
@@ -125,7 +131,7 @@ public:
 		return DO_NOTHING;
 	}
 
-	void TestFor(POSI_OPER posiOperation){ m_testingFor = DO_NOTHING; }
+	void TestFor(POSI_OPER posiOperation){ m_testingFor = posiOperation; }
 
 	virtual void ApplySettings(const std::string& settingData) = 0;
 

@@ -81,8 +81,8 @@
                                 <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">止盈条件</TextBlock>
                                 <DockPanel Margin="12, 0, 6, 4">
                                     <DockPanel>
-                                        <TextBlock VerticalAlignment="Center" Margin="4" >盈利</TextBlock>
-                                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding GreaterItemsSource}"
+                                        <TextBlock VerticalAlignment="Center" Margin="4" >价差</TextBlock>
+                                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding StopGainCondItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding StopGainCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
                                         </ComboBox>
@@ -100,8 +100,8 @@
                                 <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">止损条件</TextBlock>
                                 <DockPanel Margin="12, 0, 6, 4">
                                     <DockPanel>
-                                        <TextBlock VerticalAlignment="Center" Margin="4">亏损</TextBlock>
-                                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding GreaterItemsSource}"
+                                        <TextBlock VerticalAlignment="Center" Margin="4">价差</TextBlock>
+                                        <ComboBox Margin="4" Width="80" ItemsSource="{Binding StopLossCondItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding StopLossCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
                                         </ComboBox>
