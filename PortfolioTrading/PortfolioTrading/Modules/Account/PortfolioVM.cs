@@ -423,8 +423,8 @@ namespace PortfolioTrading.Modules.Account
 
         public void ApplyStrategySettings()
         {
-            //_accountVm.Host.PortfApplyStrategySettings(this.Id,
-            //    StrategySetting.Name, StrategySetting.Serialize());
+            _accountVm.Host.PortfApplyStrategySettings(this.Id,
+                StrategySetting.Name, StrategySetting.Serialize());
 
             _accountVm.PublishChanged();
         }
