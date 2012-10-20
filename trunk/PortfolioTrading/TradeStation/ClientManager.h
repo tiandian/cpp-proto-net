@@ -56,6 +56,7 @@ private:
 	void PorfOpenPosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void ClosePosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
+	void PortfEnableStrategy(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PortfSetPreferredLeg(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PortfTurnSwitches(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void ApplyStrategySettings(CClientAgent* pClientAgent, const string& in_data, string& out_data);

@@ -89,6 +89,41 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region LongDiff
+        private double _longDiff;
+
+        public double LongDiff
+        {
+            get { return _longDiff; }
+            set
+            {
+                if (_longDiff != value)
+                {
+                    _longDiff = value;
+                    RaisePropertyChanged("LongDiff");
+                }
+            }
+        }
+        #endregion
+
+        #region ShortDiff
+        private double _shortDiff;
+
+        public double ShortDiff
+        {
+            get { return _shortDiff; }
+            set
+            {
+                if (_shortDiff != value)
+                {
+                    _shortDiff = value;
+                    RaisePropertyChanged("ShortDiff");
+                }
+            }
+        }
+        #endregion
+
+
         #region AutoOpen
         private bool _autoOpen;
 
@@ -354,7 +389,8 @@ namespace PortfolioTrading.Modules.Account
             entity.PortfolioItem portfolioItem = new entity.PortfolioItem();
             portfolioItem.ID = Id;
             portfolioItem.AutoOpen = AutoOpen;
-            portfolioItem.AutoClose = AutoStopGain;
+            portfolioItem.AutoStopGain = AutoStopGain;
+            portfolioItem.AutoStopLoss = AutoStopLoss;
             portfolioItem.Diff = Diff;
             portfolioItem.Quantity = Quantity;
 
@@ -377,6 +413,10 @@ namespace PortfolioTrading.Modules.Account
         public void Update(entity.PortfolioItem item)
         {
             Diff = item.Diff;
+            LongDiff = item.LongDiff;
+            ShortDiff = item.ShortDiff;
+
+            IsRunning = item.StrategyRunning;
 
             for (int i = 0; i < item.Legs.Count; ++i )
             {
@@ -399,26 +439,32 @@ namespace PortfolioTrading.Modules.Account
         private void OnStart()
         {
             IsRunning = true;
-            OnSwitchChanged();
+            OnRunningChanged();
         }
 
         private void OnStop()
         {
             IsRunning = false;
-            OnSwitchChanged();
+            OnRunningChanged();
+        }
+
+        private void OnRunningChanged()
+        {
+            if (_accountVm.IsConnected)
+            {
+                _accountVm.Host.PortfEnableStrategy(Id, IsRunning);
+            }
         }
 
         private void OnSwitchChanged()
         {
             if (_accountVm.IsConnected)
             {
-                _accountVm.Host.PortfTurnSwitches(this.Id, IsRunning, AutoOpen, AutoStopGain, AutoStopLoss);
-
+                _accountVm.Host.PortfTurnSwitches(this.Id, AutoOpen, AutoStopGain, AutoStopLoss);
             }
 
             if(!IsLoading)
                 _accountVm.PublishChanged();
-
         }
 
         public void ApplyStrategySettings()

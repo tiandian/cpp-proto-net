@@ -49,6 +49,7 @@ class ArbitrageStrategySettings;
 class ChangePosiStrategySettings;
 class ModifyStrategyParam;
 class ModifyPortfolioSwitchParam;
+class ModifyRunningStatusParam;
 class ModifyPortfolioPreferredLegParam;
 
 // ===================================================================
@@ -456,24 +457,45 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline double diff() const;
   inline void set_diff(double value);
   
-  // required bool AutoOpen = 4;
+  // required double LongDiff = 4;
+  inline bool has_longdiff() const;
+  inline void clear_longdiff();
+  static const int kLongDiffFieldNumber = 4;
+  inline double longdiff() const;
+  inline void set_longdiff(double value);
+  
+  // required double ShortDiff = 5;
+  inline bool has_shortdiff() const;
+  inline void clear_shortdiff();
+  static const int kShortDiffFieldNumber = 5;
+  inline double shortdiff() const;
+  inline void set_shortdiff(double value);
+  
+  // required bool AutoOpen = 6;
   inline bool has_autoopen() const;
   inline void clear_autoopen();
-  static const int kAutoOpenFieldNumber = 4;
+  static const int kAutoOpenFieldNumber = 6;
   inline bool autoopen() const;
   inline void set_autoopen(bool value);
   
-  // required bool AutoClose = 5;
-  inline bool has_autoclose() const;
-  inline void clear_autoclose();
-  static const int kAutoCloseFieldNumber = 5;
-  inline bool autoclose() const;
-  inline void set_autoclose(bool value);
+  // required bool AutoStopGain = 7;
+  inline bool has_autostopgain() const;
+  inline void clear_autostopgain();
+  static const int kAutoStopGainFieldNumber = 7;
+  inline bool autostopgain() const;
+  inline void set_autostopgain(bool value);
   
-  // repeated .entity.LegItem Legs = 6;
+  // required bool AutoStopLoss = 8;
+  inline bool has_autostoploss() const;
+  inline void clear_autostoploss();
+  static const int kAutoStopLossFieldNumber = 8;
+  inline bool autostoploss() const;
+  inline void set_autostoploss(bool value);
+  
+  // repeated .entity.LegItem Legs = 9;
   inline int legs_size() const;
   inline void clear_legs();
-  static const int kLegsFieldNumber = 6;
+  static const int kLegsFieldNumber = 9;
   inline const ::entity::LegItem& legs(int index) const;
   inline ::entity::LegItem* mutable_legs(int index);
   inline ::entity::LegItem* add_legs();
@@ -482,10 +504,10 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::entity::LegItem >*
       mutable_legs();
   
-  // required string StrategyName = 7;
+  // required string StrategyName = 10;
   inline bool has_strategyname() const;
   inline void clear_strategyname();
-  static const int kStrategyNameFieldNumber = 7;
+  static const int kStrategyNameFieldNumber = 10;
   inline const ::std::string& strategyname() const;
   inline void set_strategyname(const ::std::string& value);
   inline void set_strategyname(const char* value);
@@ -493,16 +515,23 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline ::std::string* mutable_strategyname();
   inline ::std::string* release_strategyname();
   
-  // required bytes StrategyData = 8;
+  // required bytes StrategyData = 11;
   inline bool has_strategydata() const;
   inline void clear_strategydata();
-  static const int kStrategyDataFieldNumber = 8;
+  static const int kStrategyDataFieldNumber = 11;
   inline const ::std::string& strategydata() const;
   inline void set_strategydata(const ::std::string& value);
   inline void set_strategydata(const char* value);
   inline void set_strategydata(const void* value, size_t size);
   inline ::std::string* mutable_strategydata();
   inline ::std::string* release_strategydata();
+  
+  // required bool StrategyRunning = 12;
+  inline bool has_strategyrunning() const;
+  inline void clear_strategyrunning();
+  static const int kStrategyRunningFieldNumber = 12;
+  inline bool strategyrunning() const;
+  inline void set_strategyrunning(bool value);
   
   // @@protoc_insertion_point(class_scope:entity.PortfolioItem)
  private:
@@ -512,28 +541,40 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline void clear_has_quantity();
   inline void set_has_diff();
   inline void clear_has_diff();
+  inline void set_has_longdiff();
+  inline void clear_has_longdiff();
+  inline void set_has_shortdiff();
+  inline void clear_has_shortdiff();
   inline void set_has_autoopen();
   inline void clear_has_autoopen();
-  inline void set_has_autoclose();
-  inline void clear_has_autoclose();
+  inline void set_has_autostopgain();
+  inline void clear_has_autostopgain();
+  inline void set_has_autostoploss();
+  inline void clear_has_autostoploss();
   inline void set_has_strategyname();
   inline void clear_has_strategyname();
   inline void set_has_strategydata();
   inline void clear_has_strategydata();
+  inline void set_has_strategyrunning();
+  inline void clear_has_strategyrunning();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* id_;
   double diff_;
+  double longdiff_;
+  double shortdiff_;
   ::google::protobuf::int32 quantity_;
   bool autoopen_;
-  bool autoclose_;
+  bool autostopgain_;
+  bool autostoploss_;
+  bool strategyrunning_;
   ::google::protobuf::RepeatedPtrField< ::entity::LegItem > legs_;
   ::std::string* strategyname_;
   ::std::string* strategydata_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(12 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -1688,31 +1729,24 @@ class ModifyPortfolioSwitchParam : public ::google::protobuf::Message {
   inline ::std::string* mutable_portfid();
   inline ::std::string* release_portfid();
   
-  // required bool Enabled = 2;
-  inline bool has_enabled() const;
-  inline void clear_enabled();
-  static const int kEnabledFieldNumber = 2;
-  inline bool enabled() const;
-  inline void set_enabled(bool value);
-  
-  // required bool AutoOpen = 3;
+  // required bool AutoOpen = 2;
   inline bool has_autoopen() const;
   inline void clear_autoopen();
-  static const int kAutoOpenFieldNumber = 3;
+  static const int kAutoOpenFieldNumber = 2;
   inline bool autoopen() const;
   inline void set_autoopen(bool value);
   
-  // required bool AutoStopGain = 4;
+  // required bool AutoStopGain = 3;
   inline bool has_autostopgain() const;
   inline void clear_autostopgain();
-  static const int kAutoStopGainFieldNumber = 4;
+  static const int kAutoStopGainFieldNumber = 3;
   inline bool autostopgain() const;
   inline void set_autostopgain(bool value);
   
-  // required bool AutoStopLoss = 5;
+  // required bool AutoStopLoss = 4;
   inline bool has_autostoploss() const;
   inline void clear_autostoploss();
-  static const int kAutoStopLossFieldNumber = 5;
+  static const int kAutoStopLossFieldNumber = 4;
   inline bool autostoploss() const;
   inline void set_autostoploss(bool value);
   
@@ -1720,8 +1754,6 @@ class ModifyPortfolioSwitchParam : public ::google::protobuf::Message {
  private:
   inline void set_has_portfid();
   inline void clear_has_portfid();
-  inline void set_has_enabled();
-  inline void clear_has_enabled();
   inline void set_has_autoopen();
   inline void clear_has_autoopen();
   inline void set_has_autostopgain();
@@ -1732,13 +1764,12 @@ class ModifyPortfolioSwitchParam : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* portfid_;
-  bool enabled_;
   bool autoopen_;
   bool autostopgain_;
   bool autostoploss_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -1746,6 +1777,102 @@ class ModifyPortfolioSwitchParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ModifyPortfolioSwitchParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ModifyRunningStatusParam : public ::google::protobuf::Message {
+ public:
+  ModifyRunningStatusParam();
+  virtual ~ModifyRunningStatusParam();
+  
+  ModifyRunningStatusParam(const ModifyRunningStatusParam& from);
+  
+  inline ModifyRunningStatusParam& operator=(const ModifyRunningStatusParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyRunningStatusParam& default_instance();
+  
+  void Swap(ModifyRunningStatusParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ModifyRunningStatusParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ModifyRunningStatusParam& from);
+  void MergeFrom(const ModifyRunningStatusParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string PortfId = 1;
+  inline bool has_portfid() const;
+  inline void clear_portfid();
+  static const int kPortfIdFieldNumber = 1;
+  inline const ::std::string& portfid() const;
+  inline void set_portfid(const ::std::string& value);
+  inline void set_portfid(const char* value);
+  inline void set_portfid(const char* value, size_t size);
+  inline ::std::string* mutable_portfid();
+  inline ::std::string* release_portfid();
+  
+  // required bool Enabled = 2;
+  inline bool has_enabled() const;
+  inline void clear_enabled();
+  static const int kEnabledFieldNumber = 2;
+  inline bool enabled() const;
+  inline void set_enabled(bool value);
+  
+  // @@protoc_insertion_point(class_scope:entity.ModifyRunningStatusParam)
+ private:
+  inline void set_has_portfid();
+  inline void clear_has_portfid();
+  inline void set_has_enabled();
+  inline void clear_has_enabled();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* portfid_;
+  bool enabled_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ModifyRunningStatusParam* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -2262,15 +2389,59 @@ inline void PortfolioItem::set_diff(double value) {
   diff_ = value;
 }
 
-// required bool AutoOpen = 4;
-inline bool PortfolioItem::has_autoopen() const {
+// required double LongDiff = 4;
+inline bool PortfolioItem::has_longdiff() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void PortfolioItem::set_has_autoopen() {
+inline void PortfolioItem::set_has_longdiff() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void PortfolioItem::clear_has_autoopen() {
+inline void PortfolioItem::clear_has_longdiff() {
   _has_bits_[0] &= ~0x00000008u;
+}
+inline void PortfolioItem::clear_longdiff() {
+  longdiff_ = 0;
+  clear_has_longdiff();
+}
+inline double PortfolioItem::longdiff() const {
+  return longdiff_;
+}
+inline void PortfolioItem::set_longdiff(double value) {
+  set_has_longdiff();
+  longdiff_ = value;
+}
+
+// required double ShortDiff = 5;
+inline bool PortfolioItem::has_shortdiff() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void PortfolioItem::set_has_shortdiff() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void PortfolioItem::clear_has_shortdiff() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void PortfolioItem::clear_shortdiff() {
+  shortdiff_ = 0;
+  clear_has_shortdiff();
+}
+inline double PortfolioItem::shortdiff() const {
+  return shortdiff_;
+}
+inline void PortfolioItem::set_shortdiff(double value) {
+  set_has_shortdiff();
+  shortdiff_ = value;
+}
+
+// required bool AutoOpen = 6;
+inline bool PortfolioItem::has_autoopen() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void PortfolioItem::set_has_autoopen() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void PortfolioItem::clear_has_autoopen() {
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void PortfolioItem::clear_autoopen() {
   autoopen_ = false;
@@ -2284,29 +2455,51 @@ inline void PortfolioItem::set_autoopen(bool value) {
   autoopen_ = value;
 }
 
-// required bool AutoClose = 5;
-inline bool PortfolioItem::has_autoclose() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+// required bool AutoStopGain = 7;
+inline bool PortfolioItem::has_autostopgain() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
-inline void PortfolioItem::set_has_autoclose() {
-  _has_bits_[0] |= 0x00000010u;
+inline void PortfolioItem::set_has_autostopgain() {
+  _has_bits_[0] |= 0x00000040u;
 }
-inline void PortfolioItem::clear_has_autoclose() {
-  _has_bits_[0] &= ~0x00000010u;
+inline void PortfolioItem::clear_has_autostopgain() {
+  _has_bits_[0] &= ~0x00000040u;
 }
-inline void PortfolioItem::clear_autoclose() {
-  autoclose_ = false;
-  clear_has_autoclose();
+inline void PortfolioItem::clear_autostopgain() {
+  autostopgain_ = false;
+  clear_has_autostopgain();
 }
-inline bool PortfolioItem::autoclose() const {
-  return autoclose_;
+inline bool PortfolioItem::autostopgain() const {
+  return autostopgain_;
 }
-inline void PortfolioItem::set_autoclose(bool value) {
-  set_has_autoclose();
-  autoclose_ = value;
+inline void PortfolioItem::set_autostopgain(bool value) {
+  set_has_autostopgain();
+  autostopgain_ = value;
 }
 
-// repeated .entity.LegItem Legs = 6;
+// required bool AutoStopLoss = 8;
+inline bool PortfolioItem::has_autostoploss() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void PortfolioItem::set_has_autostoploss() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void PortfolioItem::clear_has_autostoploss() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void PortfolioItem::clear_autostoploss() {
+  autostoploss_ = false;
+  clear_has_autostoploss();
+}
+inline bool PortfolioItem::autostoploss() const {
+  return autostoploss_;
+}
+inline void PortfolioItem::set_autostoploss(bool value) {
+  set_has_autostoploss();
+  autostoploss_ = value;
+}
+
+// repeated .entity.LegItem Legs = 9;
 inline int PortfolioItem::legs_size() const {
   return legs_.size();
 }
@@ -2331,15 +2524,15 @@ PortfolioItem::mutable_legs() {
   return &legs_;
 }
 
-// required string StrategyName = 7;
+// required string StrategyName = 10;
 inline bool PortfolioItem::has_strategyname() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void PortfolioItem::set_has_strategyname() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void PortfolioItem::clear_has_strategyname() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void PortfolioItem::clear_strategyname() {
   if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
@@ -2389,15 +2582,15 @@ inline ::std::string* PortfolioItem::release_strategyname() {
   }
 }
 
-// required bytes StrategyData = 8;
+// required bytes StrategyData = 11;
 inline bool PortfolioItem::has_strategydata() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void PortfolioItem::set_has_strategydata() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void PortfolioItem::clear_has_strategydata() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void PortfolioItem::clear_strategydata() {
   if (strategydata_ != &::google::protobuf::internal::kEmptyString) {
@@ -2445,6 +2638,28 @@ inline ::std::string* PortfolioItem::release_strategydata() {
     strategydata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// required bool StrategyRunning = 12;
+inline bool PortfolioItem::has_strategyrunning() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void PortfolioItem::set_has_strategyrunning() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void PortfolioItem::clear_has_strategyrunning() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void PortfolioItem::clear_strategyrunning() {
+  strategyrunning_ = false;
+  clear_has_strategyrunning();
+}
+inline bool PortfolioItem::strategyrunning() const {
+  return strategyrunning_;
+}
+inline void PortfolioItem::set_strategyrunning(bool value) {
+  set_has_strategyrunning();
+  strategyrunning_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -3768,37 +3983,15 @@ inline ::std::string* ModifyPortfolioSwitchParam::release_portfid() {
   }
 }
 
-// required bool Enabled = 2;
-inline bool ModifyPortfolioSwitchParam::has_enabled() const {
+// required bool AutoOpen = 2;
+inline bool ModifyPortfolioSwitchParam::has_autoopen() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ModifyPortfolioSwitchParam::set_has_enabled() {
+inline void ModifyPortfolioSwitchParam::set_has_autoopen() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ModifyPortfolioSwitchParam::clear_has_enabled() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void ModifyPortfolioSwitchParam::clear_enabled() {
-  enabled_ = false;
-  clear_has_enabled();
-}
-inline bool ModifyPortfolioSwitchParam::enabled() const {
-  return enabled_;
-}
-inline void ModifyPortfolioSwitchParam::set_enabled(bool value) {
-  set_has_enabled();
-  enabled_ = value;
-}
-
-// required bool AutoOpen = 3;
-inline bool ModifyPortfolioSwitchParam::has_autoopen() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void ModifyPortfolioSwitchParam::set_has_autoopen() {
-  _has_bits_[0] |= 0x00000004u;
-}
 inline void ModifyPortfolioSwitchParam::clear_has_autoopen() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void ModifyPortfolioSwitchParam::clear_autoopen() {
   autoopen_ = false;
@@ -3812,15 +4005,15 @@ inline void ModifyPortfolioSwitchParam::set_autoopen(bool value) {
   autoopen_ = value;
 }
 
-// required bool AutoStopGain = 4;
+// required bool AutoStopGain = 3;
 inline bool ModifyPortfolioSwitchParam::has_autostopgain() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void ModifyPortfolioSwitchParam::set_has_autostopgain() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void ModifyPortfolioSwitchParam::clear_has_autostopgain() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void ModifyPortfolioSwitchParam::clear_autostopgain() {
   autostopgain_ = false;
@@ -3834,15 +4027,15 @@ inline void ModifyPortfolioSwitchParam::set_autostopgain(bool value) {
   autostopgain_ = value;
 }
 
-// required bool AutoStopLoss = 5;
+// required bool AutoStopLoss = 4;
 inline bool ModifyPortfolioSwitchParam::has_autostoploss() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void ModifyPortfolioSwitchParam::set_has_autostoploss() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void ModifyPortfolioSwitchParam::clear_has_autostoploss() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void ModifyPortfolioSwitchParam::clear_autostoploss() {
   autostoploss_ = false;
@@ -3854,6 +4047,90 @@ inline bool ModifyPortfolioSwitchParam::autostoploss() const {
 inline void ModifyPortfolioSwitchParam::set_autostoploss(bool value) {
   set_has_autostoploss();
   autostoploss_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ModifyRunningStatusParam
+
+// required string PortfId = 1;
+inline bool ModifyRunningStatusParam::has_portfid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ModifyRunningStatusParam::set_has_portfid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ModifyRunningStatusParam::clear_has_portfid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ModifyRunningStatusParam::clear_portfid() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    portfid_->clear();
+  }
+  clear_has_portfid();
+}
+inline const ::std::string& ModifyRunningStatusParam::portfid() const {
+  return *portfid_;
+}
+inline void ModifyRunningStatusParam::set_portfid(const ::std::string& value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void ModifyRunningStatusParam::set_portfid(const char* value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void ModifyRunningStatusParam::set_portfid(const char* value, size_t size) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ModifyRunningStatusParam::mutable_portfid() {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  return portfid_;
+}
+inline ::std::string* ModifyRunningStatusParam::release_portfid() {
+  clear_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = portfid_;
+    portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required bool Enabled = 2;
+inline bool ModifyRunningStatusParam::has_enabled() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ModifyRunningStatusParam::set_has_enabled() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ModifyRunningStatusParam::clear_has_enabled() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ModifyRunningStatusParam::clear_enabled() {
+  enabled_ = false;
+  clear_has_enabled();
+}
+inline bool ModifyRunningStatusParam::enabled() const {
+  return enabled_;
+}
+inline void ModifyRunningStatusParam::set_enabled(bool value) {
+  set_has_enabled();
+  enabled_ = value;
 }
 
 // -------------------------------------------------------------------

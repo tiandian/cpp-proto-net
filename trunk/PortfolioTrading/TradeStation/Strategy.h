@@ -85,7 +85,7 @@ public:
 	CPortfolio* Portfolio() const { return m_pPortfolio; }
 	void Portfolio(CPortfolio* val) { m_pPortfolio = val; }
 
-	POSI_OPER Test(T valueToTest)
+	void Test(T valueToTest)
 	{
 		if(m_isRunning)
 		{				
@@ -98,7 +98,7 @@ public:
 				if(succ)
 				{
 					DoOpenPostion();
-					return OPEN_POSI;
+					TestFor(NextOperation(OPEN_POSI));
 				}
 			}
 			else if(m_testingFor == CLOSE_POSI)
@@ -109,7 +109,7 @@ public:
 					if(succ)
 					{
 						DoStopGain();
-						return CLOSE_POSI;
+						TestFor(NextOperation(CLOSE_POSI));
 					}
 				}
 				else if(m_isStopLoss)
@@ -118,20 +118,19 @@ public:
 					if(succ)
 					{
 						DoStopLoss();
-						return CLOSE_POSI;
+						TestFor(NextOperation(CLOSE_POSI));
 					}
 				}
 			}
-			else
-			{
-				return DO_NOTHING;
-			}
 		}
-
-		return DO_NOTHING;
 	}
 
-	void TestFor(POSI_OPER posiOperation){ m_testingFor = posiOperation; }
+	void TestFor(POSI_OPER posiOperation)
+	{ 
+		m_testingFor = posiOperation;
+		if(m_testingFor == DO_NOTHING)
+			m_pPortfolio->EnableStrategy(false);	
+	}
 
 	virtual void ApplySettings(const std::string& settingData) = 0;
 
@@ -143,6 +142,11 @@ protected:
 	virtual void DoOpenPostion(){}
 	virtual void DoStopGain(){}
 	virtual void DoStopLoss(){}
+
+	virtual POSI_OPER NextOperation(POSI_OPER oper)
+	{
+		return DO_NOTHING;
+	}
 
 private:
 	bool m_isRunning;

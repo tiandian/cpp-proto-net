@@ -38,6 +38,8 @@ protected:
 	void DoStopGain(){ CloseAllPosition(); }
 	void DoStopLoss(){ CloseAllPosition(); }
 
+	POSI_OPER NextOperation(POSI_OPER oper);
+
 private:
 
 	void CloseAllPosition();

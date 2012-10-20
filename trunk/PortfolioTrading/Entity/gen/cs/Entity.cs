@@ -138,40 +138,68 @@ namespace entity
       get { return _Diff; }
       set { _Diff = value; }
     }
+    private double _LongDiff;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"LongDiff", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double LongDiff
+    {
+      get { return _LongDiff; }
+      set { _LongDiff = value; }
+    }
+    private double _ShortDiff;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"ShortDiff", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double ShortDiff
+    {
+      get { return _ShortDiff; }
+      set { _ShortDiff = value; }
+    }
     private bool _AutoOpen;
-    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"AutoOpen", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"AutoOpen", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool AutoOpen
     {
       get { return _AutoOpen; }
       set { _AutoOpen = value; }
     }
-    private bool _AutoClose;
-    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"AutoClose", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public bool AutoClose
+    private bool _AutoStopGain;
+    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"AutoStopGain", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool AutoStopGain
     {
-      get { return _AutoClose; }
-      set { _AutoClose = value; }
+      get { return _AutoStopGain; }
+      set { _AutoStopGain = value; }
+    }
+    private bool _AutoStopLoss;
+    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"AutoStopLoss", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool AutoStopLoss
+    {
+      get { return _AutoStopLoss; }
+      set { _AutoStopLoss = value; }
     }
     private readonly global::System.Collections.Generic.List<entity.LegItem> _Legs = new global::System.Collections.Generic.List<entity.LegItem>();
-    [global::ProtoBuf.ProtoMember(6, Name=@"Legs", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(9, Name=@"Legs", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public global::System.Collections.Generic.List<entity.LegItem> Legs
     {
       get { return _Legs; }
     }
   
     private string _StrategyName;
-    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"StrategyName", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(10, IsRequired = true, Name=@"StrategyName", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public string StrategyName
     {
       get { return _StrategyName; }
       set { _StrategyName = value; }
     }
     private byte[] _StrategyData;
-    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"StrategyData", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(11, IsRequired = true, Name=@"StrategyData", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public byte[] StrategyData
     {
       get { return _StrategyData; }
       set { _StrategyData = value; }
+    }
+    private bool _StrategyRunning;
+    [global::ProtoBuf.ProtoMember(12, IsRequired = true, Name=@"StrategyRunning", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool StrategyRunning
+    {
+      get { return _StrategyRunning; }
+      set { _StrategyRunning = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
@@ -495,33 +523,50 @@ namespace entity
       get { return _PortfId; }
       set { _PortfId = value; }
     }
-    private bool _Enabled;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Enabled", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public bool Enabled
-    {
-      get { return _Enabled; }
-      set { _Enabled = value; }
-    }
     private bool _AutoOpen;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"AutoOpen", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"AutoOpen", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool AutoOpen
     {
       get { return _AutoOpen; }
       set { _AutoOpen = value; }
     }
     private bool _AutoStopGain;
-    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"AutoStopGain", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"AutoStopGain", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool AutoStopGain
     {
       get { return _AutoStopGain; }
       set { _AutoStopGain = value; }
     }
     private bool _AutoStopLoss;
-    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"AutoStopLoss", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"AutoStopLoss", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool AutoStopLoss
     {
       get { return _AutoStopLoss; }
       set { _AutoStopLoss = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ModifyRunningStatusParam")]
+  public partial class ModifyRunningStatusParam : global::ProtoBuf.IExtensible
+  {
+    public ModifyRunningStatusParam() {}
+    
+    private string _PortfId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"PortfId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string PortfId
+    {
+      get { return _PortfId; }
+      set { _PortfId = value; }
+    }
+    private bool _Enabled;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Enabled", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool Enabled
+    {
+      get { return _Enabled; }
+      set { _Enabled = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

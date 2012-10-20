@@ -30,11 +30,15 @@ message PortfolioItem
 	required string ID = 1;
 	required int32 Quantity = 2;
 	required double Diff = 3;
-	required bool AutoOpen = 4;
-	required bool AutoClose = 5;
-	repeated LegItem Legs = 6; 
-	required string StrategyName = 7;
-	required bytes StrategyData = 8; 
+	required double LongDiff = 4;
+	required double ShortDiff = 5;
+	required bool AutoOpen = 6;
+	required bool AutoStopGain = 7;
+	required bool AutoStopLoss = 8;
+	repeated LegItem Legs = 9; 
+	required string StrategyName = 10;
+	required bytes StrategyData = 11; 
+	required bool StrategyRunning = 12;
 }
 
 message ConnectParam
@@ -109,10 +113,15 @@ message ModifyStrategyParam
 message ModifyPortfolioSwitchParam
 {
 	required string PortfId = 1;
+	required bool AutoOpen = 2;
+	required bool AutoStopGain = 3;
+	required bool AutoStopLoss = 4;
+}
+
+message ModifyRunningStatusParam
+{
+	required string PortfId = 1;
 	required bool Enabled = 2;
-	required bool AutoOpen = 3;
-	required bool AutoStopGain = 4;
-	required bool AutoStopLoss = 5;
 }
 
 message ModifyPortfolioPreferredLegParam

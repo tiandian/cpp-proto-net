@@ -164,7 +164,6 @@ namespace PortfolioTrading
         {
             portfolioItem = new entity.PortfolioItem();
             portfolioItem.ID = Guid.NewGuid().ToString();
-            portfolioItem.AutoOpen = true;
             portfolioItem.Diff = 2;
             portfolioItem.Quantity = 1;
 
