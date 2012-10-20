@@ -113,9 +113,9 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 	m_innerItem->set_diff(diff);
 
 	POSI_OPER strategyOperation = m_strategy->Test(diff);
-	logger.Info(boost::str(boost::format("Portfolio (%s) %s") % ID() % StrategyOpertaionText(strategyOperation)));
+	logger.Debug(boost::str(boost::format("Portfolio (%s) %s") % ID() % StrategyOpertaionText(strategyOperation)));
 
-	if(m_openOnce)
+	if(m_openOnce && strategyOperation != DO_NOTHING)
 	{
 		POSI_OPER oper = NextOperation(strategyOperation);
 		m_strategy->TestFor(oper);
@@ -157,6 +157,9 @@ int CPortfolio::NewOrderId(string& newId)
 
 void CPortfolio::ApplyStrategySetting( const string& name, const string& data )
 {
+	logger.Info(
+		boost::str(
+			boost::format("Portfolio (%s) apply %s settings") % ID().c_str() % name.c_str()));
 	m_strategy->ApplySettings(data);
 }
 
@@ -172,16 +175,23 @@ void CPortfolio::TurnSwitches( bool isAutoOpen, bool isAutoStopGain, bool isAuto
 	m_strategy->SetAutoOpen(isAutoOpen);
 	m_strategy->SetStopGain(isAutoStopGain);
 	m_strategy->SetStopLoss(isAutoStopLoss);
+
+	logger.Info(boost::str(boost::format("Portf (%s): Open %d, StopGain %d, StopLoss %d")
+		% ID().c_str() % isAutoOpen % isAutoStopGain % isAutoStopLoss));
 }
 
 void CPortfolio::EnableStrategy( bool isEnabled )
 {
 	if(isEnabled)
 	{
+		logger.Info(boost::str(boost::format("Portf (%s) START strategy >>>") % ID().c_str()));
 		m_strategy->Start();
 	}
 	else
+	{
+		logger.Info(boost::str(boost::format("Portf (%s) STOP strategy <<<") % ID().c_str()));
 		m_strategy->Stop();
+	}
 }
 
 void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )

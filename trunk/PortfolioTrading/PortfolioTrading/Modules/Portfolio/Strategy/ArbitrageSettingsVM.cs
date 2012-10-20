@@ -26,6 +26,18 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             set;
         }
 
+        public IEnumerable<CompareCondItem> StopGainCondItemsSource
+        {
+            get;
+            set;
+        }
+
+        public IEnumerable<CompareCondItem> StopLossCondItemsSource
+        {
+            get;
+            set;
+        }
+
         protected override void OnApplySetting()
         {
             ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)_lastPortfVm.StrategySetting;
@@ -76,17 +88,39 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     if (_direction == entity.PosiDirectionType.LONG)
                     {
                         OpenCondItemsSource = GreaterItemsSource;
+                        StopGainCondItemsSource = GreaterItemsSource;
+                        StopLossCondItemsSource = LessItemsSource;
+
                         RaisePropertyChanged("OpenCondItemsSource");
-                        if(!_isInitializing)
+                        RaisePropertyChanged("StopGainCondItemsSource");
+                        RaisePropertyChanged("StopLossCondItemsSource");
+
+                        if (!_isInitializing)
+                        {
                             OpenCondition = Strategy.CompareCondition.GREATER_THAN;
+                            StopGainCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
+                            StopLossCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
+                        }
                     }
                     else if (_direction == entity.PosiDirectionType.SHORT)
                     {
                         OpenCondItemsSource = LessItemsSource;
+                        StopGainCondItemsSource = LessItemsSource;
+                        StopLossCondItemsSource = GreaterItemsSource;
+
                         RaisePropertyChanged("OpenCondItemsSource");
+                        RaisePropertyChanged("StopGainCondItemsSource");
+                        RaisePropertyChanged("StopLossCondItemsSource");
+
                         if (!_isInitializing)
+                        {
                             OpenCondition = Strategy.CompareCondition.LESS_THAN;
+                            StopGainCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
+                            StopLossCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
+                        }
                     }
+
+
                     
                 }
             }

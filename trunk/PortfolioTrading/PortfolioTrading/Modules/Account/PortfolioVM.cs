@@ -412,7 +412,7 @@ namespace PortfolioTrading.Modules.Account
         {
             if (_accountVm.IsConnected)
             {
-                //_accountVm.Host.PortfTurnSwitches(this.Id, IsRunning, AutoOpen, AutoStopGain, AutoStopLoss);
+                _accountVm.Host.PortfTurnSwitches(this.Id, IsRunning, AutoOpen, AutoStopGain, AutoStopLoss);
 
             }
 
