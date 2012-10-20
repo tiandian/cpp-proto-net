@@ -129,7 +129,8 @@ namespace PortfolioTrading.Infrastructure
         {
             entity.ModifyStrategyParam modifyParam = new entity.ModifyStrategyParam();
             modifyParam.PortfId = portfId;
-
+            modifyParam.StrategyName = strategyName;
+            modifyParam.StrategyData = strategyData;
             byte[] param_data = DataTranslater.Serialize(modifyParam);
             byte[] ret_data = Request("ApplyStrategySettings", param_data);
         }

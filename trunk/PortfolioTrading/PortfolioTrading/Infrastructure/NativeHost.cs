@@ -28,6 +28,9 @@ namespace PortfolioTrading.Infrastructure
 
         public bool Startup(int port, bool showConsole = true)
         {
+#if HOST_STARTED
+            return true;
+#else
             _hostProc = new Process();
             _hostProc.StartInfo.FileName = HostName;
             string addr = GetLocalIP();
@@ -51,6 +54,7 @@ namespace PortfolioTrading.Infrastructure
             _hostProc.Exited += host_Exited;
 
             return _hostProc.Start();
+#endif
         }
 
         private void host_Exited(object sender, EventArgs e)
