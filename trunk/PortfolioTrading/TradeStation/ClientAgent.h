@@ -30,14 +30,15 @@ public:
 	void Add(entity::PortfolioItem* portfolioItem);
 	void Remove(const string& pid);
 	void RegQuote(vector<string>& symbols);
-	void PortfolioOpenPosition(const string& pid, int quantity);
-	void ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, string& msg);
+	
 	bool QueryAccountInfo(string* serializedAcctInfo);
 	void SetPorfPreferredLeg(const entity::ModifyPortfolioPreferredLegParam& preferredLegParam);
 	void TurnPortfSwitches(const entity::ModifyPortfolioSwitchParam& switchesParam);
 	void ApplyStrategySetting(const entity::ModifyStrategyParam& settings);
 
+	void OpenPosition(const string& pid, int quantity);
 	void OpenPosition(CPortfolio* portf, int qty);
+	void ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, string& msg);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);
