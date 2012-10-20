@@ -204,7 +204,7 @@ void CClientManager::PorfOpenPosition( CClientAgent* pClientAgent, const string&
 	entity::PorfOpenPosiParam opParam;
 	opParam.ParseFromString(in_data);
 
-	pClientAgent->PortfolioOpenPosition(opParam.portfid(), opParam.quantity());
+	pClientAgent->OpenPosition(opParam.portfid(), opParam.quantity());
 }
 
 void CClientManager::ClosePosition( CClientAgent* pClientAgent, const string& in_data, string& out_data )

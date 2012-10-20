@@ -202,3 +202,14 @@ void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 	}
 }
 
+int CPortfolio::GetPosition( vector<MultiLegOrderPtr>& openedOrders )
+{
+	for(map<string, MultiLegOrderPtr>::iterator iter = m_openedPosition.begin();
+		iter != m_openedPosition.end(); ++iter)
+	{
+		openedOrders.push_back(iter->second);
+	}
+
+	return openedOrders.size();
+}
+

@@ -13,7 +13,6 @@ m_clientConnected(false)
 	
 	m_portfolioMgr.SetQuoteAggregator(&m_quoteAggregator);
 	m_portfolioMgr.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnPortfolioUpdated, this, _1));
-	m_portfolioMgr.SetOpenPortfolioFunc(boost::bind(&CClientAgent::OpenPosition, this, _1, _2));
 	
 	m_orderProcessor.Initialize(&m_tradeAgent);
 	m_orderProcessor.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnMultiLegOrderUpdated, this, _1));
@@ -111,7 +110,7 @@ void CClientAgent::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 	m_pSession->BeginCallback("QuotePush", callbackData);
 }
 
-void CClientAgent::PortfolioOpenPosition( const string& pid, int quantity )
+void CClientAgent::OpenPosition( const string& pid, int quantity )
 {
 	// build order
 	CPortfolio* portf = m_portfolioMgr.Get(pid);

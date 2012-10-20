@@ -61,6 +61,8 @@ public:
 	void AddPosition(const MultiLegOrderPtr& openOrder);
 	void RemovePosition(const MultiLegOrderPtr& closeOrder);
 
+	int GetPosition(vector<MultiLegOrderPtr>& openedOrders);
+
 private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
