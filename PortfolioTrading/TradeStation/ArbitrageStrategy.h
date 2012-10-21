@@ -28,6 +28,8 @@ public:
 
 	void ApplySettings(const std::string& settingData);
 
+	void Test();
+
 protected:
 
 	CConditionChecker<double>& GetOpenPosiCond(){ return m_openPosiChecker; }

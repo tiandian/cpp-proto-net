@@ -22,6 +22,8 @@ void CArbitrageStrategy::ApplySettings( const std::string& settingData )
 	entity::ArbitrageStrategySettings arbitrageSettings;
 	arbitrageSettings.ParseFromString(settingData);
 
+	Direction(arbitrageSettings.side());
+
 	SetOpenPosiCond(ConvertCompareCondition(arbitrageSettings.opencondition()), arbitrageSettings.openposithreshold());
 	SetStopGainCond(ConvertCompareCondition(arbitrageSettings.stopgaincondition()), arbitrageSettings.stopgainthreshold());
 	SetStopLossCond(ConvertCompareCondition(arbitrageSettings.stoplosscondition()), arbitrageSettings.stoplossthreshold());
@@ -71,4 +73,21 @@ POSI_OPER CArbitrageStrategy::NextOperation( POSI_OPER oper )
 	default:
 		return DO_NOTHING;
 	}
+}
+
+void CArbitrageStrategy::Test()
+{
+	entity::PosiDirectionType direction = Direction();
+	if(direction == entity::LONG)
+	{
+		double longDiff = Portfolio()->LongDiff();
+		CStrategy<double>::Test(longDiff);
+	}
+	else if(direction == entity::SHORT)
+	{
+		double shortDiff = Portfolio()->ShortDiff();
+		CStrategy<double>::Test(shortDiff);
+	}
+	else
+		CStrategy<double>::Test(Portfolio()->Difference());
 }

@@ -46,6 +46,8 @@ public:
 	void Cleanup();
 
 	double Difference(){ return m_innerItem->diff(); }
+	double LongDiff(){ return m_innerItem->longdiff(); }
+	double ShortDiff(){ return m_innerItem->shortdiff(); }
 
 	int NewOrderId(string& newId);
 

@@ -36,7 +36,7 @@ double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType)
 				legPrice = (*iter)->Last();
 			}
 		}
-		else if(legPrice == entity::SHORT)
+		else if(legSide == entity::SHORT)
 		{
 			switch(diffType)
 			{
@@ -52,6 +52,28 @@ double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType)
 			}
 		}
 
+		if(legPrice > 0)
+		{
+			if((*iter)->Side() == entity::LONG)
+			{
+				diff +=	legPrice;
+			}
+			else
+				diff -= legPrice;
+		}
+		else	// if one of legs has no price, set diff 0 anyway
+			diff = 0;
+	}
+	return diff;
+}
+
+double CalcDiff(vector<LegPtr>& legs)
+{
+	// calculate the diff
+	double diff = 0;
+	for(vector<LegPtr>::iterator iter = legs.begin(); iter != legs.end(); ++iter)
+	{
+		double legPrice = (*iter)->Last();
 		if(legPrice > 0)
 		{
 			if((*iter)->Side() == entity::LONG)
@@ -140,28 +162,6 @@ void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfIte
 	m_strategy = strategy;
 }
 
-double CalcDiff(vector<LegPtr>& legs)
-{
-	// calculate the diff
-	double diff = 0;
-	for(vector<LegPtr>::iterator iter = legs.begin(); iter != legs.end(); ++iter)
-	{
-		double legPrice = (*iter)->Last();
-		if(legPrice > 0)
-		{
-			if((*iter)->Side() == entity::LONG)
-			{
-				diff +=	legPrice;
-			}
-			else
-				diff -= legPrice;
-		}
-		else	// if one of legs has no price, set diff 0 anyway
-			diff = 0;
-	}
-	return diff;
-}
-
 void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 {
 	// update last
@@ -182,7 +182,7 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 	double shortDiff = CalcDiff(m_vecLegs, SHORT_DIFF);
 	m_innerItem->set_shortdiff(shortDiff);
 
-	m_strategy->Test(lastDiff);
+	m_strategy->Test();
 	
 	PushUpdate();
 }
