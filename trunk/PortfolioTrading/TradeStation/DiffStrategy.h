@@ -60,4 +60,13 @@ class CDiffStrategy : public CStrategy<double>
 {
 public:
 	virtual ~CDiffStrategy(){}
+
+	entity::PosiDirectionType Direction() const { return m_direction; }
+	void Direction(entity::PosiDirectionType val) { m_direction = val; }
+
+	virtual void Test(){}
+
+private:
+	entity::PosiDirectionType m_direction;
+
 };
