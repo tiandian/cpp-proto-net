@@ -415,6 +415,8 @@ namespace PortfolioTrading.Modules.Account
             Diff = item.Diff;
             LongDiff = item.LongDiff;
             ShortDiff = item.ShortDiff;
+            OpenTimes = item.OpenTimes;
+            DoneTimes = item.CloseTimes;
 
             IsRunning = item.StrategyRunning;
 

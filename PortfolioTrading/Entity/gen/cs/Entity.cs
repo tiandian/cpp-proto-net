@@ -201,6 +201,27 @@ namespace entity
       get { return _StrategyRunning; }
       set { _StrategyRunning = value; }
     }
+    private int _OpenTimes;
+    [global::ProtoBuf.ProtoMember(13, IsRequired = true, Name=@"OpenTimes", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int OpenTimes
+    {
+      get { return _OpenTimes; }
+      set { _OpenTimes = value; }
+    }
+    private int _CloseTimes;
+    [global::ProtoBuf.ProtoMember(14, IsRequired = true, Name=@"CloseTimes", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int CloseTimes
+    {
+      get { return _CloseTimes; }
+      set { _CloseTimes = value; }
+    }
+    private double _Profit;
+    [global::ProtoBuf.ProtoMember(15, IsRequired = true, Name=@"Profit", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double Profit
+    {
+      get { return _Profit; }
+      set { _Profit = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
