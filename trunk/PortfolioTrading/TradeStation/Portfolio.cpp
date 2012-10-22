@@ -122,6 +122,20 @@ CLeg* CPortfolio::GetLeg( int legId )
 		return m_vecLegs[legId - 1].get();
 }
 
+CLeg* CPortfolio::GetLeg(const string& symbol)
+{
+	// update last
+	for(vector<LegPtr>::iterator iter = m_vecLegs.begin(); iter != m_vecLegs.end(); ++iter)
+	{
+		if((*iter)->Symbol() == symbol)
+		{
+			return iter->get();
+		}
+	}
+
+	return NULL;
+}
+
 void CLeg::SetInnerItem(entity::LegItem* pItem)
 {
 	m_pInnerItem = pItem;

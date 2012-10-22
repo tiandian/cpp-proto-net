@@ -18,11 +18,17 @@ public:
 
 	void ApplySettings(const std::string& settingData);
 
+	void Test();
+
 protected:
 
 	CConditionChecker<double>& GetOpenPosiCond(){ return m_openPosiChecker; }
 	CConditionChecker<double>& GetStopGainCond(){ return m_stopGainChecker; }
 	CConditionChecker<double>& GetStopLossCond(){ return m_stopLossChecker; }
+
+	void DoOpenPostion();
+	
+	POSI_OPER NextOperation(POSI_OPER oper);
 
 private:
 	CValueChecker m_openPosiChecker;
@@ -30,6 +36,6 @@ private:
 	CNonUseChecker m_stopLossChecker;
 
 	std::string m_closeLeg;
-
+	entity::PosiDirectionType m_closingLegPosition;
 };
 

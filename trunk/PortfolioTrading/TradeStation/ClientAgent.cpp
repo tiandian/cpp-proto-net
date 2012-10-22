@@ -146,6 +146,21 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
+void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, int qty)
+{
+	PlaceOrderContext placeOrderCtx;
+	placeOrderCtx.quantity = qty;
+	placeOrderCtx.brokerId = m_brokerId;
+	placeOrderCtx.investorId = m_userId;
+	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
+	placeOrderCtx.limitPriceType = entity::Opposite;
+
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildChangePosiOrder(portf,
+		closeSymbol, &placeOrderCtx));
+
+	m_orderProcessor.SubmitOrder(multilegOrder);
+}
+
 bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)
 {
 	bool succ = m_orderProcessor.QueryAccountInfo(serializedAcctInfo);

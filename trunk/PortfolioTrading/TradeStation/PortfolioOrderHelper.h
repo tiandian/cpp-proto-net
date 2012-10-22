@@ -21,4 +21,6 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 
 trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::MultiLegOrder* multilegOpenOrder, PlaceOrderContext* placeOrderCtx);
 
+trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, const std::string& closeSymbol, PlaceOrderContext* placeOrderCtx);
+
 int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders);
