@@ -263,6 +263,7 @@ void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
 	const string& mOrderId = openOrder->orderid();
 
 	m_openedPosition.insert(make_pair(mOrderId, openOrder));
+	IncrementalOpenTimes();
 }
 
 void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
@@ -274,6 +275,7 @@ void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 	{
 		m_openedPosition.erase(iter);
 	}
+	IncrementalCloseTimes();
 }
 
 int CPortfolio::GetPosition( vector<MultiLegOrderPtr>& openedOrders )

@@ -69,6 +69,8 @@ private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
 	void PushUpdate();
+	void IncrementalOpenTimes(){ m_innerItem->set_opentimes(m_innerItem->opentimes() + 1); }
+	void IncrementalCloseTimes(){ m_innerItem->set_closetimes(m_innerItem->closetimes() + 1); }
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;

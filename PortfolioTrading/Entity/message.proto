@@ -39,6 +39,9 @@ message PortfolioItem
 	required string StrategyName = 10;
 	required bytes StrategyData = 11; 
 	required bool StrategyRunning = 12;
+	required int32 OpenTimes = 13;
+	required int32 CloseTimes = 14;
+	required double Profit = 15;
 }
 
 message ConnectParam
