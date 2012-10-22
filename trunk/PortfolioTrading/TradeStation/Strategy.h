@@ -148,7 +148,7 @@ protected:
 		return DO_NOTHING;
 	}
 
-private:
+protected:
 	bool m_isRunning;
 	bool m_isAutoOpen;
 	bool m_isStopGain;

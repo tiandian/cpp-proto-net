@@ -533,6 +533,27 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline bool strategyrunning() const;
   inline void set_strategyrunning(bool value);
   
+  // required int32 OpenTimes = 13;
+  inline bool has_opentimes() const;
+  inline void clear_opentimes();
+  static const int kOpenTimesFieldNumber = 13;
+  inline ::google::protobuf::int32 opentimes() const;
+  inline void set_opentimes(::google::protobuf::int32 value);
+  
+  // required int32 CloseTimes = 14;
+  inline bool has_closetimes() const;
+  inline void clear_closetimes();
+  static const int kCloseTimesFieldNumber = 14;
+  inline ::google::protobuf::int32 closetimes() const;
+  inline void set_closetimes(::google::protobuf::int32 value);
+  
+  // required double Profit = 15;
+  inline bool has_profit() const;
+  inline void clear_profit();
+  static const int kProfitFieldNumber = 15;
+  inline double profit() const;
+  inline void set_profit(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioItem)
  private:
   inline void set_has_id();
@@ -557,6 +578,12 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline void clear_has_strategydata();
   inline void set_has_strategyrunning();
   inline void clear_has_strategyrunning();
+  inline void set_has_opentimes();
+  inline void clear_has_opentimes();
+  inline void set_has_closetimes();
+  inline void clear_has_closetimes();
+  inline void set_has_profit();
+  inline void clear_has_profit();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -572,9 +599,12 @@ class PortfolioItem : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::entity::LegItem > legs_;
   ::std::string* strategyname_;
   ::std::string* strategydata_;
+  ::google::protobuf::int32 opentimes_;
+  ::google::protobuf::int32 closetimes_;
+  double profit_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(12 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(15 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2660,6 +2690,72 @@ inline bool PortfolioItem::strategyrunning() const {
 inline void PortfolioItem::set_strategyrunning(bool value) {
   set_has_strategyrunning();
   strategyrunning_ = value;
+}
+
+// required int32 OpenTimes = 13;
+inline bool PortfolioItem::has_opentimes() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void PortfolioItem::set_has_opentimes() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void PortfolioItem::clear_has_opentimes() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void PortfolioItem::clear_opentimes() {
+  opentimes_ = 0;
+  clear_has_opentimes();
+}
+inline ::google::protobuf::int32 PortfolioItem::opentimes() const {
+  return opentimes_;
+}
+inline void PortfolioItem::set_opentimes(::google::protobuf::int32 value) {
+  set_has_opentimes();
+  opentimes_ = value;
+}
+
+// required int32 CloseTimes = 14;
+inline bool PortfolioItem::has_closetimes() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void PortfolioItem::set_has_closetimes() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void PortfolioItem::clear_has_closetimes() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void PortfolioItem::clear_closetimes() {
+  closetimes_ = 0;
+  clear_has_closetimes();
+}
+inline ::google::protobuf::int32 PortfolioItem::closetimes() const {
+  return closetimes_;
+}
+inline void PortfolioItem::set_closetimes(::google::protobuf::int32 value) {
+  set_has_closetimes();
+  closetimes_ = value;
+}
+
+// required double Profit = 15;
+inline bool PortfolioItem::has_profit() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void PortfolioItem::set_has_profit() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void PortfolioItem::clear_has_profit() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void PortfolioItem::clear_profit() {
+  profit_ = 0;
+  clear_has_profit();
+}
+inline double PortfolioItem::profit() const {
+  return profit_;
+}
+inline void PortfolioItem::set_profit(double value) {
+  set_has_profit();
+  profit_ = value;
 }
 
 // -------------------------------------------------------------------
