@@ -37,6 +37,7 @@ public:
 	CLeg* AddLeg(entity::LegItem* legItem);
 
 	CLeg* GetLeg(int legId);
+	CLeg* GetLeg(const string& symbol);
 
 	vector<LegPtr>& Legs(){ return m_vecLegs; }
 

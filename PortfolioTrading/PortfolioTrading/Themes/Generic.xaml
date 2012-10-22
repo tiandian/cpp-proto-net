@@ -135,10 +135,26 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="100" CornerRadius="4" BorderBrush="Chocolate" BorderThickness="2">
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                    <TextBlock>价差</TextBlock>
-                    <TextBlock Text="{Binding Diff}"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock>价差</TextBlock>
+                        <TextBlock Text="{Binding Diff}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock>多差</TextBlock>
+                        <TextBlock Text="{Binding LongDiff}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <TextBlock>空差</TextBlock>
+                        <TextBlock Text="{Binding ShortDiff}"/>
+                    </StackPanel>
+                </Grid>
+                
             </Border>
             <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="0">
                 <TextBlock Margin="4" VerticalAlignment="Center">平仓: </TextBlock>
