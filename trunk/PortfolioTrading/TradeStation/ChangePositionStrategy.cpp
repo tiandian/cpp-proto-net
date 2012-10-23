@@ -21,9 +21,12 @@ void CChangePositionStrategy::ApplySettings( const std::string& settingData )
 	settings.ParseFromString(settingData);
 
 	CloseLeg(settings.closeleg());
+	m_closingLegPosition = settings.closelegside();
 	SetOpenPosiCond(ConvertCompareCondition(settings.triggercondition()), 
 											settings.threshold());
 
+	logger.Info(boost::str(boost::format("Symbol to close: %s, Side: %d, Threshold: %f") 
+		% CloseLeg().c_str() % m_closingLegPosition % settings.threshold()));
 }
 
 void CChangePositionStrategy::DoOpenPostion()

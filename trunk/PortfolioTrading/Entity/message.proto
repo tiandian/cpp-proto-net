@@ -102,8 +102,9 @@ message ArbitrageStrategySettings
 message ChangePosiStrategySettings
 {
 	required string CloseLeg = 1;
-	required CompareCondition TriggerCondition = 2;
-	required double Threshold = 3;
+	required PosiDirectionType CloseLegSide = 2;
+	required CompareCondition TriggerCondition = 3;
+	required double Threshold = 4;
 }
 
 message ModifyStrategyParam
