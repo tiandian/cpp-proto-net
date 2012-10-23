@@ -26,6 +26,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region CloseLegSide
+        private entity.PosiDirectionType _side;
+
+        public entity.PosiDirectionType CloseLegSide
+        {
+            get { return _side; }
+            set
+            {
+                if (_side != value)
+                {
+                    _side = value;
+                    RaisePropertyChanged("CloseLegSide");
+                }
+            }
+        }
+        #endregion
+
         #region TriggerCondition
         private CompareCondition _triggerCond;
 
@@ -73,6 +90,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
             ChangePositionSetting settings = (ChangePositionSetting)portfVm.StrategySetting;
             this.CloseLeg = settings.CloseLeg;
+            this.CloseLegSide = settings.CloseLegSide;
             this.TriggerCondition = settings.TriggerCondition;
             this.Threshold = settings.Threshold;
         }
@@ -82,6 +100,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             ChangePositionSetting settings = (ChangePositionSetting)_lastPortfVm.StrategySetting;
 
             settings.CloseLeg = this.CloseLeg;
+            settings.CloseLegSide = this.CloseLegSide;
             settings.TriggerCondition = this.TriggerCondition;
             settings.Threshold = this.Threshold;
 

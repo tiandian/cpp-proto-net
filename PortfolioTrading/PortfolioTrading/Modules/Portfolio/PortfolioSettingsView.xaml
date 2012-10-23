@@ -137,14 +137,24 @@
                         </Grid>
 
                         <Border CornerRadius="4">
-                            <DockPanel>
-                                <TextBlock VerticalAlignment="Center" Margin="4">平仓合约</TextBlock>
-                                <ComboBox Margin="4, 0" SelectedValue="{Binding CloseLeg, Mode=TwoWay}"
+                            <StackPanel>
+                                <DockPanel Margin="2">
+                                    <TextBlock VerticalAlignment="Center" Margin="4">平仓合约</TextBlock>
+                                    <ComboBox Margin="4, 0" SelectedValue="{Binding CloseLeg, Mode=TwoWay}"
                                           ItemsSource="{Binding OptionalLegs}">
-                                </ComboBox>
-                            </DockPanel>
+                                    </ComboBox>
+                                </DockPanel>
+                                <DockPanel Margin="2">
+                                    <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
+                                    <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
+                                              SelectedValuePath="Direction" SelectedValue="{Binding CloseLegSide, Mode=TwoWay}"
+                                              ItemTemplate="{StaticResource combItemTemplate}" >
+                                    </ComboBox>
+                                </DockPanel>
+                            </StackPanel>
+                            
                         </Border>
-                        
+
                         <Border CornerRadius="4">
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Top" Margin="6" FontWeight="Bold">触发条件</TextBlock>
