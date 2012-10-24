@@ -295,8 +295,9 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ArbitrageStrategySettings));
   ChangePosiStrategySettings_descriptor_ = file->message_type(12);
-  static const int ChangePosiStrategySettings_offsets_[3] = {
+  static const int ChangePosiStrategySettings_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, closeleg_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, closelegside_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, triggercondition_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, threshold_),
   };
@@ -508,18 +509,19 @@ void protobuf_AddDesc_message_2eproto() {
     "ition\030\004 \002(\0162\030.entity.CompareCondition\022\031\n"
     "\021StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCond"
     "ition\030\006 \002(\0162\030.entity.CompareCondition\022\031\n"
-    "\021StopLossThreshold\030\007 \002(\001\"u\n\032ChangePosiSt"
-    "rategySettings\022\020\n\010CloseLeg\030\001 \002(\t\0222\n\020Trig"
-    "gerCondition\030\002 \002(\0162\030.entity.CompareCondi"
-    "tion\022\021\n\tThreshold\030\003 \002(\001\"R\n\023ModifyStrateg"
-    "yParam\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030"
-    "\002 \002(\t\022\024\n\014StrategyData\030\003 \002(\014\"k\n\032ModifyPor"
-    "tfolioSwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Au"
-    "toOpen\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014Au"
-    "toStopLoss\030\004 \002(\010\"<\n\030ModifyRunningStatusP"
-    "aram\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F"
-    "\n ModifyPortfolioPreferredLegParam\022\017\n\007Po"
-    "rtfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t", 1830);
+    "\021StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiS"
+    "trategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Clo"
+    "seLegSide\030\002 \002(\0162\031.entity.PosiDirectionTy"
+    "pe\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.Co"
+    "mpareCondition\022\021\n\tThreshold\030\004 \002(\001\"R\n\023Mod"
+    "ifyStrategyParam\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014Str"
+    "ategyName\030\002 \002(\t\022\024\n\014StrategyData\030\003 \002(\014\"k\n"
+    "\032ModifyPortfolioSwitchParam\022\017\n\007PortfId\030\001"
+    " \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024\n\014AutoStopGain\030\003"
+    " \002(\010\022\024\n\014AutoStopLoss\030\004 \002(\010\"<\n\030ModifyRunn"
+    "ingStatusParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabl"
+    "ed\030\002 \002(\010\"F\n ModifyPortfolioPreferredLegP"
+    "aram\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t", 1880);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -4800,6 +4802,7 @@ void ArbitrageStrategySettings::Swap(ArbitrageStrategySettings* other) {
 
 #ifndef _MSC_VER
 const int ChangePosiStrategySettings::kCloseLegFieldNumber;
+const int ChangePosiStrategySettings::kCloseLegSideFieldNumber;
 const int ChangePosiStrategySettings::kTriggerConditionFieldNumber;
 const int ChangePosiStrategySettings::kThresholdFieldNumber;
 #endif  // !_MSC_VER
@@ -4821,6 +4824,7 @@ ChangePosiStrategySettings::ChangePosiStrategySettings(const ChangePosiStrategyS
 void ChangePosiStrategySettings::SharedCtor() {
   _cached_size_ = 0;
   closeleg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  closelegside_ = 49;
   triggercondition_ = 0;
   threshold_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -4865,6 +4869,7 @@ void ChangePosiStrategySettings::Clear() {
         closeleg_->clear();
       }
     }
+    closelegside_ = 49;
     triggercondition_ = 0;
     threshold_ = 0;
   }
@@ -4890,12 +4895,33 @@ bool ChangePosiStrategySettings::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_TriggerCondition;
+        if (input->ExpectTag(16)) goto parse_CloseLegSide;
         break;
       }
       
-      // required .entity.CompareCondition TriggerCondition = 2;
+      // required .entity.PosiDirectionType CloseLegSide = 2;
       case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_CloseLegSide:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::PosiDirectionType_IsValid(value)) {
+            set_closelegside(static_cast< entity::PosiDirectionType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(2, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_TriggerCondition;
+        break;
+      }
+      
+      // required .entity.CompareCondition TriggerCondition = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_TriggerCondition:
@@ -4906,17 +4932,17 @@ bool ChangePosiStrategySettings::MergePartialFromCodedStream(
           if (entity::CompareCondition_IsValid(value)) {
             set_triggercondition(static_cast< entity::CompareCondition >(value));
           } else {
-            mutable_unknown_fields()->AddVarint(2, value);
+            mutable_unknown_fields()->AddVarint(3, value);
           }
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(25)) goto parse_Threshold;
+        if (input->ExpectTag(33)) goto parse_Threshold;
         break;
       }
       
-      // required double Threshold = 3;
-      case 3: {
+      // required double Threshold = 4;
+      case 4: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
          parse_Threshold:
@@ -4958,15 +4984,21 @@ void ChangePosiStrategySettings::SerializeWithCachedSizes(
       1, this->closeleg(), output);
   }
   
-  // required .entity.CompareCondition TriggerCondition = 2;
-  if (has_triggercondition()) {
+  // required .entity.PosiDirectionType CloseLegSide = 2;
+  if (has_closelegside()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      2, this->triggercondition(), output);
+      2, this->closelegside(), output);
   }
   
-  // required double Threshold = 3;
+  // required .entity.CompareCondition TriggerCondition = 3;
+  if (has_triggercondition()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      3, this->triggercondition(), output);
+  }
+  
+  // required double Threshold = 4;
   if (has_threshold()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->threshold(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->threshold(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -4987,15 +5019,21 @@ void ChangePosiStrategySettings::SerializeWithCachedSizes(
         1, this->closeleg(), target);
   }
   
-  // required .entity.CompareCondition TriggerCondition = 2;
-  if (has_triggercondition()) {
+  // required .entity.PosiDirectionType CloseLegSide = 2;
+  if (has_closelegside()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      2, this->triggercondition(), target);
+      2, this->closelegside(), target);
   }
   
-  // required double Threshold = 3;
+  // required .entity.CompareCondition TriggerCondition = 3;
+  if (has_triggercondition()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      3, this->triggercondition(), target);
+  }
+  
+  // required double Threshold = 4;
   if (has_threshold()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->threshold(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->threshold(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -5016,13 +5054,19 @@ int ChangePosiStrategySettings::ByteSize() const {
           this->closeleg());
     }
     
-    // required .entity.CompareCondition TriggerCondition = 2;
+    // required .entity.PosiDirectionType CloseLegSide = 2;
+    if (has_closelegside()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->closelegside());
+    }
+    
+    // required .entity.CompareCondition TriggerCondition = 3;
     if (has_triggercondition()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->triggercondition());
     }
     
-    // required double Threshold = 3;
+    // required double Threshold = 4;
     if (has_threshold()) {
       total_size += 1 + 8;
     }
@@ -5057,6 +5101,9 @@ void ChangePosiStrategySettings::MergeFrom(const ChangePosiStrategySettings& fro
     if (from.has_closeleg()) {
       set_closeleg(from.closeleg());
     }
+    if (from.has_closelegside()) {
+      set_closelegside(from.closelegside());
+    }
     if (from.has_triggercondition()) {
       set_triggercondition(from.triggercondition());
     }
@@ -5080,7 +5127,7 @@ void ChangePosiStrategySettings::CopyFrom(const ChangePosiStrategySettings& from
 }
 
 bool ChangePosiStrategySettings::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   
   return true;
 }
@@ -5088,6 +5135,7 @@ bool ChangePosiStrategySettings::IsInitialized() const {
 void ChangePosiStrategySettings::Swap(ChangePosiStrategySettings* other) {
   if (other != this) {
     std::swap(closeleg_, other->closeleg_);
+    std::swap(closelegside_, other->closelegside_);
     std::swap(triggercondition_, other->triggercondition_);
     std::swap(threshold_, other->threshold_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);

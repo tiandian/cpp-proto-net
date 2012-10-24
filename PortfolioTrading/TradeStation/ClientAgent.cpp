@@ -146,7 +146,7 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
-void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, int qty)
+void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, entity::PosiDirectionType existingPosition, int qty)
 {
 	PlaceOrderContext placeOrderCtx;
 	placeOrderCtx.quantity = qty;
@@ -156,7 +156,7 @@ void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, 
 	placeOrderCtx.limitPriceType = entity::Opposite;
 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildChangePosiOrder(portf,
-		closeSymbol, &placeOrderCtx));
+		closeSymbol, existingPosition, &placeOrderCtx));
 
 	m_orderProcessor.SubmitOrder(multilegOrder);
 }

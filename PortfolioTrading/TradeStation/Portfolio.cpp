@@ -120,6 +120,8 @@ CLeg* CPortfolio::GetLeg( int legId )
 {
 	if(legId <= m_vecLegs.size())
 		return m_vecLegs[legId - 1].get();
+
+	return NULL;
 }
 
 CLeg* CPortfolio::GetLeg(const string& symbol)
