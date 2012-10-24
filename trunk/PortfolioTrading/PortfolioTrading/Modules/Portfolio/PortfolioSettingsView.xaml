@@ -145,7 +145,7 @@
                                     </ComboBox>
                                 </DockPanel>
                                 <DockPanel Margin="2">
-                                    <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
+                                    <TextBlock VerticalAlignment="Center" Margin="4">现有仓位</TextBlock>
                                     <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
                                               SelectedValuePath="Direction" SelectedValue="{Binding CloseLegSide, Mode=TwoWay}"
                                               ItemTemplate="{StaticResource combItemTemplate}" >

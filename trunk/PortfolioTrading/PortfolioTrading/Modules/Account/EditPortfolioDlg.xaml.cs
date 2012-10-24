@@ -140,6 +140,12 @@ namespace PortfolioTrading.Modules.Account
             }
 
             portf.StrategySetting = StrategySetting.Create(StrategyName);
+            if (StrategyName == StrategySetting.ChangePositionStrategyName)
+            {
+                portf.AutoOpen = true;
+                portf.AutoStopGain = false;
+                portf.AutoStopLoss = false;
+            }
         }
 
         #region StrategyName

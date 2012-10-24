@@ -1539,17 +1539,24 @@ class ChangePosiStrategySettings : public ::google::protobuf::Message {
   inline ::std::string* mutable_closeleg();
   inline ::std::string* release_closeleg();
   
-  // required .entity.CompareCondition TriggerCondition = 2;
+  // required .entity.PosiDirectionType CloseLegSide = 2;
+  inline bool has_closelegside() const;
+  inline void clear_closelegside();
+  static const int kCloseLegSideFieldNumber = 2;
+  inline entity::PosiDirectionType closelegside() const;
+  inline void set_closelegside(entity::PosiDirectionType value);
+  
+  // required .entity.CompareCondition TriggerCondition = 3;
   inline bool has_triggercondition() const;
   inline void clear_triggercondition();
-  static const int kTriggerConditionFieldNumber = 2;
+  static const int kTriggerConditionFieldNumber = 3;
   inline entity::CompareCondition triggercondition() const;
   inline void set_triggercondition(entity::CompareCondition value);
   
-  // required double Threshold = 3;
+  // required double Threshold = 4;
   inline bool has_threshold() const;
   inline void clear_threshold();
-  static const int kThresholdFieldNumber = 3;
+  static const int kThresholdFieldNumber = 4;
   inline double threshold() const;
   inline void set_threshold(double value);
   
@@ -1557,6 +1564,8 @@ class ChangePosiStrategySettings : public ::google::protobuf::Message {
  private:
   inline void set_has_closeleg();
   inline void clear_has_closeleg();
+  inline void set_has_closelegside();
+  inline void clear_has_closelegside();
   inline void set_has_triggercondition();
   inline void clear_has_triggercondition();
   inline void set_has_threshold();
@@ -1565,11 +1574,12 @@ class ChangePosiStrategySettings : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* closeleg_;
-  double threshold_;
+  int closelegside_;
   int triggercondition_;
+  double threshold_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3794,15 +3804,38 @@ inline ::std::string* ChangePosiStrategySettings::release_closeleg() {
   }
 }
 
-// required .entity.CompareCondition TriggerCondition = 2;
-inline bool ChangePosiStrategySettings::has_triggercondition() const {
+// required .entity.PosiDirectionType CloseLegSide = 2;
+inline bool ChangePosiStrategySettings::has_closelegside() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ChangePosiStrategySettings::set_has_triggercondition() {
+inline void ChangePosiStrategySettings::set_has_closelegside() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ChangePosiStrategySettings::clear_has_triggercondition() {
+inline void ChangePosiStrategySettings::clear_has_closelegside() {
   _has_bits_[0] &= ~0x00000002u;
+}
+inline void ChangePosiStrategySettings::clear_closelegside() {
+  closelegside_ = 49;
+  clear_has_closelegside();
+}
+inline entity::PosiDirectionType ChangePosiStrategySettings::closelegside() const {
+  return static_cast< entity::PosiDirectionType >(closelegside_);
+}
+inline void ChangePosiStrategySettings::set_closelegside(entity::PosiDirectionType value) {
+  GOOGLE_DCHECK(entity::PosiDirectionType_IsValid(value));
+  set_has_closelegside();
+  closelegside_ = value;
+}
+
+// required .entity.CompareCondition TriggerCondition = 3;
+inline bool ChangePosiStrategySettings::has_triggercondition() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ChangePosiStrategySettings::set_has_triggercondition() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ChangePosiStrategySettings::clear_has_triggercondition() {
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void ChangePosiStrategySettings::clear_triggercondition() {
   triggercondition_ = 0;
@@ -3817,15 +3850,15 @@ inline void ChangePosiStrategySettings::set_triggercondition(entity::CompareCond
   triggercondition_ = value;
 }
 
-// required double Threshold = 3;
+// required double Threshold = 4;
 inline bool ChangePosiStrategySettings::has_threshold() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void ChangePosiStrategySettings::set_has_threshold() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void ChangePosiStrategySettings::clear_has_threshold() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void ChangePosiStrategySettings::clear_threshold() {
   threshold_ = 0;

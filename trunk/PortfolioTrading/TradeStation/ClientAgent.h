@@ -40,7 +40,7 @@ public:
 	void OpenPosition(const string& pid, int quantity);
 	void OpenPosition(CPortfolio* portf, int qty);
 	void ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, string& msg);
-	void ChangePosition(CPortfolio* portf, const string& closeSymbol, int qty);
+	void ChangePosition(CPortfolio* portf, const string& closeSymbol, entity::PosiDirectionType existingPosition, int qty);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);

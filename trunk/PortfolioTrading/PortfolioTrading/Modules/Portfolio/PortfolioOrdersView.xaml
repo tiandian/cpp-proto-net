@@ -63,7 +63,7 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding Direction}"/>
+                                            <TextBlock HorizontalAlignment="Center"  Text="{Binding Direction}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -80,7 +80,7 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding OCFlag}"/>
+                                            <TextBlock HorizontalAlignment="Center"  Text="{Binding OCFlag}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -123,7 +123,7 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock>
+                                            <TextBlock HorizontalAlignment="Center">
                                                 <Run Text="{Binding Volume}"/> (<Run Text="{Binding VolTraded}"/>)
                                             </TextBlock>
                                         </DataTemplate>

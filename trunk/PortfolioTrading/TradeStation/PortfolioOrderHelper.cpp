@@ -192,7 +192,9 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 	return pMultiLegOrder;
 }
 
-trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, const std::string& closeSymbol, PlaceOrderContext* placeOrderCtx)
+trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, 
+	const std::string& closeSymbol, entity::PosiDirectionType existingPosition,
+	PlaceOrderContext* placeOrderCtx)
 {
 	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
 	string mOrderId;
@@ -215,13 +217,13 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, const std::str
 
 		double limitPrice = 0;
 		// in case wanna open position
-		if(side == entity::LONG)
+		if(existingPosition == entity::LONG)
 		{
 			// open long position
 			order->set_direction(isClosingLeg ? trade::SELL : trade::BUY);
 			limitPrice = isClosingLeg ? leg->Bid() : leg->Ask();
 		}
-		else if(side == entity::SHORT)
+		else if(existingPosition == entity::SHORT)
 		{
 			order->set_direction(isClosingLeg ? trade::BUY : trade::SELL);
 			limitPrice = isClosingLeg ? leg->Ask() : leg->Bid();
@@ -238,7 +240,7 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, const std::str
 		order->set_limitprice(limitPrice);
 
 		static char CombOffset[1];
-		CombOffset[0] = isClosingLeg ? trade::OF_CLOSE : trade::OF_OPEN;
+		CombOffset[0] = isClosingLeg ? trade::OF_CLOSE_TODAY : trade::OF_OPEN;
 		
 		order->set_comboffsetflag(std::string(CombOffset));
 

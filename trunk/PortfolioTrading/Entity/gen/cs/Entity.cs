@@ -482,15 +482,22 @@ namespace entity
       get { return _CloseLeg; }
       set { _CloseLeg = value; }
     }
+    private entity.PosiDirectionType _CloseLegSide;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"CloseLegSide", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.PosiDirectionType CloseLegSide
+    {
+      get { return _CloseLegSide; }
+      set { _CloseLegSide = value; }
+    }
     private entity.CompareCondition _TriggerCondition;
-    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"TriggerCondition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"TriggerCondition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public entity.CompareCondition TriggerCondition
     {
       get { return _TriggerCondition; }
       set { _TriggerCondition = value; }
     }
     private double _Threshold;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"Threshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"Threshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public double Threshold
     {
       get { return _Threshold; }
