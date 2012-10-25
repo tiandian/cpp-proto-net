@@ -117,6 +117,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="QuoteAggregator.h" />
     <ClInclude Include="QuoteListener.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="SequenceOrderSender.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="StrategyFactory.h" />
@@ -155,6 +156,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClCompile Include="QuoteAgent.cpp" />
     <ClCompile Include="QuoteAggregator.cpp" />
     <ClCompile Include="QuoteListener.cpp" />
+    <ClCompile Include="SequenceOrderSender.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
