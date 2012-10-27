@@ -12,26 +12,26 @@
 typedef std::vector<boost::shared_ptr<trade::InputOrder>> InputOrderVector;
 typedef InputOrderVector* InputOrderVectorPtr;
 
+typedef boost::function<void(trade::InputOrder*, const std::string&)> SubmitOrderFunc; 
+
 class CSequenceOrderSender
 {
 public:
 	CSequenceOrderSender(
 		const string& mlOrderId,
 		InputOrderVectorPtr pInputOrdVec, 
-		CTradeAgent* pTdAgent,
-		std::map<std::string, std::string>* pendingMap);
+		SubmitOrderFunc submitOrdFunc);
 	~CSequenceOrderSender(void);
 
 	void Start();
 
-	void PreferredOrderDone();
+	void OrderDone();
 
 private:
 	void SendingProc();
 
 	InputOrderVectorPtr m_inputOrderVec;
-	CTradeAgent* m_tradeAgent;
-	std::map<std::string, std::string>* m_pendingLegOrderMap;
+	SubmitOrderFunc m_submitOrderFunc;
 
 	boost::thread m_th;
 	boost::condition_variable m_preferDoneCond;

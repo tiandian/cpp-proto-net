@@ -3,6 +3,7 @@
 #include "TradeAgentCallback.h"
 #include "TradeAgent.h"
 #include "multilegorderptr.h"
+#include "SequenceOrderSender.h"
 
 #include <string>
 #include <map>
@@ -16,6 +17,7 @@ typedef boost::function<void(trade::MultiLegOrder*)> PushMultiLegOrderFunc;
 typedef boost::function<void( const string&, const string&, trade::Order* legOrd)> PushLegOrderFunc;
 typedef boost::function<void(trade::Trade*)> PushTradeFunc;
 typedef boost::function<void(const MultiLegOrderPtr&)> PushPortfolioPositionChangeFunc;
+typedef boost::shared_ptr<CSequenceOrderSender> OrderSenderPtr;
 
 class COrderProcessor : public CTradeAgentCallback
 {
@@ -26,6 +28,7 @@ public:
 	void Initialize(CTradeAgent* pTradeAgent);
 
 	void SubmitOrder(MultiLegOrderPtr multilegOrder);
+	void SubmitOrder2(MultiLegOrderPtr multilegOrder);
 	void CancelOrder(const string& orderId);
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
@@ -112,6 +115,8 @@ public:
 		m_pushPortfPosiChangeFunc = funcPushPosiChange;
 	}
 
+	void SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const string& mlOrderId);
+
 private:
 	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
 	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
@@ -121,7 +126,10 @@ private:
 	map<string /* orderRef */, string /* mlOrderId */> m_pendingTicketOrderMap;
 	typedef map<string, string>::iterator PendingTktOrdMapIter;
 	boost::mutex m_mutTicketOrderMap;
-	 
+	
+	map<string, OrderSenderPtr> m_orderSenderMap;
+	typedef map<string, OrderSenderPtr>::iterator OrderSenderMapIter;
+	
 	CTradeAgent* m_pTradeAgent;
 
 	PushMultiLegOrderFunc m_pushMultiOrdFunc;
