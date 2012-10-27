@@ -533,6 +533,9 @@ message Order
 	optional int32	BrokerOrderSeq = 54;
 	///相关报单
 	optional string	RelativeOrderSysID = 55;
+
+	///优先成交
+	optional bool Preferred = 56;
 };
 
 ///TFtdcTradingRoleType是一个交易角色类型

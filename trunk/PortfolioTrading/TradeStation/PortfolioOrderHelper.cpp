@@ -85,6 +85,8 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 
 		order->set_ordersubmitstatus(trade::INSERT_SUBMITTED);
 		order->set_orderstatus(trade::STATUS_UNKNOWN);
+
+		order->set_preferred(leg->IsPreferred());
 	}
 	
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
@@ -184,6 +186,8 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 
 		order->set_ordersubmitstatus(trade::INSERT_SUBMITTED);
 		order->set_orderstatus(trade::STATUS_UNKNOWN);
+
+		order->set_preferred(leg->IsPreferred());
 	}
 
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
@@ -271,6 +275,8 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 
 		order->set_ordersubmitstatus(trade::INSERT_SUBMITTED);
 		order->set_orderstatus(trade::STATUS_UNKNOWN);
+
+		order->set_preferred(leg->IsPreferred());
 	}
 
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
@@ -310,7 +316,10 @@ int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::share
 		inputOrder->set_requestid(o.requestid());
 		inputOrder->set_userforceclose(o.userforceclose());
 
-		genInputOrders->push_back(inputOrder);
+		if(o.preferred())	// always put preferred order at front
+			genInputOrders->insert(genInputOrders->begin(), inputOrder);
+		else
+			genInputOrders->push_back(inputOrder);
 	}
 
 	return genInputOrders->size();
