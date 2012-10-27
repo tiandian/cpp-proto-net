@@ -9,6 +9,7 @@ CSequenceOrderSender::CSequenceOrderSender(
 	InputOrderVectorPtr pInputOrdVec, 
 	SubmitOrderFunc submitOrdFunc):
 m_preferOrderCompleted(false),
+m_preferOrderCompletionSuccess(false),
 m_mlOrderId(mlOrderId),
 m_inputOrderVec(pInputOrdVec),
 m_submitOrderFunc(submitOrdFunc)
@@ -38,13 +39,17 @@ void CSequenceOrderSender::SendingProc()
 		{
 			boost::mutex::scoped_lock lock(m_mut);
 			m_preferDoneCond.wait(lock);
-			m_preferOrderCompleted = true;
+			if(m_preferOrderCompletionSuccess)
+				m_preferOrderCompleted = true;
+			else // if prefer order canceled or submit failed, do NOT continue any more
+				break;	
 		}
 	}
 }
 
-void CSequenceOrderSender::OrderDone()
+void CSequenceOrderSender::OrderDone(bool success)
 {
 	boost::mutex::scoped_lock l(m_mut);
+	m_preferOrderCompletionSuccess = success;
 	m_preferDoneCond.notify_one();
 }

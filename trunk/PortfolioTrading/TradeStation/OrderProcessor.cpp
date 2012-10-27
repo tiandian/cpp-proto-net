@@ -69,23 +69,31 @@ void COrderProcessor::SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const s
 
 void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
 {
-	int count = m_pendingMultiLegOrders.size();
-	const string& mOrderId = multilegOrder->orderid();
+	CSequenceOrderSender* pOrderSender = NULL;
+	
+	{
+		boost::mutex::scoped_lock lock(m_mutTicketOrderMap);
 
-	m_maxOrderRef = IncrementalOrderRef(multilegOrder.get(), m_maxOrderRef);
+		int count = m_pendingMultiLegOrders.size();
+		const string& mOrderId = multilegOrder->orderid();
 
-	m_pendingMultiLegOrders.insert(make_pair(mOrderId, multilegOrder));
+		m_maxOrderRef = IncrementalOrderRef(multilegOrder.get(), m_maxOrderRef);
 
-	InputOrderVectorPtr vecInputOrders(new InputOrderVector);
-	int ordCount = GetInputOrders(multilegOrder.get(), vecInputOrders);
+		m_pendingMultiLegOrders.insert(make_pair(mOrderId, multilegOrder));
 
-	OrderSenderPtr orderSender(
-		new CSequenceOrderSender(
+		InputOrderVectorPtr vecInputOrders(new InputOrderVector);
+		int ordCount = GetInputOrders(multilegOrder.get(), vecInputOrders);
+
+		OrderSenderPtr orderSender(
+			new CSequenceOrderSender(
 			mOrderId, vecInputOrders, 
 			boost::bind(&COrderProcessor::SubmitOrderToTradeAgent, this, _1, _2)));
 
-	m_orderSenderMap.insert(make_pair(mOrderId, orderSender));
-	orderSender->Start();
+		m_orderSenderMap.insert(make_pair(mOrderId, orderSender));
+		pOrderSender = orderSender.get();
+	}
+
+	pOrderSender->Start();
 
 	PublishMultiLegOrderUpdate(multilegOrder.get());
 }
@@ -128,6 +136,28 @@ trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
 		}
 	}
 	return pOrd;
+}
+
+//////////////////////////////////////////////////////////////////////////
+// if given order is preferred order, set submit status INSERT_REJECTED, meanwhile
+// set other order (not submit) status INSERT_REJECTED as well.
+// if given order is NOT preferred order, set submit status INSERT_REJECTED as normal
+// and do not touch other order's submit status as long as it is already 'submit' successfully
+void SetNonPreferredOrderStatus(trade::MultiLegOrder* mlOrder, const string& prefOrdRef,
+	trade::OrderSubmitStatusType otherSubmitStatus)
+{
+	int count = mlOrder->legs_size();
+	google::protobuf::RepeatedPtrField<trade::Order>* legs = mlOrder->mutable_legs();
+	for(int i = 0; i < count; ++i)
+	{
+		trade::Order* pOrd = legs->Mutable(i);
+		if(pOrd->orderref() != prefOrdRef)
+		{
+			if(	pOrd->ordersubmitstatus() < trade::INSERT_SUBMITTED &&
+				pOrd->ordersubmitstatus() > trade::ACCEPTED)
+				pOrd->set_ordersubmitstatus(otherSubmitStatus);
+		}
+	}
 }
 
 bool IsTicketTraded(const trade::Order& order)
@@ -183,12 +213,29 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 	if(iterTicket != m_pendingTicketOrderMap.end())
 	{
 		const string& mlOrderId = iterTicket->second;
-		if(IsTicketTraded(*order))
+		
+		OrderSenderMapIter iterOrdSender = m_orderSenderMap.find(mlOrderId);
+		if(iterOrdSender != m_orderSenderMap.end())
 		{
-			OrderSenderMapIter iterOrdSender = m_orderSenderMap.find(mlOrderId);
-			if(iterOrdSender != m_orderSenderMap.end())
+			if(IsTicketDone(*order))
 			{
-				iterOrdSender->second->OrderDone();
+				if(IsTicketTraded(*order))
+				{
+					iterOrdSender->second->OrderDone(true);
+				}
+				else
+				{
+					iterOrdSender->second->OrderDone(false);
+
+					// find multi leg order
+					MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
+					if(iterOrd != m_pendingMultiLegOrders.end())
+					{
+						// set preferred order insert_rejected, and set other order NOT started
+						const MultiLegOrderPtr& mlOrder = iterOrd->second;
+						SetNonPreferredOrderStatus(mlOrder.get(), ordRef, trade::INSERT_REJECTED); 
+					}
+				}
 			}
 		}
 
@@ -224,6 +271,22 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 	if(iterTicket != m_pendingTicketOrderMap.end())
 	{
 		const string& mlOrderId = iterTicket->second;
+
+		OrderSenderMapIter iterOrdSender = m_orderSenderMap.find(mlOrderId);
+		if(iterOrdSender != m_orderSenderMap.end())
+		{
+			iterOrdSender->second->OrderDone(false);
+
+			// find multi leg order
+			MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
+			if(iterOrd != m_pendingMultiLegOrders.end())
+			{
+				// set preferred order insert_rejected, and set other order NOT started
+				const MultiLegOrderPtr& mlOrder = iterOrd->second;
+				SetNonPreferredOrderStatus(mlOrder.get(), orderRef, trade::INSERT_REJECTED); 
+			}
+		}
+
 		MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
 		if(iterOrd != m_pendingMultiLegOrders.end())
 		{
