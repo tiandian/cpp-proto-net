@@ -197,11 +197,13 @@ void COrderProcessor::RemoveFromPending( trade::MultiLegOrder* pMlOrder )
 		m_pendingTicketOrderMap.erase(ordRef);
 	}
 
-	// remove from pending mulite leg orders list
 	const string& mlOrderId = pMlOrder->orderid();
-	m_pendingMultiLegOrders.erase(mlOrderId);
-
+	
+	// remove from orderSender map if using sequence order sender
 	m_orderSenderMap.erase(mlOrderId);
+
+	// remove from pending mulite leg orders list
+	m_pendingMultiLegOrders.erase(mlOrderId);
 }
 
 // Order submit succeeded
