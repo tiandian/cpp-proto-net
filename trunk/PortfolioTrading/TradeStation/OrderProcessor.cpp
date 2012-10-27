@@ -60,6 +60,36 @@ void COrderProcessor::SubmitOrder( MultiLegOrderPtr multilegOrder )
 	PublishMultiLegOrderUpdate(multilegOrder.get());
 }
 
+void COrderProcessor::SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const string& mlOrderId)
+{
+	boost::mutex::scoped_lock lock(m_mutTicketOrderMap);
+	m_pTradeAgent->SubmitOrder(pOrder);
+	m_pendingTicketOrderMap.insert(make_pair(pOrder->orderref(), mlOrderId));
+}
+
+void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
+{
+	int count = m_pendingMultiLegOrders.size();
+	const string& mOrderId = multilegOrder->orderid();
+
+	m_maxOrderRef = IncrementalOrderRef(multilegOrder.get(), m_maxOrderRef);
+
+	m_pendingMultiLegOrders.insert(make_pair(mOrderId, multilegOrder));
+
+	InputOrderVectorPtr vecInputOrders(new InputOrderVector);
+	int ordCount = GetInputOrders(multilegOrder.get(), vecInputOrders);
+
+	OrderSenderPtr orderSender(
+		new CSequenceOrderSender(
+			mOrderId, vecInputOrders, 
+			boost::bind(&COrderProcessor::SubmitOrderToTradeAgent, this, _1, _2)));
+
+	m_orderSenderMap.insert(make_pair(mOrderId, orderSender));
+	orderSender->Start();
+
+	PublishMultiLegOrderUpdate(multilegOrder.get());
+}
+
 void COrderProcessor::CancelOrder( const string& orderId )
 {
 
@@ -100,6 +130,12 @@ trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
 	return pOrd;
 }
 
+bool IsTicketTraded(const trade::Order& order)
+{
+	trade::OrderStatusType status = order.orderstatus();
+	return status == trade::ALL_TRADED;
+}
+
 bool IsTicketDone(const trade::Order& order)
 {
 	trade::OrderSubmitStatusType submitStatus = order.ordersubmitstatus();
@@ -134,6 +170,8 @@ void COrderProcessor::RemoveFromPending( trade::MultiLegOrder* pMlOrder )
 	// remove from pending mulite leg orders list
 	const string& mlOrderId = pMlOrder->orderid();
 	m_pendingMultiLegOrders.erase(mlOrderId);
+
+	m_orderSenderMap.erase(mlOrderId);
 }
 
 // Order submit succeeded
@@ -145,6 +183,15 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 	if(iterTicket != m_pendingTicketOrderMap.end())
 	{
 		const string& mlOrderId = iterTicket->second;
+		if(IsTicketTraded(*order))
+		{
+			OrderSenderMapIter iterOrdSender = m_orderSenderMap.find(mlOrderId);
+			if(iterOrdSender != m_orderSenderMap.end())
+			{
+				iterOrdSender->second->OrderDone();
+			}
+		}
+
 		MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
 		if(iterOrd != m_pendingMultiLegOrders.end())
 		{
