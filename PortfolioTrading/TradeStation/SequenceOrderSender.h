@@ -25,7 +25,7 @@ public:
 
 	void Start();
 
-	void OrderDone();
+	void OrderDone(bool success);
 
 private:
 	void SendingProc();
@@ -38,6 +38,7 @@ private:
 	boost::mutex m_mut;
 
 	bool m_preferOrderCompleted;
+	bool m_preferOrderCompletionSuccess;
 
 	std::string m_mlOrderId;
 };

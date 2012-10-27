@@ -158,7 +158,7 @@ void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildChangePosiOrder(portf,
 		closeSymbol, existingPosition, &placeOrderCtx));
 
-	m_orderProcessor.SubmitOrder(multilegOrder);
+	m_orderProcessor.SubmitOrder2(multilegOrder);
 }
 
 bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)
