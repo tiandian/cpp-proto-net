@@ -7,18 +7,28 @@
 #include <boost/format.hpp>
 #include <boost/foreach.hpp>
 
-
+//////////////////////////////////////////////////////////////////////////
+// make sure give preferred order prior order ref
 int COrderProcessor::IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef )
 {
 	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
+	std::vector<trade::Order*> tmpOrderVec;
 	int count = pMlOrder->legs_size();
 	for(int i = 0; i < count; ++i)
 	{
 		trade::Order* pOrd = pMlOrder->mutable_legs(i);
+		if(pOrd->preferred())
+			tmpOrderVec.insert(tmpOrderVec.begin(), pOrd);
+		else
+			tmpOrderVec.push_back(pOrd);
+	}
 
+	for(std::vector<trade::Order*>::iterator iter = tmpOrderVec.begin();
+		iter != tmpOrderVec.end(); ++iter)
+	{
 		static char orderRef[10];
 		sprintf_s(orderRef, "%d", maxOrderRef);
-		pOrd->set_orderref(orderRef);
+		(*iter)->set_orderref(orderRef);
 
 		++maxOrderRef;
 	}
