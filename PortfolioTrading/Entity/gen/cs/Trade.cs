@@ -1148,6 +1148,15 @@ namespace trade
       get { return _RelativeOrderSysID; }
       set { _RelativeOrderSysID = value; }
     }
+
+    private bool _Preferred = default(bool);
+    [global::ProtoBuf.ProtoMember(56, IsRequired = false, Name=@"Preferred", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(default(bool))]
+    public bool Preferred
+    {
+      get { return _Preferred; }
+      set { _Preferred = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

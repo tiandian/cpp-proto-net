@@ -14,6 +14,7 @@ using System.Reflection;
 using System.IO;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -51,6 +52,7 @@ namespace PortfolioTrading.Modules.Account
         {
             evtAgg.GetEvent<AppShutDown>().Subscribe(OnAppShutDown);
             evtAgg.GetEvent<AccountChangedEvent>().Subscribe(OnCertainAccountChanged);
+            evtAgg.GetEvent<CloseMlOrderEvent>().Subscribe(OnClosePosition);
 
             _addAccountCommand = new DelegateCommand(OnAddAccount);
             _editAccountCommand = new DelegateCommand<XamDataTree>(OnEditAccount);
@@ -112,6 +114,14 @@ namespace PortfolioTrading.Modules.Account
                 this._accounts.Remove(acct);
                 Persist();
             }
+        }
+
+        private void OnClosePosition(CloseMlOrderArgs closeArgs)
+        {
+            AccountVM acct = _accounts.FirstOrDefault(a => a.Id == closeArgs.AccountId);
+            if(acct != null)
+                acct.Host.PortfClosePosition(closeArgs.MlOrder, closeArgs.LegOrderRef);
+            EventLogger.Write("组合委托{0} 平仓", closeArgs.MlOrder.OrderId);
         }
 
         private static AccountVM GetSelectedAcccount(XamDataTree dataTree)

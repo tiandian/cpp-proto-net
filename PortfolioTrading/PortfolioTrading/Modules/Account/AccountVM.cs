@@ -476,7 +476,8 @@ namespace PortfolioTrading.Modules.Account
         void _client_OnMultiLegOrderUpdated(trade.MultiLegOrder obj)
         {
             string info = string.Format("mlOrder: {0}\t{1}\t{2}", obj.OrderId, obj.PortfolioId, obj.Quantity);
-            EventAggregator.GetEvent<MultiLegOrderUpdatedEvent>().Publish(obj);
+            EventAggregator.GetEvent<MultiLegOrderUpdatedEvent>().Publish(
+                new MultiLegOrderUpdateArgs{ AccountId = Id, MultiLegOrder = obj });
         }
 
 
@@ -484,6 +485,7 @@ namespace PortfolioTrading.Modules.Account
         {
             OrderUpdateArgs args = new OrderUpdateArgs
                                     {
+                                        AccountId = Id,
                                         PortfolioId = portfId,
                                         MlOrderId = mlOrderId,
                                         LegOrderRef = legOrdRef,

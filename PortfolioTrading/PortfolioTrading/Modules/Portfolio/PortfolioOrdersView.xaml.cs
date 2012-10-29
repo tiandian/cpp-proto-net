@@ -42,9 +42,9 @@ namespace PortfolioTrading.Modules.Portfolio
             InitializeComponent();
         }
 
-        public void OnMultiLegOrderUpdated(trade.MultiLegOrder mlOrder)
+        public void OnMultiLegOrderUpdated(MultiLegOrderUpdateArgs mlOrderUpdateArgs)
         {
-            _ordersRepo.Update(mlOrder);
+            _ordersRepo.Update(mlOrderUpdateArgs.AccountId, mlOrderUpdateArgs.MultiLegOrder);
         }
 
         public void OnIndividualOrderUpdated(OrderUpdateArgs args)
@@ -58,6 +58,7 @@ namespace PortfolioTrading.Modules.Portfolio
             evtAgg.GetEvent<CloseMlOrderEvent>().Publish(
                 new CloseMlOrderArgs 
                 { 
+                    AccountId = mlOrderVm.AccountId,
                     MlOrder = mlOrderVm.LastOrder,
                     LegOrderRef = ""
                 });
@@ -66,20 +67,21 @@ namespace PortfolioTrading.Modules.Portfolio
 
     public class MultiLegOrderRepositry : ObservableCollection<MultiLegOrderVM>
     {
-        public void Update(trade.MultiLegOrder mlOrder)
+        public void Update(string accountId, trade.MultiLegOrder mlOrder)
         {
             lock (this)
             {
                 string ordId = mlOrder.OrderId;
                 MultiLegOrderVM mlOrderVm = null;
-                mlOrderVm = this.SingleOrDefault(vm => vm.OrderId == ordId);
+                mlOrderVm = this.SingleOrDefault(
+                    vm => vm.AccountId == accountId && vm.OrderId == ordId);
                 if (mlOrderVm != null)
                 {
                     mlOrderVm.From(mlOrder);
                 }
                 else
                 {
-                    mlOrderVm = new MultiLegOrderVM();
+                    mlOrderVm = new MultiLegOrderVM(accountId);
                     mlOrderVm.From(mlOrder);
                     this.Add(mlOrderVm);
                 }
@@ -88,7 +90,8 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public void Update(OrderUpdateArgs orderUpdateArgs)
         {
-            MultiLegOrderVM mlOrderVm = this.SingleOrDefault(vm => vm.OrderId == orderUpdateArgs.MlOrderId);
+            MultiLegOrderVM mlOrderVm = this.SingleOrDefault
+                (vm => vm.AccountId == orderUpdateArgs.AccountId && vm.OrderId == orderUpdateArgs.MlOrderId);
             Debug.Assert(mlOrderVm != null, 
                 string.Format("Cannot find parent multileg order({0}) when update individual order",
                              orderUpdateArgs.MlOrderId));

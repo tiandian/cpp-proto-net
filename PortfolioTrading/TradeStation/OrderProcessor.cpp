@@ -108,6 +108,31 @@ void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
 	PublishMultiLegOrderUpdate(multilegOrder.get());
 }
 
+//////////////////////////////////////////////////////////////////////////
+// if given order is preferred order, set submit status INSERT_REJECTED, meanwhile
+// set other order (not submit) status INSERT_REJECTED as well.
+// if given order is NOT preferred order, set submit status INSERT_REJECTED as normal
+// and do not touch other order's submit status as long as it is already 'submit' successfully
+void COrderProcessor::SetNonPreferredOrderStatus(
+	trade::MultiLegOrder* mlOrder, const string& prefOrdRef,
+	trade::OrderStatusType otherStatus)
+{
+	int count = mlOrder->legs_size();
+	google::protobuf::RepeatedPtrField<trade::Order>* legs = mlOrder->mutable_legs();
+	for(int i = 0; i < count; ++i)
+	{
+		trade::Order* pOrd = legs->Mutable(i);
+		if(pOrd->orderref() != prefOrdRef)
+		{
+			if(	pOrd->orderstatus() == trade::STATUS_UNKNOWN)
+			{
+				pOrd->set_orderstatus(otherStatus);
+				PublishOrderUpdate(mlOrder->portfolioid(), mlOrder->orderid(), pOrd);
+			}
+		}
+	}
+}
+
 void COrderProcessor::CancelOrder( const string& orderId )
 {
 
@@ -146,28 +171,6 @@ trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
 		}
 	}
 	return pOrd;
-}
-
-//////////////////////////////////////////////////////////////////////////
-// if given order is preferred order, set submit status INSERT_REJECTED, meanwhile
-// set other order (not submit) status INSERT_REJECTED as well.
-// if given order is NOT preferred order, set submit status INSERT_REJECTED as normal
-// and do not touch other order's submit status as long as it is already 'submit' successfully
-void SetNonPreferredOrderStatus(trade::MultiLegOrder* mlOrder, const string& prefOrdRef,
-	trade::OrderSubmitStatusType otherSubmitStatus)
-{
-	int count = mlOrder->legs_size();
-	google::protobuf::RepeatedPtrField<trade::Order>* legs = mlOrder->mutable_legs();
-	for(int i = 0; i < count; ++i)
-	{
-		trade::Order* pOrd = legs->Mutable(i);
-		if(pOrd->orderref() != prefOrdRef)
-		{
-			if(	pOrd->ordersubmitstatus() < trade::INSERT_SUBMITTED &&
-				pOrd->ordersubmitstatus() > trade::ACCEPTED)
-				pOrd->set_ordersubmitstatus(otherSubmitStatus);
-		}
-	}
 }
 
 bool IsTicketTraded(const trade::Order& order)
@@ -245,7 +248,7 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 					{
 						// set preferred order insert_rejected, and set other order NOT started
 						const MultiLegOrderPtr& mlOrder = iterOrd->second;
-						SetNonPreferredOrderStatus(mlOrder.get(), ordRef, trade::INSERT_REJECTED); 
+						SetNonPreferredOrderStatus(mlOrder.get(), ordRef, trade::ORDER_CANCELED); 
 					}
 				}
 			}
@@ -295,7 +298,7 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 			{
 				// set preferred order insert_rejected, and set other order NOT started
 				const MultiLegOrderPtr& mlOrder = iterOrd->second;
-				SetNonPreferredOrderStatus(mlOrder.get(), orderRef, trade::INSERT_REJECTED); 
+				SetNonPreferredOrderStatus(mlOrder.get(), orderRef, trade::ORDER_CANCELED); 
 			}
 		}
 

@@ -12,6 +12,8 @@ namespace PortfolioTrading.Events
 
     public class OrderUpdateArgs
     {
+        public string AccountId { get; set; }
+
         public string PortfolioId { get; set; }
 
         public string MlOrderId { get; set; }
