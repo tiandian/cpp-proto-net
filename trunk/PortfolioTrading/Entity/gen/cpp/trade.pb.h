@@ -2190,6 +2190,13 @@ class Order : public ::google::protobuf::Message {
   inline ::std::string* mutable_relativeordersysid();
   inline ::std::string* release_relativeordersysid();
   
+  // optional bool Preferred = 56;
+  inline bool has_preferred() const;
+  inline void clear_preferred();
+  static const int kPreferredFieldNumber = 56;
+  inline bool preferred() const;
+  inline void set_preferred(bool value);
+  
   // @@protoc_insertion_point(class_scope:trade.Order)
  private:
   inline void set_has_brokerid();
@@ -2302,6 +2309,8 @@ class Order : public ::google::protobuf::Message {
   inline void clear_has_brokerorderseq();
   inline void set_has_relativeordersysid();
   inline void clear_has_relativeordersysid();
+  inline void set_has_preferred();
+  inline void clear_has_preferred();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2339,17 +2348,18 @@ class Order : public ::google::protobuf::Message {
   int ordersource_;
   ::std::string* ordersysid_;
   int orderstatus_;
-  bool isautosuspend_;
-  bool userforceclose_;
   int ordertype_;
   ::google::protobuf::int32 volumetraded_;
+  ::google::protobuf::int32 volumetotal_;
   ::std::string* insertdate_;
   ::std::string* inserttime_;
   ::std::string* activetime_;
   ::std::string* suspendtime_;
-  ::google::protobuf::int32 volumetotal_;
-  ::google::protobuf::int32 sequenceno_;
   ::std::string* updatetime_;
+  bool isautosuspend_;
+  bool userforceclose_;
+  bool preferred_;
+  ::google::protobuf::int32 sequenceno_;
   ::std::string* canceltime_;
   ::std::string* activetraderid_;
   ::std::string* clearingpartid_;
@@ -2362,7 +2372,7 @@ class Order : public ::google::protobuf::Message {
   ::google::protobuf::int32 brokerorderseq_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(55 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(56 + 31) / 32];
   
   friend void  protobuf_AddDesc_trade_2eproto();
   friend void protobuf_AssignDesc_trade_2eproto();
@@ -8121,6 +8131,28 @@ inline ::std::string* Order::release_relativeordersysid() {
     relativeordersysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// optional bool Preferred = 56;
+inline bool Order::has_preferred() const {
+  return (_has_bits_[1] & 0x00800000u) != 0;
+}
+inline void Order::set_has_preferred() {
+  _has_bits_[1] |= 0x00800000u;
+}
+inline void Order::clear_has_preferred() {
+  _has_bits_[1] &= ~0x00800000u;
+}
+inline void Order::clear_preferred() {
+  preferred_ = false;
+  clear_has_preferred();
+}
+inline bool Order::preferred() const {
+  return preferred_;
+}
+inline void Order::set_preferred(bool value) {
+  set_has_preferred();
+  preferred_ = value;
 }
 
 // -------------------------------------------------------------------

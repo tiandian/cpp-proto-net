@@ -120,6 +120,9 @@ public:
 private:
 	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
 	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
+	void SetNonPreferredOrderStatus(
+		trade::MultiLegOrder* mlOrder, const string& prefOrdRef,
+		trade::OrderStatusType otherStatus);
 
 	map<string, MultiLegOrderPtr> m_pendingMultiLegOrders;
 	typedef map<string, MultiLegOrderPtr>::iterator MultiLegOrderIter;

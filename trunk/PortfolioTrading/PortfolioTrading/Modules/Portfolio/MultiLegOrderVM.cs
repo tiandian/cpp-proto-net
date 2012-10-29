@@ -13,6 +13,13 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public trade.MultiLegOrder LastOrder { get; private set; }
 
+        public MultiLegOrderVM(string acctId)
+        {
+            this.AccountId = acctId;
+        }
+
+        public string AccountId { get; private set; }
+
         #region OrderId
         private string _orderId;
 
@@ -64,6 +71,8 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        public bool IsOpenOrder { get; set; }
+
         public IEnumerable<OrderVM> Legs
         {
             get { return _orders; }
@@ -76,6 +85,7 @@ namespace PortfolioTrading.Modules.Portfolio
             OrderId = mlOrder.OrderId;
             PortfolioId = mlOrder.PortfolioId;
             Quantity = mlOrder.Quantity;
+            IsOpenOrder = mlOrder.OrderId == mlOrder.OpenOrderId;
 
             for (int i = 0; i < mlOrder.Legs.Count; ++i )
             {

@@ -26,9 +26,6 @@ namespace PortfolioTrading.Modules.Account
             OpenPositionCommand = new DelegateCommand(OnOpenPosition);
             StartCommand = new DelegateCommand(OnStart);
             StopCommand = new DelegateCommand(OnStop);
-
-            IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
-            evtAgg.GetEvent<CloseMlOrderEvent>().Subscribe(OnClosePosition);
         }
 
         public string AccountId
@@ -430,12 +427,6 @@ namespace PortfolioTrading.Modules.Account
         {
             _accountVm.Host.PorfOpenPosition(Id, Quantity);
             EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, Quantity);
-        }
-
-        private void OnClosePosition(CloseMlOrderArgs closeArgs)
-        {
-            _accountVm.Host.PortfClosePosition(closeArgs.MlOrder, closeArgs.LegOrderRef);
-            EventLogger.Write("组合委托{0} 平仓", closeArgs.MlOrder.OrderId);
         }
 
         private void OnStart()
