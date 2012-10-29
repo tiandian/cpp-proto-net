@@ -71,7 +71,22 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
-        public bool IsOpenOrder { get; set; }
+        #region IsOpenOrder
+        private bool _isOpenOrder;
+
+        public bool IsOpenOrder
+        {
+            get { return _isOpenOrder; }
+            set
+            {
+                if (_isOpenOrder != value)
+                {
+                    _isOpenOrder = value;
+                    RaisePropertyChanged("IsOpenOrder");
+                }
+            }
+        }
+        #endregion
 
         public IEnumerable<OrderVM> Legs
         {
