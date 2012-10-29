@@ -117,7 +117,7 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 	string mOrderId;
 	portfolio->NewOrderId(mOrderId);
 	pMultiLegOrder->set_orderid(mOrderId);
-	pMultiLegOrder->set_openorderid(mOrderId);
+	pMultiLegOrder->set_openorderid(multilegOpenOrder->orderid());
 	pMultiLegOrder->set_quantity(multilegOpenOrder->quantity());
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
