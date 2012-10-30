@@ -226,7 +226,8 @@
                         </igDP:Field.Settings>
                     </igDP:Field>
                     <igDP:Field Name="AccountId" Label="帐户" Row="0" Column="2" ColumnSpan="2"/>
-                    <igDP:UnboundField Name="CloseOrder" Label="组合平仓" Row="0" Column="4" ColumnSpan="3">
+                    <igDP:Field Name="Profit" Label="盈利" Row="0" Column="4"/>
+                    <igDP:UnboundField Name="CloseOrder" Label="组合平仓" Row="0" Column="5" ColumnSpan="2">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings CellValuePresenterStyle="{StaticResource closeOrdStyle}"/>
                         </igDP:UnboundField.Settings>

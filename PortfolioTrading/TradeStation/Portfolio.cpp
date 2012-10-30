@@ -89,6 +89,31 @@ double CalcDiff(vector<LegPtr>& legs)
 	return diff;
 }
 
+double CalcPortfProfit(trade::MultiLegOrder* openOrder, trade::MultiLegOrder* closeOrder)
+{
+	_ASSERT(openOrder != NULL);
+	_ASSERT(closeOrder != NULL);
+
+	double totalProfit = 0;
+	int legCount = openOrder->legs_size();
+	for(int i = 0; i < legCount; ++i)
+	{
+		const trade::Order& oo = openOrder->legs(i);
+		const trade::Order& co = closeOrder->legs(i);
+		trade::TradeDirectionType direction = oo.direction();
+		if(direction == trade::BUY)
+		{
+			totalProfit += co.limitprice() - oo.limitprice();
+		}
+		else if(direction == trade::SELL)
+		{
+			totalProfit += oo.limitprice() - co.limitprice();
+		}
+	}
+
+	return totalProfit;
+}
+
 CPortfolio::CPortfolio(void):
 m_porfMgr(NULL),
 m_openedOrderCount(0),
@@ -289,9 +314,11 @@ void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 	map<string, MultiLegOrderPtr>::iterator iter = m_openedPosition.find(mOrderId);
 	if(iter != m_openedPosition.end())
 	{
+		AddProfit(CalcPortfProfit((iter->second).get(), closeOrder.get()));
 		m_openedPosition.erase(iter);
 	}
 	IncrementalCloseTimes();
+	
 }
 
 int CPortfolio::GetPosition( vector<MultiLegOrderPtr>& openedOrders )
