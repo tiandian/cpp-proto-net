@@ -414,6 +414,7 @@ namespace PortfolioTrading.Modules.Account
             ShortDiff = item.ShortDiff;
             OpenTimes = item.OpenTimes;
             DoneTimes = item.CloseTimes;
+            Gain = item.Profit;
 
             IsRunning = item.StrategyRunning;
 

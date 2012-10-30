@@ -71,6 +71,24 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        #region Profit
+        private double _profit;
+
+        public double Profit
+        {
+            get { return _profit; }
+            set
+            {
+                if (_profit != value)
+                {
+                    _profit = value;
+                    RaisePropertyChanged("Profit");
+                }
+            }
+        }
+        #endregion
+
+
         #region IsOpenOrder
         private bool _isOpenOrder;
 

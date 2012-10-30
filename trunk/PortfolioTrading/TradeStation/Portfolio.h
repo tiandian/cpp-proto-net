@@ -72,6 +72,7 @@ private:
 	void PushUpdate();
 	void IncrementalOpenTimes(){ m_innerItem->set_opentimes(m_innerItem->opentimes() + 1); }
 	void IncrementalCloseTimes(){ m_innerItem->set_closetimes(m_innerItem->closetimes() + 1); }
+	void AddProfit(double val){ m_innerItem->set_profit(m_innerItem->profit() + val); }
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;

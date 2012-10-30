@@ -107,6 +107,7 @@ public:
 		if(!m_pushPortfPosiChangeFunc.empty())
 		{
 			m_pushPortfPosiChangeFunc(multilegOrder);
+			PublishMultiLegOrderUpdate(multilegOrder.get());
 		}
 	}
 

@@ -108,7 +108,7 @@ trade::OffsetFlagType GetCloseFlag(const string& symbol, const string& openDate)
 			return trade::OF_CLOSE_TODAY;
 	}
 
-	return trade::OF_CLOSE;
+	return trade::OF_CLOSE_TODAY;
 }
 
 trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::MultiLegOrder* multilegOpenOrder, PlaceOrderContext* placeOrderCtx)
