@@ -68,6 +68,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ModifyPortfolioPreferredLegParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModifyPortfolioPreferredLegParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* CancelOrderParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  CancelOrderParam_reflection_ = NULL;
 
 }  // namespace
 
@@ -379,6 +382,25 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioPreferredLegParam));
+  CancelOrderParam_descriptor_ = file->message_type(17);
+  static const int CancelOrderParam_offsets_[5] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, orderref_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, exchangeid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, ordsysid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, userid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, symbol_),
+  };
+  CancelOrderParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      CancelOrderParam_descriptor_,
+      CancelOrderParam::default_instance_,
+      CancelOrderParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(CancelOrderParam));
 }
 
 namespace {
@@ -425,6 +447,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     ModifyRunningStatusParam_descriptor_, &ModifyRunningStatusParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyPortfolioPreferredLegParam_descriptor_, &ModifyPortfolioPreferredLegParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    CancelOrderParam_descriptor_, &CancelOrderParam::default_instance());
 }
 
 }  // namespace
@@ -464,6 +488,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ModifyRunningStatusParam_reflection_;
   delete ModifyPortfolioPreferredLegParam::default_instance_;
   delete ModifyPortfolioPreferredLegParam_reflection_;
+  delete CancelOrderParam::default_instance_;
+  delete CancelOrderParam_reflection_;
 }
 
 void protobuf_AddDesc_message_2eproto() {
@@ -521,7 +547,10 @@ void protobuf_AddDesc_message_2eproto() {
     " \002(\010\022\024\n\014AutoStopLoss\030\004 \002(\010\"<\n\030ModifyRunn"
     "ingStatusParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabl"
     "ed\030\002 \002(\010\"F\n ModifyPortfolioPreferredLegP"
-    "aram\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t", 1880);
+    "aram\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t"
+    "\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030\001 \002(\t\022\022"
+    "\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006"
+    "UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t", 1988);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -541,6 +570,7 @@ void protobuf_AddDesc_message_2eproto() {
   ModifyPortfolioSwitchParam::default_instance_ = new ModifyPortfolioSwitchParam();
   ModifyRunningStatusParam::default_instance_ = new ModifyRunningStatusParam();
   ModifyPortfolioPreferredLegParam::default_instance_ = new ModifyPortfolioPreferredLegParam();
+  CancelOrderParam::default_instance_ = new CancelOrderParam();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
   LegItem::default_instance_->InitAsDefaultInstance();
@@ -558,6 +588,7 @@ void protobuf_AddDesc_message_2eproto() {
   ModifyPortfolioSwitchParam::default_instance_->InitAsDefaultInstance();
   ModifyRunningStatusParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioPreferredLegParam::default_instance_->InitAsDefaultInstance();
+  CancelOrderParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
 
@@ -6363,6 +6394,459 @@ void ModifyPortfolioPreferredLegParam::Swap(ModifyPortfolioPreferredLegParam* ot
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = ModifyPortfolioPreferredLegParam_descriptor_;
   metadata.reflection = ModifyPortfolioPreferredLegParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int CancelOrderParam::kOrderRefFieldNumber;
+const int CancelOrderParam::kExchangeIdFieldNumber;
+const int CancelOrderParam::kOrdSysIdFieldNumber;
+const int CancelOrderParam::kUserIdFieldNumber;
+const int CancelOrderParam::kSymbolFieldNumber;
+#endif  // !_MSC_VER
+
+CancelOrderParam::CancelOrderParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void CancelOrderParam::InitAsDefaultInstance() {
+}
+
+CancelOrderParam::CancelOrderParam(const CancelOrderParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void CancelOrderParam::SharedCtor() {
+  _cached_size_ = 0;
+  orderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ordsysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  symbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+CancelOrderParam::~CancelOrderParam() {
+  SharedDtor();
+}
+
+void CancelOrderParam::SharedDtor() {
+  if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+    delete orderref_;
+  }
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    delete exchangeid_;
+  }
+  if (ordsysid_ != &::google::protobuf::internal::kEmptyString) {
+    delete ordsysid_;
+  }
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    delete userid_;
+  }
+  if (symbol_ != &::google::protobuf::internal::kEmptyString) {
+    delete symbol_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void CancelOrderParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* CancelOrderParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return CancelOrderParam_descriptor_;
+}
+
+const CancelOrderParam& CancelOrderParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+CancelOrderParam* CancelOrderParam::default_instance_ = NULL;
+
+CancelOrderParam* CancelOrderParam::New() const {
+  return new CancelOrderParam;
+}
+
+void CancelOrderParam::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_orderref()) {
+      if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+        orderref_->clear();
+      }
+    }
+    if (has_exchangeid()) {
+      if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+        exchangeid_->clear();
+      }
+    }
+    if (has_ordsysid()) {
+      if (ordsysid_ != &::google::protobuf::internal::kEmptyString) {
+        ordsysid_->clear();
+      }
+    }
+    if (has_userid()) {
+      if (userid_ != &::google::protobuf::internal::kEmptyString) {
+        userid_->clear();
+      }
+    }
+    if (has_symbol()) {
+      if (symbol_ != &::google::protobuf::internal::kEmptyString) {
+        symbol_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool CancelOrderParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string OrderRef = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_orderref()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->orderref().data(), this->orderref().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_ExchangeId;
+        break;
+      }
+      
+      // required string ExchangeId = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_ExchangeId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_exchangeid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->exchangeid().data(), this->exchangeid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_OrdSysId;
+        break;
+      }
+      
+      // required string OrdSysId = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_OrdSysId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_ordsysid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->ordsysid().data(), this->ordsysid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_UserId;
+        break;
+      }
+      
+      // required string UserId = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_UserId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_userid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->userid().data(), this->userid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(42)) goto parse_Symbol;
+        break;
+      }
+      
+      // required string Symbol = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Symbol:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_symbol()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->symbol().data(), this->symbol().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void CancelOrderParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string OrderRef = 1;
+  if (has_orderref()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->orderref().data(), this->orderref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->orderref(), output);
+  }
+  
+  // required string ExchangeId = 2;
+  if (has_exchangeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeid().data(), this->exchangeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->exchangeid(), output);
+  }
+  
+  // required string OrdSysId = 3;
+  if (has_ordsysid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->ordsysid().data(), this->ordsysid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->ordsysid(), output);
+  }
+  
+  // required string UserId = 4;
+  if (has_userid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->userid().data(), this->userid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->userid(), output);
+  }
+  
+  // required string Symbol = 5;
+  if (has_symbol()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->symbol().data(), this->symbol().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      5, this->symbol(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* CancelOrderParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string OrderRef = 1;
+  if (has_orderref()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->orderref().data(), this->orderref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->orderref(), target);
+  }
+  
+  // required string ExchangeId = 2;
+  if (has_exchangeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeid().data(), this->exchangeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->exchangeid(), target);
+  }
+  
+  // required string OrdSysId = 3;
+  if (has_ordsysid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->ordsysid().data(), this->ordsysid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->ordsysid(), target);
+  }
+  
+  // required string UserId = 4;
+  if (has_userid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->userid().data(), this->userid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->userid(), target);
+  }
+  
+  // required string Symbol = 5;
+  if (has_symbol()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->symbol().data(), this->symbol().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->symbol(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int CancelOrderParam::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string OrderRef = 1;
+    if (has_orderref()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->orderref());
+    }
+    
+    // required string ExchangeId = 2;
+    if (has_exchangeid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->exchangeid());
+    }
+    
+    // required string OrdSysId = 3;
+    if (has_ordsysid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->ordsysid());
+    }
+    
+    // required string UserId = 4;
+    if (has_userid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->userid());
+    }
+    
+    // required string Symbol = 5;
+    if (has_symbol()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->symbol());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void CancelOrderParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const CancelOrderParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const CancelOrderParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void CancelOrderParam::MergeFrom(const CancelOrderParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_orderref()) {
+      set_orderref(from.orderref());
+    }
+    if (from.has_exchangeid()) {
+      set_exchangeid(from.exchangeid());
+    }
+    if (from.has_ordsysid()) {
+      set_ordsysid(from.ordsysid());
+    }
+    if (from.has_userid()) {
+      set_userid(from.userid());
+    }
+    if (from.has_symbol()) {
+      set_symbol(from.symbol());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void CancelOrderParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void CancelOrderParam::CopyFrom(const CancelOrderParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool CancelOrderParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
+  
+  return true;
+}
+
+void CancelOrderParam::Swap(CancelOrderParam* other) {
+  if (other != this) {
+    std::swap(orderref_, other->orderref_);
+    std::swap(exchangeid_, other->exchangeid_);
+    std::swap(ordsysid_, other->ordsysid_);
+    std::swap(userid_, other->userid_);
+    std::swap(symbol_, other->symbol_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata CancelOrderParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = CancelOrderParam_descriptor_;
+  metadata.reflection = CancelOrderParam_reflection_;
   return metadata;
 }
 

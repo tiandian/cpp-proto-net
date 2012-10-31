@@ -133,9 +133,32 @@ void COrderProcessor::SetNonPreferredOrderStatus(
 	}
 }
 
-void COrderProcessor::CancelOrder( const string& orderId )
+void COrderProcessor::CancelOrder(	const std::string& ordRef, 
+									const std::string& exchId, 
+									const std::string& ordSysId, 
+									const std::string& userId,
+									const std::string& symbol)
 {
+	boost::shared_ptr<trade::InputOrderAction> orderAction(new trade::InputOrderAction);
 
+	orderAction->set_orderref(ordRef);
+
+	///操作标志
+	orderAction->set_actionflag(trade::AF_Delete);	// Cancel order
+
+	///交易所代码
+	orderAction->set_exchangeid(exchId);
+	///报单编号
+	orderAction->set_ordersysid(ordSysId);
+	///用户代码
+	orderAction->set_userid(userId);
+
+	orderAction->set_instrumentid(symbol);
+
+	if(m_pTradeAgent != NULL)
+	{
+		m_pTradeAgent->SubmitOrderAction(orderAction.get());
+	}
 }
 
 void COrderProcessor::Initialize( CTradeAgent* pTradeAgent )
@@ -353,6 +376,15 @@ bool COrderProcessor::QueryAccountInfo(string* outSerializedAcctInfo)
 	}
 
 	return ret;
+}
+
+void COrderProcessor::OnRspOrderAction( bool succ, const std::string& orderRef, const std::string& msg )
+{
+	if(succ)
+		logger.Info(boost::str(boost::format("Cancel order(%s) succeeded.") % orderRef));
+	else
+		logger.Info(boost::str(boost::format("Cancel order(%s) failed. message: %s") 
+								% orderRef.c_str() % msg.c_str()));
 }
 
 

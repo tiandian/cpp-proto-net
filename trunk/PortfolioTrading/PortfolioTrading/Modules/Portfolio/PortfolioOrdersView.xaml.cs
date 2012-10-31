@@ -30,6 +30,7 @@ namespace PortfolioTrading.Modules.Portfolio
         private MultiLegOrderRepositry _ordersRepo = new MultiLegOrderRepositry();
 
         public static readonly ICommand ClosePorfOrderCommand = new DelegateCommand<MultiLegOrderVM>(OnClosePorfOrder);
+        public static readonly ICommand CancelPortfOrderCommand = new DelegateCommand<MultiLegOrderVM>(OnCancelPortfOrder);
 
         [ImportingConstructor]
         public PortfolioOrdersView(IEventAggregator evtAgg)
@@ -62,6 +63,24 @@ namespace PortfolioTrading.Modules.Portfolio
                     MlOrder = mlOrderVm.LastOrder,
                     LegOrderRef = ""
                 });
+        }
+
+        private static void OnCancelPortfOrder(MultiLegOrderVM mlOrderVm)
+        {
+            IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            foreach (var ord in mlOrderVm.LastOrder.Legs)
+            {
+                if(ord.OrderStatus != trade.OrderStatusType.ALL_TRADED &&
+                    ord.OrderStatus != trade.OrderStatusType.ORDER_CANCELED)
+                {
+                    evtAgg.GetEvent<CancelOrderEvent>().Publish(
+                        new CancelOrderEventArgs
+                        {
+                            AccountId = mlOrderVm.AccountId,
+                            OrderToCancel = ord
+                        });
+                }
+            }
         }
     }
 

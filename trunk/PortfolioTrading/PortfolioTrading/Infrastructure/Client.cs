@@ -102,6 +102,19 @@ namespace PortfolioTrading.Infrastructure
             return strReturn.Data;
         }
 
+        public void CancelOrder(trade.Order legOrder)
+        {
+            CancelOrderParam cxlParam = new CancelOrderParam();
+            cxlParam.OrderRef = legOrder.OrderRef;
+            cxlParam.ExchangeId = legOrder.ExchangeID;
+            cxlParam.OrdSysId = legOrder.OrderSysID;
+            cxlParam.UserId = legOrder.UserID;
+            cxlParam.Symbol = legOrder.InstrumentID;
+
+            byte[] param_data = DataTranslater.Serialize(cxlParam);
+            byte[] ret_data = Request("CancelOrder", param_data);
+        }
+
         public void PortfSetPreferredLeg(string portfId, string legName)
         {
             entity.ModifyPortfolioPreferredLegParam modifyParam = new entity.ModifyPortfolioPreferredLegParam();

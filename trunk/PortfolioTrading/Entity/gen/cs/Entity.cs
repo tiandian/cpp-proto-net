@@ -625,4 +625,49 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"CancelOrderParam")]
+  public partial class CancelOrderParam : global::ProtoBuf.IExtensible
+  {
+    public CancelOrderParam() {}
+    
+    private string _OrderRef;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"OrderRef", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string OrderRef
+    {
+      get { return _OrderRef; }
+      set { _OrderRef = value; }
+    }
+    private string _ExchangeId;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"ExchangeId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string ExchangeId
+    {
+      get { return _ExchangeId; }
+      set { _ExchangeId = value; }
+    }
+    private string _OrdSysId;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"OrdSysId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string OrdSysId
+    {
+      get { return _OrdSysId; }
+      set { _OrdSysId = value; }
+    }
+    private string _UserId;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"UserId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string UserId
+    {
+      get { return _UserId; }
+      set { _UserId = value; }
+    }
+    private string _Symbol;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"Symbol", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string Symbol
+    {
+      get { return _Symbol; }
+      set { _Symbol = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }
