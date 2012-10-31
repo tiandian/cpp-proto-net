@@ -86,6 +86,7 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("RemovePortf", boost::bind(&CClientManager::RemovePorf, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PorfOpenPosition", boost::bind(&CClientManager::PorfOpenPosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ClosePosition", boost::bind(&CClientManager::ClosePosition, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("CancelOrder", boost::bind(&CClientManager::CancelOrder, this, _1, _2, _3)));
 
 	m_reqTransMap.insert(make_pair("PortfEnableStrategy", boost::bind(&CClientManager::PortfEnableStrategy, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PortfSetPreferredLeg", boost::bind(&CClientManager::PortfSetPreferredLeg, this, _1, _2, _3)));
@@ -257,4 +258,12 @@ void CClientManager::PortfEnableStrategy( CClientAgent* pClientAgent, const stri
 	runningParam.ParseFromString(in_data);
 
 	pClientAgent->EnableStrategy(runningParam);
+}
+
+void CClientManager::CancelOrder( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::CancelOrderParam cancelParam;
+	cancelParam.ParseFromString(in_data);
+
+	pClientAgent->CancelOrder(cancelParam);
 }

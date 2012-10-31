@@ -55,6 +55,7 @@ private:
 	void RemovePorf(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PorfOpenPosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void ClosePosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void CancelOrder(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
 	void PortfEnableStrategy(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PortfSetPreferredLeg(CClientAgent* pClientAgent, const string& in_data, string& out_data);

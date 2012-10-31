@@ -255,3 +255,9 @@ void CClientAgent::SetPorfPreferredLeg( const entity::ModifyPortfolioPreferredLe
 		}
 	}
 }
+
+void CClientAgent::CancelOrder( const entity::CancelOrderParam& cancelParam )
+{
+	m_orderProcessor.CancelOrder(cancelParam.orderref(), cancelParam.exchangeid(),
+		cancelParam.ordsysid(), m_userId, cancelParam.symbol());
+}

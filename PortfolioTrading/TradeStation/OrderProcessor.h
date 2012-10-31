@@ -29,7 +29,11 @@ public:
 
 	void SubmitOrder(MultiLegOrderPtr multilegOrder);
 	void SubmitOrder2(MultiLegOrderPtr multilegOrder);
-	void CancelOrder(const string& orderId);
+	void CancelOrder(	const std::string& ordRef, 
+						const std::string& exchId, 
+						const std::string& ordSysId, 
+						const std::string& userId,
+						const std::string& symbol);
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
 
@@ -43,7 +47,7 @@ public:
 	virtual void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg);
 
 	///报单操作请求响应
-	virtual void OnRspOrderAction(bool succ, const std::string& orderRef, const std::string& msg){}
+	virtual void OnRspOrderAction(bool succ, const std::string& orderRef, const std::string& msg);
 
 	///报单通知
 	virtual void OnRtnOrder(trade::Order* order);

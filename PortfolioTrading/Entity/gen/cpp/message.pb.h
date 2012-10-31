@@ -51,6 +51,7 @@ class ModifyStrategyParam;
 class ModifyPortfolioSwitchParam;
 class ModifyRunningStatusParam;
 class ModifyPortfolioPreferredLegParam;
+class CancelOrderParam;
 
 // ===================================================================
 
@@ -2013,6 +2014,148 @@ class ModifyPortfolioPreferredLegParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ModifyPortfolioPreferredLegParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class CancelOrderParam : public ::google::protobuf::Message {
+ public:
+  CancelOrderParam();
+  virtual ~CancelOrderParam();
+  
+  CancelOrderParam(const CancelOrderParam& from);
+  
+  inline CancelOrderParam& operator=(const CancelOrderParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const CancelOrderParam& default_instance();
+  
+  void Swap(CancelOrderParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  CancelOrderParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const CancelOrderParam& from);
+  void MergeFrom(const CancelOrderParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string OrderRef = 1;
+  inline bool has_orderref() const;
+  inline void clear_orderref();
+  static const int kOrderRefFieldNumber = 1;
+  inline const ::std::string& orderref() const;
+  inline void set_orderref(const ::std::string& value);
+  inline void set_orderref(const char* value);
+  inline void set_orderref(const char* value, size_t size);
+  inline ::std::string* mutable_orderref();
+  inline ::std::string* release_orderref();
+  
+  // required string ExchangeId = 2;
+  inline bool has_exchangeid() const;
+  inline void clear_exchangeid();
+  static const int kExchangeIdFieldNumber = 2;
+  inline const ::std::string& exchangeid() const;
+  inline void set_exchangeid(const ::std::string& value);
+  inline void set_exchangeid(const char* value);
+  inline void set_exchangeid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeid();
+  inline ::std::string* release_exchangeid();
+  
+  // required string OrdSysId = 3;
+  inline bool has_ordsysid() const;
+  inline void clear_ordsysid();
+  static const int kOrdSysIdFieldNumber = 3;
+  inline const ::std::string& ordsysid() const;
+  inline void set_ordsysid(const ::std::string& value);
+  inline void set_ordsysid(const char* value);
+  inline void set_ordsysid(const char* value, size_t size);
+  inline ::std::string* mutable_ordsysid();
+  inline ::std::string* release_ordsysid();
+  
+  // required string UserId = 4;
+  inline bool has_userid() const;
+  inline void clear_userid();
+  static const int kUserIdFieldNumber = 4;
+  inline const ::std::string& userid() const;
+  inline void set_userid(const ::std::string& value);
+  inline void set_userid(const char* value);
+  inline void set_userid(const char* value, size_t size);
+  inline ::std::string* mutable_userid();
+  inline ::std::string* release_userid();
+  
+  // required string Symbol = 5;
+  inline bool has_symbol() const;
+  inline void clear_symbol();
+  static const int kSymbolFieldNumber = 5;
+  inline const ::std::string& symbol() const;
+  inline void set_symbol(const ::std::string& value);
+  inline void set_symbol(const char* value);
+  inline void set_symbol(const char* value, size_t size);
+  inline ::std::string* mutable_symbol();
+  inline ::std::string* release_symbol();
+  
+  // @@protoc_insertion_point(class_scope:entity.CancelOrderParam)
+ private:
+  inline void set_has_orderref();
+  inline void clear_has_orderref();
+  inline void set_has_exchangeid();
+  inline void clear_has_exchangeid();
+  inline void set_has_ordsysid();
+  inline void clear_has_ordsysid();
+  inline void set_has_userid();
+  inline void clear_has_userid();
+  inline void set_has_symbol();
+  inline void clear_has_symbol();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* orderref_;
+  ::std::string* exchangeid_;
+  ::std::string* ordsysid_;
+  ::std::string* userid_;
+  ::std::string* symbol_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static CancelOrderParam* default_instance_;
 };
 // ===================================================================
 
@@ -4378,6 +4521,300 @@ inline ::std::string* ModifyPortfolioPreferredLegParam::release_legsymbol() {
   } else {
     ::std::string* temp = legsymbol_;
     legsymbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// CancelOrderParam
+
+// required string OrderRef = 1;
+inline bool CancelOrderParam::has_orderref() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void CancelOrderParam::set_has_orderref() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void CancelOrderParam::clear_has_orderref() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void CancelOrderParam::clear_orderref() {
+  if (orderref_ != &::google::protobuf::internal::kEmptyString) {
+    orderref_->clear();
+  }
+  clear_has_orderref();
+}
+inline const ::std::string& CancelOrderParam::orderref() const {
+  return *orderref_;
+}
+inline void CancelOrderParam::set_orderref(const ::std::string& value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void CancelOrderParam::set_orderref(const char* value) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(value);
+}
+inline void CancelOrderParam::set_orderref(const char* value, size_t size) {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  orderref_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* CancelOrderParam::mutable_orderref() {
+  set_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    orderref_ = new ::std::string;
+  }
+  return orderref_;
+}
+inline ::std::string* CancelOrderParam::release_orderref() {
+  clear_has_orderref();
+  if (orderref_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = orderref_;
+    orderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ExchangeId = 2;
+inline bool CancelOrderParam::has_exchangeid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void CancelOrderParam::set_has_exchangeid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void CancelOrderParam::clear_has_exchangeid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void CancelOrderParam::clear_exchangeid() {
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeid_->clear();
+  }
+  clear_has_exchangeid();
+}
+inline const ::std::string& CancelOrderParam::exchangeid() const {
+  return *exchangeid_;
+}
+inline void CancelOrderParam::set_exchangeid(const ::std::string& value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void CancelOrderParam::set_exchangeid(const char* value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void CancelOrderParam::set_exchangeid(const char* value, size_t size) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* CancelOrderParam::mutable_exchangeid() {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  return exchangeid_;
+}
+inline ::std::string* CancelOrderParam::release_exchangeid() {
+  clear_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeid_;
+    exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string OrdSysId = 3;
+inline bool CancelOrderParam::has_ordsysid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void CancelOrderParam::set_has_ordsysid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void CancelOrderParam::clear_has_ordsysid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void CancelOrderParam::clear_ordsysid() {
+  if (ordsysid_ != &::google::protobuf::internal::kEmptyString) {
+    ordsysid_->clear();
+  }
+  clear_has_ordsysid();
+}
+inline const ::std::string& CancelOrderParam::ordsysid() const {
+  return *ordsysid_;
+}
+inline void CancelOrderParam::set_ordsysid(const ::std::string& value) {
+  set_has_ordsysid();
+  if (ordsysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordsysid_ = new ::std::string;
+  }
+  ordsysid_->assign(value);
+}
+inline void CancelOrderParam::set_ordsysid(const char* value) {
+  set_has_ordsysid();
+  if (ordsysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordsysid_ = new ::std::string;
+  }
+  ordsysid_->assign(value);
+}
+inline void CancelOrderParam::set_ordsysid(const char* value, size_t size) {
+  set_has_ordsysid();
+  if (ordsysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordsysid_ = new ::std::string;
+  }
+  ordsysid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* CancelOrderParam::mutable_ordsysid() {
+  set_has_ordsysid();
+  if (ordsysid_ == &::google::protobuf::internal::kEmptyString) {
+    ordsysid_ = new ::std::string;
+  }
+  return ordsysid_;
+}
+inline ::std::string* CancelOrderParam::release_ordsysid() {
+  clear_has_ordsysid();
+  if (ordsysid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = ordsysid_;
+    ordsysid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string UserId = 4;
+inline bool CancelOrderParam::has_userid() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void CancelOrderParam::set_has_userid() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void CancelOrderParam::clear_has_userid() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void CancelOrderParam::clear_userid() {
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    userid_->clear();
+  }
+  clear_has_userid();
+}
+inline const ::std::string& CancelOrderParam::userid() const {
+  return *userid_;
+}
+inline void CancelOrderParam::set_userid(const ::std::string& value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void CancelOrderParam::set_userid(const char* value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void CancelOrderParam::set_userid(const char* value, size_t size) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* CancelOrderParam::mutable_userid() {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  return userid_;
+}
+inline ::std::string* CancelOrderParam::release_userid() {
+  clear_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = userid_;
+    userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string Symbol = 5;
+inline bool CancelOrderParam::has_symbol() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void CancelOrderParam::set_has_symbol() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void CancelOrderParam::clear_has_symbol() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void CancelOrderParam::clear_symbol() {
+  if (symbol_ != &::google::protobuf::internal::kEmptyString) {
+    symbol_->clear();
+  }
+  clear_has_symbol();
+}
+inline const ::std::string& CancelOrderParam::symbol() const {
+  return *symbol_;
+}
+inline void CancelOrderParam::set_symbol(const ::std::string& value) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(value);
+}
+inline void CancelOrderParam::set_symbol(const char* value) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(value);
+}
+inline void CancelOrderParam::set_symbol(const char* value, size_t size) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* CancelOrderParam::mutable_symbol() {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  return symbol_;
+}
+inline ::std::string* CancelOrderParam::release_symbol() {
+  clear_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = symbol_;
+    symbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }

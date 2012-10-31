@@ -36,6 +36,7 @@ public:
 	void EnableStrategy(const entity::ModifyRunningStatusParam& runningStatusParam);
 	void TurnPortfSwitches(const entity::ModifyPortfolioSwitchParam& switchesParam);
 	void ApplyStrategySetting(const entity::ModifyStrategyParam& settings);
+	void CancelOrder(const entity::CancelOrderParam& cancelParam);
 
 	void OpenPosition(const string& pid, int quantity);
 	void OpenPosition(CPortfolio* portf, int qty);

@@ -133,3 +133,12 @@ message ModifyPortfolioPreferredLegParam
 	required string PortfId = 1;
 	required string LegSymbol = 2;
 }
+
+message CancelOrderParam
+{
+	required string OrderRef = 1; 
+	required string ExchangeId = 2; 
+	required string OrdSysId = 3; 
+	required string UserId = 4;
+	required string Symbol = 5;
+}
