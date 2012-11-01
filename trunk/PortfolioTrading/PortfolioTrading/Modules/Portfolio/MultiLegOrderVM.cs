@@ -132,12 +132,18 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public void From(string ordRef, trade.Order order)
         {
-            foreach (var oVm in _orders)
+            int idx = LastOrder.Legs.FindIndex(l => l.OrderRef == ordRef);
+            if (idx > -1)
             {
-                if (oVm.OrderRef == ordRef)
+                LastOrder.Legs[idx] = order;
+
+                foreach (var oVm in _orders)
                 {
-                    oVm.From(order);
-                    break;
+                    if (oVm.OrderRef == ordRef)
+                    {
+                        oVm.From(order);
+                        break;
+                    }
                 }
             }
         }

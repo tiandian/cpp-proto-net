@@ -201,7 +201,9 @@
                                         </Button.Style>
                                         平仓
                                     </Button>
-                                    <Button Width="60" Margin="4, 2">撤单</Button>
+                                    <Button Width="60" Margin="4, 2"
+                                            Command="{x:Static local:PortfolioOrdersView.CancelPortfOrderCommand}" 
+                                            CommandParameter="{Binding }">撤单</Button>
                                 </StackPanel>
                             </ControlTemplate>
                         </Setter.Value>

@@ -230,7 +230,7 @@ namespace PortfolioTrading.Infrastructure
 
         private void ServerLogout(string method)
         {
-            byte[] void_ret = Request(method, ClientBase.VoidParam);
+            RequestAsync(method, ClientBase.VoidParam, null);
         }
 
         public event Action<Quote> OnQuoteReceived;
