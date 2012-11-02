@@ -3,6 +3,7 @@
 #include "QuoteListener.h"
 #include "../Entity/gen/cpp/message.pb.h"
 #include "multilegorderptr.h"
+#include "OrderResubmitter.h"
 
 #include <string>
 #include <vector>
@@ -66,6 +67,10 @@ public:
 
 	int GetPosition(vector<MultiLegOrderPtr>& openedOrders);
 
+	void AddOrderResubmitter(COrderResubmitter* pResubmitter);
+	void RemoveOrderResubmitter(COrderResubmitter* pResubmitter);
+	void TriggerResubmitter(entity::Quote* pQuote);
+
 private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
@@ -77,6 +82,10 @@ private:
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;
 	map<string, MultiLegOrderPtr> m_openedPosition;
+
+	multimap<string, COrderResubmitter*> m_submitters;
+	typedef multimap<string, COrderResubmitter*>::iterator SubmitterIter;
+	boost::mutex m_mutResubmitters;
 
 	CPortfolioManager* m_porfMgr;
 

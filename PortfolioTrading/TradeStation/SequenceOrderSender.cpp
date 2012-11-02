@@ -5,11 +5,13 @@
 
 
 CSequenceOrderSender::CSequenceOrderSender(
+	const string& portfolioId,
 	const string& mlOrderId,
 	InputOrderVectorPtr pInputOrdVec, 
 	SubmitOrderFunc submitOrdFunc):
 m_preferOrderCompleted(false),
 m_preferOrderCompletionSuccess(false),
+m_portfolioId(portfolioId),
 m_mlOrderId(mlOrderId),
 m_inputOrderVec(pInputOrdVec),
 m_submitOrderFunc(submitOrdFunc)
@@ -33,7 +35,7 @@ void CSequenceOrderSender::SendingProc()
 	BOOST_FOREACH(const boost::shared_ptr<trade::InputOrder>& iOrd, *m_inputOrderVec)
 	{
 		if(!m_submitOrderFunc.empty())
-			m_submitOrderFunc(iOrd.get(), m_mlOrderId);
+			m_submitOrderFunc(m_portfolioId, iOrd.get(), m_mlOrderId);
 
 		if(!m_preferOrderCompleted)
 		{

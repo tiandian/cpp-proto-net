@@ -3,6 +3,7 @@
 #include "Portfolio.h"
 #include "QuoteAggregator.h"
 #include "multilegorderptr.h"
+#include "OrderResubmitter.h"
 
 #include <string>
 #include <map>
@@ -34,6 +35,7 @@ public:
 	void Remove(const string& portfId);
 
 	void PortfolioPositionChange(const MultiLegOrderPtr& multiLegOrder);
+	void ChangePortfolioResubmitter(const string& portfId, COrderResubmitter* pResubmitter, bool isAdding);
 
 	void PublishPortfolioUpdate(entity::PortfolioItem* pPortfolio)
 	{

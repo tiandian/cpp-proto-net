@@ -107,6 +107,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="multilegorderptr.h" />
+    <ClInclude Include="OrderResubmitter.h" />
     <ClInclude Include="PortfolioOrderHelper.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="ManualOrderPlacer.h" />
@@ -148,6 +149,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="ManualOrderPlacer.cpp" />
     <ClCompile Include="OrderProcessor.cpp" />
+    <ClCompile Include="OrderResubmitter.cpp" />
     <ClCompile Include="Portfolio.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
