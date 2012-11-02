@@ -12,12 +12,13 @@
 typedef std::vector<boost::shared_ptr<trade::InputOrder>> InputOrderVector;
 typedef InputOrderVector* InputOrderVectorPtr;
 
-typedef boost::function<void(trade::InputOrder*, const std::string&)> SubmitOrderFunc; 
+typedef boost::function<void(const string&, trade::InputOrder*, const std::string&)> SubmitOrderFunc; 
 
 class CSequenceOrderSender
 {
 public:
 	CSequenceOrderSender(
+		const string& portfolioId,
 		const string& mlOrderId,
 		InputOrderVectorPtr pInputOrdVec, 
 		SubmitOrderFunc submitOrdFunc);
@@ -41,5 +42,6 @@ private:
 	bool m_preferOrderCompletionSuccess;
 
 	std::string m_mlOrderId;
+	std::string m_portfolioId;
 };
 

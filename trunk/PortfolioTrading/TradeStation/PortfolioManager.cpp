@@ -54,3 +54,17 @@ void CPortfolioManager::PortfolioPositionChange( const MultiLegOrderPtr& multiLe
 		}
 	}
 }
+
+void CPortfolioManager::ChangePortfolioResubmitter( const string& portfId, COrderResubmitter* pResubmitter, bool isAdding )
+{
+	CPortfolio* pPortf = Get(portfId);
+	if(pPortf != NULL)
+	{
+		if(isAdding)
+		{
+			pPortf->AddOrderResubmitter(pResubmitter);
+		}
+		else
+			pPortf->RemoveOrderResubmitter(pResubmitter);
+	}
+}

@@ -70,11 +70,15 @@ void COrderProcessor::SubmitOrder( MultiLegOrderPtr multilegOrder )
 	PublishMultiLegOrderUpdate(multilegOrder.get());
 }
 
-void COrderProcessor::SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const string& mlOrderId)
+void COrderProcessor::SubmitOrderToTradeAgent(const string& porfId, trade::InputOrder* pOrder, const string& mlOrderId)
 {
 	boost::mutex::scoped_lock lock(m_mutTicketOrderMap);
 	m_pTradeAgent->SubmitOrder(pOrder);
 	m_pendingTicketOrderMap.insert(make_pair(pOrder->orderref(), mlOrderId));
+
+	OrderResubmitterPtr ordResubmitter(new COrderResubmitter(pOrder));
+	m_resubmitterMap.insert(make_pair(pOrder->orderref(), ordResubmitter));
+	ChangePortfolioResubmitter(porfId,ordResubmitter.get(), true);
 }
 
 void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
@@ -96,8 +100,8 @@ void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
 
 		OrderSenderPtr orderSender(
 			new CSequenceOrderSender(
-			mOrderId, vecInputOrders, 
-			boost::bind(&COrderProcessor::SubmitOrderToTradeAgent, this, _1, _2)));
+			multilegOrder->portfolioid(), mOrderId, vecInputOrders, 
+			boost::bind(&COrderProcessor::SubmitOrderToTradeAgent, this, _1, _2, _3)));
 
 		m_orderSenderMap.insert(make_pair(mOrderId, orderSender));
 		pOrderSender = orderSender.get();
@@ -242,6 +246,20 @@ void COrderProcessor::RemoveFromPending( trade::MultiLegOrder* pMlOrder )
 	m_pendingMultiLegOrders.erase(mlOrderId);
 }
 
+bool COrderProcessor::RemoveResubmitter(trade::Order* pOrder)
+{
+	const string& ordRef = pOrder->orderref();
+	ResubmitterMapIter iter = m_resubmitterMap.find(ordRef);
+	if(iter != m_resubmitterMap.end())
+	{
+		bool isDone = (iter->second)->IsDone(pOrder);
+		if(isDone)
+			m_resubmitterMap.erase(iter);
+	}
+	
+	return false;
+}
+
 // Order submit succeeded
 void COrderProcessor::OnRtnOrder( trade::Order* order )
 {
@@ -288,6 +306,8 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 			string ordStatusMsg;
 			GB2312ToUTF_8(ordStatusMsg, order->statusmsg().c_str());
 			pOrd->set_statusmsg(ordStatusMsg);
+
+			bool doneAndRemove = RemoveResubmitter(order);
 
 			// publish order updated
 			PublishOrderUpdate(mlOrder->portfolioid(), mlOrder->orderid(), pOrd);
@@ -338,6 +358,8 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 
 			// set error message
 			pOrd->set_statusmsg(ordStatusMsg);
+
+			bool doneAndRemove = RemoveResubmitter(pOrd);
 			
 			// publish order updated
 			PublishOrderUpdate(mlOrder->portfolioid(), mlOrder->orderid(), pOrd);
@@ -385,6 +407,72 @@ void COrderProcessor::OnRspOrderAction( bool succ, const std::string& orderRef, 
 	else
 		logger.Info(boost::str(boost::format("Cancel order(%s) failed. message: %s") 
 								% orderRef.c_str() % msg.c_str()));
+}
+
+void COrderProcessor::SetPushPortfolioFunc( PushMultiLegOrderFunc funcPushMLOrder )
+{
+	m_pushMultiOrdFunc = funcPushMLOrder;
+}
+
+void COrderProcessor::PublishMultiLegOrderUpdate( trade::MultiLegOrder* pOrder )
+{
+	if(!m_pushMultiOrdFunc.empty())
+	{
+		m_pushMultiOrdFunc(pOrder);
+	}
+}
+
+void COrderProcessor::SetPushOrderFunc( PushLegOrderFunc funcPushOrder )
+{
+	m_pushLegOrderFunc = funcPushOrder;
+}
+
+void COrderProcessor::PublishOrderUpdate( const string& portfId, const string& mlOrderId, trade::Order* legOrd )
+{
+	if(!m_pushLegOrderFunc.empty())
+	{
+		m_pushLegOrderFunc(portfId, mlOrderId, legOrd);
+	}
+}
+
+void COrderProcessor::SetPushTradeFunc( PushTradeFunc funcPushTrade )
+{
+	m_pushTradeFunc = funcPushTrade;
+}
+
+void COrderProcessor::PublishTradeUpdate( trade::Trade* pTrade )
+{
+	if(!m_pushTradeFunc.empty())
+	{
+		m_pushTradeFunc(pTrade);
+	}
+}
+
+void COrderProcessor::SetPushPositionChangeFunc( PushPortfolioPositionChangeFunc funcPushPosiChange )
+{
+	m_pushPortfPosiChangeFunc = funcPushPosiChange;
+}
+
+void COrderProcessor::OnPortfolioPositionChanged( const MultiLegOrderPtr& multilegOrder )
+{
+	if(!m_pushPortfPosiChangeFunc.empty())
+	{
+		m_pushPortfPosiChangeFunc(multilegOrder);
+		PublishMultiLegOrderUpdate(multilegOrder.get());
+	}
+}
+
+void COrderProcessor::SetPushResubmitterChangeFunc( PushPortfolioResubmitterChangeFunc funcResubmitterChange )
+{
+	m_pushResubmitterChangeFunc = funcResubmitterChange;
+}
+
+void COrderProcessor::ChangePortfolioResubmitter( const string& portfId, COrderResubmitter* pResubmitter, bool isAdding )
+{
+	if(!m_pushResubmitterChangeFunc.empty())
+	{
+		m_pushResubmitterChangeFunc(portfId, pResubmitter, isAdding);
+	}
 }
 
 

@@ -4,6 +4,7 @@
 #include "TradeAgent.h"
 #include "multilegorderptr.h"
 #include "SequenceOrderSender.h"
+#include "OrderResubmitter.h"
 
 #include <string>
 #include <map>
@@ -17,6 +18,7 @@ typedef boost::function<void(trade::MultiLegOrder*)> PushMultiLegOrderFunc;
 typedef boost::function<void( const string&, const string&, trade::Order* legOrd)> PushLegOrderFunc;
 typedef boost::function<void(trade::Trade*)> PushTradeFunc;
 typedef boost::function<void(const MultiLegOrderPtr&)> PushPortfolioPositionChangeFunc;
+typedef boost::function<void(const string&, COrderResubmitter*, bool)> PushPortfolioResubmitterChangeFunc;
 typedef boost::shared_ptr<CSequenceOrderSender> OrderSenderPtr;
 
 class COrderProcessor : public CTradeAgentCallback
@@ -69,62 +71,27 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////
 
-	void PublishMultiLegOrderUpdate(trade::MultiLegOrder* pOrder)
-	{
-		if(!m_pushMultiOrdFunc.empty())
-		{
-			m_pushMultiOrdFunc(pOrder);
-		}
-	}
-	void SetPushPortfolioFunc(PushMultiLegOrderFunc funcPushMLOrder)
-	{
-		m_pushMultiOrdFunc = funcPushMLOrder;
-	}
+	void PublishMultiLegOrderUpdate(trade::MultiLegOrder* pOrder);
+	void SetPushPortfolioFunc(PushMultiLegOrderFunc funcPushMLOrder);
 
-	void SetPushOrderFunc(PushLegOrderFunc funcPushOrder)
-	{
-		m_pushLegOrderFunc = funcPushOrder;
-	}
+	void PublishOrderUpdate(const string& portfId, const string& mlOrderId, trade::Order* legOrd);
+	void SetPushOrderFunc(PushLegOrderFunc funcPushOrder);
 
-	void PublishOrderUpdate(const string& portfId, const string& mlOrderId, trade::Order* legOrd)
-	{
-		if(!m_pushLegOrderFunc.empty())
-		{
-			m_pushLegOrderFunc(portfId, mlOrderId, legOrd);
-		}
-	}
+	void PublishTradeUpdate(trade::Trade* pTrade);
+	void SetPushTradeFunc(PushTradeFunc funcPushTrade);
 
-	void PublishTradeUpdate(trade::Trade* pTrade)
-	{
-		if(!m_pushTradeFunc.empty())
-		{
-			m_pushTradeFunc(pTrade);
-		}
-	}
-	void SetPushTradeFunc(PushTradeFunc funcPushTrade)
-	{
-		m_pushTradeFunc = funcPushTrade;
-	}
+	void OnPortfolioPositionChanged(const MultiLegOrderPtr& multilegOrder);
+	void SetPushPositionChangeFunc(PushPortfolioPositionChangeFunc funcPushPosiChange);
 
-	void OnPortfolioPositionChanged(const MultiLegOrderPtr& multilegOrder)
-	{
-		if(!m_pushPortfPosiChangeFunc.empty())
-		{
-			m_pushPortfPosiChangeFunc(multilegOrder);
-			PublishMultiLegOrderUpdate(multilegOrder.get());
-		}
-	}
+	void ChangePortfolioResubmitter(const string& portfId, COrderResubmitter* pResubmitter, bool isAdding);
+	void SetPushResubmitterChangeFunc(PushPortfolioResubmitterChangeFunc funcResubmitterChange);
 
-	void SetPushPositionChangeFunc(PushPortfolioPositionChangeFunc funcPushPosiChange)
-	{
-		m_pushPortfPosiChangeFunc = funcPushPosiChange;
-	}
-
-	void SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const string& mlOrderId);
+	void SubmitOrderToTradeAgent(const string& porfId, trade::InputOrder* pOrder, const string& mlOrderId);
 
 private:
 	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
 	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
+	bool RemoveResubmitter(trade::Order* pOrder);
 	void SetNonPreferredOrderStatus(
 		trade::MultiLegOrder* mlOrder, const string& prefOrdRef,
 		trade::OrderStatusType otherStatus);
@@ -137,6 +104,8 @@ private:
 	
 	map<string, OrderSenderPtr> m_orderSenderMap;
 	typedef map<string, OrderSenderPtr>::iterator OrderSenderMapIter;
+
+	ResubmitterMap m_resubmitterMap;
 	
 	CTradeAgent* m_pTradeAgent;
 
@@ -144,6 +113,7 @@ private:
 	PushLegOrderFunc m_pushLegOrderFunc;
 	PushTradeFunc m_pushTradeFunc;
 	PushPortfolioPositionChangeFunc m_pushPortfPosiChangeFunc;
+	PushPortfolioResubmitterChangeFunc m_pushResubmitterChangeFunc;
 
 	int m_maxOrderRef;
 	boost::mutex m_mutOrdRefIncr;
