@@ -36,6 +36,7 @@ public:
 						const std::string& ordSysId, 
 						const std::string& userId,
 						const std::string& symbol);
+	void ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice);
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
 
@@ -86,10 +87,11 @@ public:
 	void ChangePortfolioResubmitter(const string& portfId, COrderResubmitter* pResubmitter, bool isAdding);
 	void SetPushResubmitterChangeFunc(PushPortfolioResubmitterChangeFunc funcResubmitterChange);
 
-	void SubmitOrderToTradeAgent(const string& porfId, trade::InputOrder* pOrder, const string& mlOrderId);
+	void SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const string& mlOrderId);
 
 private:
 	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
+	int IncrementalOrderRef(trade::Order* pLegOrd, int maxOrderRef);
 	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
 	bool RemoveResubmitter(trade::Order* pOrder);
 	void SetNonPreferredOrderStatus(
