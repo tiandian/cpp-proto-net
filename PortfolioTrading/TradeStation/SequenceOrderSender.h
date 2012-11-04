@@ -2,17 +2,19 @@
 
 #include "../Entity/gen/cpp/trade.pb.h"
 #include "TradeAgent.h"
+#include "OrderResubmitter.h"
 
 #include <string>
 #include <vector>
 #include <map>
 #include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
 
 typedef std::vector<boost::shared_ptr<trade::InputOrder>> InputOrderVector;
 typedef InputOrderVector* InputOrderVectorPtr;
 
-typedef boost::function<void(const string&, trade::InputOrder*, const std::string&)> SubmitOrderFunc; 
+typedef boost::function<void(const string&, COrderResubmitter*, bool)> ChangeSubmitterFunc;
+
+class COrderProcessor;
 
 class CSequenceOrderSender
 {
@@ -21,22 +23,21 @@ public:
 		const string& portfolioId,
 		const string& mlOrderId,
 		InputOrderVectorPtr pInputOrdVec, 
-		SubmitOrderFunc submitOrdFunc);
+		COrderProcessor* orderProc);
 	~CSequenceOrderSender(void);
 
 	void Start();
 
-	void OrderDone(bool success);
+	bool CheckOrderStatus(trade::Order* pOrder);
 
 private:
-	void SendingProc();
+	void SendOrder(int ordIdx);
+
+	OrderResubmitterPtr m_workingResubmitter;
 
 	InputOrderVectorPtr m_inputOrderVec;
-	SubmitOrderFunc m_submitOrderFunc;
-
-	boost::thread m_th;
-	boost::condition_variable m_preferDoneCond;
-	boost::mutex m_mut;
+	int m_sendingOrderIndex;
+	COrderProcessor* m_orderProc;
 
 	bool m_preferOrderCompleted;
 	bool m_preferOrderCompletionSuccess;

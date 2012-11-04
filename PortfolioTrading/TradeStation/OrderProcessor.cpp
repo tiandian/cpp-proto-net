@@ -7,6 +7,50 @@
 #include <boost/format.hpp>
 #include <boost/foreach.hpp>
 
+trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
+{
+	trade::Order* pOrd = NULL;
+	int count = mlOrder->legs_size();
+	google::protobuf::RepeatedPtrField<trade::Order>* legs = mlOrder->mutable_legs();
+	for(int i = 0; i < count; ++i)
+	{
+		pOrd = legs->Mutable(i);
+		if(pOrd->orderref() == ordRef)
+		{
+			// find it
+			break;
+		}
+	}
+	return pOrd;
+}
+
+bool IsTicketTraded(const trade::Order& order)
+{
+	trade::OrderStatusType status = order.orderstatus();
+	return status == trade::ALL_TRADED;
+}
+
+bool IsTicketDone(const trade::Order& order)
+{
+	trade::OrderSubmitStatusType submitStatus = order.ordersubmitstatus();
+	trade::OrderStatusType status = order.orderstatus();
+	return submitStatus > trade::ACCEPTED || 
+		status == trade::ALL_TRADED ||
+		status == trade::ORDER_CANCELED;
+}
+
+bool IsMultiLegOrderDone(trade::MultiLegOrder* mlOrder)
+{
+	for(int i = 0; i < mlOrder->legs_size(); ++i )
+	{
+		const trade::Order leg = mlOrder->legs(i);
+		if(!IsTicketDone(leg))
+			return false;
+	}
+
+	return true;
+}
+
 //////////////////////////////////////////////////////////////////////////
 // make sure give preferred order prior order ref
 int COrderProcessor::IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef )
@@ -35,6 +79,17 @@ int COrderProcessor::IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int max
 
 	return maxOrderRef;
 }
+
+int COrderProcessor::IncrementalOrderRef(trade::Order* pLegOrd, int maxOrderRef)
+{
+	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
+	static char orderRef[10];
+	sprintf_s(orderRef, "%d", maxOrderRef);
+	pLegOrd->set_orderref(orderRef);
+
+	return ++maxOrderRef;
+}
+
 
 COrderProcessor::COrderProcessor(void):
 m_pTradeAgent(NULL),
@@ -70,15 +125,11 @@ void COrderProcessor::SubmitOrder( MultiLegOrderPtr multilegOrder )
 	PublishMultiLegOrderUpdate(multilegOrder.get());
 }
 
-void COrderProcessor::SubmitOrderToTradeAgent(const string& porfId, trade::InputOrder* pOrder, const string& mlOrderId)
+void COrderProcessor::SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const string& mlOrderId)
 {
 	boost::mutex::scoped_lock lock(m_mutTicketOrderMap);
 	m_pTradeAgent->SubmitOrder(pOrder);
 	m_pendingTicketOrderMap.insert(make_pair(pOrder->orderref(), mlOrderId));
-
-	OrderResubmitterPtr ordResubmitter(new COrderResubmitter(pOrder));
-	m_resubmitterMap.insert(make_pair(pOrder->orderref(), ordResubmitter));
-	ChangePortfolioResubmitter(porfId,ordResubmitter.get(), true);
 }
 
 void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
@@ -100,8 +151,7 @@ void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
 
 		OrderSenderPtr orderSender(
 			new CSequenceOrderSender(
-			multilegOrder->portfolioid(), mOrderId, vecInputOrders, 
-			boost::bind(&COrderProcessor::SubmitOrderToTradeAgent, this, _1, _2, _3)));
+			multilegOrder->portfolioid(), mOrderId, vecInputOrders, this));
 
 		m_orderSenderMap.insert(make_pair(mOrderId, orderSender));
 		pOrderSender = orderSender.get();
@@ -165,6 +215,23 @@ void COrderProcessor::CancelOrder(	const std::string& ordRef,
 	}
 }
 
+void COrderProcessor::ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice)
+{
+	// find multi leg order
+	MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
+	if(iterOrd != m_pendingMultiLegOrders.end())
+	{
+		const MultiLegOrderPtr& mlOrd = iterOrd->second;
+		trade::Order* pOrd = GetOrderByRef(mlOrd.get(), legOrderRef);
+		// remove old order ref from ticket order map
+		m_pendingTicketOrderMap.erase(legOrderRef);
+		// assign a new order ref
+		m_maxOrderRef = IncrementalOrderRef(pOrd, m_maxOrderRef);
+		// set new limit price
+		pOrd->set_limitprice(limitprice);
+	}
+}
+
 void COrderProcessor::Initialize( CTradeAgent* pTradeAgent )
 {
 	m_pTradeAgent = pTradeAgent;
@@ -181,50 +248,6 @@ void COrderProcessor::OnRspUserLogin( bool succ, std::string& msg, int initOrder
 		string warn = "Trade login failed due to " + msg;
 		logger.Warning(warn);
 	}
-}
-
-trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
-{
-	trade::Order* pOrd = NULL;
-	int count = mlOrder->legs_size();
-	google::protobuf::RepeatedPtrField<trade::Order>* legs = mlOrder->mutable_legs();
-	for(int i = 0; i < count; ++i)
-	{
-		pOrd = legs->Mutable(i);
-		if(pOrd->orderref() == ordRef)
-		{
-			// find it
-			break;
-		}
-	}
-	return pOrd;
-}
-
-bool IsTicketTraded(const trade::Order& order)
-{
-	trade::OrderStatusType status = order.orderstatus();
-	return status == trade::ALL_TRADED;
-}
-
-bool IsTicketDone(const trade::Order& order)
-{
-	trade::OrderSubmitStatusType submitStatus = order.ordersubmitstatus();
-	trade::OrderStatusType status = order.orderstatus();
-	return submitStatus > trade::ACCEPTED || 
-		status == trade::ALL_TRADED ||
-		status == trade::ORDER_CANCELED;
-}
-
-bool IsMultiLegOrderDone(trade::MultiLegOrder* mlOrder)
-{
-	for(int i = 0; i < mlOrder->legs_size(); ++i )
-	{
-		const trade::Order leg = mlOrder->legs(i);
-		if(!IsTicketDone(leg))
-			return false;
-	}
-
-	return true;
 }
 
 void COrderProcessor::RemoveFromPending( trade::MultiLegOrder* pMlOrder )
@@ -252,9 +275,9 @@ bool COrderProcessor::RemoveResubmitter(trade::Order* pOrder)
 	ResubmitterMapIter iter = m_resubmitterMap.find(ordRef);
 	if(iter != m_resubmitterMap.end())
 	{
-		bool isDone = (iter->second)->IsDone(pOrder);
+		/*bool isDone = (iter->second)->IsDone(pOrder);
 		if(isDone)
-			m_resubmitterMap.erase(iter);
+			m_resubmitterMap.erase(iter);*/
 	}
 	
 	return false;
@@ -275,14 +298,9 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 		{
 			if(IsTicketDone(*order))
 			{
-				if(IsTicketTraded(*order))
+				bool orderCompleted = iterOrdSender->second->CheckOrderStatus(order);
+				if(!orderCompleted)
 				{
-					iterOrdSender->second->OrderDone(true);
-				}
-				else
-				{
-					iterOrdSender->second->OrderDone(false);
-
 					// find multi leg order
 					MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
 					if(iterOrd != m_pendingMultiLegOrders.end())
@@ -333,8 +351,7 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 		OrderSenderMapIter iterOrdSender = m_orderSenderMap.find(mlOrderId);
 		if(iterOrdSender != m_orderSenderMap.end())
 		{
-			iterOrdSender->second->OrderDone(false);
-
+			
 			// find multi leg order
 			MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
 			if(iterOrd != m_pendingMultiLegOrders.end())

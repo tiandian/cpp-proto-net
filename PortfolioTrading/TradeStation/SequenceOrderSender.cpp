@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "SequenceOrderSender.h"
+#include "OrderProcessor.h"
 
 #include <boost/foreach.hpp>
 
@@ -8,13 +9,14 @@ CSequenceOrderSender::CSequenceOrderSender(
 	const string& portfolioId,
 	const string& mlOrderId,
 	InputOrderVectorPtr pInputOrdVec, 
-	SubmitOrderFunc submitOrdFunc):
+	COrderProcessor* orderProc):
 m_preferOrderCompleted(false),
 m_preferOrderCompletionSuccess(false),
 m_portfolioId(portfolioId),
 m_mlOrderId(mlOrderId),
 m_inputOrderVec(pInputOrdVec),
-m_submitOrderFunc(submitOrdFunc)
+m_orderProc(orderProc),
+m_sendingOrderIndex(0)
 {
 }
 
@@ -27,31 +29,34 @@ CSequenceOrderSender::~CSequenceOrderSender(void)
 
 void CSequenceOrderSender::Start()
 {
-	m_th = boost::thread(boost::bind(&CSequenceOrderSender::SendingProc, this));
+	if(m_sendingOrderIndex == 0)
+		SendOrder(m_sendingOrderIndex);
 }
 
-void CSequenceOrderSender::SendingProc()
+void CSequenceOrderSender::SendOrder(int ordIdx)
 {
-	BOOST_FOREACH(const boost::shared_ptr<trade::InputOrder>& iOrd, *m_inputOrderVec)
+	const boost::shared_ptr<trade::InputOrder>& iOrd = m_inputOrderVec->at(ordIdx);
+
+	m_workingResubmitter = OrderResubmitterPtr(
+		new COrderResubmitter(m_mlOrderId, iOrd.get(), m_orderProc));
+
+	m_orderProc->ChangePortfolioResubmitter(m_portfolioId, m_workingResubmitter.get(), true);
+
+	m_workingResubmitter->Start();
+}
+
+bool CSequenceOrderSender::CheckOrderStatus(trade::Order* pOrder)
+{
+	m_workingResubmitter->OnOrderReturn(pOrder);
+	if(m_workingResubmitter->IsDone())
 	{
-		if(!m_submitOrderFunc.empty())
-			m_submitOrderFunc(m_portfolioId, iOrd.get(), m_mlOrderId);
-
-		if(!m_preferOrderCompleted)
+		++m_sendingOrderIndex;
+		if(m_sendingOrderIndex < m_inputOrderVec->size())
 		{
-			boost::mutex::scoped_lock lock(m_mut);
-			m_preferDoneCond.wait(lock);
-			if(m_preferOrderCompletionSuccess)
-				m_preferOrderCompleted = true;
-			else // if prefer order canceled or submit failed, do NOT continue any more
-				break;	
+			SendOrder(m_sendingOrderIndex);
 		}
+		return true;
 	}
-}
 
-void CSequenceOrderSender::OrderDone(bool success)
-{
-	boost::mutex::scoped_lock l(m_mut);
-	m_preferOrderCompletionSuccess = success;
-	m_preferDoneCond.notify_one();
+	return false;
 }
