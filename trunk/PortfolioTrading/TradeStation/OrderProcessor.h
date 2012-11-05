@@ -36,7 +36,10 @@ public:
 						const std::string& ordSysId, 
 						const std::string& userId,
 						const std::string& symbol);
-	void ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice);
+
+	void CancelOrder(const string& mlOrderId, const string& ordRef);
+
+	void ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice, string* modifiedOrdRef);
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
 

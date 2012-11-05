@@ -6,11 +6,11 @@
 #include <string>
 #include <map>
 #include <boost/smart_ptr.hpp>
-#include <boost/function.hpp>
+#include <boost/thread.hpp>
 
 using namespace std;
 
-typedef boost::function<void(trade::InputOrder*, const string&)> SubmitOrderFunc; 
+enum DoneStatus { NotDone, Filled, Canceled };
 
 class COrderProcessor;
 
@@ -29,13 +29,13 @@ public:
 	void UpdateQuote(entity::Quote* pQuote);
 	void OnOrderReturn(trade::Order* pOrder);
 	int RemainingRetry() { return m_remainingRetry; }
-	bool IsDone(){ return m_isDone; }
+	DoneStatus IsDone(){ return m_isDone; }
 
 	void Start();
 
 private:
 
-	void CancelPending(trade::Order* pOrder);
+	void CancelPending();
 	void ModifyOrder(double limitPrice);
 
 	string m_mlOrderId;
@@ -43,10 +43,10 @@ private:
 	COrderProcessor* m_pOrderProc;
 
 	trade::InputOrder* m_pendingOrder;
-	trade::Order* m_lastRtnOrder;
 	int m_remainingRetry;
 
-	bool m_isDone;
+	boost::mutex m_mut;
+	DoneStatus m_isDone;
 
 	double m_quoteAsk;
 	double m_quoteBid;

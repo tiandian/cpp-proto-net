@@ -12,7 +12,7 @@ m_mlOrderId(mlOrderId),
 m_pendingOrder(pInputOrd),
 m_pOrderProc(pOrderProc),
 m_remainingRetry(INIT_RETRY_TIMES),
-m_isDone(false),
+m_isDone(NotDone),
 m_quoteAsk(0),
 m_quoteBid(0)
 {
@@ -30,11 +30,13 @@ void COrderResubmitter::Start()
 
 void COrderResubmitter::OnOrderReturn( trade::Order* pOrder )
 {
+	boost::mutex::scoped_lock l(m_mut);
+
 	trade::OrderStatusType status = pOrder->orderstatus();
 	if(status == trade::ALL_TRADED)
 	{
 		// if order filled
-		m_isDone = true;
+		m_isDone = Filled;
 	}
 	else if(status == trade::ORDER_CANCELED)
 	{
@@ -53,13 +55,15 @@ void COrderResubmitter::OnOrderReturn( trade::Order* pOrder )
 			--m_remainingRetry;
 			Start();
 		}
-		m_isDone = false;
+		m_isDone = Canceled;
 	}
 	// if insert failed
 }
 
 void COrderResubmitter::UpdateQuote( entity::Quote* pQuote )
 {
+	boost::mutex::scoped_lock l(m_mut);
+
 	m_quoteAsk = pQuote->ask();
 	m_quoteBid = pQuote->bid();
 
@@ -77,20 +81,23 @@ void COrderResubmitter::UpdateQuote( entity::Quote* pQuote )
 	else
 		_ASSERT(false);
 
-	if(priceOutOfRange)
+	if(priceOutOfRange && !m_isDone)
 	{
 		// order status is not completed
-		CancelPending(m_lastRtnOrder);
+		CancelPending();
 	}
 }
 
-void COrderResubmitter::CancelPending(trade::Order* pOrder)
+void COrderResubmitter::CancelPending()
 {
-	m_pOrderProc->CancelOrder(pOrder->orderref(), pOrder->exchangeid(), pOrder->ordersysid(),
-		pOrder->investorid(), pOrder->instrumentid());
+	m_pOrderProc->CancelOrder(m_mlOrderId, m_pendingOrder->orderref());
 }
 
 void COrderResubmitter::ModifyOrder(double limitPrice)
 {
-	m_pOrderProc->ModifyOrder(m_mlOrderId, m_pendingOrder->orderref(), limitPrice);
+	string newOrdRef;
+	m_pOrderProc->ModifyOrder(m_mlOrderId, m_pendingOrder->orderref(), limitPrice, &newOrdRef);
+
+	m_pendingOrder->set_orderref(newOrdRef);
+	m_pendingOrder->set_limitprice(limitPrice);
 }
