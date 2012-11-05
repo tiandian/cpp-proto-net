@@ -215,7 +215,20 @@ void COrderProcessor::CancelOrder(	const std::string& ordRef,
 	}
 }
 
-void COrderProcessor::ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice)
+void COrderProcessor::CancelOrder(const string& mlOrderId, const string& ordRef)
+{
+	MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
+	if(iterOrd != m_pendingMultiLegOrders.end())
+	{
+		const MultiLegOrderPtr& mlOrd = iterOrd->second;
+		trade::Order* pOrder = GetOrderByRef(mlOrd.get(), ordRef);
+
+		CancelOrder(pOrder->orderref(), pOrder->exchangeid(), pOrder->ordersysid(),
+			pOrder->investorid(), pOrder->instrumentid());
+	}
+}
+
+void COrderProcessor::ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice, string* modifiedOrdRef)
 {
 	// find multi leg order
 	MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
@@ -229,6 +242,8 @@ void COrderProcessor::ModifyOrder(const string& mlOrderId, const string& legOrde
 		m_maxOrderRef = IncrementalOrderRef(pOrd, m_maxOrderRef);
 		// set new limit price
 		pOrd->set_limitprice(limitprice);
+
+		*modifiedOrdRef = pOrd->orderref();
 	}
 }
 
@@ -298,8 +313,8 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 		{
 			if(IsTicketDone(*order))
 			{
-				bool orderCompleted = iterOrdSender->second->CheckOrderStatus(order);
-				if(!orderCompleted)
+				bool stopDueToPreferredNotFilled = iterOrdSender->second->CheckOrderStatus(order);
+				if(stopDueToPreferredNotFilled)
 				{
 					// find multi leg order
 					MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);

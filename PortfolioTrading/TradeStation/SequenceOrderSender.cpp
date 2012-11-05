@@ -48,15 +48,22 @@ void CSequenceOrderSender::SendOrder(int ordIdx)
 bool CSequenceOrderSender::CheckOrderStatus(trade::Order* pOrder)
 {
 	m_workingResubmitter->OnOrderReturn(pOrder);
-	if(m_workingResubmitter->IsDone())
+	if(m_workingResubmitter->IsDone() == Filled)
 	{
 		++m_sendingOrderIndex;
 		if(m_sendingOrderIndex < m_inputOrderVec->size())
 		{
 			SendOrder(m_sendingOrderIndex);
 		}
+		return false;
+	}
+	else if(m_workingResubmitter->IsDone() == Canceled)
+	{
 		return true;
 	}
-
-	return false;
+	else
+	{
+		_ASSERT(false);	// should not be here in the most cases
+		return true;
+	}
 }
