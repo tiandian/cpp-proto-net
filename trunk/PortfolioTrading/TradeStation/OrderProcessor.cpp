@@ -386,7 +386,8 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 		OrderSenderMapIter iterOrdSender = m_orderSenderMap.find(mlOrderId);
 		if(iterOrdSender != m_orderSenderMap.end())
 		{
-			
+			iterOrdSender->second->OrderInsertFailed();
+
 			// find multi leg order
 			MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
 			if(iterOrd != m_pendingMultiLegOrders.end())

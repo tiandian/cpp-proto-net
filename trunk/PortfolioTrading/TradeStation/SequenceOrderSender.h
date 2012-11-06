@@ -30,6 +30,7 @@ public:
 
 	bool CheckOrderStatus(trade::Order* pOrder);
 	void OrderPending();
+	void OrderInsertFailed();
 
 private:
 	void SendOrder(int ordIdx);

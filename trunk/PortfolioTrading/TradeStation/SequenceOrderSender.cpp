@@ -83,3 +83,8 @@ void CSequenceOrderSender::OrderPending()
 		% m_workingResubmitter->Symbol().c_str()));
 	m_workingResubmitter->OrderPending();
 }
+
+void CSequenceOrderSender::OrderInsertFailed()
+{
+	m_orderProc->ChangePortfolioResubmitter(m_portfolioId, m_workingResubmitter.get(), false);
+}
