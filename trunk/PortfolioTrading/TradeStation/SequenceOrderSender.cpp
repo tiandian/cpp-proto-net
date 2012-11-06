@@ -1,8 +1,10 @@
 #include "StdAfx.h"
 #include "SequenceOrderSender.h"
 #include "OrderProcessor.h"
+#include "globalmembers.h"
 
 #include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 
 CSequenceOrderSender::CSequenceOrderSender(
@@ -36,7 +38,8 @@ void CSequenceOrderSender::Start()
 void CSequenceOrderSender::SendOrder(int ordIdx)
 {
 	const boost::shared_ptr<trade::InputOrder>& iOrd = m_inputOrderVec->at(ordIdx);
-
+	logger.Trace(boost::str(boost::format("Sequence Sender start sending No.%d order(%s)") 
+		% ordIdx % iOrd->instrumentid().c_str()));
 	m_workingResubmitter = OrderResubmitterPtr(
 		new COrderResubmitter(m_mlOrderId, iOrd.get(), m_orderProc));
 
@@ -50,6 +53,10 @@ bool CSequenceOrderSender::CheckOrderStatus(trade::Order* pOrder)
 	m_workingResubmitter->OnOrderReturn(pOrder);
 	if(m_workingResubmitter->IsDone() == Filled)
 	{
+		logger.Trace(boost::str(boost::format("Resubmitter for %s is done")
+			% pOrder->instrumentid().c_str()));
+		m_orderProc->ChangePortfolioResubmitter(m_portfolioId, m_workingResubmitter.get(), false);
+
 		++m_sendingOrderIndex;
 		if(m_sendingOrderIndex < m_inputOrderVec->size())
 		{
@@ -59,11 +66,20 @@ bool CSequenceOrderSender::CheckOrderStatus(trade::Order* pOrder)
 	}
 	else if(m_workingResubmitter->IsDone() == Canceled)
 	{
+		logger.Trace(boost::str(boost::format("Resubmitter for %s is finally canceled.(out of retry)")
+			% pOrder->instrumentid().c_str()));
+		m_orderProc->ChangePortfolioResubmitter(m_portfolioId, m_workingResubmitter.get(), false);
 		return true;
 	}
-	else
+	else // Resubmitter is not done
 	{
-		_ASSERT(false);	// should not be here in the most cases
-		return true;
+		return false;
 	}
+}
+
+void CSequenceOrderSender::OrderPending()
+{
+	logger.Trace(boost::str(boost::format("Order(%s) is pending")
+		% m_workingResubmitter->Symbol().c_str()));
+	m_workingResubmitter->OrderPending();
 }

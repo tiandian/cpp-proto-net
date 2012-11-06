@@ -337,7 +337,7 @@ int CPortfolio::GetPosition( vector<MultiLegOrderPtr>& openedOrders )
 void CPortfolio::AddOrderResubmitter( COrderResubmitter* pResubmitter )
 {
 	boost::mutex::scoped_lock lock(m_mutResubmitters);
-
+	logger.Trace(boost::str(boost::format("Add Resubmitter to portfolio(%s)") % ID().c_str()));
 	m_submitters.insert(make_pair(pResubmitter->Symbol(), pResubmitter));
 }
 
@@ -357,7 +357,7 @@ void CPortfolio::TriggerResubmitter( entity::Quote* pQuote )
 void CPortfolio::RemoveOrderResubmitter( COrderResubmitter* pResubmitter )
 {
 	boost::mutex::scoped_lock lock(m_mutResubmitters);
-
+	logger.Trace(boost::str(boost::format("Remove Resubmitter from portfolio(%s)") % ID().c_str()));
 	SubmitterIter iterFound = m_submitters.end();
 	const string& symbol = pResubmitter->Symbol();
 	pair<SubmitterIter, SubmitterIter> ret = m_submitters.equal_range(symbol);

@@ -29,6 +29,7 @@ public:
 	void Start();
 
 	bool CheckOrderStatus(trade::Order* pOrder);
+	void OrderPending();
 
 private:
 	void SendOrder(int ordIdx);

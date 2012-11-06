@@ -86,7 +86,11 @@ boost::tuple<bool, string> CTradeAgent::Open( const string& address, const strin
 		streamFolder += "\\";
 		// 初始化UserApi
 		m_pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi(streamFolder.c_str());			// 创建UserApi
+		
 		m_pUserApi->RegisterSpi(this);						// 注册事件类
+
+		m_pUserApi->SubscribePrivateTopic(THOST_TERT_RESUME);
+		m_pUserApi->SubscribePublicTopic(THOST_TERT_RESUME);
 
 		logger.Info(boost::str(boost::format("Try to connect trade server (%s) ...") % address));
 
