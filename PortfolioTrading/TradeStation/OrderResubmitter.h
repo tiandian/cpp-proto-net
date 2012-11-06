@@ -32,7 +32,7 @@ public:
 	DoneStatus IsDone(){ return m_isDone; }
 
 	void Start();
-
+	void OrderPending();
 private:
 
 	void CancelPending();
@@ -44,9 +44,11 @@ private:
 
 	trade::InputOrder* m_pendingOrder;
 	int m_remainingRetry;
-
+	
 	boost::mutex m_mut;
 	DoneStatus m_isDone;
+	bool m_isCanceling;
+	bool m_isPending;
 
 	double m_quoteAsk;
 	double m_quoteBid;

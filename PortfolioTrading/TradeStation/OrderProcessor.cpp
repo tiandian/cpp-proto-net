@@ -24,6 +24,16 @@ trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
 	return pOrd;
 }
 
+bool IsOrderPending(trade::Order* pOrder)
+{
+	trade::OrderStatusType status = pOrder->orderstatus();
+	if(status == trade::NO_TRADE_QUEUEING ||
+		status == trade::NO_TRADE_NOT_QUEUEING)
+		return true;
+	else
+		return false;
+}
+
 bool IsTicketTraded(const trade::Order& order)
 {
 	trade::OrderStatusType status = order.orderstatus();
@@ -128,6 +138,8 @@ void COrderProcessor::SubmitOrder( MultiLegOrderPtr multilegOrder )
 void COrderProcessor::SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const string& mlOrderId)
 {
 	boost::mutex::scoped_lock lock(m_mutTicketOrderMap);
+	logger.Trace(boost::str(boost::format("Truly sumbit order(%s - %s) to trade agent") 
+		% mlOrderId.c_str() % pOrder->orderref().c_str()));
 	m_pTradeAgent->SubmitOrder(pOrder);
 	m_pendingTicketOrderMap.insert(make_pair(pOrder->orderref(), mlOrderId));
 }
@@ -316,6 +328,8 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 				bool stopDueToPreferredNotFilled = iterOrdSender->second->CheckOrderStatus(order);
 				if(stopDueToPreferredNotFilled)
 				{
+					logger.Trace(boost::str(boost::format("MultiLegOrder(%s) has stop due to preferred order not being filled")
+						% mlOrderId.c_str()));
 					// find multi leg order
 					MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
 					if(iterOrd != m_pendingMultiLegOrders.end())
@@ -325,6 +339,12 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 						SetNonPreferredOrderStatus(mlOrder.get(), ordRef, trade::ORDER_CANCELED); 
 					}
 				}
+			}
+			else if(IsOrderPending(order))
+			{
+				logger.Trace(boost::str(boost::format("Order(%s, %s) is pending")
+					% order->instrumentid().c_str() % order->orderref().c_str()));
+				iterOrdSender->second->OrderPending();
 			}
 		}
 
