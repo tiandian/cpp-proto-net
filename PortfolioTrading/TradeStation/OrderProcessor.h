@@ -96,7 +96,6 @@ private:
 	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
 	int IncrementalOrderRef(trade::Order* pLegOrd, int maxOrderRef);
 	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
-	bool RemoveResubmitter(trade::Order* pOrder);
 	void SetNonPreferredOrderStatus(
 		trade::MultiLegOrder* mlOrder, const string& prefOrdRef,
 		trade::OrderStatusType otherStatus);

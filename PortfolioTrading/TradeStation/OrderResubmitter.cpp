@@ -30,7 +30,7 @@ COrderResubmitter::~COrderResubmitter(void)
 
 void COrderResubmitter::Start()
 {
-	m_pOrderProc->SubmitOrderToTradeAgent(m_pendingOrder, m_mlOrderId);
+	m_sendingThread = boost::thread(boost::bind(&COrderProcessor::SubmitOrderToTradeAgent, m_pOrderProc, m_pendingOrder, m_mlOrderId));
 }
 
 void COrderResubmitter::OnOrderReturn( trade::Order* pOrder )

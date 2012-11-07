@@ -351,6 +351,8 @@ message InputOrder
 ///TFtdcOrderSubmitStatusType是一个报单提交状态类型
 enum OrderSubmitStatusType
 {
+	///未提交
+	NOT_SUBMITTED = 47;
 	///已经提交
 	INSERT_SUBMITTED = 48;
 	///撤单已经提交

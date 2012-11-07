@@ -233,6 +233,7 @@ inline bool ForceCloseReasonType_Parse(
     ForceCloseReasonType_descriptor(), name, value);
 }
 enum OrderSubmitStatusType {
+  NOT_SUBMITTED = 47,
   INSERT_SUBMITTED = 48,
   CANCEL_SUBMITTED = 49,
   MODIFY_SUBMITTED = 50,
@@ -242,7 +243,7 @@ enum OrderSubmitStatusType {
   MODIFY_REJECTED = 54
 };
 bool OrderSubmitStatusType_IsValid(int value);
-const OrderSubmitStatusType OrderSubmitStatusType_MIN = INSERT_SUBMITTED;
+const OrderSubmitStatusType OrderSubmitStatusType_MIN = NOT_SUBMITTED;
 const OrderSubmitStatusType OrderSubmitStatusType_MAX = MODIFY_REJECTED;
 const int OrderSubmitStatusType_ARRAYSIZE = OrderSubmitStatusType_MAX + 1;
 
@@ -7042,7 +7043,7 @@ inline void Order::clear_has_ordersubmitstatus() {
   _has_bits_[0] &= ~0x10000000u;
 }
 inline void Order::clear_ordersubmitstatus() {
-  ordersubmitstatus_ = 48;
+  ordersubmitstatus_ = 47;
   clear_has_ordersubmitstatus();
 }
 inline trade::OrderSubmitStatusType Order::ordersubmitstatus() const {

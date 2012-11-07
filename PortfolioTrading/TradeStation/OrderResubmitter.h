@@ -52,6 +52,8 @@ private:
 
 	double m_quoteAsk;
 	double m_quoteBid;
+
+	boost::thread m_sendingThread;
 };
 
 typedef boost::shared_ptr<COrderResubmitter> OrderResubmitterPtr;

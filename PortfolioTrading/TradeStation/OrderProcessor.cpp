@@ -9,19 +9,20 @@
 
 trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
 {
-	trade::Order* pOrd = NULL;
+	trade::Order* pOrdFound = NULL;
 	int count = mlOrder->legs_size();
 	google::protobuf::RepeatedPtrField<trade::Order>* legs = mlOrder->mutable_legs();
 	for(int i = 0; i < count; ++i)
 	{
-		pOrd = legs->Mutable(i);
+		trade::Order* pOrd = legs->Mutable(i);
 		if(pOrd->orderref() == ordRef)
 		{
 			// find it
+			pOrdFound = pOrd;
 			break;
 		}
 	}
-	return pOrd;
+	return pOrdFound;
 }
 
 bool IsOrderPending(trade::Order* pOrder)
@@ -247,6 +248,8 @@ void COrderProcessor::ModifyOrder(const string& mlOrderId, const string& legOrde
 	if(iterOrd != m_pendingMultiLegOrders.end())
 	{
 		const MultiLegOrderPtr& mlOrd = iterOrd->second;
+		
+		// Modify order to be sent first 
 		trade::Order* pOrd = GetOrderByRef(mlOrd.get(), legOrderRef);
 		// remove old order ref from ticket order map
 		m_pendingTicketOrderMap.erase(legOrderRef);
@@ -254,8 +257,22 @@ void COrderProcessor::ModifyOrder(const string& mlOrderId, const string& legOrde
 		m_maxOrderRef = IncrementalOrderRef(pOrd, m_maxOrderRef);
 		// set new limit price
 		pOrd->set_limitprice(limitprice);
+		pOrd->set_ordersubmitstatus(trade::NOT_SUBMITTED);
+		pOrd->set_orderstatus(trade::STATUS_UNKNOWN);
 
 		*modifiedOrdRef = pOrd->orderref();
+
+		// Then, has to update order ref for unsubmit order
+		int lCount = mlOrd->legs_size();
+		for(int i = 0; i < lCount; ++i)
+		{
+			trade::Order* legOrd = mlOrd->mutable_legs(i);
+			if(legOrd->orderref() != *modifiedOrdRef &&
+				legOrd->ordersubmitstatus() == trade::NOT_SUBMITTED)
+			{
+				m_maxOrderRef = IncrementalOrderRef(legOrd, m_maxOrderRef);
+			}
+		}
 	}
 }
 
@@ -296,20 +313,6 @@ void COrderProcessor::RemoveFromPending( trade::MultiLegOrder* pMlOrder )
 	m_pendingMultiLegOrders.erase(mlOrderId);
 }
 
-bool COrderProcessor::RemoveResubmitter(trade::Order* pOrder)
-{
-	const string& ordRef = pOrder->orderref();
-	ResubmitterMapIter iter = m_resubmitterMap.find(ordRef);
-	if(iter != m_resubmitterMap.end())
-	{
-		/*bool isDone = (iter->second)->IsDone(pOrder);
-		if(isDone)
-			m_resubmitterMap.erase(iter);*/
-	}
-	
-	return false;
-}
-
 // Order submit succeeded
 void COrderProcessor::OnRtnOrder( trade::Order* order )
 {
@@ -318,7 +321,7 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 	PendingTktOrdMapIter iterTicket = m_pendingTicketOrderMap.find(ordRef);
 	if(iterTicket != m_pendingTicketOrderMap.end())
 	{
-		const string& mlOrderId = iterTicket->second;
+		string mlOrderId = iterTicket->second;
 		
 		OrderSenderMapIter iterOrdSender = m_orderSenderMap.find(mlOrderId);
 		if(iterOrdSender != m_orderSenderMap.end())
@@ -354,13 +357,20 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 			const MultiLegOrderPtr& mlOrder = iterOrd->second;
 			trade::Order* pOrd = GetOrderByRef(mlOrder.get(), ordRef);
 			
-			pOrd->CopyFrom(*order);
+			if(pOrd != NULL)
+			{
+				pOrd->CopyFrom(*order);
+			}
+			else
+			{
+				// Order already been cancelled and replaced with new order ref
+				// push incoming order directly
+				pOrd = order;
+			}
 			
 			string ordStatusMsg;
 			GB2312ToUTF_8(ordStatusMsg, order->statusmsg().c_str());
 			pOrd->set_statusmsg(ordStatusMsg);
-
-			bool doneAndRemove = RemoveResubmitter(order);
 
 			// publish order updated
 			PublishOrderUpdate(mlOrder->portfolioid(), mlOrder->orderid(), pOrd);
@@ -412,8 +422,6 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 			// set error message
 			pOrd->set_statusmsg(ordStatusMsg);
 
-			bool doneAndRemove = RemoveResubmitter(pOrd);
-			
 			// publish order updated
 			PublishOrderUpdate(mlOrder->portfolioid(), mlOrder->orderid(), pOrd);
 
