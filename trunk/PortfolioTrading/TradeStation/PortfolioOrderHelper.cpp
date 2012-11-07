@@ -83,7 +83,7 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 		order->set_isautosuspend(false);
 		order->set_userforceclose(false);
 
-		order->set_ordersubmitstatus(trade::INSERT_SUBMITTED);
+		order->set_ordersubmitstatus(trade::NOT_SUBMITTED);
 		order->set_orderstatus(trade::STATUS_UNKNOWN);
 
 		order->set_preferred(leg->IsPreferred());
@@ -184,7 +184,7 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 		order->set_isautosuspend(false);
 		order->set_userforceclose(false);
 
-		order->set_ordersubmitstatus(trade::INSERT_SUBMITTED);
+		order->set_ordersubmitstatus(trade::NOT_SUBMITTED);
 		order->set_orderstatus(trade::STATUS_UNKNOWN);
 
 		order->set_preferred(leg->IsPreferred());
@@ -273,7 +273,7 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 		order->set_isautosuspend(false);
 		order->set_userforceclose(false);
 
-		order->set_ordersubmitstatus(trade::INSERT_SUBMITTED);
+		order->set_ordersubmitstatus(trade::NOT_SUBMITTED);
 		order->set_orderstatus(trade::STATUS_UNKNOWN);
 
 		order->set_preferred(leg->IsPreferred());

@@ -218,6 +218,9 @@ namespace PortfolioTrading.Modules.Portfolio
 
             switch (submitStatus)
             {
+                case trade.OrderSubmitStatusType.NOT_SUBMITTED:
+                    status = "未提交";
+                    break;
                 case trade.OrderSubmitStatusType.INSERT_SUBMITTED:
                 case trade.OrderSubmitStatusType.ACCEPTED:
                     {
