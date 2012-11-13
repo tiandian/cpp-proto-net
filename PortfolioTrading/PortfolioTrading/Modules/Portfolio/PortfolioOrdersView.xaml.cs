@@ -86,17 +86,27 @@ namespace PortfolioTrading.Modules.Portfolio
 
     public class MultiLegOrderRepositry : ObservableCollection<MultiLegOrderVM>
     {
+        public MultiLegOrderVM GetMlOrderVm(string acctId, string mlOrdId)
+        {
+            return this.SingleOrDefault(
+                    vm => vm.AccountId == acctId && vm.OrderId == mlOrdId);
+        }
+
         public void Update(string accountId, trade.MultiLegOrder mlOrder)
         {
             lock (this)
             {
                 string ordId = mlOrder.OrderId;
                 MultiLegOrderVM mlOrderVm = null;
-                mlOrderVm = this.SingleOrDefault(
-                    vm => vm.AccountId == accountId && vm.OrderId == ordId);
+                mlOrderVm = GetMlOrderVm(accountId, ordId);
                 if (mlOrderVm != null)
                 {
                     mlOrderVm.From(mlOrder);
+                    if (!mlOrderVm.IsOpenOrder && mlOrderVm.IsAllFinished)
+                    {
+                        var openOrderVm = GetMlOrderVm(accountId, mlOrder.OpenOrderId);
+                        mlOrderVm.CalcProfit(openOrderVm);
+                    }
                 }
                 else
                 {
