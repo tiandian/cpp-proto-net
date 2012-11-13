@@ -164,6 +164,23 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        #region IsFinished
+        private bool _isFinished;
+
+        public bool IsFinished
+        {
+            get { return _isFinished; }
+            set
+            {
+                if (_isFinished != value)
+                {
+                    _isFinished = value;
+                    RaisePropertyChanged("IsFinished");
+                }
+            }
+        }
+        #endregion
+
 
         public void From(trade.Order order)
         {
@@ -173,6 +190,7 @@ namespace PortfolioTrading.Modules.Portfolio
             Direction = GetDirection(order.Direction);
             OCFlag = GetOCFlag(order.CombOffsetFlag);
             StatusMsg = GetStatus(order.OrderSubmitStatus, order.OrderStatus);
+            IsFinished = CheckForFinish(order.OrderSubmitStatus, order.OrderStatus);
             if(!string.IsNullOrEmpty(order.InsertTime))
                 InsertTime = DateTime.Parse(order.InsertTime);
             Volume = order.VolumeTotalOriginal;
@@ -209,6 +227,28 @@ namespace PortfolioTrading.Modules.Portfolio
                 default:
                     return "未知";
             }
+        }
+
+        private static bool CheckForFinish(trade.OrderSubmitStatusType submitStatus,
+                                       trade.OrderStatusType statusType)
+        {
+            switch (submitStatus)
+            {
+                case trade.OrderSubmitStatusType.INSERT_SUBMITTED:
+                case trade.OrderSubmitStatusType.ACCEPTED:
+                    {
+                        switch (statusType)
+                        {
+                            case trade.OrderStatusType.ALL_TRADED:
+                            case trade.OrderStatusType.ORDER_CANCELED:
+                                return true;
+                        }
+                    }
+                    break;
+                default:
+                    return false;
+            }
+            return false;
         }
 
         public static string GetStatus(trade.OrderSubmitStatusType submitStatus,

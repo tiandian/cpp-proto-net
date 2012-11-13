@@ -88,7 +88,6 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
-
         #region IsOpenOrder
         private bool _isOpenOrder;
 
@@ -106,6 +105,24 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        #region IsAllFinished
+        private bool _isAllFinished;
+
+        public bool IsAllFinished
+        {
+            get { return _isAllFinished; }
+            set
+            {
+                if (_isAllFinished != value)
+                {
+                    _isAllFinished = value;
+                    RaisePropertyChanged("IsAllFinished");
+                }
+            }
+        }
+        #endregion
+
+
         public IEnumerable<OrderVM> Legs
         {
             get { return _orders; }
@@ -120,6 +137,7 @@ namespace PortfolioTrading.Modules.Portfolio
             Quantity = mlOrder.Quantity;
             IsOpenOrder = mlOrder.OrderId == mlOrder.OpenOrderId;
 
+            bool allFinished = false;
             for (int i = 0; i < mlOrder.Legs.Count; ++i )
             {
                 if (_orders.Count == i)
@@ -127,7 +145,10 @@ namespace PortfolioTrading.Modules.Portfolio
 
                 var legOrder = mlOrder.Legs[i];
                 _orders[i].From(legOrder);
+                allFinished = _orders[i].IsFinished;
             }
+
+            IsAllFinished = allFinished;
         }
 
         public void From(string ordRef, trade.Order order)
@@ -146,6 +167,29 @@ namespace PortfolioTrading.Modules.Portfolio
                     }
                 }
             }
+        }
+
+        public void CalcProfit(MultiLegOrderVM openOrderVm)
+        {
+            double profit = 0;
+
+            foreach (var closeOrd in LastOrder.Legs)
+            {
+                var openOrd = openOrderVm.LastOrder.Legs.FirstOrDefault(l => closeOrd.InstrumentID == l.InstrumentID);
+                if (openOrd != null)
+                {
+                    if (closeOrd.Direction == trade.TradeDirectionType.SELL)
+                    {
+                        profit += (closeOrd.LimitPrice - openOrd.LimitPrice);
+                    }
+                    else
+                    {
+                        profit += (openOrd.LimitPrice - closeOrd.LimitPrice);
+                    }
+                }
+            }
+
+            Profit = profit;
         }
     }
 }

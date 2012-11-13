@@ -1747,6 +1747,9 @@ namespace trade
     public enum OrderSubmitStatusType
     {
             
+      [global::ProtoBuf.ProtoEnum(Name=@"NOT_SUBMITTED", Value=47)]
+      NOT_SUBMITTED = 47,
+            
       [global::ProtoBuf.ProtoEnum(Name=@"INSERT_SUBMITTED", Value=48)]
       INSERT_SUBMITTED = 48,
             

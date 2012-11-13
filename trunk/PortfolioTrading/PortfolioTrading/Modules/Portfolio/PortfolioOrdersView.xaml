@@ -203,7 +203,18 @@
                                     </Button>
                                     <Button Width="60" Margin="4, 2"
                                             Command="{x:Static local:PortfolioOrdersView.CancelPortfOrderCommand}" 
-                                            CommandParameter="{Binding }">撤单</Button>
+                                            CommandParameter="{Binding }">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding IsAllFinished}" Value="True">
+                                                        <Setter Property="IsEnabled" Value="False"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        撤单
+                                    </Button>
                                 </StackPanel>
                             </ControlTemplate>
                         </Setter.Value>
