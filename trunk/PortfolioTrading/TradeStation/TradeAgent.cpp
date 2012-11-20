@@ -452,11 +452,6 @@ void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradin
 	}
 }
 
-void CTradeAgent::OnRspQryInvestorPosition( CThostFtdcInvestorPositionField *pInvestorPosition, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
-{
-
-}
-
 void CTradeAgent::OnRspError( CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 
@@ -818,4 +813,69 @@ bool CTradeAgent::SubmitOrderAction( trade::InputOrderAction* pInputOrderAction 
 void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 	m_pCallback->OnRspOrderInsert(IsErrorRspInfo(pRspInfo), std::string(pInputOrderAction->OrderRef), std::string(pRspInfo->ErrorMsg));
+}
+
+void CTradeAgent::QueryPositionDetails( const std::string& symbol )
+{
+	CThostFtdcQryInvestorPositionDetailField req;
+	memset(&req, 0, sizeof(req));
+	strcpy_s(req.BrokerID, m_brokerID.c_str());
+	strcpy_s(req.InvestorID, m_userID.c_str());
+	strcpy_s(req.InstrumentID, symbol.c_str());
+
+	while (true)
+	{
+		int iResult = m_pUserApi->ReqQryInvestorPositionDetail(&req, RequestIDIncrement());
+		if (!IsFlowControl(iResult))
+		{
+			std::string infoText = boost::str(boost::format("Query investor position details: %d, %s") % iResult % ((iResult == 0) ? ", 成功" : ", 失败"));
+			logger.Info(infoText);
+			break;
+		}
+		else
+		{
+			logger.Warning(boost::str(boost::format("--->>> Query trading account: %d, 受到流控") % iResult));
+			boost::this_thread::sleep(boost::posix_time::seconds(1));
+		}
+	} // while
+}
+
+void CTradeAgent::OnRspQryInvestorPositionDetail( CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	if(!IsErrorRspInfo(pRspInfo))
+	{
+		if(pInvestorPositionDetail == NULL) return;
+
+		trade::PositionDetailInfo posiDetail;
+		posiDetail.set_instrumentid(pInvestorPositionDetail->InstrumentID);
+		posiDetail.set_brokerid(pInvestorPositionDetail->BrokerID);
+		posiDetail.set_investorid(pInvestorPositionDetail->BrokerID);
+		posiDetail.set_hedgeflag(static_cast<trade::HedgeFlagType>(pInvestorPositionDetail->HedgeFlag));
+		posiDetail.set_direction(static_cast<trade::TradeDirectionType>(pInvestorPositionDetail->Direction));
+		posiDetail.set_opendate(pInvestorPositionDetail->OpenDate);
+		posiDetail.set_tradeid(pInvestorPositionDetail->TradeID);
+		posiDetail.set_volume(pInvestorPositionDetail->Volume);
+		posiDetail.set_openprice(pInvestorPositionDetail->OpenPrice);
+		posiDetail.set_tradingday(pInvestorPositionDetail->TradingDay);
+		posiDetail.set_settlementid(pInvestorPositionDetail->SettlementID);
+		if(pInvestorPositionDetail->TradeType < trade::TRDT_COMMON)
+			posiDetail.set_tradetype(trade::TRDT_COMMON);
+		else
+			posiDetail.set_tradetype(static_cast<trade::TradeTypeType>(pInvestorPositionDetail->TradeType));
+		posiDetail.set_combinstrumentid(pInvestorPositionDetail->CombInstrumentID);
+		posiDetail.set_exchangeid(pInvestorPositionDetail->ExchangeID);
+		posiDetail.set_closeprofitbydate(pInvestorPositionDetail->CloseProfitByDate);
+		posiDetail.set_closeprofitbytrade(pInvestorPositionDetail->CloseProfitByTrade);
+		posiDetail.set_positionprofitbydate(pInvestorPositionDetail->PositionProfitByDate);
+		posiDetail.set_positionprofitbytrade(pInvestorPositionDetail->PositionProfitByTrade);
+		posiDetail.set_margin(pInvestorPositionDetail->Margin);
+		posiDetail.set_exchmargin(pInvestorPositionDetail->ExchMargin);
+		posiDetail.set_marginratebymoney(pInvestorPositionDetail->MarginRateByMoney);
+		posiDetail.set_marginratebyvolume(pInvestorPositionDetail->MarginRateByVolume);
+		posiDetail.set_lastsettlementprice(pInvestorPositionDetail->LastSettlementPrice);
+		posiDetail.set_closevolume(pInvestorPositionDetail->CloseVolume);
+		posiDetail.set_closeamount(pInvestorPositionDetail->CloseAmount);
+
+		m_pCallback->OnRspQryInvestorPositionDetail(&posiDetail);
+	}
 }

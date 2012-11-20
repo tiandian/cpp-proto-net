@@ -1,23 +1,33 @@
 #include "server.hpp"
 #include <boost/bind.hpp>
+#include <boost/lexical_cast.hpp>
 
 
 server::server(const std::string& address, const std::string& port)
   : io_service_(),
     acceptor_(io_service_),
     new_connection_()
-{
+{	
+	if(address.empty())
+	{
+		unsigned int uport = boost::lexical_cast<unsigned int>(port.c_str());
+		boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), uport);
+		acceptor_.open(endpoint.protocol());
+		acceptor_.bind(endpoint);
+	}
+	else
+	{
+		// Open the acceptor with the option to reuse the address (i.e. SO_REUSEADDR).
+		boost::asio::ip::tcp::resolver resolver(io_service_);
+		boost::asio::ip::tcp::resolver::query query(address, port);
+		boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve(query);
+		acceptor_.open(endpoint.protocol());
+		acceptor_.bind(endpoint);
+	}
+	
+	acceptor_.listen();
 
-  // Open the acceptor with the option to reuse the address (i.e. SO_REUSEADDR).
-  boost::asio::ip::tcp::resolver resolver(io_service_);
-  boost::asio::ip::tcp::resolver::query query(address, port);
-  boost::asio::ip::tcp::endpoint endpoint = *resolver.resolve(query);
-  acceptor_.open(endpoint.protocol());
-  acceptor_.set_option(boost::asio::ip::tcp::acceptor::reuse_address(true));
-  acceptor_.bind(endpoint);
-  acceptor_.listen();
-
-  start_accept();
+	start_accept();
 }
 
 void server::run()

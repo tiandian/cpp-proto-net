@@ -94,6 +94,7 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("ApplyStrategySettings", boost::bind(&CClientManager::ApplyStrategySettings, this, _1, _2, _3)));
 
 	m_reqTransMap.insert(make_pair("QueryAccountInfo", boost::bind(&CClientManager::QueryAccountInfo, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("QueryPositionDetails", boost::bind(&CClientManager::QueryPositionDetails, this, _1, _2, _3)));
 }
 
 void CClientManager::QuoteConnect( CClientAgent* pClientAgent, const string& in_data, string& out_data )
@@ -266,4 +267,12 @@ void CClientManager::CancelOrder( CClientAgent* pClientAgent, const string& in_d
 	cancelParam.ParseFromString(in_data);
 
 	pClientAgent->CancelOrder(cancelParam);
+}
+
+void CClientManager::QueryPositionDetails( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::StringParam stringParam;
+	stringParam.ParseFromString(in_data);
+
+	pClientAgent->QueryPositionDetails(stringParam.data());
 }

@@ -32,6 +32,7 @@ public:
 	void RegQuote(vector<string>& symbols);
 	
 	bool QueryAccountInfo(string* serializedAcctInfo);
+	void QueryPositionDetails(const string& symbol);
 	void SetPorfPreferredLeg(const entity::ModifyPortfolioPreferredLegParam& preferredLegParam);
 	void EnableStrategy(const entity::ModifyRunningStatusParam& runningStatusParam);
 	void TurnPortfSwitches(const entity::ModifyPortfolioSwitchParam& switchesParam);
@@ -48,6 +49,7 @@ public:
 	void OnMultiLegOrderUpdated(trade::MultiLegOrder* order);
 	void OnLegOrderUpdated(const string& portfId, const string& mlOrderId, trade::Order* legOrd);
 	void OnTradeUpdated(trade::Trade* trade);
+	void OnPostionDetailReturned(trade::PositionDetailInfo* posiDetailInfo);
 	
 	std::string QuoteAddress() const { return m_quoteAddress; }
 	boost::tuple<bool, string> QuoteConnect(const std::string& address, const std::string& streamDir);

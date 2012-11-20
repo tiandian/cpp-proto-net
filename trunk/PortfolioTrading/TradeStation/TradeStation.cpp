@@ -40,7 +40,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	const string& sAddr = config.GetAddr();
 	const string& sPort = config.GetPort();
 	pSessionManager->Listen(sAddr, sPort);
-	logger.Info(boost::str(boost::format("Start listening at %s:%s") %sAddr.c_str() % sPort.c_str()));
+	logger.Info(boost::str(boost::format("Start listening at %s:%s") 
+		% (sAddr.empty() ? "localhost" : sAddr.c_str()) % sPort.c_str()));
 
 	bool exit = false;
 	while(!exit)

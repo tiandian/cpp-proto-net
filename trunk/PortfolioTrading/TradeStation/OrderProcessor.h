@@ -17,6 +17,7 @@ using namespace std;
 typedef boost::function<void(trade::MultiLegOrder*)> PushMultiLegOrderFunc;
 typedef boost::function<void( const string&, const string&, trade::Order* legOrd)> PushLegOrderFunc;
 typedef boost::function<void(trade::Trade*)> PushTradeFunc;
+typedef boost::function<void(trade::PositionDetailInfo*)> PushPositionDetailFunc; 
 typedef boost::function<void(const MultiLegOrderPtr&)> PushPortfolioPositionChangeFunc;
 typedef boost::function<void(const string&, COrderResubmitter*, bool)> PushPortfolioResubmitterChangeFunc;
 typedef boost::shared_ptr<CSequenceOrderSender> OrderSenderPtr;
@@ -42,6 +43,7 @@ public:
 	void ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice, string* modifiedOrdRef);
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
+	void QueryPositionDetails(const string& symbol);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Below methods are callbacks for CTradeAgent 
@@ -60,6 +62,9 @@ public:
 
 	///成交通知
 	virtual void OnRtnTrade(trade::Trade* pTrade);
+
+	///请求查询投资者持仓明细响应
+	virtual void OnRspQryInvestorPositionDetail(trade::PositionDetailInfo* pPositionDetail);
 
 	///投资者结算结果确认响应
 	virtual void OnRspSettlementInfoConfirm(){}
@@ -83,6 +88,9 @@ public:
 
 	void PublishTradeUpdate(trade::Trade* pTrade);
 	void SetPushTradeFunc(PushTradeFunc funcPushTrade);
+
+	void PublishPositionDetail(trade::PositionDetailInfo* pPosiDetailInfo);
+	void SetPushPositionDetailFunc(PushPositionDetailFunc funcPushPosiDetail);
 
 	void OnPortfolioPositionChanged(const MultiLegOrderPtr& multilegOrder);
 	void SetPushPositionChangeFunc(PushPortfolioPositionChangeFunc funcPushPosiChange);
@@ -116,6 +124,7 @@ private:
 	PushMultiLegOrderFunc m_pushMultiOrdFunc;
 	PushLegOrderFunc m_pushLegOrderFunc;
 	PushTradeFunc m_pushTradeFunc;
+	PushPositionDetailFunc m_pushPosiDetailFunc;
 	PushPortfolioPositionChangeFunc m_pushPortfPosiChangeFunc;
 	PushPortfolioResubmitterChangeFunc m_pushResubmitterChangeFunc;
 
