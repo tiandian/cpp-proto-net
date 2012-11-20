@@ -17,6 +17,7 @@ m_clientConnected(false)
 	m_orderProcessor.Initialize(&m_tradeAgent);
 	m_orderProcessor.SetPushPortfolioFunc(boost::bind(&CClientAgent::OnMultiLegOrderUpdated, this, _1));
 	m_orderProcessor.SetPushTradeFunc(boost::bind(&CClientAgent::OnTradeUpdated, this, _1));
+	m_orderProcessor.SetPushPositionDetailFunc(boost::bind(&CClientAgent::OnPostionDetailReturned, this, _1));
 	m_orderProcessor.SetPushOrderFunc(boost::bind(&CClientAgent::OnLegOrderUpdated, this, _1, _2, _3));
 	m_orderProcessor.SetPushPositionChangeFunc(boost::bind(&CPortfolioManager::PortfolioPositionChange, &m_portfolioMgr, _1));
 	m_orderProcessor.SetPushResubmitterChangeFunc(boost::bind(&CPortfolioManager::ChangePortfolioResubmitter, &m_portfolioMgr, _1, _2, _3));
@@ -261,4 +262,17 @@ void CClientAgent::CancelOrder( const entity::CancelOrderParam& cancelParam )
 {
 	m_orderProcessor.CancelOrder(cancelParam.orderref(), cancelParam.exchangeid(),
 		cancelParam.ordsysid(), m_userId, cancelParam.symbol());
+}
+
+void CClientAgent::OnPostionDetailReturned( trade::PositionDetailInfo* posiDetailInfo )
+{
+	std::string callbackData;
+	posiDetailInfo->SerializeToString(&callbackData);
+	if(m_pSession != NULL)
+		m_pSession->BeginCallback("PositionDetailReturn", callbackData);
+}
+
+void CClientAgent::QueryPositionDetails( const string& symbol )
+{
+	m_orderProcessor.QueryPositionDetails(symbol);
 }

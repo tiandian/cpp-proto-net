@@ -168,6 +168,64 @@ message PositionInfo {
 
 }
 
+///投资者持仓明细
+///CThostFtdcInvestorPositionDetailField
+message PositionDetailInfo
+{
+	///合约代码
+	required string	InstrumentID = 1;
+	///经纪公司代码
+	required string	BrokerID = 2;
+	///投资者代码
+	required string	InvestorID = 3;
+	///投机套保标志
+	required HedgeFlagType HedgeFlag = 4;
+	///买卖
+	required TradeDirectionType	Direction = 5;
+	///开仓日期
+	required string	OpenDate = 6;
+	///成交编号
+	required string TradeID = 7;
+	///数量
+	required int32	Volume = 8;
+	///开仓价
+	required double	OpenPrice = 9;
+	///交易日
+	required string	TradingDay = 10;
+	///结算编号
+	required int32	SettlementID = 11;
+	///成交类型
+	required TradeTypeType	TradeType = 12;
+	///组合合约代码
+	required string	CombInstrumentID = 13;
+	///交易所代码
+	required string	ExchangeID = 14;
+	///逐日盯市平仓盈亏
+	required double	CloseProfitByDate = 15;
+	///逐笔对冲平仓盈亏
+	required double	CloseProfitByTrade = 16;
+	///逐日盯市持仓盈亏
+	required double	PositionProfitByDate = 17;
+	///逐笔对冲持仓盈亏
+	required double	PositionProfitByTrade = 18;
+	///投资者保证金
+	required double	Margin = 19;
+	///交易所保证金
+	required double	ExchMargin = 20;
+	///保证金率
+	required double	MarginRateByMoney = 21;
+	///保证金率(按手数)
+	required double	MarginRateByVolume = 22;
+	///昨结算价
+	required double	LastSettlementPrice = 23;
+	///结算价
+	required double	SettlementPrice = 24;
+	///平仓量
+	required int32	CloseVolume = 25;
+	///平仓金额
+	required double	CloseAmount = 26;
+}
+
 ///TFtdcOrderPriceTypeType是一个报单价格条件类型
 enum OrderPriceTypeType
 {

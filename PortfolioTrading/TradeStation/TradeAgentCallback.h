@@ -25,6 +25,9 @@ public:
 	///成交通知
 	virtual void OnRtnTrade(trade::Trade* pTrade) = 0;
 
+	///请求查询投资者持仓明细响应
+	virtual void OnRspQryInvestorPositionDetail(trade::PositionDetailInfo* pPositionDetail) = 0;
+
 	///投资者结算结果确认响应
 	virtual void OnRspSettlementInfoConfirm(){}
 

@@ -111,6 +111,7 @@
     <Compile Include="Events\MultiLegOrderUpdatedEvent.cs" />
     <Compile Include="Events\OutputEvent.cs" />
     <Compile Include="Events\PortfolioSelectedEvent.cs" />
+    <Compile Include="Events\QueryPositionEvent.cs" />
     <Compile Include="Events\TradeUpdatedEvent.cs" />
     <Compile Include="LogManager.cs" />
     <Compile Include="Modules\Account\AccountInfoVM.cs" />
@@ -122,6 +123,10 @@
       <DependentUpon>AccountMgrView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Account\AccountModule.cs" />
+    <Compile Include="Modules\Account\PositionDetailVM.cs" />
+    <Compile Include="Modules\Account\PositionView.xaml.cs">
+      <DependentUpon>PositionView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Portfolio\PortfolioContentPane.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ArbitrageStrategySetting.cs" />
     <Compile Include="Modules\Account\EditAccountDlg.xaml.cs">
@@ -213,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Account\EditPortfolioDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Account\PositionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

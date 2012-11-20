@@ -536,4 +536,29 @@ void COrderProcessor::ChangePortfolioResubmitter( const string& portfId, COrderR
 	}
 }
 
+void COrderProcessor::PublishPositionDetail( trade::PositionDetailInfo* pPosiDetailInfo )
+{
+	if(!m_pushPosiDetailFunc.empty())
+	{
+		m_pushPosiDetailFunc(pPosiDetailInfo);
+	}
+}
+
+void COrderProcessor::SetPushPositionDetailFunc( PushPositionDetailFunc funcPushPosiDetail )
+{
+	m_pushPosiDetailFunc = funcPushPosiDetail;
+}
+
+void COrderProcessor::OnRspQryInvestorPositionDetail( trade::PositionDetailInfo* pPositionDetail )
+{
+	PublishPositionDetail(pPositionDetail);
+}
+
+void COrderProcessor::QueryPositionDetails( const string& symbol )
+{
+	m_pTradeAgent->QueryPositionDetails(symbol);
+}
+
+
+
 

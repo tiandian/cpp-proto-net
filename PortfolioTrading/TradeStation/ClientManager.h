@@ -63,6 +63,7 @@ private:
 	void ApplyStrategySettings(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
 	void QueryAccountInfo(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void QueryPositionDetails(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
 	ReqTranslatorMap m_reqTransMap;
 	ClientMap m_clients;
