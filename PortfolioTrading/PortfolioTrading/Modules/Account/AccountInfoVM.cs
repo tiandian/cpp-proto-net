@@ -186,14 +186,18 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         public DelegateCommand QueryAccountCommand { get; private set; }
+        public DelegateCommand QueryPositionCommand { get; private set; }
 
         private AccountVM CurrentAccount { get; set; }
+        private IEventAggregator EventAggregator { get; set; }
 
         [ImportingConstructor]
         public AccountInfoVM(IEventAggregator evtAgg)
         {
             QueryAccountCommand = new DelegateCommand(OnQueryAccount);
+            QueryPositionCommand = new DelegateCommand(OnQueryPosition);
             evtAgg.GetEvent<AccountSelectedEvent>().Subscribe(OnAccountSelected, ThreadOption.UIThread);
+            EventAggregator = evtAgg;
         }
 
         public void OnAccountSelected(AccountVM accountVm)
@@ -201,6 +205,11 @@ namespace PortfolioTrading.Modules.Account
             AccountId = accountVm.InvestorId;
             CurrentAccount = accountVm;
             OnQueryAccount();
+        }
+
+        private void OnQueryPosition()
+        {
+            EventAggregator.GetEvent<QueryPositionEvent>().Publish(CurrentAccount);
         }
 
         private void OnQueryAccount()

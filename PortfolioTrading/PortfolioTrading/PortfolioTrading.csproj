@@ -173,6 +173,7 @@
     <Compile Include="Utils\EventLogger.cs" />
     <Compile Include="Utils\ILog.cs" />
     <Compile Include="Utils\Log4netLogger.cs" />
+    <Compile Include="Utils\RegionHelper.cs" />
     <Compile Include="Utils\SideBindingSource.cs" />
     <Compile Include="Modules\Account\AccountMgrVM.cs" />
     <Page Include="BureauBlue.xaml">

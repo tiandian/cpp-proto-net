@@ -166,6 +166,14 @@ namespace PortfolioTrading.Infrastructure
             return DataTranslater.Deserialize<trade.AccountInfo>(ret_data);
         }
 
+        public void QueryPositionDetails(string symbol)
+        {
+            entity.StringParam strParam = new entity.StringParam();
+            strParam.Data = symbol;
+            byte[] param_data = DataTranslater.Serialize(strParam);
+            byte[] ret_data = Request("QueryPositionDetails", param_data);
+        }
+
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
         {
             ConnectParam connParam = new ConnectParam()
@@ -196,7 +204,7 @@ namespace PortfolioTrading.Infrastructure
 
         private void ServerDisconnect(string method)
         {
-            byte[] void_ret = Request(method, ClientBase.VoidParam);
+            byte[] void_ret = Request(method, ClientBase.VoidParam, 5000);
         }
 
         private OperationResult ServerLogin(string method, string brokerId, string userId, string password)
@@ -238,6 +246,7 @@ namespace PortfolioTrading.Infrastructure
         public event Action<MultiLegOrder> OnMultiLegOrderUpdated;
         public event Action<string, string, string, Order> OnLegOrderUpdated;
         public event Action<Trade> OnTradeUpdated;
+        public event Action<PositionDetailInfo> OnPositionDetialReturn;
 
         protected override void DispatchCallback(string method, byte[] paramData)
         {
@@ -282,6 +291,14 @@ namespace PortfolioTrading.Infrastructure
                 {
                     Trade trade = DataTranslater.Deserialize<Trade>(paramData);
                     OnTradeUpdated(trade);
+                }
+            }
+            else if (method == "PositionDetailReturn")
+            {
+                if (OnPositionDetialReturn != null)
+                {
+                    PositionDetailInfo posiDetail = DataTranslater.Deserialize<PositionDetailInfo>(paramData);
+                    OnPositionDetialReturn(posiDetail);
                 }
             }
         }

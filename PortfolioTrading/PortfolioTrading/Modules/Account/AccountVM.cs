@@ -48,6 +48,7 @@ namespace PortfolioTrading.Modules.Account
             _client.OnMultiLegOrderUpdated += new Action<trade.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
             _client.OnLegOrderUpdated += new Action<string, string, string, trade.Order>(_client_OnLegOrderUpdated);
             _client.OnTradeUpdated += new Action<trade.Trade>(_client_OnTradeUpdated);
+            _client.OnPositionDetialReturn += new Action<trade.PositionDetailInfo>(_client_OnPositionDetialReturn);
         }
 
         public string Id
@@ -185,6 +186,11 @@ namespace PortfolioTrading.Modules.Account
                 if (accountInfoCallback != null)
                     accountInfoCallback(acctInfo);
             }, null);
+        }
+
+        public void QueryPositionDetails(string symbol)
+        {
+            _client.QueryPositionDetails(symbol);
         }
 
         private void OnAddPortfolio(AccountVM acct)
@@ -362,6 +368,32 @@ namespace PortfolioTrading.Modules.Account
 
         private bool HaveTradeStationReady(AccountVM acct)
         {
+            OperationResult tradeConnResult = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
+                                                          acct.InvestorId);
+
+            if (tradeConnResult.Success)
+            {
+                EventLogger.Write("交易连接成功");
+            }
+            else
+            {
+                EventLogger.Write("交易连接失败 (" + tradeConnResult.ErrorMessage + ")");
+                return false;
+            }
+
+            OperationResult tradeLoginResult = _client.TradeLogin(acct.BrokerId,
+                acct.InvestorId, acct.Password);
+
+            if (tradeLoginResult.Success)
+            {
+                EventLogger.Write("交易登录成功");
+            }
+            else
+            {
+                EventLogger.Write("交易登录失败 (" + tradeLoginResult.ErrorMessage + ")");
+                return false;
+            }
+
             OperationResult quoteConnResult = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
                                                           acct.InvestorId);
             if (quoteConnResult.Success)
@@ -386,41 +418,15 @@ namespace PortfolioTrading.Modules.Account
                 return false;
             }
 
-            OperationResult tradeConnResult = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
-                                                          acct.InvestorId);
-
-            if (tradeConnResult.Success)
-            {
-                EventLogger.Write("交易连接成功");
-            }
-            else
-            {
-                EventLogger.Write("交易连接失败 (" + tradeConnResult.ErrorMessage + ")");
-                return false;
-            }
-
-            OperationResult tradeLoginResult = _client.TradeLogin(acct.BrokerId, 
-                acct.InvestorId, acct.Password);
-
-            if (tradeLoginResult.Success)
-            {
-                EventLogger.Write("交易登录成功");
-            }
-            else
-            {
-                EventLogger.Write("交易登录失败 (" + tradeLoginResult.ErrorMessage + ")");
-                return false;
-            }
-
             return true;
         }
 
         public void TradeStaionCutDown()
         {
-            _client.TradeLogout();
             _client.QuoteLogout();
-            _client.TradeDisconnect();
+            _client.TradeLogout();
             _client.QuoteDisconnect();
+            _client.TradeDisconnect();
         }
 
         public static AccountVM Load(XElement xmlElement)
@@ -465,6 +471,8 @@ namespace PortfolioTrading.Modules.Account
             return elem;
         }
 
+        public event Action<trade.PositionDetailInfo> OnPositionDetailReturn;
+
         #region Client event handlers
 
         void _client_OnTradeUpdated(trade.Trade obj)
@@ -505,6 +513,14 @@ namespace PortfolioTrading.Modules.Account
         void _client_OnQuoteReceived(entity.Quote obj)
         {
             string info = (string.Format("{0}\t{1}\t{2}", obj.symbol, obj.last, obj.update_time));
+        }
+
+        void _client_OnPositionDetialReturn(trade.PositionDetailInfo obj)
+        {
+            if (OnPositionDetailReturn != null)
+            {
+                OnPositionDetailReturn(obj);
+            }
         }
 
         void _client_OnError(string err)

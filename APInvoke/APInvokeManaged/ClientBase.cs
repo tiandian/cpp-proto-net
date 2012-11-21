@@ -95,7 +95,7 @@ namespace APInvokeManaged
             _connection.Close();
         }
 
-        public byte[] Request(string method, byte[] reqData)
+        public byte[] Request(string method, byte[] reqData, int timeout = -1)
         {
             lock (_syncObj)
             {
@@ -114,7 +114,11 @@ namespace APInvokeManaged
                         }
                     });
 
-                bool wtSucc = Monitor.Wait(_syncObj);
+                bool wtSucc;
+                if (timeout > 0)
+                    wtSucc = Monitor.Wait(_syncObj, timeout);
+                else
+                    wtSucc = Monitor.Wait(_syncObj);
                 if (wtSucc)
                 {
                     if (!invokeSucc)

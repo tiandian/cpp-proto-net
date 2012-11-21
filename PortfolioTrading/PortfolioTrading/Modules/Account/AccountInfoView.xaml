@@ -7,7 +7,11 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
         <DockPanel DockPanel.Dock="Top" >
-            <Button Width="80" Height="28" Name="btnQueryAccount" Command="{Binding QueryAccountCommand}">查询账户</Button>
+            <StackPanel Orientation="Horizontal">
+                <Button Width="60" Height="22" Margin="2" Name="btnQueryPosition" Command="{Binding QueryPositionCommand}">查询持仓</Button>
+                <Button Width="60" Height="22" Margin="2" Name="btnQueryAccount" Command="{Binding QueryAccountCommand}">查询账户</Button>
+            </StackPanel>
+            
             <TextBlock Margin="4" VerticalAlignment="Center" Text="{Binding UpdateTime, StringFormat=T, FallbackValue=--:--:--}" HorizontalAlignment="Right"/>
         </DockPanel>
         <StackPanel Margin="4">
