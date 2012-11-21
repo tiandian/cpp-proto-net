@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Practices.Prism.Commands;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -19,14 +20,15 @@ namespace PortfolioTrading.Modules.Account
     namespace HiFreTradeUI.ViewModels
     {
         [Export]
+        [PartCreationPolicy(CreationPolicy.NonShared)]
         public class PositionDetailVM : NotificationObject
         {
             private ObservableCollection<PositionDetailItem> _positionDetailItems = new ObservableCollection<PositionDetailItem>();
+            private AccountVM _acctVm;
 
-            [ImportingConstructor]
-            public PositionDetailVM(IEventAggregator eventAgg)
+            public PositionDetailVM()
             {
-                eventAgg.GetEvent<QueryPositionEvent>().Subscribe(OnQueryPosition);
+                RefreshPositionCommand = new DelegateCommand(RequestPositionDetail);
             }
 
             public IEnumerable<PositionDetailItem> PositionDetailItems
@@ -34,40 +36,59 @@ namespace PortfolioTrading.Modules.Account
                 get { return _positionDetailItems; }
             }
 
+            public DelegateCommand RefreshPositionCommand { get; private set; }
+
+            private void RequestPositionDetail()
+            {
+                if (_acctVm != null)
+                {
+                    _acctVm.QueryPositionDetails("");
+                }
+            }
+
             public void Clear()
             {
                 _positionDetailItems.Clear();
             }
 
-            private void OnQueryPosition(AccountVM acctVm)
+            public void SetAccount(AccountVM acctVm)
             {
-
+                _acctVm = acctVm;
+                    
+                if (acctVm != null)
+                {
+                    _acctVm.OnPositionDetailReturn += _acctVm_OnPositionDetailReturn;
+                }
+                else
+                {
+                    _acctVm.OnPositionDetailReturn -= _acctVm_OnPositionDetailReturn;
+                }
             }
 
-            //public void AddDetailItem(Win32Invoke.PositionDetail posiDetail)
-            //{
-            //    PositionDetailItem posiItem = new PositionDetailItem();
+            void _acctVm_OnPositionDetailReturn(trade.PositionDetailInfo posiDetail)
+            {
+                PositionDetailItem posiItem = new PositionDetailItem();
 
-            //    posiItem.Symbol = posiDetail.caSymbol;
-            //    posiItem.TradeID = posiDetail.caTradeID;
-            //    posiItem.HedgeFlag = GetHedgeText(posiDetail.cHedgeFlag);
-            //    posiItem.Direction = GetDirection(posiDetail.iDirection);
-            //    posiItem.OpenDate = GetDate(posiDetail.caOpenDate);
-            //    posiItem.Volume = posiDetail.iVolume;
-            //    posiItem.OpenPrice = posiDetail.dOpenPrice;
-            //    posiItem.TradingDay = GetDate(posiDetail.caTradingDay);
-            //    posiItem.ExchangeID = posiDetail.caExchangeID;
-            //    posiItem.CloseProfit = posiDetail.dCloseProfit;
-            //    posiItem.PositionProfit = posiDetail.dPositionProfit;
-            //    posiItem.Margin = posiDetail.dMargin;
-            //    posiItem.MarginRateByMoney = posiDetail.dMarginRateByMoney;
-            //    posiItem.CloseVolume = posiDetail.CloseVolume;
-            //    posiItem.CloseAmount = posiDetail.CloseAmount;
+                posiItem.Symbol = posiDetail.InstrumentID;
+                posiItem.TradeID = posiDetail.TradeID;
+                posiItem.HedgeFlag = GetHedgeText(posiDetail.HedgeFlag);
+                posiItem.Direction = GetDirection(posiDetail.Direction);
+                posiItem.OpenDate = GetDate(posiDetail.OpenDate);
+                posiItem.Volume = posiDetail.Volume;
+                posiItem.OpenPrice = posiDetail.OpenPrice;
+                posiItem.TradingDay = GetDate(posiDetail.TradingDay);
+                posiItem.ExchangeID = posiDetail.ExchangeID;
+                posiItem.CloseProfit = posiDetail.CloseProfitByDate;
+                posiItem.PositionProfit = posiDetail.PositionProfitByDate;
+                posiItem.Margin = posiDetail.Margin;
+                posiItem.MarginRateByMoney = posiDetail.MarginRateByMoney;
+                posiItem.CloseVolume = posiDetail.CloseVolume;
+                posiItem.CloseAmount = posiDetail.CloseAmount;
 
-            //    _positionDetailItems.Add(posiItem);
-            //}
+                _positionDetailItems.Add(posiItem);
+            }
 
-            private static string GetHedgeText(char hedgeFlag)
+            private static string GetHedgeText(trade.HedgeFlagType hedgeFlag)
             {
                 ///投机
                 ///#define THOST_FTDC_HF_Speculation '1'
@@ -77,25 +98,25 @@ namespace PortfolioTrading.Modules.Account
                 ///#define THOST_FTDC_HF_Hedge '3'
                 switch (hedgeFlag)
                 {
-                    case '1':
+                    case trade.HedgeFlagType.SPECULATION:
                         return "投机";
-                    case '2':
+                    case trade.HedgeFlagType.ARBITRAGE:
                         return "套利";
-                    case '3':
+                    case trade.HedgeFlagType.HEDGE:
                         return "套保";
                     default:
                         return "";
                 }
             }
 
-            private static string GetDirection(int iDirection)
+            private static string GetDirection(trade.TradeDirectionType iDirection)
             {
                 switch (iDirection)
                 {
-                    case 1:
-                        return "空头";
-                    case 2:
-                        return "多头";
+                    case trade.TradeDirectionType.SELL:
+                        return "卖出";
+                    case trade.TradeDirectionType.BUY:
+                        return "买入";
                     default:
                         return "未知";
                 }

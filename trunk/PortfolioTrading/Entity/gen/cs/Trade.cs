@@ -520,6 +520,198 @@ namespace trade
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PositionDetailInfo")]
+  public partial class PositionDetailInfo : global::ProtoBuf.IExtensible
+  {
+    public PositionDetailInfo() {}
+    
+    private string _InstrumentID;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"InstrumentID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string InstrumentID
+    {
+      get { return _InstrumentID; }
+      set { _InstrumentID = value; }
+    }
+    private string _BrokerID;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"BrokerID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string BrokerID
+    {
+      get { return _BrokerID; }
+      set { _BrokerID = value; }
+    }
+    private string _InvestorID;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"InvestorID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string InvestorID
+    {
+      get { return _InvestorID; }
+      set { _InvestorID = value; }
+    }
+    private trade.HedgeFlagType _HedgeFlag;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"HedgeFlag", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public trade.HedgeFlagType HedgeFlag
+    {
+      get { return _HedgeFlag; }
+      set { _HedgeFlag = value; }
+    }
+    private trade.TradeDirectionType _Direction;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"Direction", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public trade.TradeDirectionType Direction
+    {
+      get { return _Direction; }
+      set { _Direction = value; }
+    }
+    private string _OpenDate;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"OpenDate", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string OpenDate
+    {
+      get { return _OpenDate; }
+      set { _OpenDate = value; }
+    }
+    private string _TradeID;
+    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"TradeID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string TradeID
+    {
+      get { return _TradeID; }
+      set { _TradeID = value; }
+    }
+    private int _Volume;
+    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"Volume", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int Volume
+    {
+      get { return _Volume; }
+      set { _Volume = value; }
+    }
+    private double _OpenPrice;
+    [global::ProtoBuf.ProtoMember(9, IsRequired = true, Name=@"OpenPrice", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double OpenPrice
+    {
+      get { return _OpenPrice; }
+      set { _OpenPrice = value; }
+    }
+    private string _TradingDay;
+    [global::ProtoBuf.ProtoMember(10, IsRequired = true, Name=@"TradingDay", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string TradingDay
+    {
+      get { return _TradingDay; }
+      set { _TradingDay = value; }
+    }
+    private int _SettlementID;
+    [global::ProtoBuf.ProtoMember(11, IsRequired = true, Name=@"SettlementID", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int SettlementID
+    {
+      get { return _SettlementID; }
+      set { _SettlementID = value; }
+    }
+    private trade.TradeTypeType _TradeType;
+    [global::ProtoBuf.ProtoMember(12, IsRequired = true, Name=@"TradeType", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public trade.TradeTypeType TradeType
+    {
+      get { return _TradeType; }
+      set { _TradeType = value; }
+    }
+    private string _CombInstrumentID;
+    [global::ProtoBuf.ProtoMember(13, IsRequired = true, Name=@"CombInstrumentID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string CombInstrumentID
+    {
+      get { return _CombInstrumentID; }
+      set { _CombInstrumentID = value; }
+    }
+    private string _ExchangeID;
+    [global::ProtoBuf.ProtoMember(14, IsRequired = true, Name=@"ExchangeID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string ExchangeID
+    {
+      get { return _ExchangeID; }
+      set { _ExchangeID = value; }
+    }
+    private double _CloseProfitByDate;
+    [global::ProtoBuf.ProtoMember(15, IsRequired = true, Name=@"CloseProfitByDate", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double CloseProfitByDate
+    {
+      get { return _CloseProfitByDate; }
+      set { _CloseProfitByDate = value; }
+    }
+    private double _CloseProfitByTrade;
+    [global::ProtoBuf.ProtoMember(16, IsRequired = true, Name=@"CloseProfitByTrade", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double CloseProfitByTrade
+    {
+      get { return _CloseProfitByTrade; }
+      set { _CloseProfitByTrade = value; }
+    }
+    private double _PositionProfitByDate;
+    [global::ProtoBuf.ProtoMember(17, IsRequired = true, Name=@"PositionProfitByDate", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double PositionProfitByDate
+    {
+      get { return _PositionProfitByDate; }
+      set { _PositionProfitByDate = value; }
+    }
+    private double _PositionProfitByTrade;
+    [global::ProtoBuf.ProtoMember(18, IsRequired = true, Name=@"PositionProfitByTrade", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double PositionProfitByTrade
+    {
+      get { return _PositionProfitByTrade; }
+      set { _PositionProfitByTrade = value; }
+    }
+    private double _Margin;
+    [global::ProtoBuf.ProtoMember(19, IsRequired = true, Name=@"Margin", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double Margin
+    {
+      get { return _Margin; }
+      set { _Margin = value; }
+    }
+    private double _ExchMargin;
+    [global::ProtoBuf.ProtoMember(20, IsRequired = true, Name=@"ExchMargin", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double ExchMargin
+    {
+      get { return _ExchMargin; }
+      set { _ExchMargin = value; }
+    }
+    private double _MarginRateByMoney;
+    [global::ProtoBuf.ProtoMember(21, IsRequired = true, Name=@"MarginRateByMoney", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double MarginRateByMoney
+    {
+      get { return _MarginRateByMoney; }
+      set { _MarginRateByMoney = value; }
+    }
+    private double _MarginRateByVolume;
+    [global::ProtoBuf.ProtoMember(22, IsRequired = true, Name=@"MarginRateByVolume", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double MarginRateByVolume
+    {
+      get { return _MarginRateByVolume; }
+      set { _MarginRateByVolume = value; }
+    }
+    private double _LastSettlementPrice;
+    [global::ProtoBuf.ProtoMember(23, IsRequired = true, Name=@"LastSettlementPrice", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double LastSettlementPrice
+    {
+      get { return _LastSettlementPrice; }
+      set { _LastSettlementPrice = value; }
+    }
+    private double _SettlementPrice;
+    [global::ProtoBuf.ProtoMember(24, IsRequired = true, Name=@"SettlementPrice", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double SettlementPrice
+    {
+      get { return _SettlementPrice; }
+      set { _SettlementPrice = value; }
+    }
+    private int _CloseVolume;
+    [global::ProtoBuf.ProtoMember(25, IsRequired = true, Name=@"CloseVolume", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int CloseVolume
+    {
+      get { return _CloseVolume; }
+      set { _CloseVolume = value; }
+    }
+    private double _CloseAmount;
+    [global::ProtoBuf.ProtoMember(26, IsRequired = true, Name=@"CloseAmount", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double CloseAmount
+    {
+      get { return _CloseAmount; }
+      set { _CloseAmount = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"InputOrder")]
   public partial class InputOrder : global::ProtoBuf.IExtensible
   {

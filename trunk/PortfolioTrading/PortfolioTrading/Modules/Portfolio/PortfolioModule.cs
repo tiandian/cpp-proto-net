@@ -10,6 +10,7 @@ using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
 using PortfolioTrading.Modules.Account;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -41,7 +42,7 @@ namespace PortfolioTrading.Modules.Portfolio
         public void OnAccountSelected(AccountVM accountVm)
         {
             string viewName = accountVm.InvestorId;
-            var existingPane = GetExistingPane(viewName);
+            var existingPane = RegionManager.GetExistingPane<PortfolioContentPane>(viewName);
             if (existingPane != null)
             {
                 existingPane.Activate();
@@ -65,31 +66,7 @@ namespace PortfolioTrading.Modules.Portfolio
 
         void pane_Closed(object sender, Infragistics.Windows.DockManager.Events.PaneClosedEventArgs e)
         {
-            RemovePane(sender);
-        }
-
-        private PortfolioContentPane GetExistingPane(string viewName)
-        {
-            if (RegionManager.Regions.ContainsRegionWithName(RegionNames.PortfolioViewRegion))
-            {
-                IRegion portfViewRegion = RegionManager.Regions[RegionNames.PortfolioViewRegion];
-                foreach (var view in portfViewRegion.Views)
-                {
-                    PortfolioContentPane pane = view as PortfolioContentPane;
-                    if (pane != null && pane.ViewName == viewName)
-                        return pane;
-                }
-            }
-            return null;
-        }
-
-        private void RemovePane(object pane)
-        {
-            if (RegionManager.Regions.ContainsRegionWithName(RegionNames.PortfolioViewRegion))
-            {
-                IRegion portfViewRegion = RegionManager.Regions[RegionNames.PortfolioViewRegion];
-                portfViewRegion.Remove(pane);
-            }
+            RegionManager.RemovePane(sender);
         }
     }
 }

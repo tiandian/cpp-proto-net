@@ -34,6 +34,7 @@ void protobuf_ShutdownFile_trade_2eproto();
 
 class AccountInfo;
 class PositionInfo;
+class PositionDetailInfo;
 class InputOrder;
 class Order;
 class Trade;
@@ -1305,6 +1306,370 @@ class PositionInfo : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static PositionInfo* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class PositionDetailInfo : public ::google::protobuf::Message {
+ public:
+  PositionDetailInfo();
+  virtual ~PositionDetailInfo();
+  
+  PositionDetailInfo(const PositionDetailInfo& from);
+  
+  inline PositionDetailInfo& operator=(const PositionDetailInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PositionDetailInfo& default_instance();
+  
+  void Swap(PositionDetailInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  PositionDetailInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const PositionDetailInfo& from);
+  void MergeFrom(const PositionDetailInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string InstrumentID = 1;
+  inline bool has_instrumentid() const;
+  inline void clear_instrumentid();
+  static const int kInstrumentIDFieldNumber = 1;
+  inline const ::std::string& instrumentid() const;
+  inline void set_instrumentid(const ::std::string& value);
+  inline void set_instrumentid(const char* value);
+  inline void set_instrumentid(const char* value, size_t size);
+  inline ::std::string* mutable_instrumentid();
+  inline ::std::string* release_instrumentid();
+  
+  // required string BrokerID = 2;
+  inline bool has_brokerid() const;
+  inline void clear_brokerid();
+  static const int kBrokerIDFieldNumber = 2;
+  inline const ::std::string& brokerid() const;
+  inline void set_brokerid(const ::std::string& value);
+  inline void set_brokerid(const char* value);
+  inline void set_brokerid(const char* value, size_t size);
+  inline ::std::string* mutable_brokerid();
+  inline ::std::string* release_brokerid();
+  
+  // required string InvestorID = 3;
+  inline bool has_investorid() const;
+  inline void clear_investorid();
+  static const int kInvestorIDFieldNumber = 3;
+  inline const ::std::string& investorid() const;
+  inline void set_investorid(const ::std::string& value);
+  inline void set_investorid(const char* value);
+  inline void set_investorid(const char* value, size_t size);
+  inline ::std::string* mutable_investorid();
+  inline ::std::string* release_investorid();
+  
+  // required .trade.HedgeFlagType HedgeFlag = 4;
+  inline bool has_hedgeflag() const;
+  inline void clear_hedgeflag();
+  static const int kHedgeFlagFieldNumber = 4;
+  inline trade::HedgeFlagType hedgeflag() const;
+  inline void set_hedgeflag(trade::HedgeFlagType value);
+  
+  // required .trade.TradeDirectionType Direction = 5;
+  inline bool has_direction() const;
+  inline void clear_direction();
+  static const int kDirectionFieldNumber = 5;
+  inline trade::TradeDirectionType direction() const;
+  inline void set_direction(trade::TradeDirectionType value);
+  
+  // required string OpenDate = 6;
+  inline bool has_opendate() const;
+  inline void clear_opendate();
+  static const int kOpenDateFieldNumber = 6;
+  inline const ::std::string& opendate() const;
+  inline void set_opendate(const ::std::string& value);
+  inline void set_opendate(const char* value);
+  inline void set_opendate(const char* value, size_t size);
+  inline ::std::string* mutable_opendate();
+  inline ::std::string* release_opendate();
+  
+  // required string TradeID = 7;
+  inline bool has_tradeid() const;
+  inline void clear_tradeid();
+  static const int kTradeIDFieldNumber = 7;
+  inline const ::std::string& tradeid() const;
+  inline void set_tradeid(const ::std::string& value);
+  inline void set_tradeid(const char* value);
+  inline void set_tradeid(const char* value, size_t size);
+  inline ::std::string* mutable_tradeid();
+  inline ::std::string* release_tradeid();
+  
+  // required int32 Volume = 8;
+  inline bool has_volume() const;
+  inline void clear_volume();
+  static const int kVolumeFieldNumber = 8;
+  inline ::google::protobuf::int32 volume() const;
+  inline void set_volume(::google::protobuf::int32 value);
+  
+  // required double OpenPrice = 9;
+  inline bool has_openprice() const;
+  inline void clear_openprice();
+  static const int kOpenPriceFieldNumber = 9;
+  inline double openprice() const;
+  inline void set_openprice(double value);
+  
+  // required string TradingDay = 10;
+  inline bool has_tradingday() const;
+  inline void clear_tradingday();
+  static const int kTradingDayFieldNumber = 10;
+  inline const ::std::string& tradingday() const;
+  inline void set_tradingday(const ::std::string& value);
+  inline void set_tradingday(const char* value);
+  inline void set_tradingday(const char* value, size_t size);
+  inline ::std::string* mutable_tradingday();
+  inline ::std::string* release_tradingday();
+  
+  // required int32 SettlementID = 11;
+  inline bool has_settlementid() const;
+  inline void clear_settlementid();
+  static const int kSettlementIDFieldNumber = 11;
+  inline ::google::protobuf::int32 settlementid() const;
+  inline void set_settlementid(::google::protobuf::int32 value);
+  
+  // required .trade.TradeTypeType TradeType = 12;
+  inline bool has_tradetype() const;
+  inline void clear_tradetype();
+  static const int kTradeTypeFieldNumber = 12;
+  inline trade::TradeTypeType tradetype() const;
+  inline void set_tradetype(trade::TradeTypeType value);
+  
+  // required string CombInstrumentID = 13;
+  inline bool has_combinstrumentid() const;
+  inline void clear_combinstrumentid();
+  static const int kCombInstrumentIDFieldNumber = 13;
+  inline const ::std::string& combinstrumentid() const;
+  inline void set_combinstrumentid(const ::std::string& value);
+  inline void set_combinstrumentid(const char* value);
+  inline void set_combinstrumentid(const char* value, size_t size);
+  inline ::std::string* mutable_combinstrumentid();
+  inline ::std::string* release_combinstrumentid();
+  
+  // required string ExchangeID = 14;
+  inline bool has_exchangeid() const;
+  inline void clear_exchangeid();
+  static const int kExchangeIDFieldNumber = 14;
+  inline const ::std::string& exchangeid() const;
+  inline void set_exchangeid(const ::std::string& value);
+  inline void set_exchangeid(const char* value);
+  inline void set_exchangeid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeid();
+  inline ::std::string* release_exchangeid();
+  
+  // required double CloseProfitByDate = 15;
+  inline bool has_closeprofitbydate() const;
+  inline void clear_closeprofitbydate();
+  static const int kCloseProfitByDateFieldNumber = 15;
+  inline double closeprofitbydate() const;
+  inline void set_closeprofitbydate(double value);
+  
+  // required double CloseProfitByTrade = 16;
+  inline bool has_closeprofitbytrade() const;
+  inline void clear_closeprofitbytrade();
+  static const int kCloseProfitByTradeFieldNumber = 16;
+  inline double closeprofitbytrade() const;
+  inline void set_closeprofitbytrade(double value);
+  
+  // required double PositionProfitByDate = 17;
+  inline bool has_positionprofitbydate() const;
+  inline void clear_positionprofitbydate();
+  static const int kPositionProfitByDateFieldNumber = 17;
+  inline double positionprofitbydate() const;
+  inline void set_positionprofitbydate(double value);
+  
+  // required double PositionProfitByTrade = 18;
+  inline bool has_positionprofitbytrade() const;
+  inline void clear_positionprofitbytrade();
+  static const int kPositionProfitByTradeFieldNumber = 18;
+  inline double positionprofitbytrade() const;
+  inline void set_positionprofitbytrade(double value);
+  
+  // required double Margin = 19;
+  inline bool has_margin() const;
+  inline void clear_margin();
+  static const int kMarginFieldNumber = 19;
+  inline double margin() const;
+  inline void set_margin(double value);
+  
+  // required double ExchMargin = 20;
+  inline bool has_exchmargin() const;
+  inline void clear_exchmargin();
+  static const int kExchMarginFieldNumber = 20;
+  inline double exchmargin() const;
+  inline void set_exchmargin(double value);
+  
+  // required double MarginRateByMoney = 21;
+  inline bool has_marginratebymoney() const;
+  inline void clear_marginratebymoney();
+  static const int kMarginRateByMoneyFieldNumber = 21;
+  inline double marginratebymoney() const;
+  inline void set_marginratebymoney(double value);
+  
+  // required double MarginRateByVolume = 22;
+  inline bool has_marginratebyvolume() const;
+  inline void clear_marginratebyvolume();
+  static const int kMarginRateByVolumeFieldNumber = 22;
+  inline double marginratebyvolume() const;
+  inline void set_marginratebyvolume(double value);
+  
+  // required double LastSettlementPrice = 23;
+  inline bool has_lastsettlementprice() const;
+  inline void clear_lastsettlementprice();
+  static const int kLastSettlementPriceFieldNumber = 23;
+  inline double lastsettlementprice() const;
+  inline void set_lastsettlementprice(double value);
+  
+  // required double SettlementPrice = 24;
+  inline bool has_settlementprice() const;
+  inline void clear_settlementprice();
+  static const int kSettlementPriceFieldNumber = 24;
+  inline double settlementprice() const;
+  inline void set_settlementprice(double value);
+  
+  // required int32 CloseVolume = 25;
+  inline bool has_closevolume() const;
+  inline void clear_closevolume();
+  static const int kCloseVolumeFieldNumber = 25;
+  inline ::google::protobuf::int32 closevolume() const;
+  inline void set_closevolume(::google::protobuf::int32 value);
+  
+  // required double CloseAmount = 26;
+  inline bool has_closeamount() const;
+  inline void clear_closeamount();
+  static const int kCloseAmountFieldNumber = 26;
+  inline double closeamount() const;
+  inline void set_closeamount(double value);
+  
+  // @@protoc_insertion_point(class_scope:trade.PositionDetailInfo)
+ private:
+  inline void set_has_instrumentid();
+  inline void clear_has_instrumentid();
+  inline void set_has_brokerid();
+  inline void clear_has_brokerid();
+  inline void set_has_investorid();
+  inline void clear_has_investorid();
+  inline void set_has_hedgeflag();
+  inline void clear_has_hedgeflag();
+  inline void set_has_direction();
+  inline void clear_has_direction();
+  inline void set_has_opendate();
+  inline void clear_has_opendate();
+  inline void set_has_tradeid();
+  inline void clear_has_tradeid();
+  inline void set_has_volume();
+  inline void clear_has_volume();
+  inline void set_has_openprice();
+  inline void clear_has_openprice();
+  inline void set_has_tradingday();
+  inline void clear_has_tradingday();
+  inline void set_has_settlementid();
+  inline void clear_has_settlementid();
+  inline void set_has_tradetype();
+  inline void clear_has_tradetype();
+  inline void set_has_combinstrumentid();
+  inline void clear_has_combinstrumentid();
+  inline void set_has_exchangeid();
+  inline void clear_has_exchangeid();
+  inline void set_has_closeprofitbydate();
+  inline void clear_has_closeprofitbydate();
+  inline void set_has_closeprofitbytrade();
+  inline void clear_has_closeprofitbytrade();
+  inline void set_has_positionprofitbydate();
+  inline void clear_has_positionprofitbydate();
+  inline void set_has_positionprofitbytrade();
+  inline void clear_has_positionprofitbytrade();
+  inline void set_has_margin();
+  inline void clear_has_margin();
+  inline void set_has_exchmargin();
+  inline void clear_has_exchmargin();
+  inline void set_has_marginratebymoney();
+  inline void clear_has_marginratebymoney();
+  inline void set_has_marginratebyvolume();
+  inline void clear_has_marginratebyvolume();
+  inline void set_has_lastsettlementprice();
+  inline void clear_has_lastsettlementprice();
+  inline void set_has_settlementprice();
+  inline void clear_has_settlementprice();
+  inline void set_has_closevolume();
+  inline void clear_has_closevolume();
+  inline void set_has_closeamount();
+  inline void clear_has_closeamount();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* instrumentid_;
+  ::std::string* brokerid_;
+  ::std::string* investorid_;
+  int hedgeflag_;
+  int direction_;
+  ::std::string* opendate_;
+  ::std::string* tradeid_;
+  double openprice_;
+  ::google::protobuf::int32 volume_;
+  ::google::protobuf::int32 settlementid_;
+  ::std::string* tradingday_;
+  ::std::string* combinstrumentid_;
+  ::std::string* exchangeid_;
+  double closeprofitbydate_;
+  double closeprofitbytrade_;
+  double positionprofitbydate_;
+  double positionprofitbytrade_;
+  int tradetype_;
+  ::google::protobuf::int32 closevolume_;
+  double margin_;
+  double exchmargin_;
+  double marginratebymoney_;
+  double marginratebyvolume_;
+  double lastsettlementprice_;
+  double settlementprice_;
+  double closeamount_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(26 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_trade_2eproto();
+  friend void protobuf_AssignDesc_trade_2eproto();
+  friend void protobuf_ShutdownFile_trade_2eproto();
+  
+  void InitAsDefaultInstance();
+  static PositionDetailInfo* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -5046,6 +5411,873 @@ inline double PositionInfo::marginratebyvolume() const {
 inline void PositionInfo::set_marginratebyvolume(double value) {
   set_has_marginratebyvolume();
   marginratebyvolume_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// PositionDetailInfo
+
+// required string InstrumentID = 1;
+inline bool PositionDetailInfo::has_instrumentid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void PositionDetailInfo::set_has_instrumentid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void PositionDetailInfo::clear_has_instrumentid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void PositionDetailInfo::clear_instrumentid() {
+  if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    instrumentid_->clear();
+  }
+  clear_has_instrumentid();
+}
+inline const ::std::string& PositionDetailInfo::instrumentid() const {
+  return *instrumentid_;
+}
+inline void PositionDetailInfo::set_instrumentid(const ::std::string& value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void PositionDetailInfo::set_instrumentid(const char* value) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(value);
+}
+inline void PositionDetailInfo::set_instrumentid(const char* value, size_t size) {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  instrumentid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PositionDetailInfo::mutable_instrumentid() {
+  set_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    instrumentid_ = new ::std::string;
+  }
+  return instrumentid_;
+}
+inline ::std::string* PositionDetailInfo::release_instrumentid() {
+  clear_has_instrumentid();
+  if (instrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = instrumentid_;
+    instrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string BrokerID = 2;
+inline bool PositionDetailInfo::has_brokerid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void PositionDetailInfo::set_has_brokerid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void PositionDetailInfo::clear_has_brokerid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void PositionDetailInfo::clear_brokerid() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    brokerid_->clear();
+  }
+  clear_has_brokerid();
+}
+inline const ::std::string& PositionDetailInfo::brokerid() const {
+  return *brokerid_;
+}
+inline void PositionDetailInfo::set_brokerid(const ::std::string& value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void PositionDetailInfo::set_brokerid(const char* value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void PositionDetailInfo::set_brokerid(const char* value, size_t size) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PositionDetailInfo::mutable_brokerid() {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  return brokerid_;
+}
+inline ::std::string* PositionDetailInfo::release_brokerid() {
+  clear_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = brokerid_;
+    brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string InvestorID = 3;
+inline bool PositionDetailInfo::has_investorid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void PositionDetailInfo::set_has_investorid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void PositionDetailInfo::clear_has_investorid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void PositionDetailInfo::clear_investorid() {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    investorid_->clear();
+  }
+  clear_has_investorid();
+}
+inline const ::std::string& PositionDetailInfo::investorid() const {
+  return *investorid_;
+}
+inline void PositionDetailInfo::set_investorid(const ::std::string& value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void PositionDetailInfo::set_investorid(const char* value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void PositionDetailInfo::set_investorid(const char* value, size_t size) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PositionDetailInfo::mutable_investorid() {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  return investorid_;
+}
+inline ::std::string* PositionDetailInfo::release_investorid() {
+  clear_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = investorid_;
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .trade.HedgeFlagType HedgeFlag = 4;
+inline bool PositionDetailInfo::has_hedgeflag() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void PositionDetailInfo::set_has_hedgeflag() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void PositionDetailInfo::clear_has_hedgeflag() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void PositionDetailInfo::clear_hedgeflag() {
+  hedgeflag_ = 49;
+  clear_has_hedgeflag();
+}
+inline trade::HedgeFlagType PositionDetailInfo::hedgeflag() const {
+  return static_cast< trade::HedgeFlagType >(hedgeflag_);
+}
+inline void PositionDetailInfo::set_hedgeflag(trade::HedgeFlagType value) {
+  GOOGLE_DCHECK(trade::HedgeFlagType_IsValid(value));
+  set_has_hedgeflag();
+  hedgeflag_ = value;
+}
+
+// required .trade.TradeDirectionType Direction = 5;
+inline bool PositionDetailInfo::has_direction() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void PositionDetailInfo::set_has_direction() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void PositionDetailInfo::clear_has_direction() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void PositionDetailInfo::clear_direction() {
+  direction_ = 48;
+  clear_has_direction();
+}
+inline trade::TradeDirectionType PositionDetailInfo::direction() const {
+  return static_cast< trade::TradeDirectionType >(direction_);
+}
+inline void PositionDetailInfo::set_direction(trade::TradeDirectionType value) {
+  GOOGLE_DCHECK(trade::TradeDirectionType_IsValid(value));
+  set_has_direction();
+  direction_ = value;
+}
+
+// required string OpenDate = 6;
+inline bool PositionDetailInfo::has_opendate() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void PositionDetailInfo::set_has_opendate() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void PositionDetailInfo::clear_has_opendate() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void PositionDetailInfo::clear_opendate() {
+  if (opendate_ != &::google::protobuf::internal::kEmptyString) {
+    opendate_->clear();
+  }
+  clear_has_opendate();
+}
+inline const ::std::string& PositionDetailInfo::opendate() const {
+  return *opendate_;
+}
+inline void PositionDetailInfo::set_opendate(const ::std::string& value) {
+  set_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    opendate_ = new ::std::string;
+  }
+  opendate_->assign(value);
+}
+inline void PositionDetailInfo::set_opendate(const char* value) {
+  set_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    opendate_ = new ::std::string;
+  }
+  opendate_->assign(value);
+}
+inline void PositionDetailInfo::set_opendate(const char* value, size_t size) {
+  set_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    opendate_ = new ::std::string;
+  }
+  opendate_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PositionDetailInfo::mutable_opendate() {
+  set_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    opendate_ = new ::std::string;
+  }
+  return opendate_;
+}
+inline ::std::string* PositionDetailInfo::release_opendate() {
+  clear_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = opendate_;
+    opendate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string TradeID = 7;
+inline bool PositionDetailInfo::has_tradeid() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void PositionDetailInfo::set_has_tradeid() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void PositionDetailInfo::clear_has_tradeid() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void PositionDetailInfo::clear_tradeid() {
+  if (tradeid_ != &::google::protobuf::internal::kEmptyString) {
+    tradeid_->clear();
+  }
+  clear_has_tradeid();
+}
+inline const ::std::string& PositionDetailInfo::tradeid() const {
+  return *tradeid_;
+}
+inline void PositionDetailInfo::set_tradeid(const ::std::string& value) {
+  set_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    tradeid_ = new ::std::string;
+  }
+  tradeid_->assign(value);
+}
+inline void PositionDetailInfo::set_tradeid(const char* value) {
+  set_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    tradeid_ = new ::std::string;
+  }
+  tradeid_->assign(value);
+}
+inline void PositionDetailInfo::set_tradeid(const char* value, size_t size) {
+  set_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    tradeid_ = new ::std::string;
+  }
+  tradeid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PositionDetailInfo::mutable_tradeid() {
+  set_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    tradeid_ = new ::std::string;
+  }
+  return tradeid_;
+}
+inline ::std::string* PositionDetailInfo::release_tradeid() {
+  clear_has_tradeid();
+  if (tradeid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = tradeid_;
+    tradeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 Volume = 8;
+inline bool PositionDetailInfo::has_volume() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void PositionDetailInfo::set_has_volume() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void PositionDetailInfo::clear_has_volume() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void PositionDetailInfo::clear_volume() {
+  volume_ = 0;
+  clear_has_volume();
+}
+inline ::google::protobuf::int32 PositionDetailInfo::volume() const {
+  return volume_;
+}
+inline void PositionDetailInfo::set_volume(::google::protobuf::int32 value) {
+  set_has_volume();
+  volume_ = value;
+}
+
+// required double OpenPrice = 9;
+inline bool PositionDetailInfo::has_openprice() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void PositionDetailInfo::set_has_openprice() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void PositionDetailInfo::clear_has_openprice() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void PositionDetailInfo::clear_openprice() {
+  openprice_ = 0;
+  clear_has_openprice();
+}
+inline double PositionDetailInfo::openprice() const {
+  return openprice_;
+}
+inline void PositionDetailInfo::set_openprice(double value) {
+  set_has_openprice();
+  openprice_ = value;
+}
+
+// required string TradingDay = 10;
+inline bool PositionDetailInfo::has_tradingday() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void PositionDetailInfo::set_has_tradingday() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void PositionDetailInfo::clear_has_tradingday() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void PositionDetailInfo::clear_tradingday() {
+  if (tradingday_ != &::google::protobuf::internal::kEmptyString) {
+    tradingday_->clear();
+  }
+  clear_has_tradingday();
+}
+inline const ::std::string& PositionDetailInfo::tradingday() const {
+  return *tradingday_;
+}
+inline void PositionDetailInfo::set_tradingday(const ::std::string& value) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(value);
+}
+inline void PositionDetailInfo::set_tradingday(const char* value) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(value);
+}
+inline void PositionDetailInfo::set_tradingday(const char* value, size_t size) {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  tradingday_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PositionDetailInfo::mutable_tradingday() {
+  set_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    tradingday_ = new ::std::string;
+  }
+  return tradingday_;
+}
+inline ::std::string* PositionDetailInfo::release_tradingday() {
+  clear_has_tradingday();
+  if (tradingday_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = tradingday_;
+    tradingday_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 SettlementID = 11;
+inline bool PositionDetailInfo::has_settlementid() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void PositionDetailInfo::set_has_settlementid() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void PositionDetailInfo::clear_has_settlementid() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void PositionDetailInfo::clear_settlementid() {
+  settlementid_ = 0;
+  clear_has_settlementid();
+}
+inline ::google::protobuf::int32 PositionDetailInfo::settlementid() const {
+  return settlementid_;
+}
+inline void PositionDetailInfo::set_settlementid(::google::protobuf::int32 value) {
+  set_has_settlementid();
+  settlementid_ = value;
+}
+
+// required .trade.TradeTypeType TradeType = 12;
+inline bool PositionDetailInfo::has_tradetype() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void PositionDetailInfo::set_has_tradetype() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void PositionDetailInfo::clear_has_tradetype() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void PositionDetailInfo::clear_tradetype() {
+  tradetype_ = 48;
+  clear_has_tradetype();
+}
+inline trade::TradeTypeType PositionDetailInfo::tradetype() const {
+  return static_cast< trade::TradeTypeType >(tradetype_);
+}
+inline void PositionDetailInfo::set_tradetype(trade::TradeTypeType value) {
+  GOOGLE_DCHECK(trade::TradeTypeType_IsValid(value));
+  set_has_tradetype();
+  tradetype_ = value;
+}
+
+// required string CombInstrumentID = 13;
+inline bool PositionDetailInfo::has_combinstrumentid() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void PositionDetailInfo::set_has_combinstrumentid() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void PositionDetailInfo::clear_has_combinstrumentid() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void PositionDetailInfo::clear_combinstrumentid() {
+  if (combinstrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    combinstrumentid_->clear();
+  }
+  clear_has_combinstrumentid();
+}
+inline const ::std::string& PositionDetailInfo::combinstrumentid() const {
+  return *combinstrumentid_;
+}
+inline void PositionDetailInfo::set_combinstrumentid(const ::std::string& value) {
+  set_has_combinstrumentid();
+  if (combinstrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    combinstrumentid_ = new ::std::string;
+  }
+  combinstrumentid_->assign(value);
+}
+inline void PositionDetailInfo::set_combinstrumentid(const char* value) {
+  set_has_combinstrumentid();
+  if (combinstrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    combinstrumentid_ = new ::std::string;
+  }
+  combinstrumentid_->assign(value);
+}
+inline void PositionDetailInfo::set_combinstrumentid(const char* value, size_t size) {
+  set_has_combinstrumentid();
+  if (combinstrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    combinstrumentid_ = new ::std::string;
+  }
+  combinstrumentid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PositionDetailInfo::mutable_combinstrumentid() {
+  set_has_combinstrumentid();
+  if (combinstrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    combinstrumentid_ = new ::std::string;
+  }
+  return combinstrumentid_;
+}
+inline ::std::string* PositionDetailInfo::release_combinstrumentid() {
+  clear_has_combinstrumentid();
+  if (combinstrumentid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = combinstrumentid_;
+    combinstrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ExchangeID = 14;
+inline bool PositionDetailInfo::has_exchangeid() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void PositionDetailInfo::set_has_exchangeid() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void PositionDetailInfo::clear_has_exchangeid() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void PositionDetailInfo::clear_exchangeid() {
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeid_->clear();
+  }
+  clear_has_exchangeid();
+}
+inline const ::std::string& PositionDetailInfo::exchangeid() const {
+  return *exchangeid_;
+}
+inline void PositionDetailInfo::set_exchangeid(const ::std::string& value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void PositionDetailInfo::set_exchangeid(const char* value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void PositionDetailInfo::set_exchangeid(const char* value, size_t size) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PositionDetailInfo::mutable_exchangeid() {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  return exchangeid_;
+}
+inline ::std::string* PositionDetailInfo::release_exchangeid() {
+  clear_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeid_;
+    exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required double CloseProfitByDate = 15;
+inline bool PositionDetailInfo::has_closeprofitbydate() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void PositionDetailInfo::set_has_closeprofitbydate() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void PositionDetailInfo::clear_has_closeprofitbydate() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void PositionDetailInfo::clear_closeprofitbydate() {
+  closeprofitbydate_ = 0;
+  clear_has_closeprofitbydate();
+}
+inline double PositionDetailInfo::closeprofitbydate() const {
+  return closeprofitbydate_;
+}
+inline void PositionDetailInfo::set_closeprofitbydate(double value) {
+  set_has_closeprofitbydate();
+  closeprofitbydate_ = value;
+}
+
+// required double CloseProfitByTrade = 16;
+inline bool PositionDetailInfo::has_closeprofitbytrade() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+inline void PositionDetailInfo::set_has_closeprofitbytrade() {
+  _has_bits_[0] |= 0x00008000u;
+}
+inline void PositionDetailInfo::clear_has_closeprofitbytrade() {
+  _has_bits_[0] &= ~0x00008000u;
+}
+inline void PositionDetailInfo::clear_closeprofitbytrade() {
+  closeprofitbytrade_ = 0;
+  clear_has_closeprofitbytrade();
+}
+inline double PositionDetailInfo::closeprofitbytrade() const {
+  return closeprofitbytrade_;
+}
+inline void PositionDetailInfo::set_closeprofitbytrade(double value) {
+  set_has_closeprofitbytrade();
+  closeprofitbytrade_ = value;
+}
+
+// required double PositionProfitByDate = 17;
+inline bool PositionDetailInfo::has_positionprofitbydate() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void PositionDetailInfo::set_has_positionprofitbydate() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void PositionDetailInfo::clear_has_positionprofitbydate() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void PositionDetailInfo::clear_positionprofitbydate() {
+  positionprofitbydate_ = 0;
+  clear_has_positionprofitbydate();
+}
+inline double PositionDetailInfo::positionprofitbydate() const {
+  return positionprofitbydate_;
+}
+inline void PositionDetailInfo::set_positionprofitbydate(double value) {
+  set_has_positionprofitbydate();
+  positionprofitbydate_ = value;
+}
+
+// required double PositionProfitByTrade = 18;
+inline bool PositionDetailInfo::has_positionprofitbytrade() const {
+  return (_has_bits_[0] & 0x00020000u) != 0;
+}
+inline void PositionDetailInfo::set_has_positionprofitbytrade() {
+  _has_bits_[0] |= 0x00020000u;
+}
+inline void PositionDetailInfo::clear_has_positionprofitbytrade() {
+  _has_bits_[0] &= ~0x00020000u;
+}
+inline void PositionDetailInfo::clear_positionprofitbytrade() {
+  positionprofitbytrade_ = 0;
+  clear_has_positionprofitbytrade();
+}
+inline double PositionDetailInfo::positionprofitbytrade() const {
+  return positionprofitbytrade_;
+}
+inline void PositionDetailInfo::set_positionprofitbytrade(double value) {
+  set_has_positionprofitbytrade();
+  positionprofitbytrade_ = value;
+}
+
+// required double Margin = 19;
+inline bool PositionDetailInfo::has_margin() const {
+  return (_has_bits_[0] & 0x00040000u) != 0;
+}
+inline void PositionDetailInfo::set_has_margin() {
+  _has_bits_[0] |= 0x00040000u;
+}
+inline void PositionDetailInfo::clear_has_margin() {
+  _has_bits_[0] &= ~0x00040000u;
+}
+inline void PositionDetailInfo::clear_margin() {
+  margin_ = 0;
+  clear_has_margin();
+}
+inline double PositionDetailInfo::margin() const {
+  return margin_;
+}
+inline void PositionDetailInfo::set_margin(double value) {
+  set_has_margin();
+  margin_ = value;
+}
+
+// required double ExchMargin = 20;
+inline bool PositionDetailInfo::has_exchmargin() const {
+  return (_has_bits_[0] & 0x00080000u) != 0;
+}
+inline void PositionDetailInfo::set_has_exchmargin() {
+  _has_bits_[0] |= 0x00080000u;
+}
+inline void PositionDetailInfo::clear_has_exchmargin() {
+  _has_bits_[0] &= ~0x00080000u;
+}
+inline void PositionDetailInfo::clear_exchmargin() {
+  exchmargin_ = 0;
+  clear_has_exchmargin();
+}
+inline double PositionDetailInfo::exchmargin() const {
+  return exchmargin_;
+}
+inline void PositionDetailInfo::set_exchmargin(double value) {
+  set_has_exchmargin();
+  exchmargin_ = value;
+}
+
+// required double MarginRateByMoney = 21;
+inline bool PositionDetailInfo::has_marginratebymoney() const {
+  return (_has_bits_[0] & 0x00100000u) != 0;
+}
+inline void PositionDetailInfo::set_has_marginratebymoney() {
+  _has_bits_[0] |= 0x00100000u;
+}
+inline void PositionDetailInfo::clear_has_marginratebymoney() {
+  _has_bits_[0] &= ~0x00100000u;
+}
+inline void PositionDetailInfo::clear_marginratebymoney() {
+  marginratebymoney_ = 0;
+  clear_has_marginratebymoney();
+}
+inline double PositionDetailInfo::marginratebymoney() const {
+  return marginratebymoney_;
+}
+inline void PositionDetailInfo::set_marginratebymoney(double value) {
+  set_has_marginratebymoney();
+  marginratebymoney_ = value;
+}
+
+// required double MarginRateByVolume = 22;
+inline bool PositionDetailInfo::has_marginratebyvolume() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
+}
+inline void PositionDetailInfo::set_has_marginratebyvolume() {
+  _has_bits_[0] |= 0x00200000u;
+}
+inline void PositionDetailInfo::clear_has_marginratebyvolume() {
+  _has_bits_[0] &= ~0x00200000u;
+}
+inline void PositionDetailInfo::clear_marginratebyvolume() {
+  marginratebyvolume_ = 0;
+  clear_has_marginratebyvolume();
+}
+inline double PositionDetailInfo::marginratebyvolume() const {
+  return marginratebyvolume_;
+}
+inline void PositionDetailInfo::set_marginratebyvolume(double value) {
+  set_has_marginratebyvolume();
+  marginratebyvolume_ = value;
+}
+
+// required double LastSettlementPrice = 23;
+inline bool PositionDetailInfo::has_lastsettlementprice() const {
+  return (_has_bits_[0] & 0x00400000u) != 0;
+}
+inline void PositionDetailInfo::set_has_lastsettlementprice() {
+  _has_bits_[0] |= 0x00400000u;
+}
+inline void PositionDetailInfo::clear_has_lastsettlementprice() {
+  _has_bits_[0] &= ~0x00400000u;
+}
+inline void PositionDetailInfo::clear_lastsettlementprice() {
+  lastsettlementprice_ = 0;
+  clear_has_lastsettlementprice();
+}
+inline double PositionDetailInfo::lastsettlementprice() const {
+  return lastsettlementprice_;
+}
+inline void PositionDetailInfo::set_lastsettlementprice(double value) {
+  set_has_lastsettlementprice();
+  lastsettlementprice_ = value;
+}
+
+// required double SettlementPrice = 24;
+inline bool PositionDetailInfo::has_settlementprice() const {
+  return (_has_bits_[0] & 0x00800000u) != 0;
+}
+inline void PositionDetailInfo::set_has_settlementprice() {
+  _has_bits_[0] |= 0x00800000u;
+}
+inline void PositionDetailInfo::clear_has_settlementprice() {
+  _has_bits_[0] &= ~0x00800000u;
+}
+inline void PositionDetailInfo::clear_settlementprice() {
+  settlementprice_ = 0;
+  clear_has_settlementprice();
+}
+inline double PositionDetailInfo::settlementprice() const {
+  return settlementprice_;
+}
+inline void PositionDetailInfo::set_settlementprice(double value) {
+  set_has_settlementprice();
+  settlementprice_ = value;
+}
+
+// required int32 CloseVolume = 25;
+inline bool PositionDetailInfo::has_closevolume() const {
+  return (_has_bits_[0] & 0x01000000u) != 0;
+}
+inline void PositionDetailInfo::set_has_closevolume() {
+  _has_bits_[0] |= 0x01000000u;
+}
+inline void PositionDetailInfo::clear_has_closevolume() {
+  _has_bits_[0] &= ~0x01000000u;
+}
+inline void PositionDetailInfo::clear_closevolume() {
+  closevolume_ = 0;
+  clear_has_closevolume();
+}
+inline ::google::protobuf::int32 PositionDetailInfo::closevolume() const {
+  return closevolume_;
+}
+inline void PositionDetailInfo::set_closevolume(::google::protobuf::int32 value) {
+  set_has_closevolume();
+  closevolume_ = value;
+}
+
+// required double CloseAmount = 26;
+inline bool PositionDetailInfo::has_closeamount() const {
+  return (_has_bits_[0] & 0x02000000u) != 0;
+}
+inline void PositionDetailInfo::set_has_closeamount() {
+  _has_bits_[0] |= 0x02000000u;
+}
+inline void PositionDetailInfo::clear_has_closeamount() {
+  _has_bits_[0] &= ~0x02000000u;
+}
+inline void PositionDetailInfo::clear_closeamount() {
+  closeamount_ = 0;
+  clear_has_closeamount();
+}
+inline double PositionDetailInfo::closeamount() const {
+  return closeamount_;
+}
+inline void PositionDetailInfo::set_closeamount(double value) {
+  set_has_closeamount();
+  closeamount_ = value;
 }
 
 // -------------------------------------------------------------------

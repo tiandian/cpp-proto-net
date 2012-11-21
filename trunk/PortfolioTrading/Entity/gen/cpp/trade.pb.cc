@@ -23,6 +23,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* PositionInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PositionInfo_reflection_ = NULL;
+const ::google::protobuf::Descriptor* PositionDetailInfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  PositionDetailInfo_reflection_ = NULL;
 const ::google::protobuf::Descriptor* InputOrder_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   InputOrder_reflection_ = NULL;
@@ -163,7 +166,47 @@ void protobuf_AssignDesc_trade_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PositionInfo));
-  InputOrder_descriptor_ = file->message_type(2);
+  PositionDetailInfo_descriptor_ = file->message_type(2);
+  static const int PositionDetailInfo_offsets_[26] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, instrumentid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, brokerid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, investorid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, hedgeflag_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, direction_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, opendate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, tradeid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, volume_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, openprice_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, tradingday_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, settlementid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, tradetype_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, combinstrumentid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, exchangeid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, closeprofitbydate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, closeprofitbytrade_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, positionprofitbydate_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, positionprofitbytrade_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, margin_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, exchmargin_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, marginratebymoney_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, marginratebyvolume_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, lastsettlementprice_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, settlementprice_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, closevolume_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, closeamount_),
+  };
+  PositionDetailInfo_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      PositionDetailInfo_descriptor_,
+      PositionDetailInfo::default_instance_,
+      PositionDetailInfo_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PositionDetailInfo, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(PositionDetailInfo));
+  InputOrder_descriptor_ = file->message_type(3);
   static const int InputOrder_offsets_[22] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrder, brokerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrder, investorid_),
@@ -199,7 +242,7 @@ void protobuf_AssignDesc_trade_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(InputOrder));
-  Order_descriptor_ = file->message_type(3);
+  Order_descriptor_ = file->message_type(4);
   static const int Order_offsets_[56] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Order, brokerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Order, investorid_),
@@ -269,7 +312,7 @@ void protobuf_AssignDesc_trade_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Order));
-  Trade_descriptor_ = file->message_type(4);
+  Trade_descriptor_ = file->message_type(5);
   static const int Trade_offsets_[29] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Trade, brokerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(Trade, investorid_),
@@ -312,7 +355,7 @@ void protobuf_AssignDesc_trade_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Trade));
-  InputOrderAction_descriptor_ = file->message_type(5);
+  InputOrderAction_descriptor_ = file->message_type(6);
   static const int InputOrderAction_offsets_[14] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, brokerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(InputOrderAction, investorid_),
@@ -340,7 +383,7 @@ void protobuf_AssignDesc_trade_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(InputOrderAction));
-  MultiLegOrder_descriptor_ = file->message_type(6);
+  MultiLegOrder_descriptor_ = file->message_type(7);
   static const int MultiLegOrder_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, orderid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, portfolioid_),
@@ -394,6 +437,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     PositionInfo_descriptor_, &PositionInfo::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    PositionDetailInfo_descriptor_, &PositionDetailInfo::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     InputOrder_descriptor_, &InputOrder::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     Order_descriptor_, &Order::default_instance());
@@ -412,6 +457,8 @@ void protobuf_ShutdownFile_trade_2eproto() {
   delete AccountInfo_reflection_;
   delete PositionInfo::default_instance_;
   delete PositionInfo_reflection_;
+  delete PositionDetailInfo::default_instance_;
+  delete PositionDetailInfo_reflection_;
   delete InputOrder::default_instance_;
   delete InputOrder_reflection_;
   delete Order::default_instance_;
@@ -471,157 +518,175 @@ void protobuf_AddDesc_trade_2eproto() {
     "fitByDate\030$ \002(\001\022\032\n\022CloseProfitByTrade\030% "
     "\002(\001\022\025\n\rTodayPosition\030& \002(\005\022\031\n\021MarginRate"
     "ByMoney\030\' \002(\001\022\032\n\022MarginRateByVolume\030( \002("
-    "\001\"\224\005\n\nInputOrder\022\020\n\010BrokerID\030\001 \002(\t\022\022\n\nIn"
-    "vestorID\030\002 \002(\t\022\024\n\014InstrumentID\030\003 \002(\t\022\020\n\010"
-    "OrderRef\030\004 \002(\t\022\016\n\006UserID\030\005 \002(\t\0221\n\016OrderP"
-    "riceType\030\006 \002(\0162\031.trade.OrderPriceTypeTyp"
-    "e\022,\n\tDirection\030\007 \002(\0162\031.trade.TradeDirect"
-    "ionType\022\026\n\016CombOffsetFlag\030\010 \002(\t\022\025\n\rCombH"
-    "edgeFlag\030\t \002(\t\022\022\n\nLimitPrice\030\n \002(\001\022\033\n\023Vo"
-    "lumeTotalOriginal\030\013 \002(\005\022/\n\rTimeCondition"
-    "\030\014 \002(\0162\030.trade.TimeConditionType\022\017\n\007GTDD"
-    "ate\030\r \002(\t\0223\n\017VolumeCondition\030\016 \002(\0162\032.tra"
-    "de.VolumeConditionType\022\021\n\tMinVolume\030\017 \002("
-    "\005\022;\n\023ContingentCondition\030\020 \002(\0162\036.trade.C"
-    "ontingentConditionType\022\021\n\tStopPrice\030\021 \002("
-    "\001\0225\n\020ForceCloseReason\030\022 \002(\0162\033.trade.Forc"
-    "eCloseReasonType\022\025\n\rIsAutoSuspend\030\023 \002(\010\022"
-    "\024\n\014BusinessUnit\030\024 \002(\t\022\021\n\tRequestID\030\025 \002(\005"
-    "\022\026\n\016UserForceClose\030\026 \002(\010\"\306\013\n\005Order\022\020\n\010Br"
-    "okerID\030\001 \002(\t\022\022\n\nInvestorID\030\002 \002(\t\022\024\n\014Inst"
-    "rumentID\030\003 \002(\t\022\020\n\010OrderRef\030\004 \002(\t\022\016\n\006User"
-    "ID\030\005 \001(\t\0221\n\016OrderPriceType\030\006 \002(\0162\031.trade"
-    ".OrderPriceTypeType\022,\n\tDirection\030\007 \002(\0162\031"
-    ".trade.TradeDirectionType\022\026\n\016CombOffsetF"
-    "lag\030\010 \002(\t\022\025\n\rCombHedgeFlag\030\t \002(\t\022\022\n\nLimi"
-    "tPrice\030\n \002(\001\022\033\n\023VolumeTotalOriginal\030\013 \002("
-    "\005\022/\n\rTimeCondition\030\014 \002(\0162\030.trade.TimeCon"
-    "ditionType\022\017\n\007GTDDate\030\r \001(\t\0223\n\017VolumeCon"
-    "dition\030\016 \002(\0162\032.trade.VolumeConditionType"
-    "\022\021\n\tMinVolume\030\017 \002(\005\022;\n\023ContingentConditi"
-    "on\030\020 \002(\0162\036.trade.ContingentConditionType"
-    "\022\021\n\tStopPrice\030\021 \001(\001\0225\n\020ForceCloseReason\030"
-    "\022 \002(\0162\033.trade.ForceCloseReasonType\022\025\n\rIs"
-    "AutoSuspend\030\023 \002(\010\022\024\n\014BusinessUnit\030\024 \001(\t\022"
-    "\021\n\tRequestID\030\025 \001(\005\022\024\n\014OrderLocalID\030\026 \001(\t"
-    "\022\022\n\nExchangeID\030\027 \001(\t\022\025\n\rParticipantID\030\030 "
-    "\001(\t\022\020\n\010ClientID\030\031 \001(\t\022\026\n\016ExchangeInstID\030"
-    "\032 \001(\t\022\020\n\010TraderID\030\033 \001(\t\022\021\n\tInstallID\030\034 \001"
-    "(\005\0227\n\021OrderSubmitStatus\030\035 \002(\0162\034.trade.Or"
-    "derSubmitStatusType\022\026\n\016NotifySequence\030\036 "
-    "\001(\005\022\022\n\nTradingDay\030\037 \001(\t\022\024\n\014SettlementID\030"
-    "  \001(\005\022\022\n\nOrderSysID\030! \001(\t\022+\n\013OrderSource"
-    "\030\" \001(\0162\026.trade.OrderSourceType\022+\n\013OrderS"
-    "tatus\030# \002(\0162\026.trade.OrderStatusType\022\'\n\tO"
-    "rderType\030$ \001(\0162\024.trade.OrderTypeType\022\024\n\014"
-    "VolumeTraded\030% \001(\005\022\023\n\013VolumeTotal\030& \001(\005\022"
-    "\022\n\nInsertDate\030\' \001(\t\022\022\n\nInsertTime\030( \001(\t\022"
-    "\022\n\nActiveTime\030) \001(\t\022\023\n\013SuspendTime\030* \001(\t"
-    "\022\022\n\nUpdateTime\030+ \001(\t\022\022\n\nCancelTime\030, \001(\t"
-    "\022\026\n\016ActiveTraderID\030- \001(\t\022\026\n\016ClearingPart"
-    "ID\030. \001(\t\022\022\n\nSequenceNo\030/ \001(\005\022\017\n\007FrontID\030"
-    "0 \001(\005\022\021\n\tSessionID\0301 \001(\005\022\027\n\017UserProductI"
-    "nfo\0302 \001(\t\022\021\n\tStatusMsg\0303 \001(\t\022\026\n\016UserForc"
-    "eClose\0304 \001(\010\022\024\n\014ActiveUserID\0305 \001(\t\022\026\n\016Br"
-    "okerOrderSeq\0306 \001(\005\022\032\n\022RelativeOrderSysID"
-    "\0307 \001(\t\022\021\n\tPreferred\0308 \001(\010\"\325\005\n\005Trade\022\020\n\010B"
-    "rokerID\030\001 \002(\t\022\022\n\nInvestorID\030\002 \002(\t\022\024\n\014Ins"
-    "trumentID\030\003 \002(\t\022\020\n\010OrderRef\030\004 \002(\t\022\016\n\006Use"
-    "rID\030\005 \002(\t\022\022\n\nExchangeID\030\006 \002(\t\022\017\n\007TradeID"
-    "\030\007 \002(\t\022,\n\tDirection\030\010 \002(\0162\031.trade.TradeD"
-    "irectionType\022\022\n\nOrderSysID\030\t \002(\t\022\025\n\rPart"
-    "icipantID\030\n \002(\t\022\020\n\010ClientID\030\013 \002(\t\022+\n\013Tra"
-    "dingRole\030\014 \002(\0162\026.trade.TradingRoleType\022\026"
-    "\n\016ExchangeInstID\030\r \002(\t\022)\n\nOffsetFlag\030\016 \002"
-    "(\0162\025.trade.OffsetFlagType\022\'\n\tHedgeFlag\030\017"
-    " \002(\0162\024.trade.HedgeFlagType\022\r\n\005Price\030\020 \002("
-    "\001\022\016\n\006Volume\030\021 \002(\005\022\021\n\tTradeDate\030\022 \002(\t\022\021\n\t"
-    "TradeTime\030\023 \002(\t\022\'\n\tTradeType\030\024 \002(\0162\024.tra"
-    "de.TradeTypeType\022+\n\013PriceSource\030\025 \002(\0162\026."
-    "trade.PriceSourceType\022\020\n\010TraderID\030\026 \002(\t\022"
-    "\024\n\014OrderLocalID\030\027 \002(\t\022\026\n\016ClearingPartID\030"
-    "\030 \002(\t\022\024\n\014BusinessUnit\030\031 \002(\t\022\022\n\nSequenceN"
-    "o\030\032 \002(\005\022\022\n\nTradingDay\030\033 \002(\t\022\024\n\014Settlemen"
-    "tID\030\034 \002(\005\022\026\n\016BrokerOrderSeq\030\035 \002(\005\"\274\002\n\020In"
-    "putOrderAction\022\020\n\010BrokerID\030\001 \002(\t\022\022\n\nInve"
-    "storID\030\002 \002(\t\022\026\n\016OrderActionRef\030\003 \002(\005\022\020\n\010"
-    "OrderRef\030\004 \002(\t\022\021\n\tRequestID\030\005 \002(\005\022\017\n\007Fro"
-    "ntID\030\006 \002(\005\022\021\n\tSessionID\030\007 \002(\005\022\022\n\nExchang"
-    "eID\030\010 \002(\t\022\022\n\nOrderSysID\030\t \002(\t\022)\n\nActionF"
-    "lag\030\n \002(\0162\025.trade.ActionFlagType\022\022\n\nLimi"
-    "tPrice\030\013 \002(\001\022\024\n\014VolumeChange\030\014 \002(\005\022\016\n\006Us"
-    "erID\030\r \002(\t\022\024\n\014InstrumentID\030\016 \002(\t\"\212\001\n\rMul"
-    "tiLegOrder\022\017\n\007OrderId\030\001 \002(\t\022\023\n\013Portfolio"
-    "Id\030\002 \002(\t\022\020\n\010Quantity\030\003 \002(\005\022\032\n\004Legs\030\004 \003(\013"
-    "2\014.trade.Order\022\023\n\013OpenOrderId\030\005 \002(\t\022\020\n\010O"
-    "penDate\030\006 \002(\t*1\n\021PosiDirectionType\022\007\n\003NE"
-    "T\0201\022\010\n\004LONG\0202\022\t\n\005SHORT\0203*:\n\rHedgeFlagTyp"
-    "e\022\017\n\013SPECULATION\0201\022\r\n\tARBITRAGE\0202\022\t\n\005HED"
-    "GE\0203*\221\003\n\022OrderPriceTypeType\022\r\n\tANY_PRICE"
-    "\0201\022\017\n\013LIMIT_PRICE\0202\022\016\n\nBEST_PRICE\0203\022\016\n\nL"
-    "AST_PRICE\0204\022\035\n\031LAST_PRICE_PLUS_ONE_TICKS"
-    "\0205\022\035\n\031LAST_PRICE_PLUS_TWO_TICKS\0206\022\037\n\033LAS"
-    "T_PRICE_PLUS_THREE_TICKS\0207\022\016\n\nASK_PRICE1"
-    "\0208\022\035\n\031ASK_PRICE1_PLUS_ONE_TICKS\0209\022\035\n\031ASK"
-    "_PRICE1_PLUS_TWO_TICKS\020A\022\037\n\033ASK_PRICE1_P"
-    "LUS_THREE_TICKS\020B\022\016\n\nBID_PRICE1\020C\022\035\n\031BID"
-    "_PRICE1_PLUS_ONE_TICKS\020D\022\035\n\031BID_PRICE1_P"
-    "LUS_TWO_TICKS\020E\022\037\n\033BID_PRICE1_PLUS_THREE"
-    "_TICKS\020F*\'\n\022TradeDirectionType\022\007\n\003BUY\0200\022"
-    "\010\n\004SELL\0201*[\n\021TimeConditionType\022\n\n\006TC_IOC"
-    "\0201\022\n\n\006TC_GFS\0202\022\n\n\006TC_GFD\0203\022\n\n\006TC_GTD\0204\022\n"
-    "\n\006TC_GTC\0205\022\n\n\006TC_GFA\0206*6\n\023VolumeConditio"
-    "nType\022\t\n\005VC_AV\0201\022\t\n\005VC_MV\0202\022\t\n\005VC_CV\0203*\261"
-    "\004\n\027ContingentConditionType\022\017\n\013IMMEDIATEL"
-    "Y\0201\022\t\n\005TOUCH\0202\022\020\n\014TOUCH_PROFIT\0203\022\020\n\014PARK"
-    "ED_ORDER\0204\022&\n\"LAST_PRICE_GREATER_THAN_ST"
-    "OP_PRICE\0205\022\'\n#LAST_PRICE_GREATER_EQUAL_S"
-    "TOP_PRICE\0206\022%\n!LAST_PRICE_LESSER_THAN_ST"
-    "OP_PRICE\0207\022&\n\"LAST_PRICE_LESSER_EQUAL_ST"
-    "OP_PRICE\0208\022%\n!ASK_PRICE_GREATER_THAN_STO"
-    "P_PRICE\0209\022&\n\"ASK_PRICE_GREATER_EQUAL_STO"
-    "P_PRICE\020A\022$\n ASK_PRICE_LESSER_THAN_STOP_"
-    "PRICE\020B\022%\n!ASK_PRICE_LESSER_EQUAL_STOP_P"
-    "RICE\020C\022%\n!BID_PRICE_GREATER_THAN_STOP_PR"
-    "ICE\020D\022&\n\"BID_PRICE_GREATER_EQUAL_STOP_PR"
-    "ICE\020E\022$\n BID_PRICE_LESSER_THAN_STOP_PRIC"
-    "E\020F\022%\n!BID_PRICE_LESSER_EQUAL_STOP_PRICE"
-    "\020G*\277\001\n\024ForceCloseReasonType\022\023\n\017NOT_FORCE"
-    "_CLOSE\0200\022\020\n\014LACK_DEPOSIT\0201\022\036\n\032CLIENT_OVE"
-    "R_POSITION_LIMIT\0202\022\036\n\032MEMBER_OVER_POSITI"
-    "ON_LIMIT\0203\022\020\n\014NOT_MULTIPLE\0204\022\r\n\tVIOLATIO"
-    "N\0205\022\r\n\tFCC_OTHER\0206\022\020\n\014PERSON_DELIV\0207*\271\001\n"
-    "\025OrderSubmitStatusType\022\021\n\rNOT_SUBMITTED\020"
-    "/\022\024\n\020INSERT_SUBMITTED\0200\022\024\n\020CANCEL_SUBMIT"
-    "TED\0201\022\024\n\020MODIFY_SUBMITTED\0202\022\014\n\010ACCEPTED\020"
-    "3\022\023\n\017INSERT_REJECTED\0204\022\023\n\017CANCEL_REJECTE"
-    "D\0205\022\023\n\017MODIFY_REJECTED\0206*5\n\017OrderSourceT"
-    "ype\022\017\n\013PARTICIPANT\0200\022\021\n\rADMINISTRATOR\0201*"
-    "\335\001\n\017OrderStatusType\022\016\n\nALL_TRADED\0200\022\030\n\024P"
-    "ART_TRADED_QUEUEING\0201\022\034\n\030PART_TRADED_NOT"
-    "_QUEUEING\0202\022\025\n\021NO_TRADE_QUEUEING\0203\022\031\n\025NO"
-    "_TRADE_NOT_QUEUEING\0204\022\022\n\016ORDER_CANCELED\020"
-    "5\022\022\n\016STATUS_UNKNOWN\020a\022\025\n\021ORDER_NOT_TOUCH"
-    "ED\020b\022\021\n\rORDER_TOUCHED\020c*\215\001\n\rOrderTypeTyp"
-    "e\022\020\n\014NORMAL_ORDER\0200\022\025\n\021DERIVE_FROM_QUOTE"
-    "\0201\022\033\n\027DERIVE_FROM_COMBINATION\0202\022\017\n\013COMBI"
-    "NATION\0203\022\025\n\021CONDITIONAL_ORDER\0204\022\016\n\nSWAP_"
-    "ORDER\0205*;\n\017TradingRoleType\022\r\n\tER_BROKER\020"
-    "1\022\013\n\007ER_HOST\0202\022\014\n\010ER_MAKER\0203*\227\001\n\016OffsetF"
-    "lagType\022\013\n\007OF_OPEN\0200\022\014\n\010OF_CLOSE\0201\022\022\n\016OF"
-    "_FORCE_CLOSE\0202\022\022\n\016OF_CLOSE_TODAY\0203\022\026\n\022OF"
-    "_CLOSE_YESTERDAY\0204\022\020\n\014OF_FORCE_OFF\0205\022\030\n\024"
-    "OF_LOCAL_FORCE_CLOSE\0206*~\n\rTradeTypeType\022"
-    "\017\n\013TRDT_COMMON\0200\022\032\n\026TRDT_OPTIONS_EXECUTI"
-    "ON\0201\022\014\n\010TRDT_OTC\0202\022\024\n\020TRDT_EFP_DERIVED\0203"
-    "\022\034\n\030TRDT_COMBINATION_DERIVED\0204*C\n\017PriceS"
-    "ourceType\022\023\n\017PSRC_LAST_PRICE\0200\022\014\n\010PSRC_B"
-    "UY\0201\022\r\n\tPSRC_SELL\0202*.\n\016ActionFlagType\022\r\n"
-    "\tAF_Delete\0200\022\r\n\tAF_Modify\0203", 7467);
+    "\001\"\235\005\n\022PositionDetailInfo\022\024\n\014InstrumentID"
+    "\030\001 \002(\t\022\020\n\010BrokerID\030\002 \002(\t\022\022\n\nInvestorID\030\003"
+    " \002(\t\022\'\n\tHedgeFlag\030\004 \002(\0162\024.trade.HedgeFla"
+    "gType\022,\n\tDirection\030\005 \002(\0162\031.trade.TradeDi"
+    "rectionType\022\020\n\010OpenDate\030\006 \002(\t\022\017\n\007TradeID"
+    "\030\007 \002(\t\022\016\n\006Volume\030\010 \002(\005\022\021\n\tOpenPrice\030\t \002("
+    "\001\022\022\n\nTradingDay\030\n \002(\t\022\024\n\014SettlementID\030\013 "
+    "\002(\005\022\'\n\tTradeType\030\014 \002(\0162\024.trade.TradeType"
+    "Type\022\030\n\020CombInstrumentID\030\r \002(\t\022\022\n\nExchan"
+    "geID\030\016 \002(\t\022\031\n\021CloseProfitByDate\030\017 \002(\001\022\032\n"
+    "\022CloseProfitByTrade\030\020 \002(\001\022\034\n\024PositionPro"
+    "fitByDate\030\021 \002(\001\022\035\n\025PositionProfitByTrade"
+    "\030\022 \002(\001\022\016\n\006Margin\030\023 \002(\001\022\022\n\nExchMargin\030\024 \002"
+    "(\001\022\031\n\021MarginRateByMoney\030\025 \002(\001\022\032\n\022MarginR"
+    "ateByVolume\030\026 \002(\001\022\033\n\023LastSettlementPrice"
+    "\030\027 \002(\001\022\027\n\017SettlementPrice\030\030 \002(\001\022\023\n\013Close"
+    "Volume\030\031 \002(\005\022\023\n\013CloseAmount\030\032 \002(\001\"\224\005\n\nIn"
+    "putOrder\022\020\n\010BrokerID\030\001 \002(\t\022\022\n\nInvestorID"
+    "\030\002 \002(\t\022\024\n\014InstrumentID\030\003 \002(\t\022\020\n\010OrderRef"
+    "\030\004 \002(\t\022\016\n\006UserID\030\005 \002(\t\0221\n\016OrderPriceType"
+    "\030\006 \002(\0162\031.trade.OrderPriceTypeType\022,\n\tDir"
+    "ection\030\007 \002(\0162\031.trade.TradeDirectionType\022"
+    "\026\n\016CombOffsetFlag\030\010 \002(\t\022\025\n\rCombHedgeFlag"
+    "\030\t \002(\t\022\022\n\nLimitPrice\030\n \002(\001\022\033\n\023VolumeTota"
+    "lOriginal\030\013 \002(\005\022/\n\rTimeCondition\030\014 \002(\0162\030"
+    ".trade.TimeConditionType\022\017\n\007GTDDate\030\r \002("
+    "\t\0223\n\017VolumeCondition\030\016 \002(\0162\032.trade.Volum"
+    "eConditionType\022\021\n\tMinVolume\030\017 \002(\005\022;\n\023Con"
+    "tingentCondition\030\020 \002(\0162\036.trade.Contingen"
+    "tConditionType\022\021\n\tStopPrice\030\021 \002(\001\0225\n\020For"
+    "ceCloseReason\030\022 \002(\0162\033.trade.ForceCloseRe"
+    "asonType\022\025\n\rIsAutoSuspend\030\023 \002(\010\022\024\n\014Busin"
+    "essUnit\030\024 \002(\t\022\021\n\tRequestID\030\025 \002(\005\022\026\n\016User"
+    "ForceClose\030\026 \002(\010\"\306\013\n\005Order\022\020\n\010BrokerID\030\001"
+    " \002(\t\022\022\n\nInvestorID\030\002 \002(\t\022\024\n\014InstrumentID"
+    "\030\003 \002(\t\022\020\n\010OrderRef\030\004 \002(\t\022\016\n\006UserID\030\005 \001(\t"
+    "\0221\n\016OrderPriceType\030\006 \002(\0162\031.trade.OrderPr"
+    "iceTypeType\022,\n\tDirection\030\007 \002(\0162\031.trade.T"
+    "radeDirectionType\022\026\n\016CombOffsetFlag\030\010 \002("
+    "\t\022\025\n\rCombHedgeFlag\030\t \002(\t\022\022\n\nLimitPrice\030\n"
+    " \002(\001\022\033\n\023VolumeTotalOriginal\030\013 \002(\005\022/\n\rTim"
+    "eCondition\030\014 \002(\0162\030.trade.TimeConditionTy"
+    "pe\022\017\n\007GTDDate\030\r \001(\t\0223\n\017VolumeCondition\030\016"
+    " \002(\0162\032.trade.VolumeConditionType\022\021\n\tMinV"
+    "olume\030\017 \002(\005\022;\n\023ContingentCondition\030\020 \002(\016"
+    "2\036.trade.ContingentConditionType\022\021\n\tStop"
+    "Price\030\021 \001(\001\0225\n\020ForceCloseReason\030\022 \002(\0162\033."
+    "trade.ForceCloseReasonType\022\025\n\rIsAutoSusp"
+    "end\030\023 \002(\010\022\024\n\014BusinessUnit\030\024 \001(\t\022\021\n\tReque"
+    "stID\030\025 \001(\005\022\024\n\014OrderLocalID\030\026 \001(\t\022\022\n\nExch"
+    "angeID\030\027 \001(\t\022\025\n\rParticipantID\030\030 \001(\t\022\020\n\010C"
+    "lientID\030\031 \001(\t\022\026\n\016ExchangeInstID\030\032 \001(\t\022\020\n"
+    "\010TraderID\030\033 \001(\t\022\021\n\tInstallID\030\034 \001(\005\0227\n\021Or"
+    "derSubmitStatus\030\035 \002(\0162\034.trade.OrderSubmi"
+    "tStatusType\022\026\n\016NotifySequence\030\036 \001(\005\022\022\n\nT"
+    "radingDay\030\037 \001(\t\022\024\n\014SettlementID\030  \001(\005\022\022\n"
+    "\nOrderSysID\030! \001(\t\022+\n\013OrderSource\030\" \001(\0162\026"
+    ".trade.OrderSourceType\022+\n\013OrderStatus\030# "
+    "\002(\0162\026.trade.OrderStatusType\022\'\n\tOrderType"
+    "\030$ \001(\0162\024.trade.OrderTypeType\022\024\n\014VolumeTr"
+    "aded\030% \001(\005\022\023\n\013VolumeTotal\030& \001(\005\022\022\n\nInser"
+    "tDate\030\' \001(\t\022\022\n\nInsertTime\030( \001(\t\022\022\n\nActiv"
+    "eTime\030) \001(\t\022\023\n\013SuspendTime\030* \001(\t\022\022\n\nUpda"
+    "teTime\030+ \001(\t\022\022\n\nCancelTime\030, \001(\t\022\026\n\016Acti"
+    "veTraderID\030- \001(\t\022\026\n\016ClearingPartID\030. \001(\t"
+    "\022\022\n\nSequenceNo\030/ \001(\005\022\017\n\007FrontID\0300 \001(\005\022\021\n"
+    "\tSessionID\0301 \001(\005\022\027\n\017UserProductInfo\0302 \001("
+    "\t\022\021\n\tStatusMsg\0303 \001(\t\022\026\n\016UserForceClose\0304"
+    " \001(\010\022\024\n\014ActiveUserID\0305 \001(\t\022\026\n\016BrokerOrde"
+    "rSeq\0306 \001(\005\022\032\n\022RelativeOrderSysID\0307 \001(\t\022\021"
+    "\n\tPreferred\0308 \001(\010\"\325\005\n\005Trade\022\020\n\010BrokerID\030"
+    "\001 \002(\t\022\022\n\nInvestorID\030\002 \002(\t\022\024\n\014InstrumentI"
+    "D\030\003 \002(\t\022\020\n\010OrderRef\030\004 \002(\t\022\016\n\006UserID\030\005 \002("
+    "\t\022\022\n\nExchangeID\030\006 \002(\t\022\017\n\007TradeID\030\007 \002(\t\022,"
+    "\n\tDirection\030\010 \002(\0162\031.trade.TradeDirection"
+    "Type\022\022\n\nOrderSysID\030\t \002(\t\022\025\n\rParticipantI"
+    "D\030\n \002(\t\022\020\n\010ClientID\030\013 \002(\t\022+\n\013TradingRole"
+    "\030\014 \002(\0162\026.trade.TradingRoleType\022\026\n\016Exchan"
+    "geInstID\030\r \002(\t\022)\n\nOffsetFlag\030\016 \002(\0162\025.tra"
+    "de.OffsetFlagType\022\'\n\tHedgeFlag\030\017 \002(\0162\024.t"
+    "rade.HedgeFlagType\022\r\n\005Price\030\020 \002(\001\022\016\n\006Vol"
+    "ume\030\021 \002(\005\022\021\n\tTradeDate\030\022 \002(\t\022\021\n\tTradeTim"
+    "e\030\023 \002(\t\022\'\n\tTradeType\030\024 \002(\0162\024.trade.Trade"
+    "TypeType\022+\n\013PriceSource\030\025 \002(\0162\026.trade.Pr"
+    "iceSourceType\022\020\n\010TraderID\030\026 \002(\t\022\024\n\014Order"
+    "LocalID\030\027 \002(\t\022\026\n\016ClearingPartID\030\030 \002(\t\022\024\n"
+    "\014BusinessUnit\030\031 \002(\t\022\022\n\nSequenceNo\030\032 \002(\005\022"
+    "\022\n\nTradingDay\030\033 \002(\t\022\024\n\014SettlementID\030\034 \002("
+    "\005\022\026\n\016BrokerOrderSeq\030\035 \002(\005\"\274\002\n\020InputOrder"
+    "Action\022\020\n\010BrokerID\030\001 \002(\t\022\022\n\nInvestorID\030\002"
+    " \002(\t\022\026\n\016OrderActionRef\030\003 \002(\005\022\020\n\010OrderRef"
+    "\030\004 \002(\t\022\021\n\tRequestID\030\005 \002(\005\022\017\n\007FrontID\030\006 \002"
+    "(\005\022\021\n\tSessionID\030\007 \002(\005\022\022\n\nExchangeID\030\010 \002("
+    "\t\022\022\n\nOrderSysID\030\t \002(\t\022)\n\nActionFlag\030\n \002("
+    "\0162\025.trade.ActionFlagType\022\022\n\nLimitPrice\030\013"
+    " \002(\001\022\024\n\014VolumeChange\030\014 \002(\005\022\016\n\006UserID\030\r \002"
+    "(\t\022\024\n\014InstrumentID\030\016 \002(\t\"\212\001\n\rMultiLegOrd"
+    "er\022\017\n\007OrderId\030\001 \002(\t\022\023\n\013PortfolioId\030\002 \002(\t"
+    "\022\020\n\010Quantity\030\003 \002(\005\022\032\n\004Legs\030\004 \003(\0132\014.trade"
+    ".Order\022\023\n\013OpenOrderId\030\005 \002(\t\022\020\n\010OpenDate\030"
+    "\006 \002(\t*1\n\021PosiDirectionType\022\007\n\003NET\0201\022\010\n\004L"
+    "ONG\0202\022\t\n\005SHORT\0203*:\n\rHedgeFlagType\022\017\n\013SPE"
+    "CULATION\0201\022\r\n\tARBITRAGE\0202\022\t\n\005HEDGE\0203*\221\003\n"
+    "\022OrderPriceTypeType\022\r\n\tANY_PRICE\0201\022\017\n\013LI"
+    "MIT_PRICE\0202\022\016\n\nBEST_PRICE\0203\022\016\n\nLAST_PRIC"
+    "E\0204\022\035\n\031LAST_PRICE_PLUS_ONE_TICKS\0205\022\035\n\031LA"
+    "ST_PRICE_PLUS_TWO_TICKS\0206\022\037\n\033LAST_PRICE_"
+    "PLUS_THREE_TICKS\0207\022\016\n\nASK_PRICE1\0208\022\035\n\031AS"
+    "K_PRICE1_PLUS_ONE_TICKS\0209\022\035\n\031ASK_PRICE1_"
+    "PLUS_TWO_TICKS\020A\022\037\n\033ASK_PRICE1_PLUS_THRE"
+    "E_TICKS\020B\022\016\n\nBID_PRICE1\020C\022\035\n\031BID_PRICE1_"
+    "PLUS_ONE_TICKS\020D\022\035\n\031BID_PRICE1_PLUS_TWO_"
+    "TICKS\020E\022\037\n\033BID_PRICE1_PLUS_THREE_TICKS\020F"
+    "*\'\n\022TradeDirectionType\022\007\n\003BUY\0200\022\010\n\004SELL\020"
+    "1*[\n\021TimeConditionType\022\n\n\006TC_IOC\0201\022\n\n\006TC"
+    "_GFS\0202\022\n\n\006TC_GFD\0203\022\n\n\006TC_GTD\0204\022\n\n\006TC_GTC"
+    "\0205\022\n\n\006TC_GFA\0206*6\n\023VolumeConditionType\022\t\n"
+    "\005VC_AV\0201\022\t\n\005VC_MV\0202\022\t\n\005VC_CV\0203*\261\004\n\027Conti"
+    "ngentConditionType\022\017\n\013IMMEDIATELY\0201\022\t\n\005T"
+    "OUCH\0202\022\020\n\014TOUCH_PROFIT\0203\022\020\n\014PARKED_ORDER"
+    "\0204\022&\n\"LAST_PRICE_GREATER_THAN_STOP_PRICE"
+    "\0205\022\'\n#LAST_PRICE_GREATER_EQUAL_STOP_PRIC"
+    "E\0206\022%\n!LAST_PRICE_LESSER_THAN_STOP_PRICE"
+    "\0207\022&\n\"LAST_PRICE_LESSER_EQUAL_STOP_PRICE"
+    "\0208\022%\n!ASK_PRICE_GREATER_THAN_STOP_PRICE\020"
+    "9\022&\n\"ASK_PRICE_GREATER_EQUAL_STOP_PRICE\020"
+    "A\022$\n ASK_PRICE_LESSER_THAN_STOP_PRICE\020B\022"
+    "%\n!ASK_PRICE_LESSER_EQUAL_STOP_PRICE\020C\022%"
+    "\n!BID_PRICE_GREATER_THAN_STOP_PRICE\020D\022&\n"
+    "\"BID_PRICE_GREATER_EQUAL_STOP_PRICE\020E\022$\n"
+    " BID_PRICE_LESSER_THAN_STOP_PRICE\020F\022%\n!B"
+    "ID_PRICE_LESSER_EQUAL_STOP_PRICE\020G*\277\001\n\024F"
+    "orceCloseReasonType\022\023\n\017NOT_FORCE_CLOSE\0200"
+    "\022\020\n\014LACK_DEPOSIT\0201\022\036\n\032CLIENT_OVER_POSITI"
+    "ON_LIMIT\0202\022\036\n\032MEMBER_OVER_POSITION_LIMIT"
+    "\0203\022\020\n\014NOT_MULTIPLE\0204\022\r\n\tVIOLATION\0205\022\r\n\tF"
+    "CC_OTHER\0206\022\020\n\014PERSON_DELIV\0207*\271\001\n\025OrderSu"
+    "bmitStatusType\022\021\n\rNOT_SUBMITTED\020/\022\024\n\020INS"
+    "ERT_SUBMITTED\0200\022\024\n\020CANCEL_SUBMITTED\0201\022\024\n"
+    "\020MODIFY_SUBMITTED\0202\022\014\n\010ACCEPTED\0203\022\023\n\017INS"
+    "ERT_REJECTED\0204\022\023\n\017CANCEL_REJECTED\0205\022\023\n\017M"
+    "ODIFY_REJECTED\0206*5\n\017OrderSourceType\022\017\n\013P"
+    "ARTICIPANT\0200\022\021\n\rADMINISTRATOR\0201*\335\001\n\017Orde"
+    "rStatusType\022\016\n\nALL_TRADED\0200\022\030\n\024PART_TRAD"
+    "ED_QUEUEING\0201\022\034\n\030PART_TRADED_NOT_QUEUEIN"
+    "G\0202\022\025\n\021NO_TRADE_QUEUEING\0203\022\031\n\025NO_TRADE_N"
+    "OT_QUEUEING\0204\022\022\n\016ORDER_CANCELED\0205\022\022\n\016STA"
+    "TUS_UNKNOWN\020a\022\025\n\021ORDER_NOT_TOUCHED\020b\022\021\n\r"
+    "ORDER_TOUCHED\020c*\215\001\n\rOrderTypeType\022\020\n\014NOR"
+    "MAL_ORDER\0200\022\025\n\021DERIVE_FROM_QUOTE\0201\022\033\n\027DE"
+    "RIVE_FROM_COMBINATION\0202\022\017\n\013COMBINATION\0203"
+    "\022\025\n\021CONDITIONAL_ORDER\0204\022\016\n\nSWAP_ORDER\0205*"
+    ";\n\017TradingRoleType\022\r\n\tER_BROKER\0201\022\013\n\007ER_"
+    "HOST\0202\022\014\n\010ER_MAKER\0203*\227\001\n\016OffsetFlagType\022"
+    "\013\n\007OF_OPEN\0200\022\014\n\010OF_CLOSE\0201\022\022\n\016OF_FORCE_C"
+    "LOSE\0202\022\022\n\016OF_CLOSE_TODAY\0203\022\026\n\022OF_CLOSE_Y"
+    "ESTERDAY\0204\022\020\n\014OF_FORCE_OFF\0205\022\030\n\024OF_LOCAL"
+    "_FORCE_CLOSE\0206*~\n\rTradeTypeType\022\017\n\013TRDT_"
+    "COMMON\0200\022\032\n\026TRDT_OPTIONS_EXECUTION\0201\022\014\n\010"
+    "TRDT_OTC\0202\022\024\n\020TRDT_EFP_DERIVED\0203\022\034\n\030TRDT"
+    "_COMBINATION_DERIVED\0204*C\n\017PriceSourceTyp"
+    "e\022\023\n\017PSRC_LAST_PRICE\0200\022\014\n\010PSRC_BUY\0201\022\r\n\t"
+    "PSRC_SELL\0202*.\n\016ActionFlagType\022\r\n\tAF_Dele"
+    "te\0200\022\r\n\tAF_Modify\0203", 8139);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "trade.proto", &protobuf_RegisterTypes);
   AccountInfo::default_instance_ = new AccountInfo();
   PositionInfo::default_instance_ = new PositionInfo();
+  PositionDetailInfo::default_instance_ = new PositionDetailInfo();
   InputOrder::default_instance_ = new InputOrder();
   Order::default_instance_ = new Order();
   Trade::default_instance_ = new Trade();
@@ -629,6 +694,7 @@ void protobuf_AddDesc_trade_2eproto() {
   MultiLegOrder::default_instance_ = new MultiLegOrder();
   AccountInfo::default_instance_->InitAsDefaultInstance();
   PositionInfo::default_instance_->InitAsDefaultInstance();
+  PositionDetailInfo::default_instance_->InitAsDefaultInstance();
   InputOrder::default_instance_->InitAsDefaultInstance();
   Order::default_instance_->InitAsDefaultInstance();
   Trade::default_instance_->InitAsDefaultInstance();
@@ -4178,6 +4244,1362 @@ void PositionInfo::Swap(PositionInfo* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = PositionInfo_descriptor_;
   metadata.reflection = PositionInfo_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int PositionDetailInfo::kInstrumentIDFieldNumber;
+const int PositionDetailInfo::kBrokerIDFieldNumber;
+const int PositionDetailInfo::kInvestorIDFieldNumber;
+const int PositionDetailInfo::kHedgeFlagFieldNumber;
+const int PositionDetailInfo::kDirectionFieldNumber;
+const int PositionDetailInfo::kOpenDateFieldNumber;
+const int PositionDetailInfo::kTradeIDFieldNumber;
+const int PositionDetailInfo::kVolumeFieldNumber;
+const int PositionDetailInfo::kOpenPriceFieldNumber;
+const int PositionDetailInfo::kTradingDayFieldNumber;
+const int PositionDetailInfo::kSettlementIDFieldNumber;
+const int PositionDetailInfo::kTradeTypeFieldNumber;
+const int PositionDetailInfo::kCombInstrumentIDFieldNumber;
+const int PositionDetailInfo::kExchangeIDFieldNumber;
+const int PositionDetailInfo::kCloseProfitByDateFieldNumber;
+const int PositionDetailInfo::kCloseProfitByTradeFieldNumber;
+const int PositionDetailInfo::kPositionProfitByDateFieldNumber;
+const int PositionDetailInfo::kPositionProfitByTradeFieldNumber;
+const int PositionDetailInfo::kMarginFieldNumber;
+const int PositionDetailInfo::kExchMarginFieldNumber;
+const int PositionDetailInfo::kMarginRateByMoneyFieldNumber;
+const int PositionDetailInfo::kMarginRateByVolumeFieldNumber;
+const int PositionDetailInfo::kLastSettlementPriceFieldNumber;
+const int PositionDetailInfo::kSettlementPriceFieldNumber;
+const int PositionDetailInfo::kCloseVolumeFieldNumber;
+const int PositionDetailInfo::kCloseAmountFieldNumber;
+#endif  // !_MSC_VER
+
+PositionDetailInfo::PositionDetailInfo()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void PositionDetailInfo::InitAsDefaultInstance() {
+}
+
+PositionDetailInfo::PositionDetailInfo(const PositionDetailInfo& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void PositionDetailInfo::SharedCtor() {
+  _cached_size_ = 0;
+  instrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  hedgeflag_ = 49;
+  direction_ = 48;
+  opendate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  tradeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  volume_ = 0;
+  openprice_ = 0;
+  tradingday_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  settlementid_ = 0;
+  tradetype_ = 48;
+  combinstrumentid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  closeprofitbydate_ = 0;
+  closeprofitbytrade_ = 0;
+  positionprofitbydate_ = 0;
+  positionprofitbytrade_ = 0;
+  margin_ = 0;
+  exchmargin_ = 0;
+  marginratebymoney_ = 0;
+  marginratebyvolume_ = 0;
+  lastsettlementprice_ = 0;
+  settlementprice_ = 0;
+  closevolume_ = 0;
+  closeamount_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+PositionDetailInfo::~PositionDetailInfo() {
+  SharedDtor();
+}
+
+void PositionDetailInfo::SharedDtor() {
+  if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    delete instrumentid_;
+  }
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    delete brokerid_;
+  }
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    delete investorid_;
+  }
+  if (opendate_ != &::google::protobuf::internal::kEmptyString) {
+    delete opendate_;
+  }
+  if (tradeid_ != &::google::protobuf::internal::kEmptyString) {
+    delete tradeid_;
+  }
+  if (tradingday_ != &::google::protobuf::internal::kEmptyString) {
+    delete tradingday_;
+  }
+  if (combinstrumentid_ != &::google::protobuf::internal::kEmptyString) {
+    delete combinstrumentid_;
+  }
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    delete exchangeid_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void PositionDetailInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* PositionDetailInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PositionDetailInfo_descriptor_;
+}
+
+const PositionDetailInfo& PositionDetailInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_trade_2eproto();  return *default_instance_;
+}
+
+PositionDetailInfo* PositionDetailInfo::default_instance_ = NULL;
+
+PositionDetailInfo* PositionDetailInfo::New() const {
+  return new PositionDetailInfo;
+}
+
+void PositionDetailInfo::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_instrumentid()) {
+      if (instrumentid_ != &::google::protobuf::internal::kEmptyString) {
+        instrumentid_->clear();
+      }
+    }
+    if (has_brokerid()) {
+      if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+        brokerid_->clear();
+      }
+    }
+    if (has_investorid()) {
+      if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+        investorid_->clear();
+      }
+    }
+    hedgeflag_ = 49;
+    direction_ = 48;
+    if (has_opendate()) {
+      if (opendate_ != &::google::protobuf::internal::kEmptyString) {
+        opendate_->clear();
+      }
+    }
+    if (has_tradeid()) {
+      if (tradeid_ != &::google::protobuf::internal::kEmptyString) {
+        tradeid_->clear();
+      }
+    }
+    volume_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    openprice_ = 0;
+    if (has_tradingday()) {
+      if (tradingday_ != &::google::protobuf::internal::kEmptyString) {
+        tradingday_->clear();
+      }
+    }
+    settlementid_ = 0;
+    tradetype_ = 48;
+    if (has_combinstrumentid()) {
+      if (combinstrumentid_ != &::google::protobuf::internal::kEmptyString) {
+        combinstrumentid_->clear();
+      }
+    }
+    if (has_exchangeid()) {
+      if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+        exchangeid_->clear();
+      }
+    }
+    closeprofitbydate_ = 0;
+    closeprofitbytrade_ = 0;
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    positionprofitbydate_ = 0;
+    positionprofitbytrade_ = 0;
+    margin_ = 0;
+    exchmargin_ = 0;
+    marginratebymoney_ = 0;
+    marginratebyvolume_ = 0;
+    lastsettlementprice_ = 0;
+    settlementprice_ = 0;
+  }
+  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
+    closevolume_ = 0;
+    closeamount_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool PositionDetailInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string InstrumentID = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_instrumentid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->instrumentid().data(), this->instrumentid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_BrokerID;
+        break;
+      }
+      
+      // required string BrokerID = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_BrokerID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->brokerid().data(), this->brokerid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_InvestorID;
+        break;
+      }
+      
+      // required string InvestorID = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_InvestorID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_investorid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->investorid().data(), this->investorid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_HedgeFlag;
+        break;
+      }
+      
+      // required .trade.HedgeFlagType HedgeFlag = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_HedgeFlag:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (trade::HedgeFlagType_IsValid(value)) {
+            set_hedgeflag(static_cast< trade::HedgeFlagType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(4, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_Direction;
+        break;
+      }
+      
+      // required .trade.TradeDirectionType Direction = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Direction:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (trade::TradeDirectionType_IsValid(value)) {
+            set_direction(static_cast< trade::TradeDirectionType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(5, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_OpenDate;
+        break;
+      }
+      
+      // required string OpenDate = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_OpenDate:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_opendate()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->opendate().data(), this->opendate().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(58)) goto parse_TradeID;
+        break;
+      }
+      
+      // required string TradeID = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_TradeID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_tradeid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->tradeid().data(), this->tradeid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(64)) goto parse_Volume;
+        break;
+      }
+      
+      // required int32 Volume = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Volume:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &volume_)));
+          set_has_volume();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(73)) goto parse_OpenPrice;
+        break;
+      }
+      
+      // required double OpenPrice = 9;
+      case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_OpenPrice:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &openprice_)));
+          set_has_openprice();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(82)) goto parse_TradingDay;
+        break;
+      }
+      
+      // required string TradingDay = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_TradingDay:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_tradingday()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->tradingday().data(), this->tradingday().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(88)) goto parse_SettlementID;
+        break;
+      }
+      
+      // required int32 SettlementID = 11;
+      case 11: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SettlementID:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &settlementid_)));
+          set_has_settlementid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(96)) goto parse_TradeType;
+        break;
+      }
+      
+      // required .trade.TradeTypeType TradeType = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_TradeType:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (trade::TradeTypeType_IsValid(value)) {
+            set_tradetype(static_cast< trade::TradeTypeType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(12, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(106)) goto parse_CombInstrumentID;
+        break;
+      }
+      
+      // required string CombInstrumentID = 13;
+      case 13: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_CombInstrumentID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_combinstrumentid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->combinstrumentid().data(), this->combinstrumentid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(114)) goto parse_ExchangeID;
+        break;
+      }
+      
+      // required string ExchangeID = 14;
+      case 14: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_ExchangeID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_exchangeid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->exchangeid().data(), this->exchangeid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(121)) goto parse_CloseProfitByDate;
+        break;
+      }
+      
+      // required double CloseProfitByDate = 15;
+      case 15: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_CloseProfitByDate:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &closeprofitbydate_)));
+          set_has_closeprofitbydate();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(129)) goto parse_CloseProfitByTrade;
+        break;
+      }
+      
+      // required double CloseProfitByTrade = 16;
+      case 16: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_CloseProfitByTrade:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &closeprofitbytrade_)));
+          set_has_closeprofitbytrade();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(137)) goto parse_PositionProfitByDate;
+        break;
+      }
+      
+      // required double PositionProfitByDate = 17;
+      case 17: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_PositionProfitByDate:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &positionprofitbydate_)));
+          set_has_positionprofitbydate();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(145)) goto parse_PositionProfitByTrade;
+        break;
+      }
+      
+      // required double PositionProfitByTrade = 18;
+      case 18: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_PositionProfitByTrade:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &positionprofitbytrade_)));
+          set_has_positionprofitbytrade();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(153)) goto parse_Margin;
+        break;
+      }
+      
+      // required double Margin = 19;
+      case 19: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_Margin:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &margin_)));
+          set_has_margin();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(161)) goto parse_ExchMargin;
+        break;
+      }
+      
+      // required double ExchMargin = 20;
+      case 20: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_ExchMargin:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &exchmargin_)));
+          set_has_exchmargin();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(169)) goto parse_MarginRateByMoney;
+        break;
+      }
+      
+      // required double MarginRateByMoney = 21;
+      case 21: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_MarginRateByMoney:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &marginratebymoney_)));
+          set_has_marginratebymoney();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(177)) goto parse_MarginRateByVolume;
+        break;
+      }
+      
+      // required double MarginRateByVolume = 22;
+      case 22: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_MarginRateByVolume:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &marginratebyvolume_)));
+          set_has_marginratebyvolume();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(185)) goto parse_LastSettlementPrice;
+        break;
+      }
+      
+      // required double LastSettlementPrice = 23;
+      case 23: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_LastSettlementPrice:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &lastsettlementprice_)));
+          set_has_lastsettlementprice();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(193)) goto parse_SettlementPrice;
+        break;
+      }
+      
+      // required double SettlementPrice = 24;
+      case 24: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_SettlementPrice:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &settlementprice_)));
+          set_has_settlementprice();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(200)) goto parse_CloseVolume;
+        break;
+      }
+      
+      // required int32 CloseVolume = 25;
+      case 25: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_CloseVolume:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &closevolume_)));
+          set_has_closevolume();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(209)) goto parse_CloseAmount;
+        break;
+      }
+      
+      // required double CloseAmount = 26;
+      case 26: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_CloseAmount:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &closeamount_)));
+          set_has_closeamount();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void PositionDetailInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string InstrumentID = 1;
+  if (has_instrumentid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->instrumentid().data(), this->instrumentid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->instrumentid(), output);
+  }
+  
+  // required string BrokerID = 2;
+  if (has_brokerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->brokerid(), output);
+  }
+  
+  // required string InvestorID = 3;
+  if (has_investorid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->investorid().data(), this->investorid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->investorid(), output);
+  }
+  
+  // required .trade.HedgeFlagType HedgeFlag = 4;
+  if (has_hedgeflag()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      4, this->hedgeflag(), output);
+  }
+  
+  // required .trade.TradeDirectionType Direction = 5;
+  if (has_direction()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      5, this->direction(), output);
+  }
+  
+  // required string OpenDate = 6;
+  if (has_opendate()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->opendate().data(), this->opendate().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      6, this->opendate(), output);
+  }
+  
+  // required string TradeID = 7;
+  if (has_tradeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->tradeid().data(), this->tradeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      7, this->tradeid(), output);
+  }
+  
+  // required int32 Volume = 8;
+  if (has_volume()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->volume(), output);
+  }
+  
+  // required double OpenPrice = 9;
+  if (has_openprice()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(9, this->openprice(), output);
+  }
+  
+  // required string TradingDay = 10;
+  if (has_tradingday()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->tradingday().data(), this->tradingday().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      10, this->tradingday(), output);
+  }
+  
+  // required int32 SettlementID = 11;
+  if (has_settlementid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(11, this->settlementid(), output);
+  }
+  
+  // required .trade.TradeTypeType TradeType = 12;
+  if (has_tradetype()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      12, this->tradetype(), output);
+  }
+  
+  // required string CombInstrumentID = 13;
+  if (has_combinstrumentid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->combinstrumentid().data(), this->combinstrumentid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      13, this->combinstrumentid(), output);
+  }
+  
+  // required string ExchangeID = 14;
+  if (has_exchangeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeid().data(), this->exchangeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      14, this->exchangeid(), output);
+  }
+  
+  // required double CloseProfitByDate = 15;
+  if (has_closeprofitbydate()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(15, this->closeprofitbydate(), output);
+  }
+  
+  // required double CloseProfitByTrade = 16;
+  if (has_closeprofitbytrade()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(16, this->closeprofitbytrade(), output);
+  }
+  
+  // required double PositionProfitByDate = 17;
+  if (has_positionprofitbydate()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(17, this->positionprofitbydate(), output);
+  }
+  
+  // required double PositionProfitByTrade = 18;
+  if (has_positionprofitbytrade()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(18, this->positionprofitbytrade(), output);
+  }
+  
+  // required double Margin = 19;
+  if (has_margin()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(19, this->margin(), output);
+  }
+  
+  // required double ExchMargin = 20;
+  if (has_exchmargin()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(20, this->exchmargin(), output);
+  }
+  
+  // required double MarginRateByMoney = 21;
+  if (has_marginratebymoney()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(21, this->marginratebymoney(), output);
+  }
+  
+  // required double MarginRateByVolume = 22;
+  if (has_marginratebyvolume()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(22, this->marginratebyvolume(), output);
+  }
+  
+  // required double LastSettlementPrice = 23;
+  if (has_lastsettlementprice()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(23, this->lastsettlementprice(), output);
+  }
+  
+  // required double SettlementPrice = 24;
+  if (has_settlementprice()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(24, this->settlementprice(), output);
+  }
+  
+  // required int32 CloseVolume = 25;
+  if (has_closevolume()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(25, this->closevolume(), output);
+  }
+  
+  // required double CloseAmount = 26;
+  if (has_closeamount()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(26, this->closeamount(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* PositionDetailInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string InstrumentID = 1;
+  if (has_instrumentid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->instrumentid().data(), this->instrumentid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->instrumentid(), target);
+  }
+  
+  // required string BrokerID = 2;
+  if (has_brokerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->brokerid(), target);
+  }
+  
+  // required string InvestorID = 3;
+  if (has_investorid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->investorid().data(), this->investorid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->investorid(), target);
+  }
+  
+  // required .trade.HedgeFlagType HedgeFlag = 4;
+  if (has_hedgeflag()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      4, this->hedgeflag(), target);
+  }
+  
+  // required .trade.TradeDirectionType Direction = 5;
+  if (has_direction()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      5, this->direction(), target);
+  }
+  
+  // required string OpenDate = 6;
+  if (has_opendate()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->opendate().data(), this->opendate().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->opendate(), target);
+  }
+  
+  // required string TradeID = 7;
+  if (has_tradeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->tradeid().data(), this->tradeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        7, this->tradeid(), target);
+  }
+  
+  // required int32 Volume = 8;
+  if (has_volume()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->volume(), target);
+  }
+  
+  // required double OpenPrice = 9;
+  if (has_openprice()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(9, this->openprice(), target);
+  }
+  
+  // required string TradingDay = 10;
+  if (has_tradingday()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->tradingday().data(), this->tradingday().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        10, this->tradingday(), target);
+  }
+  
+  // required int32 SettlementID = 11;
+  if (has_settlementid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(11, this->settlementid(), target);
+  }
+  
+  // required .trade.TradeTypeType TradeType = 12;
+  if (has_tradetype()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      12, this->tradetype(), target);
+  }
+  
+  // required string CombInstrumentID = 13;
+  if (has_combinstrumentid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->combinstrumentid().data(), this->combinstrumentid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        13, this->combinstrumentid(), target);
+  }
+  
+  // required string ExchangeID = 14;
+  if (has_exchangeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeid().data(), this->exchangeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        14, this->exchangeid(), target);
+  }
+  
+  // required double CloseProfitByDate = 15;
+  if (has_closeprofitbydate()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(15, this->closeprofitbydate(), target);
+  }
+  
+  // required double CloseProfitByTrade = 16;
+  if (has_closeprofitbytrade()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(16, this->closeprofitbytrade(), target);
+  }
+  
+  // required double PositionProfitByDate = 17;
+  if (has_positionprofitbydate()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(17, this->positionprofitbydate(), target);
+  }
+  
+  // required double PositionProfitByTrade = 18;
+  if (has_positionprofitbytrade()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(18, this->positionprofitbytrade(), target);
+  }
+  
+  // required double Margin = 19;
+  if (has_margin()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(19, this->margin(), target);
+  }
+  
+  // required double ExchMargin = 20;
+  if (has_exchmargin()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(20, this->exchmargin(), target);
+  }
+  
+  // required double MarginRateByMoney = 21;
+  if (has_marginratebymoney()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(21, this->marginratebymoney(), target);
+  }
+  
+  // required double MarginRateByVolume = 22;
+  if (has_marginratebyvolume()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(22, this->marginratebyvolume(), target);
+  }
+  
+  // required double LastSettlementPrice = 23;
+  if (has_lastsettlementprice()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(23, this->lastsettlementprice(), target);
+  }
+  
+  // required double SettlementPrice = 24;
+  if (has_settlementprice()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(24, this->settlementprice(), target);
+  }
+  
+  // required int32 CloseVolume = 25;
+  if (has_closevolume()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(25, this->closevolume(), target);
+  }
+  
+  // required double CloseAmount = 26;
+  if (has_closeamount()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(26, this->closeamount(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int PositionDetailInfo::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string InstrumentID = 1;
+    if (has_instrumentid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->instrumentid());
+    }
+    
+    // required string BrokerID = 2;
+    if (has_brokerid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->brokerid());
+    }
+    
+    // required string InvestorID = 3;
+    if (has_investorid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->investorid());
+    }
+    
+    // required .trade.HedgeFlagType HedgeFlag = 4;
+    if (has_hedgeflag()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->hedgeflag());
+    }
+    
+    // required .trade.TradeDirectionType Direction = 5;
+    if (has_direction()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->direction());
+    }
+    
+    // required string OpenDate = 6;
+    if (has_opendate()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->opendate());
+    }
+    
+    // required string TradeID = 7;
+    if (has_tradeid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->tradeid());
+    }
+    
+    // required int32 Volume = 8;
+    if (has_volume()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->volume());
+    }
+    
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // required double OpenPrice = 9;
+    if (has_openprice()) {
+      total_size += 1 + 8;
+    }
+    
+    // required string TradingDay = 10;
+    if (has_tradingday()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->tradingday());
+    }
+    
+    // required int32 SettlementID = 11;
+    if (has_settlementid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->settlementid());
+    }
+    
+    // required .trade.TradeTypeType TradeType = 12;
+    if (has_tradetype()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->tradetype());
+    }
+    
+    // required string CombInstrumentID = 13;
+    if (has_combinstrumentid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->combinstrumentid());
+    }
+    
+    // required string ExchangeID = 14;
+    if (has_exchangeid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->exchangeid());
+    }
+    
+    // required double CloseProfitByDate = 15;
+    if (has_closeprofitbydate()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double CloseProfitByTrade = 16;
+    if (has_closeprofitbytrade()) {
+      total_size += 2 + 8;
+    }
+    
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    // required double PositionProfitByDate = 17;
+    if (has_positionprofitbydate()) {
+      total_size += 2 + 8;
+    }
+    
+    // required double PositionProfitByTrade = 18;
+    if (has_positionprofitbytrade()) {
+      total_size += 2 + 8;
+    }
+    
+    // required double Margin = 19;
+    if (has_margin()) {
+      total_size += 2 + 8;
+    }
+    
+    // required double ExchMargin = 20;
+    if (has_exchmargin()) {
+      total_size += 2 + 8;
+    }
+    
+    // required double MarginRateByMoney = 21;
+    if (has_marginratebymoney()) {
+      total_size += 2 + 8;
+    }
+    
+    // required double MarginRateByVolume = 22;
+    if (has_marginratebyvolume()) {
+      total_size += 2 + 8;
+    }
+    
+    // required double LastSettlementPrice = 23;
+    if (has_lastsettlementprice()) {
+      total_size += 2 + 8;
+    }
+    
+    // required double SettlementPrice = 24;
+    if (has_settlementprice()) {
+      total_size += 2 + 8;
+    }
+    
+  }
+  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
+    // required int32 CloseVolume = 25;
+    if (has_closevolume()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->closevolume());
+    }
+    
+    // required double CloseAmount = 26;
+    if (has_closeamount()) {
+      total_size += 2 + 8;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void PositionDetailInfo::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const PositionDetailInfo* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const PositionDetailInfo*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void PositionDetailInfo::MergeFrom(const PositionDetailInfo& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_instrumentid()) {
+      set_instrumentid(from.instrumentid());
+    }
+    if (from.has_brokerid()) {
+      set_brokerid(from.brokerid());
+    }
+    if (from.has_investorid()) {
+      set_investorid(from.investorid());
+    }
+    if (from.has_hedgeflag()) {
+      set_hedgeflag(from.hedgeflag());
+    }
+    if (from.has_direction()) {
+      set_direction(from.direction());
+    }
+    if (from.has_opendate()) {
+      set_opendate(from.opendate());
+    }
+    if (from.has_tradeid()) {
+      set_tradeid(from.tradeid());
+    }
+    if (from.has_volume()) {
+      set_volume(from.volume());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_openprice()) {
+      set_openprice(from.openprice());
+    }
+    if (from.has_tradingday()) {
+      set_tradingday(from.tradingday());
+    }
+    if (from.has_settlementid()) {
+      set_settlementid(from.settlementid());
+    }
+    if (from.has_tradetype()) {
+      set_tradetype(from.tradetype());
+    }
+    if (from.has_combinstrumentid()) {
+      set_combinstrumentid(from.combinstrumentid());
+    }
+    if (from.has_exchangeid()) {
+      set_exchangeid(from.exchangeid());
+    }
+    if (from.has_closeprofitbydate()) {
+      set_closeprofitbydate(from.closeprofitbydate());
+    }
+    if (from.has_closeprofitbytrade()) {
+      set_closeprofitbytrade(from.closeprofitbytrade());
+    }
+  }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    if (from.has_positionprofitbydate()) {
+      set_positionprofitbydate(from.positionprofitbydate());
+    }
+    if (from.has_positionprofitbytrade()) {
+      set_positionprofitbytrade(from.positionprofitbytrade());
+    }
+    if (from.has_margin()) {
+      set_margin(from.margin());
+    }
+    if (from.has_exchmargin()) {
+      set_exchmargin(from.exchmargin());
+    }
+    if (from.has_marginratebymoney()) {
+      set_marginratebymoney(from.marginratebymoney());
+    }
+    if (from.has_marginratebyvolume()) {
+      set_marginratebyvolume(from.marginratebyvolume());
+    }
+    if (from.has_lastsettlementprice()) {
+      set_lastsettlementprice(from.lastsettlementprice());
+    }
+    if (from.has_settlementprice()) {
+      set_settlementprice(from.settlementprice());
+    }
+  }
+  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
+    if (from.has_closevolume()) {
+      set_closevolume(from.closevolume());
+    }
+    if (from.has_closeamount()) {
+      set_closeamount(from.closeamount());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void PositionDetailInfo::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void PositionDetailInfo::CopyFrom(const PositionDetailInfo& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool PositionDetailInfo::IsInitialized() const {
+  if ((_has_bits_[0] & 0x03ffffff) != 0x03ffffff) return false;
+  
+  return true;
+}
+
+void PositionDetailInfo::Swap(PositionDetailInfo* other) {
+  if (other != this) {
+    std::swap(instrumentid_, other->instrumentid_);
+    std::swap(brokerid_, other->brokerid_);
+    std::swap(investorid_, other->investorid_);
+    std::swap(hedgeflag_, other->hedgeflag_);
+    std::swap(direction_, other->direction_);
+    std::swap(opendate_, other->opendate_);
+    std::swap(tradeid_, other->tradeid_);
+    std::swap(volume_, other->volume_);
+    std::swap(openprice_, other->openprice_);
+    std::swap(tradingday_, other->tradingday_);
+    std::swap(settlementid_, other->settlementid_);
+    std::swap(tradetype_, other->tradetype_);
+    std::swap(combinstrumentid_, other->combinstrumentid_);
+    std::swap(exchangeid_, other->exchangeid_);
+    std::swap(closeprofitbydate_, other->closeprofitbydate_);
+    std::swap(closeprofitbytrade_, other->closeprofitbytrade_);
+    std::swap(positionprofitbydate_, other->positionprofitbydate_);
+    std::swap(positionprofitbytrade_, other->positionprofitbytrade_);
+    std::swap(margin_, other->margin_);
+    std::swap(exchmargin_, other->exchmargin_);
+    std::swap(marginratebymoney_, other->marginratebymoney_);
+    std::swap(marginratebyvolume_, other->marginratebyvolume_);
+    std::swap(lastsettlementprice_, other->lastsettlementprice_);
+    std::swap(settlementprice_, other->settlementprice_);
+    std::swap(closevolume_, other->closevolume_);
+    std::swap(closeamount_, other->closeamount_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata PositionDetailInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = PositionDetailInfo_descriptor_;
+  metadata.reflection = PositionDetailInfo_reflection_;
   return metadata;
 }
 

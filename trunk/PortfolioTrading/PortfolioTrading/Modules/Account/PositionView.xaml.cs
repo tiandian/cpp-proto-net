@@ -23,21 +23,14 @@ namespace PortfolioTrading.Modules.Account
     [PartCreationPolicy(CreationPolicy.NonShared)]
     public partial class PositionView : UserControl
     {
-        public PositionView()
+        public PositionDetailVM ViewModel { get; private set;}
+
+        [ImportingConstructor]
+        public PositionView(PositionDetailVM viewModel)
         {
+            ViewModel = viewModel;
+            DataContext = ViewModel;
             InitializeComponent();
-        }
-
-        private PositionDetailVM _viewModel;
-
-        public PositionDetailVM ViewModel
-        {
-            get { return _viewModel; }
-            set 
-            { 
-                _viewModel = value;
-                DataContext = _viewModel;
-            }
         }
         
     }

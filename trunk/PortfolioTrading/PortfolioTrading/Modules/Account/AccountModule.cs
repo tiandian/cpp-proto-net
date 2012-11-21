@@ -9,6 +9,8 @@ using Microsoft.Practices.ServiceLocation;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
+using PortfolioTrading.Utils;
+using PortfolioTrading.Modules.Portfolio;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -39,7 +41,40 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnQueryPosition(AccountVM acctVm)
         {
+            string viewName = acctVm.InvestorId;
+            var existingPane = RegionManager.GetExistingPane<PositionContentPane>(viewName);
+            if (existingPane != null)
+            {
+                existingPane.Activate();
+            }
+            else
+            {
+                PositionContentPane pane = new PositionContentPane();
+                pane.ViewName = viewName;
+                var positionView = ServiceLocator.Current.GetInstance<PositionView>();
+                positionView.ViewModel.SetAccount(acctVm);
+                pane.Content = positionView;
+                //pane.CloseAction = Infragistics.Windows.DockManager.PaneCloseAction.RemovePane;
+                pane.Closed += new EventHandler<Infragistics.Windows.DockManager.Events.PaneClosedEventArgs>(pane_Closed);
+                
+                RegionManager.RegisterViewWithRegion(RegionNames.PortfolioViewRegion,
+                                                    () => pane);
+                pane.Activate();
+            }
+        }
 
+        void pane_Closed(object sender, Infragistics.Windows.DockManager.Events.PaneClosedEventArgs e)
+        {
+            PositionContentPane pane = sender as PositionContentPane;
+            if (pane != null)
+            {
+                PositionView positionView = pane.Content as PositionView;
+                if (positionView != null)
+                {
+
+                }
+            }
+            RegionManager.RemovePane(sender);
         }
     }
 }
