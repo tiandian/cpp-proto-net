@@ -423,10 +423,17 @@ namespace PortfolioTrading.Modules.Account
 
         public void TradeStaionCutDown()
         {
-            _client.QuoteLogout();
-            _client.TradeLogout();
-            _client.QuoteDisconnect();
-            _client.TradeDisconnect();
+            try
+            {
+                _client.QuoteLogout();
+                _client.TradeLogout();
+                _client.QuoteDisconnect();
+                _client.TradeDisconnect();
+            }
+            catch (System.Exception ex)
+            {
+                LogManager.Logger.WarnFormat("Cutting down Trade station encountered error - {0}", ex.Message);            	
+            }
         }
 
         public static AccountVM Load(XElement xmlElement)
@@ -507,7 +514,7 @@ namespace PortfolioTrading.Modules.Account
             string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, obj.Diff);
             Debug.WriteLine(info);
             var portf = Get(obj.ID);
-            portf.Update(obj);
+            DispatcherHelper.Current.Invoke(new Action(() => portf.Update(obj)));
         }
 
         void _client_OnQuoteReceived(entity.Quote obj)
@@ -519,7 +526,8 @@ namespace PortfolioTrading.Modules.Account
         {
             if (OnPositionDetailReturn != null)
             {
-                OnPositionDetailReturn(obj);
+                DispatcherHelper.Current.Invoke(
+                    new Action(() => OnPositionDetailReturn(obj)));
             }
         }
 

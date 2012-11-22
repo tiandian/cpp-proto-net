@@ -46,6 +46,9 @@ namespace PortfolioTrading.Modules.Account
             if (existingPane != null)
             {
                 existingPane.Activate();
+                PositionView positionView = existingPane.Content as PositionView;
+                if (positionView != null)
+                    positionView.ViewModel.RefreshPositionCommand.Execute();
             }
             else
             {
@@ -53,6 +56,7 @@ namespace PortfolioTrading.Modules.Account
                 pane.ViewName = viewName;
                 var positionView = ServiceLocator.Current.GetInstance<PositionView>();
                 positionView.ViewModel.SetAccount(acctVm);
+                positionView.ViewModel.RefreshPositionCommand.Execute();
                 pane.Content = positionView;
                 //pane.CloseAction = Infragistics.Windows.DockManager.PaneCloseAction.RemovePane;
                 pane.Closed += new EventHandler<Infragistics.Windows.DockManager.Events.PaneClosedEventArgs>(pane_Closed);
@@ -71,7 +75,7 @@ namespace PortfolioTrading.Modules.Account
                 PositionView positionView = pane.Content as PositionView;
                 if (positionView != null)
                 {
-
+                    positionView.ViewModel.SetAccount(null);
                 }
             }
             RegionManager.RemovePane(sender);

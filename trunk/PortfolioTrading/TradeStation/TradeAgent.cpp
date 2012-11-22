@@ -873,6 +873,7 @@ void CTradeAgent::OnRspQryInvestorPositionDetail( CThostFtdcInvestorPositionDeta
 		posiDetail.set_marginratebymoney(pInvestorPositionDetail->MarginRateByMoney);
 		posiDetail.set_marginratebyvolume(pInvestorPositionDetail->MarginRateByVolume);
 		posiDetail.set_lastsettlementprice(pInvestorPositionDetail->LastSettlementPrice);
+		posiDetail.set_settlementprice(pInvestorPositionDetail->SettlementPrice);
 		posiDetail.set_closevolume(pInvestorPositionDetail->CloseVolume);
 		posiDetail.set_closeamount(pInvestorPositionDetail->CloseAmount);
 
