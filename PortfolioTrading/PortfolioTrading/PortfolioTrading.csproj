@@ -170,6 +170,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShellViewModel.cs" />
+    <Compile Include="Utils\DispatcherHelper.cs" />
     <Compile Include="Utils\EventLogger.cs" />
     <Compile Include="Utils\ILog.cs" />
     <Compile Include="Utils\Log4netLogger.cs" />

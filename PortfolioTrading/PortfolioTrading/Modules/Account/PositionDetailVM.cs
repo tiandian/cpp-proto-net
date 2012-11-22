@@ -42,6 +42,7 @@ namespace PortfolioTrading.Modules.Account
             {
                 if (_acctVm != null)
                 {
+                    Clear();
                     _acctVm.QueryPositionDetails("");
                 }
             }
@@ -53,16 +54,15 @@ namespace PortfolioTrading.Modules.Account
 
             public void SetAccount(AccountVM acctVm)
             {
-                _acctVm = acctVm;
-                    
                 if (acctVm != null)
                 {
-                    _acctVm.OnPositionDetailReturn += _acctVm_OnPositionDetailReturn;
+                    acctVm.OnPositionDetailReturn += _acctVm_OnPositionDetailReturn;
                 }
                 else
                 {
                     _acctVm.OnPositionDetailReturn -= _acctVm_OnPositionDetailReturn;
                 }
+                _acctVm = acctVm;
             }
 
             void _acctVm_OnPositionDetailReturn(trade.PositionDetailInfo posiDetail)
@@ -86,6 +86,8 @@ namespace PortfolioTrading.Modules.Account
                 posiItem.CloseAmount = posiDetail.CloseAmount;
 
                 _positionDetailItems.Add(posiItem);
+
+                UpdateTime = DateTime.Now;
             }
 
             private static string GetHedgeText(trade.HedgeFlagType hedgeFlag)

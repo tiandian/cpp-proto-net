@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Events;
 using PortfolioTrading.Events;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading
 {
@@ -33,7 +34,7 @@ namespace PortfolioTrading
        
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            DispatcherHelper.Init(this.Dispatcher);
         }
 
         private void Window_Closed(object sender, EventArgs e)
