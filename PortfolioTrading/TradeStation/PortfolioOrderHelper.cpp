@@ -324,3 +324,8 @@ int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::share
 
 	return genInputOrders->size();
 }
+
+//trade::InputOrder* BuildCloseOrder(int quantity, closeFlag, flag, double limitPrice, const string& symbol)
+//{
+//
+//}

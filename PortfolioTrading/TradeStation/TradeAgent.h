@@ -2,6 +2,8 @@
 
 #include "TradeAgentCallback.h"
 #include "ThostTraderApi/ThostFtdcTraderApi.h"
+#include "SyncRequest.h"
+#include "../Entity/gen/cpp/quote.pb.h"
 
 #include <string>
 #include <boost/thread.hpp>
@@ -32,6 +34,9 @@ public:
 	void QueryOrders(const std::string& symbol);
 	void QueryPositions();
 	void QueryPositionDetails(const std::string& symbol);
+
+	bool QuerySymbol(const std::string& symbol, entity::Quote** ppQuote);
+	void QuerySymbolAsync(const std::string& symbol);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
@@ -77,6 +82,9 @@ public:
 
 	///成交通知
 	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
+	
+	///请求查询行情响应
+	virtual void OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);;
 
 	//////////////////////////////////////////////////////////////////////////
 
@@ -108,5 +116,7 @@ private:
 	TThostFtdcFrontIDType	FRONT_ID;	//前置编号
 	TThostFtdcSessionIDType	SESSION_ID;	//会话编号
 	int m_maxOrderRef;					//报单引用
+
+	CSyncRequestFactory m_requestFactory;
 };
 

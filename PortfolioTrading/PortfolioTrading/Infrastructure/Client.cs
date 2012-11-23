@@ -174,6 +174,15 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("QueryPositionDetails", param_data);
         }
 
+        public void ManualCloseOrder(string symbol)
+        {
+            entity.ManualCloseOrderParam closeOrdParam = new entity.ManualCloseOrderParam();
+            closeOrdParam.Symbol = symbol;
+
+            byte[] param_data = DataTranslater.Serialize(closeOrdParam);
+            byte[] ret_data = Request("ManualCloseOrder", param_data);
+        }
+
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
         {
             ConnectParam connParam = new ConnectParam()

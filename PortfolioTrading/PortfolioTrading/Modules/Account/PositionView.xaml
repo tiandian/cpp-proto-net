@@ -16,14 +16,15 @@
             </TextBlock>
         </DockPanel>
         <igDP:XamDataGrid GroupByAreaLocation="None" AutoFit="True" DataSource="{Binding PositionDetailItems}"
-                          Margin="4" Theme="Office2k7Blue">
+                          Margin="4" Theme="Office2k7Blue" Name="PositionDetailGrid">
             <igDP:XamDataGrid.Resources>
                 <Style x:Key="closePosiColStyle" TargetType="igDP:CellValuePresenter">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="igDP:CellValuePresenter">
                                 <Button HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Tag="{Binding DataItem}">
+                                        Command="{Binding Path=DataContext.CloseOrderCommand, ElementName=PositionDetailGrid}"
+                                        CommandParameter="{Binding DataItem}">
                                     平仓
                                 </Button>
                             </ControlTemplate>
