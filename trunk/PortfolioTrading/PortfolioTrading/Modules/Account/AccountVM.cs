@@ -193,6 +193,11 @@ namespace PortfolioTrading.Modules.Account
             _client.QueryPositionDetails(symbol);
         }
 
+        public void ManualCloseOrder(string symbol)
+        {
+            _client.ManualCloseOrder(symbol);
+        }
+
         private void OnAddPortfolio(AccountVM acct)
         {
             PortfolioVM portf = new PortfolioVM(this);
@@ -514,7 +519,7 @@ namespace PortfolioTrading.Modules.Account
             string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, obj.Diff);
             Debug.WriteLine(info);
             var portf = Get(obj.ID);
-            DispatcherHelper.Current.Invoke(new Action(() => portf.Update(obj)));
+            DispatcherHelper.Current.BeginInvoke(new Action(() => portf.Update(obj)));
         }
 
         void _client_OnQuoteReceived(entity.Quote obj)
@@ -526,7 +531,7 @@ namespace PortfolioTrading.Modules.Account
         {
             if (OnPositionDetailReturn != null)
             {
-                DispatcherHelper.Current.Invoke(
+                DispatcherHelper.Current.BeginInvoke(
                     new Action(() => OnPositionDetailReturn(obj)));
             }
         }

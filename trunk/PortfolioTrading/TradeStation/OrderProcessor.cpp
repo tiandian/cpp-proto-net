@@ -559,6 +559,12 @@ void COrderProcessor::QueryPositionDetails( const string& symbol )
 	m_pTradeAgent->QueryPositionDetails(symbol);
 }
 
+void COrderProcessor::ManualCloseOrder( const string& symbol )
+{
+	entity::Quote* pQuote = NULL;
+	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
+}
+
 
 
 

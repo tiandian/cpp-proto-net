@@ -42,6 +42,8 @@ public:
 
 	void ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice, string* modifiedOrdRef);
 
+	void ManualCloseOrder(const string& symbol);
+
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
 	void QueryPositionDetails(const string& symbol);
 

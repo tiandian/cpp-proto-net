@@ -670,4 +670,21 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ManualCloseOrderParam")]
+  public partial class ManualCloseOrderParam : global::ProtoBuf.IExtensible
+  {
+    public ManualCloseOrderParam() {}
+    
+    private string _Symbol;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"Symbol", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string Symbol
+    {
+      get { return _Symbol; }
+      set { _Symbol = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
 }

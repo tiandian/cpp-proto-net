@@ -399,7 +399,7 @@ void CTradeAgent::QueryAccount()
 		int iResult = m_pUserApi->ReqQryTradingAccount(&req, RequestIDIncrement());
 		if (!IsFlowControl(iResult))
 		{
-			std::string infoText = boost::str(boost::format("Query trading account: %d, %s") % iResult % ((iResult == 0) ? ", 成功" : ", 失败"));
+			std::string infoText = boost::str(boost::format("Query trading account: %d, %s") % iResult % ((iResult == 0) ? "成功" : "失败"));
 			logger.Info(infoText);
 			break;
 		}
@@ -828,7 +828,7 @@ void CTradeAgent::QueryPositionDetails( const std::string& symbol )
 		int iResult = m_pUserApi->ReqQryInvestorPositionDetail(&req, RequestIDIncrement());
 		if (!IsFlowControl(iResult))
 		{
-			std::string infoText = boost::str(boost::format("Query investor position details: %d, %s") % iResult % ((iResult == 0) ? ", 成功" : ", 失败"));
+			std::string infoText = boost::str(boost::format("Query investor position details: %d, %s") % iResult % ((iResult == 0) ? "成功" : "失败"));
 			logger.Info(infoText);
 			break;
 		}
@@ -880,3 +880,72 @@ void CTradeAgent::OnRspQryInvestorPositionDetail( CThostFtdcInvestorPositionDeta
 		m_pCallback->OnRspQryInvestorPositionDetail(&posiDetail);
 	}
 }
+
+
+bool CTradeAgent::QuerySymbol( const std::string& symbol, entity::Quote** ppQuote )
+{
+	SyncRequestPtr req = m_requestFactory.Create(RequestIDIncrement());
+
+	return true;
+}
+
+void CTradeAgent::QuerySymbolAsync( const std::string& symbol )
+{
+	CThostFtdcQryDepthMarketDataField req;
+	strcpy_s(req.InstrumentID, symbol.c_str());
+	int iResult = m_pUserApi->ReqQryDepthMarketData(&req, RequestIDIncrement());
+
+	std::string infoText = boost::str(boost::format("Query %s Quote: %d, %s") % symbol.c_str() % iResult % ((iResult == 0) ? "成功" : "失败"));
+	logger.Info(infoText);
+}
+
+void CTradeAgent::OnRspQryDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
+{
+	entity::Quote* quote = new entity::Quote();	// it will be managed by quote aggregator
+
+	quote->set_symbol(pDepthMarketData->InstrumentID);
+	quote->set_trading_day(pDepthMarketData->TradingDay);
+	quote->set_exchange_id(pDepthMarketData->ExchangeID);
+	quote->set_exchange_symbol_id(pDepthMarketData->ExchangeInstID);
+	quote->set_last(pDepthMarketData->LastPrice);
+	quote->set_prev_settlement_price(pDepthMarketData->PreSettlementPrice);
+	quote->set_prev_close(pDepthMarketData->PreClosePrice);
+	quote->set_prev_open_interest(pDepthMarketData->PreOpenInterest);
+	quote->set_open(pDepthMarketData->OpenPrice);
+	quote->set_high(pDepthMarketData->HighestPrice);
+	quote->set_low(pDepthMarketData->LowestPrice);
+	quote->set_volume(pDepthMarketData->Volume);
+	quote->set_turnover(pDepthMarketData->Turnover);
+	quote->set_open_interest(pDepthMarketData->OpenInterest);
+	quote->set_close(pDepthMarketData->ClosePrice);
+	quote->set_settlement_price(pDepthMarketData->SettlementPrice);
+	quote->set_upper_limit_price(pDepthMarketData->UpperLimitPrice);
+	quote->set_lower_limit_price(pDepthMarketData->LowerLimitPrice);
+	quote->set_prev_delta(pDepthMarketData->PreDelta);
+	quote->set_curr_delta(pDepthMarketData->CurrDelta);
+	quote->set_update_time(pDepthMarketData->UpdateTime);
+	quote->set_update_millisec(pDepthMarketData->UpdateMillisec);
+
+	quote->set_bid(pDepthMarketData->BidPrice1);
+	quote->set_bid_size(pDepthMarketData->BidVolume1);
+	quote->set_ask(pDepthMarketData->AskPrice1);
+	quote->set_ask_size(pDepthMarketData->AskVolume1);
+	quote->set_bid_2(pDepthMarketData->BidPrice2);
+	quote->set_bid_size_2(pDepthMarketData->BidVolume2);
+	quote->set_ask_2(pDepthMarketData->AskPrice2);
+	quote->set_ask_size_2(pDepthMarketData->AskVolume2);
+	quote->set_bid_3(pDepthMarketData->BidPrice3);
+	quote->set_bid_size_3(pDepthMarketData->BidVolume3);
+	quote->set_ask_3(pDepthMarketData->AskPrice3);
+	quote->set_ask_size_3(pDepthMarketData->AskVolume3);
+	quote->set_bid_4(pDepthMarketData->BidPrice4);
+	quote->set_bid_size_4(pDepthMarketData->BidVolume4);
+	quote->set_ask_4(pDepthMarketData->AskPrice4);
+	quote->set_ask_size_4(pDepthMarketData->AskVolume4);
+	quote->set_bid_5(pDepthMarketData->BidPrice5);
+	quote->set_bid_size_5(pDepthMarketData->BidVolume5);
+	quote->set_ask_5(pDepthMarketData->AskPrice5);
+	quote->set_ask_size_5(pDepthMarketData->AskVolume5);
+	quote->set_average_price(pDepthMarketData->AveragePrice);
+}
+

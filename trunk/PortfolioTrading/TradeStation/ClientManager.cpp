@@ -87,6 +87,7 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("PorfOpenPosition", boost::bind(&CClientManager::PorfOpenPosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ClosePosition", boost::bind(&CClientManager::ClosePosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("CancelOrder", boost::bind(&CClientManager::CancelOrder, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("ManualCloseOrder", boost::bind(&CClientManager::ManualCloseOrder, this, _1, _2, _3)));
 
 	m_reqTransMap.insert(make_pair("PortfEnableStrategy", boost::bind(&CClientManager::PortfEnableStrategy, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PortfSetPreferredLeg", boost::bind(&CClientManager::PortfSetPreferredLeg, this, _1, _2, _3)));
@@ -275,4 +276,12 @@ void CClientManager::QueryPositionDetails( CClientAgent* pClientAgent, const str
 	stringParam.ParseFromString(in_data);
 
 	pClientAgent->QueryPositionDetails(stringParam.data());
+}
+
+void CClientManager::ManualCloseOrder( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::ManualCloseOrderParam closeOrdParam;
+	closeOrdParam.ParseFromString(in_data);
+
+	pClientAgent->ManualCloseOrder(closeOrdParam.symbol());
 }

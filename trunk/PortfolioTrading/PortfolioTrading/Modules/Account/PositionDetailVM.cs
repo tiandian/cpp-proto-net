@@ -29,6 +29,7 @@ namespace PortfolioTrading.Modules.Account
             public PositionDetailVM()
             {
                 RefreshPositionCommand = new DelegateCommand(RequestPositionDetail);
+                CloseOrderCommand = new DelegateCommand<PositionDetailItem>(OnCloseOrder);
             }
 
             public IEnumerable<PositionDetailItem> PositionDetailItems
@@ -37,6 +38,7 @@ namespace PortfolioTrading.Modules.Account
             }
 
             public DelegateCommand RefreshPositionCommand { get; private set; }
+            public DelegateCommand<PositionDetailItem> CloseOrderCommand { get; private set; }
 
             private void RequestPositionDetail()
             {
@@ -44,6 +46,14 @@ namespace PortfolioTrading.Modules.Account
                 {
                     Clear();
                     _acctVm.QueryPositionDetails("");
+                }
+            }
+
+            private void OnCloseOrder(PositionDetailItem positionItem)
+            {
+                if (_acctVm != null)
+                {
+                    _acctVm.ManualCloseOrder(positionItem.Symbol);
                 }
             }
 

@@ -276,3 +276,8 @@ void CClientAgent::QueryPositionDetails( const string& symbol )
 {
 	m_orderProcessor.QueryPositionDetails(symbol);
 }
+
+void CClientAgent::ManualCloseOrder( const string& symbol )
+{
+	m_orderProcessor.ManualCloseOrder(symbol);
+}

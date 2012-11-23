@@ -142,3 +142,8 @@ message CancelOrderParam
 	required string UserId = 4;
 	required string Symbol = 5;
 }
+
+message ManualCloseOrderParam
+{
+	required string Symbol = 1;
+}
