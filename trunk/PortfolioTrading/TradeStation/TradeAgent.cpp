@@ -894,7 +894,10 @@ bool CTradeAgent::QuerySymbol( const std::string& symbol, entity::Quote** ppQuot
 		if(succ)
 			querySucc = req->GetResult(ppQuote);
 		else
+		{
 			m_requestFactory.Remove(reqId);
+			boost::this_thread::sleep(boost::posix_time::milliseconds(200));
+		}
 	}
 	return querySucc;
 }
