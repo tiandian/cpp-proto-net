@@ -325,7 +325,38 @@ int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::share
 	return genInputOrders->size();
 }
 
-//trade::InputOrder* BuildCloseOrder(int quantity, closeFlag, flag, double limitPrice, const string& symbol)
-//{
-//
-//}
+trade::InputOrder* BuildCloseOrder(const string& symbol, double limitPrice, 
+	trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag,
+	PlaceOrderContext* placeOrderCtx)
+{
+	trade::InputOrder* order = new trade::InputOrder;
+	order->set_brokerid(placeOrderCtx->brokerId);
+	order->set_investorid(placeOrderCtx->investorId);
+	order->set_instrumentid(symbol);
+
+	//order->set_orderref(NextOrderRef());
+	order->set_direction(direction);
+
+	static char CombOffset[1];
+	CombOffset[0] = offsetFlag;
+	order->set_comboffsetflag(std::string(CombOffset));
+
+	order->set_limitprice(limitPrice);
+	order->set_orderpricetype(trade::LIMIT_PRICE);
+
+	static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
+	order->set_combhedgeflag(std::string(CombHedgeFlag));
+
+	order->set_volumetotaloriginal(placeOrderCtx->quantity);
+	order->set_timecondition(trade::TC_GFD);
+	
+	order->set_volumecondition(trade::VC_AV);
+	order->set_minvolume(1);
+
+	order->set_contingentcondition(trade::IMMEDIATELY);
+	order->set_forceclosereason(trade::NOT_FORCE_CLOSE);
+	order->set_isautosuspend(false);
+	order->set_userforceclose(false);
+
+	return order;
+}

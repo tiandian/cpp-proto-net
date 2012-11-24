@@ -174,13 +174,33 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("QueryPositionDetails", param_data);
         }
 
-        public void ManualCloseOrder(string symbol)
+        public OperationResult ManualCloseOrder(string symbol, trade.TradeDirectionType direction,
+            trade.OffsetFlagType offsetFlag, int quantity)
         {
             entity.ManualCloseOrderParam closeOrdParam = new entity.ManualCloseOrderParam();
             closeOrdParam.Symbol = symbol;
+            closeOrdParam.Direction = direction;
+            closeOrdParam.OffsetFlag = offsetFlag;
+            closeOrdParam.Quantity = quantity;
 
             byte[] param_data = DataTranslater.Serialize(closeOrdParam);
             byte[] ret_data = Request("ManualCloseOrder", param_data);
+
+            if (ret_data != null)
+            {
+                OperationReturn rt = DataTranslater.Deserialize<OperationReturn>(ret_data);
+                return new OperationResult
+                {
+                    Success = rt.Success,
+                    ErrorMessage = rt.ErrorMessage
+                };
+            }
+            else
+                return new OperationResult
+                {
+                    Success = false,
+                    ErrorMessage = "Returned data (ManualCloseOrder) is invalid"
+                };
         }
 
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)

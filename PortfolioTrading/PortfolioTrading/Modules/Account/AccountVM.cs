@@ -193,9 +193,10 @@ namespace PortfolioTrading.Modules.Account
             _client.QueryPositionDetails(symbol);
         }
 
-        public void ManualCloseOrder(string symbol)
+        public void ManualCloseOrder(string symbol, trade.TradeDirectionType direction,
+            trade.OffsetFlagType offsetFlag, int quantity)
         {
-            _client.ManualCloseOrder(symbol);
+            _client.ManualCloseOrder(symbol, direction, offsetFlag, quantity);
         }
 
         private void OnAddPortfolio(AccountVM acct)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.Commands;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -30,11 +32,26 @@ namespace PortfolioTrading.Modules.Account
             {
                 RefreshPositionCommand = new DelegateCommand(RequestPositionDetail);
                 CloseOrderCommand = new DelegateCommand<PositionDetailItem>(OnCloseOrder);
+
+                PositionDetailItems = CollectionViewSource.GetDefaultView(_positionDetailItems);
+                PositionDetailItems.Filter = OnFilterPosition;
             }
 
-            public IEnumerable<PositionDetailItem> PositionDetailItems
+            public ICollectionView PositionDetailItems
             {
-                get { return _positionDetailItems; }
+                get;
+                private set;
+            }
+
+            private bool OnFilterPosition(object item)
+            {
+                PositionDetailItem posi = item as PositionDetailItem;
+                if (posi != null)
+                {
+                    return IncludingClosed || posi.Volume > 0;
+                }
+
+                return false;
             }
 
             public DelegateCommand RefreshPositionCommand { get; private set; }
@@ -53,7 +70,11 @@ namespace PortfolioTrading.Modules.Account
             {
                 if (_acctVm != null)
                 {
-                    _acctVm.ManualCloseOrder(positionItem.Symbol);
+                    if (positionItem.Volume > 0)
+                    {
+                        _acctVm.ManualCloseOrder(positionItem.Symbol, positionItem.CloseDirection, 
+                            positionItem.OffsetFlag, positionItem.Volume);
+                    }
                 }
             }
 
@@ -85,6 +106,7 @@ namespace PortfolioTrading.Modules.Account
                 posiItem.Direction = GetDirection(posiDetail.Direction);
                 posiItem.OpenDate = GetDate(posiDetail.OpenDate);
                 posiItem.Volume = posiDetail.Volume;
+                posiItem.IsClosed = posiItem.Volume > 0;
                 posiItem.OpenPrice = posiDetail.OpenPrice;
                 posiItem.TradingDay = GetDate(posiDetail.TradingDay);
                 posiItem.ExchangeID = posiDetail.ExchangeID;
@@ -95,9 +117,22 @@ namespace PortfolioTrading.Modules.Account
                 posiItem.CloseVolume = posiDetail.CloseVolume;
                 posiItem.CloseAmount = posiDetail.CloseAmount;
 
+                posiItem.CloseDirection = posiDetail.Direction == trade.TradeDirectionType.BUY ? 
+                    trade.TradeDirectionType.SELL : trade.TradeDirectionType.BUY;
+                posiItem.OffsetFlag = GetOffsetFlag(posiItem.Symbol, posiItem.OpenDate, posiItem.TradingDay);
+
                 _positionDetailItems.Add(posiItem);
 
                 UpdateTime = DateTime.Now;
+            }
+
+            private static trade.OffsetFlagType GetOffsetFlag(string symbol, DateTime openDate, DateTime tradingDay)
+            {
+                if (symbol.StartsWith("cu", StringComparison.OrdinalIgnoreCase))
+                {
+                    return openDate < tradingDay ? trade.OffsetFlagType.OF_CLOSE_YESTERDAY : trade.OffsetFlagType.OF_CLOSE_TODAY;
+                }
+                return trade.OffsetFlagType.OF_CLOSE_TODAY;
             }
 
             private static string GetHedgeText(trade.HedgeFlagType hedgeFlag)
@@ -156,6 +191,23 @@ namespace PortfolioTrading.Modules.Account
             }
             #endregion
 
+            #region IncludingClosed
+            private bool includingClosed;
+
+            public bool IncludingClosed
+            {
+                get { return includingClosed; }
+                set
+                {
+                    if (includingClosed != value)
+                    {
+                        includingClosed = value;
+                        RaisePropertyChanged("IncludingClosed");
+                        PositionDetailItems.Refresh();
+                    }
+                }
+            }
+            #endregion
         }
 
         public class PositionDetailItem : NotificationObject
@@ -410,6 +462,26 @@ namespace PortfolioTrading.Modules.Account
                     {
                         _closeAmount = value;
                         RaisePropertyChanged("CloseAmount");
+                    }
+                }
+            }
+            #endregion
+
+            public trade.TradeDirectionType CloseDirection { get; set; }
+            public trade.OffsetFlagType OffsetFlag { get; set; }
+
+            #region IsClosed
+            private bool _isClosed;
+
+            public bool IsClosed
+            {
+                get { return _isClosed; }
+                set
+                {
+                    if (_isClosed != value)
+                    {
+                        _isClosed = value;
+                        RaisePropertyChanged("IsClosed");
                     }
                 }
             }
