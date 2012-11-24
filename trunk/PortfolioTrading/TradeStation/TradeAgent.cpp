@@ -11,7 +11,7 @@
 #define CONNECT_TIMEOUT_SECONDS 15
 #define DISCONNECT_TIMEOUT_SECOND 5
 #define LOGIN_TIMEOUT_SECONDS 15
-#define QUERY_QUOTE_RETRY_TIMES 5
+#define QUERY_QUOTE_RETRY_TIMES 10
 
 // Á÷¿ØÅÐ¶Ï
 bool IsFlowControl(int iResult)
@@ -898,6 +898,7 @@ bool CTradeAgent::QuerySymbol( const std::string& symbol, entity::Quote** ppQuot
 			m_requestFactory.Remove(reqId);
 			boost::this_thread::sleep(boost::posix_time::milliseconds(200));
 		}
+		--retry;
 	}
 	return querySucc;
 }
