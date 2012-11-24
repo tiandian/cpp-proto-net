@@ -71,6 +71,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* CancelOrderParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   CancelOrderParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ManualCloseOrderParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ManualCloseOrderParam_reflection_ = NULL;
 
 }  // namespace
 
@@ -401,6 +404,21 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CancelOrderParam));
+  ManualCloseOrderParam_descriptor_ = file->message_type(18);
+  static const int ManualCloseOrderParam_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, symbol_),
+  };
+  ManualCloseOrderParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ManualCloseOrderParam_descriptor_,
+      ManualCloseOrderParam::default_instance_,
+      ManualCloseOrderParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ManualCloseOrderParam));
 }
 
 namespace {
@@ -449,6 +467,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     ModifyPortfolioPreferredLegParam_descriptor_, &ModifyPortfolioPreferredLegParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     CancelOrderParam_descriptor_, &CancelOrderParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ManualCloseOrderParam_descriptor_, &ManualCloseOrderParam::default_instance());
 }
 
 }  // namespace
@@ -490,6 +510,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ModifyPortfolioPreferredLegParam_reflection_;
   delete CancelOrderParam::default_instance_;
   delete CancelOrderParam_reflection_;
+  delete ManualCloseOrderParam::default_instance_;
+  delete ManualCloseOrderParam_reflection_;
 }
 
 void protobuf_AddDesc_message_2eproto() {
@@ -550,7 +572,8 @@ void protobuf_AddDesc_message_2eproto() {
     "aram\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t"
     "\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030\001 \002(\t\022\022"
     "\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006"
-    "UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t", 1988);
+    "UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"\'\n\025ManualCl"
+    "oseOrderParam\022\016\n\006Symbol\030\001 \002(\t", 2029);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -571,6 +594,7 @@ void protobuf_AddDesc_message_2eproto() {
   ModifyRunningStatusParam::default_instance_ = new ModifyRunningStatusParam();
   ModifyPortfolioPreferredLegParam::default_instance_ = new ModifyPortfolioPreferredLegParam();
   CancelOrderParam::default_instance_ = new CancelOrderParam();
+  ManualCloseOrderParam::default_instance_ = new ManualCloseOrderParam();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
   LegItem::default_instance_->InitAsDefaultInstance();
@@ -589,6 +613,7 @@ void protobuf_AddDesc_message_2eproto() {
   ModifyRunningStatusParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioPreferredLegParam::default_instance_->InitAsDefaultInstance();
   CancelOrderParam::default_instance_->InitAsDefaultInstance();
+  ManualCloseOrderParam::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
 
@@ -6847,6 +6872,231 @@ void CancelOrderParam::Swap(CancelOrderParam* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = CancelOrderParam_descriptor_;
   metadata.reflection = CancelOrderParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ManualCloseOrderParam::kSymbolFieldNumber;
+#endif  // !_MSC_VER
+
+ManualCloseOrderParam::ManualCloseOrderParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ManualCloseOrderParam::InitAsDefaultInstance() {
+}
+
+ManualCloseOrderParam::ManualCloseOrderParam(const ManualCloseOrderParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ManualCloseOrderParam::SharedCtor() {
+  _cached_size_ = 0;
+  symbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ManualCloseOrderParam::~ManualCloseOrderParam() {
+  SharedDtor();
+}
+
+void ManualCloseOrderParam::SharedDtor() {
+  if (symbol_ != &::google::protobuf::internal::kEmptyString) {
+    delete symbol_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void ManualCloseOrderParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ManualCloseOrderParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ManualCloseOrderParam_descriptor_;
+}
+
+const ManualCloseOrderParam& ManualCloseOrderParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+ManualCloseOrderParam* ManualCloseOrderParam::default_instance_ = NULL;
+
+ManualCloseOrderParam* ManualCloseOrderParam::New() const {
+  return new ManualCloseOrderParam;
+}
+
+void ManualCloseOrderParam::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_symbol()) {
+      if (symbol_ != &::google::protobuf::internal::kEmptyString) {
+        symbol_->clear();
+      }
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ManualCloseOrderParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string Symbol = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_symbol()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->symbol().data(), this->symbol().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ManualCloseOrderParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string Symbol = 1;
+  if (has_symbol()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->symbol().data(), this->symbol().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->symbol(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ManualCloseOrderParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string Symbol = 1;
+  if (has_symbol()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->symbol().data(), this->symbol().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->symbol(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ManualCloseOrderParam::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string Symbol = 1;
+    if (has_symbol()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->symbol());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ManualCloseOrderParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ManualCloseOrderParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ManualCloseOrderParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ManualCloseOrderParam::MergeFrom(const ManualCloseOrderParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_symbol()) {
+      set_symbol(from.symbol());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ManualCloseOrderParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ManualCloseOrderParam::CopyFrom(const ManualCloseOrderParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ManualCloseOrderParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  
+  return true;
+}
+
+void ManualCloseOrderParam::Swap(ManualCloseOrderParam* other) {
+  if (other != this) {
+    std::swap(symbol_, other->symbol_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ManualCloseOrderParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ManualCloseOrderParam_descriptor_;
+  metadata.reflection = ManualCloseOrderParam_reflection_;
   return metadata;
 }
 

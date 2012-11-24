@@ -11,6 +11,7 @@
 #define CONNECT_TIMEOUT_SECONDS 15
 #define DISCONNECT_TIMEOUT_SECOND 5
 #define LOGIN_TIMEOUT_SECONDS 15
+#define QUERY_QUOTE_RETRY_TIMES 5
 
 // Á÷¿ØÅÐ¶Ï
 bool IsFlowControl(int iResult)
@@ -881,22 +882,32 @@ void CTradeAgent::OnRspQryInvestorPositionDetail( CThostFtdcInvestorPositionDeta
 	}
 }
 
-
 bool CTradeAgent::QuerySymbol( const std::string& symbol, entity::Quote** ppQuote )
 {
-	SyncRequestPtr req = m_requestFactory.Create(RequestIDIncrement());
-
-	return true;
+	bool querySucc = false;
+	int retry = QUERY_QUOTE_RETRY_TIMES;
+	while(retry > 0 && !querySucc)
+	{
+		int reqId = RequestIDIncrement();
+		boost::shared_ptr< CSyncRequest<entity::Quote> > req = m_requestFactory.Create(reqId);
+		bool succ = req->Invoke(boost::bind(&CTradeAgent::QuerySymbolAsync, this, symbol, _1));
+		if(succ)
+			querySucc = req->GetResult(ppQuote);
+		else
+			m_requestFactory.Remove(reqId);
+	}
+	return querySucc;
 }
 
-void CTradeAgent::QuerySymbolAsync( const std::string& symbol )
+bool CTradeAgent::QuerySymbolAsync( const std::string& symbol, int nReqestId )
 {
 	CThostFtdcQryDepthMarketDataField req;
 	strcpy_s(req.InstrumentID, symbol.c_str());
-	int iResult = m_pUserApi->ReqQryDepthMarketData(&req, RequestIDIncrement());
+	int iResult = m_pUserApi->ReqQryDepthMarketData(&req, nReqestId);
 
 	std::string infoText = boost::str(boost::format("Query %s Quote: %d, %s") % symbol.c_str() % iResult % ((iResult == 0) ? "³É¹¦" : "Ê§°Ü"));
 	logger.Info(infoText);
+	return (iResult == 0);
 }
 
 void CTradeAgent::OnRspQryDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
@@ -947,5 +958,7 @@ void CTradeAgent::OnRspQryDepthMarketData( CThostFtdcDepthMarketDataField *pDept
 	quote->set_ask_5(pDepthMarketData->AskPrice5);
 	quote->set_ask_size_5(pDepthMarketData->AskVolume5);
 	quote->set_average_price(pDepthMarketData->AveragePrice);
+
+	m_requestFactory.Response(nRequestID, true, quote);
 }
 

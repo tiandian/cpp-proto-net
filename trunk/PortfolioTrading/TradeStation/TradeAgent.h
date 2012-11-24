@@ -36,7 +36,7 @@ public:
 	void QueryPositionDetails(const std::string& symbol);
 
 	bool QuerySymbol(const std::string& symbol, entity::Quote** ppQuote);
-	void QuerySymbolAsync(const std::string& symbol);
+	bool QuerySymbolAsync(const std::string& symbol, int nReqestId);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
@@ -117,6 +117,6 @@ private:
 	TThostFtdcSessionIDType	SESSION_ID;	//会话编号
 	int m_maxOrderRef;					//报单引用
 
-	CSyncRequestFactory m_requestFactory;
+	CSyncRequestFactory<entity::Quote> m_requestFactory;
 };
 

@@ -563,6 +563,13 @@ void COrderProcessor::ManualCloseOrder( const string& symbol )
 {
 	entity::Quote* pQuote = NULL;
 	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
+	if(succ)
+	{
+		logger.Info(boost::str(boost::format("Query Quote %s: %d") 
+			% symbol.c_str() % pQuote->last()));
+
+		delete pQuote;
+	}
 }
 
 
