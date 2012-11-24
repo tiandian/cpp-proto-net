@@ -5,12 +5,14 @@
 #include "multilegorderptr.h"
 #include "SequenceOrderSender.h"
 #include "OrderResubmitter.h"
+#include "PortfolioOrderHelper.h"
 
 #include <string>
 #include <map>
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
 #include <boost/thread.hpp>
+#include <boost/tuple/tuple.hpp>
 
 using namespace std;
 
@@ -42,7 +44,7 @@ public:
 
 	void ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice, string* modifiedOrdRef);
 
-	void ManualCloseOrder(const string& symbol);
+	boost::tuple<bool, string> ManualCloseOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
 	void QueryPositionDetails(const string& symbol);
@@ -105,6 +107,7 @@ public:
 private:
 	int IncrementalOrderRef(trade::MultiLegOrder* pMlOrder, int maxOrderRef);
 	int IncrementalOrderRef(trade::Order* pLegOrd, int maxOrderRef);
+	int IncrementalOrderRef(trade::InputOrder* pInputOrd, int maxOrderRef);
 	void RemoveFromPending(trade::MultiLegOrder* pMlOrder);
 	void SetNonPreferredOrderStatus(
 		trade::MultiLegOrder* mlOrder, const string& prefOrdRef,

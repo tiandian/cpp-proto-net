@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "OrderProcessor.h"
-#include "PortfolioOrderHelper.h"
 #include "globalmembers.h"
 #include "charsetconvert.h"
 
@@ -97,6 +96,16 @@ int COrderProcessor::IncrementalOrderRef(trade::Order* pLegOrd, int maxOrderRef)
 	static char orderRef[10];
 	sprintf_s(orderRef, "%d", maxOrderRef);
 	pLegOrd->set_orderref(orderRef);
+
+	return ++maxOrderRef;
+}
+
+int COrderProcessor::IncrementalOrderRef(trade::InputOrder* pInputOrd, int maxOrderRef)
+{
+	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
+	static char orderRef[10];
+	sprintf_s(orderRef, "%d", maxOrderRef);
+	pInputOrd->set_orderref(orderRef);
 
 	return ++maxOrderRef;
 }
@@ -559,8 +568,11 @@ void COrderProcessor::QueryPositionDetails( const string& symbol )
 	m_pTradeAgent->QueryPositionDetails(symbol);
 }
 
-void COrderProcessor::ManualCloseOrder( const string& symbol )
+boost::tuple<bool, string> COrderProcessor::ManualCloseOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
 {
+	bool closeSucc = false;
+	string errorMsg;
+	
 	entity::Quote* pQuote = NULL;
 	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
 	if(succ)
@@ -568,8 +580,26 @@ void COrderProcessor::ManualCloseOrder( const string& symbol )
 		logger.Info(boost::str(boost::format("Query Quote %s: %d") 
 			% symbol.c_str() % pQuote->last()));
 
+		double limitPrice = direction == trade::SELL ? pQuote->bid() : pQuote->ask();
+
+		boost::shared_ptr<trade::InputOrder> closeOrder(
+			BuildCloseOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
+
+		m_maxOrderRef = IncrementalOrderRef(closeOrder.get(), m_maxOrderRef);
+
+		m_pTradeAgent->SubmitOrder(closeOrder.get());
+
 		delete pQuote;
+
+		closeSucc = true;
 	}
+	else
+	{
+		closeSucc = false;
+		errorMsg = "Cannot get symbol quote";
+	}
+
+	return boost::make_tuple(closeSucc, errorMsg);
 }
 
 

@@ -11,6 +11,7 @@
         <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4">
             <Button Name="btnQueryPosition" Width="100" DockPanel.Dock="Left"
                     Command="{Binding RefreshPositionCommand}">查询</Button>
+            <CheckBox VerticalAlignment="Center" Margin="6, 2" IsChecked="{Binding IncludingClosed, Mode=TwoWay}">显示已平仓</CheckBox>
             <TextBlock VerticalAlignment="Center" DockPanel.Dock="Right">上次查询：
                 <Run Text="{Binding UpdateTime, StringFormat=T, FallbackValue=--:--:--}"></Run>
             </TextBlock>
@@ -24,7 +25,8 @@
                             <ControlTemplate TargetType="igDP:CellValuePresenter">
                                 <Button HorizontalAlignment="Center" VerticalAlignment="Center"
                                         Command="{Binding Path=DataContext.CloseOrderCommand, ElementName=PositionDetailGrid}"
-                                        CommandParameter="{Binding DataItem}">
+                                        CommandParameter="{Binding DataItem}"
+                                        IsEnabled="{Binding Path=DataItem.IsClosed}">
                                     平仓
                                 </Button>
                             </ControlTemplate>

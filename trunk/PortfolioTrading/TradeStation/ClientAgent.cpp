@@ -277,7 +277,14 @@ void CClientAgent::QueryPositionDetails( const string& symbol )
 	m_orderProcessor.QueryPositionDetails(symbol);
 }
 
-void CClientAgent::ManualCloseOrder( const string& symbol )
+boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, int quantity )
 {
-	m_orderProcessor.ManualCloseOrder(symbol);
+	PlaceOrderContext placeOrderCtx;
+	placeOrderCtx.quantity = quantity;
+	placeOrderCtx.brokerId = m_brokerId;
+	placeOrderCtx.investorId = m_userId;
+	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
+	placeOrderCtx.limitPriceType = entity::Opposite;
+
+	return m_orderProcessor.ManualCloseOrder(symbol, direction, offsetFlag, &placeOrderCtx);
 }

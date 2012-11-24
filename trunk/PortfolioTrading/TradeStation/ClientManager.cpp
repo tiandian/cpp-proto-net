@@ -283,5 +283,12 @@ void CClientManager::ManualCloseOrder( CClientAgent* pClientAgent, const string&
 	entity::ManualCloseOrderParam closeOrdParam;
 	closeOrdParam.ParseFromString(in_data);
 
-	pClientAgent->ManualCloseOrder(closeOrdParam.symbol());
+	boost::tuple<bool, string> ret = pClientAgent->ManualCloseOrder(
+		closeOrdParam.symbol(), closeOrdParam.direction(), closeOrdParam.offsetflag(), closeOrdParam.quantity());
+
+	entity::OperationReturn operRet;
+	operRet.set_success(boost::get<0>(ret));
+	operRet.set_errormessage(boost::get<1>(ret));
+
+	operRet.SerializeToString(&out_data);
 }
