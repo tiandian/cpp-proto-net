@@ -52,6 +52,7 @@ class ModifyPortfolioSwitchParam;
 class ModifyRunningStatusParam;
 class ModifyPortfolioPreferredLegParam;
 class CancelOrderParam;
+class ManualCloseOrderParam;
 
 // ===================================================================
 
@@ -2156,6 +2157,92 @@ class CancelOrderParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static CancelOrderParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ManualCloseOrderParam : public ::google::protobuf::Message {
+ public:
+  ManualCloseOrderParam();
+  virtual ~ManualCloseOrderParam();
+  
+  ManualCloseOrderParam(const ManualCloseOrderParam& from);
+  
+  inline ManualCloseOrderParam& operator=(const ManualCloseOrderParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ManualCloseOrderParam& default_instance();
+  
+  void Swap(ManualCloseOrderParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ManualCloseOrderParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ManualCloseOrderParam& from);
+  void MergeFrom(const ManualCloseOrderParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string Symbol = 1;
+  inline bool has_symbol() const;
+  inline void clear_symbol();
+  static const int kSymbolFieldNumber = 1;
+  inline const ::std::string& symbol() const;
+  inline void set_symbol(const ::std::string& value);
+  inline void set_symbol(const char* value);
+  inline void set_symbol(const char* value, size_t size);
+  inline ::std::string* mutable_symbol();
+  inline ::std::string* release_symbol();
+  
+  // @@protoc_insertion_point(class_scope:entity.ManualCloseOrderParam)
+ private:
+  inline void set_has_symbol();
+  inline void clear_has_symbol();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* symbol_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ManualCloseOrderParam* default_instance_;
 };
 // ===================================================================
 
@@ -4809,6 +4896,68 @@ inline ::std::string* CancelOrderParam::mutable_symbol() {
   return symbol_;
 }
 inline ::std::string* CancelOrderParam::release_symbol() {
+  clear_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = symbol_;
+    symbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// ManualCloseOrderParam
+
+// required string Symbol = 1;
+inline bool ManualCloseOrderParam::has_symbol() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ManualCloseOrderParam::set_has_symbol() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ManualCloseOrderParam::clear_has_symbol() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ManualCloseOrderParam::clear_symbol() {
+  if (symbol_ != &::google::protobuf::internal::kEmptyString) {
+    symbol_->clear();
+  }
+  clear_has_symbol();
+}
+inline const ::std::string& ManualCloseOrderParam::symbol() const {
+  return *symbol_;
+}
+inline void ManualCloseOrderParam::set_symbol(const ::std::string& value) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(value);
+}
+inline void ManualCloseOrderParam::set_symbol(const char* value) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(value);
+}
+inline void ManualCloseOrderParam::set_symbol(const char* value, size_t size) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ManualCloseOrderParam::mutable_symbol() {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  return symbol_;
+}
+inline ::std::string* ManualCloseOrderParam::release_symbol() {
   clear_has_symbol();
   if (symbol_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
