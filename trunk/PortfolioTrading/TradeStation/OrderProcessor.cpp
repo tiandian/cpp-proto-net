@@ -391,6 +391,16 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 			}
 		}
 	}
+	else	// manual placed order will be here
+	{
+		const string& ordRef = order->orderref();
+		if(IsTicketTraded(*order))
+			m_placeOrderStateMachine.Transition(ordRef, CompleteEvent(order));
+		else if(IsTicketDone(*order)) // order cancelled
+			m_placeOrderStateMachine.Transition(ordRef, CancelSuccessEvent(order));
+		else if(IsOrderPending(order))
+			m_placeOrderStateMachine.Transition(ordRef, PendingEvent(order));
+	}
 }
 
 // Order submit failed
@@ -440,6 +450,10 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 			}
 		}
 	}
+	else	// manual placed order will be here
+	{
+		m_placeOrderStateMachine.Transition(orderRef, SubmitFailedEvent(NULL));
+	}
 }
 
 void COrderProcessor::OnRtnTrade( trade::Trade* pTrade )
@@ -475,8 +489,12 @@ void COrderProcessor::OnRspOrderAction( bool succ, const std::string& orderRef, 
 	if(succ)
 		logger.Info(boost::str(boost::format("Cancel order(%s) succeeded.") % orderRef));
 	else
+	{
 		logger.Info(boost::str(boost::format("Cancel order(%s) failed. message: %s") 
 								% orderRef.c_str() % msg.c_str()));
+
+		m_placeOrderStateMachine.Transition(orderRef, CancelFailedEvent(NULL));
+	}
 }
 
 void COrderProcessor::SetPushPortfolioFunc( PushMultiLegOrderFunc funcPushMLOrder )
@@ -602,6 +620,40 @@ boost::tuple<bool, string> COrderProcessor::ManualCloseOrder( const string& symb
 	return boost::make_tuple(closeSucc, errorMsg);
 }
 
+trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx)
+{
+	entity::Quote* pQuote = NULL;
+	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
+	if(succ)
+	{
+		logger.Info(boost::str(boost::format("Query Quote %s: %d") 
+			% symbol.c_str() % pQuote->last()));
 
+		double limitPrice = direction == trade::SELL ? pQuote->bid() : pQuote->ask();
+
+		trade::InputOrder* closeOrder(
+			BuildCloseOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
+
+		m_maxOrderRef = IncrementalOrderRef(closeOrder, m_maxOrderRef);
+
+		delete pQuote;
+
+		return closeOrder;
+	}
+
+	return NULL;
+}
+
+boost::tuple<bool, string> COrderProcessor::PlaceOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
+{
+	ManualOrderPlacerPtr placer = m_placeOrderStateMachine.CreatePlacer();
+	placer->SetBuildOrderFunc(boost::bind(&COrderProcessor::BuildSingleOrder, this, symbol, direction, offsetFlag, placeOrderCtx));
+	placer->SetSubmitOrderFunc(boost::bind(&CTradeAgent::SubmitOrder, m_pTradeAgent, _1));
+	placer->SetCancelOrderFunc(boost::bind(&COrderProcessor::CancelOrder, this, _1, _2, _3, _4, _5));
+
+	bool succ = placer->Do();
+
+	return boost::make_tuple(succ, placer->GetError());
+}
 
 

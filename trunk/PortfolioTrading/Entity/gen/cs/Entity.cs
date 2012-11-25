@@ -682,6 +682,27 @@ namespace entity
       get { return _Symbol; }
       set { _Symbol = value; }
     }
+    private trade.TradeDirectionType _Direction;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"Direction", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public trade.TradeDirectionType Direction
+    {
+      get { return _Direction; }
+      set { _Direction = value; }
+    }
+    private trade.OffsetFlagType _OffsetFlag;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"OffsetFlag", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public trade.OffsetFlagType OffsetFlag
+    {
+      get { return _OffsetFlag; }
+      set { _OffsetFlag = value; }
+    }
+    private int _Quantity;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"Quantity", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int Quantity
+    {
+      get { return _Quantity; }
+      set { _Quantity = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
