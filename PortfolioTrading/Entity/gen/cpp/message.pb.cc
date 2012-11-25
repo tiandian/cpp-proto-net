@@ -405,8 +405,11 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CancelOrderParam));
   ManualCloseOrderParam_descriptor_ = file->message_type(18);
-  static const int ManualCloseOrderParam_offsets_[1] = {
+  static const int ManualCloseOrderParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, symbol_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, direction_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, offsetflag_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, quantity_),
   };
   ManualCloseOrderParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -572,8 +575,11 @@ void protobuf_AddDesc_message_2eproto() {
     "aram\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t"
     "\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030\001 \002(\t\022\022"
     "\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006"
-    "UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"\'\n\025ManualCl"
-    "oseOrderParam\022\016\n\006Symbol\030\001 \002(\t", 2029);
+    "UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"\222\001\n\025ManualC"
+    "loseOrderParam\022\016\n\006Symbol\030\001 \002(\t\022,\n\tDirect"
+    "ion\030\002 \002(\0162\031.trade.TradeDirectionType\022)\n\n"
+    "OffsetFlag\030\003 \002(\0162\025.trade.OffsetFlagType\022"
+    "\020\n\010Quantity\030\004 \002(\005", 2137);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -6880,6 +6886,9 @@ void CancelOrderParam::Swap(CancelOrderParam* other) {
 
 #ifndef _MSC_VER
 const int ManualCloseOrderParam::kSymbolFieldNumber;
+const int ManualCloseOrderParam::kDirectionFieldNumber;
+const int ManualCloseOrderParam::kOffsetFlagFieldNumber;
+const int ManualCloseOrderParam::kQuantityFieldNumber;
 #endif  // !_MSC_VER
 
 ManualCloseOrderParam::ManualCloseOrderParam()
@@ -6899,6 +6908,9 @@ ManualCloseOrderParam::ManualCloseOrderParam(const ManualCloseOrderParam& from)
 void ManualCloseOrderParam::SharedCtor() {
   _cached_size_ = 0;
   symbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  direction_ = 48;
+  offsetflag_ = 48;
+  quantity_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6941,6 +6953,9 @@ void ManualCloseOrderParam::Clear() {
         symbol_->clear();
       }
     }
+    direction_ = 48;
+    offsetflag_ = 48;
+    quantity_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -6961,6 +6976,64 @@ bool ManualCloseOrderParam::MergePartialFromCodedStream(
           ::google::protobuf::internal::WireFormat::VerifyUTF8String(
             this->symbol().data(), this->symbol().length(),
             ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_Direction;
+        break;
+      }
+      
+      // required .trade.TradeDirectionType Direction = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Direction:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (trade::TradeDirectionType_IsValid(value)) {
+            set_direction(static_cast< trade::TradeDirectionType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(2, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_OffsetFlag;
+        break;
+      }
+      
+      // required .trade.OffsetFlagType OffsetFlag = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_OffsetFlag:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (trade::OffsetFlagType_IsValid(value)) {
+            set_offsetflag(static_cast< trade::OffsetFlagType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(3, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_Quantity;
+        break;
+      }
+      
+      // required int32 Quantity = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Quantity:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &quantity_)));
+          set_has_quantity();
         } else {
           goto handle_uninterpreted;
         }
@@ -6995,6 +7068,23 @@ void ManualCloseOrderParam::SerializeWithCachedSizes(
       1, this->symbol(), output);
   }
   
+  // required .trade.TradeDirectionType Direction = 2;
+  if (has_direction()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      2, this->direction(), output);
+  }
+  
+  // required .trade.OffsetFlagType OffsetFlag = 3;
+  if (has_offsetflag()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      3, this->offsetflag(), output);
+  }
+  
+  // required int32 Quantity = 4;
+  if (has_quantity()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->quantity(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -7013,6 +7103,23 @@ void ManualCloseOrderParam::SerializeWithCachedSizes(
         1, this->symbol(), target);
   }
   
+  // required .trade.TradeDirectionType Direction = 2;
+  if (has_direction()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      2, this->direction(), target);
+  }
+  
+  // required .trade.OffsetFlagType OffsetFlag = 3;
+  if (has_offsetflag()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      3, this->offsetflag(), target);
+  }
+  
+  // required int32 Quantity = 4;
+  if (has_quantity()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->quantity(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -7029,6 +7136,25 @@ int ManualCloseOrderParam::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->symbol());
+    }
+    
+    // required .trade.TradeDirectionType Direction = 2;
+    if (has_direction()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->direction());
+    }
+    
+    // required .trade.OffsetFlagType OffsetFlag = 3;
+    if (has_offsetflag()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->offsetflag());
+    }
+    
+    // required int32 Quantity = 4;
+    if (has_quantity()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->quantity());
     }
     
   }
@@ -7061,6 +7187,15 @@ void ManualCloseOrderParam::MergeFrom(const ManualCloseOrderParam& from) {
     if (from.has_symbol()) {
       set_symbol(from.symbol());
     }
+    if (from.has_direction()) {
+      set_direction(from.direction());
+    }
+    if (from.has_offsetflag()) {
+      set_offsetflag(from.offsetflag());
+    }
+    if (from.has_quantity()) {
+      set_quantity(from.quantity());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -7078,7 +7213,7 @@ void ManualCloseOrderParam::CopyFrom(const ManualCloseOrderParam& from) {
 }
 
 bool ManualCloseOrderParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   
   return true;
 }
@@ -7086,6 +7221,9 @@ bool ManualCloseOrderParam::IsInitialized() const {
 void ManualCloseOrderParam::Swap(ManualCloseOrderParam* other) {
   if (other != this) {
     std::swap(symbol_, other->symbol_);
+    std::swap(direction_, other->direction_);
+    std::swap(offsetflag_, other->offsetflag_);
+    std::swap(quantity_, other->quantity_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

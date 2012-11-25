@@ -2225,17 +2225,47 @@ class ManualCloseOrderParam : public ::google::protobuf::Message {
   inline ::std::string* mutable_symbol();
   inline ::std::string* release_symbol();
   
+  // required .trade.TradeDirectionType Direction = 2;
+  inline bool has_direction() const;
+  inline void clear_direction();
+  static const int kDirectionFieldNumber = 2;
+  inline trade::TradeDirectionType direction() const;
+  inline void set_direction(trade::TradeDirectionType value);
+  
+  // required .trade.OffsetFlagType OffsetFlag = 3;
+  inline bool has_offsetflag() const;
+  inline void clear_offsetflag();
+  static const int kOffsetFlagFieldNumber = 3;
+  inline trade::OffsetFlagType offsetflag() const;
+  inline void set_offsetflag(trade::OffsetFlagType value);
+  
+  // required int32 Quantity = 4;
+  inline bool has_quantity() const;
+  inline void clear_quantity();
+  static const int kQuantityFieldNumber = 4;
+  inline ::google::protobuf::int32 quantity() const;
+  inline void set_quantity(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:entity.ManualCloseOrderParam)
  private:
   inline void set_has_symbol();
   inline void clear_has_symbol();
+  inline void set_has_direction();
+  inline void clear_has_direction();
+  inline void set_has_offsetflag();
+  inline void clear_has_offsetflag();
+  inline void set_has_quantity();
+  inline void clear_has_quantity();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* symbol_;
+  int direction_;
+  int offsetflag_;
+  ::google::protobuf::int32 quantity_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -4966,6 +4996,74 @@ inline ::std::string* ManualCloseOrderParam::release_symbol() {
     symbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// required .trade.TradeDirectionType Direction = 2;
+inline bool ManualCloseOrderParam::has_direction() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ManualCloseOrderParam::set_has_direction() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ManualCloseOrderParam::clear_has_direction() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ManualCloseOrderParam::clear_direction() {
+  direction_ = 48;
+  clear_has_direction();
+}
+inline trade::TradeDirectionType ManualCloseOrderParam::direction() const {
+  return static_cast< trade::TradeDirectionType >(direction_);
+}
+inline void ManualCloseOrderParam::set_direction(trade::TradeDirectionType value) {
+  GOOGLE_DCHECK(trade::TradeDirectionType_IsValid(value));
+  set_has_direction();
+  direction_ = value;
+}
+
+// required .trade.OffsetFlagType OffsetFlag = 3;
+inline bool ManualCloseOrderParam::has_offsetflag() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ManualCloseOrderParam::set_has_offsetflag() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ManualCloseOrderParam::clear_has_offsetflag() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ManualCloseOrderParam::clear_offsetflag() {
+  offsetflag_ = 48;
+  clear_has_offsetflag();
+}
+inline trade::OffsetFlagType ManualCloseOrderParam::offsetflag() const {
+  return static_cast< trade::OffsetFlagType >(offsetflag_);
+}
+inline void ManualCloseOrderParam::set_offsetflag(trade::OffsetFlagType value) {
+  GOOGLE_DCHECK(trade::OffsetFlagType_IsValid(value));
+  set_has_offsetflag();
+  offsetflag_ = value;
+}
+
+// required int32 Quantity = 4;
+inline bool ManualCloseOrderParam::has_quantity() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ManualCloseOrderParam::set_has_quantity() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ManualCloseOrderParam::clear_has_quantity() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ManualCloseOrderParam::clear_quantity() {
+  quantity_ = 0;
+  clear_has_quantity();
+}
+inline ::google::protobuf::int32 ManualCloseOrderParam::quantity() const {
+  return quantity_;
+}
+inline void ManualCloseOrderParam::set_quantity(::google::protobuf::int32 value) {
+  set_has_quantity();
+  quantity_ = value;
 }
 
 

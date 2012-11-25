@@ -6,6 +6,7 @@
 #include "SequenceOrderSender.h"
 #include "OrderResubmitter.h"
 #include "PortfolioOrderHelper.h"
+#include "ManualOrderPlacer.h"
 
 #include <string>
 #include <map>
@@ -34,6 +35,7 @@ public:
 
 	void SubmitOrder(MultiLegOrderPtr multilegOrder);
 	void SubmitOrder2(MultiLegOrderPtr multilegOrder);
+	trade::InputOrder* BuildSingleOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
 	void CancelOrder(	const std::string& ordRef, 
 						const std::string& exchId, 
 						const std::string& ordSysId, 
@@ -45,9 +47,12 @@ public:
 	void ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice, string* modifiedOrdRef);
 
 	boost::tuple<bool, string> ManualCloseOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
+	boost::tuple<bool, string> PlaceOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
 	void QueryPositionDetails(const string& symbol);
+
+	
 
 	//////////////////////////////////////////////////////////////////////////
 	// Below methods are callbacks for CTradeAgent 
@@ -139,5 +144,7 @@ private:
 	boost::condition_variable m_condQryAcct;
 	boost::mutex m_mutQryAcct;
 	string m_serializedQryAcctInfo;
+
+	CPlaceOrderStateMachine m_placeOrderStateMachine;
 };
 
