@@ -14,8 +14,6 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         private List<CompareCondItem> _greaterCondItems = new List<CompareCondItem>();
         private List<CompareCondItem> _lessCondItems = new List<CompareCondItem>();
 
-        protected PortfolioVM _lastPortfVm;
-
         public DelegateCommand ApplyCommand { get; private set; }
         public DelegateCommand ResetCommand { get; private set; }
 
@@ -127,15 +125,32 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region CurrentPortfolio
+        private PortfolioVM _lastPortfVm;
+
+        public PortfolioVM CurrentPortfolio
+        {
+            get { return _lastPortfVm; }    
+            set
+            {
+                if (_lastPortfVm != value)
+                {
+                    _lastPortfVm = value;
+                    RaisePropertyChanged("CurrentPortfolio");
+                }
+            }
+        }
+        #endregion
+        
 
         protected virtual void OnApplySetting()
         {
-            _lastPortfVm.ApplyStrategySettings();
+            CurrentPortfolio.ApplyStrategySettings();
         }
 
         protected virtual void OnResetSetting()
         {
-            SetPortfolio(_lastPortfVm);
+            SetPortfolio(CurrentPortfolio);
         }
 
         public void SetPortfolio(PortfolioVM portfVm)
@@ -146,7 +161,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
             OnSetPortfolio(portfVm);
 
-            this._lastPortfVm = portfVm;
+            this.CurrentPortfolio = portfVm;
         }
 
         protected virtual void OnSetPortfolio(PortfolioVM portfVm)

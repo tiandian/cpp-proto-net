@@ -182,7 +182,18 @@
             </Grid.Resources>
 
             <ContentControl ContentTemplateSelector="{StaticResource strategySettingSelector}"
-                            Content="{Binding }"/>
+                            Content="{Binding }">
+                <ContentControl.Style>
+                    <Style TargetType="ContentControl">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding CurrentPortfolio.Account.IsConnected, Mode=OneWay}"
+                                         Value="False">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Style>
+            </ContentControl>
             
             <Border Background="LightSteelBlue">
                 <Border.Style>

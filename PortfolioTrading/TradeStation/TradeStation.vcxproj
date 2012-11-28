@@ -80,6 +80,10 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
       <AdditionalLibraryDirectories>D:\Dev\boost_1_49_0\stage\lib;D:\Dev\protobuf-2.4.1\lib\Release;</AdditionalLibraryDirectories>
       <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y .\ThostTraderApi\thostMduserapi.dll $(OutDir)
+copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\Entity\enum.proto" />
