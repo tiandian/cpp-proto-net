@@ -97,6 +97,7 @@ copy /y $(TargetPath) $(ProjectDir)lib\</Command>
   <ItemGroup>
     <ClCompile Include="..\Transmission\gen\packet.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="APInvokeNative.cpp" />
     <ClCompile Include="APSessionManager.cpp" />
@@ -110,6 +111,7 @@ copy /y $(TargetPath) $(ProjectDir)lib\</Command>
     </ClCompile>
     <ClCompile Include="server.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

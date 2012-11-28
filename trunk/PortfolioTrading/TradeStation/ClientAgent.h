@@ -75,7 +75,6 @@ private:
 	CQuoteAggregator	m_quoteAggregator;
 	CTradeAgent			m_tradeAgent;
 	CPortfolioManager	m_portfolioMgr;
-	CManualOrderPlacer	m_orderPlacer;
 	COrderProcessor		m_orderProcessor;
 
 	string m_quoteAddress;

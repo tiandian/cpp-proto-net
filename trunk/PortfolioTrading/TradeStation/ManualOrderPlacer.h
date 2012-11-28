@@ -7,6 +7,7 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 #include <boost/bind.hpp>
+#include <boost/thread.hpp>
 
 using namespace std;
 
@@ -182,14 +183,18 @@ private:
 	SubmitOrderFunc m_submitFunc;
 	CancelOrderFunc m_cancelFunc;
 
+	bool m_succ;
 	string m_errorMsg;
 	string m_currentOrdRef;
 	CPlaceOrderStateMachine* m_pStateMachine;
 	boost::shared_ptr<trade::InputOrder> m_inputOrder;
+
+	boost::condition_variable m_cond;
+	boost::mutex m_mut;
 };
 
 typedef boost::shared_ptr<CManualOrderPlacer> ManualOrderPlacerPtr;
-typedef map<string, ManualOrderPlacerPtr> OrderPlacerMap;
+typedef map<string, CManualOrderPlacer*> OrderPlacerMap;
 typedef OrderPlacerMap::iterator OrderPlacerMapIter;
 
 class CPlaceOrderStateMachine
@@ -226,7 +231,7 @@ public:
 		return orderPlacer;
 	}
 
-	void AddPlacer(const string& orderRef, ManualOrderPlacerPtr orderPlacer)
+	void AddPlacer(const string& orderRef, CManualOrderPlacer* orderPlacer)
 	{
 		m_orderPlacers.insert(make_pair(orderRef, orderPlacer));
 	}
@@ -241,7 +246,7 @@ public:
 			COrderState* pNextState = currentState->Next(event);
 			if(pNextState != NULL)
 			{
-				pNextState->Run((iter->second).get());
+				pNextState->Run(iter->second);
 			}
 		}
 	}

@@ -24,7 +24,10 @@ bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 	// 如果ErrorID != 0, 说明收到了错误的响应
 	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
 	if (bResult)
-		cerr << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
+	{
+		logger.Debug(boost::str(boost::format("--->>> ErrorID=%d, ErrorMsg=%s")
+			% pRspInfo->ErrorID % pRspInfo->ErrorMsg)); 
+	}
 	return bResult;
 }
 
@@ -414,7 +417,7 @@ void CTradeAgent::QueryAccount()
 
 void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-	cerr << "--->>> " << "OnRspQryTradingAccount" << endl;
+	logger.Debug("--->>> OnRspQryTradingAccount");
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
 		trade::AccountInfo account;

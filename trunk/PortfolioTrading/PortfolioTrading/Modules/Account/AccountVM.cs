@@ -300,6 +300,8 @@ namespace PortfolioTrading.Modules.Account
                         return;
                     }
 
+                    LogManager.Logger.InfoFormat("TradeStaion started up.");
+
                     Action<int> actionLoopConnect = null;
                     _connectTimes = 1;
 
@@ -363,7 +365,9 @@ namespace PortfolioTrading.Modules.Account
                     actionLoopConnect = new Action<int>(delegate(int times)
                     {
                         Thread.Sleep(3000);
-                        _client.ConnectAsync("127.0.0.1", HostPort, actionClntConnectDone);
+                        string host = "127.0.0.1";
+                        LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
+                        _client.ConnectAsync(host, HostPort, actionClntConnectDone);
                     });
 
                     actionLoopConnect.Invoke(_connectTimes);
