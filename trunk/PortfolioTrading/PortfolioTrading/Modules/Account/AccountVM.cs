@@ -365,7 +365,7 @@ namespace PortfolioTrading.Modules.Account
                     actionLoopConnect = new Action<int>(delegate(int times)
                     {
                         Thread.Sleep(3000);
-                        string host = "127.0.0.1";
+                        string host = NativeHost.GetLocalIP();
                         LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
                         _client.ConnectAsync(host, HostPort, actionClntConnectDone);
                     });

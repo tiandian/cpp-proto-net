@@ -28,6 +28,8 @@ namespace PortfolioTrading.Modules.Account
             StopCommand = new DelegateCommand(OnStop);
         }
 
+        public AccountVM Account { get { return _accountVm; } }
+
         public string AccountId
         {
             get { return _accountVm.Id; }

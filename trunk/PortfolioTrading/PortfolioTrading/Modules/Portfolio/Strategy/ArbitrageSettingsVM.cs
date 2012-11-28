@@ -40,7 +40,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         protected override void OnApplySetting()
         {
-            ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)_lastPortfVm.StrategySetting;
+            ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)CurrentPortfolio.StrategySetting;
 
             strategySettings.Direction = this.PositionDirection;
             strategySettings.OpenCondition = this.OpenCondition;

@@ -97,7 +97,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         protected override void OnApplySetting()
         {
-            ChangePositionSetting settings = (ChangePositionSetting)_lastPortfVm.StrategySetting;
+            ChangePositionSetting settings = (ChangePositionSetting)CurrentPortfolio.StrategySetting;
 
             settings.CloseLeg = this.CloseLeg;
             settings.CloseLegSide = this.CloseLegSide;
