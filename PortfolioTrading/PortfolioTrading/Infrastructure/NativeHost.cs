@@ -14,7 +14,7 @@ namespace PortfolioTrading.Infrastructure
 
         private Process _hostProc;
 
-        private static string GetLocalIP()
+        public static string GetLocalIP()
         {
             IPHostEntry ipEntry = Dns.GetHostEntry(Dns.GetHostName());
             foreach (var addr in ipEntry.AddressList)
@@ -37,6 +37,8 @@ namespace PortfolioTrading.Infrastructure
             _hostProc.StartInfo.Arguments =
                 string.Format("--addr {0} --port {1}", addr, port.ToString());
 
+            LogManager.Logger.InfoFormat("Start up TradeStaion with {0}", _hostProc.StartInfo.Arguments);
+            
             if (!showConsole)
             {
                 _hostProc.StartInfo.UseShellExecute = false;
