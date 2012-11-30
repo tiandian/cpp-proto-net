@@ -629,7 +629,7 @@ trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade
 		logger.Info(boost::str(boost::format("Query Quote %s: %d") 
 			% symbol.c_str() % pQuote->last()));
 
-		double limitPrice = direction == trade::SELL ? pQuote->bid() : pQuote->ask();
+		double limitPrice = direction == trade::SELL ? pQuote->bid() + 10 : pQuote->ask() - 10;
 
 		trade::InputOrder* closeOrder(
 			BuildCloseOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
