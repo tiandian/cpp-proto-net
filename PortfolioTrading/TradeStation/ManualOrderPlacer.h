@@ -82,7 +82,7 @@ public:
 	COrderState* CurrentState() const { return m_currentState; }
 	void CurrentState(COrderState* val) { m_currentState = val; }
 
-	virtual void OnEnter(ORDER_STATE state) {};
+	virtual void OnEnter(ORDER_STATE state, trade::Order* pOrd) {};
 
 protected:
 	COrderState* m_currentState;
@@ -105,9 +105,10 @@ public:
 		eventStateMap.insert(make_pair(event, pState));
 	}
 
-	virtual void Run(CStateOwner* stateOwner)
+	virtual void Run(CStateOwner* stateOwner, trade::Order* pRtnOrder)
 	{
 		stateOwner->CurrentState(this);
+		stateOwner->OnEnter(m_state, pRtnOrder);
 	}
 
 	virtual COrderState* Next(COrderEvent& evt)
@@ -176,9 +177,12 @@ public:
 	void SetError(const string& errorMsg){ m_errorMsg = errorMsg; }
 	const string& CurrentOrderRef(){ return m_currentOrdRef; }
 
-	void OnEnter(ORDER_STATE state);
+	void OnEnter(ORDER_STATE state, trade::Order* pOrd);
 
 private:
+
+	void PrepareInputOrder();
+
 	BuildOrderFunc m_buildFunc;
 	SubmitOrderFunc m_submitFunc;
 	CancelOrderFunc m_cancelFunc;
@@ -191,6 +195,7 @@ private:
 
 	boost::condition_variable m_cond;
 	boost::mutex m_mut;
+	int m_retryTimes;
 };
 
 typedef boost::shared_ptr<CManualOrderPlacer> ManualOrderPlacerPtr;
@@ -233,11 +238,19 @@ public:
 
 	void AddPlacer(const string& orderRef, CManualOrderPlacer* orderPlacer)
 	{
+		boost::recursive_mutex::scoped_lock lock(m_mut);
 		m_orderPlacers.insert(make_pair(orderRef, orderPlacer));
+	}
+
+	void RemovePlacer(const string& orderRef)
+	{
+		boost::recursive_mutex::scoped_lock lock(m_mut);
+		m_orderPlacers.erase(orderRef);
 	}
 
 	void Transition(const string& orderRef, COrderEvent& event)
 	{
+		boost::recursive_mutex::scoped_lock lock(m_mut);
 		OrderPlacerMapIter iter = m_orderPlacers.find(orderRef);
 		if(iter != m_orderPlacers.end())
 		{
@@ -246,7 +259,7 @@ public:
 			COrderState* pNextState = currentState->Next(event);
 			if(pNextState != NULL)
 			{
-				pNextState->Run(iter->second);
+				pNextState->Run(iter->second, event.RtnOrder());
 			}
 		}
 	}
@@ -266,4 +279,6 @@ private:
 
 	OrderStateMap m_orderStates;
 	OrderPlacerMap m_orderPlacers;
+
+	boost::recursive_mutex m_mut;
 };
