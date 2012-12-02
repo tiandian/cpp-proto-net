@@ -648,11 +648,11 @@ trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade
 		logger.Info(boost::str(boost::format("Query Quote %s: %d") 
 			% symbol.c_str() % pQuote->last()));
 
-		double limitPrice = direction == trade::SELL ? pQuote->bid() : pQuote->ask();
-		//double limitPrice = direction == trade::SELL ? pQuote->last() + 2 : pQuote->last() - 2;
+		//double limitPrice = direction == trade::SELL ? pQuote->bid() : pQuote->ask();
+		double limitPrice = direction == trade::SELL ? pQuote->last() + 2 : pQuote->last() - 2;
 
 		trade::InputOrder* closeOrder(
-			BuildCloseOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
+			BuildCloseOrder(symbol, limitPrice, direction, trade::OF_CLOSE_YESTERDAY, placeOrderCtx));
 
 		m_maxOrderRef = IncrementalOrderRef(closeOrder, m_maxOrderRef);
 
@@ -660,12 +660,19 @@ trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade
 
 		return closeOrder;
 	}
-
+	else
+	{
+		logger.Warning(boost::str(boost::format("Cannot query quote %s") % symbol));
+	}
 	return NULL;
 }
 
 boost::tuple<bool, string> COrderProcessor::PlaceOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
 {
+	/*entity::Quote* pQuote = NULL;
+	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
+	return boost::make_tuple(true, "");*/
+
 	ManualOrderPlacerPtr placer = m_placeOrderStateMachine.CreatePlacer();
 	placer->SetBuildOrderFunc(boost::bind(&COrderProcessor::BuildSingleOrder, this, symbol, direction, offsetFlag, placeOrderCtx));
 	placer->SetSubmitOrderFunc(boost::bind(&CTradeAgent::SubmitOrder, m_pTradeAgent, _1));

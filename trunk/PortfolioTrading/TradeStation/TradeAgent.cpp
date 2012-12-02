@@ -11,7 +11,7 @@
 #define CONNECT_TIMEOUT_SECONDS 15
 #define DISCONNECT_TIMEOUT_SECOND 5
 #define LOGIN_TIMEOUT_SECONDS 15
-#define QUERY_QUOTE_RETRY_TIMES 10
+#define QUERY_QUOTE_RETRY_TIMES 5
 
 // Á÷¿ØÅÐ¶Ï
 bool IsFlowControl(int iResult)
@@ -895,7 +895,11 @@ bool CTradeAgent::QuerySymbol( const std::string& symbol, entity::Quote** ppQuot
 		boost::shared_ptr< CSyncRequest<entity::Quote> > req = m_requestFactory.Create(reqId);
 		bool succ = req->Invoke(boost::bind(&CTradeAgent::QuerySymbolAsync, this, symbol, _1));
 		if(succ)
+		{
 			querySucc = req->GetResult(ppQuote);
+			m_requestFactory.Remove(reqId);
+			return querySucc;
+		}
 		else
 		{
 			m_requestFactory.Remove(reqId);
