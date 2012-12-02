@@ -194,9 +194,27 @@ namespace PortfolioTrading.Modules.Account
         }
 
         public void ManualCloseOrder(string symbol, trade.TradeDirectionType direction,
-            trade.OffsetFlagType offsetFlag, int quantity)
+            trade.OffsetFlagType offsetFlag, int quantity, Action<bool, string> closeDoneHandler)
         {
-            _client.ManualCloseOrder(symbol, direction, offsetFlag, quantity);
+            Func<string, trade.TradeDirectionType, trade.OffsetFlagType, int, OperationResult> closeFunc = 
+                new Func<string, trade.TradeDirectionType, trade.OffsetFlagType, int, OperationResult>
+                    (_client.ManualCloseOrder);
+            closeFunc.BeginInvoke(symbol, direction, offsetFlag, quantity, 
+                delegate(IAsyncResult ar)
+                {
+                    try
+                    {
+                        var or = closeFunc.EndInvoke(ar);
+                        if (closeDoneHandler != null)
+                            closeDoneHandler(or.Success, or.ErrorMessage);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        LogManager.Logger.ErrorFormat("Manual close order failed due to {0}", ex.Message);
+                        if (closeDoneHandler != null)
+                            closeDoneHandler(false, "手动平仓时发生未知错误");
+                    }
+                }, null);
         }
 
         private void OnAddPortfolio(AccountVM acct)

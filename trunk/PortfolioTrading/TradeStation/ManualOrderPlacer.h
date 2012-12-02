@@ -17,7 +17,8 @@ enum ORDER_EVENT
 	ORDER_EVENT_PENDING,
 	ORDER_EVENT_CANCEL_SUCCESS,
 	ORDER_EVENT_CANCEL_FAILED,
-	ORDER_EVENT_SUBMIT_FAILED
+	ORDER_EVENT_SUBMIT_FAILED,
+	ORDER_EVENT_REJECTED
 };
 
 class COrderEvent
@@ -37,6 +38,12 @@ class CompleteEvent : public COrderEvent
 {
 public:
 	CompleteEvent(trade::Order* rtnOrder):COrderEvent(ORDER_EVENT_COMPLETE, rtnOrder){}
+};
+
+class RejectEvent: public COrderEvent
+{
+public:
+	RejectEvent(trade::Order* rtnOrder) : COrderEvent(ORDER_EVENT_REJECTED, rtnOrder){}
 };
 
 class PendingEvent : public COrderEvent
@@ -76,11 +83,11 @@ enum ORDER_STATE
 class CStateOwner
 {
 public:
-	CStateOwner(){}
+	CStateOwner():m_currentState(NULL){}
 	virtual ~CStateOwner(){}
 
 	COrderState* CurrentState() const { return m_currentState; }
-	void CurrentState(COrderState* val) { m_currentState = val; }
+	void CurrentState(COrderState* val);
 
 	virtual void OnEnter(ORDER_STATE state, trade::Order* pOrd) {};
 
@@ -211,24 +218,7 @@ public:
 	}
 	~CPlaceOrderStateMachine(){}
 
-	void Init()
-	{
-		OrderStatePtr sent(new OrderSent);
-		m_orderStates.insert(make_pair(sent->State(), sent));
-		OrderStatePtr canceling(new Canceling);
-		m_orderStates.insert(make_pair(canceling->State(), canceling));
-		OrderStatePtr complete(new OrderComplete);
-		m_orderStates.insert(make_pair(complete->State(), complete));
-		OrderStatePtr failed(new PlaceFailed);
-		m_orderStates.insert(make_pair(failed->State(), failed));
-
-		sent->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
-		sent->AddEventState(ORDER_EVENT_PENDING, canceling.get());
-		sent->AddEventState(ORDER_EVENT_SUBMIT_FAILED, failed.get());
-
-		canceling->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
-		canceling->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sent.get());
-	}
+	void Init();
 
 	ManualOrderPlacerPtr CreatePlacer()
 	{ 
@@ -248,21 +238,7 @@ public:
 		m_orderPlacers.erase(orderRef);
 	}
 
-	void Transition(const string& orderRef, COrderEvent& event)
-	{
-		boost::recursive_mutex::scoped_lock lock(m_mut);
-		OrderPlacerMapIter iter = m_orderPlacers.find(orderRef);
-		if(iter != m_orderPlacers.end())
-		{
-			COrderState* currentState = iter->second->CurrentState();
-			
-			COrderState* pNextState = currentState->Next(event);
-			if(pNextState != NULL)
-			{
-				pNextState->Run(iter->second, event.RtnOrder());
-			}
-		}
-	}
+	void Transition(const string& orderRef, COrderEvent& event);
 
 	COrderState* GetState(ORDER_STATE stateVal)
 	{

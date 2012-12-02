@@ -2,6 +2,7 @@
 #include "OrderProcessor.h"
 #include "globalmembers.h"
 #include "charsetconvert.h"
+#include "orderstatushelper.h"
 
 #include <boost/format.hpp>
 #include <boost/foreach.hpp>
@@ -22,6 +23,11 @@ trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
 		}
 	}
 	return pOrdFound;
+}
+
+bool IsOrderRejected(trade::Order* pOrder)
+{
+	return pOrder->ordersubmitstatus() > trade::ACCEPTED;
 }
 
 bool IsOrderPending(trade::Order* pOrder)
@@ -47,6 +53,14 @@ bool IsTicketDone(const trade::Order& order)
 	return submitStatus > trade::ACCEPTED || 
 		status == trade::ALL_TRADED ||
 		status == trade::ORDER_CANCELED;
+}
+
+void PrintOrderStatus(trade::Order* order)
+{
+	trade::OrderSubmitStatusType submitStatus = order->ordersubmitstatus();
+	trade::OrderStatusType status = order->orderstatus();
+	logger.Debug(boost::str(boost::format("Order(%s) - submit status(%s), order status(%s)")
+		% order->orderref().c_str() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
 }
 
 bool IsMultiLegOrderDone(trade::MultiLegOrder* mlOrder)
@@ -393,8 +407,11 @@ void COrderProcessor::OnRtnOrder( trade::Order* order )
 	}
 	else	// manual placed order will be here
 	{
+		PrintOrderStatus(order);
 		const string& ordRef = order->orderref();
-		if(IsTicketTraded(*order))
+		if(IsOrderRejected(order))
+			m_placeOrderStateMachine.Transition(ordRef, RejectEvent(order));
+		else if(IsTicketTraded(*order))
 			m_placeOrderStateMachine.Transition(ordRef, CompleteEvent(order));
 		else if(IsTicketDone(*order)) // order cancelled
 			m_placeOrderStateMachine.Transition(ordRef, CancelSuccessEvent(order));
@@ -629,7 +646,7 @@ trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade
 		logger.Info(boost::str(boost::format("Query Quote %s: %d") 
 			% symbol.c_str() % pQuote->last()));
 
-		double limitPrice = direction == trade::SELL ? pQuote->bid() + 10 : pQuote->ask() - 10;
+		double limitPrice = direction == trade::SELL ? pQuote->bid() : pQuote->ask();
 
 		trade::InputOrder* closeOrder(
 			BuildCloseOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
