@@ -469,7 +469,9 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 	}
 	else	// manual placed order will be here
 	{
-		m_placeOrderStateMachine.Transition(orderRef, SubmitFailedEvent(NULL));
+		string errorMsg;
+		GB2312ToUTF_8(errorMsg, msg.c_str());
+		m_placeOrderStateMachine.Transition(orderRef, SubmitFailedEvent(errorMsg));
 	}
 }
 
@@ -647,6 +649,7 @@ trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade
 			% symbol.c_str() % pQuote->last()));
 
 		double limitPrice = direction == trade::SELL ? pQuote->bid() : pQuote->ask();
+		//double limitPrice = direction == trade::SELL ? pQuote->last() + 2 : pQuote->last() - 2;
 
 		trade::InputOrder* closeOrder(
 			BuildCloseOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
