@@ -56,7 +56,7 @@ void CManualOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	{
 	case ORDER_STATE_SENT:
 		{
-			if(m_retryTimes > 0)
+			if(m_retryTimes >= 0)
 			{
 				if(m_retryTimes < DEFAULT_RETRY_TIMES)
 				{
@@ -64,6 +64,7 @@ void CManualOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 					PrepareInputOrder();
 				}
 				m_submitFunc(m_inputOrder.get());
+				--m_retryTimes;
 			}
 			else
 			{
@@ -135,7 +136,7 @@ void CManualOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	}
 }
 
-void CStateOwner::CurrentState( COrderState* val )
+bool CStateOwner::CurrentState( COrderState* val )
 {
 	if(m_currentState != NULL)
 	{
@@ -144,8 +145,12 @@ void CStateOwner::CurrentState( COrderState* val )
 		logger.Debug(boost::str(boost::format("%s -> %s") 
 			% STATE_TEXT[beforeState] % STATE_TEXT[afterState]));
 	}
+	
+	bool changed = m_currentState != val;
 
 	m_currentState = val;
+
+	return changed;
 }
 
 void CPlaceOrderStateMachine::Transition( const string& orderRef, COrderEvent& event )
@@ -196,4 +201,5 @@ void CPlaceOrderStateMachine::Init()
 
 	canceling->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
 	canceling->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sent.get());
+	canceling->AddEventState(ORDER_EVENT_PENDING, canceling.get());
 }

@@ -99,7 +99,7 @@ public:
 	virtual ~CStateOwner(){}
 
 	COrderState* CurrentState() const { return m_currentState; }
-	void CurrentState(COrderState* val);
+	bool CurrentState(COrderState* val);
 
 	virtual void OnEnter(ORDER_STATE state, COrderEvent* transEvent) {};
 
@@ -126,8 +126,8 @@ public:
 
 	virtual void Run(CStateOwner* stateOwner, COrderEvent* transEvent)
 	{
-		stateOwner->CurrentState(this);
-		stateOwner->OnEnter(m_state, transEvent);
+		if(stateOwner->CurrentState(this))
+			stateOwner->OnEnter(m_state, transEvent);
 	}
 
 	virtual COrderState* Next(COrderEvent& evt)
