@@ -12,6 +12,8 @@ const char* STATE_TEXT[] = {"Order SENT",
 const char* EVENT_TEXT[] = {"Order COMPLETE", "Order PENDING",
 	"Order CANCEL Success", "Order CANCEL Failed", "Order SUBMIT Failed", "Order REJECTED"};
 
+string COrderEvent::m_emptyStatusMsg = "";
+
 CManualOrderPlacer::CManualOrderPlacer(CPlaceOrderStateMachine* pStateMachine):
 m_pStateMachine(pStateMachine),
 m_succ(false),
@@ -45,7 +47,7 @@ void CManualOrderPlacer::PrepareInputOrder()
 	m_pStateMachine->AddPlacer(m_currentOrdRef, this);
 }
 
-void CManualOrderPlacer::OnEnter( ORDER_STATE state, trade::Order* pOrd )
+void CManualOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 {
 	string dbText = boost::str(boost::format("Order(%s) enter %s") 
 		% m_currentOrdRef.c_str() % STATE_TEXT[state]);
@@ -74,6 +76,7 @@ void CManualOrderPlacer::OnEnter( ORDER_STATE state, trade::Order* pOrd )
 		break;
 	case ORDER_STATE_CANCELING:
 		{
+			trade::Order* pOrd = transEvent != NULL ? transEvent->RtnOrder() : NULL;
 			if(pOrd != NULL)
 			{
 				const std::string& ordRef = pOrd->orderref();
@@ -97,12 +100,28 @@ void CManualOrderPlacer::OnEnter( ORDER_STATE state, trade::Order* pOrd )
 			boost::mutex::scoped_lock lock(m_mut);
 			m_succ = false;
 
-			if(pOrd != NULL)
+			if(transEvent != NULL)
 			{
-				const string& status = pOrd->statusmsg();
-				if(!status.empty())
+				trade::Order* pOrd = transEvent->RtnOrder();
+				if(pOrd != NULL)
 				{
-					GB2312ToUTF_8(m_errorMsg, status.c_str());
+					const string& status = pOrd->statusmsg();
+					if(!status.empty())
+					{
+						GB2312ToUTF_8(m_errorMsg, status.c_str());
+					}
+				}
+				else
+				{
+					const string& errorMsg = transEvent->StatusMsg();
+					if(errorMsg.empty())
+					{
+						m_errorMsg = "Order not completed";
+					}
+					else
+					{
+						m_errorMsg = errorMsg;
+					}
 				}
 			}
 			else
@@ -144,7 +163,7 @@ void CPlaceOrderStateMachine::Transition( const string& orderRef, COrderEvent& e
 		COrderState* pNextState = currentState->Next(event);
 		if(pNextState != NULL)
 		{
-			pNextState->Run(iter->second, event.RtnOrder());
+			pNextState->Run(iter->second, &event);
 		}
 		else
 		{

@@ -29,9 +29,15 @@ public:
 
 	ORDER_EVENT Event(){ return m_event; }
 	trade::Order* RtnOrder(){ return m_rtnOrder; }
+
+	virtual const string& StatusMsg(){ return m_rtnOrder != NULL ? m_rtnOrder->statusmsg() : m_emptyStatusMsg; }
+
 protected:
 	ORDER_EVENT m_event;
 	trade::Order* m_rtnOrder;
+
+private:
+	static string m_emptyStatusMsg;
 };
 
 class CompleteEvent : public COrderEvent
@@ -67,7 +73,13 @@ public:
 class SubmitFailedEvent : public COrderEvent
 {
 public:
-	SubmitFailedEvent(trade::Order* rtnOrder):COrderEvent(ORDER_EVENT_SUBMIT_FAILED, rtnOrder){}
+	SubmitFailedEvent(const string& errMsg):
+	  COrderEvent(ORDER_EVENT_SUBMIT_FAILED, NULL),
+	  m_errMsg(errMsg){}
+
+	virtual const string& StatusMsg(){ return m_errMsg; }
+private:
+	string m_errMsg;
 };
 
 class COrderState;
@@ -89,7 +101,7 @@ public:
 	COrderState* CurrentState() const { return m_currentState; }
 	void CurrentState(COrderState* val);
 
-	virtual void OnEnter(ORDER_STATE state, trade::Order* pOrd) {};
+	virtual void OnEnter(ORDER_STATE state, COrderEvent* transEvent) {};
 
 protected:
 	COrderState* m_currentState;
@@ -112,10 +124,10 @@ public:
 		eventStateMap.insert(make_pair(event, pState));
 	}
 
-	virtual void Run(CStateOwner* stateOwner, trade::Order* pRtnOrder)
+	virtual void Run(CStateOwner* stateOwner, COrderEvent* transEvent)
 	{
 		stateOwner->CurrentState(this);
-		stateOwner->OnEnter(m_state, pRtnOrder);
+		stateOwner->OnEnter(m_state, transEvent);
 	}
 
 	virtual COrderState* Next(COrderEvent& evt)
@@ -184,7 +196,7 @@ public:
 	void SetError(const string& errorMsg){ m_errorMsg = errorMsg; }
 	const string& CurrentOrderRef(){ return m_currentOrdRef; }
 
-	void OnEnter(ORDER_STATE state, trade::Order* pOrd);
+	void OnEnter(ORDER_STATE state, COrderEvent* transEvent);
 
 private:
 
