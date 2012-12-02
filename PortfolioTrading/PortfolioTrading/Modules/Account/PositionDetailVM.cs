@@ -18,6 +18,7 @@ namespace PortfolioTrading.Modules.Account
     using System.Globalization;
     using Microsoft.Practices.Prism.Events;
     using PortfolioTrading.Events;
+    using System.Threading;
 
     namespace HiFreTradeUI.ViewModels
     {
@@ -72,8 +73,23 @@ namespace PortfolioTrading.Modules.Account
                 {
                     if (positionItem.Volume > 0)
                     {
-                        _acctVm.ManualCloseOrder(positionItem.Symbol, positionItem.CloseDirection, 
-                            positionItem.OffsetFlag, positionItem.Volume);
+                        SynchronizationContext syncCtx = SynchronizationContext.Current;
+                        _acctVm.ManualCloseOrder(positionItem.Symbol, positionItem.CloseDirection,
+                            positionItem.OffsetFlag, positionItem.Volume, 
+                            (b, err) =>
+                            {
+                                if (!b)
+                                {
+                                    syncCtx.Send(o =>
+                                    {
+                                        System.Windows.MessageBox.Show(
+                                            System.Windows.Application.Current.MainWindow,
+                                            err, "平仓时发生错误",
+                                            System.Windows.MessageBoxButton.OK,
+                                            System.Windows.MessageBoxImage.Error);
+                                    }, null);
+                                }
+                            });
                     }
                 }
             }
