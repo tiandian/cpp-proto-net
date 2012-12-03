@@ -70,8 +70,10 @@ void CManualOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 			{
 				boost::mutex::scoped_lock lock(m_mut);
 				m_succ = false;
-				m_errorMsg = "Retry times is used up";
+				m_errorMsg = boost::str(boost::format("%d次追单后仍未成交！") % DEFAULT_RETRY_TIMES);
 				m_cond.notify_one();
+				logger.Info(boost::str(boost::format("Manual place order %s -> Retry times is used up")
+					% m_inputOrder->instrumentid()));
 			}
 		}
 		break;
