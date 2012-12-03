@@ -3,6 +3,7 @@
 #include "TradeAgentCallback.h"
 #include "ThostTraderApi/ThostFtdcTraderApi.h"
 #include "SyncRequest.h"
+#include "TradeMessagePump.h"
 #include "../Entity/gen/cpp/quote.pb.h"
 
 #include <string>
@@ -23,7 +24,7 @@ public:
 	boost::tuple<bool, string> Login(const string& brokerId, const string& userId, const string& password);
 	void Logout();
 
-	void SetCallbackHanlder(CTradeAgentCallback* pCallback){ m_pCallback = pCallback; }
+	void SetCallbackHanlder(CTradeAgentCallback* pCallback);
 
 	bool SubmitOrder(trade::InputOrder* pInputOrder);
 	bool SubmitOrderAction(trade::InputOrderAction* pInputOrderAction);
@@ -101,8 +102,7 @@ private:
 	bool m_loginSuccess;
 
 	CThostFtdcTraderApi* m_pUserApi;
-	CTradeAgentCallback* m_pCallback;
-
+	
 	bool m_bIsConnected;
 
 	boost::condition_variable m_condConnectDone;
@@ -118,5 +118,6 @@ private:
 	int m_maxOrderRef;					//报单引用
 
 	CSyncRequestFactory<entity::Quote> m_requestFactory;
+	CTradeMessagePump m_messagePump;
 };
 

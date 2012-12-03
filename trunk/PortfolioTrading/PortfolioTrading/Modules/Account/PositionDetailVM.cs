@@ -78,17 +78,24 @@ namespace PortfolioTrading.Modules.Account
                             positionItem.OffsetFlag, positionItem.Volume, 
                             (b, err) =>
                             {
-                                if (!b)
-                                {
-                                    syncCtx.Send(o =>
+                                syncCtx.Send(o =>
                                     {
-                                        System.Windows.MessageBox.Show(
-                                            System.Windows.Application.Current.MainWindow,
-                                            err, "平仓时发生错误",
-                                            System.Windows.MessageBoxButton.OK,
-                                            System.Windows.MessageBoxImage.Error);
+                                        if (b)
+                                        {
+                                            positionItem.CloseVolume = positionItem.Volume;
+                                            positionItem.Volume = 0;
+                                            positionItem.IsOpen = false;
+                                            PositionDetailItems.Refresh();
+                                        }
+                                        else
+                                        {
+                                            System.Windows.MessageBox.Show(
+                                                System.Windows.Application.Current.MainWindow,
+                                                err, "平仓时发生错误",
+                                                System.Windows.MessageBoxButton.OK,
+                                                System.Windows.MessageBoxImage.Error);
+                                        }
                                     }, null);
-                                }
                             });
                     }
                 }
@@ -122,7 +129,7 @@ namespace PortfolioTrading.Modules.Account
                 posiItem.Direction = GetDirection(posiDetail.Direction);
                 posiItem.OpenDate = GetDate(posiDetail.OpenDate);
                 posiItem.Volume = posiDetail.Volume;
-                posiItem.IsClosed = posiItem.Volume > 0;
+                posiItem.IsOpen = posiItem.Volume > 0;
                 posiItem.OpenPrice = posiDetail.OpenPrice;
                 posiItem.TradingDay = GetDate(posiDetail.TradingDay);
                 posiItem.ExchangeID = posiDetail.ExchangeID;
@@ -486,18 +493,18 @@ namespace PortfolioTrading.Modules.Account
             public trade.TradeDirectionType CloseDirection { get; set; }
             public trade.OffsetFlagType OffsetFlag { get; set; }
 
-            #region IsClosed
-            private bool _isClosed;
+            #region IsOpen
+            private bool _isOpen;
 
-            public bool IsClosed
+            public bool IsOpen
             {
-                get { return _isClosed; }
+                get { return _isOpen; }
                 set
                 {
-                    if (_isClosed != value)
+                    if (_isOpen != value)
                     {
-                        _isClosed = value;
-                        RaisePropertyChanged("IsClosed");
+                        _isOpen = value;
+                        RaisePropertyChanged("IsOpen");
                     }
                 }
             }

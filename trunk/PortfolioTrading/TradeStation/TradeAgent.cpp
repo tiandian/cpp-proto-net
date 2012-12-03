@@ -54,7 +54,6 @@ void PrintRtnOrder(CThostFtdcOrderField* pOrder)
 CTradeAgent::CTradeAgent(void):
 m_loginSuccess(false),
 m_pUserApi(NULL),
-m_pCallback(NULL),
 m_bIsConnected(false),
 m_maxOrderRef(0),
 m_iRequestID(0)
@@ -312,19 +311,23 @@ void CTradeAgent::ReqSettlementInfoConfirm()
 
 void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-	string errorMsg;
 	if (bIsLast)
 	{
+		CRspUserLogin* pRspLogin= new CRspUserLogin;
+		MessagePacketPtr packet(new CTradeMessagePacket(pRspLogin, RSP_LOGIN));
 		if(!IsErrorRspInfo(pRspInfo))
 		{
 			// Settlement confirm succeeded, then notify login success
-			m_pCallback->OnRspUserLogin(true, errorMsg, m_maxOrderRef);
+			pRspLogin->LoginSuccess = true;
+			pRspLogin->InitOrderRef = m_maxOrderRef;
 		}
 		else
 		{
-			errorMsg = pRspInfo->ErrorMsg;
-			m_pCallback->OnRspUserLogin(false, errorMsg, -1);
+			pRspLogin->LoginSuccess = false;
+			pRspLogin->ErrorMsg = pRspInfo->ErrorMsg;
+			pRspLogin->InitOrderRef = -1;
 		}
+		m_messagePump.Enqueue(packet);
 	}
 }
 
@@ -420,39 +423,40 @@ void CTradeAgent::OnRspQryTradingAccount( CThostFtdcTradingAccountField *pTradin
 	logger.Debug("--->>> OnRspQryTradingAccount");
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
-		trade::AccountInfo account;
-		account.set_brokerid(pTradingAccount->BrokerID);
-		account.set_accountid(pTradingAccount->AccountID);
-		account.set_premortgage(pTradingAccount->PreMortgage);
-		account.set_precredit(pTradingAccount->PreCredit);
-		account.set_predeposit(pTradingAccount->PreDeposit);
-		account.set_prebalance(pTradingAccount->PreBalance);
-		account.set_premargin(pTradingAccount->PreMargin);
-		account.set_interestbase(pTradingAccount->InterestBase);
-		account.set_interest(pTradingAccount->Interest);
-		account.set_deposit(pTradingAccount->Deposit);
-		account.set_withdraw(pTradingAccount->Withdraw);
-		account.set_frozenmargin(pTradingAccount->FrozenMargin);
-		account.set_frozencash(pTradingAccount->FrozenCash);
-		account.set_frozencommission(pTradingAccount->FrozenCommission);
-		account.set_currmargin(pTradingAccount->CurrMargin);
-		account.set_cashin(pTradingAccount->CashIn);
-		account.set_commission(pTradingAccount->Commission);
-		account.set_closeprofit(pTradingAccount->CloseProfit);
-		account.set_positionprofit(pTradingAccount->PositionProfit);
-		account.set_balance(pTradingAccount->Balance);
-		account.set_available(pTradingAccount->Available);
-		account.set_withdrawquota(pTradingAccount->WithdrawQuota);
-		account.set_reserve(pTradingAccount->Reserve);
-		account.set_tradingday(pTradingAccount->TradingDay);
-		account.set_settlementid(pTradingAccount->SettlementID);
-		account.set_credit(pTradingAccount->Credit);
-		account.set_mortgage(pTradingAccount->Mortgage);
-		account.set_exchangemargin(pTradingAccount->ExchangeMargin);
-		account.set_deliverymargin(pTradingAccount->DeliveryMargin);
-		account.set_exchangedeliverymargin(pTradingAccount->ExchangeDeliveryMargin);
+		trade::AccountInfo* account = new trade::AccountInfo;
+		account->set_brokerid(pTradingAccount->BrokerID);
+		account->set_accountid(pTradingAccount->AccountID);
+		account->set_premortgage(pTradingAccount->PreMortgage);
+		account->set_precredit(pTradingAccount->PreCredit);
+		account->set_predeposit(pTradingAccount->PreDeposit);
+		account->set_prebalance(pTradingAccount->PreBalance);
+		account->set_premargin(pTradingAccount->PreMargin);
+		account->set_interestbase(pTradingAccount->InterestBase);
+		account->set_interest(pTradingAccount->Interest);
+		account->set_deposit(pTradingAccount->Deposit);
+		account->set_withdraw(pTradingAccount->Withdraw);
+		account->set_frozenmargin(pTradingAccount->FrozenMargin);
+		account->set_frozencash(pTradingAccount->FrozenCash);
+		account->set_frozencommission(pTradingAccount->FrozenCommission);
+		account->set_currmargin(pTradingAccount->CurrMargin);
+		account->set_cashin(pTradingAccount->CashIn);
+		account->set_commission(pTradingAccount->Commission);
+		account->set_closeprofit(pTradingAccount->CloseProfit);
+		account->set_positionprofit(pTradingAccount->PositionProfit);
+		account->set_balance(pTradingAccount->Balance);
+		account->set_available(pTradingAccount->Available);
+		account->set_withdrawquota(pTradingAccount->WithdrawQuota);
+		account->set_reserve(pTradingAccount->Reserve);
+		account->set_tradingday(pTradingAccount->TradingDay);
+		account->set_settlementid(pTradingAccount->SettlementID);
+		account->set_credit(pTradingAccount->Credit);
+		account->set_mortgage(pTradingAccount->Mortgage);
+		account->set_exchangemargin(pTradingAccount->ExchangeMargin);
+		account->set_deliverymargin(pTradingAccount->DeliveryMargin);
+		account->set_exchangedeliverymargin(pTradingAccount->ExchangeDeliveryMargin);
 		
-		m_pCallback->OnRspQryTradingAccount(account);
+		MessagePacketPtr packet(new CTradeMessagePacket(account, RSP_ACCOUNT));
+		m_messagePump.Enqueue(packet);
 	}
 }
 
@@ -544,8 +548,12 @@ void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CTho
 
 	logger.Info(oss.str());
 
-	m_pCallback->OnRspOrderInsert(false, std::string(pInputOrder->OrderRef), std::string(pRspInfo->ErrorMsg));
-
+	CRspOrderInsert* pOrdIns = new CRspOrderInsert;
+	pOrdIns->InsertSucess = false;
+	pOrdIns->OrderRef = pInputOrder->OrderRef;
+	pOrdIns->ErrorMsg = pRspInfo->ErrorMsg;
+	MessagePacketPtr packet(new CTradeMessagePacket(pOrdIns, RSP_ORDER_INSERT));
+	m_messagePump.Enqueue(packet);
 }
 
 void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
@@ -554,7 +562,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
 	logger.Info(oss.str());
 
-	boost::shared_ptr<trade::Order> pOrd(new trade::Order);
+	trade::Order* pOrd(new trade::Order);
 
 	///经纪公司代码
 	pOrd->set_brokerid(pOrder->BrokerID);
@@ -682,7 +690,8 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	if(pOrder->OrderSubmitStatus >= THOST_FTDC_OSS_InsertRejected)
 		PrintRtnOrder(pOrder);
 
-	m_pCallback->OnRtnOrder(pOrd.get());
+	MessagePacketPtr packet(new CTradeMessagePacket(pOrd, RTN_ORDER));
+	m_messagePump.Enqueue(packet);
 }
 
 void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
@@ -691,7 +700,7 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 	oss << "--->>> " << "OnRtnTrade (OrdRef:"  << pTrade->OrderRef << ") TradeId:" << pTrade->TradeID;
 	logger.Info(oss.str());
 
-	boost::shared_ptr<trade::Trade> pTd(new trade::Trade);
+	trade::Trade* pTd(new trade::Trade);
 
 	///经纪公司代码
 	pTd->set_brokerid(pTrade->BrokerID);
@@ -765,7 +774,8 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 	///经纪公司报单编号
 	pTd->set_brokerorderseq(pTrade->BrokerOrderSeq);
 
-	m_pCallback->OnRtnTrade(pTd.get());
+	MessagePacketPtr packet(new CTradeMessagePacket(pTd,  RTN_TRADE));
+	m_messagePump.Enqueue(packet);
 }
 
 
@@ -816,7 +826,12 @@ bool CTradeAgent::SubmitOrderAction( trade::InputOrderAction* pInputOrderAction 
 
 void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-	m_pCallback->OnRspOrderInsert(IsErrorRspInfo(pRspInfo), std::string(pInputOrderAction->OrderRef), std::string(pRspInfo->ErrorMsg));
+	CRspOrderInsert* pOrdIns = new CRspOrderInsert;
+	pOrdIns->InsertSucess = IsErrorRspInfo(pRspInfo);
+	pOrdIns->OrderRef = pInputOrderAction->OrderRef;
+	pOrdIns->ErrorMsg = pRspInfo->ErrorMsg;
+	MessagePacketPtr packet(new CTradeMessagePacket(pOrdIns, RSP_ORDER_INSERT));
+	m_messagePump.Enqueue(packet);
 }
 
 void CTradeAgent::QueryPositionDetails( const std::string& symbol )
@@ -850,39 +865,46 @@ void CTradeAgent::OnRspQryInvestorPositionDetail( CThostFtdcInvestorPositionDeta
 	{
 		if(pInvestorPositionDetail == NULL) return;
 
-		trade::PositionDetailInfo posiDetail;
-		posiDetail.set_instrumentid(pInvestorPositionDetail->InstrumentID);
-		posiDetail.set_brokerid(pInvestorPositionDetail->BrokerID);
-		posiDetail.set_investorid(pInvestorPositionDetail->BrokerID);
-		posiDetail.set_hedgeflag(static_cast<trade::HedgeFlagType>(pInvestorPositionDetail->HedgeFlag));
-		posiDetail.set_direction(static_cast<trade::TradeDirectionType>(pInvestorPositionDetail->Direction));
-		posiDetail.set_opendate(pInvestorPositionDetail->OpenDate);
-		posiDetail.set_tradeid(pInvestorPositionDetail->TradeID);
-		posiDetail.set_volume(pInvestorPositionDetail->Volume);
-		posiDetail.set_openprice(pInvestorPositionDetail->OpenPrice);
-		posiDetail.set_tradingday(pInvestorPositionDetail->TradingDay);
-		posiDetail.set_settlementid(pInvestorPositionDetail->SettlementID);
+		trade::PositionDetailInfo* posiDetail = new trade::PositionDetailInfo;
+		posiDetail->set_instrumentid(pInvestorPositionDetail->InstrumentID);
+		posiDetail->set_brokerid(pInvestorPositionDetail->BrokerID);
+		posiDetail->set_investorid(pInvestorPositionDetail->BrokerID);
+		posiDetail->set_hedgeflag(static_cast<trade::HedgeFlagType>(pInvestorPositionDetail->HedgeFlag));
+		posiDetail->set_direction(static_cast<trade::TradeDirectionType>(pInvestorPositionDetail->Direction));
+		posiDetail->set_opendate(pInvestorPositionDetail->OpenDate);
+		posiDetail->set_tradeid(pInvestorPositionDetail->TradeID);
+		posiDetail->set_volume(pInvestorPositionDetail->Volume);
+		posiDetail->set_openprice(pInvestorPositionDetail->OpenPrice);
+		posiDetail->set_tradingday(pInvestorPositionDetail->TradingDay);
+		posiDetail->set_settlementid(pInvestorPositionDetail->SettlementID);
 		if(pInvestorPositionDetail->TradeType < trade::TRDT_COMMON)
-			posiDetail.set_tradetype(trade::TRDT_COMMON);
+			posiDetail->set_tradetype(trade::TRDT_COMMON);
 		else
-			posiDetail.set_tradetype(static_cast<trade::TradeTypeType>(pInvestorPositionDetail->TradeType));
-		posiDetail.set_combinstrumentid(pInvestorPositionDetail->CombInstrumentID);
-		posiDetail.set_exchangeid(pInvestorPositionDetail->ExchangeID);
-		posiDetail.set_closeprofitbydate(pInvestorPositionDetail->CloseProfitByDate);
-		posiDetail.set_closeprofitbytrade(pInvestorPositionDetail->CloseProfitByTrade);
-		posiDetail.set_positionprofitbydate(pInvestorPositionDetail->PositionProfitByDate);
-		posiDetail.set_positionprofitbytrade(pInvestorPositionDetail->PositionProfitByTrade);
-		posiDetail.set_margin(pInvestorPositionDetail->Margin);
-		posiDetail.set_exchmargin(pInvestorPositionDetail->ExchMargin);
-		posiDetail.set_marginratebymoney(pInvestorPositionDetail->MarginRateByMoney);
-		posiDetail.set_marginratebyvolume(pInvestorPositionDetail->MarginRateByVolume);
-		posiDetail.set_lastsettlementprice(pInvestorPositionDetail->LastSettlementPrice);
-		posiDetail.set_settlementprice(pInvestorPositionDetail->SettlementPrice);
-		posiDetail.set_closevolume(pInvestorPositionDetail->CloseVolume);
-		posiDetail.set_closeamount(pInvestorPositionDetail->CloseAmount);
+			posiDetail->set_tradetype(static_cast<trade::TradeTypeType>(pInvestorPositionDetail->TradeType));
+		posiDetail->set_combinstrumentid(pInvestorPositionDetail->CombInstrumentID);
+		posiDetail->set_exchangeid(pInvestorPositionDetail->ExchangeID);
+		posiDetail->set_closeprofitbydate(pInvestorPositionDetail->CloseProfitByDate);
+		posiDetail->set_closeprofitbytrade(pInvestorPositionDetail->CloseProfitByTrade);
+		posiDetail->set_positionprofitbydate(pInvestorPositionDetail->PositionProfitByDate);
+		posiDetail->set_positionprofitbytrade(pInvestorPositionDetail->PositionProfitByTrade);
+		posiDetail->set_margin(pInvestorPositionDetail->Margin);
+		posiDetail->set_exchmargin(pInvestorPositionDetail->ExchMargin);
+		posiDetail->set_marginratebymoney(pInvestorPositionDetail->MarginRateByMoney);
+		posiDetail->set_marginratebyvolume(pInvestorPositionDetail->MarginRateByVolume);
+		posiDetail->set_lastsettlementprice(pInvestorPositionDetail->LastSettlementPrice);
+		posiDetail->set_settlementprice(pInvestorPositionDetail->SettlementPrice);
+		posiDetail->set_closevolume(pInvestorPositionDetail->CloseVolume);
+		posiDetail->set_closeamount(pInvestorPositionDetail->CloseAmount);
 
-		m_pCallback->OnRspQryInvestorPositionDetail(&posiDetail);
+		MessagePacketPtr packet(new CTradeMessagePacket(posiDetail, RSP_POSITION));
+		m_messagePump.Enqueue(packet);
 	}
+
+#ifdef _DEBUG
+	ostringstream oss;
+	oss << "--->>> 查询仓位明细 (ReqestID: " << nRequestID << ") -- " << (bIsLast ? "End" : "Remaining");
+	logger.Debug(oss.str());
+#endif
 }
 
 bool CTradeAgent::QuerySymbol( const std::string& symbol, entity::Quote** ppQuote )
@@ -971,5 +993,10 @@ void CTradeAgent::OnRspQryDepthMarketData( CThostFtdcDepthMarketDataField *pDept
 	quote->set_average_price(pDepthMarketData->AveragePrice);
 
 	m_requestFactory.Response(nRequestID, true, quote);
+}
+
+void CTradeAgent::SetCallbackHanlder( CTradeAgentCallback* pCallback )
+{
+	m_messagePump.Init(pCallback);
 }
 

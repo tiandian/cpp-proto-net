@@ -26,7 +26,7 @@
                                 <Button HorizontalAlignment="Center" VerticalAlignment="Center"
                                         Command="{Binding Path=DataContext.CloseOrderCommand, ElementName=PositionDetailGrid}"
                                         CommandParameter="{Binding DataItem}"
-                                        IsEnabled="{Binding Path=DataItem.IsClosed}">
+                                        IsEnabled="{Binding Path=DataItem.IsOpen}">
                                     平仓
                                 </Button>
                             </ControlTemplate>

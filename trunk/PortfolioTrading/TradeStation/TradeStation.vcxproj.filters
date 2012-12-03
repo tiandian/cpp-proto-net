@@ -147,6 +147,9 @@
     <ClInclude Include="orderstatushelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TradeMessagePump.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -234,6 +237,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="orderstatushelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TradeMessagePump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
