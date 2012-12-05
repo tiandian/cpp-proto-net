@@ -91,7 +91,7 @@
                     </Setter>
                 </Style>
                 
-                <Style x:Key="lastColHeaderSytle" TargetType="{x:Type igDP:LabelPresenter}">
+                <!--<Style x:Key="lastColHeaderSytle" TargetType="{x:Type igDP:LabelPresenter}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type igDP:LabelPresenter}">
@@ -108,7 +108,7 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                </Style>
+                </Style>-->
 
                 <!-- Last column style -->
                 <Style x:Key="lastColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
@@ -118,16 +118,7 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid Margin="2" >
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0"  Text="{Binding Last}" TextAlignment="Right" Margin="4,0"/>
-                                                <TextBlock Grid.Column="1"  Text="{Binding Ask}" TextAlignment="Right" Margin="4,0"/>
-                                                <TextBlock Grid.Column="2"  Text="{Binding Bid}" TextAlignment="Right" Margin="4,0"/>
-                                            </Grid>
+                                            <TextBlock Text="{Binding Last}" Margin="4, 2"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
@@ -135,7 +126,41 @@
                         </Setter.Value>
                     </Setter>
                 </Style>
-                
+
+                <!-- Ask column style -->
+                <Style x:Key="askColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Ask}" Margin="4, 2"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Bid column style -->
+                <Style x:Key="bidColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Bid}" Margin="4, 2"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
                 <!-- Open/Close statistics -->
                 <Style x:Key="openColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
                     <Setter Property="Template">
@@ -150,18 +175,54 @@
                     </Setter>
                 </Style>
 
+                <!-- Position -->
+                <Style x:Key="posiColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Run Text="{Binding Record.DataItem.OpenTimes, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                         FontWeight="Bold" FontSize="20"/> / 
+                                    <Run Text="{Binding Record.DataItem.DoneTimes, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                </TextBlock>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Condition setting column style -->
+                <Style x:Key="condSettingColStyle" TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <Border BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 2">
+                                    <ctrls:PortfMonitorPanel DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
+                <!-- Price diff column style -->
+                <Style x:Key="priceDiffColStyle" TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <Border BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 2">
+                                    <ctrls:PriceDiffWatchPanel DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                
                 <!-- Operation column style -->
                 <Style x:Key="operationColStyle" TargetType="{x:Type igDP:CellValuePresenter}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
-                                <Border Height="75" Margin="4, 4, 0, 4" BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 3">
-                                    <DockPanel>
-                                        <TextBlock DockPanel.Dock="Left">监控</TextBlock>
-                                        <ctrls:PositionOperPanel DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}" 
-                                                                 Width="220" DockPanel.Dock="Right"/>
-                                        <ctrls:PortfMonitorPanel DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
-                                    </DockPanel>
+                                <Border BorderBrush="YellowGreen" BorderThickness="0, 0, 0, 2">
+                                    <ctrls:PositionOperPanel DataContext="{Binding Record.DataItem, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
@@ -179,28 +240,73 @@
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="Last" Row="0" Column="2" Width="240">
-                        <igDP:UnboundField.Settings>
-                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource lastColStyle}"
-                                                LabelPresenterStyle="{StaticResource lastColHeaderSytle}"/>
-                        </igDP:UnboundField.Settings>
-                    </igDP:UnboundField>
-
-                    <igDP:UnboundField Name="Prefer" Label="优先成交" Column="3">
+                    <igDP:UnboundField Name="Prefer" Label="优先成交" Row="0" Column="2">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings CellValuePresenterStyle="{StaticResource preferColStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="OpenClose" Label="开仓/平仓" Row="0" Column="4">
+                    <igDP:UnboundField Name="Last" Label="最新" Row="0" Column="3">
                         <igDP:UnboundField.Settings>
-                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource openColStyle}"/>
+                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource lastColStyle}" CellMinWidth="80"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:Field Name="Gain" Label="盈利" Row="0" Column="5" />
+                    <igDP:UnboundField Name="Ask" Label="卖一" Row="0" Column="4">
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource askColStyle}" CellMinWidth="80"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="Opertaion" Label="操作" Row="1"  Column="0" ColumnSpan="6">
+                    <igDP:UnboundField Name="Bid" Label="买一" Row="0" Column="5">
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource bidColStyle}" CellMinWidth="80"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+
+                    <igDP:UnboundField Name="OpenClose" Label="开仓/平仓" Row="0" Column="6">
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource openColStyle}" CellMinWidth="80"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+
+                    <igDP:UnboundField Name="OpenClose" Label="持仓/最大" Row="0" Column="7">
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource posiColStyle}" CellMinWidth="80"/>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+
+                    <igDP:Field Name="Gain" Label="盈利" Row="0" Column="8">
+                        <igDP:Field.Settings>
+                            <igDP:FieldSettings CellMinWidth="80"/>
+                        </igDP:Field.Settings>
+                    </igDP:Field>
+
+                    <igDP:UnboundField Name="Condition" Label="条件" Row="1"  Column="0" ColumnSpan="3">
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource condSettingColStyle}" LabelHeight="0">
+                                <igDP:FieldSettings.LabelPresenterStyle>
+                                    <Style TargetType="igDP:LabelPresenter">
+                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                    </Style>
+                                </igDP:FieldSettings.LabelPresenterStyle>
+                            </igDP:FieldSettings>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+
+                    <igDP:UnboundField Name="PriceDiff" Label="价差" Row="1"  Column="3" ColumnSpan="3">
+                        <igDP:UnboundField.Settings>
+                            <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource priceDiffColStyle}" LabelHeight="0">
+                                <igDP:FieldSettings.LabelPresenterStyle>
+                                    <Style TargetType="igDP:LabelPresenter">
+                                        <Setter Property="Visibility" Value="Hidden"></Setter>
+                                    </Style>
+                                </igDP:FieldSettings.LabelPresenterStyle>
+                            </igDP:FieldSettings>
+                        </igDP:UnboundField.Settings>
+                    </igDP:UnboundField>
+
+                    <igDP:UnboundField Name="Opertaion" Label="操作" Row="1"  Column="6" ColumnSpan="3">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource operationColStyle}" LabelHeight="0">
                                 <igDP:FieldSettings.LabelPresenterStyle>

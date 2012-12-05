@@ -105,6 +105,7 @@
     </ApplicationDefinition>
     <Compile Include="Controls\PortfMonTemplateSelector.cs" />
     <Compile Include="Controls\PortfSettingTemplateSelector.cs" />
+    <Compile Include="Controls\PriceDiffWatchPanel.cs" />
     <Compile Include="Controls\RadioButtonExtended.cs" />
     <Compile Include="Converters\CompareConditionDisplayConverter.cs" />
     <Compile Include="Converters\OrderPriceTypeConverter.cs" />
