@@ -11,13 +11,14 @@ CSequenceOrderSender::CSequenceOrderSender(
 	const string& portfolioId,
 	const string& mlOrderId,
 	InputOrderVectorPtr pInputOrdVec, 
-	COrderProcessor* orderProc):
+	COrderProcessor* orderProc, int retryTimes):
 m_preferOrderCompleted(false),
 m_preferOrderCompletionSuccess(false),
 m_portfolioId(portfolioId),
 m_mlOrderId(mlOrderId),
 m_inputOrderVec(pInputOrdVec),
 m_orderProc(orderProc),
+m_retryTimes(retryTimes),
 m_sendingOrderIndex(0)
 {
 }
@@ -41,7 +42,7 @@ void CSequenceOrderSender::SendOrder(int ordIdx)
 	logger.Trace(boost::str(boost::format("Sequence Sender start sending No.%d order(%s)") 
 		% ordIdx % iOrd->instrumentid().c_str()));
 	m_workingResubmitter = OrderResubmitterPtr(
-		new COrderResubmitter(m_mlOrderId, iOrd.get(), m_orderProc));
+		new COrderResubmitter(m_mlOrderId, iOrd.get(), m_orderProc, m_retryTimes));
 
 	m_orderProc->ChangePortfolioResubmitter(m_portfolioId, m_workingResubmitter.get(), true);
 

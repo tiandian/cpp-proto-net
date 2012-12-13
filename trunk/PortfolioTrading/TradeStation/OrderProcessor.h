@@ -34,7 +34,7 @@ public:
 	void Initialize(CTradeAgent* pTradeAgent);
 
 	void SubmitOrder(MultiLegOrderPtr multilegOrder);
-	void SubmitOrder2(MultiLegOrderPtr multilegOrder);
+	void SubmitOrder2(MultiLegOrderPtr multilegOrder, bool autoTracking);
 	trade::InputOrder* BuildSingleOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
 	void CancelOrder(	const std::string& ordRef, 
 						const std::string& exchId, 

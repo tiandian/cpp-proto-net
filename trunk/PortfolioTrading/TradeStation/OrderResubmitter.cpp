@@ -5,16 +5,15 @@
 
 #include <boost/format.hpp>
 
-#define INIT_RETRY_TIMES 2
-
 COrderResubmitter::COrderResubmitter(
 	const string& mlOrderId,
 	trade::InputOrder* pInputOrd,
-	COrderProcessor* pOrderProc):
+	COrderProcessor* pOrderProc,
+	int retryTimes):
 m_mlOrderId(mlOrderId),
 m_pendingOrder(pInputOrd),
 m_pOrderProc(pOrderProc),
-m_remainingRetry(INIT_RETRY_TIMES),
+m_remainingRetry(retryTimes),
 m_isDone(NotDone),
 m_quoteAsk(0),
 m_quoteBid(0),

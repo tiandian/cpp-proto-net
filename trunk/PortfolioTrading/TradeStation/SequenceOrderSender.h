@@ -23,7 +23,7 @@ public:
 		const string& portfolioId,
 		const string& mlOrderId,
 		InputOrderVectorPtr pInputOrdVec, 
-		COrderProcessor* orderProc);
+		COrderProcessor* orderProc, int retryTimes);
 	~CSequenceOrderSender(void);
 
 	void Start();
@@ -41,6 +41,7 @@ private:
 	int m_sendingOrderIndex;
 	COrderProcessor* m_orderProc;
 
+	int m_retryTimes;
 	bool m_preferOrderCompleted;
 	bool m_preferOrderCompletionSuccess;
 

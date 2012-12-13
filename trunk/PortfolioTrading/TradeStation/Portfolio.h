@@ -59,7 +59,7 @@ public:
 	
 	void EnableStrategy(bool isEnabled);
 
-	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss);
+	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss, bool isAutoTracking, bool enablePrefer);
 	void ApplyStrategySetting(const string& name, const string& data);
 
 	void AddPosition(const MultiLegOrderPtr& openOrder);

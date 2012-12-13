@@ -200,6 +200,8 @@ void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfIte
 	strategy->SetAutoOpen(pPortfItem->autoopen());
 	strategy->SetStopGain(pPortfItem->autostopgain());
 	strategy->SetStopLoss(pPortfItem->autostoploss());
+	strategy->SetAutoTracking(pPortfItem->autotrack());
+	strategy->SetEnablePrefer(pPortfItem->enableprefer());
 	m_strategy = strategy;
 }
 
@@ -276,14 +278,16 @@ CPortfolio* CPortfolio::Create( CClientAgent* pClient, entity::PortfolioItem* pP
 	return pPortf;
 }
 
-void CPortfolio::TurnSwitches( bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss )
+void CPortfolio::TurnSwitches( bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss, bool isAutoTracking, bool enablePrefer )
 {
 	m_strategy->SetAutoOpen(isAutoOpen);
 	m_strategy->SetStopGain(isAutoStopGain);
 	m_strategy->SetStopLoss(isAutoStopLoss);
+	m_strategy->SetAutoTracking(isAutoTracking);
+	m_strategy->SetEnablePrefer(enablePrefer);
 
-	logger.Info(boost::str(boost::format("Portf (%s): Open %d, StopGain %d, StopLoss %d")
-		% ID().c_str() % isAutoOpen % isAutoStopGain % isAutoStopLoss));
+	logger.Info(boost::str(boost::format("Portf (%s): Open %d, StopGain %d, StopLoss %d, AutoTrack %d, Prefer %d")
+		% ID().c_str() % isAutoOpen % isAutoStopGain % isAutoStopLoss % isAutoTracking % enablePrefer));
 }
 
 void CPortfolio::EnableStrategy( bool isEnabled )

@@ -137,7 +137,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegItem));
   PortfolioItem_descriptor_ = file->message_type(3);
-  static const int PortfolioItem_offsets_[15] = {
+  static const int PortfolioItem_offsets_[18] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, quantity_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, diff_),
@@ -146,6 +146,8 @@ void protobuf_AssignDesc_message_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autoopen_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autostopgain_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autostoploss_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, autotrack_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, enableprefer_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, legs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategyname_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategydata_),
@@ -153,6 +155,7 @@ void protobuf_AssignDesc_message_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, opentimes_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, closetimes_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, profit_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, maxposition_),
   };
   PortfolioItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -230,9 +233,11 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RegQuoteParam));
   PorfOpenPosiParam_descriptor_ = file->message_type(8);
-  static const int PorfOpenPosiParam_offsets_[2] = {
+  static const int PorfOpenPosiParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, quantity_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, autotrack_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, enableprefer_),
   };
   PorfOpenPosiParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -336,11 +341,13 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyStrategyParam));
   ModifyPortfolioSwitchParam_descriptor_ = file->message_type(14);
-  static const int ModifyPortfolioSwitchParam_offsets_[4] = {
+  static const int ModifyPortfolioSwitchParam_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autoopen_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autostopgain_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autostoploss_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autotracking_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, enableprefer_),
   };
   ModifyPortfolioSwitchParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -533,53 +540,57 @@ void protobuf_AddDesc_message_2eproto() {
     "2\031.entity.PosiDirectionType\022!\n\006Status\030\004 "
     "\002(\0162\021.entity.LegStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003"
     "Ask\030\006 \002(\001\022\013\n\003Bid\030\007 \002(\001\022\023\n\013IsPreferred\030\010 "
-    "\002(\010\"\271\002\n\rPortfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Qua"
+    "\002(\010\"\367\002\n\rPortfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Qua"
     "ntity\030\002 \002(\005\022\014\n\004Diff\030\003 \002(\001\022\020\n\010LongDiff\030\004 "
     "\002(\001\022\021\n\tShortDiff\030\005 \002(\001\022\020\n\010AutoOpen\030\006 \002(\010"
     "\022\024\n\014AutoStopGain\030\007 \002(\010\022\024\n\014AutoStopLoss\030\010"
-    " \002(\010\022\035\n\004Legs\030\t \003(\0132\017.entity.LegItem\022\024\n\014S"
-    "trategyName\030\n \002(\t\022\024\n\014StrategyData\030\013 \002(\014\022"
-    "\027\n\017StrategyRunning\030\014 \002(\010\022\021\n\tOpenTimes\030\r "
-    "\002(\005\022\022\n\nCloseTimes\030\016 \002(\005\022\016\n\006Profit\030\017 \002(\001\""
-    ":\n\014ConnectParam\022\024\n\014QuoteAddress\030\001 \002(\t\022\024\n"
-    "\014StreamFolder\030\002 \002(\t\"8\n\017OperationReturn\022\017"
-    "\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t\"@\n"
-    "\nLoginParam\022\020\n\010BrokerId\030\001 \002(\t\022\016\n\006UserId\030"
-    "\002 \002(\t\022\020\n\010Password\030\003 \002(\t\" \n\rRegQuoteParam"
-    "\022\017\n\007Symbols\030\001 \003(\t\"6\n\021PorfOpenPosiParam\022\017"
-    "\n\007PortfId\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\"T\n\022Clo"
-    "sePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024"
-    ".trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\""
-    "t\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022"
-    "\027\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030"
-    "\003 \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002"
-    "\n\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002("
-    "\0162\031.entity.PosiDirectionType\022/\n\rOpenCond"
-    "ition\030\002 \002(\0162\030.entity.CompareCondition\022\031\n"
-    "\021OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCond"
-    "ition\030\004 \002(\0162\030.entity.CompareCondition\022\031\n"
-    "\021StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCond"
-    "ition\030\006 \002(\0162\030.entity.CompareCondition\022\031\n"
-    "\021StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiS"
-    "trategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Clo"
-    "seLegSide\030\002 \002(\0162\031.entity.PosiDirectionTy"
-    "pe\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.Co"
-    "mpareCondition\022\021\n\tThreshold\030\004 \002(\001\"R\n\023Mod"
-    "ifyStrategyParam\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014Str"
-    "ategyName\030\002 \002(\t\022\024\n\014StrategyData\030\003 \002(\014\"k\n"
-    "\032ModifyPortfolioSwitchParam\022\017\n\007PortfId\030\001"
-    " \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024\n\014AutoStopGain\030\003"
-    " \002(\010\022\024\n\014AutoStopLoss\030\004 \002(\010\"<\n\030ModifyRunn"
-    "ingStatusParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabl"
-    "ed\030\002 \002(\010\"F\n ModifyPortfolioPreferredLegP"
-    "aram\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t"
-    "\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030\001 \002(\t\022\022"
-    "\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006"
-    "UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"\222\001\n\025ManualC"
-    "loseOrderParam\022\016\n\006Symbol\030\001 \002(\t\022,\n\tDirect"
-    "ion\030\002 \002(\0162\031.trade.TradeDirectionType\022)\n\n"
-    "OffsetFlag\030\003 \002(\0162\025.trade.OffsetFlagType\022"
-    "\020\n\010Quantity\030\004 \002(\005", 2137);
+    " \002(\010\022\021\n\tAutoTrack\030\t \002(\010\022\024\n\014EnablePrefer\030"
+    "\n \002(\010\022\035\n\004Legs\030\013 \003(\0132\017.entity.LegItem\022\024\n\014"
+    "StrategyName\030\014 \002(\t\022\024\n\014StrategyData\030\r \002(\014"
+    "\022\027\n\017StrategyRunning\030\016 \002(\010\022\021\n\tOpenTimes\030\017"
+    " \002(\005\022\022\n\nCloseTimes\030\020 \002(\005\022\016\n\006Profit\030\021 \002(\001"
+    "\022\023\n\013MaxPosition\030\022 \002(\005\":\n\014ConnectParam\022\024\n"
+    "\014QuoteAddress\030\001 \002(\t\022\024\n\014StreamFolder\030\002 \002("
+    "\t\"8\n\017OperationReturn\022\017\n\007Success\030\001 \002(\010\022\024\n"
+    "\014ErrorMessage\030\002 \002(\t\"@\n\nLoginParam\022\020\n\010Bro"
+    "kerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Password\030"
+    "\003 \002(\t\" \n\rRegQuoteParam\022\017\n\007Symbols\030\001 \003(\t\""
+    "_\n\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n"
+    "\010Quantity\030\002 \002(\005\022\021\n\tAutoTrack\030\003 \002(\010\022\024\n\014En"
+    "ablePrefer\030\004 \002(\010\"T\n\022ClosePositionParam\022+"
+    "\n\rMultiLegOrder\030\001 \002(\0132\024.trade.MultiLegOr"
+    "der\022\021\n\tLegOrdRef\030\002 \001(\t\"t\n\023LegOrderUpdate"
+    "Param\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017MultiLegOrderI"
+    "d\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036\n\010LegOrder"
+    "\030\004 \002(\0132\014.trade.Order\"\260\002\n\031ArbitrageStrate"
+    "gySettings\022\'\n\004Side\030\001 \002(\0162\031.entity.PosiDi"
+    "rectionType\022/\n\rOpenCondition\030\002 \002(\0162\030.ent"
+    "ity.CompareCondition\022\031\n\021OpenPosiThreshol"
+    "d\030\003 \002(\001\0223\n\021StopGainCondition\030\004 \002(\0162\030.ent"
+    "ity.CompareCondition\022\031\n\021StopGainThreshol"
+    "d\030\005 \002(\001\0223\n\021StopLossCondition\030\006 \002(\0162\030.ent"
+    "ity.CompareCondition\022\031\n\021StopLossThreshol"
+    "d\030\007 \002(\001\"\246\001\n\032ChangePosiStrategySettings\022\020"
+    "\n\010CloseLeg\030\001 \002(\t\022/\n\014CloseLegSide\030\002 \002(\0162\031"
+    ".entity.PosiDirectionType\0222\n\020TriggerCond"
+    "ition\030\003 \002(\0162\030.entity.CompareCondition\022\021\n"
+    "\tThreshold\030\004 \002(\001\"R\n\023ModifyStrategyParam\022"
+    "\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024"
+    "\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolio"
+    "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
+    "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
+    "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
+    "lePrefer\030\006 \002(\010\"<\n\030ModifyRunningStatusPar"
+    "am\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n "
+    "ModifyPortfolioPreferredLegParam\022\017\n\007Port"
+    "fId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOr"
+    "derParam\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId"
+    "\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t"
+    "\022\016\n\006Symbol\030\005 \002(\t\"\222\001\n\025ManualCloseOrderPar"
+    "am\022\016\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031."
+    "trade.TradeDirectionType\022)\n\nOffsetFlag\030\003"
+    " \002(\0162\025.trade.OffsetFlagType\022\020\n\010Quantity\030"
+    "\004 \002(\005", 2285);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -1584,6 +1595,8 @@ const int PortfolioItem::kShortDiffFieldNumber;
 const int PortfolioItem::kAutoOpenFieldNumber;
 const int PortfolioItem::kAutoStopGainFieldNumber;
 const int PortfolioItem::kAutoStopLossFieldNumber;
+const int PortfolioItem::kAutoTrackFieldNumber;
+const int PortfolioItem::kEnablePreferFieldNumber;
 const int PortfolioItem::kLegsFieldNumber;
 const int PortfolioItem::kStrategyNameFieldNumber;
 const int PortfolioItem::kStrategyDataFieldNumber;
@@ -1591,6 +1604,7 @@ const int PortfolioItem::kStrategyRunningFieldNumber;
 const int PortfolioItem::kOpenTimesFieldNumber;
 const int PortfolioItem::kCloseTimesFieldNumber;
 const int PortfolioItem::kProfitFieldNumber;
+const int PortfolioItem::kMaxPositionFieldNumber;
 #endif  // !_MSC_VER
 
 PortfolioItem::PortfolioItem()
@@ -1617,12 +1631,15 @@ void PortfolioItem::SharedCtor() {
   autoopen_ = false;
   autostopgain_ = false;
   autostoploss_ = false;
+  autotrack_ = false;
+  enableprefer_ = false;
   strategyname_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   strategydata_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   strategyrunning_ = false;
   opentimes_ = 0;
   closetimes_ = 0;
   profit_ = 0;
+  maxposition_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1679,7 +1696,9 @@ void PortfolioItem::Clear() {
     autostopgain_ = false;
     autostoploss_ = false;
   }
-  if (_has_bits_[9 / 32] & (0xffu << (9 % 32))) {
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    autotrack_ = false;
+    enableprefer_ = false;
     if (has_strategyname()) {
       if (strategyname_ != &::google::protobuf::internal::kEmptyString) {
         strategyname_->clear();
@@ -1693,7 +1712,10 @@ void PortfolioItem::Clear() {
     strategyrunning_ = false;
     opentimes_ = 0;
     closetimes_ = 0;
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     profit_ = 0;
+    maxposition_ = 0;
   }
   legs_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1830,12 +1852,44 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(74)) goto parse_Legs;
+        if (input->ExpectTag(72)) goto parse_AutoTrack;
         break;
       }
       
-      // repeated .entity.LegItem Legs = 9;
+      // required bool AutoTrack = 9;
       case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_AutoTrack:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &autotrack_)));
+          set_has_autotrack();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(80)) goto parse_EnablePrefer;
+        break;
+      }
+      
+      // required bool EnablePrefer = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_EnablePrefer:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &enableprefer_)));
+          set_has_enableprefer();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(90)) goto parse_Legs;
+        break;
+      }
+      
+      // repeated .entity.LegItem Legs = 11;
+      case 11: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_Legs:
@@ -1844,13 +1898,13 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(74)) goto parse_Legs;
-        if (input->ExpectTag(82)) goto parse_StrategyName;
+        if (input->ExpectTag(90)) goto parse_Legs;
+        if (input->ExpectTag(98)) goto parse_StrategyName;
         break;
       }
       
-      // required string StrategyName = 10;
-      case 10: {
+      // required string StrategyName = 12;
+      case 12: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_StrategyName:
@@ -1862,12 +1916,12 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(90)) goto parse_StrategyData;
+        if (input->ExpectTag(106)) goto parse_StrategyData;
         break;
       }
       
-      // required bytes StrategyData = 11;
-      case 11: {
+      // required bytes StrategyData = 13;
+      case 13: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_StrategyData:
@@ -1876,12 +1930,12 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(96)) goto parse_StrategyRunning;
+        if (input->ExpectTag(112)) goto parse_StrategyRunning;
         break;
       }
       
-      // required bool StrategyRunning = 12;
-      case 12: {
+      // required bool StrategyRunning = 14;
+      case 14: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_StrategyRunning:
@@ -1892,12 +1946,12 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(104)) goto parse_OpenTimes;
+        if (input->ExpectTag(120)) goto parse_OpenTimes;
         break;
       }
       
-      // required int32 OpenTimes = 13;
-      case 13: {
+      // required int32 OpenTimes = 15;
+      case 15: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_OpenTimes:
@@ -1908,12 +1962,12 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(112)) goto parse_CloseTimes;
+        if (input->ExpectTag(128)) goto parse_CloseTimes;
         break;
       }
       
-      // required int32 CloseTimes = 14;
-      case 14: {
+      // required int32 CloseTimes = 16;
+      case 16: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_CloseTimes:
@@ -1924,12 +1978,12 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(121)) goto parse_Profit;
+        if (input->ExpectTag(137)) goto parse_Profit;
         break;
       }
       
-      // required double Profit = 15;
-      case 15: {
+      // required double Profit = 17;
+      case 17: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
          parse_Profit:
@@ -1937,6 +1991,22 @@ bool PortfolioItem::MergePartialFromCodedStream(
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &profit_)));
           set_has_profit();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(144)) goto parse_MaxPosition;
+        break;
+      }
+      
+      // required int32 MaxPosition = 18;
+      case 18: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_MaxPosition:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxposition_)));
+          set_has_maxposition();
         } else {
           goto handle_uninterpreted;
         }
@@ -2006,45 +2076,60 @@ void PortfolioItem::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(8, this->autostoploss(), output);
   }
   
-  // repeated .entity.LegItem Legs = 9;
-  for (int i = 0; i < this->legs_size(); i++) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      9, this->legs(i), output);
+  // required bool AutoTrack = 9;
+  if (has_autotrack()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(9, this->autotrack(), output);
   }
   
-  // required string StrategyName = 10;
+  // required bool EnablePrefer = 10;
+  if (has_enableprefer()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(10, this->enableprefer(), output);
+  }
+  
+  // repeated .entity.LegItem Legs = 11;
+  for (int i = 0; i < this->legs_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      11, this->legs(i), output);
+  }
+  
+  // required string StrategyName = 12;
   if (has_strategyname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->strategyname().data(), this->strategyname().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      10, this->strategyname(), output);
+      12, this->strategyname(), output);
   }
   
-  // required bytes StrategyData = 11;
+  // required bytes StrategyData = 13;
   if (has_strategydata()) {
     ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      11, this->strategydata(), output);
+      13, this->strategydata(), output);
   }
   
-  // required bool StrategyRunning = 12;
+  // required bool StrategyRunning = 14;
   if (has_strategyrunning()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(12, this->strategyrunning(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(14, this->strategyrunning(), output);
   }
   
-  // required int32 OpenTimes = 13;
+  // required int32 OpenTimes = 15;
   if (has_opentimes()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(13, this->opentimes(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(15, this->opentimes(), output);
   }
   
-  // required int32 CloseTimes = 14;
+  // required int32 CloseTimes = 16;
   if (has_closetimes()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(14, this->closetimes(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(16, this->closetimes(), output);
   }
   
-  // required double Profit = 15;
+  // required double Profit = 17;
   if (has_profit()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(15, this->profit(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(17, this->profit(), output);
+  }
+  
+  // required int32 MaxPosition = 18;
+  if (has_maxposition()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(18, this->maxposition(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -2100,48 +2185,63 @@ void PortfolioItem::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(8, this->autostoploss(), target);
   }
   
-  // repeated .entity.LegItem Legs = 9;
+  // required bool AutoTrack = 9;
+  if (has_autotrack()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(9, this->autotrack(), target);
+  }
+  
+  // required bool EnablePrefer = 10;
+  if (has_enableprefer()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(10, this->enableprefer(), target);
+  }
+  
+  // repeated .entity.LegItem Legs = 11;
   for (int i = 0; i < this->legs_size(); i++) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        9, this->legs(i), target);
+        11, this->legs(i), target);
   }
   
-  // required string StrategyName = 10;
+  // required string StrategyName = 12;
   if (has_strategyname()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->strategyname().data(), this->strategyname().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        10, this->strategyname(), target);
+        12, this->strategyname(), target);
   }
   
-  // required bytes StrategyData = 11;
+  // required bytes StrategyData = 13;
   if (has_strategydata()) {
     target =
       ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        11, this->strategydata(), target);
+        13, this->strategydata(), target);
   }
   
-  // required bool StrategyRunning = 12;
+  // required bool StrategyRunning = 14;
   if (has_strategyrunning()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(12, this->strategyrunning(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(14, this->strategyrunning(), target);
   }
   
-  // required int32 OpenTimes = 13;
+  // required int32 OpenTimes = 15;
   if (has_opentimes()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(13, this->opentimes(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(15, this->opentimes(), target);
   }
   
-  // required int32 CloseTimes = 14;
+  // required int32 CloseTimes = 16;
   if (has_closetimes()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(14, this->closetimes(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(16, this->closetimes(), target);
   }
   
-  // required double Profit = 15;
+  // required double Profit = 17;
   if (has_profit()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(15, this->profit(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(17, this->profit(), target);
+  }
+  
+  // required int32 MaxPosition = 18;
+  if (has_maxposition()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(18, this->maxposition(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -2200,47 +2300,66 @@ int PortfolioItem::ByteSize() const {
     }
     
   }
-  if (_has_bits_[9 / 32] & (0xffu << (9 % 32))) {
-    // required string StrategyName = 10;
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // required bool AutoTrack = 9;
+    if (has_autotrack()) {
+      total_size += 1 + 1;
+    }
+    
+    // required bool EnablePrefer = 10;
+    if (has_enableprefer()) {
+      total_size += 1 + 1;
+    }
+    
+    // required string StrategyName = 12;
     if (has_strategyname()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->strategyname());
     }
     
-    // required bytes StrategyData = 11;
+    // required bytes StrategyData = 13;
     if (has_strategydata()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::BytesSize(
           this->strategydata());
     }
     
-    // required bool StrategyRunning = 12;
+    // required bool StrategyRunning = 14;
     if (has_strategyrunning()) {
       total_size += 1 + 1;
     }
     
-    // required int32 OpenTimes = 13;
+    // required int32 OpenTimes = 15;
     if (has_opentimes()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->opentimes());
     }
     
-    // required int32 CloseTimes = 14;
+    // required int32 CloseTimes = 16;
     if (has_closetimes()) {
-      total_size += 1 +
+      total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->closetimes());
     }
     
-    // required double Profit = 15;
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    // required double Profit = 17;
     if (has_profit()) {
-      total_size += 1 + 8;
+      total_size += 2 + 8;
+    }
+    
+    // required int32 MaxPosition = 18;
+    if (has_maxposition()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->maxposition());
     }
     
   }
-  // repeated .entity.LegItem Legs = 9;
+  // repeated .entity.LegItem Legs = 11;
   total_size += 1 * this->legs_size();
   for (int i = 0; i < this->legs_size(); i++) {
     total_size +=
@@ -2300,7 +2419,13 @@ void PortfolioItem::MergeFrom(const PortfolioItem& from) {
       set_autostoploss(from.autostoploss());
     }
   }
-  if (from._has_bits_[9 / 32] & (0xffu << (9 % 32))) {
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_autotrack()) {
+      set_autotrack(from.autotrack());
+    }
+    if (from.has_enableprefer()) {
+      set_enableprefer(from.enableprefer());
+    }
     if (from.has_strategyname()) {
       set_strategyname(from.strategyname());
     }
@@ -2316,8 +2441,13 @@ void PortfolioItem::MergeFrom(const PortfolioItem& from) {
     if (from.has_closetimes()) {
       set_closetimes(from.closetimes());
     }
+  }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     if (from.has_profit()) {
       set_profit(from.profit());
+    }
+    if (from.has_maxposition()) {
+      set_maxposition(from.maxposition());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -2336,7 +2466,7 @@ void PortfolioItem::CopyFrom(const PortfolioItem& from) {
 }
 
 bool PortfolioItem::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00007eff) != 0x00007eff) return false;
+  if ((_has_bits_[0] & 0x0003fbff) != 0x0003fbff) return false;
   
   for (int i = 0; i < legs_size(); i++) {
     if (!this->legs(i).IsInitialized()) return false;
@@ -2354,6 +2484,8 @@ void PortfolioItem::Swap(PortfolioItem* other) {
     std::swap(autoopen_, other->autoopen_);
     std::swap(autostopgain_, other->autostopgain_);
     std::swap(autostoploss_, other->autostoploss_);
+    std::swap(autotrack_, other->autotrack_);
+    std::swap(enableprefer_, other->enableprefer_);
     legs_.Swap(&other->legs_);
     std::swap(strategyname_, other->strategyname_);
     std::swap(strategydata_, other->strategydata_);
@@ -2361,6 +2493,7 @@ void PortfolioItem::Swap(PortfolioItem* other) {
     std::swap(opentimes_, other->opentimes_);
     std::swap(closetimes_, other->closetimes_);
     std::swap(profit_, other->profit_);
+    std::swap(maxposition_, other->maxposition_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -3474,6 +3607,8 @@ void RegQuoteParam::Swap(RegQuoteParam* other) {
 #ifndef _MSC_VER
 const int PorfOpenPosiParam::kPortfIdFieldNumber;
 const int PorfOpenPosiParam::kQuantityFieldNumber;
+const int PorfOpenPosiParam::kAutoTrackFieldNumber;
+const int PorfOpenPosiParam::kEnablePreferFieldNumber;
 #endif  // !_MSC_VER
 
 PorfOpenPosiParam::PorfOpenPosiParam()
@@ -3494,6 +3629,8 @@ void PorfOpenPosiParam::SharedCtor() {
   _cached_size_ = 0;
   portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   quantity_ = 0;
+  autotrack_ = false;
+  enableprefer_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3537,6 +3674,8 @@ void PorfOpenPosiParam::Clear() {
       }
     }
     quantity_ = 0;
+    autotrack_ = false;
+    enableprefer_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -3576,6 +3715,38 @@ bool PorfOpenPosiParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(24)) goto parse_AutoTrack;
+        break;
+      }
+      
+      // required bool AutoTrack = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_AutoTrack:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &autotrack_)));
+          set_has_autotrack();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_EnablePrefer;
+        break;
+      }
+      
+      // required bool EnablePrefer = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_EnablePrefer:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &enableprefer_)));
+          set_has_enableprefer();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3612,6 +3783,16 @@ void PorfOpenPosiParam::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->quantity(), output);
   }
   
+  // required bool AutoTrack = 3;
+  if (has_autotrack()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->autotrack(), output);
+  }
+  
+  // required bool EnablePrefer = 4;
+  if (has_enableprefer()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->enableprefer(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -3633,6 +3814,16 @@ void PorfOpenPosiParam::SerializeWithCachedSizes(
   // required int32 Quantity = 2;
   if (has_quantity()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->quantity(), target);
+  }
+  
+  // required bool AutoTrack = 3;
+  if (has_autotrack()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->autotrack(), target);
+  }
+  
+  // required bool EnablePrefer = 4;
+  if (has_enableprefer()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->enableprefer(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -3658,6 +3849,16 @@ int PorfOpenPosiParam::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->quantity());
+    }
+    
+    // required bool AutoTrack = 3;
+    if (has_autotrack()) {
+      total_size += 1 + 1;
+    }
+    
+    // required bool EnablePrefer = 4;
+    if (has_enableprefer()) {
+      total_size += 1 + 1;
     }
     
   }
@@ -3693,6 +3894,12 @@ void PorfOpenPosiParam::MergeFrom(const PorfOpenPosiParam& from) {
     if (from.has_quantity()) {
       set_quantity(from.quantity());
     }
+    if (from.has_autotrack()) {
+      set_autotrack(from.autotrack());
+    }
+    if (from.has_enableprefer()) {
+      set_enableprefer(from.enableprefer());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -3710,7 +3917,7 @@ void PorfOpenPosiParam::CopyFrom(const PorfOpenPosiParam& from) {
 }
 
 bool PorfOpenPosiParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
   
   return true;
 }
@@ -3719,6 +3926,8 @@ void PorfOpenPosiParam::Swap(PorfOpenPosiParam* other) {
   if (other != this) {
     std::swap(portfid_, other->portfid_);
     std::swap(quantity_, other->quantity_);
+    std::swap(autotrack_, other->autotrack_);
+    std::swap(enableprefer_, other->enableprefer_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -5552,6 +5761,8 @@ const int ModifyPortfolioSwitchParam::kPortfIdFieldNumber;
 const int ModifyPortfolioSwitchParam::kAutoOpenFieldNumber;
 const int ModifyPortfolioSwitchParam::kAutoStopGainFieldNumber;
 const int ModifyPortfolioSwitchParam::kAutoStopLossFieldNumber;
+const int ModifyPortfolioSwitchParam::kAutoTrackingFieldNumber;
+const int ModifyPortfolioSwitchParam::kEnablePreferFieldNumber;
 #endif  // !_MSC_VER
 
 ModifyPortfolioSwitchParam::ModifyPortfolioSwitchParam()
@@ -5574,6 +5785,8 @@ void ModifyPortfolioSwitchParam::SharedCtor() {
   autoopen_ = false;
   autostopgain_ = false;
   autostoploss_ = false;
+  autotracking_ = false;
+  enableprefer_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5619,6 +5832,8 @@ void ModifyPortfolioSwitchParam::Clear() {
     autoopen_ = false;
     autostopgain_ = false;
     autostoploss_ = false;
+    autotracking_ = false;
+    enableprefer_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -5690,6 +5905,38 @@ bool ModifyPortfolioSwitchParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(40)) goto parse_AutoTracking;
+        break;
+      }
+      
+      // required bool AutoTracking = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_AutoTracking:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &autotracking_)));
+          set_has_autotracking();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(48)) goto parse_EnablePrefer;
+        break;
+      }
+      
+      // required bool EnablePrefer = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_EnablePrefer:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &enableprefer_)));
+          set_has_enableprefer();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -5736,6 +5983,16 @@ void ModifyPortfolioSwitchParam::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteBool(4, this->autostoploss(), output);
   }
   
+  // required bool AutoTracking = 5;
+  if (has_autotracking()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->autotracking(), output);
+  }
+  
+  // required bool EnablePrefer = 6;
+  if (has_enableprefer()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(6, this->enableprefer(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -5769,6 +6026,16 @@ void ModifyPortfolioSwitchParam::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(4, this->autostoploss(), target);
   }
   
+  // required bool AutoTracking = 5;
+  if (has_autotracking()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->autotracking(), target);
+  }
+  
+  // required bool EnablePrefer = 6;
+  if (has_enableprefer()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(6, this->enableprefer(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -5799,6 +6066,16 @@ int ModifyPortfolioSwitchParam::ByteSize() const {
     
     // required bool AutoStopLoss = 4;
     if (has_autostoploss()) {
+      total_size += 1 + 1;
+    }
+    
+    // required bool AutoTracking = 5;
+    if (has_autotracking()) {
+      total_size += 1 + 1;
+    }
+    
+    // required bool EnablePrefer = 6;
+    if (has_enableprefer()) {
       total_size += 1 + 1;
     }
     
@@ -5841,6 +6118,12 @@ void ModifyPortfolioSwitchParam::MergeFrom(const ModifyPortfolioSwitchParam& fro
     if (from.has_autostoploss()) {
       set_autostoploss(from.autostoploss());
     }
+    if (from.has_autotracking()) {
+      set_autotracking(from.autotracking());
+    }
+    if (from.has_enableprefer()) {
+      set_enableprefer(from.enableprefer());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -5858,7 +6141,7 @@ void ModifyPortfolioSwitchParam::CopyFrom(const ModifyPortfolioSwitchParam& from
 }
 
 bool ModifyPortfolioSwitchParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000000f) != 0x0000000f) return false;
+  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
   
   return true;
 }
@@ -5869,6 +6152,8 @@ void ModifyPortfolioSwitchParam::Swap(ModifyPortfolioSwitchParam* other) {
     std::swap(autoopen_, other->autoopen_);
     std::swap(autostopgain_, other->autostopgain_);
     std::swap(autostoploss_, other->autostoploss_);
+    std::swap(autotracking_, other->autotracking_);
+    std::swap(enableprefer_, other->enableprefer_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

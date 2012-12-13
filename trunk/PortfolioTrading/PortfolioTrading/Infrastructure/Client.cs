@@ -135,13 +135,16 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("PortfEnableStrategy", param_data);
         }
 
-        public void PortfTurnSwitches(string portfId, bool autoOpen, bool autoStopGain, bool autoStopLoss)
+        public void PortfTurnSwitches(string portfId, bool autoOpen, bool autoStopGain, bool autoStopLoss,
+            bool autoTracking, bool enablePrefer)
         {
             entity.ModifyPortfolioSwitchParam modifyParam = new entity.ModifyPortfolioSwitchParam();
             modifyParam.PortfId = portfId;
             modifyParam.AutoOpen = autoOpen;
             modifyParam.AutoStopGain = autoStopGain;
             modifyParam.AutoStopLoss = autoStopLoss;
+            modifyParam.AutoTracking = autoTracking;
+            modifyParam.EnablePrefer = enablePrefer;
 
             byte[] param_data = DataTranslater.Serialize(modifyParam);
             byte[] ret_data = Request("PortfTurnSwitches", param_data);
