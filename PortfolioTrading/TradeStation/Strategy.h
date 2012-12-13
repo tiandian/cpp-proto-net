@@ -49,6 +49,8 @@ public:
 		m_isAutoOpen(false),
 		m_isStopGain(false),
 		m_isStopLoss(false),
+		m_isAutoTracking(false),
+		m_enablePrefer(false),
 		m_testingFor(DO_NOTHING)
 	{
 	}
@@ -78,6 +80,12 @@ public:
 
 	bool IsStopLoss(){ return m_isStopLoss; }
 	void SetStopLoss(bool flag) { m_isStopLoss = flag; }
+
+	bool IsAutoTracking(){ return m_isAutoTracking; }
+	void SetAutoTracking(bool flag) { m_isAutoTracking = flag; }
+
+	bool EnablePrefer(){ return m_enablePrefer; }
+	void SetEnablePrefer(bool flag) { m_enablePrefer = flag; }
 
 	CClientAgent* Client() const { return m_pClient; }
 	void Client(CClientAgent* val) { m_pClient = val; }
@@ -153,6 +161,8 @@ protected:
 	bool m_isAutoOpen;
 	bool m_isStopGain;
 	bool m_isStopLoss;
+	bool m_isAutoTracking;
+	bool m_enablePrefer;
 
 	POSI_OPER m_testingFor;
 

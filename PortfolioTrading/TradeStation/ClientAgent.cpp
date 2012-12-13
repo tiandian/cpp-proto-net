@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "ClientAgent.h"
 #include "Portfolio.h"
+#include "DiffStrategy.h"
 #include "PortfolioOrderHelper.h"
 
 #include <boost/shared_ptr.hpp>
@@ -112,7 +113,7 @@ void CClientAgent::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 	m_pSession->BeginCallback("QuotePush", callbackData);
 }
 
-void CClientAgent::OpenPosition( const string& pid, int quantity )
+void CClientAgent::OpenPosition( const string& pid, int quantity)
 {
 	// build order
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
@@ -120,8 +121,11 @@ void CClientAgent::OpenPosition( const string& pid, int quantity )
 }
 
 
-void CClientAgent::OpenPosition( CPortfolio* portf, int qty )
+void CClientAgent::OpenPosition( CPortfolio* portf, int qty)
 {
+	bool autoTracking = portf->Strategy()->IsAutoTracking();
+	bool enablePrefer = portf->Strategy()->EnablePrefer();
+
 	PlaceOrderContext placeOrderCtx;
 	placeOrderCtx.quantity = qty;
 	placeOrderCtx.brokerId = m_brokerId;
@@ -131,12 +135,19 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty )
 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, &placeOrderCtx));
 	// send to order processor
-	m_orderProcessor.SubmitOrder2(multilegOrder);
+	if(enablePrefer)
+		m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
+	else
+		m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
 void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, string& msg)
 {
 	CPortfolio* portf = m_portfolioMgr.Get(openMlOrd.portfolioid());
+
+	bool autoTracking = portf->Strategy()->IsAutoTracking();
+	bool enablePrefer = portf->Strategy()->EnablePrefer();
+
 	PlaceOrderContext placeOrderCtx;
 	placeOrderCtx.brokerId = m_brokerId;
 	placeOrderCtx.investorId = m_userId;
@@ -145,7 +156,10 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildClosePosiOrder(portf,
 		&openMlOrd, &placeOrderCtx));
-	m_orderProcessor.SubmitOrder2(multilegOrder);
+	if(enablePrefer)
+		m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
+	else
+		m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
 void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, entity::PosiDirectionType existingPosition, int qty)
@@ -159,8 +173,8 @@ void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, 
 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildChangePosiOrder(portf,
 		closeSymbol, existingPosition, &placeOrderCtx));
-
-	m_orderProcessor.SubmitOrder2(multilegOrder);
+	bool autoTracking = portf->Strategy()->IsAutoTracking();
+	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
 }
 
 bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)
@@ -237,7 +251,8 @@ void CClientAgent::TurnPortfSwitches( const entity::ModifyPortfolioSwitchParam& 
 	if(portf != NULL)
 	{
 		portf->TurnSwitches(switchesParam.autoopen(),
-			switchesParam.autostopgain(), switchesParam.autostoploss());
+			switchesParam.autostopgain(), switchesParam.autostoploss(),
+			switchesParam.autotracking(), switchesParam.enableprefer());
 	}
 }
 

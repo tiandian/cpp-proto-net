@@ -20,7 +20,8 @@ public:
 	COrderResubmitter(
 		const string& mlOrderId,
 		trade::InputOrder* pInputOrd,
-		COrderProcessor* pOrderProc);
+		COrderProcessor* pOrderProc,
+		int retryTimes);
 	~COrderResubmitter(void);
 
 	const std::string& Symbol() const { return m_pendingOrder->instrumentid(); }

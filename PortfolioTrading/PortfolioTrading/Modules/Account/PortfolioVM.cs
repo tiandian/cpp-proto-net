@@ -177,6 +177,42 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region AutoTracking
+        private bool _autoTracking = true;
+
+        public bool AutoTracking
+        {
+            get { return _autoTracking; }
+            set
+            {
+                if (_autoTracking != value)
+                {
+                    _autoTracking = value;
+                    RaisePropertyChanged("AutoTracking");
+                    OnSwitchChanged();
+                }
+            }
+        }
+        #endregion
+
+        #region EnablePrefer
+        private bool _enablePrefer;
+
+        public bool EnablePrefer
+        {
+            get { return _enablePrefer; }
+            set
+            {
+                if (_enablePrefer != value)
+                {
+                    _enablePrefer = value;
+                    RaisePropertyChanged("EnablePrefer");
+                    OnSwitchChanged();
+                }
+            }
+        }
+        #endregion
+
         #region OpenTimes
         private int _openTimes;
 
@@ -206,10 +242,46 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _doneTimes = value;
                     RaisePropertyChanged("DoneTimes");
+                    CalcPosition();
                 }
             }
         }
         #endregion
+
+        #region Position
+        private int _position;
+
+        public int Position
+        {
+            get { return _position; }
+            set
+            {
+                if (_position != value)
+                {
+                    _position = value;
+                    RaisePropertyChanged("Position");
+                }
+            }
+        }
+        #endregion
+
+        #region MaxPosition
+        private int _maxPosition;
+
+        public int MaxPosition
+        {
+            get { return _maxPosition; }
+            set
+            {
+                if (_maxPosition != value)
+                {
+                    _maxPosition = value;
+                    RaisePropertyChanged("MaxPosition");
+                }
+            }
+        }
+        #endregion
+
 
         #region Gain
         private double _gain;
@@ -326,6 +398,12 @@ namespace PortfolioTrading.Modules.Account
                 portf.Quantity = int.Parse(attr.Value);
             }
 
+            attr = xmlElement.Attribute("maxPosition");
+            if (attr != null)
+            {
+                portf.MaxPosition = int.Parse(attr.Value);
+            }
+
             attr = xmlElement.Attribute("autoOpen");
             if (attr != null)
             {
@@ -342,6 +420,18 @@ namespace PortfolioTrading.Modules.Account
             if (attr != null)
             {
                 portf.AutoStopLoss = attr.Value == bool.TrueString;
+            }
+
+            attr = xmlElement.Attribute("autoTracking");
+            if (attr != null)
+            {
+                portf.AutoTracking = attr.Value == bool.TrueString;
+            }
+
+            attr = xmlElement.Attribute("enablePrefer");
+            if (attr != null)
+            {
+                portf.EnablePrefer = attr.Value == bool.TrueString;
             }
 
             foreach (var legElem in xmlElement.Element("legs").Elements("leg"))
@@ -364,9 +454,13 @@ namespace PortfolioTrading.Modules.Account
             XElement elem = new XElement("portfolio");
             elem.Add(new XAttribute("id", _id));
             elem.Add(new XAttribute("quantity", _qty));
+            elem.Add(new XAttribute("maxPosition", _maxPosition));
             elem.Add(new XAttribute("autoOpen", _autoOpen.ToString()));
             elem.Add(new XAttribute("autoStopGain", _autoStopGain.ToString()));
             elem.Add(new XAttribute("autoStopLoss", _autoStopLoss.ToString()));
+            elem.Add(new XAttribute("autoTracking", _autoTracking.ToString()));
+            elem.Add(new XAttribute("enablePrefer", _enablePrefer.ToString()));
+            
 
             XElement elemLegs = new XElement("legs");
             foreach (var l in _legs)
@@ -390,6 +484,8 @@ namespace PortfolioTrading.Modules.Account
             portfolioItem.AutoOpen = AutoOpen;
             portfolioItem.AutoStopGain = AutoStopGain;
             portfolioItem.AutoStopLoss = AutoStopLoss;
+            portfolioItem.AutoTrack = AutoTracking;
+            portfolioItem.EnablePrefer = EnablePrefer;
             portfolioItem.Diff = Diff;
             portfolioItem.Quantity = Quantity;
 
@@ -426,6 +522,11 @@ namespace PortfolioTrading.Modules.Account
             }
         }
 
+        private void CalcPosition()
+        {
+            Position = OpenTimes - DoneTimes;
+        }
+
         private void OnOpenPosition()
         {
             _accountVm.Host.PorfOpenPosition(Id, Quantity);
@@ -456,7 +557,8 @@ namespace PortfolioTrading.Modules.Account
         {
             if (_accountVm.IsConnected)
             {
-                _accountVm.Host.PortfTurnSwitches(this.Id, AutoOpen, AutoStopGain, AutoStopLoss);
+                _accountVm.Host.PortfTurnSwitches(this.Id, AutoOpen, AutoStopGain, AutoStopLoss,
+                    AutoTracking, EnablePrefer);
             }
 
             if(!IsLoading)

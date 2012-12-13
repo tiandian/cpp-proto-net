@@ -7,6 +7,8 @@
 #include <boost/format.hpp>
 #include <boost/foreach.hpp>
 
+#define DEFAULT_RETRY_TIMES 2
+
 trade::Order* GetOrderByRef(trade::MultiLegOrder* mlOrder, const string& ordRef)
 {
 	trade::Order* pOrdFound = NULL;
@@ -168,7 +170,7 @@ void COrderProcessor::SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const s
 	m_pendingTicketOrderMap.insert(make_pair(pOrder->orderref(), mlOrderId));
 }
 
-void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
+void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder, bool autoTracking)
 {
 	CSequenceOrderSender* pOrderSender = NULL;
 	
@@ -187,7 +189,8 @@ void COrderProcessor::SubmitOrder2(MultiLegOrderPtr multilegOrder)
 
 		OrderSenderPtr orderSender(
 			new CSequenceOrderSender(
-			multilegOrder->portfolioid(), mOrderId, vecInputOrders, this));
+			multilegOrder->portfolioid(), mOrderId, vecInputOrders, this, 
+			autoTracking ? DEFAULT_RETRY_TIMES : 0));
 
 		m_orderSenderMap.insert(make_pair(mOrderId, orderSender));
 		pOrderSender = orderSender.get();
