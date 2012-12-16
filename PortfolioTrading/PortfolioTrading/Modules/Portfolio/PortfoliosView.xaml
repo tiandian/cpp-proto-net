@@ -185,7 +185,7 @@
                                          FontWeight="Bold" FontSize="20" VerticalAlignment="Bottom"/>
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text=" "/>
-                                        / <Run Text="{Binding Record.DataItem.DoneTimes, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                        / <Run Text="{Binding Record.DataItem.MaxPosition, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </ControlTemplate>
