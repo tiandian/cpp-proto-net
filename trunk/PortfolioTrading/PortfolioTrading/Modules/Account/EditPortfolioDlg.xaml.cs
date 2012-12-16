@@ -145,6 +145,11 @@ namespace PortfolioTrading.Modules.Account
                 portf.AutoOpen = true;
                 portf.AutoStopGain = false;
                 portf.AutoStopLoss = false;
+                portf.EnablePrefer = true;
+                portf.AutoTracking = true;
+                ChangePositionSetting setting = (ChangePositionSetting)portf.StrategySetting;
+                setting.CloseLeg = Symbol1;
+                setting.CloseLegSide = Side1;
             }
         }
 

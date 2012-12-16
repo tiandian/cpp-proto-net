@@ -115,7 +115,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 ChangePositionSetting setting = new ChangePositionSetting();
                 setting.TriggerCondition = CompareCondition.GREATER_EQUAL_THAN;
                 setting.Threshold = 100;
-                setting.CloseLeg = "cu1212";
+                
                 return setting;
             }
             else
