@@ -75,6 +75,8 @@ namespace PortfolioTrading.Modules.Account
         public void From(PortfolioVM portf)
         {
             PortfId = portf.Id;
+            Quantity = portf.Quantity;
+            MaxQuantity = portf.MaxPosition;
 
             int legIdx = 0;
             foreach (var leg in portf.Legs)
@@ -103,6 +105,8 @@ namespace PortfolioTrading.Modules.Account
         public void To(PortfolioVM portf)
         {
             portf.Quantity = this.Quantity;
+            portf.MaxPosition = this.MaxQuantity;
+
             if (Leg1)
             {
                 LegVM leg;
@@ -203,6 +207,24 @@ namespace PortfolioTrading.Modules.Account
             }
         }
         #endregion
+
+        #region MaxQuantity
+        private int _maxQuantity = 1;
+
+        public int MaxQuantity
+        {
+            get { return _maxQuantity; }
+            set
+            {
+                if (_maxQuantity != value)
+                {
+                    _maxQuantity = value;
+                    RaisePropertyChanged("MaxQuantity");
+                }
+            }
+        }
+        #endregion
+        
 
         #region Leg1
         private bool _leg1 = true;

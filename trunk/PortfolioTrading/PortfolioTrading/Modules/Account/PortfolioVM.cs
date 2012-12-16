@@ -488,6 +488,7 @@ namespace PortfolioTrading.Modules.Account
             portfolioItem.EnablePrefer = EnablePrefer;
             portfolioItem.Diff = Diff;
             portfolioItem.Quantity = Quantity;
+            portfolioItem.MaxPosition = MaxPosition;
 
             foreach (var legVm in _legs)
             {
