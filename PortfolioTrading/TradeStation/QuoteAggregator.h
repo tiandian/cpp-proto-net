@@ -30,6 +30,9 @@ public:
 	virtual void OnUnsubscribeCompleted();
 	virtual void OnQuoteReceived(entity::Quote* pQuote);
 
+	void DelaySubmit() { m_bDelaySubmit = true; }
+	void SubmitSubscription();
+
 private:
 
 	void DispatchQuotes(boost::shared_ptr<entity::Quote>& pQuote);
@@ -51,5 +54,7 @@ private:
 	CQuoteAgent* m_quoteAgent;
 
 	CBufferRunner< boost::shared_ptr<entity::Quote> > m_bufferRunner;
+
+	bool m_bDelaySubmit;
 };
 

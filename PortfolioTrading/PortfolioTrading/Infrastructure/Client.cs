@@ -71,6 +71,16 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("AddPortf", portf_data);
         }
 
+        public void AddPortfCollection(IEnumerable<PortfolioItem> portfItems)
+        {
+            AddPortfolioParam addPortfParam = new AddPortfolioParam();
+            addPortfParam.PortfolioItems.AddRange(portfItems);
+
+            byte[] portf_data = DataTranslater.Serialize(addPortfParam);
+
+            byte[] ret_data = Request("AddPortfCollection", portf_data);
+        }
+
         public void RemovePortf(string portfId)
         {
             StringParam strParam = new StringParam() { Data = portfId };

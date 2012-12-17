@@ -269,11 +269,13 @@ namespace PortfolioTrading.Modules.Account
 
         private void SyncToHost()
         {
+            List<entity.PortfolioItem> portfItems = new List<entity.PortfolioItem>();
             foreach (var portf in _acctPortfolios)
             {
                 entity.PortfolioItem portfolioItem = portf.GetEntity();
-                _client.AddPortf(portfolioItem);
+                portfItems.Add(portfolioItem);
             }
+            _client.AddPortfCollection(portfItems);
         }
 
         public bool IsConnected

@@ -52,6 +52,7 @@ private:
 	void TradeLogout(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
 	void AddPorf(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void AddPortfCollection(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void RemovePorf(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PorfOpenPosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void ClosePosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);

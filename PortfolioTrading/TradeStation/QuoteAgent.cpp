@@ -318,6 +318,9 @@ void CQuoteAgent::OnRspSubMarketData( CThostFtdcSpecificInstrumentField *pSpecif
 
 void CQuoteAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMarketData )
 {
+	logger.Debug(boost::str(boost::format("Quote (%s): %d")
+		% pDepthMarketData->InstrumentID % pDepthMarketData->LastPrice));
+
 	if(m_pCallback != NULL)
 	{
 		entity::Quote* quote = new entity::Quote();	// it will be managed by quote aggregator

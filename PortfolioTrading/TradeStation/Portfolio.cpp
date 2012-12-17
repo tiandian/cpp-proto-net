@@ -114,6 +114,49 @@ double CalcPortfProfit(trade::MultiLegOrder* openOrder, trade::MultiLegOrder* cl
 	return totalProfit;
 }
 
+int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType)
+{
+	// calculate the diff
+	int diffSize = 0;
+	for(vector<LegPtr>::iterator iter = legs.begin(); iter != legs.end(); ++iter)
+	{
+		int legSize = 0;
+		entity::PosiDirectionType legSide = (*iter)->Side();
+		if(legSide == entity::LONG)
+		{
+			switch(diffType)
+			{
+			case LONG_DIFF:
+				legSize = (*iter)->AskSize();
+				break;
+			case SHORT_DIFF:
+				legSize = (*iter)->BidSize();
+				break;
+			}
+		}
+		else if(legSide == entity::SHORT)
+		{
+			switch(diffType)
+			{
+			case LONG_DIFF:
+				legSize = (*iter)->BidSize();
+				break;
+			case SHORT_DIFF:
+				legSize = (*iter)->AskSize();
+				break;
+			}
+		}
+
+		if(legSize > 0)
+		{
+			if(diffSize == 0) diffSize = legSize;
+			else
+				diffSize = legSize < diffSize ? legSize : diffSize;
+		}
+	}
+	return diffSize;
+}
+
 CPortfolio::CPortfolio(void):
 m_porfMgr(NULL),
 m_openedOrderCount(0),
@@ -187,7 +230,9 @@ void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfIte
 		nl->set_side(iter->side());
 		nl->set_last(iter->last());
 		nl->set_ask(iter->ask());
+		nl->set_asksize(iter->asksize());
 		nl->set_bid(iter->bid());
+		nl->set_bidsize(iter->bidsize());
 		nl->set_ispreferred(iter->ispreferred());
 		nl->set_status(iter->status());
 
@@ -214,7 +259,9 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 		{
 			(*iter)->UpdateLast(pQuote->last());
 			(*iter)->UpdateAsk(pQuote->ask());
+			(*iter)->UpdateAskSize(pQuote->ask_size());
 			(*iter)->UpdateBid(pQuote->bid());
+			(*iter)->UpdateBidSize(pQuote->bid_size());
 			break;
 		}
 	}
@@ -222,8 +269,12 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 	m_innerItem->set_diff(lastDiff);
 	double longDiff = CalcDiff(m_vecLegs, LONG_DIFF);
 	m_innerItem->set_longdiff(longDiff);
+	int longDiffSize = CalcSize(m_vecLegs, LONG_DIFF);
+	m_innerItem->set_longsize(longDiffSize);
 	double shortDiff = CalcDiff(m_vecLegs, SHORT_DIFF);
 	m_innerItem->set_shortdiff(shortDiff);
+	int shortDiffSize = CalcSize(m_vecLegs, SHORT_DIFF);
+	m_innerItem->set_shortsize(shortDiffSize);
 
 	m_strategy->Test();
 	

@@ -50,24 +50,17 @@ public:
 		m_isStopGain(false),
 		m_isStopLoss(false),
 		m_isAutoTracking(false),
-		m_enablePrefer(false),
-		m_testingFor(DO_NOTHING)
+		m_enablePrefer(false)
 	{
 	}
 	virtual ~CStrategy(void){}
 
 	void Start()
 	{
-		if(m_isAutoOpen) 
-			m_testingFor = OPEN_POSI;
-		else
-			m_testingFor = CLOSE_POSI;
-
 		m_isRunning = true; 
 	}
 	void Stop()
 	{
-		m_testingFor = DO_NOTHING;
 		m_isRunning = false; 
 	}
 	bool IsRunning() { return m_isRunning; }
@@ -93,51 +86,51 @@ public:
 	CPortfolio* Portfolio() const { return m_pPortfolio; }
 	void Portfolio(CPortfolio* val) { m_pPortfolio = val; }
 
-	void Test(T valueToTest)
+	void Test(T valueToTest, POSI_OPER testFor = DO_NOTHING)
 	{
 		if(m_isRunning)
-		{				
-			logger.Info(boost::str(boost::format("Test for %s") 
-						% StrategyOpertaionText(m_testingFor)));
+		{
+			if(testFor == DO_NOTHING || testFor == OPEN_POSI)
+			{
+				if(!m_pPortfolio->PositionReachLimit() && m_isAutoOpen)
+				{
+					logger.Info(boost::str(boost::format("Test for %s") 
+						% StrategyOpertaionText(OPEN_POSI)));
 
-			if(m_testingFor == OPEN_POSI && m_isAutoOpen)
-			{
-				bool succ = GetOpenPosiCond().Test(valueToTest);
-				if(succ)
-				{
-					DoOpenPostion();
-					TestFor(NextOperation(OPEN_POSI));
-				}
-			}
-			else if(m_testingFor == CLOSE_POSI)
-			{
-				if(m_isStopGain)
-				{
-					bool succ = GetStopGainCond().Test(valueToTest);
+					bool succ = GetOpenPosiCond().Test(valueToTest);
 					if(succ)
 					{
-						DoStopGain();
-						TestFor(NextOperation(CLOSE_POSI));
+						DoOpenPostion();
 					}
 				}
-				else if(m_isStopLoss)
+			}
+
+			if(testFor == DO_NOTHING || testFor == CLOSE_POSI)
+			{
+				if(m_pPortfolio->HasPosition())
 				{
-					bool succ = GetStopLossCond().Test(valueToTest);
-					if(succ)
+					logger.Info(boost::str(boost::format("Test for %s") 
+						% StrategyOpertaionText(CLOSE_POSI)));
+
+					if(m_isStopGain)
 					{
-						DoStopLoss();
-						TestFor(NextOperation(CLOSE_POSI));
+						bool succ = GetStopGainCond().Test(valueToTest);
+						if(succ)
+						{
+							DoStopGain();
+						}
+					}
+					else if(m_isStopLoss)
+					{
+						bool succ = GetStopLossCond().Test(valueToTest);
+						if(succ)
+						{
+							DoStopLoss();
+						}
 					}
 				}
 			}
 		}
-	}
-
-	void TestFor(POSI_OPER posiOperation)
-	{ 
-		m_testingFor = posiOperation;
-		if(m_testingFor == DO_NOTHING)
-			m_pPortfolio->EnableStrategy(false);	
 	}
 
 	virtual void ApplySettings(const std::string& settingData) = 0;
@@ -163,8 +156,6 @@ protected:
 	bool m_isStopLoss;
 	bool m_isAutoTracking;
 	bool m_enablePrefer;
-
-	POSI_OPER m_testingFor;
 
 	CClientAgent* m_pClient;
 	CPortfolio* m_pPortfolio;
