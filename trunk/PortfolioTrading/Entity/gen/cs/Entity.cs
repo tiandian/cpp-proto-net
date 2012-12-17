@@ -93,15 +93,29 @@ namespace entity
       get { return _Ask; }
       set { _Ask = value; }
     }
+    private int _AskSize;
+    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"AskSize", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int AskSize
+    {
+      get { return _AskSize; }
+      set { _AskSize = value; }
+    }
     private double _Bid;
-    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"Bid", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"Bid", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public double Bid
     {
       get { return _Bid; }
       set { _Bid = value; }
     }
+    private int _BidSize;
+    [global::ProtoBuf.ProtoMember(9, IsRequired = true, Name=@"BidSize", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int BidSize
+    {
+      get { return _BidSize; }
+      set { _BidSize = value; }
+    }
     private bool _IsPreferred;
-    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"IsPreferred", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(10, IsRequired = true, Name=@"IsPreferred", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool IsPreferred
     {
       get { return _IsPreferred; }
@@ -152,92 +166,106 @@ namespace entity
       get { return _ShortDiff; }
       set { _ShortDiff = value; }
     }
+    private int _LongSize;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"LongSize", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int LongSize
+    {
+      get { return _LongSize; }
+      set { _LongSize = value; }
+    }
+    private int _ShortSize;
+    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"ShortSize", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int ShortSize
+    {
+      get { return _ShortSize; }
+      set { _ShortSize = value; }
+    }
     private bool _AutoOpen;
-    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"AutoOpen", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"AutoOpen", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool AutoOpen
     {
       get { return _AutoOpen; }
       set { _AutoOpen = value; }
     }
     private bool _AutoStopGain;
-    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"AutoStopGain", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(9, IsRequired = true, Name=@"AutoStopGain", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool AutoStopGain
     {
       get { return _AutoStopGain; }
       set { _AutoStopGain = value; }
     }
     private bool _AutoStopLoss;
-    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"AutoStopLoss", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(10, IsRequired = true, Name=@"AutoStopLoss", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool AutoStopLoss
     {
       get { return _AutoStopLoss; }
       set { _AutoStopLoss = value; }
     }
     private bool _AutoTrack;
-    [global::ProtoBuf.ProtoMember(9, IsRequired = true, Name=@"AutoTrack", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(11, IsRequired = true, Name=@"AutoTrack", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool AutoTrack
     {
       get { return _AutoTrack; }
       set { _AutoTrack = value; }
     }
     private bool _EnablePrefer;
-    [global::ProtoBuf.ProtoMember(10, IsRequired = true, Name=@"EnablePrefer", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(12, IsRequired = true, Name=@"EnablePrefer", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool EnablePrefer
     {
       get { return _EnablePrefer; }
       set { _EnablePrefer = value; }
     }
     private readonly global::System.Collections.Generic.List<entity.LegItem> _Legs = new global::System.Collections.Generic.List<entity.LegItem>();
-    [global::ProtoBuf.ProtoMember(11, Name=@"Legs", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(13, Name=@"Legs", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public global::System.Collections.Generic.List<entity.LegItem> Legs
     {
       get { return _Legs; }
     }
   
     private string _StrategyName;
-    [global::ProtoBuf.ProtoMember(12, IsRequired = true, Name=@"StrategyName", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(14, IsRequired = true, Name=@"StrategyName", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public string StrategyName
     {
       get { return _StrategyName; }
       set { _StrategyName = value; }
     }
     private byte[] _StrategyData;
-    [global::ProtoBuf.ProtoMember(13, IsRequired = true, Name=@"StrategyData", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(15, IsRequired = true, Name=@"StrategyData", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public byte[] StrategyData
     {
       get { return _StrategyData; }
       set { _StrategyData = value; }
     }
     private bool _StrategyRunning;
-    [global::ProtoBuf.ProtoMember(14, IsRequired = true, Name=@"StrategyRunning", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::ProtoBuf.ProtoMember(16, IsRequired = true, Name=@"StrategyRunning", DataFormat = global::ProtoBuf.DataFormat.Default)]
     public bool StrategyRunning
     {
       get { return _StrategyRunning; }
       set { _StrategyRunning = value; }
     }
     private int _OpenTimes;
-    [global::ProtoBuf.ProtoMember(15, IsRequired = true, Name=@"OpenTimes", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(17, IsRequired = true, Name=@"OpenTimes", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int OpenTimes
     {
       get { return _OpenTimes; }
       set { _OpenTimes = value; }
     }
     private int _CloseTimes;
-    [global::ProtoBuf.ProtoMember(16, IsRequired = true, Name=@"CloseTimes", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(18, IsRequired = true, Name=@"CloseTimes", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int CloseTimes
     {
       get { return _CloseTimes; }
       set { _CloseTimes = value; }
     }
     private double _Profit;
-    [global::ProtoBuf.ProtoMember(17, IsRequired = true, Name=@"Profit", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(19, IsRequired = true, Name=@"Profit", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public double Profit
     {
       get { return _Profit; }
       set { _Profit = value; }
     }
     private int _MaxPosition;
-    [global::ProtoBuf.ProtoMember(18, IsRequired = true, Name=@"MaxPosition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    [global::ProtoBuf.ProtoMember(20, IsRequired = true, Name=@"MaxPosition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
     public int MaxPosition
     {
       get { return _MaxPosition; }
@@ -344,6 +372,23 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AddPortfolioParam")]
+  public partial class AddPortfolioParam : global::ProtoBuf.IExtensible
+  {
+    public AddPortfolioParam() {}
+    
+    private readonly global::System.Collections.Generic.List<entity.PortfolioItem> _PortfolioItems = new global::System.Collections.Generic.List<entity.PortfolioItem>();
+    [global::ProtoBuf.ProtoMember(1, Name=@"PortfolioItems", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public global::System.Collections.Generic.List<entity.PortfolioItem> PortfolioItems
+    {
+      get { return _PortfolioItems; }
+    }
+  
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"PorfOpenPosiParam")]
   public partial class PorfOpenPosiParam : global::ProtoBuf.IExtensible
   {
@@ -362,20 +407,6 @@ namespace entity
     {
       get { return _Quantity; }
       set { _Quantity = value; }
-    }
-    private bool _AutoTrack;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"AutoTrack", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public bool AutoTrack
-    {
-      get { return _AutoTrack; }
-      set { _AutoTrack = value; }
-    }
-    private bool _EnablePrefer;
-    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"EnablePrefer", DataFormat = global::ProtoBuf.DataFormat.Default)]
-    public bool EnablePrefer
-    {
-      get { return _EnablePrefer; }
-      set { _EnablePrefer = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

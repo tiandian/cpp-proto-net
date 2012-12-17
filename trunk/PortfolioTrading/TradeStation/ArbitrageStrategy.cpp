@@ -82,29 +82,19 @@ void CArbitrageStrategy::Test()
 	entity::PosiDirectionType direction = Direction();
 	if(direction == entity::LONG)
 	{
-		if(m_testingFor == OPEN_POSI)
-		{
-			double longDiff = Portfolio()->LongDiff();
-			CStrategy<double>::Test(longDiff);
-		}
-		else if(m_testingFor == CLOSE_POSI)
-		{
-			double shortDiff = Portfolio()->ShortDiff();
-			CStrategy<double>::Test(shortDiff);
-		}
+		double longDiff = Portfolio()->LongDiff();
+		CStrategy<double>::Test(longDiff, OPEN_POSI);
+		
+		double shortDiff = Portfolio()->ShortDiff();
+		CStrategy<double>::Test(shortDiff, CLOSE_POSI);
 	}
 	else if(direction == entity::SHORT)
 	{
-		if(m_testingFor == OPEN_POSI)
-		{
-			double shortDiff = Portfolio()->ShortDiff();
-			CStrategy<double>::Test(shortDiff);
-		}
-		else if(m_testingFor == CLOSE_POSI)
-		{
-			double longDiff = Portfolio()->LongDiff();
-			CStrategy<double>::Test(longDiff);
-		}
+		double shortDiff = Portfolio()->ShortDiff();
+		CStrategy<double>::Test(shortDiff, OPEN_POSI);
+
+		double longDiff = Portfolio()->LongDiff();
+		CStrategy<double>::Test(longDiff, CLOSE_POSI);
 	}
 	else
 		CStrategy<double>::Test(Portfolio()->Difference());

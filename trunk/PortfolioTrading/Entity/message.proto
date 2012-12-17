@@ -21,8 +21,10 @@ message LegItem
 	required LegStatus Status = 4;
 	required double Last = 5;
 	required double Ask = 6;
-	required double Bid = 7;
-	required bool IsPreferred = 8;
+	required int32 AskSize = 7;
+	required double Bid = 8;
+	required int32 BidSize = 9;
+	required bool IsPreferred = 10;
 }
 
 message PortfolioItem
@@ -32,19 +34,21 @@ message PortfolioItem
 	required double Diff = 3;
 	required double LongDiff = 4;
 	required double ShortDiff = 5;
-	required bool AutoOpen = 6;
-	required bool AutoStopGain = 7;
-	required bool AutoStopLoss = 8;
-	required bool AutoTrack = 9;
-	required bool EnablePrefer = 10;
-	repeated LegItem Legs = 11; 
-	required string StrategyName = 12;
-	required bytes StrategyData = 13; 
-	required bool StrategyRunning = 14;
-	required int32 OpenTimes = 15;
-	required int32 CloseTimes = 16;
-	required double Profit = 17;
-	required int32 MaxPosition = 18;
+	required int32 LongSize = 6;
+	required int32 ShortSize = 7;
+	required bool AutoOpen = 8;
+	required bool AutoStopGain = 9;
+	required bool AutoStopLoss = 10;
+	required bool AutoTrack = 11;
+	required bool EnablePrefer = 12;
+	repeated LegItem Legs = 13; 
+	required string StrategyName = 14;
+	required bytes StrategyData = 15; 
+	required bool StrategyRunning = 16;
+	required int32 OpenTimes = 17;
+	required int32 CloseTimes = 18;
+	required double Profit = 19;
+	required int32 MaxPosition = 20;
 }
 
 message ConnectParam
@@ -69,6 +73,11 @@ message LoginParam
 message RegQuoteParam
 {
 	repeated string Symbols = 1;
+}
+
+message AddPortfolioParam
+{
+	repeated PortfolioItem PortfolioItems = 1;
 }
 
 message PorfOpenPosiParam

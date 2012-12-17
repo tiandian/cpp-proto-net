@@ -28,6 +28,7 @@ public:
 	}
 
 	void Add(entity::PortfolioItem* portfolioItem);
+	void AddPortfolios( entity::AddPortfolioParam& addPortfParam );
 	void Remove(const string& pid);
 	void RegQuote(vector<string>& symbols);
 	

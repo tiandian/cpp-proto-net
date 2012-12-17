@@ -71,9 +71,13 @@ public:
 	void RemoveOrderResubmitter(COrderResubmitter* pResubmitter);
 	void TriggerResubmitter(entity::Quote* pQuote);
 
+	bool HasPosition(){ return PositionQuantity() > 0; }
+	bool PositionReachLimit(){ return PositionQuantity() == m_innerItem->maxposition(); }
+
 private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
+	int PositionQuantity(){ return m_innerItem->opentimes() - m_innerItem->closetimes(); }
 	void PushUpdate();
 	void IncrementalOpenTimes(){ m_innerItem->set_opentimes(m_innerItem->opentimes() + 1); }
 	void IncrementalCloseTimes(){ m_innerItem->set_closetimes(m_innerItem->closetimes() + 1); }
@@ -120,8 +124,14 @@ public:
 	double Ask(){ return m_pInnerItem->ask(); }
 	void UpdateAsk(double ask){ m_pInnerItem->set_ask(ask); }
 
+	int AskSize(){ return m_pInnerItem->asksize(); }
+	void UpdateAskSize(int askSize){ m_pInnerItem->set_asksize(askSize); }
+
 	double Bid(){ return m_pInnerItem->bid(); }
 	void UpdateBid(double bid){ m_pInnerItem->set_bid(bid); }
+
+	int BidSize(){ return m_pInnerItem->bidsize(); }
+	void UpdateBidSize(int bidSize){ m_pInnerItem->set_bidsize(bidSize); }
 
 	entity::LegStatus Status(){ return m_pInnerItem->status(); }
 	void UpdateStatus(entity::LegStatus status){ m_pInnerItem->set_status(status); }

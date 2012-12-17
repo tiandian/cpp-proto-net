@@ -53,37 +53,34 @@ void CChangePositionStrategy::Test()
 {
 	if(!m_isRunning) return;
 
-	if(m_testingFor == OPEN_POSI)
+	CLeg* pLeg = Portfolio()->GetLeg(CloseLeg());
+	if(pLeg != NULL)
 	{
-		CLeg* pLeg = Portfolio()->GetLeg(CloseLeg());
-		if(pLeg != NULL)
+		entity::PosiDirectionType side = pLeg->Side();
+		if(side == entity::LONG)
 		{
-			entity::PosiDirectionType side = pLeg->Side();
-			if(side == entity::LONG)
+			if(m_closingLegPosition == entity::LONG)
 			{
-				if(m_closingLegPosition == entity::LONG)
-				{
-					double shortDiff = Portfolio()->ShortDiff();
-					CStrategy<double>::Test(shortDiff);
-				}
-				else if(m_closingLegPosition == entity::SHORT)
-				{
-					double longDiff = Portfolio()->LongDiff();
-					CStrategy<double>::Test(longDiff);
-				}
+				double shortDiff = Portfolio()->ShortDiff();
+				CStrategy<double>::Test(shortDiff, OPEN_POSI);
 			}
-			else if(side == entity::SHORT)
+			else if(m_closingLegPosition == entity::SHORT)
 			{
-				if(m_closingLegPosition == entity::LONG)
-				{
-					double longDiff = Portfolio()->LongDiff();
-					CStrategy<double>::Test(longDiff);
-				}
-				else if(m_closingLegPosition == entity::SHORT)
-				{
-					double shortDiff = Portfolio()->ShortDiff();
-					CStrategy<double>::Test(shortDiff);
-				}
+				double longDiff = Portfolio()->LongDiff();
+				CStrategy<double>::Test(longDiff, OPEN_POSI);
+			}
+		}
+		else if(side == entity::SHORT)
+		{
+			if(m_closingLegPosition == entity::LONG)
+			{
+				double longDiff = Portfolio()->LongDiff();
+				CStrategy<double>::Test(longDiff, OPEN_POSI);
+			}
+			else if(m_closingLegPosition == entity::SHORT)
+			{
+				double shortDiff = Portfolio()->ShortDiff();
+				CStrategy<double>::Test(shortDiff, OPEN_POSI);
 			}
 		}
 	}

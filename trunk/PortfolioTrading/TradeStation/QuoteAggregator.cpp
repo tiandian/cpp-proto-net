@@ -7,6 +7,7 @@
 
 CQuoteAggregator::CQuoteAggregator(void):
 m_quoteAgent(NULL),
+m_bDelaySubmit(false),
 m_bufferRunner(boost::bind(&CQuoteAggregator::DispatchQuotes, this, _1))
 {
 }
@@ -200,7 +201,7 @@ bool CQuoteAggregator::SubmitToServer()
 	// update m_subscribingSymbols to latest and get subscribe array and unsubscribe array
 	vector<string> subscribeArr, unsubscribeArr;
 	bool needSubmit = GetUpdateSymbolSet(subscribeArr, unsubscribeArr);
-	if(needSubmit)
+	if(needSubmit && !m_bDelaySubmit)
 	{
 		bool succ = m_quoteAgent->SubscribesQuotes(subscribeArr);
 
@@ -211,6 +212,13 @@ bool CQuoteAggregator::SubmitToServer()
 		logger.Trace("Subscribed symbols didn't change, no need to submit.");
 		retVal = true;
 	}
-
+	
 	return retVal;
+}
+
+void CQuoteAggregator::SubmitSubscription()
+{
+	m_bDelaySubmit = false;
+	vector<string> subscribeArr(m_subscribingSymbols.begin(), m_subscribingSymbols.end());
+	bool succ = m_quoteAgent->SubscribesQuotes(subscribeArr);
 }

@@ -35,6 +35,22 @@ void CClientAgent::Add( entity::PortfolioItem* portfolioItem )
 	m_portfolioMgr.Add(pPortf);
 }
 
+void CClientAgent::AddPortfolios( entity::AddPortfolioParam& addPortfParam )
+{
+	m_quoteAggregator.DelaySubmit();
+
+	int count = addPortfParam.portfolioitems_size();
+	for(int i = 0; i < count; ++i )
+	{
+		const entity::PortfolioItem& portfItem = addPortfParam.portfolioitems(i);
+		entity::PortfolioItem* pClonedItem = new entity::PortfolioItem;
+		pClonedItem->CopyFrom(portfItem);
+		Add(pClonedItem);
+	}
+
+	m_quoteAggregator.SubmitSubscription();
+}
+
 void CClientAgent::Remove( const string& pid )
 {
 	m_portfolioMgr.Remove(pid);
