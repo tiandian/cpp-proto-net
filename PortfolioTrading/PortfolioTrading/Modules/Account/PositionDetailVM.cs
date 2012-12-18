@@ -74,12 +74,16 @@ namespace PortfolioTrading.Modules.Account
                     if (positionItem.Volume > 0)
                     {
                         SynchronizationContext syncCtx = SynchronizationContext.Current;
+
+                        positionItem.IsClosing = true;
+
                         _acctVm.ManualCloseOrder(positionItem.Symbol, positionItem.CloseDirection,
                             positionItem.OffsetFlag, positionItem.Volume, 
                             (b, err) =>
                             {
                                 syncCtx.Send(o =>
                                     {
+                                        positionItem.IsClosing = false;
                                         if (b)
                                         {
                                             positionItem.CloseVolume = positionItem.Volume;
@@ -155,7 +159,7 @@ namespace PortfolioTrading.Modules.Account
                 {
                     return openDate < tradingDay ? trade.OffsetFlagType.OF_CLOSE_YESTERDAY : trade.OffsetFlagType.OF_CLOSE_TODAY;
                 }
-                return trade.OffsetFlagType.OF_CLOSE_TODAY;
+                return trade.OffsetFlagType.OF_CLOSE;
             }
 
             private static string GetHedgeText(trade.HedgeFlagType hedgeFlag)
@@ -505,6 +509,23 @@ namespace PortfolioTrading.Modules.Account
                     {
                         _isOpen = value;
                         RaisePropertyChanged("IsOpen");
+                    }
+                }
+            }
+            #endregion
+
+            #region IsClosing
+            private bool _isClosing;
+
+            public bool IsClosing
+            {
+                get { return _isClosing; }
+                set
+                {
+                    if (_isClosing != value)
+                    {
+                        _isClosing = value;
+                        RaisePropertyChanged("IsClosing");
                     }
                 }
             }

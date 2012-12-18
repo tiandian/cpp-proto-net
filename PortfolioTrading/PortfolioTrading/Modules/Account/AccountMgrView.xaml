@@ -24,14 +24,19 @@
                         <DataTemplate>
                             <DockPanel Width="150">
                                 <Button DockPanel.Dock="Right"
-                                        Command="{Binding Data.ConnectCommand}"
-                                        CommandParameter="{Binding Data}">连接
+                                        CommandParameter="{Binding Data}">
                                     <Button.Style>
                                         <Style TargetType="Button">
+                                            <Setter Property="Command" Value="{Binding Data.ConnectCommand}"/>
+                                            <Setter Property="Content" Value="连接"/>
                                             <Setter Property="Visibility" Value="Hidden"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Node.IsActive}" Value="True">
                                                     <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Data.IsConnected}" Value="True">
+                                                    <Setter Property="Command" Value="{Binding Data.DisconnectCommand}"/>
+                                                    <Setter Property="Content" Value="断开"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
