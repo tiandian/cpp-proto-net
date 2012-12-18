@@ -109,19 +109,22 @@ public:
 			{
 				if(m_pPortfolio->HasPosition())
 				{
-					logger.Info(boost::str(boost::format("Test for %s") 
-						% StrategyOpertaionText(CLOSE_POSI)));
-
 					if(m_isStopGain)
 					{
+						logger.Info(boost::str(boost::format("Test for %s") 
+							% "Stop Gain"));
+
 						bool succ = GetStopGainCond().Test(valueToTest);
 						if(succ)
 						{
 							DoStopGain();
 						}
 					}
-					else if(m_isStopLoss)
+					if(m_isStopLoss)
 					{
+						logger.Info(boost::str(boost::format("Test for %s") 
+							% "Stop Loss"));
+
 						bool succ = GetStopLossCond().Test(valueToTest);
 						if(succ)
 						{

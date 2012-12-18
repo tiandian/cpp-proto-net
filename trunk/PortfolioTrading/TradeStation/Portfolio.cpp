@@ -299,7 +299,8 @@ void CPortfolio::SetManager( CPortfolioManager* parentMgr )
 
 void CPortfolio::Cleanup()
 {
-	m_porfMgr->QuoteAggregator()->UnsubscribeQuotes(this);
+	if(m_porfMgr != NULL)
+		m_porfMgr->QuoteAggregator()->UnsubscribeQuotes(this);
 }
 
 void CPortfolio::PushUpdate()

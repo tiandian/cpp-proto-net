@@ -27,7 +27,8 @@ CPortfolio* CPortfolioManager::Get( const string& portfId )
 void CPortfolioManager::Add( CPortfolio* portfolio )
 {
 	const string& pid = portfolio->ID();
-	m_mapPortfolios.insert(make_pair(pid, PortfolioPtr(portfolio)));
+	PortfolioPtr portfWrapper(portfolio);
+	m_mapPortfolios.insert(make_pair(pid, portfWrapper));
 	portfolio->SetManager(this);
 
 	logger.Info(boost::str(boost::format("Portfolio(%s) added") % pid.c_str()));

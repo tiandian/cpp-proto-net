@@ -204,4 +204,5 @@ void CPlaceOrderStateMachine::Init()
 	canceling->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
 	canceling->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sent.get());
 	canceling->AddEventState(ORDER_EVENT_PENDING, canceling.get());
+	canceling->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 }

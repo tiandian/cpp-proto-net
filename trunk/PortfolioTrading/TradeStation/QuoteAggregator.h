@@ -29,6 +29,7 @@ public:
 	virtual void OnSubscribeCompleted();
 	virtual void OnUnsubscribeCompleted();
 	virtual void OnQuoteReceived(entity::Quote* pQuote);
+	virtual void OnReconnected();;
 
 	void DelaySubmit() { m_bDelaySubmit = true; }
 	void SubmitSubscription();
