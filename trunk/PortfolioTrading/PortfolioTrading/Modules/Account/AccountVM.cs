@@ -35,6 +35,7 @@ namespace PortfolioTrading.Modules.Account
         {
             AddPortfolioCommand = new DelegateCommand<AccountVM>(OnAddPortfolio);
             ConnectCommand = new DelegateCommand<AccountVM>(OnConnectHost);
+            DisconnectCommand = new DelegateCommand<AccountVM>(OnDisconnectHost);
             RemovePortfolioCommand = new DelegateCommand<XamDataGrid>(OnRemovePortfolio);
 
             _host = new NativeHost();
@@ -177,6 +178,12 @@ namespace PortfolioTrading.Modules.Account
             private set;
         }
 
+        public ICommand DisconnectCommand
+        {
+            get;
+            private set;
+        }
+
         public void QueryAccountInfo(Action<trade.AccountInfo> accountInfoCallback)
         {
             Func<trade.AccountInfo> funcQryAcctInfo = _client.QueryAccountInfo;
@@ -301,7 +308,7 @@ namespace PortfolioTrading.Modules.Account
         {
             TradeStaionCutDown();
             _client.Disconnect();
-            _host.Exit();
+            //_host.Exit();
         }
 
         private int _connectTimes;
@@ -457,6 +464,14 @@ namespace PortfolioTrading.Modules.Account
             }
 
             return true;
+        }
+
+        private void OnDisconnectHost(AccountVM acct)
+        {
+            EventLogger.Write(string.Format("正在将{0}从交易终端断开连接...", acct.InvestorId));
+            Close();
+            EventLogger.Write(string.Format("{0}已断开", acct.InvestorId));
+            Status = "未连接";
         }
 
         public void TradeStaionCutDown()

@@ -472,8 +472,7 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 	}
 	else	// manual placed order will be here
 	{
-		string errorMsg;
-		GB2312ToUTF_8(errorMsg, msg.c_str());
+		string errorMsg = msg;
 		m_placeOrderStateMachine.Transition(orderRef, SubmitFailedEvent(errorMsg));
 	}
 }
