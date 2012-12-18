@@ -80,6 +80,7 @@ private:
 	CQuoteAgentCallback* m_pCallback;
 
 	bool m_bIsConnected;
+	bool m_bConnectionDrop;
 
 	boost::condition_variable m_condConnectDone;
 	boost::mutex m_mutex;

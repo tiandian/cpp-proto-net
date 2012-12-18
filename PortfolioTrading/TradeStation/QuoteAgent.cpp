@@ -18,6 +18,7 @@ m_loginSuccess(false),
 m_pUserApi(NULL),
 m_pCallback(NULL),
 m_bIsConnected(false),
+m_bConnectionDrop(false),
 m_iRequestID(0)
 {
 }
@@ -66,8 +67,6 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 				logger.Warning(errMsg);
 				return boost::make_tuple(false, errMsg);
 			}
-
-			m_bIsConnected = true;
 		}
 		return boost::make_tuple(true, errMsg);
 	}
@@ -458,7 +457,15 @@ void CQuoteAgent::OnFrontConnected()
 {
 	boost::lock_guard<boost::mutex> lock(m_mutex);
 	logger.Info("Market connected");
+
+	m_bIsConnected = true;
 	m_condConnectDone.notify_all();
+
+	if(m_bConnectionDrop)
+	{
+		m_pCallback->OnReconnected();
+		m_bConnectionDrop = false;
+	}
 }
 
 void CQuoteAgent::OnFrontDisconnected( int nReason )
@@ -495,6 +502,7 @@ void CQuoteAgent::OnFrontDisconnected( int nReason )
 		}
 		reasonTxt.append(" (will reconnect automatically).");
 		logger.Warning(reasonTxt);
+		m_bConnectionDrop = true;
 	}
 
 	m_bIsConnected = false;

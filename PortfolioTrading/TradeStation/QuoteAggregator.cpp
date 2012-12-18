@@ -222,3 +222,8 @@ void CQuoteAggregator::SubmitSubscription()
 	vector<string> subscribeArr(m_subscribingSymbols.begin(), m_subscribingSymbols.end());
 	bool succ = m_quoteAgent->SubscribesQuotes(subscribeArr);
 }
+
+void CQuoteAggregator::OnReconnected()
+{
+	SubmitSubscription();
+}

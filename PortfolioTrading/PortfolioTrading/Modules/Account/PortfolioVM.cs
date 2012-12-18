@@ -72,9 +72,9 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region Diff
-        private double _diff;
+        private decimal _diff;
 
-        public double Diff
+        public decimal Diff
         {
             get { return _diff; }
             set
@@ -89,9 +89,9 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region LongDiff
-        private double _longDiff;
+        private decimal _longDiff;
 
-        public double LongDiff
+        public decimal LongDiff
         {
             get { return _longDiff; }
             set
@@ -106,9 +106,9 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region ShortDiff
-        private double _shortDiff;
+        private decimal _shortDiff;
 
-        public double ShortDiff
+        public decimal ShortDiff
         {
             get { return _shortDiff; }
             set
@@ -122,6 +122,39 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region LongSize
+        private int _longSize;
+
+        public int LongSize
+        {
+            get { return _longSize; }
+            set
+            {
+                if (_longSize != value)
+                {
+                    _longSize = value;
+                    RaisePropertyChanged("LongSize");
+                }
+            }
+        }
+        #endregion
+
+        #region ShortSize
+        private int _shortSize;
+
+        public int ShortSize
+        {
+            get { return _shortSize; }
+            set
+            {
+                if (_shortSize != value)
+                {
+                    _shortSize = value;
+                    RaisePropertyChanged("ShortSize");
+                }
+            }
+        }
+        #endregion
 
         #region AutoOpen
         private bool _autoOpen;
@@ -486,7 +519,6 @@ namespace PortfolioTrading.Modules.Account
             portfolioItem.AutoStopLoss = AutoStopLoss;
             portfolioItem.AutoTrack = AutoTracking;
             portfolioItem.EnablePrefer = EnablePrefer;
-            portfolioItem.Diff = Diff;
             portfolioItem.Quantity = Quantity;
             portfolioItem.MaxPosition = MaxPosition;
 
@@ -508,9 +540,11 @@ namespace PortfolioTrading.Modules.Account
 
         public void Update(entity.PortfolioItem item)
         {
-            Diff = item.Diff;
-            LongDiff = item.LongDiff;
-            ShortDiff = item.ShortDiff;
+            Diff = ToDecimal(item.Diff);
+            LongDiff = ToDecimal(item.LongDiff);
+            ShortDiff = ToDecimal(item.ShortDiff);
+            LongSize = item.LongSize;
+            ShortSize = item.ShortSize;
             OpenTimes = item.OpenTimes;
             DoneTimes = item.CloseTimes;
             Gain = item.Profit;
@@ -521,6 +555,12 @@ namespace PortfolioTrading.Modules.Account
             {
                 _legs[i].Update(item.Legs[i]);
             }
+        }
+
+        private static decimal ToDecimal(double val)
+        {
+            return val == double.MaxValue || val == double.MinValue ? 
+                0 : (decimal)Math.Round(val, 2);
         }
 
         private void CalcPosition()

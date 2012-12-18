@@ -220,7 +220,7 @@ namespace PortfolioTrading.Modules.Account
         private void OnAddPortfolio(AccountVM acct)
         {
             PortfolioVM portf = new PortfolioVM(this);
-            portf.Id = (_acctPortfolios.Count + 1).ToString();
+            portf.Id = NextPortfId();
             
             EditPortfolioDlg dlg = new EditPortfolioDlg();
             dlg.Owner = System.Windows.Application.Current.MainWindow;
@@ -235,6 +235,14 @@ namespace PortfolioTrading.Modules.Account
 
                 PublishChanged();
             }
+        }
+
+        private string NextPortfId()
+        {
+            if (_acctPortfolios.Count > 0)
+                return (int.Parse(_acctPortfolios.Last().Id) + 1).ToString();
+            else
+                return "1";
         }
 
         private void OnRemovePortfolio(XamDataGrid dataGrid)

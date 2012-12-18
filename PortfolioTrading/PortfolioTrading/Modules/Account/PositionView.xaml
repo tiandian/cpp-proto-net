@@ -69,7 +69,7 @@
                 <igDP:FieldSettings Width="Auto" AllowEdit="False"/>
             </igDP:XamDataGrid.FieldSettings>
             <igDP:XamDataGrid.FieldLayoutSettings>
-                <igDP:FieldLayoutSettings AutoGenerateFields="False" />
+                <igDP:FieldLayoutSettings AutoGenerateFields="False" AllowDelete="False" AllowAddNew="False" />
             </igDP:XamDataGrid.FieldLayoutSettings>
         </igDP:XamDataGrid>
     </DockPanel>
