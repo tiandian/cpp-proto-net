@@ -84,7 +84,7 @@ namespace APInvokeManaged
                 throw new InvalidOperationException("Cannot connect again during connected");
 
             IPHostEntry hostEntry = Dns.GetHostEntry(Address);
-            IPAddress ipAddr = hostEntry.AddressList.SingleOrDefault(h => h.AddressFamily == AddressFamily.InterNetwork);
+            IPAddress ipAddr = hostEntry.AddressList.FirstOrDefault(h => h.AddressFamily == AddressFamily.InterNetwork);
             IPEndPoint ipe = new IPEndPoint(ipAddr, Port);
 
             _tcpClient =
