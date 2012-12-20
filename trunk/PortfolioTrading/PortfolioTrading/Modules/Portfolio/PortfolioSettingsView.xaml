@@ -24,6 +24,15 @@
         </DockPanel>
         <Grid>
             <Grid.Resources>
+                <Style x:Key="dirtyButtonStyle" TargetType="Button">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsDirty}" Value="True">
+                            <Setter Property="IsEnabled" Value="True"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+                
                 <DataTemplate x:Key="combItemTemplate">
                     <TextBlock Text="{Binding DisplayText}"/>
                 </DataTemplate>
@@ -38,15 +47,6 @@
                                 <Setter Property="BorderBrush" Value="Green" />
                             </Style>
                         </StackPanel.Resources>
-
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Button Margin="8" Command="{Binding ApplyCommand}">应用</Button>
-                            <Button Grid.Column="1" Margin="8" Command="{Binding ResetCommand}">重置</Button>
-                        </Grid>
 
                         <Border CornerRadius="4">
                             <DockPanel>
@@ -127,15 +127,6 @@
                             </Style>
                         </StackPanel.Resources>
 
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Button Margin="8" Command="{Binding ApplyCommand}">应用</Button>
-                            <Button Grid.Column="1" Margin="8" Command="{Binding ResetCommand}">重置</Button>
-                        </Grid>
-
                         <Border CornerRadius="4">
                             <StackPanel>
                                 <DockPanel Margin="2">
@@ -181,19 +172,32 @@
                                     ChangePositionTemplate="{StaticResource changePositionSettingTemplate}"/>
             </Grid.Resources>
 
-            <ContentControl ContentTemplateSelector="{StaticResource strategySettingSelector}"
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button Margin="8" Command="{Binding ApplyCommand}" Style="{StaticResource dirtyButtonStyle}">应用</Button>
+                        <Button Grid.Column="1" Margin="8" Command="{Binding ResetCommand}" Style="{StaticResource dirtyButtonStyle}">重置</Button>
+                    </Grid>
+                    
+                    <ContentControl ContentTemplateSelector="{StaticResource strategySettingSelector}"
                             Content="{Binding }">
-                <ContentControl.Style>
-                    <Style TargetType="ContentControl">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding CurrentPortfolio.Account.IsConnected, Mode=OneWay}"
+                        <ContentControl.Style>
+                            <Style TargetType="ContentControl">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPortfolio.Account.IsConnected, Mode=OneWay}"
                                          Value="False">
-                                <Setter Property="IsEnabled" Value="False"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ContentControl.Style>
-            </ContentControl>
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ContentControl.Style>
+                    </ContentControl>
+                </StackPanel>
+            </ScrollViewer>
             
             <Border Background="LightSteelBlue">
                 <Border.Style>

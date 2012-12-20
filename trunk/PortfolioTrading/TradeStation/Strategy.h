@@ -92,7 +92,15 @@ public:
 		{
 			if(testFor == DO_NOTHING || testFor == OPEN_POSI)
 			{
-				if(!m_pPortfolio->PositionReachLimit() && m_isAutoOpen)
+				logger.Debug(boost::str(boost::format("Portfolio(%s): Reach Limit %d, Placing Order %d, Auto Open %d")
+					% m_pPortfolio->ID() 
+					% m_pPortfolio->PositionReachLimit() 
+					% m_pPortfolio->IsPlacingOrder()
+					% m_isAutoOpen));
+
+				if(!m_pPortfolio->PositionReachLimit() 
+					&& !m_pPortfolio->IsPlacingOrder()
+					&& m_isAutoOpen)
 				{
 					logger.Info(boost::str(boost::format("Test for %s") 
 						% StrategyOpertaionText(OPEN_POSI)));
@@ -107,7 +115,12 @@ public:
 
 			if(testFor == DO_NOTHING || testFor == CLOSE_POSI)
 			{
-				if(m_pPortfolio->HasPosition())
+				logger.Debug(boost::str(boost::format("Portfolio(%s): Has position %d,  Placing Order %d")
+					% m_pPortfolio->ID() 
+					% m_pPortfolio->HasPosition() 
+					% m_pPortfolio->IsPlacingOrder()));
+
+				if(m_pPortfolio->HasPosition() && !m_pPortfolio->IsPlacingOrder())
 				{
 					if(m_isStopGain)
 					{

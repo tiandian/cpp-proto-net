@@ -26,6 +26,7 @@ public:
 
 	bool Test(double valToTest)
 	{
+		_ASSERT(valToTest < 999999);
 		switch(m_comparsion)
 		{
 		case GREATER_THAN:

@@ -20,8 +20,10 @@ m_clientConnected(false)
 	m_orderProcessor.SetPushTradeFunc(boost::bind(&CClientAgent::OnTradeUpdated, this, _1));
 	m_orderProcessor.SetPushPositionDetailFunc(boost::bind(&CClientAgent::OnPostionDetailReturned, this, _1));
 	m_orderProcessor.SetPushOrderFunc(boost::bind(&CClientAgent::OnLegOrderUpdated, this, _1, _2, _3));
+
 	m_orderProcessor.SetPushPositionChangeFunc(boost::bind(&CPortfolioManager::PortfolioPositionChange, &m_portfolioMgr, _1));
 	m_orderProcessor.SetPushResubmitterChangeFunc(boost::bind(&CPortfolioManager::ChangePortfolioResubmitter, &m_portfolioMgr, _1, _2, _3));
+	m_orderProcessor.SetPortfolioPlaceOrderDoneFunc(boost::bind(&CPortfolioManager::PortfolioPlaceOrderDone, &m_portfolioMgr, _1));
 }
 
 CClientAgent::~CClientAgent(void)
@@ -150,6 +152,7 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty)
 	placeOrderCtx.limitPriceType = entity::Opposite;
 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, &placeOrderCtx));
+	portf->BeginPlaceOrder();
 	// send to order processor
 	if(enablePrefer)
 		m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);

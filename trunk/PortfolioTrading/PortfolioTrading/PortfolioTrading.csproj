@@ -90,6 +90,8 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -103,6 +105,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\DropDownMenuContainer.cs" />
     <Compile Include="Controls\PortfMonTemplateSelector.cs" />
     <Compile Include="Controls\PortfSettingTemplateSelector.cs" />
     <Compile Include="Controls\PriceDiffWatchPanel.cs" />

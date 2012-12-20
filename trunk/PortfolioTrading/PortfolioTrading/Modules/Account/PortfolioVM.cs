@@ -24,6 +24,9 @@ namespace PortfolioTrading.Modules.Account
         {
             _accountVm = accountVm;
             OpenPositionCommand = new DelegateCommand(OnOpenPosition);
+            OpenQtyPositionCommand = new DelegateCommand(OnOpenQtyPosition);
+            ClosePositionCommand = new DelegateCommand(OnClosePosition);
+            CloseQtyPositionCommand = new DelegateCommand(OnCloseQtyPosition);
             StartCommand = new DelegateCommand(OnStart);
             StopCommand = new DelegateCommand(OnStop);
         }
@@ -275,7 +278,6 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _doneTimes = value;
                     RaisePropertyChanged("DoneTimes");
-                    CalcPosition();
                 }
             }
         }
@@ -374,7 +376,9 @@ namespace PortfolioTrading.Modules.Account
         }
 
         public ICommand OpenPositionCommand { get; private set; }
+        public ICommand OpenQtyPositionCommand { get; private set; }
         public ICommand ClosePositionCommand { get; private set; }
+        public ICommand CloseQtyPositionCommand { get; private set; }
 
         public ICommand StartCommand { get; private set; }
         public ICommand StopCommand { get; private set; }
@@ -547,6 +551,7 @@ namespace PortfolioTrading.Modules.Account
             ShortSize = item.ShortSize;
             OpenTimes = item.OpenTimes;
             DoneTimes = item.CloseTimes;
+            Position = item.CurrentPosition;
             Gain = item.Profit;
 
             IsRunning = item.StrategyRunning;
@@ -563,15 +568,25 @@ namespace PortfolioTrading.Modules.Account
                 0 : (decimal)Math.Round(val, 2);
         }
 
-        private void CalcPosition()
-        {
-            Position = OpenTimes - DoneTimes;
-        }
-
         private void OnOpenPosition()
         {
             _accountVm.Host.PorfOpenPosition(Id, Quantity);
             EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, Quantity);
+        }
+
+        private void OnOpenQtyPosition()
+        {
+
+        }
+
+        private void OnClosePosition()
+        {
+
+        }
+
+        private void OnCloseQtyPosition()
+        {
+
         }
 
         private void OnStart()
