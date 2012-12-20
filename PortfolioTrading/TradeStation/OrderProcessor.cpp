@@ -335,6 +335,11 @@ void COrderProcessor::RemoveFromPending( trade::MultiLegOrder* pMlOrder )
 	// remove from orderSender map if using sequence order sender
 	m_orderSenderMap.erase(mlOrderId);
 
+	if(!m_notifyPortfolioPlaceOrderDoneFunc.empty())
+	{
+		m_notifyPortfolioPlaceOrderDoneFunc(pMlOrder->portfolioid());
+	}
+
 	// remove from pending mulite leg orders list
 	m_pendingMultiLegOrders.erase(mlOrderId);
 }
@@ -453,6 +458,7 @@ void COrderProcessor::OnRspOrderInsert( bool succ, const std::string& orderRef, 
 			const MultiLegOrderPtr& mlOrder = iterOrd->second;
 			trade::Order* pOrd = GetOrderByRef(mlOrder.get(), orderRef);
 
+			_ASSERT(pOrd != NULL);
 			pOrd->set_ordersubmitstatus(trade::INSERT_REJECTED);
 
 			string ordStatusMsg;
@@ -602,6 +608,11 @@ void COrderProcessor::OnRspQryInvestorPositionDetail( trade::PositionDetailInfo*
 	PublishPositionDetail(pPositionDetail);
 }
 
+void COrderProcessor::SetPortfolioPlaceOrderDoneFunc( PortfolioPlaceOrderDoneFunc funcPlaceOrderDone )
+{
+	m_notifyPortfolioPlaceOrderDoneFunc = funcPlaceOrderDone;
+}
+
 void COrderProcessor::QueryPositionDetails( const string& symbol )
 {
 	m_pTradeAgent->QueryPositionDetails(symbol);
@@ -682,5 +693,6 @@ boost::tuple<bool, string> COrderProcessor::PlaceOrder( const string& symbol, tr
 
 	return boost::make_tuple(succ, errMsg);
 }
+
 
 

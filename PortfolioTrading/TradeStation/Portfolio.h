@@ -74,10 +74,19 @@ public:
 	bool HasPosition(){ return PositionQuantity() > 0; }
 	bool PositionReachLimit(){ return PositionQuantity() == m_innerItem->maxposition(); }
 
+	bool IsPlacingOrder() { return m_isPlacingOrder; }
+	void BeginPlaceOrder() { m_isPlacingOrder = true; }
+	void EndPlaceOrder() { m_isPlacingOrder = false; }
+
 private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
-	int PositionQuantity(){ return m_innerItem->opentimes() - m_innerItem->closetimes(); }
+	int PositionQuantity()
+	{
+		int posiQty = m_innerItem->opentimes() - m_innerItem->closetimes();
+		m_innerItem->set_currentposition(posiQty);
+		return posiQty; 
+	}
 	void PushUpdate();
 	void IncrementalOpenTimes(){ m_innerItem->set_opentimes(m_innerItem->opentimes() + 1); }
 	void IncrementalCloseTimes(){ m_innerItem->set_closetimes(m_innerItem->closetimes() + 1); }
@@ -99,6 +108,7 @@ private:
 	boost::shared_ptr<CDiffStrategy> m_strategy;
 		
 	bool m_openOnce;
+	bool m_isPlacingOrder;
 };
 
 class CLeg

@@ -36,6 +36,7 @@ public:
 
 	void PortfolioPositionChange(const MultiLegOrderPtr& multiLegOrder);
 	void ChangePortfolioResubmitter(const string& portfId, COrderResubmitter* pResubmitter, bool isAdding);
+	void PortfolioPlaceOrderDone(const string& portfId);
 
 	void PublishPortfolioUpdate(entity::PortfolioItem* pPortfolio)
 	{

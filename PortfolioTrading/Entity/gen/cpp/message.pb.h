@@ -612,6 +612,13 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 maxposition() const;
   inline void set_maxposition(::google::protobuf::int32 value);
   
+  // required int32 CurrentPosition = 21;
+  inline bool has_currentposition() const;
+  inline void clear_currentposition();
+  static const int kCurrentPositionFieldNumber = 21;
+  inline ::google::protobuf::int32 currentposition() const;
+  inline void set_currentposition(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioItem)
  private:
   inline void set_has_id();
@@ -652,6 +659,8 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline void clear_has_profit();
   inline void set_has_maxposition();
   inline void clear_has_maxposition();
+  inline void set_has_currentposition();
+  inline void clear_has_currentposition();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -675,9 +684,10 @@ class PortfolioItem : public ::google::protobuf::Message {
   double profit_;
   ::google::protobuf::int32 closetimes_;
   ::google::protobuf::int32 maxposition_;
+  ::google::protobuf::int32 currentposition_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(20 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(21 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3356,6 +3366,28 @@ inline ::google::protobuf::int32 PortfolioItem::maxposition() const {
 inline void PortfolioItem::set_maxposition(::google::protobuf::int32 value) {
   set_has_maxposition();
   maxposition_ = value;
+}
+
+// required int32 CurrentPosition = 21;
+inline bool PortfolioItem::has_currentposition() const {
+  return (_has_bits_[0] & 0x00100000u) != 0;
+}
+inline void PortfolioItem::set_has_currentposition() {
+  _has_bits_[0] |= 0x00100000u;
+}
+inline void PortfolioItem::clear_has_currentposition() {
+  _has_bits_[0] &= ~0x00100000u;
+}
+inline void PortfolioItem::clear_currentposition() {
+  currentposition_ = 0;
+  clear_has_currentposition();
+}
+inline ::google::protobuf::int32 PortfolioItem::currentposition() const {
+  return currentposition_;
+}
+inline void PortfolioItem::set_currentposition(::google::protobuf::int32 value) {
+  set_has_currentposition();
+  currentposition_ = value;
 }
 
 // -------------------------------------------------------------------

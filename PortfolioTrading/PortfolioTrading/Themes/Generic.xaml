@@ -82,12 +82,30 @@
                                 </DockPanel>
                             </Border>
                             <Border Grid.Column="2" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 0, 1">
-                                <Button Style="{StaticResource operBtnStyle}"
-                                    Command="{Binding OpenPositionCommand}">开仓</Button>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Style="{StaticResource operBtnStyle}"
+                                            Command="{Binding OpenPositionCommand}">开仓</Button>
+                                    <local:DropDownMenuContainer DockPanel.Dock="Right" Height="24">
+                                        <MenuItem Width="100" Command="{Binding OpenQtyPositionCommand}">
+                                            <MenuItem.Header>
+                                                <TextBlock>数量...</TextBlock>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                    </local:DropDownMenuContainer>
+                                </StackPanel>
                             </Border>
                             <Border Grid.Column="2" Grid.Row="1" >
-                                <Button Style="{StaticResource operBtnStyle}"
-                                    >平仓</Button>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Style="{StaticResource operBtnStyle}"
+                                            Command="{Binding ClosePositionCommand}">平仓</Button>
+                                    <local:DropDownMenuContainer DockPanel.Dock="Right" Height="24">
+                                        <MenuItem Width="100" Command="{Binding CloseQtyPositionCommand}">
+                                            <MenuItem.Header>
+                                                <TextBlock>数量...</TextBlock>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                    </local:DropDownMenuContainer>
+                                </StackPanel>
                             </Border>
                         </Grid>
                     </Border>
@@ -295,6 +313,30 @@
                                 </DockPanel>
                             </Border>
                         </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:DropDownMenuContainer}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:DropDownMenuContainer}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Button Name="dropDownButton">
+                            <Path x:Name="path"
+									Data="M0,0L3,3 6,0z" 
+									Margin="0,1,0,0" 
+									Grid.Column="1"
+									Stroke="{TemplateBinding Foreground}" 
+									Fill="{TemplateBinding Foreground}" 
+									HorizontalAlignment="Center" 
+									VerticalAlignment="Center"
+									/>
+                        </Button>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

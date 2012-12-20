@@ -57,6 +57,16 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
             ApplyCommand = new DelegateCommand(OnApplySetting);
             ResetCommand = new DelegateCommand(OnResetSetting);
+
+            this.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(StrategySettingVM_PropertyChanged);
+        }
+
+        void StrategySettingVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (!isSettingPortfolio && e.PropertyName != "IsDirty")
+            {
+                IsDirty = true;
+            }
         }
 
         public IEnumerable<DirectionItem> DirectionItemsSource
@@ -141,27 +151,52 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             }
         }
         #endregion
-        
+
+        #region IsDirty
+        private bool _isDirty;
+
+        public bool IsDirty
+        {
+            get { return _isDirty; }
+            set
+            {
+                if (_isDirty != value)
+                {
+                    _isDirty = value;
+                    RaisePropertyChanged("IsDirty");
+                }
+            }
+        }
+        #endregion
+
 
         protected virtual void OnApplySetting()
         {
             CurrentPortfolio.ApplyStrategySettings();
+            IsDirty = false;
         }
 
         protected virtual void OnResetSetting()
         {
             SetPortfolio(CurrentPortfolio);
+            IsDirty = false;
         }
+
+        private bool isSettingPortfolio = false;
 
         public void SetPortfolio(PortfolioVM portfVm)
         {
+            isSettingPortfolio = true;
+
             this.AccountId = portfVm.AccountId;
             this.PortfolioID = portfVm.Id;
             this.StrategyType = GetStrategyDisplayName(portfVm.StrategySetting.Name);
 
             OnSetPortfolio(portfVm);
-
+            
             this.CurrentPortfolio = portfVm;
+
+            isSettingPortfolio = false;
         }
 
         protected virtual void OnSetPortfolio(PortfolioVM portfVm)

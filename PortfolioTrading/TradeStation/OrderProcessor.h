@@ -24,6 +24,7 @@ typedef boost::function<void(trade::PositionDetailInfo*)> PushPositionDetailFunc
 typedef boost::function<void(const MultiLegOrderPtr&)> PushPortfolioPositionChangeFunc;
 typedef boost::function<void(const string&, COrderResubmitter*, bool)> PushPortfolioResubmitterChangeFunc;
 typedef boost::shared_ptr<CSequenceOrderSender> OrderSenderPtr;
+typedef boost::function<void(const string&)> PortfolioPlaceOrderDoneFunc;
 
 class COrderProcessor : public CTradeAgentCallback
 {
@@ -107,6 +108,8 @@ public:
 	void ChangePortfolioResubmitter(const string& portfId, COrderResubmitter* pResubmitter, bool isAdding);
 	void SetPushResubmitterChangeFunc(PushPortfolioResubmitterChangeFunc funcResubmitterChange);
 
+	void SetPortfolioPlaceOrderDoneFunc(PortfolioPlaceOrderDoneFunc funcPlaceOrderDone);
+
 	void SubmitOrderToTradeAgent(trade::InputOrder* pOrder, const string& mlOrderId);
 
 private:
@@ -137,6 +140,7 @@ private:
 	PushPositionDetailFunc m_pushPosiDetailFunc;
 	PushPortfolioPositionChangeFunc m_pushPortfPosiChangeFunc;
 	PushPortfolioResubmitterChangeFunc m_pushResubmitterChangeFunc;
+	PortfolioPlaceOrderDoneFunc m_notifyPortfolioPlaceOrderDoneFunc;
 
 	int m_maxOrderRef;
 	boost::mutex m_mutOrdRefIncr;

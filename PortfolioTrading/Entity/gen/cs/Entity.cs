@@ -271,6 +271,13 @@ namespace entity
       get { return _MaxPosition; }
       set { _MaxPosition = value; }
     }
+    private int _CurrentPosition;
+    [global::ProtoBuf.ProtoMember(21, IsRequired = true, Name=@"CurrentPosition", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int CurrentPosition
+    {
+      get { return _CurrentPosition; }
+      set { _CurrentPosition = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

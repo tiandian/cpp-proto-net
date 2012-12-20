@@ -69,3 +69,12 @@ void CPortfolioManager::ChangePortfolioResubmitter( const string& portfId, COrde
 			pPortf->RemoveOrderResubmitter(pResubmitter);
 	}
 }
+
+void CPortfolioManager::PortfolioPlaceOrderDone( const string& portfId )
+{
+	CPortfolio* pPortf = Get(portfId);
+	if(pPortf != NULL)
+	{
+		pPortf->EndPlaceOrder();
+	}
+}
