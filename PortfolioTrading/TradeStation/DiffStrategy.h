@@ -5,6 +5,9 @@
 
 #include <boost/format.hpp>
 
+#define DBL_TEST_UPPER_BOUNDERY 9999999
+#define DBL_TEST_LOWER_BOUNDERY -9999999
+
 class CNonUseChecker : public CConditionChecker<double>
 {
 public:
@@ -26,32 +29,39 @@ public:
 
 	bool Test(double valToTest)
 	{
-		_ASSERT(valToTest < 999999);
-		switch(m_comparsion)
+		_ASSERT(valToTest < DBL_TEST_UPPER_BOUNDERY && valToTest > DBL_TEST_LOWER_BOUNDERY);
+
+		if(valToTest < DBL_TEST_UPPER_BOUNDERY && 
+			valToTest > DBL_TEST_LOWER_BOUNDERY)
 		{
-		case GREATER_THAN:
-			logger.Info(boost::str(boost::format("? %f > %f")
-				% valToTest % m_targetVal));
-			return valToTest > m_targetVal;
-		case GREATER_EQUAL_THAN:
-			logger.Info(boost::str(boost::format("? %f >= %f")
-				% valToTest % m_targetVal));
-			return DoubleGreaterEqual(valToTest, m_targetVal);
-		case LESS_THAN:
-			logger.Info(boost::str(boost::format("? %f < %f")
-				% valToTest % m_targetVal));
-			return valToTest < m_targetVal;
-		case LESS_EQUAL_THAN:
-			logger.Info(boost::str(boost::format("? %f <= %f")
-				% valToTest % m_targetVal));
-			return DoubleGreaterEqual(m_targetVal, valToTest);
-		default:
-			return false;
+			switch(m_comparsion)
+			{
+			case GREATER_THAN:
+				logger.Info(boost::str(boost::format("? %f > %f")
+					% valToTest % m_targetVal));
+				return valToTest > m_targetVal;
+			case GREATER_EQUAL_THAN:
+				logger.Info(boost::str(boost::format("? %f >= %f")
+					% valToTest % m_targetVal));
+				return DoubleGreaterEqual(valToTest, m_targetVal);
+			case LESS_THAN:
+				logger.Info(boost::str(boost::format("? %f < %f")
+					% valToTest % m_targetVal));
+				return valToTest < m_targetVal;
+			case LESS_EQUAL_THAN:
+				logger.Info(boost::str(boost::format("? %f <= %f")
+					% valToTest % m_targetVal));
+				return DoubleGreaterEqual(m_targetVal, valToTest);
+			default:
+				return false;
+			}
 		}
+		
 		return false; 
 	}
 
 private:
+	
 	double m_targetVal;
 	COMPARE_OP m_comparsion;	
 

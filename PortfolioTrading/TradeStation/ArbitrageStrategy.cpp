@@ -38,10 +38,10 @@ void CArbitrageStrategy::DoOpenPostion()
 
 	CPortfolio *portf = Portfolio();
 	if(portf != NULL)
-		Client()->OpenPosition(portf, portf->Quantity());
+		Client()->OpenPosition(portf, portf->Quantity(), trade::SR_AutoOpen);
 }
 
-void CArbitrageStrategy::ClosePosition()
+void CArbitrageStrategy::ClosePosition(trade::SubmitReason submitReason)
 {
 	logger.Info(boost::str(boost::format("Portf (%s) CLOSE position by Arbitrage strategy") % Portfolio()->ID().c_str()));
 
@@ -55,7 +55,7 @@ void CArbitrageStrategy::ClosePosition()
 		{
 			const trade::MultiLegOrder& openMlOrd = *(*iter);
 			std::string msg;
-			Client()->ClosePosition(openMlOrd, std::string(), msg);
+			Client()->ClosePosition(openMlOrd, std::string(), submitReason, msg);
 		}
 	}
 }

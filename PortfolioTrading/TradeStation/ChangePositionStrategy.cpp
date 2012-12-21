@@ -35,7 +35,7 @@ void CChangePositionStrategy::DoOpenPostion()
 
 	CPortfolio *portf = Portfolio();
 	if(portf != NULL)
-		Client()->ChangePosition(portf, CloseLeg(), m_closingLegPosition, portf->Quantity());
+		Client()->ChangePosition(portf, CloseLeg(), m_closingLegPosition, portf->Quantity(), trade::SR_AutoSwitch);
 }
 
 POSI_OPER CChangePositionStrategy::NextOperation( POSI_OPER oper )

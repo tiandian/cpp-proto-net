@@ -19,7 +19,7 @@ public:
 
 trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx);
 
-trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::MultiLegOrder* multilegOpenOrder, PlaceOrderContext* placeOrderCtx);
+trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::MultiLegOrder* multilegOpenOrder, int quantity, PlaceOrderContext* placeOrderCtx);
 
 trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, const std::string& closeSymbol, entity::PosiDirectionType existingPosition, PlaceOrderContext* placeOrderCtx);
 

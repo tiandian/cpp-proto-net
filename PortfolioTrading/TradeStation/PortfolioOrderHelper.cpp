@@ -111,14 +111,19 @@ trade::OffsetFlagType GetCloseFlag(const string& symbol, const string& openDate)
 	return trade::OF_CLOSE_TODAY;
 }
 
-trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::MultiLegOrder* multilegOpenOrder, PlaceOrderContext* placeOrderCtx)
+trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::MultiLegOrder* multilegOpenOrder, int quantity, PlaceOrderContext* placeOrderCtx)
 {
 	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
 	string mOrderId;
 	portfolio->NewOrderId(mOrderId);
 	pMultiLegOrder->set_orderid(mOrderId);
-	pMultiLegOrder->set_openorderid(multilegOpenOrder->orderid());
-	pMultiLegOrder->set_quantity(multilegOpenOrder->quantity());
+
+	if(multilegOpenOrder != NULL)
+		pMultiLegOrder->set_openorderid(multilegOpenOrder->orderid());
+	else
+		pMultiLegOrder->set_openorderid("");
+	
+	pMultiLegOrder->set_quantity(quantity);
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
 	{
@@ -156,7 +161,10 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 		order->set_limitprice(limitPrice);
 
 		static char CombOffset[1];
-		CombOffset[0] = GetCloseFlag(order->instrumentid(), multilegOpenOrder->opendate());
+		if(multilegOpenOrder != NULL)
+			CombOffset[0] = GetCloseFlag(order->instrumentid(), multilegOpenOrder->opendate());
+		else
+			CombOffset[0] = trade::OF_CLOSE_TODAY;
 
 		order->set_comboffsetflag(std::string(CombOffset));
 
