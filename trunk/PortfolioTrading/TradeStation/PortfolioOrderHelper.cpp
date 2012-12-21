@@ -137,12 +137,12 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 		{
 			// open long position
 			order->set_direction(trade::SELL);
-			limitPrice = leg->Bid() + 10;
+			limitPrice = leg->Bid();
 		}
 		else if(side == entity::SHORT)
 		{
 			order->set_direction(trade::BUY);
-			limitPrice = leg->Ask() - 10;
+			limitPrice = leg->Ask();
 		}
 		else
 		{
