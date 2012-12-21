@@ -41,6 +41,16 @@ void CSequenceOrderSender::SendOrder(int ordIdx)
 	const boost::shared_ptr<trade::InputOrder>& iOrd = m_inputOrderVec->at(ordIdx);
 	logger.Trace(boost::str(boost::format("Sequence Sender start sending No.%d order(%s)") 
 		% ordIdx % iOrd->instrumentid().c_str()));
+	
+	// The last order has ever modified (i.e. cancelled and resent)
+	if(m_workingResubmitter.get() != NULL && m_workingResubmitter->EverModifyOrder())
+	{
+		// Need to re generate order ref
+		string newOrdRef;
+		m_orderProc->ModifyOrderRef(m_mlOrderId, iOrd->orderref(), &newOrdRef);
+		iOrd->set_orderref(newOrdRef);
+	}
+
 	m_workingResubmitter = OrderResubmitterPtr(
 		new COrderResubmitter(m_mlOrderId, iOrd.get(), m_orderProc, m_retryTimes));
 

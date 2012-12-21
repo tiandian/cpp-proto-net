@@ -17,6 +17,7 @@ m_remainingRetry(retryTimes),
 m_isDone(NotDone),
 m_quoteAsk(0),
 m_quoteBid(0),
+m_bEverModifyOrder(false),
 m_isCanceling(false),
 m_isPending(false)
 {
@@ -102,7 +103,7 @@ void COrderResubmitter::UpdateQuote( entity::Quote* pQuote )
 	else if(direction == trade::SELL)
 	{
 		logger.Trace(boost::str(boost::format("Sell: Bid(%f) ?< Lmt Px(%f)")
-			% m_quoteAsk % limitPx));
+			% m_quoteBid % limitPx));
 		priceOutOfRange = m_quoteBid < limitPx;
 	}
 	else
@@ -130,6 +131,8 @@ void COrderResubmitter::ModifyOrder(double limitPrice)
 
 	m_pendingOrder->set_orderref(newOrdRef);
 	m_pendingOrder->set_limitprice(limitPrice);
+
+	m_bEverModifyOrder = true;
 }
 
 void COrderResubmitter::OrderPending()
