@@ -41,7 +41,7 @@ void CArbitrageStrategy::DoOpenPostion()
 		Client()->OpenPosition(portf, portf->Quantity());
 }
 
-void CArbitrageStrategy::CloseAllPosition()
+void CArbitrageStrategy::ClosePosition()
 {
 	logger.Info(boost::str(boost::format("Portf (%s) CLOSE position by Arbitrage strategy") % Portfolio()->ID().c_str()));
 
@@ -50,14 +50,12 @@ void CArbitrageStrategy::CloseAllPosition()
 	{
 		std::vector<MultiLegOrderPtr> openedOrders;
 		int orderCount = portf->GetPosition(openedOrders);
-		if(orderCount > 0)
+		std::vector<MultiLegOrderPtr>::iterator iter = openedOrders.begin();
+		if(iter != openedOrders.end())
 		{
-			BOOST_FOREACH(MultiLegOrderPtr mlOrd, openedOrders)
-			{
-				const trade::MultiLegOrder& openMlOrd = *mlOrd;
-				std::string msg;
-				Client()->ClosePosition(openMlOrd, std::string(), msg);
-			}
+			const trade::MultiLegOrder& openMlOrd = *(*iter);
+			std::string msg;
+			Client()->ClosePosition(openMlOrd, std::string(), msg);
 		}
 	}
 }
