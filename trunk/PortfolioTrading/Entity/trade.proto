@@ -763,6 +763,15 @@ message InputOrderAction
 	required string	InstrumentID = 14;
 }
 
+enum SubmitReason
+{
+	SR_Manual = 1;
+	SR_AutoOpen = 2;
+	SR_StopGain = 3;
+	SR_StopLoss = 4;
+	SR_AutoSwitch = 5;
+}
+
 message MultiLegOrder
 {
 	required string OrderId = 1;
@@ -772,4 +781,6 @@ message MultiLegOrder
 	repeated Order Legs = 4;
 	required string OpenOrderId = 5;
 	required string OpenDate = 6;
+
+	required SubmitReason Reason = 7;
 }

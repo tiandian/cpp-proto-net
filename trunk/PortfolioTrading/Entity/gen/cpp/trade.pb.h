@@ -431,6 +431,28 @@ inline bool ActionFlagType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<ActionFlagType>(
     ActionFlagType_descriptor(), name, value);
 }
+enum SubmitReason {
+  SR_Manual = 1,
+  SR_AutoOpen = 2,
+  SR_StopGain = 3,
+  SR_StopLoss = 4,
+  SR_AutoSwitch = 5
+};
+bool SubmitReason_IsValid(int value);
+const SubmitReason SubmitReason_MIN = SR_Manual;
+const SubmitReason SubmitReason_MAX = SR_AutoSwitch;
+const int SubmitReason_ARRAYSIZE = SubmitReason_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* SubmitReason_descriptor();
+inline const ::std::string& SubmitReason_Name(SubmitReason value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    SubmitReason_descriptor(), value);
+}
+inline bool SubmitReason_Parse(
+    const ::std::string& name, SubmitReason* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<SubmitReason>(
+    SubmitReason_descriptor(), name, value);
+}
 // ===================================================================
 
 class AccountInfo : public ::google::protobuf::Message {
@@ -3540,6 +3562,13 @@ class MultiLegOrder : public ::google::protobuf::Message {
   inline ::std::string* mutable_opendate();
   inline ::std::string* release_opendate();
   
+  // required .trade.SubmitReason Reason = 7;
+  inline bool has_reason() const;
+  inline void clear_reason();
+  static const int kReasonFieldNumber = 7;
+  inline trade::SubmitReason reason() const;
+  inline void set_reason(trade::SubmitReason value);
+  
   // @@protoc_insertion_point(class_scope:trade.MultiLegOrder)
  private:
   inline void set_has_orderid();
@@ -3552,6 +3581,8 @@ class MultiLegOrder : public ::google::protobuf::Message {
   inline void clear_has_openorderid();
   inline void set_has_opendate();
   inline void clear_has_opendate();
+  inline void set_has_reason();
+  inline void clear_has_reason();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -3559,11 +3590,12 @@ class MultiLegOrder : public ::google::protobuf::Message {
   ::std::string* portfolioid_;
   ::google::protobuf::RepeatedPtrField< ::trade::Order > legs_;
   ::std::string* openorderid_;
-  ::std::string* opendate_;
   ::google::protobuf::int32 quantity_;
+  int reason_;
+  ::std::string* opendate_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
   
   friend void  protobuf_AddDesc_trade_2eproto();
   friend void protobuf_AssignDesc_trade_2eproto();
@@ -11532,6 +11564,29 @@ inline ::std::string* MultiLegOrder::release_opendate() {
   }
 }
 
+// required .trade.SubmitReason Reason = 7;
+inline bool MultiLegOrder::has_reason() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void MultiLegOrder::set_has_reason() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void MultiLegOrder::clear_has_reason() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void MultiLegOrder::clear_reason() {
+  reason_ = 1;
+  clear_has_reason();
+}
+inline trade::SubmitReason MultiLegOrder::reason() const {
+  return static_cast< trade::SubmitReason >(reason_);
+}
+inline void MultiLegOrder::set_reason(trade::SubmitReason value) {
+  GOOGLE_DCHECK(trade::SubmitReason_IsValid(value));
+  set_has_reason();
+  reason_ = value;
+}
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -11608,6 +11663,10 @@ inline const EnumDescriptor* GetEnumDescriptor< trade::PriceSourceType>() {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< trade::ActionFlagType>() {
   return trade::ActionFlagType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< trade::SubmitReason>() {
+  return trade::SubmitReason_descriptor();
 }
 
 }  // namespace google

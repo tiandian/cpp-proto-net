@@ -577,30 +577,35 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnOpenQtyPosition()
         {
-            ChangeSpecifiedQtyDlg dlg = new ChangeSpecifiedQtyDlg(
-                new SpecifyQuantityViewModel(SpecifyQuantityViewModel.SpecifyQtyMode.Open));
+            var viewModel = new SpecifyQuantityViewModel(SpecifyQuantityViewModel.SpecifyQtyMode.Open);
+            ChangeSpecifiedQtyDlg dlg = new ChangeSpecifiedQtyDlg(viewModel);
             dlg.Owner = System.Windows.Application.Current.MainWindow;
             bool? ret = dlg.ShowDialog();
             if(ret ?? false)
             {
-
+                int qty = viewModel.Quantity;
+                _accountVm.Host.PorfOpenPosition(Id, qty);
+                EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, qty);
             }
         }
 
         private void OnClosePosition()
         {
-
+            _accountVm.Host.PorfClosePosition(Id, 0);
+            EventLogger.Write("{0} 平仓组合 {1}", _accountVm.InvestorId, DisplayText);
         }
 
         private void OnCloseQtyPosition()
         {
-            ChangeSpecifiedQtyDlg dlg = new ChangeSpecifiedQtyDlg(
-                new SpecifyQuantityViewModel(SpecifyQuantityViewModel.SpecifyQtyMode.Close));
+            var viewModel = new SpecifyQuantityViewModel(SpecifyQuantityViewModel.SpecifyQtyMode.Close);
+            ChangeSpecifiedQtyDlg dlg = new ChangeSpecifiedQtyDlg(viewModel);
             dlg.Owner = System.Windows.Application.Current.MainWindow;
             bool? ret = dlg.ShowDialog();
             if (ret ?? false)
             {
-
+                int qty = viewModel.Quantity;
+                _accountVm.Host.PorfClosePosition(Id, qty);
+                EventLogger.Write("{0} 平仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, qty);
             }
         }
 

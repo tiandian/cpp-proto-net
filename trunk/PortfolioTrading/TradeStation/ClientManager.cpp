@@ -86,6 +86,7 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("AddPortfCollection", boost::bind(&CClientManager::AddPortfCollection, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("RemovePortf", boost::bind(&CClientManager::RemovePorf, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PorfOpenPosition", boost::bind(&CClientManager::PorfOpenPosition, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("PorfClosePosition", boost::bind(&CClientManager::PorfClosePosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ClosePosition", boost::bind(&CClientManager::ClosePosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("CancelOrder", boost::bind(&CClientManager::CancelOrder, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ManualCloseOrder", boost::bind(&CClientManager::ManualCloseOrder, this, _1, _2, _3)));
@@ -219,6 +220,18 @@ void CClientManager::PorfOpenPosition( CClientAgent* pClientAgent, const string&
 	pClientAgent->OpenPosition(opParam.portfid(), opParam.quantity());
 }
 
+void CClientManager::PorfClosePosition(CClientAgent* pClientAgent, const string& in_data, string& out_data)
+{
+	entity::PorfOpenPosiParam opParam;
+	opParam.ParseFromString(in_data);
+	const string& portfId = opParam.portfid();
+	int qty = opParam.quantity();
+	if(qty > 0)
+		pClientAgent->ClosePosition(portfId, qty, trade::SR_Manual);
+	else
+		pClientAgent->SimpleCloseOrderPosition(portfId, trade::SR_Manual);
+}
+
 void CClientManager::ClosePosition( CClientAgent* pClientAgent, const string& in_data, string& out_data )
 {
 	entity::ClosePositionParam cpParam;
@@ -227,7 +240,7 @@ void CClientManager::ClosePosition( CClientAgent* pClientAgent, const string& in
 	const trade::MultiLegOrder& openMlOrder = cpParam.multilegorder();
 
 	string message;
-	pClientAgent->ClosePosition(openMlOrder, cpParam.legordref(), message);
+	pClientAgent->ClosePosition(openMlOrder, cpParam.legordref(), trade::SR_Manual, message);
 	entity::StringParam retParam;
 	retParam.set_data(message);
 	retParam.SerializeToString(&out_data);

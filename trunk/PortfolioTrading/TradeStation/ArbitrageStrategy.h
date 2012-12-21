@@ -37,14 +37,14 @@ protected:
 	CConditionChecker<double>& GetStopLossCond(){ return m_stopLossChecker; }
 
 	void DoOpenPostion();
-	void DoStopGain(){ ClosePosition(); }
-	void DoStopLoss(){ ClosePosition(); }
+	void DoStopGain(){ ClosePosition(trade::SR_StopGain); }
+	void DoStopLoss(){ ClosePosition(trade::SR_StopLoss); }
 
 	POSI_OPER NextOperation(POSI_OPER oper);
 
 private:
 
-	void ClosePosition();
+	void ClosePosition(trade::SubmitReason submitReason);
 
 	CValueChecker m_openPosiChecker;
 	CValueChecker m_stopGainChecker;

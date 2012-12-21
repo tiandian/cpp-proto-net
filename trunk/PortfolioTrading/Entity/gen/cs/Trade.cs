@@ -1722,6 +1722,13 @@ namespace trade
       get { return _OpenDate; }
       set { _OpenDate = value; }
     }
+    private trade.SubmitReason _Reason;
+    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"Reason", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public trade.SubmitReason Reason
+    {
+      get { return _Reason; }
+      set { _Reason = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -2113,6 +2120,26 @@ namespace trade
             
       [global::ProtoBuf.ProtoEnum(Name=@"AF_Modify", Value=51)]
       AF_Modify = 51
+    }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"SubmitReason")]
+    public enum SubmitReason
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"SR_Manual", Value=1)]
+      SR_Manual = 1,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"SR_AutoOpen", Value=2)]
+      SR_AutoOpen = 2,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"SR_StopGain", Value=3)]
+      SR_StopGain = 3,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"SR_StopLoss", Value=4)]
+      SR_StopLoss = 4,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"SR_AutoSwitch", Value=5)]
+      SR_AutoSwitch = 5
     }
   
 }
