@@ -46,6 +46,7 @@ public:
 	void CancelOrder(const string& mlOrderId, const string& ordRef);
 
 	void ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice, string* modifiedOrdRef);
+	void ModifyOrderRef(const string& mlOrderId, const string& legOrderRef, string* modifiedOrdRef);
 
 	boost::tuple<bool, string> ManualCloseOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
 	boost::tuple<bool, string> PlaceOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);

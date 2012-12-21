@@ -267,6 +267,25 @@ void COrderProcessor::CancelOrder(const string& mlOrderId, const string& ordRef)
 	}
 }
 
+void COrderProcessor::ModifyOrderRef(const string& mlOrderId, const string& legOrderRef, string* modifiedOrdRef)
+{
+	// find multi leg order
+	MultiLegOrderIter iterOrd = m_pendingMultiLegOrders.find(mlOrderId);
+	if(iterOrd != m_pendingMultiLegOrders.end())
+	{
+		const MultiLegOrderPtr& mlOrd = iterOrd->second;
+
+		// Modify order to be sent first 
+		trade::Order* pOrd = GetOrderByRef(mlOrd.get(), legOrderRef);
+
+		_ASSERT(pOrd != NULL);
+		// assign a new order ref
+		m_maxOrderRef = IncrementalOrderRef(pOrd, m_maxOrderRef);
+
+		*modifiedOrdRef = pOrd->orderref();
+	}
+}
+
 void COrderProcessor::ModifyOrder(const string& mlOrderId, const string& legOrderRef, double limitprice, string* modifiedOrdRef)
 {
 	// find multi leg order
@@ -288,17 +307,6 @@ void COrderProcessor::ModifyOrder(const string& mlOrderId, const string& legOrde
 
 		*modifiedOrdRef = pOrd->orderref();
 
-		// Then, has to update order ref for unsubmit order
-		int lCount = mlOrd->legs_size();
-		for(int i = 0; i < lCount; ++i)
-		{
-			trade::Order* legOrd = mlOrd->mutable_legs(i);
-			if(legOrd->orderref() != *modifiedOrdRef &&
-				legOrd->ordersubmitstatus() == trade::NOT_SUBMITTED)
-			{
-				m_maxOrderRef = IncrementalOrderRef(legOrd, m_maxOrderRef);
-			}
-		}
 	}
 }
 

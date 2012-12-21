@@ -83,13 +83,18 @@ private:
 
 	int PositionQuantity()
 	{
+		return m_innerItem->currentposition();
+	}
+
+	void UpdatePosition()
+	{
 		int posiQty = m_innerItem->opentimes() - m_innerItem->closetimes();
 		m_innerItem->set_currentposition(posiQty);
-		return posiQty; 
 	}
+
 	void PushUpdate();
-	void IncrementalOpenTimes(){ m_innerItem->set_opentimes(m_innerItem->opentimes() + 1); }
-	void IncrementalCloseTimes(){ m_innerItem->set_closetimes(m_innerItem->closetimes() + 1); }
+	void IncrementalOpenTimes(){ m_innerItem->set_opentimes(m_innerItem->opentimes() + 1); UpdatePosition(); }
+	void IncrementalCloseTimes(){ m_innerItem->set_closetimes(m_innerItem->closetimes() + 1); UpdatePosition(); }
 	void AddProfit(double val){ m_innerItem->set_profit(m_innerItem->profit() + val); }
 
 	vector<LegPtr> m_vecLegs;

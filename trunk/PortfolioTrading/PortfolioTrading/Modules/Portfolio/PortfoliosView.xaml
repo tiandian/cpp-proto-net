@@ -181,7 +181,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Record.DataItem.OpenTimes, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                    <TextBlock Text="{Binding Record.DataItem.Position, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                          FontWeight="Bold" FontSize="20" VerticalAlignment="Bottom"/>
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text=" "/>

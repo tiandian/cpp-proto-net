@@ -34,6 +34,8 @@ public:
 
 	void Start();
 	void OrderPending();
+
+	bool EverModifyOrder(){ return m_bEverModifyOrder; }
 private:
 
 	void CancelPending();
@@ -55,6 +57,7 @@ private:
 	double m_quoteBid;
 
 	boost::thread m_sendingThread;
+	bool m_bEverModifyOrder;
 };
 
 typedef boost::shared_ptr<COrderResubmitter> OrderResubmitterPtr;

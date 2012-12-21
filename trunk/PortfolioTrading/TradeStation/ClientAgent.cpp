@@ -175,6 +175,9 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildClosePosiOrder(portf,
 		&openMlOrd, &placeOrderCtx));
+
+	portf->BeginPlaceOrder();
+
 	if(enablePrefer)
 		m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
 	else
@@ -193,6 +196,9 @@ void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildChangePosiOrder(portf,
 		closeSymbol, existingPosition, &placeOrderCtx));
 	bool autoTracking = portf->Strategy()->IsAutoTracking();
+
+	portf->BeginPlaceOrder();
+
 	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
 }
 
