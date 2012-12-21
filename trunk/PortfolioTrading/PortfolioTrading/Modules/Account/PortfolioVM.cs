@@ -12,6 +12,7 @@ using PortfolioTrading.Events;
 using Microsoft.Practices.Prism.Events;
 using Microsoft.Practices.ServiceLocation;
 using PortfolioTrading.Modules.Portfolio.Strategy;
+using PortfolioTrading.Modules.Portfolio;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -576,7 +577,14 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnOpenQtyPosition()
         {
+            ChangeSpecifiedQtyDlg dlg = new ChangeSpecifiedQtyDlg(
+                new SpecifyQuantityViewModel(SpecifyQuantityViewModel.SpecifyQtyMode.Open));
+            dlg.Owner = System.Windows.Application.Current.MainWindow;
+            bool? ret = dlg.ShowDialog();
+            if(ret ?? false)
+            {
 
+            }
         }
 
         private void OnClosePosition()
@@ -586,7 +594,14 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnCloseQtyPosition()
         {
+            ChangeSpecifiedQtyDlg dlg = new ChangeSpecifiedQtyDlg(
+                new SpecifyQuantityViewModel(SpecifyQuantityViewModel.SpecifyQtyMode.Close));
+            dlg.Owner = System.Windows.Application.Current.MainWindow;
+            bool? ret = dlg.ShowDialog();
+            if (ret ?? false)
+            {
 
+            }
         }
 
         private void OnStart()
