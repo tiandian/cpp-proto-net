@@ -122,6 +122,40 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        #region OpenOrderId
+        private string _openOrderId;
+
+        public string OpenOrderId
+        {
+            get { return _openOrderId; }
+            set
+            {
+                if (_openOrderId != value)
+                {
+                    _openOrderId = value;
+                    RaisePropertyChanged("OpenOrderId");
+                }
+            }
+        }
+        #endregion
+
+        #region Reason
+        private string _reason;
+
+        public string Reason
+        {
+            get { return _reason; }
+            set
+            {
+                if (_reason != value)
+                {
+                    _reason = value;
+                    RaisePropertyChanged("Reason");
+                }
+            }
+        }
+        #endregion
+
 
         public IEnumerable<OrderVM> Legs
         {
@@ -133,6 +167,8 @@ namespace PortfolioTrading.Modules.Portfolio
             LastOrder = mlOrder;
 
             OrderId = mlOrder.OrderId;
+            OpenOrderId = mlOrder.OpenOrderId;
+            Reason = GetReasonDisplayText(mlOrder.Reason);
             PortfolioId = mlOrder.PortfolioId;
             Quantity = mlOrder.Quantity;
             IsOpenOrder = mlOrder.OrderId == mlOrder.OpenOrderId;
@@ -190,6 +226,25 @@ namespace PortfolioTrading.Modules.Portfolio
             }
 
             Profit = profit;
+        }
+
+        private static string GetReasonDisplayText(trade.SubmitReason submitReason)
+        {
+            switch (submitReason)
+            {
+                case trade.SubmitReason.SR_AutoOpen:
+                    return "开仓";
+                case trade.SubmitReason.SR_Manual:
+                    return "手动";
+                case trade.SubmitReason.SR_StopGain:
+                    return "止盈";
+                case trade.SubmitReason.SR_StopLoss:
+                    return "止损";
+                case trade.SubmitReason.SR_AutoSwitch:
+                    return "移仓";
+                default:
+                    return "未知";
+            }
         }
     }
 }
