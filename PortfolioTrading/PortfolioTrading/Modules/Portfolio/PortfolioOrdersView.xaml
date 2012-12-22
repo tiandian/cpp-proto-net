@@ -12,6 +12,10 @@
         <igDP:XamDataGrid Name="xamDG_MlOrders" DataSource="{Binding }" AutoFit="True"
                               GroupByAreaLocation="None">
             <igDP:XamDataGrid.Resources>
+                <Style x:Key="dataRecordCellAreaStyle"  TargetType="igDP:DataRecordCellArea">
+                    <Setter Property="BorderBrush" Value="YellowGreen"/>
+                    <Setter Property="BorderThickness" Value="0, 0, 0, 2"/>
+                </Style>
                 <!-- HeaderLabelArea style -->
                 <Style x:Key="shrinkHeaderLabelArea" TargetType="igDP:HeaderLabelArea">
                     <Setter Property="Template">
@@ -41,9 +45,22 @@
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
-                                    <TextBlock>
-                                        <Run Text="{Binding OrderId}"/>
-                                    </TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding OrderId}"/>
+                                        <TextBlock Margin="4, 0">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsOpenOrder}" Value="False">
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                            (<Run Text="{Binding OpenOrderId}"/>)
+                                        </TextBlock>
+                                    </StackPanel>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
@@ -228,18 +245,19 @@
             </igDP:XamDataGrid.Resources>
             <igDP:XamDataGrid.FieldLayouts>
                 <igDP:FieldLayout>
-                    <igDP:Field Name="OrderId" Label="编号" Row="0" Column="0" >
+                    <igDP:Field Name="OrderId" Label="编号(关联)" Row="0" Column="0" >
                         <igDP:Field.Settings>
                             <igDP:FieldSettings CellValuePresenterStyle="{StaticResource orderIdColStyle}"/>
                         </igDP:Field.Settings>
                     </igDP:Field>
-                    <igDP:Field Name="Quantity" Label="数量" Row="0" Column="1">
+                    <igDP:Field Name="Reason" Label="原因" Row="0" Column="1"/>
+                    <igDP:Field Name="Quantity" Label="数量" Row="0" Column="2">
                         <igDP:Field.Settings>
                             <igDP:FieldSettings />
                         </igDP:Field.Settings>
                     </igDP:Field>
-                    <igDP:Field Name="AccountId" Label="帐户" Row="0" Column="2" ColumnSpan="2"/>
-                    <igDP:Field Name="Profit" Label="盈利" Row="0" Column="4"/>
+                    <igDP:Field Name="Profit" Label="盈利" Row="0" Column="3"/>
+                    <igDP:Field Name="AccountId" Label="帐户" Row="0" Column="4"/>
                     <igDP:UnboundField Name="CloseOrder" Label="组合平仓" Row="0" Column="5" ColumnSpan="2">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings CellValuePresenterStyle="{StaticResource closeOrdStyle}"/>
@@ -288,7 +306,7 @@
             <igDP:XamDataGrid.FieldLayoutSettings>
                 <igDP:FieldLayoutSettings AutoGenerateFields="False" AutoArrangeCells="Never" RecordSelectorLocation="None"
                                           HeaderLabelAreaStyle="{StaticResource shrinkHeaderLabelArea}"
-                                          />
+                                          DataRecordCellAreaStyle="{StaticResource dataRecordCellAreaStyle}"/>
             </igDP:XamDataGrid.FieldLayoutSettings>
         </igDP:XamDataGrid>
     </Grid>

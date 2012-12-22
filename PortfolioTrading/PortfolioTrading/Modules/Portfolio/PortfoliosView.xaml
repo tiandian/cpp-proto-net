@@ -91,25 +91,6 @@
                     </Setter>
                 </Style>
                 
-                <!--<Style x:Key="lastColHeaderSytle" TargetType="{x:Type igDP:LabelPresenter}">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type igDP:LabelPresenter}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" TextAlignment="Right">最新 |</TextBlock>
-                                    <TextBlock Grid.Column="1" TextAlignment="Right">卖一 |</TextBlock>
-                                    <TextBlock Grid.Column="2" TextAlignment="Right" Margin="0, 0, 6, 0">买一</TextBlock>
-                                </Grid>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>-->
-
                 <!-- Last column style -->
                 <Style x:Key="lastColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
                     <Setter Property="Template">
@@ -328,8 +309,7 @@
             </igDP:XamDataGrid.FieldSettings>
             <igDP:XamDataGrid.FieldLayoutSettings>
                 <igDP:FieldLayoutSettings  AutoGenerateFields="False" AutoArrangeCells="Never" RecordSelectorLocation="None"
-                                               HeaderLabelAreaStyle="{StaticResource shrinkHeaderLabelArea}"
-                                               />
+                                           HeaderLabelAreaStyle="{StaticResource shrinkHeaderLabelArea}"/>
             </igDP:XamDataGrid.FieldLayoutSettings>
         </igDP:XamDataGrid>
     </DockPanel>
