@@ -89,21 +89,23 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("RemovePortf", param_data);
         }
 
-        public void PorfOpenPosition(string pid, int quantity)
+        public void PorfOpenPosition(string pid, int quantity, bool isVirtual)
         {
             PorfOpenPosiParam opParam = new PorfOpenPosiParam();
             opParam.PortfId = pid;
             opParam.Quantity = quantity;
+            opParam.IsVirtual = isVirtual;
 
             byte[] param_data = DataTranslater.Serialize(opParam);
             byte[] ret_data = Request("PorfOpenPosition", param_data);
         }
 
-        public void PorfClosePosition(string pid, int quantity)
+        public void PorfClosePosition(string pid, int quantity, bool isVirtual)
         {
             PorfOpenPosiParam opParam = new PorfOpenPosiParam();
             opParam.PortfId = pid;
             opParam.Quantity = quantity;
+            opParam.IsVirtual = isVirtual;
 
             byte[] param_data = DataTranslater.Serialize(opParam);
             byte[] ret_data = Request("PorfClosePosition", param_data);

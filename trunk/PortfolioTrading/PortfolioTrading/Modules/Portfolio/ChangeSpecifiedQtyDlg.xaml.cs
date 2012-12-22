@@ -67,7 +67,7 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public string ModeTitle
         {
-            get { return string.Format("输入{0}数量", ModeText); }
+            get { return string.Format("一次性{0}指定数量", ModeText); }
         }
 
         #region Quantity
@@ -86,6 +86,24 @@ namespace PortfolioTrading.Modules.Portfolio
             }
         }
         #endregion
+
+        #region IsVirtual
+        private bool _isVirtual;
+
+        public bool IsVirtual
+        {
+            get { return _isVirtual; }
+            set
+            {
+                if (_isVirtual != value)
+                {
+                    _isVirtual = value;
+                    RaisePropertyChanged("IsVirtual");
+                }
+            }
+        }
+        #endregion
+
 
     }
 }

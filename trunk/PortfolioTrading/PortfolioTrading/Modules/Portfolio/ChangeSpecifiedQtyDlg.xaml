@@ -6,17 +6,21 @@
         Title="{Binding ModeTitle}" Height="200" Width="300" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <DockPanel>
         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center" Margin="10, 2, 10, 16">
-            <Button Width="80" Height="26" Margin="10,4" IsDefault="True" Name="btnOK" Click="btnOK_Click">确定</Button>
+            <Button Width="80" Height="26" Margin="10,4" IsDefault="True" Name="btnOK" Click="btnOK_Click"
+                    Content="{Binding ModeText, FallbackValue=确定}"/>
             <Button Width="80" Height="26" Margin="10,4" IsCancel="True" Name="btnCancel" Click="btnCancel_Click">取消</Button>
         </StackPanel>
-        <DockPanel Height="30" Margin="20, 4">
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="2">
-                <TextBlock VerticalAlignment="Center" Text="{Binding ModeText, FallbackValue=开仓}"/>
-                <TextBlock VerticalAlignment="Center">数量</TextBlock>
-            </StackPanel>
-            <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" Margin="2" ValueType="{x:Type sys:Int32}"
-                                       Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                       />
-        </DockPanel>
+        <StackPanel Margin="20, 4" VerticalAlignment="Center">
+            <DockPanel Margin="4">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Margin="2">
+                    <TextBlock VerticalAlignment="Center" Text="{Binding ModeText, FallbackValue=开仓}"/>
+                    <TextBlock VerticalAlignment="Center">数量</TextBlock>
+                </StackPanel>
+                <igEditor:XamNumericEditor SpinButtonDisplayMode="Always" Margin="2" ValueType="{x:Type sys:Int32}"
+                                           Value="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           />
+            </DockPanel>
+            <CheckBox Margin="4" HorizontalAlignment="Left" IsChecked="{Binding IsVirtual, Mode=TwoWay}">虚拟</CheckBox>
+        </StackPanel>
     </DockPanel>
 </Window>

@@ -78,6 +78,9 @@ public:
 	void BeginPlaceOrder() { m_isPlacingOrder = true; }
 	void EndPlaceOrder() { m_isPlacingOrder = false; }
 
+	void VirtualOpen(int qty){ IncrementalOpenTimes(qty); PushUpdate(); }
+	void VirtualClose(int qty){ IncrementalCloseTimes(qty); PushUpdate(); }
+
 private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
@@ -93,8 +96,8 @@ private:
 	}
 
 	void PushUpdate();
-	void IncrementalOpenTimes(){ m_innerItem->set_opentimes(m_innerItem->opentimes() + 1); UpdatePosition(); }
-	void IncrementalCloseTimes(){ m_innerItem->set_closetimes(m_innerItem->closetimes() + 1); UpdatePosition(); }
+	void IncrementalOpenTimes(int opened){ m_innerItem->set_opentimes(m_innerItem->opentimes() + opened); UpdatePosition(); }
+	void IncrementalCloseTimes(int closed){ m_innerItem->set_closetimes(m_innerItem->closetimes() + closed); UpdatePosition(); }
 	void AddProfit(double val){ m_innerItem->set_profit(m_innerItem->profit() + val); }
 
 	vector<LegPtr> m_vecLegs;
