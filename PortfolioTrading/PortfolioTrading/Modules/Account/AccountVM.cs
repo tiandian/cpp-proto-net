@@ -151,13 +151,26 @@ namespace PortfolioTrading.Modules.Account
 
         public PortfolioVM Get(string pid)
         {
-            int id = int.Parse(pid);
-            return _acctPortfolios[id - 1];
+            lock (_acctPortfolios)
+            {
+                return _acctPortfolios.FirstOrDefault(p => p.Id == pid);
+            }
         }
 
         public void AddPorfolio(PortfolioVM porfVm)
         {
-            _acctPortfolios.Add(porfVm);
+            lock (_acctPortfolios)
+            {
+                _acctPortfolios.Add(porfVm);
+            }
+        }
+
+        public void RemovePortfolio(PortfolioVM portfVm)
+        {
+            lock (_acctPortfolios)
+            {
+                _acctPortfolios.Remove(portfVm);
+            }
         }
 
         public ICommand AddPortfolioCommand
@@ -236,7 +249,7 @@ namespace PortfolioTrading.Modules.Account
             if (res ?? false)
             {
                 entity.PortfolioItem portfolioItem = dlg.Portfolio.GetEntity();
-                _acctPortfolios.Add(portf);
+                AddPorfolio(portf);
                 if(_client.IsConnected)
                     _client.AddPortf(portfolioItem);
 
@@ -267,10 +280,10 @@ namespace PortfolioTrading.Modules.Account
                         "删除确认", MessageBoxButton.YesNo, MessageBoxImage.Question);
                     if (res == MessageBoxResult.Yes)
                     {
-                        _acctPortfolios.Remove(portfVm);
+                        RemovePortfolio(portfVm);
                         if (_client.IsConnected)
                             _client.RemovePortf(portfVm.Id);
-
+                        
                         PublishChanged();
                     }
                 }
@@ -567,7 +580,8 @@ namespace PortfolioTrading.Modules.Account
             string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, obj.Diff);
             Debug.WriteLine(info);
             var portf = Get(obj.ID);
-            DispatcherHelper.Current.BeginInvoke(new Action(() => portf.Update(obj)));
+            if(portf != null)
+                DispatcherHelper.Current.BeginInvoke(new Action(() => portf.Update(obj)));
         }
 
         void _client_OnQuoteReceived(entity.Quote obj)
