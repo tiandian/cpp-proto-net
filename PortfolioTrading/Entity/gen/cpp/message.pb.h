@@ -1254,20 +1254,30 @@ class PorfOpenPosiParam : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 quantity() const;
   inline void set_quantity(::google::protobuf::int32 value);
   
+  // required bool IsVirtual = 3;
+  inline bool has_isvirtual() const;
+  inline void clear_isvirtual();
+  static const int kIsVirtualFieldNumber = 3;
+  inline bool isvirtual() const;
+  inline void set_isvirtual(bool value);
+  
   // @@protoc_insertion_point(class_scope:entity.PorfOpenPosiParam)
  private:
   inline void set_has_portfid();
   inline void clear_has_portfid();
   inline void set_has_quantity();
   inline void clear_has_quantity();
+  inline void set_has_isvirtual();
+  inline void clear_has_isvirtual();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* portfid_;
   ::google::protobuf::int32 quantity_;
+  bool isvirtual_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3931,6 +3941,28 @@ inline ::google::protobuf::int32 PorfOpenPosiParam::quantity() const {
 inline void PorfOpenPosiParam::set_quantity(::google::protobuf::int32 value) {
   set_has_quantity();
   quantity_ = value;
+}
+
+// required bool IsVirtual = 3;
+inline bool PorfOpenPosiParam::has_isvirtual() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void PorfOpenPosiParam::set_has_isvirtual() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void PorfOpenPosiParam::clear_has_isvirtual() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void PorfOpenPosiParam::clear_isvirtual() {
+  isvirtual_ = false;
+  clear_has_isvirtual();
+}
+inline bool PorfOpenPosiParam::isvirtual() const {
+  return isvirtual_;
+}
+inline void PorfOpenPosiParam::set_isvirtual(bool value) {
+  set_has_isvirtual();
+  isvirtual_ = value;
 }
 
 // -------------------------------------------------------------------

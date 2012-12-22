@@ -363,7 +363,7 @@ void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
 	const string& mOrderId = openOrder->orderid();
 
 	m_openedPosition.insert(make_pair(mOrderId, openOrder));
-	IncrementalOpenTimes();
+	IncrementalOpenTimes(openOrder->quantity());
 }
 
 void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
@@ -376,7 +376,7 @@ void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 		AddProfit(CalcPortfProfit((iter->second).get(), closeOrder.get()));
 		m_openedPosition.erase(iter);
 	}
-	IncrementalCloseTimes();
+	IncrementalCloseTimes(closeOrder->quantity());
 	
 }
 

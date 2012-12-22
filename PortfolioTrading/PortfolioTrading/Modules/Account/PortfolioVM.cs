@@ -59,7 +59,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region Quantity
-        private int _qty;
+        private int _qty = 1;
 
         public int Quantity
         {
@@ -302,7 +302,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region MaxPosition
-        private int _maxPosition;
+        private int _maxPosition = 1;
 
         public int MaxPosition
         {
@@ -571,7 +571,7 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnOpenPosition()
         {
-            _accountVm.Host.PorfOpenPosition(Id, Quantity);
+            _accountVm.Host.PorfOpenPosition(Id, Quantity, false);
             EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, Quantity);
         }
 
@@ -584,14 +584,16 @@ namespace PortfolioTrading.Modules.Account
             if(ret ?? false)
             {
                 int qty = viewModel.Quantity;
-                _accountVm.Host.PorfOpenPosition(Id, qty);
-                EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, qty);
+                bool isVirtual = viewModel.IsVirtual;
+                _accountVm.Host.PorfOpenPosition(Id, qty, isVirtual);
+                EventLogger.Write("{0} 开仓组合 {1}, 数量 {2} - ({3})", _accountVm.InvestorId, DisplayText, qty,
+                    isVirtual ? "虚拟" : "真实");
             }
         }
 
         private void OnClosePosition()
         {
-            _accountVm.Host.PorfClosePosition(Id, 0);
+            _accountVm.Host.PorfClosePosition(Id, 0, false);
             EventLogger.Write("{0} 平仓组合 {1}", _accountVm.InvestorId, DisplayText);
         }
 
@@ -604,8 +606,10 @@ namespace PortfolioTrading.Modules.Account
             if (ret ?? false)
             {
                 int qty = viewModel.Quantity;
-                _accountVm.Host.PorfClosePosition(Id, qty);
-                EventLogger.Write("{0} 平仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, qty);
+                bool isVirtual = viewModel.IsVirtual;
+                _accountVm.Host.PorfClosePosition(Id, qty, isVirtual);
+                EventLogger.Write("{0} 平仓组合 {1}, 数量 {2} - ({3})", _accountVm.InvestorId, DisplayText, qty,
+                    isVirtual ? "虚拟" : "真实");
             }
         }
 

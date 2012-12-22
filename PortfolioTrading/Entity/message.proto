@@ -85,6 +85,7 @@ message PorfOpenPosiParam
 {
 	required string PortfId = 1;
 	required int32 Quantity = 2;
+	required bool IsVirtual = 3;
 }
 
 message ClosePositionParam

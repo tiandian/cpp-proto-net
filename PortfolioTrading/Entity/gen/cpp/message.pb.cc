@@ -256,9 +256,10 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AddPortfolioParam));
   PorfOpenPosiParam_descriptor_ = file->message_type(9);
-  static const int PorfOpenPosiParam_offsets_[2] = {
+  static const int PorfOpenPosiParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, quantity_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, isvirtual_),
   };
   PorfOpenPosiParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -584,41 +585,41 @@ void protobuf_AddDesc_message_2eproto() {
     "\002(\t\022\020\n\010Password\030\003 \002(\t\" \n\rRegQuoteParam\022\017"
     "\n\007Symbols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016"
     "PortfolioItems\030\001 \003(\0132\025.entity.PortfolioI"
-    "tem\"6\n\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002("
-    "\t\022\020\n\010Quantity\030\002 \002(\005\"T\n\022ClosePositionPara"
-    "m\022+\n\rMultiLegOrder\030\001 \002(\0132\024.trade.MultiLe"
-    "gOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t\n\023LegOrderUpd"
-    "ateParam\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017MultiLegOrd"
-    "erId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036\n\010LegOr"
-    "der\030\004 \002(\0132\014.trade.Order\"\260\002\n\031ArbitrageStr"
-    "ategySettings\022\'\n\004Side\030\001 \002(\0162\031.entity.Pos"
-    "iDirectionType\022/\n\rOpenCondition\030\002 \002(\0162\030."
-    "entity.CompareCondition\022\031\n\021OpenPosiThres"
-    "hold\030\003 \002(\001\0223\n\021StopGainCondition\030\004 \002(\0162\030."
-    "entity.CompareCondition\022\031\n\021StopGainThres"
-    "hold\030\005 \002(\001\0223\n\021StopLossCondition\030\006 \002(\0162\030."
-    "entity.CompareCondition\022\031\n\021StopLossThres"
-    "hold\030\007 \002(\001\"\246\001\n\032ChangePosiStrategySetting"
-    "s\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014CloseLegSide\030\002 \002("
-    "\0162\031.entity.PosiDirectionType\0222\n\020TriggerC"
-    "ondition\030\003 \002(\0162\030.entity.CompareCondition"
-    "\022\021\n\tThreshold\030\004 \002(\001\"R\n\023ModifyStrategyPar"
-    "am\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002("
-    "\t\022\024\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfo"
-    "lioSwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoO"
-    "pen\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoS"
-    "topLoss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014E"
-    "nablePrefer\030\006 \002(\010\"<\n\030ModifyRunningStatus"
-    "Param\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\""
-    "F\n ModifyPortfolioPreferredLegParam\022\017\n\007P"
-    "ortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020Cance"
-    "lOrderParam\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchang"
-    "eId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 "
-    "\002(\t\022\016\n\006Symbol\030\005 \002(\t\"\222\001\n\025ManualCloseOrder"
-    "Param\022\016\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\016"
-    "2\031.trade.TradeDirectionType\022)\n\nOffsetFla"
-    "g\030\003 \002(\0162\025.trade.OffsetFlagType\022\020\n\010Quanti"
-    "ty\030\004 \002(\005", 2408);
+    "tem\"I\n\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002("
+    "\t\022\020\n\010Quantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T"
+    "\n\022ClosePositionParam\022+\n\rMultiLegOrder\030\001 "
+    "\002(\0132\024.trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002"
+    " \001(\t\"t\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001"
+    " \002(\t\022\027\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrde"
+    "rRef\030\003 \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Ord"
+    "er\"\260\002\n\031ArbitrageStrategySettings\022\'\n\004Side"
+    "\030\001 \002(\0162\031.entity.PosiDirectionType\022/\n\rOpe"
+    "nCondition\030\002 \002(\0162\030.entity.CompareConditi"
+    "on\022\031\n\021OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGai"
+    "nCondition\030\004 \002(\0162\030.entity.CompareConditi"
+    "on\022\031\n\021StopGainThreshold\030\005 \002(\001\0223\n\021StopLos"
+    "sCondition\030\006 \002(\0162\030.entity.CompareConditi"
+    "on\022\031\n\021StopLossThreshold\030\007 \002(\001\"\246\001\n\032Change"
+    "PosiStrategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/"
+    "\n\014CloseLegSide\030\002 \002(\0162\031.entity.PosiDirect"
+    "ionType\0222\n\020TriggerCondition\030\003 \002(\0162\030.enti"
+    "ty.CompareCondition\022\021\n\tThreshold\030\004 \002(\001\"R"
+    "\n\023ModifyStrategyParam\022\017\n\007PortfId\030\001 \002(\t\022\024"
+    "\n\014StrategyName\030\002 \002(\t\022\024\n\014StrategyData\030\003 \002"
+    "(\014\"\227\001\n\032ModifyPortfolioSwitchParam\022\017\n\007Por"
+    "tfId\030\001 \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024\n\014AutoStop"
+    "Gain\030\003 \002(\010\022\024\n\014AutoStopLoss\030\004 \002(\010\022\024\n\014Auto"
+    "Tracking\030\005 \002(\010\022\024\n\014EnablePrefer\030\006 \002(\010\"<\n\030"
+    "ModifyRunningStatusParam\022\017\n\007PortfId\030\001 \002("
+    "\t\022\017\n\007Enabled\030\002 \002(\010\"F\n ModifyPortfolioPre"
+    "ferredLegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSy"
+    "mbol\030\002 \002(\t\"j\n\020CancelOrderParam\022\020\n\010OrderR"
+    "ef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId"
+    "\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"\222"
+    "\001\n\025ManualCloseOrderParam\022\016\n\006Symbol\030\001 \002(\t"
+    "\022,\n\tDirection\030\002 \002(\0162\031.trade.TradeDirecti"
+    "onType\022)\n\nOffsetFlag\030\003 \002(\0162\025.trade.Offse"
+    "tFlagType\022\020\n\010Quantity\030\004 \002(\005", 2427);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -4048,6 +4049,7 @@ void AddPortfolioParam::Swap(AddPortfolioParam* other) {
 #ifndef _MSC_VER
 const int PorfOpenPosiParam::kPortfIdFieldNumber;
 const int PorfOpenPosiParam::kQuantityFieldNumber;
+const int PorfOpenPosiParam::kIsVirtualFieldNumber;
 #endif  // !_MSC_VER
 
 PorfOpenPosiParam::PorfOpenPosiParam()
@@ -4068,6 +4070,7 @@ void PorfOpenPosiParam::SharedCtor() {
   _cached_size_ = 0;
   portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   quantity_ = 0;
+  isvirtual_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4111,6 +4114,7 @@ void PorfOpenPosiParam::Clear() {
       }
     }
     quantity_ = 0;
+    isvirtual_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -4150,6 +4154,22 @@ bool PorfOpenPosiParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(24)) goto parse_IsVirtual;
+        break;
+      }
+      
+      // required bool IsVirtual = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_IsVirtual:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &isvirtual_)));
+          set_has_isvirtual();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -4186,6 +4206,11 @@ void PorfOpenPosiParam::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->quantity(), output);
   }
   
+  // required bool IsVirtual = 3;
+  if (has_isvirtual()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->isvirtual(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -4207,6 +4232,11 @@ void PorfOpenPosiParam::SerializeWithCachedSizes(
   // required int32 Quantity = 2;
   if (has_quantity()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->quantity(), target);
+  }
+  
+  // required bool IsVirtual = 3;
+  if (has_isvirtual()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->isvirtual(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4232,6 +4262,11 @@ int PorfOpenPosiParam::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->quantity());
+    }
+    
+    // required bool IsVirtual = 3;
+    if (has_isvirtual()) {
+      total_size += 1 + 1;
     }
     
   }
@@ -4267,6 +4302,9 @@ void PorfOpenPosiParam::MergeFrom(const PorfOpenPosiParam& from) {
     if (from.has_quantity()) {
       set_quantity(from.quantity());
     }
+    if (from.has_isvirtual()) {
+      set_isvirtual(from.isvirtual());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -4284,7 +4322,7 @@ void PorfOpenPosiParam::CopyFrom(const PorfOpenPosiParam& from) {
 }
 
 bool PorfOpenPosiParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   
   return true;
 }
@@ -4293,6 +4331,7 @@ void PorfOpenPosiParam::Swap(PorfOpenPosiParam* other) {
   if (other != this) {
     std::swap(portfid_, other->portfid_);
     std::swap(quantity_, other->quantity_);
+    std::swap(isvirtual_, other->isvirtual_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

@@ -217,7 +217,11 @@ void CClientManager::PorfOpenPosition( CClientAgent* pClientAgent, const string&
 	entity::PorfOpenPosiParam opParam;
 	opParam.ParseFromString(in_data);
 
-	pClientAgent->OpenPosition(opParam.portfid(), opParam.quantity());
+	bool isVirtual = opParam.isvirtual();
+	if(isVirtual)
+		pClientAgent->VirtualOpenPosition(opParam.portfid(), opParam.quantity());
+	else
+		pClientAgent->OpenPosition(opParam.portfid(), opParam.quantity());
 }
 
 void CClientManager::PorfClosePosition(CClientAgent* pClientAgent, const string& in_data, string& out_data)
@@ -227,7 +231,13 @@ void CClientManager::PorfClosePosition(CClientAgent* pClientAgent, const string&
 	const string& portfId = opParam.portfid();
 	int qty = opParam.quantity();
 	if(qty > 0)
-		pClientAgent->ClosePosition(portfId, qty, trade::SR_Manual);
+	{
+		bool isVirtual = opParam.isvirtual();
+		if(isVirtual)
+			pClientAgent->VirtualClosePosition(portfId, qty);
+		else
+			pClientAgent->ClosePosition(portfId, qty, trade::SR_Manual);
+	}
 	else
 		pClientAgent->SimpleCloseOrderPosition(portfId, trade::SR_Manual);
 }

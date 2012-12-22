@@ -373,3 +373,17 @@ boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol,
 	//return m_orderProcessor.ManualCloseOrder(symbol, direction, offsetFlag, &placeOrderCtx);
 	return m_orderProcessor.PlaceOrder(symbol, direction, offsetFlag, &placeOrderCtx);
 }
+
+void CClientAgent::VirtualOpenPosition( const string& pid, int quantity )
+{
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
+	if(portf != NULL)
+		portf->VirtualOpen(quantity);
+}
+
+void CClientAgent::VirtualClosePosition( const string& pid, int quantity )
+{
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
+	if(portf != NULL)
+		portf->VirtualClose(quantity);
+}
