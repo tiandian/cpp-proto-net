@@ -45,7 +45,11 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public void OnMultiLegOrderUpdated(MultiLegOrderUpdateArgs mlOrderUpdateArgs)
         {
-            _ordersRepo.Update(mlOrderUpdateArgs.AccountId, mlOrderUpdateArgs.MultiLegOrder);
+            var rowAdded = _ordersRepo.Update(mlOrderUpdateArgs.AccountId, mlOrderUpdateArgs.MultiLegOrder);
+            if (rowAdded != null)
+            {
+                xamDG_MlOrders.BringDataItemIntoView(rowAdded, false);
+            }
         }
 
         public void OnIndividualOrderUpdated(OrderUpdateArgs args)
@@ -92,7 +96,7 @@ namespace PortfolioTrading.Modules.Portfolio
                     vm => vm.AccountId == acctId && vm.OrderId == mlOrdId);
         }
 
-        public void Update(string accountId, trade.MultiLegOrder mlOrder)
+        public MultiLegOrderVM Update(string accountId, trade.MultiLegOrder mlOrder)
         {
             lock (this)
             {
@@ -107,12 +111,14 @@ namespace PortfolioTrading.Modules.Portfolio
                         var openOrderVm = GetMlOrderVm(accountId, mlOrder.OpenOrderId);
                         mlOrderVm.CalcProfit(openOrderVm);
                     }
+                    return null;
                 }
                 else
                 {
                     mlOrderVm = new MultiLegOrderVM(accountId);
                     mlOrderVm.From(mlOrder);
                     this.Add(mlOrderVm);
+                    return mlOrderVm;
                 }
             }
         }
