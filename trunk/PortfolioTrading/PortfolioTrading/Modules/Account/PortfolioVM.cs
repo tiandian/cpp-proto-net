@@ -28,6 +28,7 @@ namespace PortfolioTrading.Modules.Account
             OpenQtyPositionCommand = new DelegateCommand(OnOpenQtyPosition);
             ClosePositionCommand = new DelegateCommand(OnClosePosition);
             CloseQtyPositionCommand = new DelegateCommand(OnCloseQtyPosition);
+            ModifyQtyCommand = new DelegateCommand(OnModifyQuantity);
             StartCommand = new DelegateCommand(OnStart);
             StopCommand = new DelegateCommand(OnStop);
         }
@@ -380,6 +381,7 @@ namespace PortfolioTrading.Modules.Account
         public ICommand OpenQtyPositionCommand { get; private set; }
         public ICommand ClosePositionCommand { get; private set; }
         public ICommand CloseQtyPositionCommand { get; private set; }
+        public ICommand ModifyQtyCommand { get; private set; }
 
         public ICommand StartCommand { get; private set; }
         public ICommand StopCommand { get; private set; }
@@ -554,6 +556,8 @@ namespace PortfolioTrading.Modules.Account
             DoneTimes = item.CloseTimes;
             Position = item.CurrentPosition;
             Gain = item.Profit;
+            Quantity = item.Quantity;
+            MaxPosition = item.MaxPosition;
 
             IsRunning = item.StrategyRunning;
 
@@ -611,6 +615,27 @@ namespace PortfolioTrading.Modules.Account
                 EventLogger.Write("{0} 平仓组合 {1}, 数量 {2} - ({3})", _accountVm.InvestorId, DisplayText, qty,
                     isVirtual ? "虚拟" : "真实");
             }
+        }
+
+        private void OnModifyQuantity()
+        {
+            var viewModel = new ModifyQtyViewModel();
+            viewModel.PortfolioId = Id;
+            viewModel.OnceQuantity = Quantity;
+            viewModel.MaxQuantity = MaxPosition;
+            ModifyMaxQtyDlg dlg = new ModifyMaxQtyDlg(viewModel);
+            dlg.Owner = System.Windows.Application.Current.MainWindow;
+            bool? ret = dlg.ShowDialog();
+            if (ret ?? false)
+            {
+                int onceQty = viewModel.OnceQuantity;
+                int maxQty = viewModel.MaxQuantity;
+
+                _accountVm.Host.PortfModifyQuantity(Id, onceQty, maxQty);
+                EventLogger.Write("{0} 修改组合 {1}数量: 每次 {2}, 最大 {3}",
+                    _accountVm.InvestorId, DisplayText, onceQty, maxQty);
+            }
+            
         }
 
         private void OnStart()

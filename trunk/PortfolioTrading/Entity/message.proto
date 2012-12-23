@@ -138,6 +138,13 @@ message ModifyPortfolioSwitchParam
 	required bool EnablePrefer = 6;
 }
 
+message ModifyPortfolioQtyParam
+{
+	required string PortfId = 1;
+	required int32 OnceQty = 2;
+	required int32 MaxQty = 3;
+}
+
 message ModifyRunningStatusParam
 {
 	required string PortfId = 1;
