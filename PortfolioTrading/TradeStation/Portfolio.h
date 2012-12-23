@@ -72,7 +72,7 @@ public:
 	void TriggerResubmitter(entity::Quote* pQuote);
 
 	bool HasPosition(){ return PositionQuantity() > 0; }
-	bool PositionReachLimit(){ return PositionQuantity() == m_innerItem->maxposition(); }
+	bool PositionReachLimit(){ return PositionQuantity() >= m_innerItem->maxposition(); }
 
 	bool IsPlacingOrder() { return m_isPlacingOrder; }
 	void BeginPlaceOrder() { m_isPlacingOrder = true; }
@@ -96,6 +96,7 @@ private:
 	{
 		int posiQty = m_innerItem->opentimes() - m_innerItem->closetimes();
 		m_innerItem->set_currentposition(posiQty);
+		PushUpdate();
 	}
 
 	void PushUpdate();

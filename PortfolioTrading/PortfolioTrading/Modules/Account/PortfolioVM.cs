@@ -438,6 +438,14 @@ namespace PortfolioTrading.Modules.Account
                 portf.Quantity = int.Parse(attr.Value);
             }
 
+            attr = xmlElement.Attribute("currentPosition");
+            if (attr != null)
+            {
+                int currPos = int.Parse(attr.Value);
+                portf.Position = currPos;
+                portf.OpenTimes = currPos;
+            }
+
             attr = xmlElement.Attribute("maxPosition");
             if (attr != null)
             {
@@ -494,6 +502,7 @@ namespace PortfolioTrading.Modules.Account
             XElement elem = new XElement("portfolio");
             elem.Add(new XAttribute("id", _id));
             elem.Add(new XAttribute("quantity", _qty));
+            elem.Add(new XAttribute("currentPosition", _position));
             elem.Add(new XAttribute("maxPosition", _maxPosition));
             elem.Add(new XAttribute("autoOpen", _autoOpen.ToString()));
             elem.Add(new XAttribute("autoStopGain", _autoStopGain.ToString()));
@@ -528,6 +537,9 @@ namespace PortfolioTrading.Modules.Account
             portfolioItem.EnablePrefer = EnablePrefer;
             portfolioItem.Quantity = Quantity;
             portfolioItem.MaxPosition = MaxPosition;
+            portfolioItem.OpenTimes = OpenTimes;
+            portfolioItem.CloseTimes = 0;
+            portfolioItem.CurrentPosition = Position;
 
             foreach (var legVm in _legs)
             {
