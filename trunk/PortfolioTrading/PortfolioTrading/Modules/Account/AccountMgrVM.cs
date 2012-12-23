@@ -193,6 +193,8 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnAppShutDown(string msg)
         {
+            Persist();
+
             foreach (var acct in _accounts)
             {
                 if (acct.IsConnected)

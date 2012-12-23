@@ -321,7 +321,7 @@ namespace PortfolioTrading.Modules.Account
         {
             TradeStaionCutDown();
             _client.Disconnect();
-            //_host.Exit();
+            _host.Exit();
         }
 
         private int _connectTimes;
