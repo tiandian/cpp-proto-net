@@ -49,6 +49,7 @@ public:
 	boost::tuple<bool, string> ManualCloseOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, int quantity);
 	void VirtualOpenPosition(const string& pid, int quantity);
 	void VirtualClosePosition(const string& pid, int quantity);
+	void SetPortfolioQuantity(const string& pid, int qty, int maxQty);
 
 	void OnQuoteRecevied(boost::shared_ptr<entity::Quote>& pQuote);
 	void OnPortfolioUpdated(entity::PortfolioItem* portfolioItem);

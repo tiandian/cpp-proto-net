@@ -144,7 +144,6 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
-
         #region OpenThreshold
         private double _openThreshold;
 
@@ -179,7 +178,6 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
-
         #region StopGainThreshold
         private double _stopGainThreshold;
 
@@ -192,11 +190,29 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     _stopGainThreshold = value;
                     RaisePropertyChanged("StopGainThreshold");
+                    CalcPossibleGain();
                 }
             }
         }
         #endregion
 
+        #region PossibleGain
+        private decimal _possibleGain;
+
+        public decimal PossibleGain
+        {
+            get { return _possibleGain; }
+            set
+            {
+                if (_possibleGain != value)
+                {
+                    _possibleGain = value;
+                    RaisePropertyChanged("PossibleGain");
+                }
+            }
+        }
+        #endregion
+        
         #region StopLossCondition
         private CompareCondition _stopLossCond;
 
@@ -214,7 +230,6 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
-
         #region StopLossThreshold
         private double _stopLossThreshold;
 
@@ -227,11 +242,48 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     _stopLossThreshold = value;
                     RaisePropertyChanged("StopLossThreshold");
+                    CalcPossibleLoss();
                 }
             }
         }
         #endregion
 
+        #region PossibleLoss
+        private decimal _possibleLoss;
+
+        public decimal PossibleLoss
+        {
+            get { return _possibleLoss; }
+            set
+            {
+                if (_possibleLoss != value)
+                {
+                    _possibleLoss = value;
+                    RaisePropertyChanged("PossibleLoss");
+                }
+            }
+        }
+        #endregion
+
+        private void CalcPossibleGain()
+        {
+            decimal profit;
+            if (PositionDirection == entity.PosiDirectionType.LONG)
+                profit = (decimal)StopGainThreshold - (decimal)OpenThreshold;
+            else
+                profit = (decimal)OpenThreshold - (decimal)StopGainThreshold;
+            PossibleGain = profit;
+        }
+
+        private void CalcPossibleLoss()
+        {
+            decimal profit;
+            if (PositionDirection == entity.PosiDirectionType.LONG)
+                profit = (decimal)StopLossThreshold - (decimal)OpenThreshold;
+            else
+                profit = (decimal)OpenThreshold - (decimal)StopLossThreshold;
+            PossibleLoss = profit;
+        }
     }
 
     public class DirectionItem

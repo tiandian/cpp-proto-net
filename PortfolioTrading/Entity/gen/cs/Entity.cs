@@ -415,6 +415,13 @@ namespace entity
       get { return _Quantity; }
       set { _Quantity = value; }
     }
+    private bool _IsVirtual;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"IsVirtual", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool IsVirtual
+    {
+      get { return _IsVirtual; }
+      set { _IsVirtual = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -658,6 +665,37 @@ namespace entity
     {
       get { return _EnablePrefer; }
       set { _EnablePrefer = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ModifyPortfolioQtyParam")]
+  public partial class ModifyPortfolioQtyParam : global::ProtoBuf.IExtensible
+  {
+    public ModifyPortfolioQtyParam() {}
+    
+    private string _PortfId;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"PortfId", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string PortfId
+    {
+      get { return _PortfId; }
+      set { _PortfId = value; }
+    }
+    private int _OnceQty;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"OnceQty", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int OnceQty
+    {
+      get { return _OnceQty; }
+      set { _OnceQty = value; }
+    }
+    private int _MaxQty;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"MaxQty", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int MaxQty
+    {
+      get { return _MaxQty; }
+      set { _MaxQty = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

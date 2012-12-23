@@ -91,6 +91,11 @@
                                                 <TextBlock>数量...</TextBlock>
                                             </MenuItem.Header>
                                         </MenuItem>
+                                        <MenuItem Width="100" Command="{Binding ModifyQtyCommand}">
+                                            <MenuItem.Header>
+                                                <TextBlock>设置数量</TextBlock>
+                                            </MenuItem.Header>
+                                        </MenuItem>
                                     </local:DropDownMenuContainer>
                                 </StackPanel>
                             </Border>
@@ -102,6 +107,11 @@
                                         <MenuItem Width="100" Command="{Binding CloseQtyPositionCommand}">
                                             <MenuItem.Header>
                                                 <TextBlock>数量...</TextBlock>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        <MenuItem Width="100" Command="{Binding ModifyQtyCommand}">
+                                            <MenuItem.Header>
+                                                <TextBlock>设置数量</TextBlock>
                                             </MenuItem.Header>
                                         </MenuItem>
                                     </local:DropDownMenuContainer>

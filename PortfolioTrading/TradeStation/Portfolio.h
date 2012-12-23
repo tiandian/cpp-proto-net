@@ -81,6 +81,9 @@ public:
 	void VirtualOpen(int qty){ IncrementalOpenTimes(qty); PushUpdate(); }
 	void VirtualClose(int qty){ IncrementalCloseTimes(qty); PushUpdate(); }
 
+	void SetQuantity(int qty, int maxQty)
+	{ m_innerItem->set_quantity(qty); m_innerItem->set_maxposition(maxQty); PushUpdate(); }
+	
 private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 

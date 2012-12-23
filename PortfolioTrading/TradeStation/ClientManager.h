@@ -60,6 +60,7 @@ private:
 	void CancelOrder(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void ManualCloseOrder(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
+	void PortfChgQuantity(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PortfEnableStrategy(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PortfSetPreferredLeg(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PortfTurnSwitches(CClientAgent* pClientAgent, const string& in_data, string& out_data);

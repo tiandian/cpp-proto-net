@@ -137,6 +137,17 @@ namespace PortfolioTrading.Infrastructure
             byte[] ret_data = Request("CancelOrder", param_data);
         }
 
+        public void PortfModifyQuantity(string portfId, int onceQty, int maxQty)
+        {
+            ModifyPortfolioQtyParam qtyParam = new ModifyPortfolioQtyParam();
+            qtyParam.PortfId = portfId;
+            qtyParam.OnceQty = onceQty;
+            qtyParam.MaxQty = maxQty;
+
+            byte[] param_data = DataTranslater.Serialize(qtyParam);
+            byte[] ret_data = Request("PortfChgQuantity", param_data);
+        }
+
         public void PortfSetPreferredLeg(string portfId, string legName)
         {
             entity.ModifyPortfolioPreferredLegParam modifyParam = new entity.ModifyPortfolioPreferredLegParam();

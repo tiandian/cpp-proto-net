@@ -387,3 +387,12 @@ void CClientAgent::VirtualClosePosition( const string& pid, int quantity )
 	if(portf != NULL)
 		portf->VirtualClose(quantity);
 }
+
+void CClientAgent::SetPortfolioQuantity( const string& pid, int qty, int maxQty )
+{
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
+	if(portf != NULL)
+		portf->SetQuantity(qty, maxQty);
+}
+
+
