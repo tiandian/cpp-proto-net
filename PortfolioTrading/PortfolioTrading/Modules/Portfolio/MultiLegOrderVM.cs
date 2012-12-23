@@ -209,6 +209,8 @@ namespace PortfolioTrading.Modules.Portfolio
         {
             double profit = 0;
 
+            if (LastOrder == null) return;
+
             foreach (var closeOrd in LastOrder.Legs)
             {
                 var openOrd = openOrderVm.LastOrder.Legs.FirstOrDefault(l => closeOrd.InstrumentID == l.InstrumentID);
