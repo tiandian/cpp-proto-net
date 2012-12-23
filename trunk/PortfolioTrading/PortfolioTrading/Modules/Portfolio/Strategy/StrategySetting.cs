@@ -105,9 +105,12 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             {
                 ArbitrageStrategySetting setting = new ArbitrageStrategySetting();
                 setting.Direction = entity.PosiDirectionType.LONG;
-                setting.OpenThreshold = 100;
-                setting.StopGainThreshold = 20;
-                setting.StopLossThreshold = 100;
+                setting.OpenCondition = CompareCondition.LESS_EQUAL_THAN;
+                setting.OpenThreshold = 0;
+                setting.StopGainCondition = CompareCondition.GREATER_THAN;
+                setting.StopGainThreshold = 0;
+                setting.StopLossCondition = CompareCondition.LESS_THAN;
+                setting.StopLossThreshold = 0;
                 return setting;
             }
             else if(name == ChangePositionStrategyName)

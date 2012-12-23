@@ -87,7 +87,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
                     if (_direction == entity.PosiDirectionType.LONG)
                     {
-                        OpenCondItemsSource = GreaterItemsSource;
+                        OpenCondItemsSource = LessItemsSource;
                         StopGainCondItemsSource = GreaterItemsSource;
                         StopLossCondItemsSource = LessItemsSource;
 
@@ -97,14 +97,16 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
                         if (!_isInitializing)
                         {
-                            OpenCondition = Strategy.CompareCondition.GREATER_THAN;
+                            OpenCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
                             StopGainCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
                             StopLossCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
+                            CalcPossibleGain();
+                            CalcPossibleLoss();
                         }
                     }
                     else if (_direction == entity.PosiDirectionType.SHORT)
                     {
-                        OpenCondItemsSource = LessItemsSource;
+                        OpenCondItemsSource = GreaterItemsSource;
                         StopGainCondItemsSource = LessItemsSource;
                         StopLossCondItemsSource = GreaterItemsSource;
 
@@ -114,9 +116,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
                         if (!_isInitializing)
                         {
-                            OpenCondition = Strategy.CompareCondition.LESS_THAN;
+                            OpenCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
                             StopGainCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
                             StopLossCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
+                            CalcPossibleGain();
+                            CalcPossibleLoss();
                         }
                     }
 
@@ -156,6 +160,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     _openThreshold = value;
                     RaisePropertyChanged("OpenThreshold");
+                    CalcPossibleGain();
+                    CalcPossibleLoss();
                 }
             }
         }

@@ -65,6 +65,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ModifyPortfolioSwitchParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModifyPortfolioSwitchParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ModifyPortfolioQtyParam_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ModifyPortfolioQtyParam_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ModifyRunningStatusParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModifyRunningStatusParam_reflection_ = NULL;
@@ -382,7 +385,24 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioSwitchParam));
-  ModifyRunningStatusParam_descriptor_ = file->message_type(16);
+  ModifyPortfolioQtyParam_descriptor_ = file->message_type(16);
+  static const int ModifyPortfolioQtyParam_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, portfid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, onceqty_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, maxqty_),
+  };
+  ModifyPortfolioQtyParam_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ModifyPortfolioQtyParam_descriptor_,
+      ModifyPortfolioQtyParam::default_instance_,
+      ModifyPortfolioQtyParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ModifyPortfolioQtyParam));
+  ModifyRunningStatusParam_descriptor_ = file->message_type(17);
   static const int ModifyRunningStatusParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, enabled_),
@@ -398,7 +418,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyRunningStatusParam));
-  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(17);
+  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(18);
   static const int ModifyPortfolioPreferredLegParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, legsymbol_),
@@ -414,7 +434,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioPreferredLegParam));
-  CancelOrderParam_descriptor_ = file->message_type(18);
+  CancelOrderParam_descriptor_ = file->message_type(19);
   static const int CancelOrderParam_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, orderref_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, exchangeid_),
@@ -433,7 +453,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CancelOrderParam));
-  ManualCloseOrderParam_descriptor_ = file->message_type(19);
+  ManualCloseOrderParam_descriptor_ = file->message_type(20);
   static const int ManualCloseOrderParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, direction_),
@@ -496,6 +516,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyPortfolioSwitchParam_descriptor_, &ModifyPortfolioSwitchParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ModifyPortfolioQtyParam_descriptor_, &ModifyPortfolioQtyParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyRunningStatusParam_descriptor_, &ModifyRunningStatusParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyPortfolioPreferredLegParam_descriptor_, &ModifyPortfolioPreferredLegParam::default_instance());
@@ -540,6 +562,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ModifyStrategyParam_reflection_;
   delete ModifyPortfolioSwitchParam::default_instance_;
   delete ModifyPortfolioSwitchParam_reflection_;
+  delete ModifyPortfolioQtyParam::default_instance_;
+  delete ModifyPortfolioQtyParam_reflection_;
   delete ModifyRunningStatusParam::default_instance_;
   delete ModifyRunningStatusParam_reflection_;
   delete ModifyPortfolioPreferredLegParam::default_instance_;
@@ -609,17 +633,19 @@ void protobuf_AddDesc_message_2eproto() {
     "(\014\"\227\001\n\032ModifyPortfolioSwitchParam\022\017\n\007Por"
     "tfId\030\001 \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024\n\014AutoStop"
     "Gain\030\003 \002(\010\022\024\n\014AutoStopLoss\030\004 \002(\010\022\024\n\014Auto"
-    "Tracking\030\005 \002(\010\022\024\n\014EnablePrefer\030\006 \002(\010\"<\n\030"
-    "ModifyRunningStatusParam\022\017\n\007PortfId\030\001 \002("
-    "\t\022\017\n\007Enabled\030\002 \002(\010\"F\n ModifyPortfolioPre"
-    "ferredLegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSy"
-    "mbol\030\002 \002(\t\"j\n\020CancelOrderParam\022\020\n\010OrderR"
-    "ef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId"
-    "\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"\222"
-    "\001\n\025ManualCloseOrderParam\022\016\n\006Symbol\030\001 \002(\t"
-    "\022,\n\tDirection\030\002 \002(\0162\031.trade.TradeDirecti"
-    "onType\022)\n\nOffsetFlag\030\003 \002(\0162\025.trade.Offse"
-    "tFlagType\022\020\n\010Quantity\030\004 \002(\005", 2427);
+    "Tracking\030\005 \002(\010\022\024\n\014EnablePrefer\030\006 \002(\010\"K\n\027"
+    "ModifyPortfolioQtyParam\022\017\n\007PortfId\030\001 \002(\t"
+    "\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006MaxQty\030\003 \002(\005\"<\n\030Mod"
+    "ifyRunningStatusParam\022\017\n\007PortfId\030\001 \002(\t\022\017"
+    "\n\007Enabled\030\002 \002(\010\"F\n ModifyPortfolioPrefer"
+    "redLegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbo"
+    "l\030\002 \002(\t\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030"
+    "\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 "
+    "\002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"\222\001\n\025"
+    "ManualCloseOrderParam\022\016\n\006Symbol\030\001 \002(\t\022,\n"
+    "\tDirection\030\002 \002(\0162\031.trade.TradeDirectionT"
+    "ype\022)\n\nOffsetFlag\030\003 \002(\0162\025.trade.OffsetFl"
+    "agType\022\020\n\010Quantity\030\004 \002(\005", 2504);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -638,6 +664,7 @@ void protobuf_AddDesc_message_2eproto() {
   ChangePosiStrategySettings::default_instance_ = new ChangePosiStrategySettings();
   ModifyStrategyParam::default_instance_ = new ModifyStrategyParam();
   ModifyPortfolioSwitchParam::default_instance_ = new ModifyPortfolioSwitchParam();
+  ModifyPortfolioQtyParam::default_instance_ = new ModifyPortfolioQtyParam();
   ModifyRunningStatusParam::default_instance_ = new ModifyRunningStatusParam();
   ModifyPortfolioPreferredLegParam::default_instance_ = new ModifyPortfolioPreferredLegParam();
   CancelOrderParam::default_instance_ = new CancelOrderParam();
@@ -658,6 +685,7 @@ void protobuf_AddDesc_message_2eproto() {
   ChangePosiStrategySettings::default_instance_->InitAsDefaultInstance();
   ModifyStrategyParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioSwitchParam::default_instance_->InitAsDefaultInstance();
+  ModifyPortfolioQtyParam::default_instance_->InitAsDefaultInstance();
   ModifyRunningStatusParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioPreferredLegParam::default_instance_->InitAsDefaultInstance();
   CancelOrderParam::default_instance_->InitAsDefaultInstance();
@@ -6569,6 +6597,311 @@ void ModifyPortfolioSwitchParam::Swap(ModifyPortfolioSwitchParam* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = ModifyPortfolioSwitchParam_descriptor_;
   metadata.reflection = ModifyPortfolioSwitchParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ModifyPortfolioQtyParam::kPortfIdFieldNumber;
+const int ModifyPortfolioQtyParam::kOnceQtyFieldNumber;
+const int ModifyPortfolioQtyParam::kMaxQtyFieldNumber;
+#endif  // !_MSC_VER
+
+ModifyPortfolioQtyParam::ModifyPortfolioQtyParam()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ModifyPortfolioQtyParam::InitAsDefaultInstance() {
+}
+
+ModifyPortfolioQtyParam::ModifyPortfolioQtyParam(const ModifyPortfolioQtyParam& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ModifyPortfolioQtyParam::SharedCtor() {
+  _cached_size_ = 0;
+  portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  onceqty_ = 0;
+  maxqty_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ModifyPortfolioQtyParam::~ModifyPortfolioQtyParam() {
+  SharedDtor();
+}
+
+void ModifyPortfolioQtyParam::SharedDtor() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    delete portfid_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void ModifyPortfolioQtyParam::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ModifyPortfolioQtyParam::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ModifyPortfolioQtyParam_descriptor_;
+}
+
+const ModifyPortfolioQtyParam& ModifyPortfolioQtyParam::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+ModifyPortfolioQtyParam* ModifyPortfolioQtyParam::default_instance_ = NULL;
+
+ModifyPortfolioQtyParam* ModifyPortfolioQtyParam::New() const {
+  return new ModifyPortfolioQtyParam;
+}
+
+void ModifyPortfolioQtyParam::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_portfid()) {
+      if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+        portfid_->clear();
+      }
+    }
+    onceqty_ = 0;
+    maxqty_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ModifyPortfolioQtyParam::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string PortfId = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_portfid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->portfid().data(), this->portfid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_OnceQty;
+        break;
+      }
+      
+      // required int32 OnceQty = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_OnceQty:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &onceqty_)));
+          set_has_onceqty();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_MaxQty;
+        break;
+      }
+      
+      // required int32 MaxQty = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_MaxQty:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxqty_)));
+          set_has_maxqty();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ModifyPortfolioQtyParam::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string PortfId = 1;
+  if (has_portfid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->portfid().data(), this->portfid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->portfid(), output);
+  }
+  
+  // required int32 OnceQty = 2;
+  if (has_onceqty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->onceqty(), output);
+  }
+  
+  // required int32 MaxQty = 3;
+  if (has_maxqty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->maxqty(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ModifyPortfolioQtyParam::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string PortfId = 1;
+  if (has_portfid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->portfid().data(), this->portfid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->portfid(), target);
+  }
+  
+  // required int32 OnceQty = 2;
+  if (has_onceqty()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->onceqty(), target);
+  }
+  
+  // required int32 MaxQty = 3;
+  if (has_maxqty()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->maxqty(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ModifyPortfolioQtyParam::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string PortfId = 1;
+    if (has_portfid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->portfid());
+    }
+    
+    // required int32 OnceQty = 2;
+    if (has_onceqty()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->onceqty());
+    }
+    
+    // required int32 MaxQty = 3;
+    if (has_maxqty()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->maxqty());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ModifyPortfolioQtyParam::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ModifyPortfolioQtyParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ModifyPortfolioQtyParam*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ModifyPortfolioQtyParam::MergeFrom(const ModifyPortfolioQtyParam& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_portfid()) {
+      set_portfid(from.portfid());
+    }
+    if (from.has_onceqty()) {
+      set_onceqty(from.onceqty());
+    }
+    if (from.has_maxqty()) {
+      set_maxqty(from.maxqty());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ModifyPortfolioQtyParam::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ModifyPortfolioQtyParam::CopyFrom(const ModifyPortfolioQtyParam& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ModifyPortfolioQtyParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  
+  return true;
+}
+
+void ModifyPortfolioQtyParam::Swap(ModifyPortfolioQtyParam* other) {
+  if (other != this) {
+    std::swap(portfid_, other->portfid_);
+    std::swap(onceqty_, other->onceqty_);
+    std::swap(maxqty_, other->maxqty_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ModifyPortfolioQtyParam::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ModifyPortfolioQtyParam_descriptor_;
+  metadata.reflection = ModifyPortfolioQtyParam_reflection_;
   return metadata;
 }
 

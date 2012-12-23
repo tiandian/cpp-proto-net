@@ -535,9 +535,12 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("password", _password));
 
             XElement elemPortfs = new XElement("portfolios");
-            foreach (var portf in Portfolios)
+            lock (_acctPortfolios)
             {
-                elemPortfs.Add(portf.Persist());
+                foreach (var portf in Portfolios)
+                {
+                    elemPortfs.Add(portf.Persist());
+                }
             }
             elem.Add(elemPortfs);
 

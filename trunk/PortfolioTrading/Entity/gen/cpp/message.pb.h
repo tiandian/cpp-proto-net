@@ -50,6 +50,7 @@ class ArbitrageStrategySettings;
 class ChangePosiStrategySettings;
 class ModifyStrategyParam;
 class ModifyPortfolioSwitchParam;
+class ModifyPortfolioQtyParam;
 class ModifyRunningStatusParam;
 class ModifyPortfolioPreferredLegParam;
 class CancelOrderParam;
@@ -2015,6 +2016,112 @@ class ModifyPortfolioSwitchParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ModifyPortfolioSwitchParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ModifyPortfolioQtyParam : public ::google::protobuf::Message {
+ public:
+  ModifyPortfolioQtyParam();
+  virtual ~ModifyPortfolioQtyParam();
+  
+  ModifyPortfolioQtyParam(const ModifyPortfolioQtyParam& from);
+  
+  inline ModifyPortfolioQtyParam& operator=(const ModifyPortfolioQtyParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ModifyPortfolioQtyParam& default_instance();
+  
+  void Swap(ModifyPortfolioQtyParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ModifyPortfolioQtyParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ModifyPortfolioQtyParam& from);
+  void MergeFrom(const ModifyPortfolioQtyParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string PortfId = 1;
+  inline bool has_portfid() const;
+  inline void clear_portfid();
+  static const int kPortfIdFieldNumber = 1;
+  inline const ::std::string& portfid() const;
+  inline void set_portfid(const ::std::string& value);
+  inline void set_portfid(const char* value);
+  inline void set_portfid(const char* value, size_t size);
+  inline ::std::string* mutable_portfid();
+  inline ::std::string* release_portfid();
+  
+  // required int32 OnceQty = 2;
+  inline bool has_onceqty() const;
+  inline void clear_onceqty();
+  static const int kOnceQtyFieldNumber = 2;
+  inline ::google::protobuf::int32 onceqty() const;
+  inline void set_onceqty(::google::protobuf::int32 value);
+  
+  // required int32 MaxQty = 3;
+  inline bool has_maxqty() const;
+  inline void clear_maxqty();
+  static const int kMaxQtyFieldNumber = 3;
+  inline ::google::protobuf::int32 maxqty() const;
+  inline void set_maxqty(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:entity.ModifyPortfolioQtyParam)
+ private:
+  inline void set_has_portfid();
+  inline void clear_has_portfid();
+  inline void set_has_onceqty();
+  inline void clear_has_onceqty();
+  inline void set_has_maxqty();
+  inline void clear_has_maxqty();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* portfid_;
+  ::google::protobuf::int32 onceqty_;
+  ::google::protobuf::int32 maxqty_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ModifyPortfolioQtyParam* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -4903,6 +5010,112 @@ inline bool ModifyPortfolioSwitchParam::enableprefer() const {
 inline void ModifyPortfolioSwitchParam::set_enableprefer(bool value) {
   set_has_enableprefer();
   enableprefer_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ModifyPortfolioQtyParam
+
+// required string PortfId = 1;
+inline bool ModifyPortfolioQtyParam::has_portfid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ModifyPortfolioQtyParam::set_has_portfid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ModifyPortfolioQtyParam::clear_has_portfid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ModifyPortfolioQtyParam::clear_portfid() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    portfid_->clear();
+  }
+  clear_has_portfid();
+}
+inline const ::std::string& ModifyPortfolioQtyParam::portfid() const {
+  return *portfid_;
+}
+inline void ModifyPortfolioQtyParam::set_portfid(const ::std::string& value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void ModifyPortfolioQtyParam::set_portfid(const char* value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void ModifyPortfolioQtyParam::set_portfid(const char* value, size_t size) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ModifyPortfolioQtyParam::mutable_portfid() {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  return portfid_;
+}
+inline ::std::string* ModifyPortfolioQtyParam::release_portfid() {
+  clear_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = portfid_;
+    portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 OnceQty = 2;
+inline bool ModifyPortfolioQtyParam::has_onceqty() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ModifyPortfolioQtyParam::set_has_onceqty() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ModifyPortfolioQtyParam::clear_has_onceqty() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ModifyPortfolioQtyParam::clear_onceqty() {
+  onceqty_ = 0;
+  clear_has_onceqty();
+}
+inline ::google::protobuf::int32 ModifyPortfolioQtyParam::onceqty() const {
+  return onceqty_;
+}
+inline void ModifyPortfolioQtyParam::set_onceqty(::google::protobuf::int32 value) {
+  set_has_onceqty();
+  onceqty_ = value;
+}
+
+// required int32 MaxQty = 3;
+inline bool ModifyPortfolioQtyParam::has_maxqty() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ModifyPortfolioQtyParam::set_has_maxqty() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ModifyPortfolioQtyParam::clear_has_maxqty() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ModifyPortfolioQtyParam::clear_maxqty() {
+  maxqty_ = 0;
+  clear_has_maxqty();
+}
+inline ::google::protobuf::int32 ModifyPortfolioQtyParam::maxqty() const {
+  return maxqty_;
+}
+inline void ModifyPortfolioQtyParam::set_maxqty(::google::protobuf::int32 value) {
+  set_has_maxqty();
+  maxqty_ = value;
 }
 
 // -------------------------------------------------------------------
