@@ -363,7 +363,14 @@ void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
 	const string& mOrderId = openOrder->orderid();
 
 	m_openedPosition.insert(make_pair(mOrderId, openOrder));
-	IncrementalOpenTimes(openOrder->quantity());
+	int qty = openOrder->quantity();
+	
+	double cost = CalcMlOrderCost(openOrder);
+	int origQty = PositionQuantity();
+	double newAvgCost = (AvgCost() * origQty + cost * qty) / (origQty + qty);
+	AvgCost(newAvgCost);
+
+	IncrementalOpenTimes(qty);
 }
 
 void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
@@ -376,8 +383,20 @@ void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 		AddProfit(CalcPortfProfit((iter->second).get(), closeOrder.get()));
 		m_openedPosition.erase(iter);
 	}
-	IncrementalCloseTimes(closeOrder->quantity());
-	
+
+	int qty = closeOrder->quantity();
+	double cost = CalcMlOrderCost(closeOrder);
+	int origQty = PositionQuantity();
+	int remaing = origQty - qty;
+	if(remaing > 0)
+	{
+		double newAvgCost = (AvgCost() * origQty - cost * qty) / remaing;
+		AvgCost(newAvgCost);
+	}
+	else
+		AvgCost(0);
+
+	IncrementalCloseTimes(qty);
 }
 
 int CPortfolio::GetPosition( vector<MultiLegOrderPtr>& openedOrders )
@@ -428,5 +447,31 @@ void CPortfolio::RemoveOrderResubmitter( COrderResubmitter* pResubmitter )
 	}
 	if(iterFound != m_submitters.end())
 		m_submitters.erase(iterFound);
+}
+
+double CPortfolio::CalcMlOrderCost( const MultiLegOrderPtr& openOrder )
+{
+	double cost = 0;
+	int legCount = openOrder->legs_size();
+	for(int ordIdx = 0; ordIdx < legCount; ++ordIdx)
+	{
+		const trade::Order& legOrd = openOrder->legs(ordIdx);
+		double ordPrice = legOrd.limitprice();
+		if(ordPrice > 0)
+		{
+			CLeg* pLeg = GetLeg(legOrd.instrumentid());
+			if(pLeg != NULL)
+			{
+				if(pLeg->Side() == entity::LONG)
+				{
+					cost +=	ordPrice;
+				}
+				else
+					cost -= ordPrice;
+			}
+		}
+	}
+
+	return cost;
 }
 

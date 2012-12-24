@@ -83,6 +83,9 @@ public:
 
 	void SetQuantity(int qty, int maxQty)
 	{ m_innerItem->set_quantity(qty); m_innerItem->set_maxposition(maxQty); PushUpdate(); }
+
+	double AvgCost(){ return m_innerItem->avgcost(); }
+	void AvgCost(double avgCost){ return m_innerItem->set_avgcost(avgCost); }
 	
 private:
 	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
@@ -103,6 +106,8 @@ private:
 	void IncrementalOpenTimes(int opened){ m_innerItem->set_opentimes(m_innerItem->opentimes() + opened); UpdatePosition(); }
 	void IncrementalCloseTimes(int closed){ m_innerItem->set_closetimes(m_innerItem->closetimes() + closed); UpdatePosition(); }
 	void AddProfit(double val){ m_innerItem->set_profit(m_innerItem->profit() + val); }
+
+	double CalcMlOrderCost(const MultiLegOrderPtr& openOrder);
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;

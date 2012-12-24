@@ -278,6 +278,13 @@ namespace entity
       get { return _CurrentPosition; }
       set { _CurrentPosition = value; }
     }
+    private double _AvgCost;
+    [global::ProtoBuf.ProtoMember(22, IsRequired = true, Name=@"AvgCost", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double AvgCost
+    {
+      get { return _AvgCost; }
+      set { _AvgCost = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

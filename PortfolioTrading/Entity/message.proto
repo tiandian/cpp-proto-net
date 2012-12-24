@@ -50,6 +50,7 @@ message PortfolioItem
 	required double Profit = 19;
 	required int32 MaxPosition = 20;
 	required int32 CurrentPosition = 21;
+	required double AvgCost = 22;
 }
 
 message ConnectParam
