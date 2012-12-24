@@ -319,6 +319,22 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region AvgCost
+        private double _avgCost;
+
+        public double AvgCost
+        {
+            get { return _avgCost; }
+            set
+            {
+                if (_avgCost != value)
+                {
+                    _avgCost = value;
+                    RaisePropertyChanged("AvgCost");
+                }
+            }
+        }
+        #endregion
 
         #region Gain
         private double _gain;
@@ -570,6 +586,7 @@ namespace PortfolioTrading.Modules.Account
             Gain = item.Profit;
             Quantity = item.Quantity;
             MaxPosition = item.MaxPosition;
+            AvgCost = item.AvgCost;
 
             IsRunning = item.StrategyRunning;
 

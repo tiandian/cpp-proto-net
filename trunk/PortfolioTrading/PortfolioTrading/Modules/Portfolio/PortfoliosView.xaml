@@ -261,9 +261,15 @@
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:Field Name="Gain" Label="盈利" Row="0" Column="8">
+                    <igDP:Field Name="AvgCost" Label="平均成本" Row="0" Column="8">
                         <igDP:Field.Settings>
                             <igDP:FieldSettings CellMinWidth="80"/>
+                        </igDP:Field.Settings>
+                    </igDP:Field>
+                    
+                    <igDP:Field Name="Gain" Label="盈利" Row="0" Column="9">
+                        <igDP:Field.Settings>
+                            <igDP:FieldSettings CellMinWidth="60"/>
                         </igDP:Field.Settings>
                     </igDP:Field>
 
@@ -291,7 +297,7 @@
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="Opertaion" Label="操作" Row="1"  Column="6" ColumnSpan="3">
+                    <igDP:UnboundField Name="Opertaion" Label="操作" Row="1"  Column="6" ColumnSpan="4">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource operationColStyle}" LabelHeight="0">
                                 <igDP:FieldSettings.LabelPresenterStyle>

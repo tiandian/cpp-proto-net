@@ -620,6 +620,13 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 currentposition() const;
   inline void set_currentposition(::google::protobuf::int32 value);
   
+  // required double AvgCost = 22;
+  inline bool has_avgcost() const;
+  inline void clear_avgcost();
+  static const int kAvgCostFieldNumber = 22;
+  inline double avgcost() const;
+  inline void set_avgcost(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioItem)
  private:
   inline void set_has_id();
@@ -662,6 +669,8 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline void clear_has_maxposition();
   inline void set_has_currentposition();
   inline void clear_has_currentposition();
+  inline void set_has_avgcost();
+  inline void clear_has_avgcost();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -685,10 +694,11 @@ class PortfolioItem : public ::google::protobuf::Message {
   double profit_;
   ::google::protobuf::int32 closetimes_;
   ::google::protobuf::int32 maxposition_;
+  double avgcost_;
   ::google::protobuf::int32 currentposition_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(21 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(22 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3505,6 +3515,28 @@ inline ::google::protobuf::int32 PortfolioItem::currentposition() const {
 inline void PortfolioItem::set_currentposition(::google::protobuf::int32 value) {
   set_has_currentposition();
   currentposition_ = value;
+}
+
+// required double AvgCost = 22;
+inline bool PortfolioItem::has_avgcost() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
+}
+inline void PortfolioItem::set_has_avgcost() {
+  _has_bits_[0] |= 0x00200000u;
+}
+inline void PortfolioItem::clear_has_avgcost() {
+  _has_bits_[0] &= ~0x00200000u;
+}
+inline void PortfolioItem::clear_avgcost() {
+  avgcost_ = 0;
+  clear_has_avgcost();
+}
+inline double PortfolioItem::avgcost() const {
+  return avgcost_;
+}
+inline void PortfolioItem::set_avgcost(double value) {
+  set_has_avgcost();
+  avgcost_ = value;
 }
 
 // -------------------------------------------------------------------
