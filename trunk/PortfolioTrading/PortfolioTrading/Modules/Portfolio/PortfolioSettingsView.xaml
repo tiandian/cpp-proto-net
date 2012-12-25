@@ -82,14 +82,14 @@
                                 <DockPanel DockPanel.Dock="Top" LastChildFill="False">
                                     <TextBlock DockPanel.Dock="Left" Margin="6, 2" FontWeight="Bold">止盈条件</TextBlock>
                                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="2, 0, 12, 0">
-                                        <TextBlock Margin="6, 2">估计盈利</TextBlock>
-                                        <TextBlock Margin="2" Text="{Binding PossibleGain}" MinWidth="40" TextAlignment="Right"/>
+                                        <TextBlock Margin="6, 2">预计止盈于</TextBlock>
+                                        <TextBlock Margin="2" Text="{Binding EstimatedStopGainValue}" MinWidth="40" TextAlignment="Right"/>
                                     </StackPanel>
                                 </DockPanel>
                                 
                                 <DockPanel Margin="12, 0, 6, 2">
                                     <DockPanel>
-                                        <TextBlock VerticalAlignment="Center" Margin="4, 2" >价差</TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Margin="4, 2" >盈利</TextBlock>
                                         <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding StopGainCondItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding StopGainCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
@@ -108,14 +108,14 @@
                                 <DockPanel DockPanel.Dock="Top" LastChildFill="False">
                                     <TextBlock DockPanel.Dock="Left" Margin="6, 2" FontWeight="Bold">止损条件</TextBlock>
                                     <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="2, 0, 12, 0">
-                                        <TextBlock Margin="6, 2">估计亏损</TextBlock>
-                                        <TextBlock Margin="2" Text="{Binding PossibleLoss}" MinWidth="40" TextAlignment="Right"/>
+                                        <TextBlock Margin="6, 2">预计止损于</TextBlock>
+                                        <TextBlock Margin="2" Text="{Binding EstimatedStopLossValue}" MinWidth="40" TextAlignment="Right"/>
                                     </StackPanel>
                                 </DockPanel>
                                 
                                 <DockPanel Margin="12, 0, 6, 2">
                                     <DockPanel>
-                                        <TextBlock VerticalAlignment="Center" Margin="4, 2">价差</TextBlock>
+                                        <TextBlock VerticalAlignment="Center" Margin="4, 2">亏损</TextBlock>
                                         <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding StopLossCondItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding StopLossCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">

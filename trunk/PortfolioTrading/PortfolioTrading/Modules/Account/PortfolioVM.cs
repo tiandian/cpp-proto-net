@@ -462,6 +462,13 @@ namespace PortfolioTrading.Modules.Account
                 portf.OpenTimes = currPos;
             }
 
+            attr = xmlElement.Attribute("avgCost");
+            if(attr != null)
+            {
+                double avgCost = double.Parse(attr.Value);
+                portf.AvgCost = avgCost;
+            }
+
             attr = xmlElement.Attribute("maxPosition");
             if (attr != null)
             {
@@ -519,6 +526,7 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("id", _id));
             elem.Add(new XAttribute("quantity", _qty));
             elem.Add(new XAttribute("currentPosition", _position));
+            elem.Add(new XAttribute("avgCost", _avgCost.ToString("F2")));
             elem.Add(new XAttribute("maxPosition", _maxPosition));
             elem.Add(new XAttribute("autoOpen", _autoOpen.ToString()));
             elem.Add(new XAttribute("autoStopGain", _autoStopGain.ToString()));
@@ -556,6 +564,7 @@ namespace PortfolioTrading.Modules.Account
             portfolioItem.OpenTimes = OpenTimes;
             portfolioItem.CloseTimes = 0;
             portfolioItem.CurrentPosition = Position;
+            portfolioItem.AvgCost = AvgCost;
 
             foreach (var legVm in _legs)
             {

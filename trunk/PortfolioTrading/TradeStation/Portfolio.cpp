@@ -367,6 +367,7 @@ void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
 	
 	double cost = CalcMlOrderCost(openOrder);
 	int origQty = PositionQuantity();
+	
 	double newAvgCost = (AvgCost() * origQty + cost * qty) / (origQty + qty);
 	AvgCost(newAvgCost);
 
