@@ -16,8 +16,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
     {
         public ArbitrageSettingsVM()
         {
-            
-
+            StopGainCondItemsSource = GreaterItemsSource;
+            StopLossCondItemsSource = GreaterItemsSource;
         }
 
         public IEnumerable<CompareCondItem> OpenCondItemsSource
@@ -88,18 +88,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     if (_direction == entity.PosiDirectionType.LONG)
                     {
                         OpenCondItemsSource = LessItemsSource;
-                        StopGainCondItemsSource = GreaterItemsSource;
-                        StopLossCondItemsSource = LessItemsSource;
-
                         RaisePropertyChanged("OpenCondItemsSource");
-                        RaisePropertyChanged("StopGainCondItemsSource");
-                        RaisePropertyChanged("StopLossCondItemsSource");
 
                         if (!_isInitializing)
                         {
                             OpenCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
-                            StopGainCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
-                            StopLossCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
                             CalcPossibleGain();
                             CalcPossibleLoss();
                         }
@@ -107,25 +100,15 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     else if (_direction == entity.PosiDirectionType.SHORT)
                     {
                         OpenCondItemsSource = GreaterItemsSource;
-                        StopGainCondItemsSource = LessItemsSource;
-                        StopLossCondItemsSource = GreaterItemsSource;
-
                         RaisePropertyChanged("OpenCondItemsSource");
-                        RaisePropertyChanged("StopGainCondItemsSource");
-                        RaisePropertyChanged("StopLossCondItemsSource");
 
                         if (!_isInitializing)
                         {
                             OpenCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
-                            StopGainCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
-                            StopLossCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
                             CalcPossibleGain();
                             CalcPossibleLoss();
                         }
                     }
-
-
-                    
                 }
             }
         }
@@ -205,7 +188,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #region PossibleGain
         private decimal _possibleGain;
 
-        public decimal PossibleGain
+        public decimal EstimatedStopGainValue
         {
             get { return _possibleGain; }
             set
@@ -213,7 +196,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 if (_possibleGain != value)
                 {
                     _possibleGain = value;
-                    RaisePropertyChanged("PossibleGain");
+                    RaisePropertyChanged("EstimatedStopGainValue");
                 }
             }
         }
@@ -257,7 +240,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #region PossibleLoss
         private decimal _possibleLoss;
 
-        public decimal PossibleLoss
+        public decimal EstimatedStopLossValue
         {
             get { return _possibleLoss; }
             set
@@ -265,7 +248,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 if (_possibleLoss != value)
                 {
                     _possibleLoss = value;
-                    RaisePropertyChanged("PossibleLoss");
+                    RaisePropertyChanged("EstimatedStopLossValue");
                 }
             }
         }
@@ -273,22 +256,22 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         private void CalcPossibleGain()
         {
-            decimal profit;
+            decimal stopGainVal;
             if (PositionDirection == entity.PosiDirectionType.LONG)
-                profit = (decimal)StopGainThreshold - (decimal)OpenThreshold;
+                stopGainVal = (decimal)OpenThreshold + (decimal)StopGainThreshold;
             else
-                profit = (decimal)OpenThreshold - (decimal)StopGainThreshold;
-            PossibleGain = profit;
+                stopGainVal = (decimal)OpenThreshold - (decimal)StopGainThreshold;
+            EstimatedStopGainValue = stopGainVal;
         }
 
         private void CalcPossibleLoss()
         {
-            decimal profit;
+            decimal stopLossVal;
             if (PositionDirection == entity.PosiDirectionType.LONG)
-                profit = (decimal)StopLossThreshold - (decimal)OpenThreshold;
+                stopLossVal = (decimal)OpenThreshold - (decimal)StopLossThreshold;
             else
-                profit = (decimal)OpenThreshold - (decimal)StopLossThreshold;
-            PossibleLoss = profit;
+                stopLossVal = (decimal)OpenThreshold + (decimal)StopLossThreshold;
+            EstimatedStopLossValue = stopLossVal;
         }
     }
 

@@ -3,6 +3,7 @@
 #include "Strategy.h"
 #include "globalmembers.h"
 
+#include <boost/bind.hpp>
 #include <boost/format.hpp>
 
 #define DBL_TEST_UPPER_BOUNDERY 9999999
@@ -21,8 +22,8 @@ public:
 	{
 	}
 
-	double TargetVal() const { return m_targetVal; }
-	void TargetVal(double val) { m_targetVal = val; }
+	virtual double TargetVal() { return m_targetVal; }
+	void SetTargetVal(double val) { m_targetVal = val; }
 
 	COMPARE_OP Comparsion() const { return m_comparsion; }
 	void Comparsion(COMPARE_OP val) { m_comparsion = val; }
@@ -31,6 +32,8 @@ public:
 	{
 		_ASSERT(valToTest < DBL_TEST_UPPER_BOUNDERY && valToTest > DBL_TEST_LOWER_BOUNDERY);
 
+		double targetVal = TargetVal();
+
 		if(valToTest < DBL_TEST_UPPER_BOUNDERY && 
 			valToTest > DBL_TEST_LOWER_BOUNDERY)
 		{
@@ -38,20 +41,20 @@ public:
 			{
 			case GREATER_THAN:
 				logger.Info(boost::str(boost::format("? %f > %f")
-					% valToTest % m_targetVal));
-				return valToTest > m_targetVal;
+					% valToTest % targetVal));
+				return valToTest > targetVal;
 			case GREATER_EQUAL_THAN:
 				logger.Info(boost::str(boost::format("? %f >= %f")
-					% valToTest % m_targetVal));
-				return DoubleGreaterEqual(valToTest, m_targetVal);
+					% valToTest % targetVal));
+				return DoubleGreaterEqual(valToTest, targetVal);
 			case LESS_THAN:
 				logger.Info(boost::str(boost::format("? %f < %f")
-					% valToTest % m_targetVal));
-				return valToTest < m_targetVal;
+					% valToTest % targetVal));
+				return valToTest < targetVal;
 			case LESS_EQUAL_THAN:
 				logger.Info(boost::str(boost::format("? %f <= %f")
-					% valToTest % m_targetVal));
-				return DoubleGreaterEqual(m_targetVal, valToTest);
+					% valToTest % targetVal));
+				return DoubleGreaterEqual(targetVal, valToTest);
 			default:
 				return false;
 			}
@@ -60,7 +63,7 @@ public:
 		return false; 
 	}
 
-private:
+protected:
 	
 	double m_targetVal;
 	COMPARE_OP m_comparsion;	
@@ -80,4 +83,23 @@ public:
 private:
 	entity::PosiDirectionType m_direction;
 
+};
+
+typedef boost::function<double()> GetPortfolioCostFunc;
+
+class CCostValueChecker : public CValueChecker
+{
+public:
+	void SetGetCostFunc(GetPortfolioCostFunc funcGetCost){ m_func = funcGetCost; }
+	virtual double TargetVal() 
+	{
+		double cost = m_func();
+		if(Comparsion() < LESS_THAN)
+			return cost + m_targetVal;
+		else
+			return cost - m_targetVal;
+	}
+
+private:
+	GetPortfolioCostFunc m_func;
 };

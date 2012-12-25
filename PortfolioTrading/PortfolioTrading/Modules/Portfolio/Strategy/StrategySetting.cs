@@ -109,7 +109,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 setting.OpenThreshold = 0;
                 setting.StopGainCondition = CompareCondition.GREATER_THAN;
                 setting.StopGainThreshold = 0;
-                setting.StopLossCondition = CompareCondition.LESS_THAN;
+                setting.StopLossCondition = CompareCondition.GREATER_THAN;
                 setting.StopLossThreshold = 0;
                 return setting;
             }

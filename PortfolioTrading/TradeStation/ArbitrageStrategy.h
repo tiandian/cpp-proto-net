@@ -11,19 +11,21 @@ public:
 	void SetOpenPosiCond(COMPARE_OP op, double targetVal)
 	{
 		m_openPosiChecker.Comparsion(op);
-		m_openPosiChecker.TargetVal(targetVal);
+		m_openPosiChecker.SetTargetVal(targetVal);
 	}
 
 	void SetStopGainCond(COMPARE_OP op, double targetVal)
 	{
 		m_stopGainChecker.Comparsion(op);
-		m_stopGainChecker.TargetVal(targetVal);
+		m_stopGainChecker.SetTargetVal(targetVal);
+		m_stopGainChecker.SetGetCostFunc(boost::bind(&CPortfolio::AvgCost, Portfolio()));
 	}
 
 	void SetStopLossCond(COMPARE_OP op, double targetVal)
 	{
 		m_stopLossChecker.Comparsion(op);
-		m_stopLossChecker.TargetVal(targetVal);
+		m_stopLossChecker.SetTargetVal(targetVal);
+		m_stopLossChecker.SetGetCostFunc(boost::bind(&CPortfolio::AvgCost, Portfolio()));
 	}
 
 	void ApplySettings(const std::string& settingData);
@@ -47,7 +49,7 @@ private:
 	void ClosePosition(trade::SubmitReason submitReason);
 
 	CValueChecker m_openPosiChecker;
-	CValueChecker m_stopGainChecker;
-	CValueChecker m_stopLossChecker;
+	CCostValueChecker m_stopGainChecker;
+	CCostValueChecker m_stopLossChecker;
 };
 

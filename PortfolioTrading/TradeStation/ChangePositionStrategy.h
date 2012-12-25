@@ -13,7 +13,7 @@ public:
 	void SetOpenPosiCond(COMPARE_OP op, double targetVal)
 	{
 		m_openPosiChecker.Comparsion(op);
-		m_openPosiChecker.TargetVal(targetVal);
+		m_openPosiChecker.SetTargetVal(targetVal);
 	}
 
 	void ApplySettings(const std::string& settingData);
