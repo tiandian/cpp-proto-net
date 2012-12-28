@@ -2,10 +2,11 @@
 #include <string>
 
 class CDiffStrategy;
+class CPortfolio;
 
 using namespace std;
 
-CDiffStrategy* CreateStrategy(const string& name, const string& data);
+CDiffStrategy* CreateStrategy(CPortfolio* pPortf, const string& name, const string& data);
 
 
 

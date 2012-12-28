@@ -23,3 +23,20 @@ const char* StrategyOpertaionText(POSI_OPER oper)
 	else if(oper == CLOSE_POSI) return ST_CLOSE_POSI;
 	else return ST_DO_NOTHING;
 }
+
+COMPARE_OP ReverseCondition(COMPARE_OP compareCond)
+{
+	switch(compareCond) 
+	{
+	case GREATER_THAN:
+		return LESS_THAN;
+	case GREATER_EQUAL_THAN:
+		return LESS_EQUAL_THAN;
+	case LESS_THAN:
+		return GREATER_THAN;
+	case LESS_EQUAL_THAN:
+		return GREATER_EQUAL_THAN;
+	default:
+		return NOT_COMPARE;
+	}
+}

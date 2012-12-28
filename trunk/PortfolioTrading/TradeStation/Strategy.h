@@ -30,6 +30,7 @@ bool DoubleGreaterEqual(double a, double b);
 COMPARE_OP ConvertCompareCondition(entity::CompareCondition compareCond);
 const char* StrategyOpertaionText(POSI_OPER oper);
 POSI_OPER NextOperation(POSI_OPER oper);
+COMPARE_OP ReverseCondition(COMPARE_OP compareCond);
 
 template <typename T>
 class CConditionChecker

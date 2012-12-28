@@ -37,7 +37,7 @@ public:
 		if(valToTest < DBL_TEST_UPPER_BOUNDERY && 
 			valToTest > DBL_TEST_LOWER_BOUNDERY)
 		{
-			switch(m_comparsion)
+			switch(EffectiveComparsion())
 			{
 			case GREATER_THAN:
 				logger.Info(boost::str(boost::format("? %f > %f")
@@ -64,7 +64,8 @@ public:
 	}
 
 protected:
-	
+	virtual COMPARE_OP EffectiveComparsion() { return Comparsion(); }
+
 	double m_targetVal;
 	COMPARE_OP m_comparsion;	
 
@@ -87,7 +88,7 @@ private:
 
 typedef boost::function<double()> GetPortfolioCostFunc;
 
-class CCostValueChecker : public CValueChecker
+class CGainCostValueChecker : public CValueChecker
 {
 public:
 	void SetGetCostFunc(GetPortfolioCostFunc funcGetCost){ m_func = funcGetCost; }
@@ -99,6 +100,30 @@ public:
 		else
 			return cost - m_targetVal;
 	}
+
+private:
+	GetPortfolioCostFunc m_func;
+};
+
+class CLossCostValueChecker : public CValueChecker
+{
+public:
+	void SetGetCostFunc(GetPortfolioCostFunc funcGetCost){ m_func = funcGetCost; }
+	virtual double TargetVal() 
+	{
+		double cost = m_func();
+		if(Comparsion() < LESS_THAN)
+			return cost - m_targetVal;
+		else
+			return cost + m_targetVal;
+	}
+
+protected:
+	COMPARE_OP EffectiveComparsion() 
+	{ 
+		return (ReverseCondition(Comparsion()));
+	}
+
 
 private:
 	GetPortfolioCostFunc m_func;
