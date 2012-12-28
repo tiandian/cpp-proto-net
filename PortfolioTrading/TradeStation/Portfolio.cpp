@@ -240,9 +240,9 @@ void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfIte
 		AddLeg(nl);
 	}
 
-	boost::shared_ptr<CDiffStrategy> strategy(CreateStrategy(pPortfItem->strategyname(), pPortfItem->strategydata()));
+	boost::shared_ptr<CDiffStrategy> strategy(CreateStrategy(this, pPortfItem->strategyname(), pPortfItem->strategydata()));
 	strategy->Client(pClient);
-	strategy->Portfolio(this);
+	
 	strategy->SetAutoOpen(pPortfItem->autoopen());
 	strategy->SetStopGain(pPortfItem->autostopgain());
 	strategy->SetStopLoss(pPortfItem->autostoploss());
