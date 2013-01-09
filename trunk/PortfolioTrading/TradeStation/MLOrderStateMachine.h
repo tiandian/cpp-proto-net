@@ -28,7 +28,7 @@ public:
 private:
 
 	void Send();
-	void CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder);
+	OrderPlacerPtr CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
 
 	CMLOrderStateMachine* m_pStateMachine;
 	CPortfolio* m_pPortf;
@@ -50,6 +50,6 @@ public:
 	}
 
 	void Init();
-	//void Transition(const string& orderId, COrderEvent& event);
+	void Transition(const string& orderId, COrderEvent& event);
 };
 

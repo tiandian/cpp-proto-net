@@ -15,10 +15,12 @@ public:
 	CSgOrderPlacer(CSgOrderStateMachine* pStateMachine,
 					trade::MultiLegOrder* pMultiLegOrder,
 					const InputOrderPtr& inputOrder,
+					int retryTimes,
 					COrderProcessor2* pOrderProc)
 					:m_pStateMachine(pStateMachine),
 					m_pMultiLegOrder(pMultiLegOrder),
 					m_pInputOrder(inputOrder),
+					m_retryTimes(retryTimes),
 					m_pOrderProcessor(pOrderProc){}
 	~CSgOrderPlacer(){}
 
@@ -32,6 +34,8 @@ private:
 	trade::MultiLegOrder* m_pMultiLegOrder;
 	InputOrderPtr m_pInputOrder;
 	COrderProcessor2* m_pOrderProcessor;
+	
+	int m_retryTimes;
 };
 
 class CSgOrderStateMachine : public COrderStateMachine
@@ -42,9 +46,10 @@ public:
 
 	OrderPlacerPtr CreatePlacer(trade::MultiLegOrder* pMultiLegOrder,
 								const InputOrderPtr& pInputOrder,
+								int retryTimes,
 								COrderProcessor2* pOrderProc)
 	{
-		return OrderPlacerPtr(new CSgOrderPlacer(this, pMultiLegOrder, pInputOrder, pOrderProc));
+		return OrderPlacerPtr(new CSgOrderPlacer(this, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc));
 	}
 
 	void Init();

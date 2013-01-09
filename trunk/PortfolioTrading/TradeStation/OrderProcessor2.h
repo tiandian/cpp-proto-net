@@ -16,7 +16,7 @@ public:
 	~COrderProcessor2(void);
 
 	void SubmitPortfOrder(CPortfolio* pPortf, const MultiLegOrderPtr& multilegOrder);
-	OrderPlacerPtr CreateSingleOrderPlacer(trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder);
+	OrderPlacerPtr CreateSingleOrderPlacer(trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes);
 	void RaiseMLOrderPlacerEvent(const string& mlOrdPlacerId, COrderEvent& orderEvent);
 
 	int GenerateOrderRef(char** ppOrdRef);
