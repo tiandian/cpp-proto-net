@@ -476,3 +476,13 @@ double CPortfolio::CalcMlOrderCost( const MultiLegOrderPtr& openOrder )
 	return cost;
 }
 
+bool CPortfolio::EnablePrefer()
+{
+	return m_strategy->EnablePrefer();
+}
+
+bool CPortfolio::AutoTracking()
+{
+	return m_strategy->IsAutoTracking();
+}
+

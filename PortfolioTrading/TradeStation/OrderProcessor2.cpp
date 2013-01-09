@@ -122,9 +122,9 @@ void COrderProcessor2::CancelOrder( const std::string& ordRef, const std::string
 
 }
 
-OrderPlacerPtr COrderProcessor2::CreateSingleOrderPlacer(trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder)
+OrderPlacerPtr COrderProcessor2::CreateSingleOrderPlacer(trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes)
 {
-	return m_sgOrderStateMachine.CreatePlacer(pMlOrder, pInputOrder, this);
+	return m_sgOrderStateMachine.CreatePlacer(pMlOrder, pInputOrder, retryTimes, this);
 }
 
 void COrderProcessor2::RaiseMLOrderPlacerEvent( const string& mlOrdPlacerId, COrderEvent& orderEvent )

@@ -56,6 +56,9 @@ public:
 	int Quantity() { return m_innerItem->quantity(); }
 
 	CDiffStrategy* Strategy(){ return m_strategy.get(); }
+
+	bool EnablePrefer();
+	bool AutoTracking();
 	
 	void EnableStrategy(bool isEnabled);
 
