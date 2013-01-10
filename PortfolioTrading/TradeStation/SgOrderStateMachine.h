@@ -53,6 +53,7 @@ public:
 	}
 
 	void Init();
+	void Transition(const string& orderId, COrderEvent& event);
 };
 
 namespace op2
