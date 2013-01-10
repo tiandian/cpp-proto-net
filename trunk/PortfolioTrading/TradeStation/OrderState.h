@@ -43,9 +43,12 @@ enum ORDER_STATE
 	ORDER_STATE_SENT,
 	ORDER_STATE_PENDING,
 	ORDER_STATE_COMPLETE,
-	ORDER_STATE_PLACE_FAILED,
 	ORDER_STATE_PARTIALLY_FILLED,
-	ORDER_STATE_CANCELED
+	ORDER_STATE_CANCELED,
+	ORDER_STATE_PARTIALLY_CANCELED,
+	ORDER_STATE_PLACE_FAILED,
+	ORDER_STATE_PARTIALLY_FAILED,
+	ORDER_STATE_WARNING
 };
 
 class CStateOwner
@@ -137,6 +140,24 @@ class OrderCanceled : public COrderState
 {
 public:
 	OrderCanceled():COrderState(ORDER_STATE_CANCELED){}
+};
+
+class OrderPartiallyCanceled : public COrderState
+{
+public:
+	OrderPartiallyCanceled():COrderState(ORDER_STATE_PARTIALLY_CANCELED){}
+};
+
+class OrderPartiallyFailed : public COrderState
+{
+public:
+	OrderPartiallyFailed():COrderState(ORDER_STATE_PARTIALLY_FAILED){}
+};
+
+class OrderWarningState : public COrderState
+{
+public:
+	OrderWarningState():COrderState(ORDER_STATE_WARNING){}
 };
 
 };

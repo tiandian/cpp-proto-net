@@ -34,6 +34,11 @@ void CSgOrderStateMachine::Init()
 	pending->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 }
 
+void CSgOrderStateMachine::Transition( const string& orderId, COrderEvent& event )
+{
+	COrderStateMachine::Transition(orderId, event);
+}
+
 
 void CSgOrderPlacer::Do()
 {

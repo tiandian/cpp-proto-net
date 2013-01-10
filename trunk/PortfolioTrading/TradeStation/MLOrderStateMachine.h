@@ -53,3 +53,24 @@ public:
 	void Transition(const string& orderId, COrderEvent& event);
 };
 
+namespace op2
+{
+	class LegCompletedEvent : public COrderEvent
+	{
+	public:
+		LegCompletedEvent():COrderEvent(ORDER_EVENT_COMPLETE){}
+	};
+
+	class LegCanceledEvent : public COrderEvent
+	{
+	public:
+		LegCanceledEvent():COrderEvent(ORDER_EVENT_CANCEL_SUCCESS){}
+	};
+
+	class LegRejectedEvent : public COrderEvent
+	{
+	public:
+		LegRejectedEvent():COrderEvent(ORDER_EVENT_REJECTED){}
+	};
+};
+
