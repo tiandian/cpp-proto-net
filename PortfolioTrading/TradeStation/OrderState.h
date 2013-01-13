@@ -62,6 +62,9 @@ public:
 
 	virtual void OnEnter(ORDER_STATE state, COrderEvent* transEvent) {};
 
+	static const char* PrintState(ORDER_STATE state);
+	static const char* PrintEvent(ORDER_EVENT evt);
+
 protected:
 	COrderState* m_currentState;
 

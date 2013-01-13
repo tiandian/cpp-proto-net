@@ -4,8 +4,12 @@
 
 #include <boost/format.hpp>
 
-const char* ORDER_STATE_TEXT[] = {"Order SENT", 
-	"Order PENDING", "Order COMPLETE", "Place FAILED", "Partialy Filled", "Order CANCELED"};
+const char* ORDER_STATE_TEXT[] = {
+	"Order SENT", 
+	"Order PENDING", 
+	"Order COMPLETE", "Partially Filled",
+	"Order CANCELED", "Partially Canceled",
+	"Place FAILED", "Partialy Failed", };
 const char* ORDER_EVENT_TEXT[] = {"Order COMPLETED", "Order is PENDING",
 	"Order CANCEL Success", "Order CANCEL Failed", "Order SUBMIT Failed", "Order REJECTED", "Order PARTIALLY Filled"};
 
@@ -26,4 +30,14 @@ bool op2::CStateOwner::CurrentState( COrderState* val )
 	m_currentState = val;
 
 	return changed;
+}
+
+const char* op2::CStateOwner::PrintState( ORDER_STATE state )
+{
+	return ORDER_STATE_TEXT[state];
+}
+
+const char* op2::CStateOwner::PrintEvent( ORDER_EVENT evt )
+{
+	return ORDER_EVENT_TEXT[evt];
 }

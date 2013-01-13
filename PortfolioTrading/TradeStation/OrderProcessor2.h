@@ -20,6 +20,7 @@ public:
 	void RaiseMLOrderPlacerEvent(const string& mlOrdPlacerId, COrderEvent& orderEvent);
 
 	int GenerateOrderRef(char** ppOrdRef);
+	void SubmitOrderToTradeAgent(trade::InputOrder* pOrder);
 
 	void CancelOrder(const std::string& ordRef, 
 					 const std::string& exchId, 

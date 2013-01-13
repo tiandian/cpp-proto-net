@@ -15,16 +15,21 @@ public:
 	CSgOrderPlacer(CSgOrderStateMachine* pStateMachine,
 					trade::MultiLegOrder* pMultiLegOrder,
 					const InputOrderPtr& inputOrder,
-					int retryTimes,
+					int maxRetryTimes,
 					COrderProcessor2* pOrderProc)
 					:m_pStateMachine(pStateMachine),
 					m_pMultiLegOrder(pMultiLegOrder),
 					m_pInputOrder(inputOrder),
-					m_retryTimes(retryTimes),
+					m_maxRetryTimes(maxRetryTimes),
+					m_submitTimes(0), m_succ(false),
 					m_pOrderProcessor(pOrderProc){}
 	~CSgOrderPlacer(){}
 
+	const string& ParentOrderId(){ return m_pMultiLegOrder->orderid(); }
+	const string& Symbol() { return m_pInputOrder->instrumentid(); }
 	const string& Id(){ return m_orderRef; }
+
+	void OnEnter(ORDER_STATE state, COrderEvent* transEvent);
 
 	void Do();
 
@@ -35,7 +40,10 @@ private:
 	InputOrderPtr m_pInputOrder;
 	COrderProcessor2* m_pOrderProcessor;
 	
-	int m_retryTimes;
+	int m_maxRetryTimes;
+	int m_submitTimes;
+	bool m_succ;
+	string m_errorMsg;
 };
 
 class CSgOrderStateMachine : public COrderStateMachine
