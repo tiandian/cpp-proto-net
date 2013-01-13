@@ -3,10 +3,12 @@
 #include "PortfolioOrderHelper.h"
 #include "SgOrderStateMachine.h"
 #include "OrderProcessor2.h"
+#include "globalmembers.h"
 
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
+#include <boost/format.hpp>
 
 typedef std::vector<boost::shared_ptr<trade::InputOrder>> InputOrderVector;
 typedef InputOrderVector* InputOrderVectorPtr;
@@ -68,27 +70,31 @@ void CMLOrderStateMachine::Transition( const string& orderId, COrderEvent& event
 
 void CMLOrderPlacer::Do()
 {
-
-}
-
-void CMLOrderPlacer::Send()
-{
 	InputOrderVectorPtr vecInputOrders(new InputOrderVector);
 	int ordCount = GetInputOrders(m_mlOrder.get(), vecInputOrders);
 
 	bool autoTracking = m_pPortf->AutoTracking();
-	bool enablePrefer = m_pPortf->EnablePrefer();
-
+	
 	for(InputOrderVector::iterator iter = vecInputOrders->begin();
 		iter != vecInputOrders->end(); ++iter)
 	{
 		m_sgOrderPlacers.push_back(CreateSgOrderPlacer(*iter, autoTracking ? 2 : 0));
 	}
 
-	if(enablePrefer)
+	COrderState* sentState = m_pStateMachine->GetState(ORDER_STATE_SENT);
+	sentState->Run(this, NULL);
+
+}
+
+void CMLOrderPlacer::Send()
+{
+	m_isSequential = m_pPortf->EnablePrefer();
+	if(m_isSequential)
 	{
 		// Only start the first one
-		(m_sgOrderPlacers.front())->Do();
+		m_sendingIdx = 0;
+		_ASSERT(m_sgOrderPlacers.size() > 0);
+		(m_sgOrderPlacers.at(0))->Do();
 	}
 	else
 	{
@@ -99,7 +105,36 @@ void CMLOrderPlacer::Send()
 	}
 }
 
+void CMLOrderPlacer::SendNext()
+{
+	if(++m_sendingIdx < m_sgOrderPlacers.size())
+	{
+		(m_sgOrderPlacers.at(m_sendingIdx))->Do();
+	}
+}
+
 OrderPlacerPtr CMLOrderPlacer::CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes)
 {
 	return m_pOrderProcessor->CreateSingleOrderPlacer(m_mlOrder.get(), inputOrder, retryTimes);
+}
+
+void CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
+{
+	string dbText = boost::str(boost::format("MultiLeg Order(%s) enter %s") 
+		% Id() % PrintState(state));
+	logger.Debug(dbText);
+	switch(state)
+	{
+	case ORDER_STATE_SENT:
+		{
+			Send();
+		}
+		break;
+	case ORDER_STATE_PARTIALLY_FILLED:
+		{
+			if(m_isSequential)
+				SendNext();
+		}
+		break;
+	}
 }

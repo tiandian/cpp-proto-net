@@ -132,3 +132,8 @@ void COrderProcessor2::RaiseMLOrderPlacerEvent( const string& mlOrdPlacerId, COr
 	m_mlOrderStateMachine.Transition(mlOrdPlacerId, orderEvent);
 }
 
+void COrderProcessor2::SubmitOrderToTradeAgent( trade::InputOrder* pOrder )
+{
+
+}
+

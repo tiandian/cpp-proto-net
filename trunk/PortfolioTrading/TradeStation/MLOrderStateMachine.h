@@ -16,18 +16,20 @@ public:
 				   CPortfolio* pPortf,
 				   const MultiLegOrderPtr& mlOrder,
 				   COrderProcessor2* pOrdProcessor)
-		:m_pStateMachine(pStateMachine), m_pPortf(pPortf),
-		m_mlOrder(mlOrder), m_pOrderProcessor(pOrdProcessor)
+		:m_pStateMachine(pStateMachine), m_pPortf(pPortf), m_sendingIdx(-1),
+		m_isSequential(false), m_mlOrder(mlOrder), m_pOrderProcessor(pOrdProcessor)
 	{}
 	~CMLOrderPlacer(){}
 
-	const string& Id(){ return m_mlOrder->orderid(); }
+	void OnEnter(ORDER_STATE state, COrderEvent* transEvent);
 
+	const string& Id(){ return m_mlOrder->orderid(); }
 	void Do();
 
 private:
 
 	void Send();
+	void SendNext();
 	OrderPlacerPtr CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
 
 	CMLOrderStateMachine* m_pStateMachine;
@@ -36,6 +38,8 @@ private:
 	COrderProcessor2* m_pOrderProcessor;
 
 	std::vector<OrderPlacerPtr> m_sgOrderPlacers;
+	int m_isSequential;
+	int m_sendingIdx;
 };
 
 class CMLOrderStateMachine : public COrderStateMachine
