@@ -3,6 +3,7 @@
 #include "globalmembers.h"
 #include "OrderProcessor2.h"
 #include "charsetconvert.h"
+#include "Portfolio.h"
 
 #include <boost/format.hpp>
 
@@ -88,7 +89,10 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 			if(m_submitTimes <= m_maxRetryTimes)
 			{
 				if(m_submitTimes > 0)
+				{
 					m_pStateMachine->RemovePlacer(Id());
+					ModifyOrderPrice();
+				}
 
 				// lock and generate order ref
 				int iOrdRef = m_pOrderProcessor->LockForSubmit(m_currentOrdRef);
@@ -105,6 +109,8 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 
 					string submitInfo = boost::str(boost::format("Submit Order(%s - %s) [No. %d time(s)]")
 						% ParentOrderId() % Symbol() % m_submitTimes);
+					logger.Info(submitInfo);
+					// real submit order and unlock to allow next order ref generation
 					bool succ = m_pOrderProcessor->SubmitAndUnlock(m_pInputOrder.get());
 					++m_submitTimes;
 				}
@@ -203,4 +209,34 @@ void CSgOrderPlacer::OnOrderUpdate( trade::Order* pOrd )
 
 		m_pOrderProcessor->PublishOrderUpdate(m_pMultiLegOrder->portfolioid(), m_pMultiLegOrder->orderid(), pLegOrder);
 	}
+}
+
+void CSgOrderPlacer::ModifyOrderPrice()
+{
+	CLeg* pLeg = m_pPortf->GetLeg(Symbol());
+	_ASSERT(pLeg != NULL);
+	if(pLeg != NULL)
+	{
+		trade::TradeDirectionType direction = m_pInputOrder->direction();
+		double origLmtPx = m_pInputOrder->limitprice();
+		if(direction == trade::BUY)
+		{
+			double ask = pLeg->Ask();
+			logger.Trace(boost::str(boost::format("Buy: Ask(%f) ?> Lmt Px(%f)")
+				% ask % origLmtPx));
+			logger.Trace(boost::str(boost::format("Modify order(%s): Buy @ %f")
+				% Symbol() % ask));
+			m_pInputOrder->set_limitprice(ask);
+		}
+		else if(direction == trade::SELL)
+		{
+			double bid = pLeg->Bid();
+			logger.Trace(boost::str(boost::format("Sell: Bid(%f) ?< Lmt Px(%f)")
+				% bid % origLmtPx));
+			logger.Trace(boost::str(boost::format("Modify order(%s): Sell @ %f")
+				% Symbol() % bid));
+			m_pInputOrder->set_limitprice(bid);
+		}
+	}
+	
 }
