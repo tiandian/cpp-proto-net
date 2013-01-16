@@ -119,7 +119,7 @@ void CMLOrderPlacer::SendNext()
 
 COrderPlacer* CMLOrderPlacer::CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes)
 {
-	return m_pOrderProcessor->CreateSingleOrderPlacer(m_mlOrder.get(), inputOrder, retryTimes);
+	return m_pOrderProcessor->CreateSingleOrderPlacer(m_pPortf, m_mlOrder.get(), inputOrder, retryTimes);
 }
 
 bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )

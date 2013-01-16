@@ -7,6 +7,7 @@
 
 class CSgOrderStateMachine;
 class COrderProcessor2;
+class CPortfolio;
 
 typedef boost::shared_ptr<trade::InputOrder> InputOrderPtr;
 
@@ -14,11 +15,13 @@ class CSgOrderPlacer : public COrderPlacer
 {
 public:
 	CSgOrderPlacer(CSgOrderStateMachine* pStateMachine,
+					CPortfolio* pPortfolio,
 					trade::MultiLegOrder* pMultiLegOrder,
 					const InputOrderPtr& inputOrder,
 					int maxRetryTimes,
 					COrderProcessor2* pOrderProc)
 					:m_pStateMachine(pStateMachine),
+					m_pPortf(pPortfolio),
 					m_pMultiLegOrder(pMultiLegOrder),
 					m_pInputOrder(inputOrder),
 					m_maxRetryTimes(maxRetryTimes),
@@ -40,11 +43,13 @@ public:
 
 private:
 	void OnOrderUpdate(trade::Order* pOrd);
+	void ModifyOrderPrice();
 
 	string m_sgOrderUid;
 	string m_currentOrdRef;
 	CSgOrderStateMachine* m_pStateMachine;
 	trade::MultiLegOrder* m_pMultiLegOrder;
+	CPortfolio* m_pPortf;
 	InputOrderPtr m_pInputOrder;
 	COrderProcessor2* m_pOrderProcessor;
 	
@@ -60,12 +65,13 @@ public:
 	CSgOrderStateMachine(void);
 	~CSgOrderStateMachine(void);
 
-	COrderPlacer* CreatePlacer(trade::MultiLegOrder* pMultiLegOrder,
+	COrderPlacer* CreatePlacer( CPortfolio* pPortfolio,
+								trade::MultiLegOrder* pMultiLegOrder,
 								const InputOrderPtr& pInputOrder,
 								int retryTimes,
 								COrderProcessor2* pOrderProc)
 	{
-		return new CSgOrderPlacer(this, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
+		return new CSgOrderPlacer(this, pPortfolio, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
 	}
 
 	void Init();
