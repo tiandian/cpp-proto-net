@@ -6,8 +6,25 @@
 
 #include <boost/format.hpp>
 
-
 using namespace op2;
+
+trade::Order* GetOrderBySymbol(trade::MultiLegOrder* mlOrder, const string& symbol)
+{
+	trade::Order* pOrdFound = NULL;
+	int count = mlOrder->legs_size();
+	google::protobuf::RepeatedPtrField<trade::Order>* legs = mlOrder->mutable_legs();
+	for(int i = 0; i < count; ++i)
+	{
+		trade::Order* pOrd = legs->Mutable(i);
+		if(pOrd->instrumentid() == symbol)
+		{
+			// find it
+			pOrdFound = pOrd;
+			break;
+		}
+	}
+	return pOrdFound;
+}
 
 CSgOrderStateMachine::CSgOrderStateMachine(void)
 {
@@ -40,10 +57,11 @@ void CSgOrderStateMachine::Init()
 	pending->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 }
 
-void CSgOrderStateMachine::Transition( const string& orderId, COrderEvent& event )
+void CSgOrderStateMachine::Transition( const string& orderId/*orderRef*/, COrderEvent& event )
 {
 	COrderStateMachine::Transition(orderId, event);
 }
+
 
 void CSgOrderPlacer::Do()
 {
@@ -51,16 +69,17 @@ void CSgOrderPlacer::Do()
 	sentState->Run(this, NULL);
 }
 
-void CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
+bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 {
 	string dbText = boost::str(boost::format("Order(%s - %s) enter %s") 
 		% ParentOrderId() % Symbol() % PrintState(state));
 	logger.Debug(dbText);
+	bool isTerminal = false;
 
 	CSgOrderEvent* pSgOrderEvent = dynamic_cast<CSgOrderEvent*>(transEvent);
 	_ASSERT(pSgOrderEvent != NULL);
 	if(pSgOrderEvent == NULL)
-		return;
+		return isTerminal;
 
 	switch(state)
 	{
@@ -68,10 +87,27 @@ void CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 		{
 			if(m_submitTimes <= m_maxRetryTimes)
 			{
-				string submitInfo = boost::str(boost::format("Submit Order(%s - %s) [No. %d time(s)]")
-					% ParentOrderId() % Symbol() % m_submitTimes);
-				m_pOrderProcessor->SubmitOrderToTradeAgent(m_pInputOrder.get());
-				++m_submitTimes;
+				if(m_submitTimes > 0)
+					m_pStateMachine->RemovePlacer(Id());
+
+				// lock and generate order ref
+				int iOrdRef = m_pOrderProcessor->LockForSubmit(m_currentOrdRef);
+				if(iOrdRef < 0) // Cannot correctly generate order ref, something wrong
+				{
+					m_succ = false;
+					m_errorMsg = "未能生成委托引用(OrderRef)";
+					isTerminal = true;
+				}
+				else
+				{
+					m_pInputOrder->set_orderref(m_currentOrdRef);
+					m_pStateMachine->AddPlacer(OrderPlacerPtr(this));
+
+					string submitInfo = boost::str(boost::format("Submit Order(%s - %s) [No. %d time(s)]")
+						% ParentOrderId() % Symbol() % m_submitTimes);
+					bool succ = m_pOrderProcessor->SubmitAndUnlock(m_pInputOrder.get());
+					++m_submitTimes;
+				}
 			}
 			else
 			{
@@ -79,14 +115,19 @@ void CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 				m_errorMsg = boost::str(boost::format("%d次追单后仍未成交！") % m_maxRetryTimes);
 				logger.Info(boost::str(boost::format("Submit order (%s - %s ) -> Retry times is used up")
 					% ParentOrderId() % Symbol()));
+				isTerminal = true;
+
+				m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegCanceledEvent());
 			}
 		}
 		break;
 	case ORDER_STATE_PENDING:
 		{
-			trade::Order* pOrd = transEvent != NULL ? pSgOrderEvent->RtnOrder() : NULL;
+			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
 			if(pOrd != NULL)
 			{
+				OnOrderUpdate(pOrd);
+
 				const std::string& ordRef = pOrd->orderref();
 				const std::string& exchId = pOrd->exchangeid();
 				const std::string& ordSysId = pOrd->ordersysid(); 
@@ -98,7 +139,10 @@ void CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 		break;
 	case ORDER_STATE_COMPLETE:
 		{
+			OnOrderUpdate(pSgOrderEvent->RtnOrder());
 			m_succ = true;
+			isTerminal = true;
+			m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegCompletedEvent());
 		}
 		break;
 	case ORDER_STATE_PLACE_FAILED:
@@ -118,7 +162,7 @@ void CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 				}
 				else
 				{
-					const string& errorMsg = transEvent->StatusMsg();
+					const string& errorMsg = pSgOrderEvent->StatusMsg();
 					if(errorMsg.empty())
 					{
 						m_errorMsg = "Order not completed";
@@ -133,10 +177,30 @@ void CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 			{
 				m_errorMsg = "Order not completed";
 			}
+			isTerminal = true;
+
+			m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegRejectedEvent());
 		}
 		break;
+	
 	default:
-		logger.Warning(boost::str(boost::format("Entering UNHANDLED state %s")
+		logger.Warning(boost::str(boost::format("Entering Single order UNHANDLED state %s")
 			% PrintState(state)));
+	}
+
+	return isTerminal;
+}
+
+void CSgOrderPlacer::OnOrderUpdate( trade::Order* pOrd )
+{
+	if(pOrd != NULL)
+	{
+		trade::Order* pLegOrder = GetOrderBySymbol(m_pMultiLegOrder, pOrd->instrumentid());
+
+		string ordStatusMsg;
+		GB2312ToUTF_8(ordStatusMsg, pOrd->statusmsg().c_str());
+		pLegOrder->set_statusmsg(ordStatusMsg);
+
+		m_pOrderProcessor->PublishOrderUpdate(m_pMultiLegOrder->portfolioid(), m_pMultiLegOrder->orderid(), pLegOrder);
 	}
 }

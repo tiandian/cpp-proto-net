@@ -113,10 +113,11 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="MLOrderStateMachine.h" />
     <ClInclude Include="multilegorderptr.h" />
     <ClInclude Include="OrderProcessor2.h" />
+    <ClInclude Include="OrderProcPushFuncDef.h" />
     <ClInclude Include="OrderResubmitter.h" />
     <ClInclude Include="OrderState.h" />
     <ClInclude Include="OrderStateMachine.h" />
-    <ClInclude Include="orderstatushelper.h" />
+    <ClInclude Include="orderhelper.h" />
     <ClInclude Include="PortfolioOrderHelper.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="ManualOrderPlacer.h" />
@@ -170,7 +171,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClCompile Include="OrderResubmitter.cpp" />
     <ClCompile Include="OrderState.cpp" />
     <ClCompile Include="OrderStateMachine.cpp" />
-    <ClCompile Include="orderstatushelper.cpp" />
+    <ClCompile Include="orderhelper.cpp" />
     <ClCompile Include="Portfolio.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>

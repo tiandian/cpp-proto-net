@@ -60,7 +60,7 @@ public:
 	COrderState* CurrentState() const { return m_currentState; }
 	bool CurrentState(COrderState* val);
 
-	virtual void OnEnter(ORDER_STATE state, COrderEvent* transEvent) {};
+	virtual bool OnEnter(ORDER_STATE state, COrderEvent* transEvent) { return false; };
 
 	static const char* PrintState(ORDER_STATE state);
 	static const char* PrintEvent(ORDER_EVENT evt);
@@ -86,10 +86,15 @@ public:
 		eventStateMap.insert(make_pair(event, pState));
 	}
 
-	virtual void Run(CStateOwner* stateOwner, COrderEvent* transEvent)
+	// returning boolean stands for termination of state transition
+	// true means state won't change any more, it's terminated
+	// false means it would keep changing.
+	virtual bool Run(CStateOwner* stateOwner, COrderEvent* transEvent)
 	{
 		if(stateOwner->CurrentState(this))
-			stateOwner->OnEnter(m_state, transEvent);
+			return stateOwner->OnEnter(m_state, transEvent);
+
+		return false;
 	}
 
 	virtual COrderState* Next(COrderEvent& evt)
@@ -102,6 +107,8 @@ public:
 
 		return NULL;
 	}
+
+	bool IsEnd() { return eventStateMap.empty(); }
 
 protected:
 	ORDER_STATE m_state;

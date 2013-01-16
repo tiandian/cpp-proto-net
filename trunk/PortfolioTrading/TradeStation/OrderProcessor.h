@@ -7,6 +7,7 @@
 #include "OrderResubmitter.h"
 #include "PortfolioOrderHelper.h"
 #include "ManualOrderPlacer.h"
+#include "OrderProcPushFuncDef.h"
 
 #include <string>
 #include <map>
@@ -17,10 +18,6 @@
 
 using namespace std;
 
-typedef boost::function<void(trade::MultiLegOrder*)> PushMultiLegOrderFunc;
-typedef boost::function<void( const string&, const string&, trade::Order* legOrd)> PushLegOrderFunc;
-typedef boost::function<void(trade::Trade*)> PushTradeFunc;
-typedef boost::function<void(trade::PositionDetailInfo*)> PushPositionDetailFunc; 
 typedef boost::function<void(const MultiLegOrderPtr&)> PushPortfolioPositionChangeFunc;
 typedef boost::function<void(const string&, COrderResubmitter*, bool)> PushPortfolioResubmitterChangeFunc;
 typedef boost::shared_ptr<CSequenceOrderSender> OrderSenderPtr;

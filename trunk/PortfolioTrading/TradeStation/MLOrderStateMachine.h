@@ -21,7 +21,7 @@ public:
 	{}
 	~CMLOrderPlacer(){}
 
-	void OnEnter(ORDER_STATE state, COrderEvent* transEvent);
+	bool OnEnter(ORDER_STATE state, COrderEvent* transEvent);
 
 	const string& Id(){ return m_mlOrder->orderid(); }
 	void Do();
@@ -30,14 +30,14 @@ private:
 
 	void Send();
 	void SendNext();
-	OrderPlacerPtr CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
+	COrderPlacer* CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
 
 	CMLOrderStateMachine* m_pStateMachine;
 	CPortfolio* m_pPortf;
 	MultiLegOrderPtr m_mlOrder;
 	COrderProcessor2* m_pOrderProcessor;
 
-	std::vector<OrderPlacerPtr> m_sgOrderPlacers;
+	std::vector<COrderPlacer*> m_sgOrderPlacers;
 	int m_isSequential;
 	int m_sendingIdx;
 };
@@ -48,9 +48,9 @@ public:
 	CMLOrderStateMachine(void);
 	~CMLOrderStateMachine(void);
 
-	OrderPlacerPtr CreatePlacer(CPortfolio* pPortf, const MultiLegOrderPtr& mlOrder, COrderProcessor2* pOrdProc)
+	COrderPlacer* CreatePlacer(CPortfolio* pPortf, const MultiLegOrderPtr& mlOrder, COrderProcessor2* pOrdProc)
 	{
-		return OrderPlacerPtr(new CMLOrderPlacer(this, pPortf, mlOrder, pOrdProc));
+		return new CMLOrderPlacer(this, pPortf, mlOrder, pOrdProc);
 	}
 
 	void Init();

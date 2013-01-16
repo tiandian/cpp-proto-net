@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "OrderProcessor2.h"
 #include "globalmembers.h"
-#include "orderstatushelper.h"
+#include "orderhelper.h"
 
 #include <boost/format.hpp>
 
@@ -17,8 +17,8 @@ COrderProcessor2::~COrderProcessor2(void)
 
 void COrderProcessor2::SubmitPortfOrder( CPortfolio* pPortf, const MultiLegOrderPtr& multilegOrder )
 {
-	OrderPlacerPtr ordPlacer = m_mlOrderStateMachine.CreatePlacer(pPortf, multilegOrder, this);
-	ordPlacer->Do();
+	COrderPlacer* pOrdPlacer = m_mlOrderStateMachine.CreatePlacer(pPortf, multilegOrder, this);
+	pOrdPlacer->Do();
 }
 
 void COrderProcessor2::OnRspUserLogin( bool succ, std::string& msg, int initOrderRefID )
@@ -43,7 +43,7 @@ void COrderProcessor2::OnRtnOrder( trade::Order* order )
 	if(succ)
 	{
 		boost::shared_ptr<COrderEvent> orderEvtPtr(pEvent);
-		const string& ordRef = order->orderref();
+		string ordRef = order->orderref();
 		m_sgOrderStateMachine.Transition(ordRef, *pEvent);
 	}
 }
@@ -106,23 +106,12 @@ bool COrderProcessor2::GetOrderEvent( trade::Order* order, COrderEvent** ppOrder
 	return *ppOrderEvt != NULL;
 }
 
-int COrderProcessor2::GenerateOrderRef( char** ppOrdRef )
-{
-	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
-
-	static char orderRef[10];
-	sprintf_s(orderRef, "%d", m_maxOrderRef++);
-	*ppOrdRef = orderRef;
-
-	return m_maxOrderRef;
-}
-
 void COrderProcessor2::CancelOrder( const std::string& ordRef, const std::string& exchId, const std::string& ordSysId, const std::string& userId, const std::string& symbol )
 {
 
 }
 
-OrderPlacerPtr COrderProcessor2::CreateSingleOrderPlacer(trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes)
+COrderPlacer* COrderProcessor2::CreateSingleOrderPlacer(trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes)
 {
 	return m_sgOrderStateMachine.CreatePlacer(pMlOrder, pInputOrder, retryTimes, this);
 }
@@ -132,8 +121,90 @@ void COrderProcessor2::RaiseMLOrderPlacerEvent( const string& mlOrdPlacerId, COr
 	m_mlOrderStateMachine.Transition(mlOrdPlacerId, orderEvent);
 }
 
-void COrderProcessor2::SubmitOrderToTradeAgent( trade::InputOrder* pOrder )
+int COrderProcessor2::LockForSubmit( string& outOrdRef )
 {
+	int retOrderRef = -1;
+	boost::unique_lock<boost::mutex> lock(m_mutOrdRefIncr);
+	if(m_condSubmit.timed_wait(lock, boost::posix_time::seconds(3)))
+	{
+		retOrderRef = GenerateOrderRef(outOrdRef);
+	}
+	else
+		logger.Warning("LOCK for submit order TIME OUT!");
 
+	return retOrderRef;
 }
 
+bool COrderProcessor2::SubmitAndUnlock( trade::InputOrder* pOrder )
+{
+	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
+	bool succ = SubmitOrderToTradeAgent(pOrder);
+	m_condSubmit.notify_one();
+	return succ;
+}
+
+int COrderProcessor2::GenerateOrderRef( string& outOrdRef )
+{
+	static char orderRef[10];
+	sprintf_s(orderRef, "%d", m_maxOrderRef++);
+	outOrdRef = orderRef;
+
+	return m_maxOrderRef;
+}
+
+bool COrderProcessor2::SubmitOrderToTradeAgent( trade::InputOrder* pOrder )
+{
+	return true;
+}
+
+void COrderProcessor2::SetPushPortfolioFunc( PushMultiLegOrderFunc funcPushMLOrder )
+{
+	m_pushMultiOrdFunc = funcPushMLOrder;
+}
+
+void COrderProcessor2::PublishMultiLegOrderUpdate( trade::MultiLegOrder* pOrder )
+{
+	if(!m_pushMultiOrdFunc.empty())
+	{
+		m_pushMultiOrdFunc(pOrder);
+	}
+}
+
+void COrderProcessor2::SetPushOrderFunc( PushLegOrderFunc funcPushOrder )
+{
+	m_pushLegOrderFunc = funcPushOrder;
+}
+
+void COrderProcessor2::PublishOrderUpdate( const string& portfId, const string& mlOrderId, trade::Order* legOrd )
+{
+	if(!m_pushLegOrderFunc.empty())
+	{
+		m_pushLegOrderFunc(portfId, mlOrderId, legOrd);
+	}
+}
+
+void COrderProcessor2::SetPushTradeFunc( PushTradeFunc funcPushTrade )
+{
+	m_pushTradeFunc = funcPushTrade;
+}
+
+void COrderProcessor2::PublishTradeUpdate( trade::Trade* pTrade )
+{
+	if(!m_pushTradeFunc.empty())
+	{
+		m_pushTradeFunc(pTrade);
+	}
+}
+
+void COrderProcessor2::PublishPositionDetail( trade::PositionDetailInfo* pPosiDetailInfo )
+{
+	if(!m_pushPosiDetailFunc.empty())
+	{
+		m_pushPosiDetailFunc(pPosiDetailInfo);
+	}
+}
+
+void COrderProcessor2::SetPushPositionDetailFunc( PushPositionDetailFunc funcPushPosiDetail )
+{
+	m_pushPosiDetailFunc = funcPushPosiDetail;
+}

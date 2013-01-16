@@ -2,6 +2,7 @@
 
 #include "OrderState.h"
 #include "OrderStateMachine.h"
+#include "orderhelper.h"
 #include "../Entity/gen/cpp/trade.pb.h"
 
 class CSgOrderStateMachine;
@@ -22,19 +23,26 @@ public:
 					m_pInputOrder(inputOrder),
 					m_maxRetryTimes(maxRetryTimes),
 					m_submitTimes(0), m_succ(false),
-					m_pOrderProcessor(pOrderProc){}
+					m_pOrderProcessor(pOrderProc)
+	{
+		GetOrderUid(inputOrder.get(), m_sgOrderUid);
+	}
 	~CSgOrderPlacer(){}
 
 	const string& ParentOrderId(){ return m_pMultiLegOrder->orderid(); }
 	const string& Symbol() { return m_pInputOrder->instrumentid(); }
-	const string& Id(){ return m_orderRef; }
+	const string& Id(){ return m_currentOrdRef; }
+	const string& CompositeId() { return m_sgOrderUid; }
 
-	void OnEnter(ORDER_STATE state, COrderEvent* transEvent);
+	bool OnEnter(ORDER_STATE state, COrderEvent* transEvent);
 
 	void Do();
 
 private:
-	string m_orderRef;
+	void OnOrderUpdate(trade::Order* pOrd);
+
+	string m_sgOrderUid;
+	string m_currentOrdRef;
 	CSgOrderStateMachine* m_pStateMachine;
 	trade::MultiLegOrder* m_pMultiLegOrder;
 	InputOrderPtr m_pInputOrder;
@@ -52,12 +60,12 @@ public:
 	CSgOrderStateMachine(void);
 	~CSgOrderStateMachine(void);
 
-	OrderPlacerPtr CreatePlacer(trade::MultiLegOrder* pMultiLegOrder,
+	COrderPlacer* CreatePlacer(trade::MultiLegOrder* pMultiLegOrder,
 								const InputOrderPtr& pInputOrder,
 								int retryTimes,
 								COrderProcessor2* pOrderProc)
 	{
-		return OrderPlacerPtr(new CSgOrderPlacer(this, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc));
+		return new CSgOrderPlacer(this, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
 	}
 
 	void Init();

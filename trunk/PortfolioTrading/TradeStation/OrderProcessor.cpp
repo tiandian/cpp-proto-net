@@ -2,7 +2,7 @@
 #include "OrderProcessor.h"
 #include "globalmembers.h"
 #include "charsetconvert.h"
-#include "orderstatushelper.h"
+#include "orderhelper.h"
 
 #include <boost/format.hpp>
 #include <boost/foreach.hpp>

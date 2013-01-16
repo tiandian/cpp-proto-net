@@ -150,9 +150,6 @@
     <ClInclude Include="SyncRequest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orderstatushelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TradeMessagePump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -170,6 +167,12 @@
     </ClInclude>
     <ClInclude Include="OrderState.h">
       <Filter>Header Files\OP2</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderProcPushFuncDef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orderhelper.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -257,9 +260,6 @@
     <ClCompile Include="SyncRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="orderstatushelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TradeMessagePump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -277,6 +277,9 @@
     </ClCompile>
     <ClCompile Include="OrderState.cpp">
       <Filter>Source Files\OP2</Filter>
+    </ClCompile>
+    <ClCompile Include="orderhelper.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

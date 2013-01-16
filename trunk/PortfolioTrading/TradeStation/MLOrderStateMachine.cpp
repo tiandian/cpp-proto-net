@@ -72,7 +72,7 @@ void CMLOrderPlacer::Do()
 {
 	InputOrderVectorPtr vecInputOrders(new InputOrderVector);
 	int ordCount = GetInputOrders(m_mlOrder.get(), vecInputOrders);
-
+	
 	bool autoTracking = m_pPortf->AutoTracking();
 	
 	for(InputOrderVector::iterator iter = vecInputOrders->begin();
@@ -80,6 +80,9 @@ void CMLOrderPlacer::Do()
 	{
 		m_sgOrderPlacers.push_back(CreateSgOrderPlacer(*iter, autoTracking ? 2 : 0));
 	}
+
+	// Wrap into smart pointer and let state machine manage the life cycle
+	m_pStateMachine->AddPlacer(OrderPlacerPtr(this));
 
 	COrderState* sentState = m_pStateMachine->GetState(ORDER_STATE_SENT);
 	sentState->Run(this, NULL);
@@ -98,11 +101,12 @@ void CMLOrderPlacer::Send()
 	}
 	else
 	{
-		BOOST_FOREACH(const OrderPlacerPtr& placer, m_sgOrderPlacers)
+		BOOST_FOREACH(COrderPlacer* placer, m_sgOrderPlacers)
 		{
 			placer->Do();
 		}
 	}
+	m_pOrderProcessor->PublishMultiLegOrderUpdate(m_mlOrder.get());
 }
 
 void CMLOrderPlacer::SendNext()
@@ -113,16 +117,18 @@ void CMLOrderPlacer::SendNext()
 	}
 }
 
-OrderPlacerPtr CMLOrderPlacer::CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes)
+COrderPlacer* CMLOrderPlacer::CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes)
 {
 	return m_pOrderProcessor->CreateSingleOrderPlacer(m_mlOrder.get(), inputOrder, retryTimes);
 }
 
-void CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
+bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 {
 	string dbText = boost::str(boost::format("MultiLeg Order(%s) enter %s") 
 		% Id() % PrintState(state));
 	logger.Debug(dbText);
+	bool isTerminal = false;
+
 	switch(state)
 	{
 	case ORDER_STATE_SENT:
@@ -136,5 +142,40 @@ void CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 				SendNext();
 		}
 		break;
+	case ORDER_STATE_COMPLETE:
+		{
+			isTerminal = true;
+		}
+		break;
+	case ORDER_STATE_PARTIALLY_CANCELED:
+		{
+
+		}
+		break;
+	case ORDER_STATE_CANCELED:
+		{
+			isTerminal = true;
+		}
+		break;
+	case ORDER_STATE_PARTIALLY_FAILED:
+		{
+
+		}
+		break;
+	case ORDER_STATE_PLACE_FAILED:
+		{
+			isTerminal = true;
+		}
+		break;
+	case ORDER_STATE_WARNING:
+		{
+			isTerminal = true;
+		}
+		break;
+	default:
+		logger.Warning(boost::str(boost::format("Entering MultiLeg order UNHANDLED state %s")
+			% PrintState(state)));
 	}
+
+	return isTerminal;
 }
