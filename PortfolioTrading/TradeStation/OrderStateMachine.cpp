@@ -32,7 +32,16 @@ void COrderStateMachine::Transition( const string& orderId, COrderEvent& event )
 		COrderState* pNextState = currentState->Next(event);
 		if(pNextState != NULL)
 		{
-			pNextState->Run((iter->second).get(), &event);
+			bool isTerminated = pNextState->Run((iter->second).get(), &event);
+			
+			// If the state has no NEXT state, it's considered as terminal state
+			// And erase this order placer from map.
+			if(isTerminated)
+			{
+				logger.Debug(boost::str(boost::format("Order(%s) ENDs up at %s")
+					% orderId % ORDER_STATE_TEXT[pNextState->State()]));
+				RemovePlacer(orderId);
+			}
 		}
 		else
 		{
