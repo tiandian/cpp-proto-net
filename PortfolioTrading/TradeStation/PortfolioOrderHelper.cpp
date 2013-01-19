@@ -14,6 +14,8 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 	pMultiLegOrder->set_quantity(placeOrderCtx->quantity);
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
 	pMultiLegOrder->set_offset(trade::ML_OF_OPEN);
+	pMultiLegOrder->set_haswarn(false);
+	pMultiLegOrder->set_statusmsg("");
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
 	{
 		trade::Order* order = pMultiLegOrder->add_legs();
@@ -127,6 +129,8 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 	pMultiLegOrder->set_quantity(quantity);
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
 	pMultiLegOrder->set_offset(trade::ML_OF_CLOSE);
+	pMultiLegOrder->set_haswarn(false);
+	pMultiLegOrder->set_statusmsg("");
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
 	{
 		trade::Order* order = pMultiLegOrder->add_legs();
@@ -217,6 +221,9 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 	pMultiLegOrder->set_openorderid(mOrderId);
 	pMultiLegOrder->set_quantity(placeOrderCtx->quantity);
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
+	pMultiLegOrder->set_offset(trade::ML_OF_OPEN);
+	pMultiLegOrder->set_haswarn(false);
+	pMultiLegOrder->set_statusmsg("");
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
 	{
 		trade::Order* order = pMultiLegOrder->add_legs();
