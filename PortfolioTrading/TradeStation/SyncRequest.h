@@ -83,7 +83,6 @@ public:
 		if(iter != m_requesterMap.end())
 		{
 			iter->second->SetResult(succ, pResult);
-			m_requesterMap.erase(iter);
 		}
 	}
 

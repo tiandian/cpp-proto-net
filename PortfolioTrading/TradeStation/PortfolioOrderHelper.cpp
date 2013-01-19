@@ -13,6 +13,7 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 	pMultiLegOrder->set_openorderid(mOrderId);
 	pMultiLegOrder->set_quantity(placeOrderCtx->quantity);
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
+	pMultiLegOrder->set_offset(trade::ML_OF_OPEN);
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
 	{
 		trade::Order* order = pMultiLegOrder->add_legs();
@@ -125,6 +126,7 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 	
 	pMultiLegOrder->set_quantity(quantity);
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
+	pMultiLegOrder->set_offset(trade::ML_OF_CLOSE);
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
 	{
 		trade::Order* order = pMultiLegOrder->add_legs();

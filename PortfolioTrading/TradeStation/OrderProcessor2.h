@@ -9,12 +9,15 @@
 #include "boost/thread.hpp"
 
 class CPortfolio;
+class CTradeAgent;
 
 class COrderProcessor2 : public CTradeAgentCallback
 {
 public:
 	COrderProcessor2(void);
 	~COrderProcessor2(void);
+
+	void Initialize(CTradeAgent* pTradeAgent);
 
 	void SubmitPortfOrder(CPortfolio* pPortf, const MultiLegOrderPtr& multilegOrder);
 	COrderPlacer* CreateSingleOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes);
@@ -30,6 +33,9 @@ public:
 					 const std::string& ordSysId, 
 					 const std::string& userId,
 					 const std::string& symbol);
+
+	bool QueryAccountInfo(string* outSerializedAcctInfo);
+	void QueryPositionDetails(const string& symbol);
 
 	void PublishMultiLegOrderUpdate(trade::MultiLegOrder* pOrder);
 	void SetPushPortfolioFunc(PushMultiLegOrderFunc funcPushMLOrder);
@@ -94,5 +100,11 @@ private:
 	PushLegOrderFunc m_pushLegOrderFunc;
 	PushTradeFunc m_pushTradeFunc;
 	PushPositionDetailFunc m_pushPosiDetailFunc;
+
+	CTradeAgent* m_pTradeAgent;
+
+	boost::condition_variable m_condQryAcct;
+	boost::mutex m_mutQryAcct;
+	string m_serializedQryAcctInfo;
 };
 

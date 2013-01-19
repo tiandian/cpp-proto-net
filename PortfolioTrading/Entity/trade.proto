@@ -772,6 +772,12 @@ enum SubmitReason
 	SR_AutoSwitch = 5;
 }
 
+enum MlOrderOffset
+{
+	ML_OF_OPEN = 1;
+	ML_OF_CLOSE = 2;
+}
+
 message MultiLegOrder
 {
 	required string OrderId = 1;
@@ -783,4 +789,7 @@ message MultiLegOrder
 	required string OpenDate = 6;
 
 	required SubmitReason Reason = 7;
+	required bool HasWarn = 8;
+	required string StatusMsg = 9;
+	required MlOrderOffset Offset = 10;
 }

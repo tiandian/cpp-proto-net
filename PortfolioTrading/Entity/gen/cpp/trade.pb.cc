@@ -59,6 +59,7 @@ const ::google::protobuf::EnumDescriptor* TradeTypeType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* PriceSourceType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* ActionFlagType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* SubmitReason_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* MlOrderOffset_descriptor_ = NULL;
 
 }  // namespace
 
@@ -385,7 +386,7 @@ void protobuf_AssignDesc_trade_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(InputOrderAction));
   MultiLegOrder_descriptor_ = file->message_type(7);
-  static const int MultiLegOrder_offsets_[7] = {
+  static const int MultiLegOrder_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, orderid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, portfolioid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, quantity_),
@@ -393,6 +394,9 @@ void protobuf_AssignDesc_trade_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, openorderid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, opendate_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, reason_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, haswarn_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, statusmsg_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(MultiLegOrder, offset_),
   };
   MultiLegOrder_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -423,6 +427,7 @@ void protobuf_AssignDesc_trade_2eproto() {
   PriceSourceType_descriptor_ = file->enum_type(15);
   ActionFlagType_descriptor_ = file->enum_type(16);
   SubmitReason_descriptor_ = file->enum_type(17);
+  MlOrderOffset_descriptor_ = file->enum_type(18);
 }
 
 namespace {
@@ -617,77 +622,81 @@ void protobuf_AddDesc_trade_2eproto() {
     "\t\022\022\n\nOrderSysID\030\t \002(\t\022)\n\nActionFlag\030\n \002("
     "\0162\025.trade.ActionFlagType\022\022\n\nLimitPrice\030\013"
     " \002(\001\022\024\n\014VolumeChange\030\014 \002(\005\022\016\n\006UserID\030\r \002"
-    "(\t\022\024\n\014InstrumentID\030\016 \002(\t\"\257\001\n\rMultiLegOrd"
+    "(\t\022\024\n\014InstrumentID\030\016 \002(\t\"\371\001\n\rMultiLegOrd"
     "er\022\017\n\007OrderId\030\001 \002(\t\022\023\n\013PortfolioId\030\002 \002(\t"
     "\022\020\n\010Quantity\030\003 \002(\005\022\032\n\004Legs\030\004 \003(\0132\014.trade"
     ".Order\022\023\n\013OpenOrderId\030\005 \002(\t\022\020\n\010OpenDate\030"
     "\006 \002(\t\022#\n\006Reason\030\007 \002(\0162\023.trade.SubmitReas"
-    "on*1\n\021PosiDirectionType\022\007\n\003NET\0201\022\010\n\004LONG"
-    "\0202\022\t\n\005SHORT\0203*:\n\rHedgeFlagType\022\017\n\013SPECUL"
-    "ATION\0201\022\r\n\tARBITRAGE\0202\022\t\n\005HEDGE\0203*\221\003\n\022Or"
-    "derPriceTypeType\022\r\n\tANY_PRICE\0201\022\017\n\013LIMIT"
-    "_PRICE\0202\022\016\n\nBEST_PRICE\0203\022\016\n\nLAST_PRICE\0204"
-    "\022\035\n\031LAST_PRICE_PLUS_ONE_TICKS\0205\022\035\n\031LAST_"
-    "PRICE_PLUS_TWO_TICKS\0206\022\037\n\033LAST_PRICE_PLU"
-    "S_THREE_TICKS\0207\022\016\n\nASK_PRICE1\0208\022\035\n\031ASK_P"
-    "RICE1_PLUS_ONE_TICKS\0209\022\035\n\031ASK_PRICE1_PLU"
-    "S_TWO_TICKS\020A\022\037\n\033ASK_PRICE1_PLUS_THREE_T"
-    "ICKS\020B\022\016\n\nBID_PRICE1\020C\022\035\n\031BID_PRICE1_PLU"
-    "S_ONE_TICKS\020D\022\035\n\031BID_PRICE1_PLUS_TWO_TIC"
-    "KS\020E\022\037\n\033BID_PRICE1_PLUS_THREE_TICKS\020F*\'\n"
-    "\022TradeDirectionType\022\007\n\003BUY\0200\022\010\n\004SELL\0201*["
-    "\n\021TimeConditionType\022\n\n\006TC_IOC\0201\022\n\n\006TC_GF"
-    "S\0202\022\n\n\006TC_GFD\0203\022\n\n\006TC_GTD\0204\022\n\n\006TC_GTC\0205\022"
-    "\n\n\006TC_GFA\0206*6\n\023VolumeConditionType\022\t\n\005VC"
-    "_AV\0201\022\t\n\005VC_MV\0202\022\t\n\005VC_CV\0203*\261\004\n\027Continge"
-    "ntConditionType\022\017\n\013IMMEDIATELY\0201\022\t\n\005TOUC"
-    "H\0202\022\020\n\014TOUCH_PROFIT\0203\022\020\n\014PARKED_ORDER\0204\022"
-    "&\n\"LAST_PRICE_GREATER_THAN_STOP_PRICE\0205\022"
-    "\'\n#LAST_PRICE_GREATER_EQUAL_STOP_PRICE\0206"
-    "\022%\n!LAST_PRICE_LESSER_THAN_STOP_PRICE\0207\022"
-    "&\n\"LAST_PRICE_LESSER_EQUAL_STOP_PRICE\0208\022"
-    "%\n!ASK_PRICE_GREATER_THAN_STOP_PRICE\0209\022&"
-    "\n\"ASK_PRICE_GREATER_EQUAL_STOP_PRICE\020A\022$"
-    "\n ASK_PRICE_LESSER_THAN_STOP_PRICE\020B\022%\n!"
-    "ASK_PRICE_LESSER_EQUAL_STOP_PRICE\020C\022%\n!B"
-    "ID_PRICE_GREATER_THAN_STOP_PRICE\020D\022&\n\"BI"
-    "D_PRICE_GREATER_EQUAL_STOP_PRICE\020E\022$\n BI"
-    "D_PRICE_LESSER_THAN_STOP_PRICE\020F\022%\n!BID_"
-    "PRICE_LESSER_EQUAL_STOP_PRICE\020G*\277\001\n\024Forc"
-    "eCloseReasonType\022\023\n\017NOT_FORCE_CLOSE\0200\022\020\n"
-    "\014LACK_DEPOSIT\0201\022\036\n\032CLIENT_OVER_POSITION_"
-    "LIMIT\0202\022\036\n\032MEMBER_OVER_POSITION_LIMIT\0203\022"
-    "\020\n\014NOT_MULTIPLE\0204\022\r\n\tVIOLATION\0205\022\r\n\tFCC_"
-    "OTHER\0206\022\020\n\014PERSON_DELIV\0207*\271\001\n\025OrderSubmi"
-    "tStatusType\022\021\n\rNOT_SUBMITTED\020/\022\024\n\020INSERT"
-    "_SUBMITTED\0200\022\024\n\020CANCEL_SUBMITTED\0201\022\024\n\020MO"
-    "DIFY_SUBMITTED\0202\022\014\n\010ACCEPTED\0203\022\023\n\017INSERT"
-    "_REJECTED\0204\022\023\n\017CANCEL_REJECTED\0205\022\023\n\017MODI"
-    "FY_REJECTED\0206*5\n\017OrderSourceType\022\017\n\013PART"
-    "ICIPANT\0200\022\021\n\rADMINISTRATOR\0201*\335\001\n\017OrderSt"
-    "atusType\022\016\n\nALL_TRADED\0200\022\030\n\024PART_TRADED_"
-    "QUEUEING\0201\022\034\n\030PART_TRADED_NOT_QUEUEING\0202"
-    "\022\025\n\021NO_TRADE_QUEUEING\0203\022\031\n\025NO_TRADE_NOT_"
-    "QUEUEING\0204\022\022\n\016ORDER_CANCELED\0205\022\022\n\016STATUS"
-    "_UNKNOWN\020a\022\025\n\021ORDER_NOT_TOUCHED\020b\022\021\n\rORD"
-    "ER_TOUCHED\020c*\215\001\n\rOrderTypeType\022\020\n\014NORMAL"
-    "_ORDER\0200\022\025\n\021DERIVE_FROM_QUOTE\0201\022\033\n\027DERIV"
-    "E_FROM_COMBINATION\0202\022\017\n\013COMBINATION\0203\022\025\n"
-    "\021CONDITIONAL_ORDER\0204\022\016\n\nSWAP_ORDER\0205*;\n\017"
-    "TradingRoleType\022\r\n\tER_BROKER\0201\022\013\n\007ER_HOS"
-    "T\0202\022\014\n\010ER_MAKER\0203*\227\001\n\016OffsetFlagType\022\013\n\007"
-    "OF_OPEN\0200\022\014\n\010OF_CLOSE\0201\022\022\n\016OF_FORCE_CLOS"
-    "E\0202\022\022\n\016OF_CLOSE_TODAY\0203\022\026\n\022OF_CLOSE_YEST"
-    "ERDAY\0204\022\020\n\014OF_FORCE_OFF\0205\022\030\n\024OF_LOCAL_FO"
-    "RCE_CLOSE\0206*~\n\rTradeTypeType\022\017\n\013TRDT_COM"
-    "MON\0200\022\032\n\026TRDT_OPTIONS_EXECUTION\0201\022\014\n\010TRD"
-    "T_OTC\0202\022\024\n\020TRDT_EFP_DERIVED\0203\022\034\n\030TRDT_CO"
-    "MBINATION_DERIVED\0204*C\n\017PriceSourceType\022\023"
-    "\n\017PSRC_LAST_PRICE\0200\022\014\n\010PSRC_BUY\0201\022\r\n\tPSR"
-    "C_SELL\0202*.\n\016ActionFlagType\022\r\n\tAF_Delete\020"
-    "0\022\r\n\tAF_Modify\0203*c\n\014SubmitReason\022\r\n\tSR_M"
-    "anual\020\001\022\017\n\013SR_AutoOpen\020\002\022\017\n\013SR_StopGain\020"
-    "\003\022\017\n\013SR_StopLoss\020\004\022\021\n\rSR_AutoSwitch\020\005", 8277);
+    "on\022\017\n\007HasWarn\030\010 \002(\010\022\021\n\tStatusMsg\030\t \002(\t\022$"
+    "\n\006Offset\030\n \002(\0162\024.trade.MlOrderOffset*1\n\021"
+    "PosiDirectionType\022\007\n\003NET\0201\022\010\n\004LONG\0202\022\t\n\005"
+    "SHORT\0203*:\n\rHedgeFlagType\022\017\n\013SPECULATION\020"
+    "1\022\r\n\tARBITRAGE\0202\022\t\n\005HEDGE\0203*\221\003\n\022OrderPri"
+    "ceTypeType\022\r\n\tANY_PRICE\0201\022\017\n\013LIMIT_PRICE"
+    "\0202\022\016\n\nBEST_PRICE\0203\022\016\n\nLAST_PRICE\0204\022\035\n\031LA"
+    "ST_PRICE_PLUS_ONE_TICKS\0205\022\035\n\031LAST_PRICE_"
+    "PLUS_TWO_TICKS\0206\022\037\n\033LAST_PRICE_PLUS_THRE"
+    "E_TICKS\0207\022\016\n\nASK_PRICE1\0208\022\035\n\031ASK_PRICE1_"
+    "PLUS_ONE_TICKS\0209\022\035\n\031ASK_PRICE1_PLUS_TWO_"
+    "TICKS\020A\022\037\n\033ASK_PRICE1_PLUS_THREE_TICKS\020B"
+    "\022\016\n\nBID_PRICE1\020C\022\035\n\031BID_PRICE1_PLUS_ONE_"
+    "TICKS\020D\022\035\n\031BID_PRICE1_PLUS_TWO_TICKS\020E\022\037"
+    "\n\033BID_PRICE1_PLUS_THREE_TICKS\020F*\'\n\022Trade"
+    "DirectionType\022\007\n\003BUY\0200\022\010\n\004SELL\0201*[\n\021Time"
+    "ConditionType\022\n\n\006TC_IOC\0201\022\n\n\006TC_GFS\0202\022\n\n"
+    "\006TC_GFD\0203\022\n\n\006TC_GTD\0204\022\n\n\006TC_GTC\0205\022\n\n\006TC_"
+    "GFA\0206*6\n\023VolumeConditionType\022\t\n\005VC_AV\0201\022"
+    "\t\n\005VC_MV\0202\022\t\n\005VC_CV\0203*\261\004\n\027ContingentCond"
+    "itionType\022\017\n\013IMMEDIATELY\0201\022\t\n\005TOUCH\0202\022\020\n"
+    "\014TOUCH_PROFIT\0203\022\020\n\014PARKED_ORDER\0204\022&\n\"LAS"
+    "T_PRICE_GREATER_THAN_STOP_PRICE\0205\022\'\n#LAS"
+    "T_PRICE_GREATER_EQUAL_STOP_PRICE\0206\022%\n!LA"
+    "ST_PRICE_LESSER_THAN_STOP_PRICE\0207\022&\n\"LAS"
+    "T_PRICE_LESSER_EQUAL_STOP_PRICE\0208\022%\n!ASK"
+    "_PRICE_GREATER_THAN_STOP_PRICE\0209\022&\n\"ASK_"
+    "PRICE_GREATER_EQUAL_STOP_PRICE\020A\022$\n ASK_"
+    "PRICE_LESSER_THAN_STOP_PRICE\020B\022%\n!ASK_PR"
+    "ICE_LESSER_EQUAL_STOP_PRICE\020C\022%\n!BID_PRI"
+    "CE_GREATER_THAN_STOP_PRICE\020D\022&\n\"BID_PRIC"
+    "E_GREATER_EQUAL_STOP_PRICE\020E\022$\n BID_PRIC"
+    "E_LESSER_THAN_STOP_PRICE\020F\022%\n!BID_PRICE_"
+    "LESSER_EQUAL_STOP_PRICE\020G*\277\001\n\024ForceClose"
+    "ReasonType\022\023\n\017NOT_FORCE_CLOSE\0200\022\020\n\014LACK_"
+    "DEPOSIT\0201\022\036\n\032CLIENT_OVER_POSITION_LIMIT\020"
+    "2\022\036\n\032MEMBER_OVER_POSITION_LIMIT\0203\022\020\n\014NOT"
+    "_MULTIPLE\0204\022\r\n\tVIOLATION\0205\022\r\n\tFCC_OTHER\020"
+    "6\022\020\n\014PERSON_DELIV\0207*\271\001\n\025OrderSubmitStatu"
+    "sType\022\021\n\rNOT_SUBMITTED\020/\022\024\n\020INSERT_SUBMI"
+    "TTED\0200\022\024\n\020CANCEL_SUBMITTED\0201\022\024\n\020MODIFY_S"
+    "UBMITTED\0202\022\014\n\010ACCEPTED\0203\022\023\n\017INSERT_REJEC"
+    "TED\0204\022\023\n\017CANCEL_REJECTED\0205\022\023\n\017MODIFY_REJ"
+    "ECTED\0206*5\n\017OrderSourceType\022\017\n\013PARTICIPAN"
+    "T\0200\022\021\n\rADMINISTRATOR\0201*\335\001\n\017OrderStatusTy"
+    "pe\022\016\n\nALL_TRADED\0200\022\030\n\024PART_TRADED_QUEUEI"
+    "NG\0201\022\034\n\030PART_TRADED_NOT_QUEUEING\0202\022\025\n\021NO"
+    "_TRADE_QUEUEING\0203\022\031\n\025NO_TRADE_NOT_QUEUEI"
+    "NG\0204\022\022\n\016ORDER_CANCELED\0205\022\022\n\016STATUS_UNKNO"
+    "WN\020a\022\025\n\021ORDER_NOT_TOUCHED\020b\022\021\n\rORDER_TOU"
+    "CHED\020c*\215\001\n\rOrderTypeType\022\020\n\014NORMAL_ORDER"
+    "\0200\022\025\n\021DERIVE_FROM_QUOTE\0201\022\033\n\027DERIVE_FROM"
+    "_COMBINATION\0202\022\017\n\013COMBINATION\0203\022\025\n\021CONDI"
+    "TIONAL_ORDER\0204\022\016\n\nSWAP_ORDER\0205*;\n\017Tradin"
+    "gRoleType\022\r\n\tER_BROKER\0201\022\013\n\007ER_HOST\0202\022\014\n"
+    "\010ER_MAKER\0203*\227\001\n\016OffsetFlagType\022\013\n\007OF_OPE"
+    "N\0200\022\014\n\010OF_CLOSE\0201\022\022\n\016OF_FORCE_CLOSE\0202\022\022\n"
+    "\016OF_CLOSE_TODAY\0203\022\026\n\022OF_CLOSE_YESTERDAY\020"
+    "4\022\020\n\014OF_FORCE_OFF\0205\022\030\n\024OF_LOCAL_FORCE_CL"
+    "OSE\0206*~\n\rTradeTypeType\022\017\n\013TRDT_COMMON\0200\022"
+    "\032\n\026TRDT_OPTIONS_EXECUTION\0201\022\014\n\010TRDT_OTC\020"
+    "2\022\024\n\020TRDT_EFP_DERIVED\0203\022\034\n\030TRDT_COMBINAT"
+    "ION_DERIVED\0204*C\n\017PriceSourceType\022\023\n\017PSRC"
+    "_LAST_PRICE\0200\022\014\n\010PSRC_BUY\0201\022\r\n\tPSRC_SELL"
+    "\0202*.\n\016ActionFlagType\022\r\n\tAF_Delete\0200\022\r\n\tA"
+    "F_Modify\0203*c\n\014SubmitReason\022\r\n\tSR_Manual\020"
+    "\001\022\017\n\013SR_AutoOpen\020\002\022\017\n\013SR_StopGain\020\003\022\017\n\013S"
+    "R_StopLoss\020\004\022\021\n\rSR_AutoSwitch\020\005*0\n\rMlOrd"
+    "erOffset\022\016\n\nML_OF_OPEN\020\001\022\017\n\013ML_OF_CLOSE\020"
+    "\002", 8401);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "trade.proto", &protobuf_RegisterTypes);
   AccountInfo::default_instance_ = new AccountInfo();
@@ -1032,6 +1041,20 @@ bool SubmitReason_IsValid(int value) {
     case 3:
     case 4:
     case 5:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* MlOrderOffset_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return MlOrderOffset_descriptor_;
+}
+bool MlOrderOffset_IsValid(int value) {
+  switch(value) {
+    case 1:
+    case 2:
       return true;
     default:
       return false;
@@ -12410,6 +12433,9 @@ const int MultiLegOrder::kLegsFieldNumber;
 const int MultiLegOrder::kOpenOrderIdFieldNumber;
 const int MultiLegOrder::kOpenDateFieldNumber;
 const int MultiLegOrder::kReasonFieldNumber;
+const int MultiLegOrder::kHasWarnFieldNumber;
+const int MultiLegOrder::kStatusMsgFieldNumber;
+const int MultiLegOrder::kOffsetFieldNumber;
 #endif  // !_MSC_VER
 
 MultiLegOrder::MultiLegOrder()
@@ -12434,6 +12460,9 @@ void MultiLegOrder::SharedCtor() {
   openorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   opendate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   reason_ = 1;
+  haswarn_ = false;
+  statusmsg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  offset_ = 1;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -12453,6 +12482,9 @@ void MultiLegOrder::SharedDtor() {
   }
   if (opendate_ != &::google::protobuf::internal::kEmptyString) {
     delete opendate_;
+  }
+  if (statusmsg_ != &::google::protobuf::internal::kEmptyString) {
+    delete statusmsg_;
   }
   if (this != default_instance_) {
   }
@@ -12502,6 +12534,15 @@ void MultiLegOrder::Clear() {
       }
     }
     reason_ = 1;
+    haswarn_ = false;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (has_statusmsg()) {
+      if (statusmsg_ != &::google::protobuf::internal::kEmptyString) {
+        statusmsg_->clear();
+      }
+    }
+    offset_ = 1;
   }
   legs_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -12629,6 +12670,60 @@ bool MultiLegOrder::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(64)) goto parse_HasWarn;
+        break;
+      }
+      
+      // required bool HasWarn = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_HasWarn:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &haswarn_)));
+          set_has_haswarn();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(74)) goto parse_StatusMsg;
+        break;
+      }
+      
+      // required string StatusMsg = 9;
+      case 9: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_StatusMsg:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_statusmsg()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->statusmsg().data(), this->statusmsg().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(80)) goto parse_Offset;
+        break;
+      }
+      
+      // required .trade.MlOrderOffset Offset = 10;
+      case 10: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Offset:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (trade::MlOrderOffset_IsValid(value)) {
+            set_offset(static_cast< trade::MlOrderOffset >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(10, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -12704,6 +12799,26 @@ void MultiLegOrder::SerializeWithCachedSizes(
       7, this->reason(), output);
   }
   
+  // required bool HasWarn = 8;
+  if (has_haswarn()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(8, this->haswarn(), output);
+  }
+  
+  // required string StatusMsg = 9;
+  if (has_statusmsg()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->statusmsg().data(), this->statusmsg().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      9, this->statusmsg(), output);
+  }
+  
+  // required .trade.MlOrderOffset Offset = 10;
+  if (has_offset()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      10, this->offset(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -12770,6 +12885,27 @@ void MultiLegOrder::SerializeWithCachedSizes(
       7, this->reason(), target);
   }
   
+  // required bool HasWarn = 8;
+  if (has_haswarn()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(8, this->haswarn(), target);
+  }
+  
+  // required string StatusMsg = 9;
+  if (has_statusmsg()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->statusmsg().data(), this->statusmsg().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        9, this->statusmsg(), target);
+  }
+  
+  // required .trade.MlOrderOffset Offset = 10;
+  if (has_offset()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      10, this->offset(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -12820,6 +12956,26 @@ int MultiLegOrder::ByteSize() const {
     if (has_reason()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->reason());
+    }
+    
+    // required bool HasWarn = 8;
+    if (has_haswarn()) {
+      total_size += 1 + 1;
+    }
+    
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // required string StatusMsg = 9;
+    if (has_statusmsg()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->statusmsg());
+    }
+    
+    // required .trade.MlOrderOffset Offset = 10;
+    if (has_offset()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->offset());
     }
     
   }
@@ -12876,6 +13032,17 @@ void MultiLegOrder::MergeFrom(const MultiLegOrder& from) {
     if (from.has_reason()) {
       set_reason(from.reason());
     }
+    if (from.has_haswarn()) {
+      set_haswarn(from.haswarn());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_statusmsg()) {
+      set_statusmsg(from.statusmsg());
+    }
+    if (from.has_offset()) {
+      set_offset(from.offset());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -12893,7 +13060,7 @@ void MultiLegOrder::CopyFrom(const MultiLegOrder& from) {
 }
 
 bool MultiLegOrder::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000077) != 0x00000077) return false;
+  if ((_has_bits_[0] & 0x000003f7) != 0x000003f7) return false;
   
   for (int i = 0; i < legs_size(); i++) {
     if (!this->legs(i).IsInitialized()) return false;
@@ -12910,6 +13077,9 @@ void MultiLegOrder::Swap(MultiLegOrder* other) {
     std::swap(openorderid_, other->openorderid_);
     std::swap(opendate_, other->opendate_);
     std::swap(reason_, other->reason_);
+    std::swap(haswarn_, other->haswarn_);
+    std::swap(statusmsg_, other->statusmsg_);
+    std::swap(offset_, other->offset_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
