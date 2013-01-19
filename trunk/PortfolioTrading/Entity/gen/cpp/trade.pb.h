@@ -453,6 +453,25 @@ inline bool SubmitReason_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<SubmitReason>(
     SubmitReason_descriptor(), name, value);
 }
+enum MlOrderOffset {
+  ML_OF_OPEN = 1,
+  ML_OF_CLOSE = 2
+};
+bool MlOrderOffset_IsValid(int value);
+const MlOrderOffset MlOrderOffset_MIN = ML_OF_OPEN;
+const MlOrderOffset MlOrderOffset_MAX = ML_OF_CLOSE;
+const int MlOrderOffset_ARRAYSIZE = MlOrderOffset_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* MlOrderOffset_descriptor();
+inline const ::std::string& MlOrderOffset_Name(MlOrderOffset value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    MlOrderOffset_descriptor(), value);
+}
+inline bool MlOrderOffset_Parse(
+    const ::std::string& name, MlOrderOffset* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<MlOrderOffset>(
+    MlOrderOffset_descriptor(), name, value);
+}
 // ===================================================================
 
 class AccountInfo : public ::google::protobuf::Message {
@@ -3569,6 +3588,31 @@ class MultiLegOrder : public ::google::protobuf::Message {
   inline trade::SubmitReason reason() const;
   inline void set_reason(trade::SubmitReason value);
   
+  // required bool HasWarn = 8;
+  inline bool has_haswarn() const;
+  inline void clear_haswarn();
+  static const int kHasWarnFieldNumber = 8;
+  inline bool haswarn() const;
+  inline void set_haswarn(bool value);
+  
+  // required string StatusMsg = 9;
+  inline bool has_statusmsg() const;
+  inline void clear_statusmsg();
+  static const int kStatusMsgFieldNumber = 9;
+  inline const ::std::string& statusmsg() const;
+  inline void set_statusmsg(const ::std::string& value);
+  inline void set_statusmsg(const char* value);
+  inline void set_statusmsg(const char* value, size_t size);
+  inline ::std::string* mutable_statusmsg();
+  inline ::std::string* release_statusmsg();
+  
+  // required .trade.MlOrderOffset Offset = 10;
+  inline bool has_offset() const;
+  inline void clear_offset();
+  static const int kOffsetFieldNumber = 10;
+  inline trade::MlOrderOffset offset() const;
+  inline void set_offset(trade::MlOrderOffset value);
+  
   // @@protoc_insertion_point(class_scope:trade.MultiLegOrder)
  private:
   inline void set_has_orderid();
@@ -3583,6 +3627,12 @@ class MultiLegOrder : public ::google::protobuf::Message {
   inline void clear_has_opendate();
   inline void set_has_reason();
   inline void clear_has_reason();
+  inline void set_has_haswarn();
+  inline void clear_has_haswarn();
+  inline void set_has_statusmsg();
+  inline void clear_has_statusmsg();
+  inline void set_has_offset();
+  inline void clear_has_offset();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -3593,9 +3643,12 @@ class MultiLegOrder : public ::google::protobuf::Message {
   ::google::protobuf::int32 quantity_;
   int reason_;
   ::std::string* opendate_;
+  ::std::string* statusmsg_;
+  bool haswarn_;
+  int offset_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
   
   friend void  protobuf_AddDesc_trade_2eproto();
   friend void protobuf_AssignDesc_trade_2eproto();
@@ -11587,6 +11640,109 @@ inline void MultiLegOrder::set_reason(trade::SubmitReason value) {
   reason_ = value;
 }
 
+// required bool HasWarn = 8;
+inline bool MultiLegOrder::has_haswarn() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void MultiLegOrder::set_has_haswarn() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void MultiLegOrder::clear_has_haswarn() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void MultiLegOrder::clear_haswarn() {
+  haswarn_ = false;
+  clear_has_haswarn();
+}
+inline bool MultiLegOrder::haswarn() const {
+  return haswarn_;
+}
+inline void MultiLegOrder::set_haswarn(bool value) {
+  set_has_haswarn();
+  haswarn_ = value;
+}
+
+// required string StatusMsg = 9;
+inline bool MultiLegOrder::has_statusmsg() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void MultiLegOrder::set_has_statusmsg() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void MultiLegOrder::clear_has_statusmsg() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void MultiLegOrder::clear_statusmsg() {
+  if (statusmsg_ != &::google::protobuf::internal::kEmptyString) {
+    statusmsg_->clear();
+  }
+  clear_has_statusmsg();
+}
+inline const ::std::string& MultiLegOrder::statusmsg() const {
+  return *statusmsg_;
+}
+inline void MultiLegOrder::set_statusmsg(const ::std::string& value) {
+  set_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    statusmsg_ = new ::std::string;
+  }
+  statusmsg_->assign(value);
+}
+inline void MultiLegOrder::set_statusmsg(const char* value) {
+  set_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    statusmsg_ = new ::std::string;
+  }
+  statusmsg_->assign(value);
+}
+inline void MultiLegOrder::set_statusmsg(const char* value, size_t size) {
+  set_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    statusmsg_ = new ::std::string;
+  }
+  statusmsg_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* MultiLegOrder::mutable_statusmsg() {
+  set_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    statusmsg_ = new ::std::string;
+  }
+  return statusmsg_;
+}
+inline ::std::string* MultiLegOrder::release_statusmsg() {
+  clear_has_statusmsg();
+  if (statusmsg_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = statusmsg_;
+    statusmsg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .trade.MlOrderOffset Offset = 10;
+inline bool MultiLegOrder::has_offset() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void MultiLegOrder::set_has_offset() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void MultiLegOrder::clear_has_offset() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void MultiLegOrder::clear_offset() {
+  offset_ = 1;
+  clear_has_offset();
+}
+inline trade::MlOrderOffset MultiLegOrder::offset() const {
+  return static_cast< trade::MlOrderOffset >(offset_);
+}
+inline void MultiLegOrder::set_offset(trade::MlOrderOffset value) {
+  GOOGLE_DCHECK(trade::MlOrderOffset_IsValid(value));
+  set_has_offset();
+  offset_ = value;
+}
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -11667,6 +11823,10 @@ inline const EnumDescriptor* GetEnumDescriptor< trade::ActionFlagType>() {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< trade::SubmitReason>() {
   return trade::SubmitReason_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< trade::MlOrderOffset>() {
+  return trade::MlOrderOffset_descriptor();
 }
 
 }  // namespace google

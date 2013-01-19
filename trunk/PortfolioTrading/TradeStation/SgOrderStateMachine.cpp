@@ -123,7 +123,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 					% ParentOrderId() % Symbol()));
 				isTerminal = true;
 
-				m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegCanceledEvent());
+				m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegCanceledEvent(Symbol()));
 			}
 		}
 		break;
@@ -148,7 +148,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 			OnOrderUpdate(pSgOrderEvent->RtnOrder());
 			m_succ = true;
 			isTerminal = true;
-			m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegCompletedEvent());
+			m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegCompletedEvent(Symbol()));
 		}
 		break;
 	case ORDER_STATE_PLACE_FAILED:
@@ -185,7 +185,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 			}
 			isTerminal = true;
 
-			m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegRejectedEvent());
+			m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegRejectedEvent(Symbol()));
 		}
 		break;
 	

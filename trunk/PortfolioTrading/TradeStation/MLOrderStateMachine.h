@@ -31,6 +31,7 @@ private:
 	void Send();
 	void SendNext();
 	COrderPlacer* CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
+	void OutputStatus(const string& statusMsg);
 
 	CMLOrderStateMachine* m_pStateMachine;
 	CPortfolio* m_pPortf;
@@ -59,22 +60,35 @@ public:
 
 namespace op2
 {
-	class LegCompletedEvent : public COrderEvent
+	class CMLegOrderEvent : public COrderEvent
 	{
 	public:
-		LegCompletedEvent():COrderEvent(ORDER_EVENT_COMPLETE){}
+		CMLegOrderEvent(const std::string& symbol, ORDER_EVENT ordEvt):
+		  COrderEvent(ordEvt), m_legSymbol(symbol){}
+		virtual ~CMLegOrderEvent(){}
+
+		const string& LegSymbol(){ return m_legSymbol; }
+
+	protected:
+		std::string m_legSymbol;
 	};
 
-	class LegCanceledEvent : public COrderEvent
+	class LegCompletedEvent : public CMLegOrderEvent
 	{
 	public:
-		LegCanceledEvent():COrderEvent(ORDER_EVENT_CANCEL_SUCCESS){}
+		LegCompletedEvent(const std::string& symbol):CMLegOrderEvent(symbol, ORDER_EVENT_COMPLETE){}
 	};
 
-	class LegRejectedEvent : public COrderEvent
+	class LegCanceledEvent : public CMLegOrderEvent
 	{
 	public:
-		LegRejectedEvent():COrderEvent(ORDER_EVENT_REJECTED){}
+		LegCanceledEvent(const std::string& symbol):CMLegOrderEvent(symbol, ORDER_EVENT_CANCEL_SUCCESS){}
+	};
+
+	class LegRejectedEvent : public CMLegOrderEvent
+	{
+	public:
+		LegRejectedEvent(const std::string& symbol):CMLegOrderEvent(symbol, ORDER_EVENT_REJECTED){}
 	};
 };
 

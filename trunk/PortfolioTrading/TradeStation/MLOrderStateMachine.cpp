@@ -129,6 +129,11 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	logger.Debug(dbText);
 	bool isTerminal = false;
 
+	CMLegOrderEvent* pOrderEvent = dynamic_cast<CMLegOrderEvent*>(transEvent);
+	_ASSERT(pOrderEvent != NULL);
+	if(pOrderEvent == NULL)
+		return isTerminal;
+
 	switch(state)
 	{
 	case ORDER_STATE_SENT:
@@ -144,31 +149,68 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 		break;
 	case ORDER_STATE_COMPLETE:
 		{
+			trade::MlOrderOffset offset = m_mlOrder->offset();
+			if(offset == trade::ML_OF_OPEN)
+				m_pPortf->AddPosition(m_mlOrder);
+			else
+				m_pPortf->RemovePosition(m_mlOrder);
 			isTerminal = true;
 		}
 		break;
 	case ORDER_STATE_PARTIALLY_CANCELED:
 		{
-
+			if(m_isSequential)
+			{
+				isTerminal = true;
+				OutputStatus("Portfolio Order Canceled");
+			}
 		}
 		break;
 	case ORDER_STATE_CANCELED:
 		{
 			isTerminal = true;
+			OutputStatus("Portfolio Order Canceled");
 		}
 		break;
 	case ORDER_STATE_PARTIALLY_FAILED:
 		{
-
+			if(m_isSequential)
+			{
+				isTerminal = true;
+				OutputStatus("Portfolio order place failed");
+			}
 		}
 		break;
 	case ORDER_STATE_PLACE_FAILED:
 		{
 			isTerminal = true;
+			OutputStatus("Portfolio order place failed");
 		}
 		break;
 	case ORDER_STATE_WARNING:
 		{
+			m_mlOrder->set_haswarn(true);
+
+			string warnMsg;
+			ORDER_EVENT evt = pOrderEvent->Event();
+			switch(evt)
+			{
+			case ORDER_EVENT_CANCEL_SUCCESS:
+				warnMsg = "Leg Order Canceled though prior order filled";
+				break;
+			case ORDER_EVENT_SUBMIT_FAILED:
+				warnMsg = "Leg Order Failed though prior order filled";
+				break;
+			case ORDER_EVENT_COMPLETE:
+				warnMsg = "A Leg Order gets Filled but prior order doesn't";
+				break;
+			default:
+				logger.Warning(
+					boost::str(boost::format(
+					"MultiLeg Order enter WARN state due to unexpected event(%s)")
+					% PrintEvent(evt)));
+			}
+			OutputStatus(warnMsg);
 			isTerminal = true;
 		}
 		break;
@@ -178,4 +220,10 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	}
 
 	return isTerminal;
+}
+
+void CMLOrderPlacer::OutputStatus(const string& statusMsg)
+{
+	m_mlOrder->set_statusmsg(statusMsg);
+	m_pOrderProcessor->PublishMultiLegOrderUpdate(m_mlOrder.get());
 }
