@@ -23,7 +23,7 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 		order->set_brokerid(placeOrderCtx->brokerId);
 		order->set_investorid(placeOrderCtx->investorId);
 		order->set_instrumentid(leg->Symbol());
-		//order->set_orderref(NextOrderRef());
+		order->set_orderref("");
 		
 		entity::PosiDirectionType side = leg->Side();
 		
@@ -138,7 +138,7 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 		order->set_brokerid(placeOrderCtx->brokerId);
 		order->set_investorid(placeOrderCtx->investorId);
 		order->set_instrumentid(leg->Symbol());
-		//order->set_orderref(NextOrderRef());
+		order->set_orderref("");
 
 		entity::PosiDirectionType side = leg->Side();
 
@@ -233,6 +233,7 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 		order->set_brokerid(placeOrderCtx->brokerId);
 		order->set_investorid(placeOrderCtx->investorId);
 		order->set_instrumentid(leg->Symbol());
+		order->set_orderref("");
 		
 		entity::PosiDirectionType side = leg->Side();
 

@@ -21,9 +21,9 @@ m_clientConnected(false)
 	m_orderProcessor.SetPushPositionDetailFunc(boost::bind(&CClientAgent::OnPostionDetailReturned, this, _1));
 	m_orderProcessor.SetPushOrderFunc(boost::bind(&CClientAgent::OnLegOrderUpdated, this, _1, _2, _3));
 
-	m_orderProcessor.SetPushPositionChangeFunc(boost::bind(&CPortfolioManager::PortfolioPositionChange, &m_portfolioMgr, _1));
-	m_orderProcessor.SetPushResubmitterChangeFunc(boost::bind(&CPortfolioManager::ChangePortfolioResubmitter, &m_portfolioMgr, _1, _2, _3));
-	m_orderProcessor.SetPortfolioPlaceOrderDoneFunc(boost::bind(&CPortfolioManager::PortfolioPlaceOrderDone, &m_portfolioMgr, _1));
+	//m_orderProcessor.SetPushPositionChangeFunc(boost::bind(&CPortfolioManager::PortfolioPositionChange, &m_portfolioMgr, _1));
+	//m_orderProcessor.SetPushResubmitterChangeFunc(boost::bind(&CPortfolioManager::ChangePortfolioResubmitter, &m_portfolioMgr, _1, _2, _3));
+	//m_orderProcessor.SetPortfolioPlaceOrderDoneFunc(boost::bind(&CPortfolioManager::PortfolioPlaceOrderDone, &m_portfolioMgr, _1));
 }
 
 CClientAgent::~CClientAgent(void)
@@ -156,10 +156,11 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty, trade::SubmitReason
 
 	portf->BeginPlaceOrder();
 	// send to order processor
-	if(enablePrefer)
-		m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
-	else
-		m_orderProcessor.SubmitOrder(multilegOrder);
+	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//if(enablePrefer)
+	//	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
+	//else
+	//	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
 void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, trade::SubmitReason submitReason, string& msg)
@@ -181,10 +182,11 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 
 	portf->BeginPlaceOrder();
 
-	if(enablePrefer)
-		m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
-	else
-		m_orderProcessor.SubmitOrder(multilegOrder);
+	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//if(enablePrefer)
+	//	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
+	//else
+	//	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
 void CClientAgent::SimpleCloseOrderPosition(const string& portfolioId, trade::SubmitReason submitReason)
@@ -221,10 +223,11 @@ void CClientAgent::ClosePosition(const string& portfolioId, int quantity, trade:
 
 	portf->BeginPlaceOrder();
 
-	if(enablePrefer)
-		m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
-	else
-		m_orderProcessor.SubmitOrder(multilegOrder);
+	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//if(enablePrefer)
+	//	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
+	//else
+	//	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
 void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, entity::PosiDirectionType existingPosition, int qty, trade::SubmitReason submitReason)
@@ -243,7 +246,8 @@ void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, 
 
 	portf->BeginPlaceOrder();
 
-	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
+	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
 }
 
 bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)
@@ -370,8 +374,9 @@ boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol,
 	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
 	placeOrderCtx.limitPriceType = entity::Opposite;
 
+	return boost::make_tuple(true, string());
 	//return m_orderProcessor.ManualCloseOrder(symbol, direction, offsetFlag, &placeOrderCtx);
-	return m_orderProcessor.PlaceOrder(symbol, direction, offsetFlag, &placeOrderCtx);
+	//return m_orderProcessor.PlaceOrder(symbol, direction, offsetFlag, &placeOrderCtx);
 }
 
 void CClientAgent::VirtualOpenPosition( const string& pid, int quantity )

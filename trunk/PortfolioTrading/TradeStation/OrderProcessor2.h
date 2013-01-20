@@ -84,6 +84,8 @@ public:
 
 	//////////////////////////////////////////////////////////////////////////
 
+	bool IsReadyForSubmit(){ return !m_bIsSubmitting; }
+
 private:
 
 	static void PrintOrderStatus(trade::Order* order);
@@ -95,6 +97,7 @@ private:
 	int m_maxOrderRef;
 	boost::mutex m_mutOrdRefIncr;
 	boost::condition_variable m_condSubmit;
+	bool m_bIsSubmitting;
 
 	PushMultiLegOrderFunc m_pushMultiOrdFunc;
 	PushLegOrderFunc m_pushLegOrderFunc;

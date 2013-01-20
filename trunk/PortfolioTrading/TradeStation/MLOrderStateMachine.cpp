@@ -15,6 +15,7 @@ typedef InputOrderVector* InputOrderVectorPtr;
 
 CMLOrderStateMachine::CMLOrderStateMachine(void)
 {
+	Initialize();
 }
 
 
@@ -22,7 +23,7 @@ CMLOrderStateMachine::~CMLOrderStateMachine(void)
 {
 }
 
-void CMLOrderStateMachine::Init()
+void CMLOrderStateMachine::Initialize()
 {
 	OrderStatePtr sent(new OrderSent);
 	m_orderStates.insert(make_pair(sent->State(), sent));
@@ -129,11 +130,6 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	logger.Debug(dbText);
 	bool isTerminal = false;
 
-	CMLegOrderEvent* pOrderEvent = dynamic_cast<CMLegOrderEvent*>(transEvent);
-	_ASSERT(pOrderEvent != NULL);
-	if(pOrderEvent == NULL)
-		return isTerminal;
-
 	switch(state)
 	{
 	case ORDER_STATE_SENT:
@@ -190,6 +186,11 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	case ORDER_STATE_WARNING:
 		{
 			m_mlOrder->set_haswarn(true);
+
+			CMLegOrderEvent* pOrderEvent = dynamic_cast<CMLegOrderEvent*>(transEvent);
+			_ASSERT(pOrderEvent != NULL);
+			if(pOrderEvent == NULL)
+				return isTerminal;
 
 			string warnMsg;
 			ORDER_EVENT evt = pOrderEvent->Event();

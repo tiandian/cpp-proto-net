@@ -9,7 +9,7 @@ namespace PortfolioTrading.Modules.Portfolio
 {
     public class OrderVM : NotificationObject
     {
-        public string OrderRef { get; set; }
+        public string OrderUid { get; private set; }
 
         #region Symbol
         private string _symbol;
@@ -182,9 +182,9 @@ namespace PortfolioTrading.Modules.Portfolio
         #endregion
 
 
-        public void From(trade.Order order)
+        public void From(trade.Order order, bool fromParent = false)
         {
-            OrderRef = order.OrderRef;
+            OrderUid = GetOrderUid(order);
 
             Symbol = order.InstrumentID;
             Direction = GetDirection(order.Direction);
@@ -198,9 +198,12 @@ namespace PortfolioTrading.Modules.Portfolio
             OrderPriceType = GetPriceType(order.OrderPriceType);
             LimitPrice = order.LimitPrice;
 
-            if (order.OrderSubmitStatus > trade.OrderSubmitStatusType.ACCEPTED)
+            if (!fromParent)
             {
-                EventLogger.Write("{0} {1} 被拒绝 -({2})", Direction, Symbol, order.StatusMsg);
+                if (order.OrderSubmitStatus > trade.OrderSubmitStatusType.ACCEPTED)
+                {
+                    EventLogger.Write("{0} {1} 被拒绝 -({2})", Direction, Symbol, order.StatusMsg);
+                }
             }
         }
 
@@ -369,6 +372,13 @@ namespace PortfolioTrading.Modules.Portfolio
                 default:
                     return "未知";
             }
+        }
+
+        public static string GetOrderUid(trade.Order order)
+        {
+            string directionIndicator = order.Direction == trade.TradeDirectionType.BUY ?
+                "B" : "S";
+            return string.Format("{0}-{1}", directionIndicator, order.InstrumentID);
         }
     }
 }

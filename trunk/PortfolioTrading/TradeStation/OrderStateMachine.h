@@ -31,8 +31,9 @@ typedef OrderStateMap::iterator OrderStateMapIter;
 class COrderStateMachine
 {
 public:
-	COrderStateMachine(void);
-	virtual ~COrderStateMachine(void);
+	COrderStateMachine(void)
+	{}
+	virtual ~COrderStateMachine(void){}
 
 	void AddPlacer(const OrderPlacerPtr& placer)
 	{
@@ -56,11 +57,10 @@ public:
 		return NULL;
 	}
 
-	virtual void Init() = 0;
-
 	virtual void Transition(const string& orderId, COrderEvent& event);
 
 protected:
+	
 	OrderPlacerMap m_orderPlacerMap;
 	boost::recursive_mutex m_mut;
 

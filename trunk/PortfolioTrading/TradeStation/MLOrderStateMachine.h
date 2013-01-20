@@ -19,7 +19,10 @@ public:
 		:m_pStateMachine(pStateMachine), m_pPortf(pPortf), m_sendingIdx(-1),
 		m_isSequential(false), m_mlOrder(mlOrder), m_pOrderProcessor(pOrdProcessor)
 	{}
-	~CMLOrderPlacer(){}
+	~CMLOrderPlacer()
+	{
+
+	}
 
 	bool OnEnter(ORDER_STATE state, COrderEvent* transEvent);
 
@@ -54,7 +57,7 @@ public:
 		return new CMLOrderPlacer(this, pPortf, mlOrder, pOrdProc);
 	}
 
-	void Init();
+	virtual void Initialize();
 	void Transition(const string& orderId, COrderEvent& event);
 };
 
@@ -88,7 +91,7 @@ namespace op2
 	class LegRejectedEvent : public CMLegOrderEvent
 	{
 	public:
-		LegRejectedEvent(const std::string& symbol):CMLegOrderEvent(symbol, ORDER_EVENT_REJECTED){}
+		LegRejectedEvent(const std::string& symbol):CMLegOrderEvent(symbol, ORDER_EVENT_SUBMIT_FAILED){}
 	};
 };
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using System.Collections.ObjectModel;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -180,23 +181,30 @@ namespace PortfolioTrading.Modules.Portfolio
                     _orders.Add(new OrderVM());
 
                 var legOrder = mlOrder.Legs[i];
-                _orders[i].From(legOrder);
+                _orders[i].From(legOrder, true);
                 allFinished = _orders[i].IsFinished;
             }
 
             IsAllFinished = allFinished;
+
+            if (!string.IsNullOrEmpty(mlOrder.StatusMsg))
+            {
+                EventLogger.Write("组合下单({0}) - {1}", mlOrder.OrderId, mlOrder.StatusMsg);
+            }
         }
 
         public void From(string ordRef, trade.Order order)
         {
-            int idx = LastOrder.Legs.FindIndex(l => l.OrderRef == ordRef);
+            int idx = LastOrder.Legs.FindIndex(
+                l => l.InstrumentID == order.InstrumentID 
+                    && l.Direction == order.Direction);
             if (idx > -1)
             {
                 LastOrder.Legs[idx] = order;
 
                 foreach (var oVm in _orders)
                 {
-                    if (oVm.OrderRef == ordRef)
+                    if (oVm.OrderUid == OrderVM.GetOrderUid(order))
                     {
                         oVm.From(order);
                         break;
