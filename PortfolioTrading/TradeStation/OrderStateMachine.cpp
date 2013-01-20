@@ -8,15 +8,6 @@
 extern const char* ORDER_STATE_TEXT[];
 extern const char* ORDER_EVENT_TEXT[];
 
-COrderStateMachine::COrderStateMachine(void)
-{
-}
-
-
-COrderStateMachine::~COrderStateMachine(void)
-{
-}
-
 void COrderStateMachine::Transition( const string& orderId, COrderEvent& event )
 {
 	boost::recursive_mutex::scoped_lock lock(m_mut);

@@ -1729,6 +1729,27 @@ namespace trade
       get { return _Reason; }
       set { _Reason = value; }
     }
+    private bool _HasWarn;
+    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"HasWarn", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool HasWarn
+    {
+      get { return _HasWarn; }
+      set { _HasWarn = value; }
+    }
+    private string _StatusMsg;
+    [global::ProtoBuf.ProtoMember(9, IsRequired = true, Name=@"StatusMsg", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string StatusMsg
+    {
+      get { return _StatusMsg; }
+      set { _StatusMsg = value; }
+    }
+    private trade.MlOrderOffset _Offset;
+    [global::ProtoBuf.ProtoMember(10, IsRequired = true, Name=@"Offset", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public trade.MlOrderOffset Offset
+    {
+      get { return _Offset; }
+      set { _Offset = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -2140,6 +2161,17 @@ namespace trade
             
       [global::ProtoBuf.ProtoEnum(Name=@"SR_AutoSwitch", Value=5)]
       SR_AutoSwitch = 5
+    }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"MlOrderOffset")]
+    public enum MlOrderOffset
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"ML_OF_OPEN", Value=1)]
+      ML_OF_OPEN = 1,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"ML_OF_CLOSE", Value=2)]
+      ML_OF_CLOSE = 2
     }
   
 }

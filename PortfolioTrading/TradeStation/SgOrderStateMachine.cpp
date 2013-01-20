@@ -9,7 +9,7 @@
 
 using namespace op2;
 
-trade::Order* GetOrderBySymbol(trade::MultiLegOrder* mlOrder, const string& symbol)
+trade::Order* GetOrderBySymbol(trade::MultiLegOrder* mlOrder, const string& symbol, trade::TradeDirectionType direction)
 {
 	trade::Order* pOrdFound = NULL;
 	int count = mlOrder->legs_size();
@@ -17,7 +17,7 @@ trade::Order* GetOrderBySymbol(trade::MultiLegOrder* mlOrder, const string& symb
 	for(int i = 0; i < count; ++i)
 	{
 		trade::Order* pOrd = legs->Mutable(i);
-		if(pOrd->instrumentid() == symbol)
+		if(pOrd->instrumentid() == symbol && pOrd->direction() == direction)
 		{
 			// find it
 			pOrdFound = pOrd;
@@ -29,6 +29,7 @@ trade::Order* GetOrderBySymbol(trade::MultiLegOrder* mlOrder, const string& symb
 
 CSgOrderStateMachine::CSgOrderStateMachine(void)
 {
+	Initialize();
 }
 
 
@@ -36,7 +37,7 @@ CSgOrderStateMachine::~CSgOrderStateMachine(void)
 {
 }
 
-void CSgOrderStateMachine::Init()
+void CSgOrderStateMachine::Initialize()
 {
 	OrderStatePtr sent(new OrderSent);
 	m_orderStates.insert(make_pair(sent->State(), sent));
@@ -77,10 +78,14 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	logger.Debug(dbText);
 	bool isTerminal = false;
 
-	CSgOrderEvent* pSgOrderEvent = dynamic_cast<CSgOrderEvent*>(transEvent);
-	_ASSERT(pSgOrderEvent != NULL);
-	if(pSgOrderEvent == NULL)
-		return isTerminal;
+	CSgOrderEvent* pSgOrderEvent = NULL;
+	if(ORDER_STATE_SENT != state)
+	{
+		pSgOrderEvent = dynamic_cast<CSgOrderEvent*>(transEvent);
+		_ASSERT(pSgOrderEvent != NULL);
+		if(pSgOrderEvent == NULL)
+			return isTerminal;
+	}
 
 	switch(state)
 	{
@@ -134,12 +139,15 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 			{
 				OnOrderUpdate(pOrd);
 
-				const std::string& ordRef = pOrd->orderref();
-				const std::string& exchId = pOrd->exchangeid();
-				const std::string& ordSysId = pOrd->ordersysid(); 
-				const std::string& userId = pOrd->userid();
-				const std::string& symbol = pOrd->instrumentid();
-				m_pOrderProcessor->CancelOrder(ordRef, exchId, ordSysId, userId, symbol);
+				if(!m_allowPending)
+				{
+					const std::string& ordRef = pOrd->orderref();
+					const std::string& exchId = pOrd->exchangeid();
+					const std::string& ordSysId = pOrd->ordersysid(); 
+					const std::string& userId = pOrd->userid();
+					const std::string& symbol = pOrd->instrumentid();
+					m_pOrderProcessor->CancelOrder(ordRef, exchId, ordSysId, userId, symbol);
+				}
 			}
 		}
 		break;
@@ -160,28 +168,32 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 				trade::Order* pOrd = pSgOrderEvent->RtnOrder();
 				if(pOrd != NULL)
 				{
-					const string& status = pOrd->statusmsg();
-					if(!status.empty())
-					{
-						GB2312ToUTF_8(m_errorMsg, status.c_str());
-					}
+					OnOrderUpdate(pOrd);
 				}
 				else
 				{
+					trade::Order* pLegOrder = GetOrderBySymbol(m_pMultiLegOrder, 
+						m_pInputOrder->instrumentid(), m_pInputOrder->direction());
+
+					pLegOrder->set_orderref(m_currentOrdRef);
+					pLegOrder->set_ordersubmitstatus(trade::INSERT_REJECTED);
 					const string& errorMsg = pSgOrderEvent->StatusMsg();
-					if(errorMsg.empty())
+					if(!errorMsg.empty())
 					{
-						m_errorMsg = "Order not completed";
+						GB2312ToUTF_8(m_errorMsg, errorMsg.c_str());
 					}
 					else
 					{
-						m_errorMsg = errorMsg;
+						m_errorMsg = "Order not completed";
 					}
+					pLegOrder->set_statusmsg(m_errorMsg);
+					m_pOrderProcessor->PublishOrderUpdate(m_pMultiLegOrder->portfolioid(), 
+						m_pMultiLegOrder->orderid(), pLegOrder);
 				}
 			}
 			else
 			{
-				m_errorMsg = "Order not completed";
+				m_errorMsg = "Order not completed due to unexpected event";
 			}
 			isTerminal = true;
 
@@ -201,7 +213,9 @@ void CSgOrderPlacer::OnOrderUpdate( trade::Order* pOrd )
 {
 	if(pOrd != NULL)
 	{
-		trade::Order* pLegOrder = GetOrderBySymbol(m_pMultiLegOrder, pOrd->instrumentid());
+		trade::Order* pLegOrder = GetOrderBySymbol(m_pMultiLegOrder, pOrd->instrumentid(), pOrd->direction());
+
+		pLegOrder->CopyFrom(*pOrd);
 
 		string ordStatusMsg;
 		GB2312ToUTF_8(ordStatusMsg, pOrd->statusmsg().c_str());

@@ -9,7 +9,8 @@
 
 COrderProcessor2::COrderProcessor2(void):
 m_pTradeAgent(NULL),
-m_maxOrderRef(0)
+m_maxOrderRef(0),
+m_bIsSubmitting(false)
 {
 }
 
@@ -156,9 +157,11 @@ int COrderProcessor2::LockForSubmit( string& outOrdRef )
 {
 	int retOrderRef = -1;
 	boost::unique_lock<boost::mutex> lock(m_mutOrdRefIncr);
-	if(m_condSubmit.timed_wait(lock, boost::posix_time::seconds(3)))
+	if(m_condSubmit.timed_wait(lock, boost::posix_time::seconds(3), 
+		boost::bind(&COrderProcessor2::IsReadyForSubmit, this)))
 	{
 		retOrderRef = GenerateOrderRef(outOrdRef);
+		m_bIsSubmitting = true;
 	}
 	else
 		logger.Warning("LOCK for submit order TIME OUT!");
@@ -170,6 +173,7 @@ bool COrderProcessor2::SubmitAndUnlock( trade::InputOrder* pOrder )
 {
 	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
 	bool succ = SubmitOrderToTradeAgent(pOrder);
+	m_bIsSubmitting = false;
 	m_condSubmit.notify_one();
 	return succ;
 }
@@ -177,10 +181,10 @@ bool COrderProcessor2::SubmitAndUnlock( trade::InputOrder* pOrder )
 int COrderProcessor2::GenerateOrderRef( string& outOrdRef )
 {
 	static char orderRef[10];
-	sprintf_s(orderRef, "%d", m_maxOrderRef++);
+	sprintf_s(orderRef, "%d", m_maxOrderRef);
 	outOrdRef = orderRef;
-
-	return m_maxOrderRef;
+	int currOrdRef = m_maxOrderRef++;
+	return currOrdRef;
 }
 
 bool COrderProcessor2::SubmitOrderToTradeAgent( trade::InputOrder* pOrder )

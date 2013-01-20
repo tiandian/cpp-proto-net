@@ -25,12 +25,15 @@ public:
 					m_pMultiLegOrder(pMultiLegOrder),
 					m_pInputOrder(inputOrder),
 					m_maxRetryTimes(maxRetryTimes),
-					m_submitTimes(0), m_succ(false),
+					m_submitTimes(0), m_succ(false), m_allowPending(false),
 					m_pOrderProcessor(pOrderProc)
 	{
 		GetOrderUid(inputOrder.get(), m_sgOrderUid);
 	}
-	~CSgOrderPlacer(){}
+	~CSgOrderPlacer()
+	{
+
+	}
 
 	const string& ParentOrderId(){ return m_pMultiLegOrder->orderid(); }
 	const string& Symbol() { return m_pInputOrder->instrumentid(); }
@@ -57,6 +60,7 @@ private:
 	int m_submitTimes;
 	bool m_succ;
 	string m_errorMsg;
+	bool m_allowPending;
 };
 
 class CSgOrderStateMachine : public COrderStateMachine
@@ -74,7 +78,7 @@ public:
 		return new CSgOrderPlacer(this, pPortfolio, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
 	}
 
-	void Init();
+	virtual void Initialize();
 	void Transition(const string& orderId, COrderEvent& event);
 };
 
