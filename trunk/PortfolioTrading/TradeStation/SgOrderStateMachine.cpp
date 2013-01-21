@@ -9,6 +9,8 @@
 
 using namespace op2;
 
+string CSgOrderPlacer::EmptyParentOrderId;
+
 trade::Order* GetOrderBySymbol(trade::MultiLegOrder* mlOrder, const string& symbol, trade::TradeDirectionType direction)
 {
 	trade::Order* pOrdFound = NULL;
@@ -128,7 +130,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 					% ParentOrderId() % Symbol()));
 				isTerminal = true;
 
-				m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegCanceledEvent(Symbol()));
+				RaiseMultiLegOrderEvent(LegCanceledEvent(Symbol()));
 			}
 		}
 		break;
@@ -156,7 +158,8 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 			OnOrderUpdate(pSgOrderEvent->RtnOrder());
 			m_succ = true;
 			isTerminal = true;
-			m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegCompletedEvent(Symbol()));
+
+			RaiseMultiLegOrderEvent(LegCompletedEvent(Symbol()));
 		}
 		break;
 	case ORDER_STATE_PLACE_FAILED:
@@ -165,31 +168,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 
 			if(pSgOrderEvent != NULL)
 			{
-				trade::Order* pOrd = pSgOrderEvent->RtnOrder();
-				if(pOrd != NULL)
-				{
-					OnOrderUpdate(pOrd);
-				}
-				else
-				{
-					trade::Order* pLegOrder = GetOrderBySymbol(m_pMultiLegOrder, 
-						m_pInputOrder->instrumentid(), m_pInputOrder->direction());
-
-					pLegOrder->set_orderref(m_currentOrdRef);
-					pLegOrder->set_ordersubmitstatus(trade::INSERT_REJECTED);
-					const string& errorMsg = pSgOrderEvent->StatusMsg();
-					if(!errorMsg.empty())
-					{
-						GB2312ToUTF_8(m_errorMsg, errorMsg.c_str());
-					}
-					else
-					{
-						m_errorMsg = "Order not completed";
-					}
-					pLegOrder->set_statusmsg(m_errorMsg);
-					m_pOrderProcessor->PublishOrderUpdate(m_pMultiLegOrder->portfolioid(), 
-						m_pMultiLegOrder->orderid(), pLegOrder);
-				}
+				OnOrderPlaceFailed(pSgOrderEvent);
 			}
 			else
 			{
@@ -197,7 +176,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 			}
 			isTerminal = true;
 
-			m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), LegRejectedEvent(Symbol()));
+			RaiseMultiLegOrderEvent(LegRejectedEvent(Symbol()));
 		}
 		break;
 	
@@ -253,4 +232,80 @@ void CSgOrderPlacer::ModifyOrderPrice()
 		}
 	}
 	
+}
+
+void CSgOrderPlacer::RaiseMultiLegOrderEvent( COrderEvent& orderEvent )
+{
+	m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), orderEvent);
+}
+
+void CSgOrderPlacer::OnOrderPlaceFailed( COrderEvent* pOrdEvent )
+{
+	CSgOrderEvent* pSgOrderEvent = dynamic_cast<CSgOrderEvent*>(pOrdEvent);
+	trade::Order* pOrd = pSgOrderEvent->RtnOrder();
+	if(pOrd != NULL)
+	{
+		OnOrderUpdate(pOrd);
+	}
+	else
+	{
+		trade::Order* pLegOrder = GetOrderBySymbol(m_pMultiLegOrder, 
+			m_pInputOrder->instrumentid(), m_pInputOrder->direction());
+
+		pLegOrder->set_orderref(m_currentOrdRef);
+		pLegOrder->set_ordersubmitstatus(trade::INSERT_REJECTED);
+		const string& errorMsg = pSgOrderEvent->StatusMsg();
+		if(!errorMsg.empty())
+		{
+			GB2312ToUTF_8(m_errorMsg, errorMsg.c_str());
+		}
+		else
+		{
+			m_errorMsg = "Order not completed";
+		}
+		pLegOrder->set_statusmsg(m_errorMsg);
+
+		m_pOrderProcessor->PublishOrderUpdate(m_pMultiLegOrder->portfolioid(), 
+			m_pMultiLegOrder->orderid(), pLegOrder);
+	}
+}
+
+void CManualSgOrderPlacer::ModifyOrderPrice()
+{
+	entity::Quote* pQuote = NULL;
+	bool succ = m_pOrderProcessor->QuerySymbol(Symbol(), &pQuote);
+	if(succ)
+	{
+		trade::TradeDirectionType direction = m_pInputOrder->direction();
+		double origLmtPx = m_pInputOrder->limitprice();
+		if(direction == trade::BUY)
+		{
+			double ask = pQuote->ask();
+			logger.Trace(boost::str(boost::format("Buy: Ask(%f) ?> Lmt Px(%f)")
+				% ask % origLmtPx));
+			logger.Trace(boost::str(boost::format("Modify order(%s): Buy @ %f")
+				% Symbol() % ask));
+			m_pInputOrder->set_limitprice(ask);
+		}
+		else if(direction == trade::SELL)
+		{
+			double bid = pQuote->bid();
+			logger.Trace(boost::str(boost::format("Sell: Bid(%f) ?< Lmt Px(%f)")
+				% bid % origLmtPx));
+			logger.Trace(boost::str(boost::format("Modify order(%s): Sell @ %f")
+				% Symbol() % bid));
+			m_pInputOrder->set_limitprice(bid);
+		}
+	}
+	else
+	{
+		logger.Warning(boost::str(boost::format("Cannot query quote %s") % Symbol()));
+	}
+}
+
+bool CManualSgOrderPlacer::DoAndWait()
+{
+	Do();
+
+	return m_succ;
 }

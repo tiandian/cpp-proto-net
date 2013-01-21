@@ -5,8 +5,10 @@
 #include "MLOrderStateMachine.h"
 #include "SgOrderStateMachine.h"
 #include "OrderProcPushFuncDef.h"
+#include "PortfolioOrderHelper.h"
 
 #include "boost/thread.hpp"
+#include <boost/tuple/tuple.hpp>
 
 class CPortfolio;
 class CTradeAgent;
@@ -33,6 +35,12 @@ public:
 					 const std::string& ordSysId, 
 					 const std::string& userId,
 					 const std::string& symbol);
+
+	boost::tuple<bool, string> PlaceOrder( const string& symbol, 
+										   trade::TradeDirectionType direction, 
+										   trade::OffsetFlagType offsetFlag, 
+										   PlaceOrderContext* placeOrderCtx);
+	bool QuerySymbol( const std::string& symbol, entity::Quote** ppQuote );
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
 	void QueryPositionDetails(const string& symbol);
@@ -90,6 +98,8 @@ private:
 
 	static void PrintOrderStatus(trade::Order* order);
 	static bool GetOrderEvent(trade::Order* order, COrderEvent** ppOrderEvt);
+	
+	trade::InputOrder* BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
 
 	CMLOrderStateMachine m_mlOrderStateMachine;
 	CSgOrderStateMachine m_sgOrderStateMachine;

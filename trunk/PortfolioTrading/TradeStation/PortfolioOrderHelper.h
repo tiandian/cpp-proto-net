@@ -25,4 +25,4 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, const std::str
 
 int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders);
 
-trade::InputOrder* BuildCloseOrder(const string& symbol, double limitPrice, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
+trade::InputOrder* BuildSingleOrder(const string& symbol, double limitPrice, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);

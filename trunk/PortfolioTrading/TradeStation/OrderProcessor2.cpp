@@ -3,6 +3,7 @@
 #include "globalmembers.h"
 #include "orderhelper.h"
 #include "TradeAgent.h"
+#include "charsetconvert.h"
 
 #include <boost/format.hpp>
 
@@ -279,4 +280,47 @@ bool COrderProcessor2::QueryAccountInfo( string* outSerializedAcctInfo )
 void COrderProcessor2::QueryPositionDetails( const string& symbol )
 {
 	m_pTradeAgent->QueryPositionDetails(symbol);
+}
+
+trade::InputOrder* COrderProcessor2::BuildCloseOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
+{
+	entity::Quote* pQuote = NULL;
+	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
+	if(succ)
+	{
+		logger.Info(boost::str(boost::format("Query Quote %s: %d") 
+			% symbol.c_str() % pQuote->last()));
+
+		double limitPrice = direction == trade::SELL ? pQuote->bid(): pQuote->ask();
+
+		trade::InputOrder* closeOrder(
+			BuildSingleOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
+		
+		delete pQuote;
+
+		return closeOrder;
+	}
+	else
+	{
+		logger.Warning(boost::str(boost::format("Cannot query quote %s") % symbol));
+	}
+	return NULL;
+}
+
+boost::tuple<bool, string> COrderProcessor2::PlaceOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
+{
+	boost::shared_ptr<trade::InputOrder> pInputOrder(BuildCloseOrder(symbol, direction, offsetFlag, placeOrderCtx));
+	CManualSgOrderPlacer* placer = m_sgOrderStateMachine.CreateManualPlacer(pInputOrder, 2, this);
+	
+	bool succ = placer->DoAndWait();
+
+	string errMsg;
+	GB2312ToUTF_8(errMsg, placer->GetError().c_str());
+
+	return boost::make_tuple(succ, errMsg);
+}
+
+bool COrderProcessor2::QuerySymbol( const std::string& symbol, entity::Quote** ppQuote )
+{
+	return m_pTradeAgent->QuerySymbol(symbol, ppQuote);
 }

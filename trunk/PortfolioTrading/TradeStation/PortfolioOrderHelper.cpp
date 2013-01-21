@@ -343,7 +343,7 @@ int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::share
 	return genInputOrders->size();
 }
 
-trade::InputOrder* BuildCloseOrder(const string& symbol, double limitPrice, 
+trade::InputOrder* BuildSingleOrder(const string& symbol, double limitPrice, 
 	trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag,
 	PlaceOrderContext* placeOrderCtx)
 {
@@ -352,7 +352,7 @@ trade::InputOrder* BuildCloseOrder(const string& symbol, double limitPrice,
 	order->set_investorid(placeOrderCtx->investorId);
 	order->set_instrumentid(symbol);
 
-	//order->set_orderref(NextOrderRef());
+	order->set_orderref("");
 	order->set_direction(direction);
 
 	static char CombOffset[1];

@@ -35,7 +35,7 @@ public:
 
 	}
 
-	const string& ParentOrderId(){ return m_pMultiLegOrder->orderid(); }
+	const string& ParentOrderId(){ return m_pMultiLegOrder != NULL ? m_pMultiLegOrder->orderid() : EmptyParentOrderId; }
 	const string& Symbol() { return m_pInputOrder->instrumentid(); }
 	const string& Id(){ return m_currentOrdRef; }
 	const string& CompositeId() { return m_sgOrderUid; }
@@ -44,9 +44,13 @@ public:
 
 	void Do();
 
-private:
-	void OnOrderUpdate(trade::Order* pOrd);
-	void ModifyOrderPrice();
+protected:
+	virtual void RaiseMultiLegOrderEvent(COrderEvent& orderEvent);
+	virtual void OnOrderUpdate(trade::Order* pOrd);
+	virtual void ModifyOrderPrice();
+	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent);
+
+	static string EmptyParentOrderId;
 
 	string m_sgOrderUid;
 	string m_currentOrdRef;
@@ -63,6 +67,27 @@ private:
 	bool m_allowPending;
 };
 
+class CManualSgOrderPlacer : public CSgOrderPlacer
+{
+public:
+	CManualSgOrderPlacer(CSgOrderStateMachine* pStateMachine,
+		const InputOrderPtr& pInputOrder,
+		int retryTimes,
+		COrderProcessor2* pOrderProc):
+	CSgOrderPlacer(pStateMachine, NULL, NULL, 
+		pInputOrder, retryTimes, pOrderProc){}
+
+	~CManualSgOrderPlacer(){}
+
+	bool DoAndWait();
+	const string& GetError(){ return m_errorMsg; }
+protected:
+	virtual void RaiseMultiLegOrderEvent(COrderEvent& orderEvent){}
+	virtual void OnOrderUpdate(trade::Order* pOrd){}
+	virtual void ModifyOrderPrice();
+	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent){}
+};
+
 class CSgOrderStateMachine : public COrderStateMachine
 {
 public:
@@ -76,6 +101,13 @@ public:
 								COrderProcessor2* pOrderProc)
 	{
 		return new CSgOrderPlacer(this, pPortfolio, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
+	}
+
+	CManualSgOrderPlacer* CreateManualPlacer(const InputOrderPtr& pInputOrder,
+											int retryTimes,
+											COrderProcessor2* pOrderProc)
+	{
+		return new CManualSgOrderPlacer(this, pInputOrder, retryTimes, pOrderProc);
 	}
 
 	virtual void Initialize();

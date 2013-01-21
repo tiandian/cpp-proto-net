@@ -641,7 +641,7 @@ boost::tuple<bool, string> COrderProcessor::ManualCloseOrder( const string& symb
 		double limitPrice = direction == trade::SELL ? pQuote->bid() : pQuote->ask();
 
 		boost::shared_ptr<trade::InputOrder> closeOrder(
-			BuildCloseOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
+			BuildSingleOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
 
 		m_maxOrderRef = IncrementalOrderRef(closeOrder.get(), m_maxOrderRef);
 
@@ -660,7 +660,7 @@ boost::tuple<bool, string> COrderProcessor::ManualCloseOrder( const string& symb
 	return boost::make_tuple(closeSucc, errorMsg);
 }
 
-trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx)
+trade::InputOrder* COrderProcessor::BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx)
 {
 	entity::Quote* pQuote = NULL;
 	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
@@ -672,7 +672,7 @@ trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade
 		double limitPrice = direction == trade::SELL ? pQuote->bid(): pQuote->ask();
 		
 		trade::InputOrder* closeOrder(
-			BuildCloseOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
+			BuildSingleOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
 
 		m_maxOrderRef = IncrementalOrderRef(closeOrder, m_maxOrderRef);
 
@@ -690,7 +690,7 @@ trade::InputOrder* COrderProcessor::BuildSingleOrder(const string& symbol, trade
 boost::tuple<bool, string> COrderProcessor::PlaceOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
 {
 	ManualOrderPlacerPtr placer = m_placeOrderStateMachine.CreatePlacer();
-	placer->SetBuildOrderFunc(boost::bind(&COrderProcessor::BuildSingleOrder, this, symbol, direction, offsetFlag, placeOrderCtx));
+	placer->SetBuildOrderFunc(boost::bind(&COrderProcessor::BuildCloseOrder, this, symbol, direction, offsetFlag, placeOrderCtx));
 	placer->SetSubmitOrderFunc(boost::bind(&CTradeAgent::SubmitOrder, m_pTradeAgent, _1));
 	placer->SetCancelOrderFunc(boost::bind(&COrderProcessor::CancelOrder, this, _1, _2, _3, _4, _5));
 
