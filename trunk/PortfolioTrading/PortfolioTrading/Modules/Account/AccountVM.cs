@@ -426,7 +426,7 @@ namespace PortfolioTrading.Modules.Account
 
         private bool HaveTradeStationReady(AccountVM acct)
         {
-            OperationResult tradeConnResult = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
+            OperationResult tradeConnResult = _client.TradeConnect("tcp://ctpsim-front01.gfqh.cn:43205",
                                                           acct.InvestorId);
 
             if (tradeConnResult.Success)
@@ -452,7 +452,7 @@ namespace PortfolioTrading.Modules.Account
                 return false;
             }
 
-            OperationResult quoteConnResult = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
+            OperationResult quoteConnResult = _client.QuoteConnect("tcp://ctpsim-front01.gfqh.cn:43213",
                                                           acct.InvestorId);
             if (quoteConnResult.Success)
             {
@@ -464,7 +464,8 @@ namespace PortfolioTrading.Modules.Account
                 return false;
             }
 
-            OperationResult quoteLoginResult = _client.QuoteLogin("2030", "00092", "888888");
+            OperationResult quoteLoginResult = _client.QuoteLogin(acct.BrokerId,
+                acct.InvestorId, acct.Password);
 
             if (quoteLoginResult.Success)
             {
