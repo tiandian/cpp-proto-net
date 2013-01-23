@@ -29,9 +29,10 @@ void COrderStateMachine::Transition( const string& orderId, COrderEvent& event )
 			// And erase this order placer from map.
 			if(isTerminated)
 			{
-				logger.Debug(boost::str(boost::format("Order(%s) ENDs up at %s")
-					% orderId % ORDER_STATE_TEXT[pNextState->State()]));
-				RemovePlacer(orderId);
+				logger.Debug(boost::str(boost::format("Order(%s) ENDs up at %s (Dispose:%d)")
+					% orderId % ORDER_STATE_TEXT[pNextState->State()] % (iter->second->AutoDispose())));
+				if(iter->second->AutoDispose())
+					RemovePlacer(orderId);
 			}
 		}
 		else

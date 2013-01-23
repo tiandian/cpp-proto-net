@@ -18,6 +18,7 @@ public:
 
 	virtual const string& Id() = 0;
 	virtual void Do(){}
+	virtual bool AutoDispose() { return true; }
 };
 
 typedef boost::shared_ptr<COrderPlacer> OrderPlacerPtr;

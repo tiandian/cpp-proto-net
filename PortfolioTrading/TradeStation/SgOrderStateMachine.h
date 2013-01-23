@@ -81,11 +81,17 @@ public:
 
 	bool DoAndWait();
 	const string& GetError(){ return m_errorMsg; }
+	bool AutoDispose() { return false; }
+
 protected:
-	virtual void RaiseMultiLegOrderEvent(COrderEvent& orderEvent){}
+	virtual void RaiseMultiLegOrderEvent(COrderEvent& orderEvent);
 	virtual void OnOrderUpdate(trade::Order* pOrd){}
 	virtual void ModifyOrderPrice();
 	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent){}
+
+private:
+	boost::condition_variable m_cond;
+	boost::mutex m_mut;
 };
 
 class CSgOrderStateMachine : public COrderStateMachine

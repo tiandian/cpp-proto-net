@@ -310,12 +310,18 @@ trade::InputOrder* COrderProcessor2::BuildCloseOrder( const string& symbol, trad
 boost::tuple<bool, string> COrderProcessor2::PlaceOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
 {
 	boost::shared_ptr<trade::InputOrder> pInputOrder(BuildCloseOrder(symbol, direction, offsetFlag, placeOrderCtx));
+	if(pInputOrder.get() == NULL)
+		return boost::make_tuple(false, string("Failed to build close order"));
+
 	CManualSgOrderPlacer* placer = m_sgOrderStateMachine.CreateManualPlacer(pInputOrder, 2, this);
 	
 	bool succ = placer->DoAndWait();
 
 	string errMsg;
 	GB2312ToUTF_8(errMsg, placer->GetError().c_str());
+
+	string pId = placer->Id();
+	m_sgOrderStateMachine.RemovePlacer(pId);
 
 	return boost::make_tuple(succ, errMsg);
 }

@@ -374,9 +374,7 @@ boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol,
 	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
 	placeOrderCtx.limitPriceType = entity::Opposite;
 
-	return boost::make_tuple(true, string());
-	//return m_orderProcessor.ManualCloseOrder(symbol, direction, offsetFlag, &placeOrderCtx);
-	//return m_orderProcessor.PlaceOrder(symbol, direction, offsetFlag, &placeOrderCtx);
+	return m_orderProcessor.PlaceOrder(symbol, direction, offsetFlag, &placeOrderCtx);
 }
 
 void CClientAgent::VirtualOpenPosition( const string& pid, int quantity )

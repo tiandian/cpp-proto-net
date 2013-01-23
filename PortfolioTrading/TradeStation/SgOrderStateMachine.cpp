@@ -115,7 +115,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 					m_pStateMachine->AddPlacer(OrderPlacerPtr(this));
 
 					string submitInfo = boost::str(boost::format("Submit Order(%s - %s) [No. %d time(s)]")
-						% ParentOrderId() % Symbol() % m_submitTimes);
+						% ParentOrderId() % Symbol() % (m_submitTimes + 1));
 					logger.Info(submitInfo);
 					// real submit order and unlock to allow next order ref generation
 					bool succ = m_pOrderProcessor->SubmitAndUnlock(m_pInputOrder.get());
@@ -305,7 +305,21 @@ void CManualSgOrderPlacer::ModifyOrderPrice()
 
 bool CManualSgOrderPlacer::DoAndWait()
 {
+	boost::unique_lock<boost::mutex> l(m_mut);
+
 	Do();
 
+	if(!m_cond.timed_wait(l, boost::posix_time::seconds(30)))
+	{
+		m_errorMsg = "Manual close order timeout";
+		return false;
+	}
+
 	return m_succ;
+}
+
+void CManualSgOrderPlacer::RaiseMultiLegOrderEvent( COrderEvent& orderEvent )
+{
+	boost::mutex::scoped_lock l(m_mut);
+	m_cond.notify_one();
 }
