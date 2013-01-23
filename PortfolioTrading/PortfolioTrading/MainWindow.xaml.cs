@@ -88,8 +88,8 @@ namespace PortfolioTrading
 
         private void btnQuoteConn_Click(object sender, RoutedEventArgs e)
         {
-            
-            OperationResult result = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
+
+            OperationResult result = _client.QuoteConnect("tcp://ctpsim-front01.gfqh.cn:43213",
                                                           AccountId);
             MessageBox.Show(this, string.Format("Connect: {0}. {1}", result.Success, result.ErrorMessage));
         }
@@ -113,7 +113,7 @@ namespace PortfolioTrading
 
         private void btnQuoteLogin_Click(object sender, RoutedEventArgs e)
         {
-            OperationResult result = _client.QuoteLogin("2030", "00092", "888888");
+            OperationResult result = _client.QuoteLogin("1004", "00000014", "123456");
         }
 
         private void btnQuoteLogout_Click(object sender, RoutedEventArgs e)
@@ -123,7 +123,7 @@ namespace PortfolioTrading
 
         private void btnTradeConn_Click(object sender, RoutedEventArgs e)
         {
-            OperationResult result = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
+            OperationResult result = _client.TradeConnect("tcp://ctpsim-front01.gfqh.cn:43205",
                                                           AccountId);
         }
 
@@ -134,7 +134,7 @@ namespace PortfolioTrading
 
         private void btnTradeLogin_Click(object sender, RoutedEventArgs e)
         {
-            OperationResult result = _client.TradeLogin("0240", AccountId, "888888");
+            OperationResult result = _client.TradeLogin("1004", AccountId, "123456");
         }
 
         private void btnTradeLogout_Click(object sender, RoutedEventArgs e)
@@ -218,7 +218,7 @@ namespace PortfolioTrading
 
         private void ClientReady()
         {
-            OperationResult quoteConnResult = _client.QuoteConnect("tcp://asp-sim2-md1.financial-trading-platform.com:26213",
+            OperationResult quoteConnResult = _client.QuoteConnect("tcp://ctpsim-front01.gfqh.cn:43213",
                                                           AccountId);
             if (quoteConnResult.Success)
             {
@@ -230,7 +230,7 @@ namespace PortfolioTrading
                 return;
             }
 
-            OperationResult quoteLoginResult = _client.QuoteLogin("2030", "00092", "888888");
+            OperationResult quoteLoginResult = _client.QuoteLogin("1004", "00000014", "123456");
 
             if (quoteLoginResult.Success)
             {
@@ -242,7 +242,7 @@ namespace PortfolioTrading
                 return;
             }
 
-            OperationResult tradeConnResult = _client.TradeConnect("tcp://asp-sim2-front1.financial-trading-platform.com:26205",
+            OperationResult tradeConnResult = _client.TradeConnect("tcp://ctpsim-front01.gfqh.cn:43205",
                                                           AccountId);
 
             if (tradeConnResult.Success)
@@ -255,7 +255,7 @@ namespace PortfolioTrading
                 return;
             }
 
-            OperationResult tradeLoginResult = _client.TradeLogin("0240", AccountId, "888888");
+            OperationResult tradeLoginResult = _client.TradeLogin("1004", AccountId, "123456");
 
             if (tradeLoginResult.Success)
             {
