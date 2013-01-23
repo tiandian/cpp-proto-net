@@ -42,7 +42,7 @@ private:
 	COrderProcessor2* m_pOrderProcessor;
 
 	std::vector<COrderPlacer*> m_sgOrderPlacers;
-	int m_isSequential;
+	bool m_isSequential;
 	int m_sendingIdx;
 };
 
