@@ -122,6 +122,11 @@ message ChangePosiStrategySettings
 	required double Threshold = 4;
 }
 
+message ScalperSettings
+{
+	required double Threshold = 1;
+}
+
 message ModifyStrategyParam
 {
 	required string PortfId = 1;

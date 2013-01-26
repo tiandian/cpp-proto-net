@@ -10,6 +10,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
     {
         public const string ArbitrageStrategyName = "ArbitrageStrategy";
         public const string ChangePositionStrategyName = "ChangePosition";
+        public const string ScalperStrategyName = "Scalper";
 
         public abstract string Name { get; }
 
@@ -95,6 +96,17 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
                 return setting;
             }
+            else if(name == ScalperStrategyName)
+            {
+                ScalperSetting setting = new ScalperSetting();
+                XElement elem = XElement.Parse(xmlText);
+                XAttribute attr = elem.Attribute("threshold");
+                if (attr != null)
+                {
+                    setting.Threshold = double.Parse(attr.Value);
+                }
+                return setting;
+            }
             else
                 throw new ArgumentException(string.Format("Unexpected strategy setting ({0})", name));
         }
@@ -119,6 +131,13 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 setting.TriggerCondition = CompareCondition.GREATER_EQUAL_THAN;
                 setting.Threshold = 100;
                 
+                return setting;
+            }
+            else if (name == ScalperStrategyName)
+            {
+                ScalperSetting setting = new ScalperSetting();
+                setting.Threshold = 0;
+
                 return setting;
             }
             else

@@ -47,6 +47,10 @@ namespace PortfolioTrading.Modules.Portfolio
             {
                 viewModel = ServiceLocator.Current.GetInstance<ChangePositionSettingsVM>();
             }
+            else if (porfVm.StrategySetting.Name == StrategySetting.ScalperStrategyName)
+            {
+                viewModel = ServiceLocator.Current.GetInstance<ScalperSettingVM>();
+            }
 
             if (viewModel != null)
             {

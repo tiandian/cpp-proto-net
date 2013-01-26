@@ -12,6 +12,7 @@ namespace PortfolioTrading.Controls
     {
         public DataTemplate ArbitrageTemplate { get; set; }
         public DataTemplate ChangePositionTemplate { get; set; }
+        public DataTemplate ScalperTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -19,7 +20,8 @@ namespace PortfolioTrading.Controls
                 return ArbitrageTemplate;
             else if (item is ChangePositionSettingsVM)
                 return ChangePositionTemplate;
-            
+            else if (item is ScalperSettingVM)
+                return ScalperTemplate;
             return null;
         }
     }
