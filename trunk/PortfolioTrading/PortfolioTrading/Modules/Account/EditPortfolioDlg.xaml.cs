@@ -68,6 +68,11 @@ namespace PortfolioTrading.Modules.Account
                 Name = StrategySetting.ChangePositionStrategyName,
                 DisplayName = "移仓"
             });
+            this.StrategyItemsSource.Add(new StrategyItem 
+            {
+                Name = StrategySetting.ScalperStrategyName,
+                DisplayName = "高频"
+            });
         }
 
         public List<StrategyItem> StrategyItemsSource { get; private set; }

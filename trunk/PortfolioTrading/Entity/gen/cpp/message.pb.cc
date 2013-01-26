@@ -59,6 +59,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ChangePosiStrategySettings_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ChangePosiStrategySettings_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ScalperSettings_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ScalperSettings_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ModifyStrategyParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ModifyStrategyParam_reflection_ = NULL;
@@ -349,7 +352,22 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ChangePosiStrategySettings));
-  ModifyStrategyParam_descriptor_ = file->message_type(14);
+  ScalperSettings_descriptor_ = file->message_type(14);
+  static const int ScalperSettings_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, threshold_),
+  };
+  ScalperSettings_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ScalperSettings_descriptor_,
+      ScalperSettings::default_instance_,
+      ScalperSettings_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ScalperSettings));
+  ModifyStrategyParam_descriptor_ = file->message_type(15);
   static const int ModifyStrategyParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, strategyname_),
@@ -366,7 +384,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyStrategyParam));
-  ModifyPortfolioSwitchParam_descriptor_ = file->message_type(15);
+  ModifyPortfolioSwitchParam_descriptor_ = file->message_type(16);
   static const int ModifyPortfolioSwitchParam_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autoopen_),
@@ -386,7 +404,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioSwitchParam));
-  ModifyPortfolioQtyParam_descriptor_ = file->message_type(16);
+  ModifyPortfolioQtyParam_descriptor_ = file->message_type(17);
   static const int ModifyPortfolioQtyParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, onceqty_),
@@ -403,7 +421,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioQtyParam));
-  ModifyRunningStatusParam_descriptor_ = file->message_type(17);
+  ModifyRunningStatusParam_descriptor_ = file->message_type(18);
   static const int ModifyRunningStatusParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, enabled_),
@@ -419,7 +437,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyRunningStatusParam));
-  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(18);
+  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(19);
   static const int ModifyPortfolioPreferredLegParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, legsymbol_),
@@ -435,7 +453,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioPreferredLegParam));
-  CancelOrderParam_descriptor_ = file->message_type(19);
+  CancelOrderParam_descriptor_ = file->message_type(20);
   static const int CancelOrderParam_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, orderref_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, exchangeid_),
@@ -454,7 +472,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CancelOrderParam));
-  ManualCloseOrderParam_descriptor_ = file->message_type(20);
+  ManualCloseOrderParam_descriptor_ = file->message_type(21);
   static const int ManualCloseOrderParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, direction_),
@@ -513,6 +531,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ChangePosiStrategySettings_descriptor_, &ChangePosiStrategySettings::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ScalperSettings_descriptor_, &ScalperSettings::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyStrategyParam_descriptor_, &ModifyStrategyParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ModifyPortfolioSwitchParam_descriptor_, &ModifyPortfolioSwitchParam::default_instance());
@@ -559,6 +579,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ArbitrageStrategySettings_reflection_;
   delete ChangePosiStrategySettings::default_instance_;
   delete ChangePosiStrategySettings_reflection_;
+  delete ScalperSettings::default_instance_;
+  delete ScalperSettings_reflection_;
   delete ModifyStrategyParam::default_instance_;
   delete ModifyStrategyParam_reflection_;
   delete ModifyPortfolioSwitchParam::default_instance_;
@@ -629,25 +651,25 @@ void protobuf_AddDesc_message_2eproto() {
     "\010CloseLeg\030\001 \002(\t\022/\n\014CloseLegSide\030\002 \002(\0162\031."
     "entity.PosiDirectionType\0222\n\020TriggerCondi"
     "tion\030\003 \002(\0162\030.entity.CompareCondition\022\021\n\t"
-    "Threshold\030\004 \002(\001\"R\n\023ModifyStrategyParam\022\017"
-    "\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n"
-    "\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolioS"
-    "witchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen\030"
-    "\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStopL"
-    "oss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enabl"
-    "ePrefer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyParam"
-    "\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006Ma"
-    "xQty\030\003 \002(\005\"<\n\030ModifyRunningStatusParam\022\017"
-    "\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Modi"
-    "fyPortfolioPreferredLegParam\022\017\n\007PortfId\030"
-    "\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrderP"
-    "aram\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002"
-    "(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006"
-    "Symbol\030\005 \002(\t\"\222\001\n\025ManualCloseOrderParam\022\016"
-    "\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trad"
-    "e.TradeDirectionType\022)\n\nOffsetFlag\030\003 \002(\016"
-    "2\025.trade.OffsetFlagType\022\020\n\010Quantity\030\004 \002("
-    "\005", 2521);
+    "Threshold\030\004 \002(\001\"$\n\017ScalperSettings\022\021\n\tTh"
+    "reshold\030\001 \002(\001\"R\n\023ModifyStrategyParam\022\017\n\007"
+    "PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n\014S"
+    "trategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolioSwi"
+    "tchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen\030\002 "
+    "\002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStopLos"
+    "s\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014EnableP"
+    "refer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyParam\022\017"
+    "\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006MaxQ"
+    "ty\030\003 \002(\005\"<\n\030ModifyRunningStatusParam\022\017\n\007"
+    "PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Modify"
+    "PortfolioPreferredLegParam\022\017\n\007PortfId\030\001 "
+    "\002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrderPar"
+    "am\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t"
+    "\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Sy"
+    "mbol\030\005 \002(\t\"\222\001\n\025ManualCloseOrderParam\022\016\n\006"
+    "Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trade."
+    "TradeDirectionType\022)\n\nOffsetFlag\030\003 \002(\0162\025"
+    ".trade.OffsetFlagType\022\020\n\010Quantity\030\004 \002(\005", 2559);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -664,6 +686,7 @@ void protobuf_AddDesc_message_2eproto() {
   LegOrderUpdateParam::default_instance_ = new LegOrderUpdateParam();
   ArbitrageStrategySettings::default_instance_ = new ArbitrageStrategySettings();
   ChangePosiStrategySettings::default_instance_ = new ChangePosiStrategySettings();
+  ScalperSettings::default_instance_ = new ScalperSettings();
   ModifyStrategyParam::default_instance_ = new ModifyStrategyParam();
   ModifyPortfolioSwitchParam::default_instance_ = new ModifyPortfolioSwitchParam();
   ModifyPortfolioQtyParam::default_instance_ = new ModifyPortfolioQtyParam();
@@ -685,6 +708,7 @@ void protobuf_AddDesc_message_2eproto() {
   LegOrderUpdateParam::default_instance_->InitAsDefaultInstance();
   ArbitrageStrategySettings::default_instance_->InitAsDefaultInstance();
   ChangePosiStrategySettings::default_instance_->InitAsDefaultInstance();
+  ScalperSettings::default_instance_->InitAsDefaultInstance();
   ModifyStrategyParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioSwitchParam::default_instance_->InitAsDefaultInstance();
   ModifyPortfolioQtyParam::default_instance_->InitAsDefaultInstance();
@@ -5892,6 +5916,212 @@ void ChangePosiStrategySettings::Swap(ChangePosiStrategySettings* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = ChangePosiStrategySettings_descriptor_;
   metadata.reflection = ChangePosiStrategySettings_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ScalperSettings::kThresholdFieldNumber;
+#endif  // !_MSC_VER
+
+ScalperSettings::ScalperSettings()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ScalperSettings::InitAsDefaultInstance() {
+}
+
+ScalperSettings::ScalperSettings(const ScalperSettings& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ScalperSettings::SharedCtor() {
+  _cached_size_ = 0;
+  threshold_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ScalperSettings::~ScalperSettings() {
+  SharedDtor();
+}
+
+void ScalperSettings::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void ScalperSettings::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ScalperSettings::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ScalperSettings_descriptor_;
+}
+
+const ScalperSettings& ScalperSettings::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+ScalperSettings* ScalperSettings::default_instance_ = NULL;
+
+ScalperSettings* ScalperSettings::New() const {
+  return new ScalperSettings;
+}
+
+void ScalperSettings::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    threshold_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ScalperSettings::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required double Threshold = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &threshold_)));
+          set_has_threshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ScalperSettings::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required double Threshold = 1;
+  if (has_threshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->threshold(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ScalperSettings::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required double Threshold = 1;
+  if (has_threshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->threshold(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ScalperSettings::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required double Threshold = 1;
+    if (has_threshold()) {
+      total_size += 1 + 8;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ScalperSettings::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ScalperSettings* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ScalperSettings*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ScalperSettings::MergeFrom(const ScalperSettings& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_threshold()) {
+      set_threshold(from.threshold());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ScalperSettings::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ScalperSettings::CopyFrom(const ScalperSettings& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ScalperSettings::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  
+  return true;
+}
+
+void ScalperSettings::Swap(ScalperSettings* other) {
+  if (other != this) {
+    std::swap(threshold_, other->threshold_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ScalperSettings::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ScalperSettings_descriptor_;
+  metadata.reflection = ScalperSettings_reflection_;
   return metadata;
 }
 

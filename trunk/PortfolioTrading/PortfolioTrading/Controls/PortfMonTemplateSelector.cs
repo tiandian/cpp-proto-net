@@ -12,7 +12,7 @@ namespace PortfolioTrading.Controls
     public class PortfMonTemplateSelector : DataTemplateSelector
     {
         public DataTemplate ArbitrageTemplate { get; set; }
-        public DataTemplate BoxBreakTemplate { get; set; }
+        public DataTemplate ScalperTemplate { get; set; }
         public DataTemplate ChangePositionTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -24,6 +24,8 @@ namespace PortfolioTrading.Controls
                     return ArbitrageTemplate;
                 else if (portfVm.StrategySetting.Name == StrategySetting.ChangePositionStrategyName)
                     return ChangePositionTemplate;
+                else if (portfVm.StrategySetting.Name == StrategySetting.ScalperStrategyName)
+                    return ScalperTemplate;
             }
 
             return null;

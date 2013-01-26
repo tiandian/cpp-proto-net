@@ -252,14 +252,14 @@
         </Grid>
     </DataTemplate>
     
-    <DataTemplate x:Key="boxBreakTemplate">
-        <TextBlock>箱体突破监视</TextBlock>
+    <DataTemplate x:Key="scalperTemplate">
+        <TextBlock>抢帽客</TextBlock>
     </DataTemplate>
     
     <local:PortfMonTemplateSelector x:Key="portfMonSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionTemplate}"
-                                    BoxBreakTemplate="{StaticResource boxBreakTemplate}"/>
+                                    ScalperTemplate="{StaticResource scalperTemplate}"/>
     
     <Style TargetType="{x:Type local:PortfMonitorPanel}">
         <Setter Property="Template">

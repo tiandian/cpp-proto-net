@@ -48,6 +48,7 @@ class ClosePositionParam;
 class LegOrderUpdateParam;
 class ArbitrageStrategySettings;
 class ChangePosiStrategySettings;
+class ScalperSettings;
 class ModifyStrategyParam;
 class ModifyPortfolioSwitchParam;
 class ModifyPortfolioQtyParam;
@@ -1776,6 +1777,88 @@ class ChangePosiStrategySettings : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ChangePosiStrategySettings* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ScalperSettings : public ::google::protobuf::Message {
+ public:
+  ScalperSettings();
+  virtual ~ScalperSettings();
+  
+  ScalperSettings(const ScalperSettings& from);
+  
+  inline ScalperSettings& operator=(const ScalperSettings& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ScalperSettings& default_instance();
+  
+  void Swap(ScalperSettings* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ScalperSettings* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ScalperSettings& from);
+  void MergeFrom(const ScalperSettings& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required double Threshold = 1;
+  inline bool has_threshold() const;
+  inline void clear_threshold();
+  static const int kThresholdFieldNumber = 1;
+  inline double threshold() const;
+  inline void set_threshold(double value);
+  
+  // @@protoc_insertion_point(class_scope:entity.ScalperSettings)
+ private:
+  inline void set_has_threshold();
+  inline void clear_has_threshold();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  double threshold_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ScalperSettings* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -4690,6 +4773,32 @@ inline double ChangePosiStrategySettings::threshold() const {
   return threshold_;
 }
 inline void ChangePosiStrategySettings::set_threshold(double value) {
+  set_has_threshold();
+  threshold_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ScalperSettings
+
+// required double Threshold = 1;
+inline bool ScalperSettings::has_threshold() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ScalperSettings::set_has_threshold() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ScalperSettings::clear_has_threshold() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ScalperSettings::clear_threshold() {
+  threshold_ = 0;
+  clear_has_threshold();
+}
+inline double ScalperSettings::threshold() const {
+  return threshold_;
+}
+inline void ScalperSettings::set_threshold(double value) {
   set_has_threshold();
   threshold_ = value;
 }
