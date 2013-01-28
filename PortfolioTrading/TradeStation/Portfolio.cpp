@@ -266,16 +266,28 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 			break;
 		}
 	}
-	double lastDiff = CalcDiff(m_vecLegs, LAST_DIFF);
-	m_innerItem->set_diff(lastDiff);
-	double longDiff = CalcDiff(m_vecLegs, LONG_DIFF);
-	m_innerItem->set_longdiff(longDiff);
-	int longDiffSize = CalcSize(m_vecLegs, LONG_DIFF);
-	m_innerItem->set_longsize(longDiffSize);
-	double shortDiff = CalcDiff(m_vecLegs, SHORT_DIFF);
-	m_innerItem->set_shortdiff(shortDiff);
-	int shortDiffSize = CalcSize(m_vecLegs, SHORT_DIFF);
-	m_innerItem->set_shortsize(shortDiffSize);
+
+	if(m_vecLegs.size() > 1)
+	{
+		double lastDiff = CalcDiff(m_vecLegs, LAST_DIFF);
+		m_innerItem->set_diff(lastDiff);
+		double longDiff = CalcDiff(m_vecLegs, LONG_DIFF);
+		m_innerItem->set_longdiff(longDiff);
+		int longDiffSize = CalcSize(m_vecLegs, LONG_DIFF);
+		m_innerItem->set_longsize(longDiffSize);
+		double shortDiff = CalcDiff(m_vecLegs, SHORT_DIFF);
+		m_innerItem->set_shortdiff(shortDiff);
+		int shortDiffSize = CalcSize(m_vecLegs, SHORT_DIFF);
+		m_innerItem->set_shortsize(shortDiffSize);
+	}
+	else	// only one leg
+	{
+		m_innerItem->set_diff(pQuote->ask() - pQuote->bid());
+		m_innerItem->set_longdiff(pQuote->ask());
+		m_innerItem->set_longsize(pQuote->ask_size());
+		m_innerItem->set_shortdiff(pQuote->bid());
+		m_innerItem->set_shortsize(pQuote->bid_size());
+	}
 
 	m_strategy->Test();
 	

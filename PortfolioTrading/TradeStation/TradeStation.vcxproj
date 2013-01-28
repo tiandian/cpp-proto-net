@@ -128,6 +128,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="QuoteAggregator.h" />
     <ClInclude Include="QuoteListener.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ScalperStrategy.h" />
     <ClInclude Include="SequenceOrderSender.h" />
     <ClInclude Include="SgOrderStateMachine.h" />
     <ClInclude Include="stdafx.h" />
@@ -180,6 +181,7 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClCompile Include="QuoteAgent.cpp" />
     <ClCompile Include="QuoteAggregator.cpp" />
     <ClCompile Include="QuoteListener.cpp" />
+    <ClCompile Include="ScalperStrategy.cpp" />
     <ClCompile Include="SequenceOrderSender.cpp" />
     <ClCompile Include="SgOrderStateMachine.cpp" />
     <ClCompile Include="stdafx.cpp">

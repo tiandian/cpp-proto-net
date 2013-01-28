@@ -595,6 +595,23 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ScalperSettings")]
+  public partial class ScalperSettings : global::ProtoBuf.IExtensible
+  {
+    public ScalperSettings() {}
+    
+    private double _Threshold;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"Threshold", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double Threshold
+    {
+      get { return _Threshold; }
+      set { _Threshold = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"ModifyStrategyParam")]
   public partial class ModifyStrategyParam : global::ProtoBuf.IExtensible
   {
