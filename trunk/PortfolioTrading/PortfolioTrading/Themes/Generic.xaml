@@ -253,7 +253,30 @@
     </DataTemplate>
     
     <DataTemplate x:Key="scalperTemplate">
-        <TextBlock>抢帽客</TextBlock>
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="38"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Margin="4" VerticalAlignment="Center">触发</TextBlock>
+                </Border>
+                <Border Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Width="60" Text="大于等于" VerticalAlignment="Center"/>
+                        <TextBlock Width="60" Text="{Binding StrategySetting.Threshold}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+            
+        </Grid>
     </DataTemplate>
     
     <local:PortfMonTemplateSelector x:Key="portfMonSelector"
@@ -266,8 +289,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:PortfMonitorPanel}">
                     <ContentControl ContentTemplateSelector="{StaticResource portfMonSelector}"
-                                    VerticalAlignment="Center"
-                                    Content="{Binding }"/>
+                                    VerticalAlignment="Stretch" Content="{Binding }"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

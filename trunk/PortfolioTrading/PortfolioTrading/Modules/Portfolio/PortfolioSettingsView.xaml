@@ -199,8 +199,8 @@
                                 <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">开仓条件</TextBlock>
                                 <DockPanel Margin="12, 0, 6, 2">
                                     <DockPanel >
-                                        <TextBlock VerticalAlignment="Center" Margin="4, 2">价差</TextBlock>
-                                        <TextBlock Margin="4, 2" Width="80" >大于等于
+                                        <TextBlock Margin="4, 2" VerticalAlignment="Center">价差</TextBlock>
+                                        <TextBlock Margin="4, 2" Width="80" VerticalAlignment="Center">大于等于
                                         </TextBlock>
                                     </DockPanel>
                                     <DockPanel Margin="4, 2">
