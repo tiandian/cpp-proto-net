@@ -436,11 +436,12 @@ enum SubmitReason {
   SR_AutoOpen = 2,
   SR_StopGain = 3,
   SR_StopLoss = 4,
-  SR_AutoSwitch = 5
+  SR_AutoSwitch = 5,
+  SR_Scalpe = 6
 };
 bool SubmitReason_IsValid(int value);
 const SubmitReason SubmitReason_MIN = SR_Manual;
-const SubmitReason SubmitReason_MAX = SR_AutoSwitch;
+const SubmitReason SubmitReason_MAX = SR_Scalpe;
 const int SubmitReason_ARRAYSIZE = SubmitReason_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* SubmitReason_descriptor();
@@ -455,11 +456,12 @@ inline bool SubmitReason_Parse(
 }
 enum MlOrderOffset {
   ML_OF_OPEN = 1,
-  ML_OF_CLOSE = 2
+  ML_OF_CLOSE = 2,
+  ML_OF_OTHER = 3
 };
 bool MlOrderOffset_IsValid(int value);
 const MlOrderOffset MlOrderOffset_MIN = ML_OF_OPEN;
-const MlOrderOffset MlOrderOffset_MAX = ML_OF_CLOSE;
+const MlOrderOffset MlOrderOffset_MAX = ML_OF_OTHER;
 const int MlOrderOffset_ARRAYSIZE = MlOrderOffset_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* MlOrderOffset_descriptor();

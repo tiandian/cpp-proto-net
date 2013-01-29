@@ -250,6 +250,23 @@ void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, 
 	//m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
 }
 
+void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDirectionType posiDirection, double precedence )
+{
+	PlaceOrderContext placeOrderCtx;
+	placeOrderCtx.quantity = quantity;
+	placeOrderCtx.brokerId = m_brokerId;
+	placeOrderCtx.investorId = m_userId;
+	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
+	placeOrderCtx.limitPriceType = entity::Opposite;
+
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildScalperOrder(portf, posiDirection, precedence, &placeOrderCtx));
+	multilegOrder->set_reason(trade::SR_Scalpe);
+
+	portf->BeginPlaceOrder();
+
+	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+}
+
 bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)
 {
 	bool succ = m_orderProcessor.QueryAccountInfo(serializedAcctInfo);
@@ -397,5 +414,6 @@ void CClientAgent::SetPortfolioQuantity( const string& pid, int qty, int maxQty 
 	if(portf != NULL)
 		portf->SetQuantity(qty, maxQty);
 }
+
 
 

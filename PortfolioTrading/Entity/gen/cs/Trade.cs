@@ -2160,7 +2160,10 @@ namespace trade
       SR_StopLoss = 4,
             
       [global::ProtoBuf.ProtoEnum(Name=@"SR_AutoSwitch", Value=5)]
-      SR_AutoSwitch = 5
+      SR_AutoSwitch = 5,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"SR_Scalpe", Value=6)]
+      SR_Scalpe = 6
     }
   
     [global::ProtoBuf.ProtoContract(Name=@"MlOrderOffset")]
@@ -2171,7 +2174,10 @@ namespace trade
       ML_OF_OPEN = 1,
             
       [global::ProtoBuf.ProtoEnum(Name=@"ML_OF_CLOSE", Value=2)]
-      ML_OF_CLOSE = 2
+      ML_OF_CLOSE = 2,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"ML_OF_OTHER", Value=3)]
+      ML_OF_OTHER = 3
     }
   
 }

@@ -45,6 +45,7 @@ public:
 	void ClosePosition(const string& portfolioId, int quantity, trade::SubmitReason submitReason);
 	void SimpleCloseOrderPosition(const string& portfolioId, trade::SubmitReason submitReason);
 	void ChangePosition(CPortfolio* portf, const string& closeSymbol, entity::PosiDirectionType existingPosition, int qty, trade::SubmitReason submitReason);
+	void QuickScalpe(CPortfolio* portf, int quantity, trade::PosiDirectionType posiDirection, double precedence);
 	boost::tuple<bool, string> ManualCloseOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, int quantity);
 	void VirtualOpenPosition(const string& pid, int quantity);
 	void VirtualClosePosition(const string& pid, int quantity);

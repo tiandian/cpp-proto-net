@@ -770,12 +770,14 @@ enum SubmitReason
 	SR_StopGain = 3;
 	SR_StopLoss = 4;
 	SR_AutoSwitch = 5;
+	SR_Scalpe = 6;
 }
 
 enum MlOrderOffset
 {
 	ML_OF_OPEN = 1;
 	ML_OF_CLOSE = 2;
+	ML_OF_OTHER = 3;
 }
 
 message MultiLegOrder

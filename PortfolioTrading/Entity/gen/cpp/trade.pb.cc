@@ -692,11 +692,11 @@ void protobuf_AddDesc_trade_2eproto() {
     "ION_DERIVED\0204*C\n\017PriceSourceType\022\023\n\017PSRC"
     "_LAST_PRICE\0200\022\014\n\010PSRC_BUY\0201\022\r\n\tPSRC_SELL"
     "\0202*.\n\016ActionFlagType\022\r\n\tAF_Delete\0200\022\r\n\tA"
-    "F_Modify\0203*c\n\014SubmitReason\022\r\n\tSR_Manual\020"
+    "F_Modify\0203*r\n\014SubmitReason\022\r\n\tSR_Manual\020"
     "\001\022\017\n\013SR_AutoOpen\020\002\022\017\n\013SR_StopGain\020\003\022\017\n\013S"
-    "R_StopLoss\020\004\022\021\n\rSR_AutoSwitch\020\005*0\n\rMlOrd"
-    "erOffset\022\016\n\nML_OF_OPEN\020\001\022\017\n\013ML_OF_CLOSE\020"
-    "\002", 8401);
+    "R_StopLoss\020\004\022\021\n\rSR_AutoSwitch\020\005\022\r\n\tSR_Sc"
+    "alpe\020\006*A\n\rMlOrderOffset\022\016\n\nML_OF_OPEN\020\001\022"
+    "\017\n\013ML_OF_CLOSE\020\002\022\017\n\013ML_OF_OTHER\020\003", 8433);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "trade.proto", &protobuf_RegisterTypes);
   AccountInfo::default_instance_ = new AccountInfo();
@@ -1041,6 +1041,7 @@ bool SubmitReason_IsValid(int value) {
     case 3:
     case 4:
     case 5:
+    case 6:
       return true;
     default:
       return false;
@@ -1055,6 +1056,7 @@ bool MlOrderOffset_IsValid(int value) {
   switch(value) {
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;

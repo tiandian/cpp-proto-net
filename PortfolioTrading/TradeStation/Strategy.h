@@ -75,10 +75,10 @@ public:
 	bool IsStopLoss(){ return m_isStopLoss; }
 	void SetStopLoss(bool flag) { m_isStopLoss = flag; }
 
-	bool IsAutoTracking(){ return m_isAutoTracking; }
+	virtual bool IsAutoTracking(){ return m_isAutoTracking; }
 	void SetAutoTracking(bool flag) { m_isAutoTracking = flag; }
 
-	bool EnablePrefer(){ return m_enablePrefer; }
+	virtual bool EnablePrefer(){ return m_enablePrefer; }
 	void SetEnablePrefer(bool flag) { m_enablePrefer = flag; }
 
 	CClientAgent* Client() const { return m_pClient; }

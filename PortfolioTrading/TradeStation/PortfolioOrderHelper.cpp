@@ -221,7 +221,7 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 	pMultiLegOrder->set_openorderid(mOrderId);
 	pMultiLegOrder->set_quantity(placeOrderCtx->quantity);
 	pMultiLegOrder->set_portfolioid(portfolio->ID());
-	pMultiLegOrder->set_offset(trade::ML_OF_OPEN);
+	pMultiLegOrder->set_offset(trade::ML_OF_OTHER);
 	pMultiLegOrder->set_haswarn(false);
 	pMultiLegOrder->set_statusmsg("");
 	BOOST_FOREACH(LegPtr leg, portfolio->Legs())
@@ -377,4 +377,97 @@ trade::InputOrder* BuildSingleOrder(const string& symbol, double limitPrice,
 	order->set_userforceclose(false);
 
 	return order;
+}
+
+trade::OffsetFlagType OFFSET_FLAGS[2] = {trade::OF_OPEN, trade::OF_CLOSE_TODAY};
+trade::TradeDirectionType LONG_TRADE_SEQ[2] = {trade::BUY, trade::SELL};
+trade::TradeDirectionType SHORT_TRADE_SEQ[2] = {trade::SELL, trade::BUY};
+
+trade::MultiLegOrder* BuildScalperOrder( CPortfolio* portfolio, trade::PosiDirectionType posiDirection, double precedence, PlaceOrderContext* placeOrderCtx )
+{
+	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
+	string mOrderId;
+	portfolio->NewOrderId(mOrderId);
+	pMultiLegOrder->set_orderid(mOrderId);
+	pMultiLegOrder->set_openorderid(mOrderId);
+	pMultiLegOrder->set_quantity(placeOrderCtx->quantity);
+	pMultiLegOrder->set_portfolioid(portfolio->ID());
+	pMultiLegOrder->set_offset(trade::ML_OF_OTHER);
+	pMultiLegOrder->set_haswarn(false);
+	pMultiLegOrder->set_statusmsg("");
+
+	_ASSERT(portfolio->Count() == 1);
+
+	CLeg* leg = portfolio->GetLeg(1);
+
+	for(int i = 0; i < 2; ++i)
+	{
+		trade::Order* order = pMultiLegOrder->add_legs();
+		order->set_brokerid(placeOrderCtx->brokerId);
+		order->set_investorid(placeOrderCtx->investorId);
+		order->set_instrumentid(leg->Symbol());
+		order->set_orderref("");
+	
+		double limitPrice = 0;
+		// in case wanna open position
+		if(posiDirection == entity::LONG)
+		{
+			// open long position
+			order->set_direction(LONG_TRADE_SEQ[i]);
+		}
+		else if(posiDirection == entity::SHORT)
+		{
+			order->set_direction(SHORT_TRADE_SEQ[i]);
+		}
+		else
+		{
+			throw std::exception("unexpected position direction");
+		}
+
+		limitPrice = order->direction() == trade::BUY ?
+			(leg->Ask() - precedence) : (leg->Bid() + precedence);
+
+		order->set_orderpricetype(placeOrderCtx->orderPriceType);
+		order->set_limitprice(limitPrice);
+
+		static char CombOffset[1];
+		CombOffset[0] = OFFSET_FLAGS[i];
+
+		order->set_comboffsetflag(std::string(CombOffset));
+
+		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
+		order->set_combhedgeflag(std::string(CombHedgeFlag));
+
+		// 	order->set_limitprice(0);
+		int qty = pMultiLegOrder->quantity() * leg->Ratio();
+		order->set_volumetotaloriginal(qty);
+
+		if(order->orderpricetype() == trade::ANY_PRICE)
+		{
+			// IOC needed for market price
+			order->set_timecondition(trade::TC_IOC);
+		}
+		else
+		{
+			order->set_timecondition(trade::TC_GFD);
+		}
+
+		order->set_volumecondition(trade::VC_AV);
+		order->set_minvolume(1);
+
+		order->set_contingentcondition(trade::IMMEDIATELY);
+		order->set_forceclosereason(trade::NOT_FORCE_CLOSE);
+		order->set_isautosuspend(false);
+		order->set_userforceclose(false);
+
+		order->set_ordersubmitstatus(trade::NOT_SUBMITTED);
+		order->set_orderstatus(trade::STATUS_UNKNOWN);
+
+		order->set_preferred(i == 0);
+	}
+
+	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
+	pMultiLegOrder->set_opendate(boost::gregorian::to_iso_string(d));
+
+	return pMultiLegOrder;
 }
