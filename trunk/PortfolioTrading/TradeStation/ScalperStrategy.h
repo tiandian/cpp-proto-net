@@ -17,6 +17,9 @@ public:
 
 	void Test();
 
+	bool IsAutoTracking(){ return false; }
+	bool EnablePrefer(){ return true; }
+
 protected:
 	CConditionChecker<double>& GetOpenPosiCond(){ return m_openPosiChecker; }
 	CConditionChecker<double>& GetStopGainCond(){ return m_stopGainChecker; }

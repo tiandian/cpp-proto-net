@@ -44,4 +44,7 @@ void CScalperStrategy::DoOpenPostion()
 {
 	logger.Info(boost::str(boost::format("Portf (%s) OPEN & CLOSE position by strategy") % Portfolio()->ID().c_str()));
 
+	CPortfolio *portf = Portfolio();
+	if(portf != NULL)
+		Client()->QuickScalpe(portf, portf->Quantity(), trade::LONG, 0.2);
 }
