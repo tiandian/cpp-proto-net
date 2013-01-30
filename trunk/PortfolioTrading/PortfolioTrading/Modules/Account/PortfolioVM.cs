@@ -613,7 +613,19 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnOpenPosition()
         {
-            _accountVm.Host.PorfOpenPosition(Id, Quantity, false);
+            if (StrategySetting.Name == StrategySetting.ChangePositionStrategyName)
+            {
+                _accountVm.Host.SwitchPosition(Id, Quantity);
+            }
+            else if (StrategySetting.Name == StrategySetting.ScalperStrategyName)
+            {
+                _accountVm.Host.ScalperOpenPosition(Id, Quantity);
+            }
+            else
+            {
+                _accountVm.Host.PorfOpenPosition(Id, Quantity, false);
+            }
+            
             EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, Quantity);
         }
 

@@ -425,7 +425,7 @@ trade::MultiLegOrder* BuildScalperOrder( CPortfolio* portfolio, trade::PosiDirec
 		}
 
 		limitPrice = order->direction() == trade::BUY ?
-			(leg->Ask() - precedence) : (leg->Bid() + precedence);
+			(leg->Ask() - (2 * precedence)) : (leg->Bid() + (2 * precedence));
 
 		order->set_orderpricetype(placeOrderCtx->orderPriceType);
 		order->set_limitprice(limitPrice);

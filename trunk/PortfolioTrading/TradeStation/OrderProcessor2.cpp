@@ -7,6 +7,18 @@
 
 #include <boost/format.hpp>
 
+const char* TRADE_DIRECTION[] = {"Buy", "Sell"};
+
+void PrintInputOrder(trade::InputOrder* order)
+{
+	if(order != NULL)
+	{
+		string orderInfo = boost::str(boost::format("%s %s @ %.2f")
+			% TRADE_DIRECTION[order->direction() - trade::BUY]
+			% order->instrumentid() % order->limitprice());
+		logger.Info(orderInfo);
+	}
+}
 
 COrderProcessor2::COrderProcessor2(void):
 m_pTradeAgent(NULL),
@@ -109,7 +121,7 @@ bool COrderProcessor2::GetOrderEvent( trade::Order* order, COrderEvent** ppOrder
 	else if(status == trade::NO_TRADE_QUEUEING ||
 		status == trade::NO_TRADE_NOT_QUEUEING)
 	{
-		*ppOrderEvt == new PendingEvent(order);
+		*ppOrderEvt = new PendingEvent(order);
 	}
 	else if(status == trade::PART_TRADED_QUEUEING ||
 		status == trade::PART_TRADED_NOT_QUEUEING)
@@ -173,6 +185,9 @@ int COrderProcessor2::LockForSubmit( string& outOrdRef )
 bool COrderProcessor2::SubmitAndUnlock( trade::InputOrder* pOrder )
 {
 	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
+
+	PrintInputOrder(pOrder);
+
 	bool succ = SubmitOrderToTradeAgent(pOrder);
 	m_bIsSubmitting = false;
 	m_condSubmit.notify_one();

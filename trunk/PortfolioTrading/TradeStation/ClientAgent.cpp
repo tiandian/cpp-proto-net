@@ -133,7 +133,6 @@ void CClientAgent::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 
 void CClientAgent::OpenPosition( const string& pid, int quantity)
 {
-	// build order
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	OpenPosition(portf, quantity, trade::SR_Manual);
 }
@@ -265,6 +264,12 @@ void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDire
 	portf->BeginPlaceOrder();
 
 	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+}
+
+void CClientAgent::QuickScalpe( const string& pid, int quantity )
+{
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
+	QuickScalpe(portf, quantity, trade::LONG, 0.2);
 }
 
 bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)

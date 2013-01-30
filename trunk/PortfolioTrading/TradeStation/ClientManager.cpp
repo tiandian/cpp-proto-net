@@ -87,6 +87,10 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("RemovePortf", boost::bind(&CClientManager::RemovePorf, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PorfOpenPosition", boost::bind(&CClientManager::PorfOpenPosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PorfClosePosition", boost::bind(&CClientManager::PorfClosePosition, this, _1, _2, _3)));
+
+	m_reqTransMap.insert(make_pair("SwitchPosition", boost::bind(&CClientManager::SwitchPosition, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("ScalperOpenPosition", boost::bind(&CClientManager::ScalperOpenPosition, this, _1, _2, _3)));
+	
 	m_reqTransMap.insert(make_pair("ClosePosition", boost::bind(&CClientManager::ClosePosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("CancelOrder", boost::bind(&CClientManager::CancelOrder, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ManualCloseOrder", boost::bind(&CClientManager::ManualCloseOrder, this, _1, _2, _3)));
@@ -223,6 +227,20 @@ void CClientManager::PorfOpenPosition( CClientAgent* pClientAgent, const string&
 		pClientAgent->VirtualOpenPosition(opParam.portfid(), opParam.quantity());
 	else
 		pClientAgent->OpenPosition(opParam.portfid(), opParam.quantity());
+}
+
+void CClientManager::SwitchPosition( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::PorfOpenPosiParam opParam;
+	opParam.ParseFromString(in_data);
+	//pClientAgent->ChangePosition(opParam.portfid(), opParam.quantity());
+}
+
+void CClientManager::ScalperOpenPosition( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::PorfOpenPosiParam opParam;
+	opParam.ParseFromString(in_data);
+	pClientAgent->QuickScalpe(opParam.portfid(), opParam.quantity());
 }
 
 void CClientManager::PorfClosePosition(CClientAgent* pClientAgent, const string& in_data, string& out_data)
