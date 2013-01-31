@@ -20,10 +20,6 @@ m_clientConnected(false)
 	m_orderProcessor.SetPushTradeFunc(boost::bind(&CClientAgent::OnTradeUpdated, this, _1));
 	m_orderProcessor.SetPushPositionDetailFunc(boost::bind(&CClientAgent::OnPostionDetailReturned, this, _1));
 	m_orderProcessor.SetPushOrderFunc(boost::bind(&CClientAgent::OnLegOrderUpdated, this, _1, _2, _3));
-
-	//m_orderProcessor.SetPushPositionChangeFunc(boost::bind(&CPortfolioManager::PortfolioPositionChange, &m_portfolioMgr, _1));
-	//m_orderProcessor.SetPushResubmitterChangeFunc(boost::bind(&CPortfolioManager::ChangePortfolioResubmitter, &m_portfolioMgr, _1, _2, _3));
-	//m_orderProcessor.SetPortfolioPlaceOrderDoneFunc(boost::bind(&CPortfolioManager::PortfolioPlaceOrderDone, &m_portfolioMgr, _1));
 }
 
 CClientAgent::~CClientAgent(void)
@@ -153,13 +149,8 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty, trade::SubmitReason
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, &placeOrderCtx));
 	multilegOrder->set_reason(submitReason);
 
-	portf->BeginPlaceOrder();
 	// send to order processor
 	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
-	//if(enablePrefer)
-	//	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
-	//else
-	//	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
 void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, trade::SubmitReason submitReason, string& msg)
@@ -179,13 +170,7 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 		&openMlOrd, openMlOrd.quantity(), &placeOrderCtx));
 	multilegOrder->set_reason(submitReason);
 
-	portf->BeginPlaceOrder();
-
 	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
-	//if(enablePrefer)
-	//	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
-	//else
-	//	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
 void CClientAgent::SimpleCloseOrderPosition(const string& portfolioId, trade::SubmitReason submitReason)
@@ -220,13 +205,7 @@ void CClientAgent::ClosePosition(const string& portfolioId, int quantity, trade:
 		NULL, quantity, &placeOrderCtx));
 	multilegOrder->set_reason(submitReason);
 
-	portf->BeginPlaceOrder();
-
 	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
-	//if(enablePrefer)
-	//	m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
-	//else
-	//	m_orderProcessor.SubmitOrder(multilegOrder);
 }
 
 void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, entity::PosiDirectionType existingPosition, int qty, trade::SubmitReason submitReason)
@@ -243,10 +222,7 @@ void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, 
 	bool autoTracking = portf->Strategy()->IsAutoTracking();
 	multilegOrder->set_reason(submitReason);
 
-	portf->BeginPlaceOrder();
-
 	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
-	//m_orderProcessor.SubmitOrder2(multilegOrder, autoTracking);
 }
 
 void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDirectionType posiDirection, double precedence )
@@ -260,8 +236,6 @@ void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDire
 
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildScalperOrder(portf, posiDirection, precedence, &placeOrderCtx));
 	multilegOrder->set_reason(trade::SR_Scalpe);
-
-	portf->BeginPlaceOrder();
 
 	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
 }

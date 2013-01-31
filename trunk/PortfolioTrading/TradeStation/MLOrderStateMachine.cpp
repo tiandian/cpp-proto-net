@@ -71,6 +71,8 @@ void CMLOrderStateMachine::Transition( const string& orderId, COrderEvent& event
 
 void CMLOrderPlacer::Do()
 {
+	m_pPortf->BeginPlaceOrder();
+
 	InputOrderVectorPtr vecInputOrders(new InputOrderVector);
 	int ordCount = GetInputOrders(m_mlOrder.get(), vecInputOrders);
 	
@@ -150,6 +152,7 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 				m_pPortf->AddPosition(m_mlOrder);
 			else if(offset == trade::ML_OF_CLOSE)
 				m_pPortf->RemovePosition(m_mlOrder);
+
 			isTerminal = true;
 		}
 		break;
@@ -219,6 +222,9 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 		logger.Warning(boost::str(boost::format("Entering MultiLeg order UNHANDLED state %s")
 			% PrintState(state)));
 	}
+
+	if(isTerminal)
+		m_pPortf->EndPlaceOrder();
 
 	return isTerminal;
 }
