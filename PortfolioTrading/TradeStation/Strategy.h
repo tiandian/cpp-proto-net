@@ -93,7 +93,7 @@ public:
 		{
 			if(testFor == DO_NOTHING || testFor == OPEN_POSI)
 			{
-				logger.Debug(boost::str(boost::format("Portfolio(%s): Reach Limit %d, Placing Order %d, Auto Open %d")
+				logger.Debug(boost::str(boost::format("[OPEN Test]Portfolio(%s): Reach Limit %d, Placing Order %d, Auto Open %d")
 					% m_pPortfolio->ID() 
 					% m_pPortfolio->PositionReachLimit() 
 					% m_pPortfolio->IsPlacingOrder()
@@ -116,7 +116,7 @@ public:
 
 			if(testFor == DO_NOTHING || testFor == CLOSE_POSI)
 			{
-				logger.Debug(boost::str(boost::format("Portfolio(%s): Has position %d,  Placing Order %d")
+				logger.Debug(boost::str(boost::format("[CLOSE Test]Portfolio(%s): Has position %d,  Placing Order %d")
 					% m_pPortfolio->ID() 
 					% m_pPortfolio->HasPosition() 
 					% m_pPortfolio->IsPlacingOrder()));

@@ -25,7 +25,7 @@ public:
 					m_pMultiLegOrder(pMultiLegOrder),
 					m_pInputOrder(inputOrder),
 					m_maxRetryTimes(maxRetryTimes),
-					m_submitTimes(0), m_succ(false), m_allowPending(false),
+					m_submitTimes(0), m_succ(false), m_allowPending(true),
 					m_pOrderProcessor(pOrderProc)
 	{
 		GetOrderUid(inputOrder.get(), m_sgOrderUid);
