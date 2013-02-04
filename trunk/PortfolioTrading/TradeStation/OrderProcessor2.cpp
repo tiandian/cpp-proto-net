@@ -106,6 +106,11 @@ bool COrderProcessor2::GetOrderEvent( trade::Order* order, COrderEvent** ppOrder
 	logger.Debug(boost::str(boost::format("Order(%s) - submit status(%s), order status(%s)")
 		% order->orderref().c_str() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
 
+	if(submitStatus > trade::NOT_SUBMITTED && 
+		submitStatus <= trade::ACCEPTED && status >= trade::STATUS_UNKNOWN)
+	{
+		*ppOrderEvt = new SubmitSuccessEvent(order);
+	}
 	if(submitStatus > trade::ACCEPTED)
 	{
 		*ppOrderEvt = new RejectEvent(order);
@@ -332,9 +337,8 @@ boost::tuple<bool, string> COrderProcessor2::PlaceOrder( const string& symbol, t
 	
 	bool succ = placer->DoAndWait();
 
-	string errMsg;
-	GB2312ToUTF_8(errMsg, placer->GetError().c_str());
-
+	string errMsg = placer->GetError();
+	
 	string pId = placer->Id();
 	m_sgOrderStateMachine.RemovePlacer(pId);
 

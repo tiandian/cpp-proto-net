@@ -74,7 +74,9 @@ namespace PortfolioTrading.Modules.Portfolio
             IEventAggregator evtAgg = ServiceLocator.Current.GetInstance<IEventAggregator>();
             foreach (var ord in mlOrderVm.LastOrder.Legs)
             {
-                if(ord.OrderStatus != trade.OrderStatusType.ALL_TRADED &&
+                if(
+                    ord.OrderSubmitStatus != trade.OrderSubmitStatusType.NOT_SUBMITTED &&
+                    ord.OrderStatus != trade.OrderStatusType.ALL_TRADED &&
                     ord.OrderStatus != trade.OrderStatusType.ORDER_CANCELED)
                 {
                     evtAgg.GetEvent<CancelOrderEvent>().Publish(

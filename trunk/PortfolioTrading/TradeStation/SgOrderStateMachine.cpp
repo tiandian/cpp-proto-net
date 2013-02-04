@@ -41,6 +41,8 @@ CSgOrderStateMachine::~CSgOrderStateMachine(void)
 
 void CSgOrderStateMachine::Initialize()
 {
+	OrderStatePtr sending(new OrderSending);
+	m_orderStates.insert(make_pair(sending->State(), sending));
 	OrderStatePtr sent(new OrderSent);
 	m_orderStates.insert(make_pair(sent->State(), sent));
 	OrderStatePtr pending(new OrderPending);
@@ -50,13 +52,15 @@ void CSgOrderStateMachine::Initialize()
 	OrderStatePtr failed(new OrderPlaceFailed);
 	m_orderStates.insert(make_pair(failed->State(), failed));
 
+	sending->AddEventState(ORDER_EVENT_SUBMIT_SUCCESS, sent.get());
+	sending->AddEventState(ORDER_EVENT_REJECTED, failed.get());
+
+	sent->AddEventState(ORDER_EVENT_SUBMIT_SUCCESS, sent.get());
 	sent->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 	sent->AddEventState(ORDER_EVENT_PENDING, pending.get());
-	sent->AddEventState(ORDER_EVENT_SUBMIT_FAILED, failed.get());
-	sent->AddEventState(ORDER_EVENT_REJECTED, failed.get());
 
 	pending->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
-	pending->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sent.get());
+	pending->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sending.get());
 	pending->AddEventState(ORDER_EVENT_PENDING, pending.get());
 	pending->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 }
@@ -66,10 +70,9 @@ void CSgOrderStateMachine::Transition( const string& orderId/*orderRef*/, COrder
 	COrderStateMachine::Transition(orderId, event);
 }
 
-
 void CSgOrderPlacer::Do()
 {
-	COrderState* sentState = m_pStateMachine->GetState(ORDER_STATE_SENT);
+	COrderState* sentState = m_pStateMachine->GetState(ORDER_STATE_SENDING);
 	sentState->Run(this, NULL);
 }
 
@@ -81,7 +84,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	bool isTerminal = false;
 
 	CSgOrderEvent* pSgOrderEvent = NULL;
-	if(ORDER_STATE_SENT != state)
+	if(ORDER_STATE_SENDING != state)
 	{
 		pSgOrderEvent = dynamic_cast<CSgOrderEvent*>(transEvent);
 		_ASSERT(pSgOrderEvent != NULL);
@@ -91,7 +94,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 
 	switch(state)
 	{
-	case ORDER_STATE_SENT:
+	case ORDER_STATE_SENDING:
 		{
 			if(m_submitTimes <= m_maxRetryTimes)
 			{
@@ -130,7 +133,28 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 					% ParentOrderId() % Symbol()));
 				isTerminal = true;
 
+				
+				CSgOrderEvent* pSgOrderEvent = dynamic_cast<CSgOrderEvent*>(transEvent);
+				trade::Order* pOrd = pSgOrderEvent->RtnOrder();
+				if(pOrd != NULL)
+				{
+					OnOrderUpdate(pOrd);
+				}
 				RaiseMultiLegOrderEvent(LegCanceledEvent(Symbol()));
+			}
+		}
+		break;
+	case ORDER_STATE_SENT:
+		{
+			if(pSgOrderEvent->Event() == ORDER_EVENT_SUBMIT_SUCCESS)
+			{
+				break;	// duplicate order submit success event
+			}
+
+			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
+			if(pOrd != NULL)
+			{
+				OnOrderUpdate(pOrd);
 			}
 		}
 		break;
@@ -322,4 +346,17 @@ void CManualSgOrderPlacer::RaiseMultiLegOrderEvent( COrderEvent& orderEvent )
 {
 	boost::mutex::scoped_lock l(m_mut);
 	m_cond.notify_one();
+}
+
+void CManualSgOrderPlacer::OnOrderPlaceFailed( COrderEvent* pOrdEvent )
+{
+	const string& errorMsg = pOrdEvent->StatusMsg();
+	if(!errorMsg.empty())
+	{
+		GB2312ToUTF_8(m_errorMsg, errorMsg.c_str());
+	}
+	else
+	{
+		m_errorMsg = "Order not completed";
+	}
 }

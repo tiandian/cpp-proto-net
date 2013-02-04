@@ -14,6 +14,7 @@ enum ORDER_EVENT
 	ORDER_EVENT_PENDING,
 	ORDER_EVENT_CANCEL_SUCCESS,
 	ORDER_EVENT_CANCEL_FAILED,
+	ORDER_EVENT_SUBMIT_SUCCESS,
 	ORDER_EVENT_SUBMIT_FAILED,
 	ORDER_EVENT_REJECTED,
 	ORDER_EVENT_PARTIALLY_FILLED
@@ -40,6 +41,7 @@ class COrderState;
 
 enum ORDER_STATE 
 {
+	ORDER_STATE_SENDING,
 	ORDER_STATE_SENT,
 	ORDER_STATE_PENDING,
 	ORDER_STATE_COMPLETE,
@@ -114,6 +116,12 @@ protected:
 	ORDER_STATE m_state;
 
 	map<ORDER_EVENT, COrderState*> eventStateMap;
+};
+
+class OrderSending : public COrderState
+{
+public:
+	OrderSending():COrderState(ORDER_STATE_SENDING){}
 };
 
 class OrderSent : public COrderState

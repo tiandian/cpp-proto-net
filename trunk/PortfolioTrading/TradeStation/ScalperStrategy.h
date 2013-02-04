@@ -17,6 +17,10 @@ public:
 
 	void Test();
 
+	virtual bool IsAutoOpen(){ return true; }
+	virtual bool IsStopGain(){ return false; }
+	virtual bool IsStopLoss(){ return false; }
+
 	bool IsAutoTracking(){ return false; }
 	bool EnablePrefer(){ return true; }
 
