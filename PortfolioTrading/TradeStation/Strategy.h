@@ -66,13 +66,13 @@ public:
 	}
 	bool IsRunning() { return m_isRunning; }
 
-	bool IsAutoOpen(){ return  m_isAutoOpen; }
+	virtual bool IsAutoOpen(){ return  m_isAutoOpen; }
 	void SetAutoOpen(bool flag){ m_isAutoOpen = flag; }
 
-	bool IsStopGain(){ return m_isStopGain; }
+	virtual bool IsStopGain(){ return m_isStopGain; }
 	void SetStopGain(bool flag) { m_isStopGain = flag; }
 
-	bool IsStopLoss(){ return m_isStopLoss; }
+	virtual bool IsStopLoss(){ return m_isStopLoss; }
 	void SetStopLoss(bool flag) { m_isStopLoss = flag; }
 
 	virtual bool IsAutoTracking(){ return m_isAutoTracking; }
@@ -97,11 +97,11 @@ public:
 					% m_pPortfolio->ID() 
 					% m_pPortfolio->PositionReachLimit() 
 					% m_pPortfolio->IsPlacingOrder()
-					% m_isAutoOpen));
+					% IsAutoOpen()));
 
 				if(!m_pPortfolio->PositionReachLimit() 
 					&& !m_pPortfolio->IsPlacingOrder()
-					&& m_isAutoOpen)
+					&& IsAutoOpen())
 				{
 					logger.Info(boost::str(boost::format("Test for %s") 
 						% StrategyOpertaionText(OPEN_POSI)));
@@ -123,7 +123,7 @@ public:
 
 				if(m_pPortfolio->HasPosition() && !m_pPortfolio->IsPlacingOrder())
 				{
-					if(m_isStopGain)
+					if(IsStopGain())
 					{
 						logger.Info(boost::str(boost::format("Test for %s") 
 							% "Stop Gain"));
@@ -134,7 +134,7 @@ public:
 							DoStopGain();
 						}
 					}
-					if(m_isStopLoss)
+					if(IsStopLoss())
 					{
 						logger.Info(boost::str(boost::format("Test for %s") 
 							% "Stop Loss"));

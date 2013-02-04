@@ -92,8 +92,8 @@ boost::tuple<bool, string> CTradeAgent::Open( const string& address, const strin
 		
 		m_pUserApi->RegisterSpi(this);						// ×¢²áÊÂ¼þÀà
 
-		m_pUserApi->SubscribePrivateTopic(THOST_TERT_RESUME);
-		m_pUserApi->SubscribePublicTopic(THOST_TERT_RESUME);
+		m_pUserApi->SubscribePrivateTopic(THOST_TERT_QUICK);
+		m_pUserApi->SubscribePublicTopic(THOST_TERT_QUICK);
 
 		logger.Info(boost::str(boost::format("Try to connect trade server (%s) ...") % address));
 

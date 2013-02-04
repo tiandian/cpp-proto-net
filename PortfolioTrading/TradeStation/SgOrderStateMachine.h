@@ -87,7 +87,7 @@ protected:
 	virtual void RaiseMultiLegOrderEvent(COrderEvent& orderEvent);
 	virtual void OnOrderUpdate(trade::Order* pOrd){}
 	virtual void ModifyOrderPrice();
-	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent){}
+	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent);
 
 private:
 	boost::condition_variable m_cond;
@@ -169,6 +169,12 @@ namespace op2
 	{
 	public:
 		PartiallyFilledEvent(trade::Order* rtnOrder):CSgOrderEvent(ORDER_EVENT_PARTIALLY_FILLED, rtnOrder){}
+	};
+
+	class SubmitSuccessEvent : public CSgOrderEvent
+	{
+	public:
+		SubmitSuccessEvent(trade::Order* rtnOrder):CSgOrderEvent(ORDER_EVENT_SUBMIT_SUCCESS, rtnOrder){}
 	};
 
 	class SubmitFailedEvent : public CSgOrderEvent

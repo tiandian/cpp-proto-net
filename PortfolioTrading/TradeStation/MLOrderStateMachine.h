@@ -32,7 +32,7 @@ public:
 private:
 
 	void Send();
-	void SendNext();
+	bool SendNext();
 	COrderPlacer* CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
 	void OutputStatus(const string& statusMsg);
 

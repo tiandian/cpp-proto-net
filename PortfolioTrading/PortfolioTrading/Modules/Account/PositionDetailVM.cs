@@ -153,9 +153,13 @@ namespace PortfolioTrading.Modules.Account
                 UpdateTime = DateTime.Now;
             }
 
+            private static readonly HashSet<string> SH_Symbols = new HashSet<string>() 
+                                    { "cu", "if" };
+
             private static trade.OffsetFlagType GetOffsetFlag(string symbol, DateTime openDate, DateTime tradingDay)
             {
-                if (symbol.StartsWith("cu", StringComparison.OrdinalIgnoreCase))
+                string prefix = symbol.Substring(0, 2).ToLower();
+                if (SH_Symbols.Contains(prefix))
                 {
                     return openDate < tradingDay ? trade.OffsetFlagType.OF_CLOSE_YESTERDAY : trade.OffsetFlagType.OF_CLOSE_TODAY;
                 }

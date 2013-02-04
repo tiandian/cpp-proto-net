@@ -112,12 +112,15 @@ void CMLOrderPlacer::Send()
 	m_pOrderProcessor->PublishMultiLegOrderUpdate(m_mlOrder.get());
 }
 
-void CMLOrderPlacer::SendNext()
+bool CMLOrderPlacer::SendNext()
 {
 	if(++m_sendingIdx < m_sgOrderPlacers.size())
 	{
 		(m_sgOrderPlacers.at(m_sendingIdx))->Do();
+		return true;
 	}
+
+	return false;
 }
 
 COrderPlacer* CMLOrderPlacer::CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes)
@@ -142,9 +145,18 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 	case ORDER_STATE_PARTIALLY_FILLED:
 		{
 			if(m_isSequential)
-				SendNext();
+			{
+				if(SendNext())
+					break;
+				//else if there is no next placer to do
+				// go to next case "ORDER_STATE_COMPLETE"
+				logger.Debug("There is no next placer to do. GO to Complete state");
+			}
+			else if (m_sgOrderPlacers.size() > 1)
+				break;	// if there is only 1 order in portfolio, recognized as partially filled
+						// otherwise got to complete state
 		}
-		break;
+		//break;
 	case ORDER_STATE_COMPLETE:
 		{
 			trade::MlOrderOffset offset = m_mlOrder->offset();
