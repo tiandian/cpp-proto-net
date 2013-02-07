@@ -47,6 +47,20 @@ public:
 		m_orderPlacerMap.erase(placerId);
 	}
 
+	bool RemovePlacer(const string& placerId, OrderPlacerPtr* pRemovedPlacer)
+	{
+		boost::recursive_mutex::scoped_lock lock(m_mut);
+		OrderPlacerMapIter iter = m_orderPlacerMap.find(placerId);
+		if(iter != m_orderPlacerMap.end())
+		{
+			if(pRemovedPlacer != NULL)
+				*pRemovedPlacer = iter->second;
+			m_orderPlacerMap.erase(iter);
+			return true;
+		}
+		return false;
+	}
+
 	COrderState* GetState(ORDER_STATE stateVal)
 	{
 		OrderStateMapIter iter = m_orderStates.find(stateVal);

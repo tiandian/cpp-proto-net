@@ -98,10 +98,16 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 		{
 			if(m_submitTimes <= m_maxRetryTimes)
 			{
+				OrderPlacerPtr tmp_self;
+
 				if(m_submitTimes > 0)
 				{
-					m_pStateMachine->RemovePlacer(Id());
+					bool removeSucc = m_pStateMachine->RemovePlacer(Id(), &tmp_self);
 					ModifyOrderPrice();
+				}
+				else
+				{
+					tmp_self = OrderPlacerPtr(this);
 				}
 
 				// lock and generate order ref
@@ -115,7 +121,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 				else
 				{
 					m_pInputOrder->set_orderref(m_currentOrdRef);
-					m_pStateMachine->AddPlacer(OrderPlacerPtr(this));
+					m_pStateMachine->AddPlacer(tmp_self);
 
 					string submitInfo = boost::str(boost::format("Submit Order(%s - %s) [No. %d time(s)]")
 						% ParentOrderId() % Symbol() % (m_submitTimes + 1));
