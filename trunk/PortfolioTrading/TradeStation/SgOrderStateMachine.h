@@ -25,7 +25,7 @@ public:
 					m_pMultiLegOrder(pMultiLegOrder),
 					m_pInputOrder(inputOrder),
 					m_maxRetryTimes(maxRetryTimes),
-					m_submitTimes(0), m_succ(false), m_allowPending(true),
+					m_submitTimes(0), m_succ(false), m_allowPending(maxRetryTimes <= 0),
 					m_pOrderProcessor(pOrderProc)
 	{
 		GetOrderUid(inputOrder.get(), m_sgOrderUid);
@@ -40,7 +40,7 @@ public:
 	const string& Id(){ return m_currentOrdRef; }
 	const string& CompositeId() { return m_sgOrderUid; }
 
-	bool OnEnter(ORDER_STATE state, COrderEvent* transEvent);
+	bool OnEnter(ORDER_STATE state, COrderEvent* transEvent, ORDER_STATE lastState);
 
 	void Do();
 
