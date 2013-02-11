@@ -128,7 +128,7 @@ COrderPlacer* CMLOrderPlacer::CreateSgOrderPlacer(const boost::shared_ptr<trade:
 	return m_pOrderProcessor->CreateSingleOrderPlacer(m_pPortf, m_mlOrder.get(), inputOrder, retryTimes);
 }
 
-bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
+bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_STATE lastState )
 {
 	string dbText = boost::str(boost::format("MultiLeg Order(%s) enter %s") 
 		% Id() % PrintState(state));

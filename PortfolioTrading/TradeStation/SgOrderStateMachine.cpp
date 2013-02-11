@@ -76,7 +76,7 @@ void CSgOrderPlacer::Do()
 	sentState->Run(this, NULL);
 }
 
-bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
+bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_STATE lastState )
 {
 	string dbText = boost::str(boost::format("Order(%s - %s) enter %s") 
 		% ParentOrderId() % Symbol() % PrintState(state));
@@ -152,11 +152,6 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent )
 		break;
 	case ORDER_STATE_SENT:
 		{
-			if(pSgOrderEvent->Event() == ORDER_EVENT_SUBMIT_SUCCESS)
-			{
-				break;	// duplicate order submit success event
-			}
-
 			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
 			if(pOrd != NULL)
 			{

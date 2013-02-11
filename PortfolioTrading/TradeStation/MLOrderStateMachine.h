@@ -24,7 +24,7 @@ public:
 
 	}
 
-	bool OnEnter(ORDER_STATE state, COrderEvent* transEvent);
+	bool OnEnter(ORDER_STATE state, COrderEvent* transEvent, ORDER_STATE lastState);
 
 	const string& Id(){ return m_mlOrder->orderid(); }
 	void Do();

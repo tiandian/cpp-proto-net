@@ -62,7 +62,7 @@ public:
 	COrderState* CurrentState() const { return m_currentState; }
 	bool CurrentState(COrderState* val);
 
-	virtual bool OnEnter(ORDER_STATE state, COrderEvent* transEvent) { return false; };
+	virtual bool OnEnter(ORDER_STATE state, COrderEvent* transEvent, ORDER_STATE lastState) { return false; };
 
 	static const char* PrintState(ORDER_STATE state);
 	static const char* PrintEvent(ORDER_EVENT evt);
@@ -93,8 +93,11 @@ public:
 	// false means it would keep changing.
 	virtual bool Run(CStateOwner* stateOwner, COrderEvent* transEvent)
 	{
+		COrderState* pLastSate = stateOwner->CurrentState();
+		ORDER_STATE lastStateEum = pLastSate != NULL ? pLastSate->State() : (ORDER_STATE)-1;
+
 		if(stateOwner->CurrentState(this))
-			return stateOwner->OnEnter(m_state, transEvent);
+			return stateOwner->OnEnter(m_state, transEvent, lastStateEum);
 
 		return false;
 	}
