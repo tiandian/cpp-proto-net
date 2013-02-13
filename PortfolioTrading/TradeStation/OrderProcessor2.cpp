@@ -163,7 +163,14 @@ void COrderProcessor2::CancelOrder( const std::string& ordRef, const std::string
 
 COrderPlacer* COrderProcessor2::CreateSingleOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes)
 {
-	return m_sgOrderStateMachine.CreatePlacer(pPortf, pMlOrder, pInputOrder, retryTimes, this);
+	if(pMlOrder->reason() == trade::SR_Scalpe)
+	{
+		// if scalpe open order, don't need to retry
+		int actRetryTimes = pInputOrder->comboffsetflag() == "0" ? 0 : retryTimes;
+		return m_sgOrderStateMachine.CreateScalperPlacer(pPortf, pMlOrder, pInputOrder, actRetryTimes, this);
+	}
+	else
+		return m_sgOrderStateMachine.CreatePlacer(pPortf, pMlOrder, pInputOrder, retryTimes, this);
 }
 
 void COrderProcessor2::RaiseMLOrderPlacerEvent( const string& mlOrdPlacerId, COrderEvent& orderEvent )

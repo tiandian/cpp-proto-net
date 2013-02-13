@@ -21,7 +21,7 @@ public:
 	virtual bool IsStopGain(){ return false; }
 	virtual bool IsStopLoss(){ return false; }
 
-	bool IsAutoTracking(){ return false; }
+	bool IsAutoTracking(){ return true; }
 	bool EnablePrefer(){ return true; }
 
 protected:

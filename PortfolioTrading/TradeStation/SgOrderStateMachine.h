@@ -25,7 +25,9 @@ public:
 					m_pMultiLegOrder(pMultiLegOrder),
 					m_pInputOrder(inputOrder),
 					m_maxRetryTimes(maxRetryTimes),
-					m_submitTimes(0), m_succ(false), m_allowPending(maxRetryTimes <= 0),
+					m_submitTimes(0), m_succ(false), 
+					m_allowPending(maxRetryTimes <= 0),
+					m_quoteTimestamp(0),
 					m_pOrderProcessor(pOrderProc)
 	{
 		GetOrderUid(inputOrder.get(), m_sgOrderUid);
@@ -65,6 +67,8 @@ protected:
 	bool m_succ;
 	string m_errorMsg;
 	bool m_allowPending;
+
+	long m_quoteTimestamp;
 };
 
 class CManualSgOrderPlacer : public CSgOrderPlacer
@@ -94,6 +98,34 @@ private:
 	boost::mutex m_mut;
 };
 
+class CScalperOrderPlacer : public CSgOrderPlacer
+{
+public:
+	CScalperOrderPlacer(CSgOrderStateMachine* pStateMachine,
+						CPortfolio* pPortfolio,
+						trade::MultiLegOrder* pMultiLegOrder,
+						const InputOrderPtr& inputOrder,
+						int maxRetryTimes,
+						COrderProcessor2* pOrderProc):
+	CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder, 
+		inputOrder, maxRetryTimes, pOrderProc)
+	{
+		m_precedence = 0.2;	// precedence so far only support IFxxxx
+	}
+
+	~CScalperOrderPlacer(){}
+
+	double Precedence() const { return m_precedence; }
+	void SetPrecedence(double val) { m_precedence = val; }
+
+protected:
+	virtual void ModifyOrderPrice();
+
+private:
+	double m_precedence;
+	
+};
+
 class CSgOrderStateMachine : public COrderStateMachine
 {
 public:
@@ -114,6 +146,15 @@ public:
 											COrderProcessor2* pOrderProc)
 	{
 		return new CManualSgOrderPlacer(this, pInputOrder, retryTimes, pOrderProc);
+	}
+
+	CScalperOrderPlacer* CreateScalperPlacer(CPortfolio* pPortfolio,
+		trade::MultiLegOrder* pMultiLegOrder,
+		const InputOrderPtr& pInputOrder,
+		int retryTimes,
+		COrderProcessor2* pOrderProc)
+	{
+		return new CScalperOrderPlacer(this, pPortfolio, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
 	}
 
 	virtual void Initialize();
