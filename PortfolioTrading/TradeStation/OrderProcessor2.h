@@ -94,6 +94,11 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 
 	bool IsReadyForSubmit(){ return !m_bIsSubmitting; }
+	int TotalOpenTimes(){ return m_totalOpenTimes; }
+	int TotalCancelTimes(){ return m_totalCancelTimes; }
+
+	bool ReachOpenTimesLimit(){ return m_totalOpenTimes >= m_maxTotalOpenTimes; }
+	bool ReachCancelTimesLimit() { return m_totalCancelTimes >= m_maxTotalCancelTimes; }
 
 private:
 
@@ -101,6 +106,8 @@ private:
 	static bool GetOrderEvent(trade::Order* order, COrderEvent** ppOrderEvt);
 	
 	trade::InputOrder* BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
+	void AddOpenTimes() { ++m_totalOpenTimes; }
+	void AddCancelTimes() { ++m_totalCancelTimes; }
 
 	CMLOrderStateMachine m_mlOrderStateMachine;
 	CSgOrderStateMachine m_sgOrderStateMachine;
@@ -120,5 +127,10 @@ private:
 	boost::condition_variable m_condQryAcct;
 	boost::mutex m_mutQryAcct;
 	string m_serializedQryAcctInfo;
+
+	int m_totalOpenTimes;
+	int m_totalCancelTimes;
+	int m_maxTotalOpenTimes;
+	int m_maxTotalCancelTimes;
 };
 

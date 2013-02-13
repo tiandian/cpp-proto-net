@@ -23,7 +23,11 @@ void PrintInputOrder(trade::InputOrder* order)
 COrderProcessor2::COrderProcessor2(void):
 m_pTradeAgent(NULL),
 m_maxOrderRef(0),
-m_bIsSubmitting(false)
+m_bIsSubmitting(false),
+m_totalOpenTimes(0),
+m_totalCancelTimes(0),
+m_maxTotalOpenTimes(450),
+m_maxTotalCancelTimes(900)
 {
 }
 
@@ -157,7 +161,11 @@ void COrderProcessor2::CancelOrder( const std::string& ordRef, const std::string
 
 	if(m_pTradeAgent != NULL)
 	{
-		m_pTradeAgent->SubmitOrderAction(orderAction.get());
+		if(!ReachCancelTimesLimit())
+		{
+			m_pTradeAgent->SubmitOrderAction(orderAction.get());
+			AddCancelTimes();
+		}
 	}
 }
 
@@ -219,7 +227,10 @@ bool COrderProcessor2::SubmitOrderToTradeAgent( trade::InputOrder* pOrder )
 {
 	logger.Trace(boost::str(boost::format("Truly sumbit order(%s) to trade agent") 
 		% pOrder->orderref()));
-	return m_pTradeAgent->SubmitOrder(pOrder);
+	bool succ = m_pTradeAgent->SubmitOrder(pOrder);
+	if(succ)
+		AddOpenTimes();
+	return succ;
 }
 
 void COrderProcessor2::SetPushPortfolioFunc( PushMultiLegOrderFunc funcPushMLOrder )

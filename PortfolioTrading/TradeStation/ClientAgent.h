@@ -74,6 +74,9 @@ public:
 	boost::tuple<bool, string> QuoteLogin(const string& brokerId, const string& userId, const string& password);
 	void QuoteLogout();
 
+	bool ReachOpenTimesLimit(){ return m_orderProcessor.ReachOpenTimesLimit(); }
+	bool ReachCancelTimesLimit() { return m_orderProcessor.ReachCancelTimesLimit(); }
+
 private:
 
 	void SetClientStatus(bool connected) { m_clientConnected = connected; }
