@@ -10,6 +10,7 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
+#include <boost/date_time.hpp>
 
 using namespace std;
 
@@ -134,7 +135,7 @@ private:
 class CLeg
 {
 	CLeg(int legId) : 
-		m_legId(legId)
+		m_legId(legId), m_timestamp(0)
 	{}
 
 public:
@@ -171,13 +172,22 @@ public:
 
 	entity::LegItem* InnerItem(){ return m_pInnerItem; }
 	
+	long GetTimestamp(){ return m_timestamp; }
+	void UpdateTimestamp();
+	bool IsQuoteUpdated(long timestamp);
 
 private:
 	void SetInnerItem(entity::LegItem* pItem);
+	bool CompareTimestamp(long destTs);
+	
+	static boost::posix_time::ptime m_stEpochTime; 
 
 	int m_legId;
 	entity::LegItem* m_pInnerItem;
 
+	long m_timestamp;
+	boost::condition_variable m_condQuoteUpdated;
+	boost::mutex m_mut;
 };
 
 

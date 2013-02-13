@@ -128,6 +128,11 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 					logger.Info(submitInfo);
 					// real submit order and unlock to allow next order ref generation
 					bool succ = m_pOrderProcessor->SubmitAndUnlock(m_pInputOrder.get());
+
+					CLeg* pLeg = m_pPortf->GetLeg(Symbol());
+					_ASSERT(pLeg != NULL);
+					m_quoteTimestamp = pLeg->GetTimestamp();
+
 					++m_submitTimes;
 				}
 			}
@@ -235,6 +240,13 @@ void CSgOrderPlacer::ModifyOrderPrice()
 	_ASSERT(pLeg != NULL);
 	if(pLeg != NULL)
 	{
+		bool quoteUpdated = pLeg->IsQuoteUpdated(m_quoteTimestamp);
+		if(!quoteUpdated)
+		{
+			logger.Warning(boost::str(boost::format("Order(%s)'s quote didn't get updated after cancelled")
+				% Symbol()));
+		}
+
 		trade::TradeDirectionType direction = m_pInputOrder->direction();
 		double origLmtPx = m_pInputOrder->limitprice();
 		if(direction == trade::BUY)
@@ -359,5 +371,29 @@ void CManualSgOrderPlacer::OnOrderPlaceFailed( COrderEvent* pOrdEvent )
 	else
 	{
 		m_errorMsg = "Order not completed";
+	}
+}
+
+void CScalperOrderPlacer::ModifyOrderPrice()
+{
+	trade::TradeDirectionType direction = m_pInputOrder->direction();
+	double origLmtPx = m_pInputOrder->limitprice();
+	if(direction == trade::BUY)
+	{
+		double ask = origLmtPx - m_precedence;
+		logger.Trace(boost::str(boost::format("Buy: Ask(%f) ?> Lmt Px(%f)")
+			% ask % origLmtPx));
+		logger.Trace(boost::str(boost::format("Modify order(%s): Buy @ %f")
+			% Symbol() % ask));
+		m_pInputOrder->set_limitprice(ask);
+	}
+	else if(direction == trade::SELL)
+	{
+		double bid = origLmtPx + m_precedence;
+		logger.Trace(boost::str(boost::format("Sell: Bid(%f) ?< Lmt Px(%f)")
+			% bid % origLmtPx));
+		logger.Trace(boost::str(boost::format("Modify order(%s): Sell @ %f")
+			% Symbol() % bid));
+		m_pInputOrder->set_limitprice(bid);
 	}
 }

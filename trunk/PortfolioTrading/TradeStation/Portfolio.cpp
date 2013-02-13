@@ -13,6 +13,8 @@ enum DIFF_TYPE
 	LAST_DIFF, LONG_DIFF, SHORT_DIFF
 };
 
+boost::posix_time::ptime CLeg::m_stEpochTime(boost::gregorian::date(2000, 1, 1)); 
+
 double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType)
 {
 	// calculate the diff
@@ -212,6 +214,31 @@ void CLeg::SetInnerItem(entity::LegItem* pItem)
 	m_pInnerItem = pItem;
 }
 
+void CLeg::UpdateTimestamp()
+{
+	boost::unique_lock<boost::mutex> l(m_mut);
+	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+	boost::posix_time::time_duration diff = now - m_stEpochTime;
+	m_timestamp = diff.total_milliseconds();
+	m_condQuoteUpdated.notify_one();
+}
+
+bool CLeg::CompareTimestamp(long destTs)
+{
+	return m_timestamp > destTs;
+}
+
+bool CLeg::IsQuoteUpdated(long timestamp)
+{
+	boost::unique_lock<boost::mutex> l(m_mut);
+	if(m_condQuoteUpdated.timed_wait(l, boost::posix_time::seconds(3), 
+		boost::bind(&CLeg::CompareTimestamp, this, timestamp)))
+	{
+		return true;
+	}
+	return false;
+}
+
 void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem )
 {
 	m_innerItem = PortfItemPtr(pPortfItem);
@@ -263,6 +290,7 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 			(*iter)->UpdateAskSize(pQuote->ask_size());
 			(*iter)->UpdateBid(pQuote->bid());
 			(*iter)->UpdateBidSize(pQuote->bid_size());
+			(*iter)->UpdateTimestamp();
 			break;
 		}
 	}
