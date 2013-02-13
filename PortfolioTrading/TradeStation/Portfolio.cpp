@@ -319,8 +319,6 @@ void CPortfolio::OnQuoteRecevied( boost::shared_ptr<entity::Quote>& pQuote )
 
 	m_strategy->Test();
 	
-	TriggerResubmitter(pQuote.get());
-
 	PushUpdate();
 }
 
@@ -449,45 +447,6 @@ int CPortfolio::GetPosition( vector<MultiLegOrderPtr>& openedOrders )
 	}
 
 	return openedOrders.size();
-}
-
-void CPortfolio::AddOrderResubmitter( COrderResubmitter* pResubmitter )
-{
-	boost::mutex::scoped_lock lock(m_mutResubmitters);
-	logger.Trace(boost::str(boost::format("Add Resubmitter to portfolio(%s)") % ID().c_str()));
-	m_submitters.insert(make_pair(pResubmitter->Symbol(), pResubmitter));
-}
-
-void CPortfolio::TriggerResubmitter( entity::Quote* pQuote )
-{
-	boost::mutex::scoped_lock lock(m_mutResubmitters);
-
-	const string& symbol = pQuote->symbol();
-	pair<SubmitterIter, SubmitterIter> ret = m_submitters.equal_range(symbol);
-
-	for (SubmitterIter iter = ret.first; iter != ret.second; ++iter)
-	{
-		(iter->second)->UpdateQuote(pQuote);
-	}
-}
-
-void CPortfolio::RemoveOrderResubmitter( COrderResubmitter* pResubmitter )
-{
-	boost::mutex::scoped_lock lock(m_mutResubmitters);
-	logger.Trace(boost::str(boost::format("Remove Resubmitter from portfolio(%s)") % ID().c_str()));
-	SubmitterIter iterFound = m_submitters.end();
-	const string& symbol = pResubmitter->Symbol();
-	pair<SubmitterIter, SubmitterIter> ret = m_submitters.equal_range(symbol);
-	for (SubmitterIter iter = ret.first; iter != ret.second; ++iter)
-	{
-		if((iter->second) == pResubmitter)
-		{
-			iterFound = iter;
-			break;
-		}
-	}
-	if(iterFound != m_submitters.end())
-		m_submitters.erase(iterFound);
 }
 
 double CPortfolio::CalcMlOrderCost( const MultiLegOrderPtr& openOrder )
