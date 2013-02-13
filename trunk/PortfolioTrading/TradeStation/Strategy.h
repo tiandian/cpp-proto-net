@@ -109,7 +109,10 @@ public:
 					bool succ = GetOpenPosiCond().Test(valueToTest);
 					if(succ)
 					{
-						DoOpenPostion();
+						if(!(Client()->ReachOpenTimesLimit()))
+							DoOpenPostion();
+						else
+							m_pPortfolio->EnableStrategy(false);
 					}
 				}
 			}

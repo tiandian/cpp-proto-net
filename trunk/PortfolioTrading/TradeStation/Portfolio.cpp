@@ -398,9 +398,6 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 
 void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
 {
-	const string& mOrderId = openOrder->orderid();
-
-	m_openedPosition.insert(make_pair(mOrderId, openOrder));
 	int qty = openOrder->quantity();
 	
 	double cost = CalcMlOrderCost(openOrder);
@@ -414,17 +411,12 @@ void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
 
 void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 {
-	const string& mOrderId = closeOrder->openorderid();
-
-	map<string, MultiLegOrderPtr>::iterator iter = m_openedPosition.find(mOrderId);
-	if(iter != m_openedPosition.end())
-	{
-		AddProfit(CalcPortfProfit((iter->second).get(), closeOrder.get()));
-		m_openedPosition.erase(iter);
-	}
-
 	int qty = closeOrder->quantity();
 	double cost = CalcMlOrderCost(closeOrder);
+
+	double orderProfit = (cost - AvgCost()) * qty;
+	AddProfit(orderProfit);
+
 	int origQty = PositionQuantity();
 	int remaing = origQty - qty;
 	if(remaing > 0)
@@ -433,20 +425,12 @@ void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 		AvgCost(newAvgCost);
 	}
 	else
-		AvgCost(0);
-
-	IncrementalCloseTimes(qty);
-}
-
-int CPortfolio::GetPosition( vector<MultiLegOrderPtr>& openedOrders )
-{
-	for(map<string, MultiLegOrderPtr>::iterator iter = m_openedPosition.begin();
-		iter != m_openedPosition.end(); ++iter)
 	{
-		openedOrders.push_back(iter->second);
+		AvgCost(0);
+		SetProfit(0);
 	}
 
-	return openedOrders.size();
+	IncrementalCloseTimes(qty);
 }
 
 double CPortfolio::CalcMlOrderCost( const MultiLegOrderPtr& openOrder )

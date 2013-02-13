@@ -69,8 +69,6 @@ public:
 	void AddPosition(const MultiLegOrderPtr& openOrder);
 	void RemovePosition(const MultiLegOrderPtr& closeOrder);
 
-	int GetPosition(vector<MultiLegOrderPtr>& openedOrders);
-
 	bool HasPosition(){ return PositionQuantity() > 0; }
 	bool PositionReachLimit(){ return PositionQuantity() >= m_innerItem->maxposition(); }
 
@@ -86,14 +84,14 @@ public:
 
 	double AvgCost(){ return m_innerItem->avgcost(); }
 	void AvgCost(double avgCost){ return m_innerItem->set_avgcost(avgCost); }
-	
-private:
-	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
 	int PositionQuantity()
 	{
 		return m_innerItem->currentposition();
 	}
+	
+private:
+	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
 
 	void UpdatePosition()
 	{
@@ -106,13 +104,13 @@ private:
 	void IncrementalOpenTimes(int opened){ m_innerItem->set_opentimes(m_innerItem->opentimes() + opened); UpdatePosition(); }
 	void IncrementalCloseTimes(int closed){ m_innerItem->set_closetimes(m_innerItem->closetimes() + closed); UpdatePosition(); }
 	void AddProfit(double val){ m_innerItem->set_profit(m_innerItem->profit() + val); }
+	void SetProfit(double val){ m_innerItem->set_profit(val); }
 
 	double CalcMlOrderCost(const MultiLegOrderPtr& openOrder);
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;
-	map<string, MultiLegOrderPtr> m_openedPosition;
-
+	
 	CPortfolioManager* m_porfMgr;
 
 	int m_openedOrderCount;

@@ -176,15 +176,10 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 void CClientAgent::SimpleCloseOrderPosition(const string& portfolioId, trade::SubmitReason submitReason)
 {
 	CPortfolio* portf = m_portfolioMgr.Get(portfolioId);
-
-	std::vector<MultiLegOrderPtr> openedOrders;
-	int orderCount = portf->GetPosition(openedOrders);
-	std::vector<MultiLegOrderPtr>::iterator iter = openedOrders.begin();
-	if(iter != openedOrders.end())
+	int qty = portf->Quantity();
+	if(portf->HasPosition())
 	{
-		const trade::MultiLegOrder& openMlOrd = *(*iter);
-		std::string msg;
-		ClosePosition(openMlOrd, std::string(), submitReason, msg);
+		ClosePosition(portfolioId, qty, submitReason);
 	}
 }
 

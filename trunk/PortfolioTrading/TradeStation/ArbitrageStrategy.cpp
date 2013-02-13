@@ -48,15 +48,12 @@ void CArbitrageStrategy::ClosePosition(trade::SubmitReason submitReason)
 	CPortfolio *portf = Portfolio();
 	if(portf != NULL)
 	{
-		std::vector<MultiLegOrderPtr> openedOrders;
-		int orderCount = portf->GetPosition(openedOrders);
-		std::vector<MultiLegOrderPtr>::iterator iter = openedOrders.begin();
-		if(iter != openedOrders.end())
-		{
-			const trade::MultiLegOrder& openMlOrd = *(*iter);
-			std::string msg;
-			Client()->ClosePosition(openMlOrd, std::string(), submitReason, msg);
-		}
+		int qty = portf->Quantity();
+		int positionQty = portf->PositionQuantity();
+		_ASSERT(positionQty > 0);
+		
+		const string& portfId = portf->ID();
+		Client()->ClosePosition(portfId, qty, submitReason);
 	}
 }
 
