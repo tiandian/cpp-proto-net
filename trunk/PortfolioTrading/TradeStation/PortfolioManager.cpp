@@ -61,12 +61,17 @@ void CPortfolioManager::ChangePortfolioResubmitter( const string& portfId, COrde
 	CPortfolio* pPortf = Get(portfId);
 	if(pPortf != NULL)
 	{
+		_ASSERT(false);
+		/* Portfolio doesn't support order resubmitter for quote pushing after Feb 13.
+
 		if(isAdding)
 		{
 			pPortf->AddOrderResubmitter(pResubmitter);
 		}
 		else
 			pPortf->RemoveOrderResubmitter(pResubmitter);
+		
+		*/
 	}
 }
 
