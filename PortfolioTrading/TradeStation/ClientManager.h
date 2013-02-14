@@ -23,7 +23,7 @@ public:
 	CClientManager(void);
 	~CClientManager(void);
 
-	virtual void OnConnected(Session* session);
+	virtual bool OnConnected(Session* session, const string& clientId, bool attach);
 
 	virtual void OnDisconnected(Session* session);
 
@@ -32,7 +32,10 @@ public:
 	virtual void DispatchPacket(const string& sessionId, 
 		const string& method, const string& in_data, string& out_data);
 
+	virtual bool VerifyClient(const string& username, const string& password, bool* clientExisting);
+
 	CClientAgent* GetClient(const string& sessionId);
+	CClientAgent* GetClientById(const string& clientId);
 
 private:
 	void InitializeReqTranslators();

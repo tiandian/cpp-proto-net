@@ -17,7 +17,7 @@ using namespace std;
 class CClientAgent : public CQuoteListener
 {
 public:
-	CClientAgent(void);
+	CClientAgent(const string& clntId);
 	~CClientAgent(void);
 
 	void SetSession(Session* pSession) 
@@ -26,6 +26,9 @@ public:
 		SetClientStatus( m_pSession != NULL );
 	}
 
+	bool Detached(){ return m_pSession == NULL; }
+	const string& ClientId() { return m_clientId; }
+	
 	void Add(entity::PortfolioItem* portfolioItem);
 	void AddPortfolios( entity::AddPortfolioParam& addPortfParam );
 	void Remove(const string& pid);
@@ -92,6 +95,8 @@ private:
 	string m_tradeAddress;
 	string m_brokerId;
 	string m_userId;
+
+	string m_clientId;
 
 	Session* m_pSession;
 

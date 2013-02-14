@@ -415,6 +415,7 @@ namespace PortfolioTrading.Modules.Account
                         Thread.Sleep(3000);
                         string host = NativeHost.GetLocalIP();
                         LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
+                        _client.AuthClientId = this.Id;
                         _client.ConnectAsync(host, HostPort, actionClntConnectDone);
                     });
 

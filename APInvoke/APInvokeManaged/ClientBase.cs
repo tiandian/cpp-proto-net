@@ -11,8 +11,8 @@ namespace APInvokeManaged
 
     public abstract class ClientBase
     {
-        private static string _authId = "APInvoke Connection";
-        private static string _authPwd = "";
+        private static string _authId = "APInvoke Client";
+        private static string _authPwd = "APInvoke Connection";
 
         public static readonly byte[] VoidParam = new byte[0];
 
@@ -36,6 +36,19 @@ namespace APInvokeManaged
         public event Action<string> OnError;
         public bool IsConnected { get; private set; }
         public string SessionId { get; private set; }
+
+        private string _authClientId;
+        public string AuthClientId
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_authClientId))
+                    return AuthId;
+                else
+                    return _authClientId;
+            }
+            set { _authClientId = value; }
+        }
 
         public ClientBase()
         {
@@ -199,7 +212,7 @@ namespace APInvokeManaged
         private void EstablishConnection(Action<bool, string> connectCompletionHandler)
         {
             Packet.Connect connReq = new Packet.Connect();
-            connReq.userid = AuthId;
+            connReq.userid = AuthClientId;
             connReq.password = AuthPwd;
 
             byte[] data = DataTranslater.Serialize(connReq);

@@ -94,6 +94,8 @@ void CMLOrderPlacer::Do()
 
 void CMLOrderPlacer::Send()
 {
+	m_pOrderProcessor->PublishMultiLegOrderUpdate(m_mlOrder.get());
+
 	m_isSequential = m_pPortf->EnablePrefer();
 	if(m_isSequential)
 	{
@@ -109,7 +111,6 @@ void CMLOrderPlacer::Send()
 			placer->Do();
 		}
 	}
-	m_pOrderProcessor->PublishMultiLegOrderUpdate(m_mlOrder.get());
 }
 
 bool CMLOrderPlacer::SendNext()
