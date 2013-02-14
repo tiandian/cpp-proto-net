@@ -7,7 +7,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
-CClientAgent::CClientAgent(void):
+CClientAgent::CClientAgent(const string& clntId):
+m_clientId(clntId),
+m_pSession(NULL),
 m_clientConnected(false)
 {
 	m_quoteAggregator.Initialize(&m_quoteAgent);

@@ -63,7 +63,8 @@ public:
 private:
 
 	void OnSocketError(const boost::system::error_code& e);
-	void OnConnectionEstablished();
+	bool OnConnectionEstablished(const string& clientId, bool attach);
+	bool VerifyClient(const string& user, const string& pwd, bool* clientExisting);
 
 	connection_ptr m_conn;
 	string m_sessionId;
@@ -96,9 +97,20 @@ public:
 
 	void HandleRequest(const string& sessionId, const RequestPtr& request);
 
-	void RaiseConnected(Session* session) 
+	bool VerifyClient(const string& username, const string& password, bool* clientExisting)
 	{
-		if(m_callback != NULL) m_callback->OnConnected(session);
+		if(m_callback != NULL)
+		{
+			return m_callback->VerifyClient(username, password, clientExisting);
+		}
+		return false;
+	}
+
+	bool RaiseConnected(Session* session, string clientId, bool attach) 
+	{
+		if(m_callback != NULL) 
+			return m_callback->OnConnected(session, clientId, attach);
+		return false;
 	}
 	void RaiseDisconnected(Session* session)
 	{

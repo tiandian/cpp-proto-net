@@ -54,10 +54,12 @@ void CSgOrderStateMachine::Initialize()
 
 	sending->AddEventState(ORDER_EVENT_SUBMIT_SUCCESS, sent.get());
 	sending->AddEventState(ORDER_EVENT_REJECTED, failed.get());
+	sending->AddEventState(ORDER_EVENT_SUBMIT_FAILED, failed.get());
 
 	sent->AddEventState(ORDER_EVENT_SUBMIT_SUCCESS, sent.get());
 	sent->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 	sent->AddEventState(ORDER_EVENT_PENDING, pending.get());
+	sent->AddEventState(ORDER_EVENT_REJECTED, failed.get());
 
 	pending->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
 	pending->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sending.get());

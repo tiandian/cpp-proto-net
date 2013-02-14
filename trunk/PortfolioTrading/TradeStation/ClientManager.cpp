@@ -17,14 +17,34 @@ CClientManager::~CClientManager(void)
 {
 }
 
-void CClientManager::OnConnected( Session* session )
+bool CClientManager::OnConnected( Session* session, const string& clientId, bool attach )
 {
-	std::string info = boost::str(boost::format("Client(%s) connected.") % session->SessionId().c_str());
-	logger.Info(info);
+	if(attach)
+	{
+		CClientAgent* pClientAgent = GetClientById(clientId);
+		_ASSERT(pClientAgent != NULL);
+		if(pClientAgent != NULL)
+		{
+			if(pClientAgent->Detached())
+			{
+				pClientAgent->SetSession(session);
+				logger.Info(boost::str(boost::format("Client(%s) Attached.") % clientId ));
+				return true;
+			}
+		}
+	}
+	else
+	{
+		std::string info = boost::str(boost::format("Client(%s) connected.") % session->SessionId().c_str());
+		logger.Info(info);
 
-	ClientPtr client(new CClientAgent);
-	client->SetSession(session);
-	m_clients.insert(std::make_pair(session->SessionId(), client));
+		ClientPtr client(new CClientAgent(clientId));
+		client->SetSession(session);
+		m_clients.insert(std::make_pair(session->SessionId(), client));
+		return true;
+	}
+
+	return false;
 }
 
 void CClientManager::OnDisconnected( Session* session )
@@ -66,6 +86,19 @@ CClientAgent* CClientManager::GetClient( const string& sessionId )
 	}
 	else
 		return NULL;
+}
+
+CClientAgent* CClientManager::GetClientById( const string& clientId )
+{
+	for (ClientMapIter clntIter = m_clients.begin(); clntIter != m_clients.end(); ++clntIter)
+	{
+		const string& currClientId = (clntIter->second)->ClientId();
+		if(currClientId == clientId)
+		{
+			return (clntIter->second).get();
+		}
+	}
+	return NULL;
 }
 
 void CClientManager::InitializeReqTranslators()
@@ -349,4 +382,22 @@ void CClientManager::PortfChgQuantity( CClientAgent* pClientAgent, const string&
 	qtyParam.ParseFromString(in_data);
 
 	pClientAgent->SetPortfolioQuantity(qtyParam.portfid(), qtyParam.onceqty(), qtyParam.maxqty());
+}
+
+bool CClientManager::VerifyClient( const string& username, const string& password, bool* clientExisting )
+{
+	*clientExisting = false;
+	CClientAgent* pClient = GetClientById(username);
+	if(pClient == NULL)
+		return true;
+	else
+	{
+		*clientExisting = true;
+
+		if(pClient->Detached())
+		{
+			return true;
+		}
+		return false;
+	}
 }

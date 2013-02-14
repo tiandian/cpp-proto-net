@@ -15,7 +15,7 @@ SessionManager* SessionManager::Create()
 
 bool HandleConnected(const string& userId, const string& pwd)
 {
-	return userId == "APInvoke Connection";
+	return pwd == "APInvoke Connection";
 }
 
 APSessionManager::APSessionManager(void):
@@ -205,17 +205,24 @@ void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE ms
 				reqConn.ParseFromString(data);
 				
 				AP::ConnectAck rspConn;
+				rspConn.set_success(false);
+				rspConn.set_session("");
+
 				if(HandleConnected(reqConn.userid(), reqConn.password()))
 				{
-					rspConn.set_success(true);
-					rspConn.set_session(SessionId());
+					// check whether client already existing
+					bool attachClient = false;
+					if(VerifyClient(reqConn.userid(), reqConn.password(), &attachClient))
+					{
+						bool connectedSucc = OnConnectionEstablished(reqConn.userid(), attachClient);
+						if(connectedSucc)
+						{
+							rspConn.set_success(true);
+							rspConn.set_session(SessionId());
+						}
+					}
+				}
 
-					OnConnectionEstablished();
-				}
-				else
-				{
-					rspConn.set_success(false);
-				}
 				BeginSendMessage(CONN_ACK, &rspConn);
 			}
 			break;
@@ -270,10 +277,21 @@ void APSession::RegisterCallback( SessionCallback* callbackRsp )
 	m_callbackRspHandler = callbackRsp;
 }
 
-void APSession::OnConnectionEstablished()
+bool APSession::OnConnectionEstablished(const string& clientId, bool attach)
 {
 	if(m_pSessionMgr != NULL)
 	{
-		m_conn->socket().get_io_service().post(boost::bind(&APSessionManager::RaiseConnected, m_pSessionMgr, this));
+		return m_pSessionMgr->RaiseConnected(this, clientId, attach);
+		//m_conn->socket().get_io_service().post(boost::bind(&APSessionManager::RaiseConnected, m_pSessionMgr, this, clientId, attach));
 	}
+	return false;
+}
+
+bool APSession::VerifyClient( const string& user, const string& pwd, bool* clientExisting )
+{
+	if(m_pSessionMgr != NULL)
+	{
+		return m_pSessionMgr->VerifyClient(user, pwd, clientExisting);
+	}
+	return false;
 }

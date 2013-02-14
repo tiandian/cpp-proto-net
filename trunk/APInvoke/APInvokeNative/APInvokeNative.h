@@ -53,9 +53,12 @@ public:
 class SessionManagerHandler
 {
 public:
-	virtual void OnConnected(Session* session){}
+
+	virtual bool OnConnected(Session* session, const string& clientId, bool attach){ return false; }
 
 	virtual void OnDisconnected(Session* session){}
+
+	virtual bool VerifyClient(const string& username, const string& password, bool* clientExisting){ return true; }
 
 	virtual void OnError(Session* session, const string& errorMsg){}
 
