@@ -39,6 +39,8 @@ public:
 	bool QuerySymbol(const std::string& symbol, entity::Quote** ppQuote);
 	bool QuerySymbolAsync(const std::string& symbol, int nReqestId);
 
+	bool IsConnected(){ return m_bIsConnected; }
+
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
 
@@ -91,6 +93,10 @@ public:
 
 private:
 	int RequestIDIncrement();
+	bool IsMyOrder(CThostFtdcOrderField *pOrder)
+	{ 
+		return pOrder->FrontID == FRONT_ID && pOrder->SessionID == SESSION_ID;
+	}
 
 	// «Î«Û±‡∫≈
 	int m_iRequestID;

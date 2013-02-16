@@ -213,20 +213,30 @@ class ConnectAck : public ::google::protobuf::Message {
   inline ::std::string* mutable_session();
   inline ::std::string* release_session();
   
+  // required bool attach_existing = 3;
+  inline bool has_attach_existing() const;
+  inline void clear_attach_existing();
+  static const int kAttachExistingFieldNumber = 3;
+  inline bool attach_existing() const;
+  inline void set_attach_existing(bool value);
+  
   // @@protoc_insertion_point(class_scope:AP.ConnectAck)
  private:
   inline void set_has_success();
   inline void clear_has_success();
   inline void set_has_session();
   inline void clear_has_session();
+  inline void set_has_attach_existing();
+  inline void clear_has_attach_existing();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* session_;
   bool success_;
+  bool attach_existing_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_packet_2eproto();
   friend void protobuf_AssignDesc_packet_2eproto();
@@ -916,6 +926,28 @@ inline ::std::string* ConnectAck::release_session() {
     session_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// required bool attach_existing = 3;
+inline bool ConnectAck::has_attach_existing() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ConnectAck::set_has_attach_existing() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ConnectAck::clear_has_attach_existing() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ConnectAck::clear_attach_existing() {
+  attach_existing_ = false;
+  clear_has_attach_existing();
+}
+inline bool ConnectAck::attach_existing() const {
+  return attach_existing_;
+}
+inline void ConnectAck::set_attach_existing(bool value) {
+  set_has_attach_existing();
+  attach_existing_ = value;
 }
 
 // -------------------------------------------------------------------

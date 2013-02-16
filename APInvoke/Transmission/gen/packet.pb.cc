@@ -62,9 +62,10 @@ void protobuf_AssignDesc_packet_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(Connect));
   ConnectAck_descriptor_ = file->message_type(1);
-  static const int ConnectAck_offsets_[2] = {
+  static const int ConnectAck_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectAck, success_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectAck, session_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectAck, attach_existing_),
   };
   ConnectAck_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -198,16 +199,16 @@ void protobuf_AddDesc_packet_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\014packet.proto\022\002AP\"+\n\007Connect\022\016\n\006userid\030"
-    "\001 \002(\t\022\020\n\010password\030\002 \002(\t\".\n\nConnectAck\022\017\n"
-    "\007success\030\001 \002(\010\022\017\n\007session\030\002 \002(\t\">\n\007Reque"
-    "st\022\017\n\007session\030\001 \002(\t\022\016\n\006method\030\002 \002(\t\022\022\n\np"
-    "aram_data\030\003 \002(\014\"N\n\010Response\022\016\n\006method\030\001 "
-    "\002(\t\022\023\n\013return_data\030\002 \002(\014\022\016\n\006invoke\030\003 \002(\010"
-    "\022\r\n\005error\030\004 \002(\t\"1\n\013CallbackReq\022\016\n\006method"
-    "\030\001 \002(\t\022\022\n\nparam_data\030\002 \002(\014\"b\n\013CallbackRs"
-    "p\022\017\n\007session\030\001 \002(\t\022\016\n\006method\030\002 \002(\t\022\023\n\013re"
-    "turn_data\030\003 \002(\014\022\016\n\006invoke\030\004 \002(\010\022\r\n\005error"
-    "\030\005 \002(\t", 406);
+    "\001 \002(\t\022\020\n\010password\030\002 \002(\t\"G\n\nConnectAck\022\017\n"
+    "\007success\030\001 \002(\010\022\017\n\007session\030\002 \002(\t\022\027\n\017attac"
+    "h_existing\030\003 \002(\010\">\n\007Request\022\017\n\007session\030\001"
+    " \002(\t\022\016\n\006method\030\002 \002(\t\022\022\n\nparam_data\030\003 \002(\014"
+    "\"N\n\010Response\022\016\n\006method\030\001 \002(\t\022\023\n\013return_d"
+    "ata\030\002 \002(\014\022\016\n\006invoke\030\003 \002(\010\022\r\n\005error\030\004 \002(\t"
+    "\"1\n\013CallbackReq\022\016\n\006method\030\001 \002(\t\022\022\n\nparam"
+    "_data\030\002 \002(\014\"b\n\013CallbackRsp\022\017\n\007session\030\001 "
+    "\002(\t\022\016\n\006method\030\002 \002(\t\022\023\n\013return_data\030\003 \002(\014"
+    "\022\016\n\006invoke\030\004 \002(\010\022\r\n\005error\030\005 \002(\t", 431);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "packet.proto", &protobuf_RegisterTypes);
   Connect::default_instance_ = new Connect();
@@ -520,6 +521,7 @@ void Connect::Swap(Connect* other) {
 #ifndef _MSC_VER
 const int ConnectAck::kSuccessFieldNumber;
 const int ConnectAck::kSessionFieldNumber;
+const int ConnectAck::kAttachExistingFieldNumber;
 #endif  // !_MSC_VER
 
 ConnectAck::ConnectAck()
@@ -540,6 +542,7 @@ void ConnectAck::SharedCtor() {
   _cached_size_ = 0;
   success_ = false;
   session_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  attach_existing_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -583,6 +586,7 @@ void ConnectAck::Clear() {
         session_->clear();
       }
     }
+    attach_existing_ = false;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -622,6 +626,22 @@ bool ConnectAck::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(24)) goto parse_attach_existing;
+        break;
+      }
+      
+      // required bool attach_existing = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_attach_existing:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &attach_existing_)));
+          set_has_attach_existing();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -658,6 +678,11 @@ void ConnectAck::SerializeWithCachedSizes(
       2, this->session(), output);
   }
   
+  // required bool attach_existing = 3;
+  if (has_attach_existing()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->attach_existing(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -681,6 +706,11 @@ void ConnectAck::SerializeWithCachedSizes(
         2, this->session(), target);
   }
   
+  // required bool attach_existing = 3;
+  if (has_attach_existing()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->attach_existing(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -702,6 +732,11 @@ int ConnectAck::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->session());
+    }
+    
+    // required bool attach_existing = 3;
+    if (has_attach_existing()) {
+      total_size += 1 + 1;
     }
     
   }
@@ -737,6 +772,9 @@ void ConnectAck::MergeFrom(const ConnectAck& from) {
     if (from.has_session()) {
       set_session(from.session());
     }
+    if (from.has_attach_existing()) {
+      set_attach_existing(from.attach_existing());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -754,7 +792,7 @@ void ConnectAck::CopyFrom(const ConnectAck& from) {
 }
 
 bool ConnectAck::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   
   return true;
 }
@@ -763,6 +801,7 @@ void ConnectAck::Swap(ConnectAck* other) {
   if (other != this) {
     std::swap(success_, other->success_);
     std::swap(session_, other->session_);
+    std::swap(attach_existing_, other->attach_existing_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

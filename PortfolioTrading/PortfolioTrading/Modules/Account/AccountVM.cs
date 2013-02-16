@@ -353,8 +353,8 @@ namespace PortfolioTrading.Modules.Account
                     Action<int> actionLoopConnect = null;
                     _connectTimes = 1;
 
-                    Action<bool, string> actionClntConnectDone = null;
-                    actionClntConnectDone = (b, t) =>
+                    Action<bool, string, bool> actionClntConnectDone = null;
+                    actionClntConnectDone = (b, t, attach) =>
                     {
                         string txt = string.Format("连接交易终端(第{0}次)", _connectTimes);
                         if (b)
@@ -369,43 +369,52 @@ namespace PortfolioTrading.Modules.Account
 
                         if (b)
                         {
-                            Func<AccountVM, bool> actionReady = new Func<AccountVM, bool>(HaveTradeStationReady);
-                            actionReady.BeginInvoke(
-                                acct,
-                                new AsyncCallback(
-                                    delegate(IAsyncResult ar)
-                                    {
-                                        try
+                            if (attach)
+                            {
+                                EventLogger.Write("恢复连接到交易终端");
+                            }
+                            else
+                            {
+                                Func<AccountVM, bool> actionReady = new Func<AccountVM, bool>(HaveTradeStationReady);
+                                actionReady.BeginInvoke(
+                                    acct,
+                                    new AsyncCallback(
+                                        delegate(IAsyncResult ar)
                                         {
-                                            bool ok = actionReady.EndInvoke(ar);
-                                            if (ok)
+                                            try
                                             {
-                                                uiContext.Send(o => Status = "已连接", null);
-                                                EventLogger.Write(string.Format("{0}准备就绪", acct.InvestorId));
-                                                SyncToHost();
+                                                bool ok = actionReady.EndInvoke(ar);
+                                                if (ok)
+                                                {
+                                                    uiContext.Send(o => Status = "已连接", null);
+                                                    EventLogger.Write(string.Format("{0}准备就绪", acct.InvestorId));
+                                                    SyncToHost();
+                                                }
+                                                else
+                                                {
+                                                    uiContext.Send(o => Status = "连接失败", null);
+                                                    EventLogger.Write(string.Format("{0}发生错误", acct.InvestorId));
+                                                    _host.Exit();
+                                                }
                                             }
-                                            else
+                                            catch (System.Exception ex)
                                             {
-                                                uiContext.Send(o => Status = "连接失败", null);
-                                                EventLogger.Write(string.Format("{0}发生错误", acct.InvestorId));
+                                                EventLogger.Write("初始化交易终端发生错误");
+                                                LogManager.Logger.Error(ex.Message);
                                                 _host.Exit();
                                             }
-                                        }
-                                        catch (System.Exception ex)
-                                        {
-                                            EventLogger.Write("初始化交易终端发生错误");
-                                            LogManager.Logger.Error(ex.Message);
-                                            _host.Exit();
-                                        }
 
-                                    }),
-                                null);
-                            LogManager.Logger.Info(txt);
+                                        }),
+                                    null);
+                                LogManager.Logger.Info(txt);
+                            }
                         }
                         else
                         {
                             LogManager.Logger.Warn(txt);
-                            if (_connectTimes < 10 && actionLoopConnect != null)
+                            if ("交易终端拒绝连接" != t && 
+                                _connectTimes < 10 && 
+                                actionLoopConnect != null)
                                 actionLoopConnect.Invoke(++_connectTimes);
                         }
                     };

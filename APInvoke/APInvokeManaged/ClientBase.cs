@@ -36,6 +36,7 @@ namespace APInvokeManaged
         public event Action<string> OnError;
         public bool IsConnected { get; private set; }
         public string SessionId { get; private set; }
+        public bool AttachExisting { get; private set; }
 
         private string _authClientId;
         public string AuthClientId
@@ -63,12 +64,14 @@ namespace APInvokeManaged
             lock(_syncObj)
             {
                 bool connected = false;
+                bool attachExisting = false;
                 ConnectAsync(address, port, 
-                    delegate(bool succ, string err)
+                    delegate(bool succ, string err, bool attach)
                     {
                         lock (_syncObj)
                         {
                             connected = succ;
+                            attachExisting = attach;
                             Monitor.Pulse(_syncObj);
                         }
                     });
@@ -80,7 +83,7 @@ namespace APInvokeManaged
             }
         }
 
-        public void ConnectAsync(string address, int port, Action<bool, string> connectCompletionHandler)
+        public void ConnectAsync(string address, int port, Action<bool, string, bool> connectCompletionHandler)
         {
             _connection.Address = address;
             _connection.Port = port;
@@ -98,7 +101,7 @@ namespace APInvokeManaged
                     else
                     {
                         if (connectCompletionHandler != null)
-                            connectCompletionHandler(succ, err);
+                            connectCompletionHandler(succ, err, false);
                     }
                 });
         }
@@ -209,7 +212,7 @@ namespace APInvokeManaged
                 OnError(errMsg);
         }
 
-        private void EstablishConnection(Action<bool, string> connectCompletionHandler)
+        private void EstablishConnection(Action<bool, string, bool> connectCompletionHandler)
         {
             Packet.Connect connReq = new Packet.Connect();
             connReq.userid = AuthClientId;
@@ -230,26 +233,29 @@ namespace APInvokeManaged
                     {
                         RemoveBookedRequest(typeof(Packet.Connect).Name);
                         connectCompletionHandler(
-                            false, string.Format("Attempt to establish connection failed due to {0}", msg));
+                            false, string.Format("Attempt to establish connection failed due to {0}", msg), false);
                     }
                 });
         }
 
         private void OnEstablishConnectionAck(byte[] data)
         {
+            bool attachExisting = false;
             if (data != null && data.Length > 0)
             {
                 Packet.ConnectAck connAck = DataTranslater.Deserialize<Packet.ConnectAck>(data);
                 IsConnected = connAck.success;
                 SessionId = connAck.session;
+                attachExisting = connAck.attach_existing;
             }
 
             Delegate callback = GetResponseCallback(typeof(Packet.Connect).Name);
             if (callback != null)
             {
-                Action<bool, string> connCompletion = callback as Action<bool, string>;
+                string errMsg = !IsConnected ? "交易终端拒绝连接" : "";
+                Action<bool, string, bool> connCompletion = callback as Action<bool, string, bool>;
                 if (connCompletion != null)
-                    connCompletion(IsConnected, "");
+                    connCompletion(IsConnected, errMsg, attachExisting);
             }
         }
 

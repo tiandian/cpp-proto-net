@@ -9,8 +9,7 @@
 
 CClientAgent::CClientAgent(const string& clntId):
 m_clientId(clntId),
-m_pSession(NULL),
-m_clientConnected(false)
+m_pSession(NULL)
 {
 	m_quoteAggregator.Initialize(&m_quoteAgent);
 	
@@ -66,6 +65,7 @@ boost::tuple<bool, string> CClientAgent::TradeLogin( const string& brokerId, con
 {
 	m_brokerId = brokerId;
 	m_userId = userId;
+	
 	return m_tradeAgent.Login(brokerId, userId, password);
 }
 

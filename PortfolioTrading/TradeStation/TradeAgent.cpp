@@ -9,7 +9,7 @@
 #pragma comment(lib, "./ThostTraderApi/thosttraderapi.lib")
 
 #define CONNECT_TIMEOUT_SECONDS 15
-#define DISCONNECT_TIMEOUT_SECOND 5
+#define DISCONNECT_TIMEOUT_SECOND 1
 #define LOGIN_TIMEOUT_SECONDS 15
 #define QUERY_QUOTE_RETRY_TIMES 5
 
@@ -52,6 +52,8 @@ void PrintRtnOrder(CThostFtdcOrderField* pOrder)
 }
 
 CTradeAgent::CTradeAgent(void):
+FRONT_ID(0),
+SESSION_ID(0),
 m_loginSuccess(false),
 m_pUserApi(NULL),
 m_bIsConnected(false),
@@ -74,6 +76,12 @@ void RunTradingFunc(CThostFtdcTraderApi* pUserApi, const char* address)
 
 CTradeAgent::~CTradeAgent(void)
 {
+	logger.Info(boost::str(boost::format("Trade Agent(%s) destructing...") % m_userID));
+	if(m_pUserApi != NULL)
+	{
+		m_pUserApi->RegisterSpi(NULL);
+		m_thQuoting.detach();
+	}
 }
 
 boost::tuple<bool, string> CTradeAgent::Open( const string& address, const string& streamDir )
@@ -142,7 +150,8 @@ void CTradeAgent::Close()
 
 	if(m_pUserApi != NULL)
 	{
-		//m_pUserApi->RegisterSpi(NULL);
+		logger.Trace("Releasing Trader Api...");
+		m_pUserApi->RegisterSpi(NULL);
 		m_pUserApi->Release();
 
 		{
@@ -157,6 +166,8 @@ void CTradeAgent::Close()
 				}
 			}
 		}
+
+		m_pUserApi = NULL;
 	}
 }
 
@@ -558,6 +569,9 @@ void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CTho
 
 void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 {
+	if(!IsMyOrder(pOrder))
+		return;
+
 	ostringstream oss;
 	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
 	logger.Info(oss.str());

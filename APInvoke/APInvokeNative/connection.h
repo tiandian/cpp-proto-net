@@ -16,7 +16,7 @@ class connection
 public:
 	/// Constructor.
 	connection(boost::asio::io_service& io_service)
-		: socket_(io_service), _ready_to_write(true)
+		: socket_(io_service), _ready_to_write(true), _in_fault(false)
 	{
 	}
 
@@ -37,6 +37,9 @@ public:
 	void async_write(MSG_TYPE msg_type, std::string& data, Handler handler)
 	{
 		boost::unique_lock<boost::mutex> lock(_write_mutex);
+
+		if(in_fault())
+			return;		// if socket in fault status, don't allow writing any longer
 
 		while (!_ready_to_write)
 		{
@@ -190,6 +193,9 @@ public:
 	MSG_TYPE get_in_msg_type(){ return _in_msg_type; }
 	std::string& get_in_data(){ return _in_data; }
 
+	void fault() { _in_fault = true; }
+	bool in_fault() { return _in_fault; }
+
 private:
 	/// The underlying socket.
 	boost::asio::ip::tcp::socket socket_;
@@ -220,6 +226,7 @@ private:
 	MSG_TYPE _in_msg_type;
 	std::string _in_data;
 
+	bool _in_fault;
 };
 
 typedef boost::shared_ptr<connection> connection_ptr;

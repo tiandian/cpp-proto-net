@@ -107,6 +107,8 @@ void CQuoteAgent::Close()
 				}
 			}
 		}
+
+		m_pUserApi = NULL;
 	}
 }
 
@@ -238,6 +240,9 @@ void CQuoteAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThos
 bool CQuoteAgent::SubscribesQuotes( vector<string>& subscribeArr )
 {
 	bool retVal = false;
+
+	if(m_pUserApi == NULL)
+		return retVal;
 
 	// know symbols's count
 	int symbCount = subscribeArr.size();
@@ -377,6 +382,9 @@ void CQuoteAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMa
 bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 {
 	bool retVal = false;
+
+	if(m_pUserApi == NULL)
+		return retVal;
 
 	// know symbols's count
 	int symbCount = unSubscribeArr.size();

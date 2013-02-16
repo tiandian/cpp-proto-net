@@ -39,6 +39,7 @@ public:
 
 private:
 	void InitializeReqTranslators();
+	void AttachSession(const string& clientId, Session* session);
 
 	void QuoteConnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void QuoteDisconnect(CClientAgent* pClientAgent, const string& in_data, string& out_data);
