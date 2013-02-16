@@ -200,7 +200,7 @@ namespace PortfolioTrading
 
         private void btnStartup_Click(object sender, RoutedEventArgs e)
         {
-            _client.ConnectAsync("127.0.0.1", 16168, (b, t) =>
+            _client.ConnectAsync("127.0.0.1", 16168, (b, t, a) =>
             {
                 string txt = "Connect trade station ";
                 if (b)

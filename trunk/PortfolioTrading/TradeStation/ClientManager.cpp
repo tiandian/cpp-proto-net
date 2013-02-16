@@ -27,7 +27,7 @@ bool CClientManager::OnConnected( Session* session, const string& clientId, bool
 		{
 			if(pClientAgent->Detached())
 			{
-				pClientAgent->SetSession(session);
+				AttachSession(clientId, session);
 				logger.Info(boost::str(boost::format("Client(%s) Attached.") % clientId ));
 				return true;
 			}
@@ -52,9 +52,14 @@ void CClientManager::OnDisconnected( Session* session )
 	std::string info = boost::str(boost::format("Client(%s) disconnected.") % session->SessionId().c_str());
 	logger.Info(info);
 
-	CClientAgent* pClntAgent = GetClient(session->SessionId());
+	const string& sessionId = session->SessionId();
+	CClientAgent* pClntAgent = GetClient(sessionId);
 	if(pClntAgent != NULL)
+	{
 		pClntAgent->SetSession(NULL);
+		if(!pClntAgent->IsConnected())
+			m_clients.erase(sessionId);
+	}
 }
 
 void CClientManager::OnError( Session* session, const string& errorMsg )
@@ -399,5 +404,28 @@ bool CClientManager::VerifyClient( const string& username, const string& passwor
 			return true;
 		}
 		return false;
+	}
+}
+
+void CClientManager::AttachSession( const string& clientId, Session* session )
+{
+	ClientPtr targetClient;
+	bool found = false;
+	for (ClientMapIter clntIter = m_clients.begin(); clntIter != m_clients.end(); ++clntIter)
+	{
+		const string& currClientId = (clntIter->second)->ClientId();
+		if(currClientId == clientId)
+		{
+			targetClient = (clntIter->second);
+			found = true;
+			m_clients.erase(clntIter);
+			break;
+		}
+	}
+
+	if(found)
+	{
+		targetClient->SetSession(session);
+		m_clients.insert(std::make_pair(session->SessionId(), targetClient));
 	}
 }

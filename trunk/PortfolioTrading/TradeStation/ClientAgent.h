@@ -23,7 +23,6 @@ public:
 	void SetSession(Session* pSession) 
 	{ 
 		m_pSession = pSession; 
-		SetClientStatus( m_pSession != NULL );
 	}
 
 	bool Detached(){ return m_pSession == NULL; }
@@ -80,10 +79,8 @@ public:
 	bool ReachOpenTimesLimit(){ return m_orderProcessor.ReachOpenTimesLimit(); }
 	bool ReachCancelTimesLimit() { return m_orderProcessor.ReachCancelTimesLimit(); }
 
+	bool IsConnected(){ return (m_quoteAgent.IsConnected() && m_tradeAgent.IsConnected()); }
 private:
-
-	void SetClientStatus(bool connected) { m_clientConnected = connected; }
-
 
 	CQuoteAgent			m_quoteAgent;
 	CQuoteAggregator	m_quoteAggregator;
@@ -99,7 +96,5 @@ private:
 	string m_clientId;
 
 	Session* m_pSession;
-
-	bool m_clientConnected;
 };
 

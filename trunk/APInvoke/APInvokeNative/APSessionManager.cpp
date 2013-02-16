@@ -207,6 +207,7 @@ void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE ms
 				AP::ConnectAck rspConn;
 				rspConn.set_success(false);
 				rspConn.set_session("");
+				rspConn.set_attach_existing(false);
 
 				if(HandleConnected(reqConn.userid(), reqConn.password()))
 				{
@@ -219,6 +220,7 @@ void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE ms
 						{
 							rspConn.set_success(true);
 							rspConn.set_session(SessionId());
+							rspConn.set_attach_existing(attachClient);
 						}
 					}
 				}
@@ -253,6 +255,7 @@ void APSession::OnSocketError( const boost::system::error_code& e )
 {
 	if(m_pSessionMgr != NULL && m_isConnected)
 	{
+		m_conn->fault();
 		m_conn->socket().get_io_service().post(boost::bind(&APSessionManager::HandleError, m_pSessionMgr, m_sessionId, e));
 	}
 }

@@ -24,5 +24,8 @@ namespace APInvokeManaged.Packet
 
         [ProtoMember(2)]
         public string session { get; set; }
+
+        [ProtoMember(3)]
+        public bool attach_existing { get; set; }
     }
 }

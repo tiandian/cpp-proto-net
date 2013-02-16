@@ -27,6 +27,8 @@ public:
 
 	void SetCallbackHanlder(CQuoteAgentCallback* pCallback){ m_pCallback = pCallback; }
 
+	bool IsConnected(){ return m_bIsConnected; }
+
 	//////////////////////////////////////////////////////////////////////////
 
 	///当客户端与交易后台建立起通信连接时（还未登录前），该方法被调用。
