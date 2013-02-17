@@ -35,7 +35,7 @@
                                                     <Setter Property="Visibility" Value="Visible"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Data.IsConnected}" Value="True">
-                                                    <Setter Property="Command" Value="{Binding Data.DisconnectCommand}"/>
+                                                    <Setter Property="Command" Value="{Binding Data.DetachCommand}"/>
                                                     <Setter Property="Content" Value="断开"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
