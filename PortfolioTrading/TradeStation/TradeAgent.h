@@ -40,6 +40,7 @@ public:
 	bool QuerySymbolAsync(const std::string& symbol, int nReqestId);
 
 	bool IsConnected(){ return m_bIsConnected; }
+	bool IsDisconnected(){ return !m_bIsConnected; }
 
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
