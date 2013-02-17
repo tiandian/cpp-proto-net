@@ -109,6 +109,41 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region MaxSubmit
+        private int _maxSubmit = 450;
+
+        public int MaxSubmit
+        {
+            get { return _maxSubmit; }
+            set
+            {
+                if (_maxSubmit != value)
+                {
+                    _maxSubmit = value;
+                    RaisePropertyChanged("MaxSubmit");
+                }
+            }
+        }
+        #endregion
+
+        #region MaxCancel
+        private int _maxCancel = 900;
+
+        public int MaxCancel
+        {
+            get { return _maxCancel; }
+            set
+            {
+                if (_maxCancel != value)
+                {
+                    _maxCancel = value;
+                    RaisePropertyChanged("MaxCancel");
+                }
+            }
+        }
+        #endregion
+
+
         #region HostPort
         private int _hostPort;
 
@@ -458,7 +493,11 @@ namespace PortfolioTrading.Modules.Account
             }
 
             OperationResult tradeLoginResult = _client.TradeLogin(acct.BrokerId,
-                acct.InvestorId, acct.Password);
+                acct.InvestorId, acct.Password, new entity.AccountSettings
+                {
+                    MaxSubmit = acct.MaxSubmit,
+                    MaxCancel = acct.MaxCancel
+                });
 
             if (tradeLoginResult.Success)
             {
@@ -545,6 +584,14 @@ namespace PortfolioTrading.Modules.Account
             if (attrPwd != null)
                 acct.Password = attrPwd.Value;
 
+            XAttribute attrMaxSubmit = xmlElement.Attribute("maxSubmit");
+            if (attrMaxSubmit != null)
+                acct.MaxSubmit = int.Parse(attrMaxSubmit.Value);
+
+            XAttribute attrMaxCancel = xmlElement.Attribute("maxCancel");
+            if (attrMaxCancel != null)
+                acct.MaxCancel = int.Parse(attrMaxCancel.Value);
+
             foreach(var portfElem in xmlElement.Element("portfolios").Elements("portfolio"))
             {
                 PortfolioVM porfVm = PortfolioVM.Load(acct, portfElem);
@@ -560,6 +607,8 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("brokerId", _brokerId));
             elem.Add(new XAttribute("investorId", _investorId));
             elem.Add(new XAttribute("password", _password));
+            elem.Add(new XAttribute("maxSubmit", _maxSubmit));
+            elem.Add(new XAttribute("maxCancel", _maxCancel));
 
             XElement elemPortfs = new XElement("portfolios");
             lock (_acctPortfolios)

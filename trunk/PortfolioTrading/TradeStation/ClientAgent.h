@@ -66,7 +66,7 @@ public:
 	boost::tuple<bool, string> QuoteConnect(const std::string& address, const std::string& streamDir);
 	void QuoteDisconnect();
 
-	boost::tuple<bool, string> TradeLogin(const string& brokerId, const string& userId, const string& password);
+	boost::tuple<bool, string> TradeLogin(const string& brokerId, const string& userId, const string& password, const entity::AccountSettings* pAcctSettings);
 	void TradeLogout();
 
 	std::string TradeAddress() const { return m_tradeAddress; }

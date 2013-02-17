@@ -338,6 +338,30 @@ namespace entity
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
   
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"AccountSettings")]
+  public partial class AccountSettings : global::ProtoBuf.IExtensible
+  {
+    public AccountSettings() {}
+    
+    private int _MaxSubmit;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"MaxSubmit", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int MaxSubmit
+    {
+      get { return _MaxSubmit; }
+      set { _MaxSubmit = value; }
+    }
+    private int _MaxCancel;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"MaxCancel", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int MaxCancel
+    {
+      get { return _MaxCancel; }
+      set { _MaxCancel = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
   [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"LoginParam")]
   public partial class LoginParam : global::ProtoBuf.IExtensible
   {
@@ -363,6 +387,15 @@ namespace entity
     {
       get { return _Password; }
       set { _Password = value; }
+    }
+
+    private entity.AccountSettings _AcctSettings = null;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = false, Name=@"AcctSettings", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    [global::System.ComponentModel.DefaultValue(null)]
+    public entity.AccountSettings AcctSettings
+    {
+      get { return _AcctSettings; }
+      set { _AcctSettings = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)

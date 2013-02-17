@@ -65,11 +65,18 @@ message OperationReturn
 	required string ErrorMessage = 2;
 }
 
+message AccountSettings
+{
+	required int32 MaxSubmit = 1;
+	required int32 MaxCancel = 2;
+}
+
 message LoginParam
 {
 	required string BrokerId = 1;
 	required string UserId = 2;
 	required string Password = 3;
+	optional AccountSettings AcctSettings = 4;
 }
 
 message RegQuoteParam
