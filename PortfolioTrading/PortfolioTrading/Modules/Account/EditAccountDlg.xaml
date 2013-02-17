@@ -40,6 +40,14 @@
                 <TextBlock>密码</TextBlock>
                 <TextBox Text="{Binding Password, Mode=TwoWay}"></TextBox>
             </DockPanel>
+            <DockPanel>
+                <TextBlock>最多下单</TextBlock>
+                <TextBox Text="{Binding MaxSubmit, Mode=TwoWay}"></TextBox>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock>最多撤单</TextBlock>
+                <TextBox Text="{Binding MaxCancel, Mode=TwoWay}"></TextBox>
+            </DockPanel>
         </StackPanel>
     </DockPanel>
 </Window>

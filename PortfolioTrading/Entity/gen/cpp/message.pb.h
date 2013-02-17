@@ -40,6 +40,7 @@ class LegItem;
 class PortfolioItem;
 class ConnectParam;
 class OperationReturn;
+class AccountSettings;
 class LoginParam;
 class RegQuoteParam;
 class AddPortfolioParam;
@@ -906,6 +907,98 @@ class OperationReturn : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class AccountSettings : public ::google::protobuf::Message {
+ public:
+  AccountSettings();
+  virtual ~AccountSettings();
+  
+  AccountSettings(const AccountSettings& from);
+  
+  inline AccountSettings& operator=(const AccountSettings& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const AccountSettings& default_instance();
+  
+  void Swap(AccountSettings* other);
+  
+  // implements Message ----------------------------------------------
+  
+  AccountSettings* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const AccountSettings& from);
+  void MergeFrom(const AccountSettings& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required int32 MaxSubmit = 1;
+  inline bool has_maxsubmit() const;
+  inline void clear_maxsubmit();
+  static const int kMaxSubmitFieldNumber = 1;
+  inline ::google::protobuf::int32 maxsubmit() const;
+  inline void set_maxsubmit(::google::protobuf::int32 value);
+  
+  // required int32 MaxCancel = 2;
+  inline bool has_maxcancel() const;
+  inline void clear_maxcancel();
+  static const int kMaxCancelFieldNumber = 2;
+  inline ::google::protobuf::int32 maxcancel() const;
+  inline void set_maxcancel(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:entity.AccountSettings)
+ private:
+  inline void set_has_maxsubmit();
+  inline void clear_has_maxsubmit();
+  inline void set_has_maxcancel();
+  inline void clear_has_maxcancel();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::int32 maxsubmit_;
+  ::google::protobuf::int32 maxcancel_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static AccountSettings* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class LoginParam : public ::google::protobuf::Message {
  public:
   LoginParam();
@@ -993,6 +1086,14 @@ class LoginParam : public ::google::protobuf::Message {
   inline ::std::string* mutable_password();
   inline ::std::string* release_password();
   
+  // optional .entity.AccountSettings AcctSettings = 4;
+  inline bool has_acctsettings() const;
+  inline void clear_acctsettings();
+  static const int kAcctSettingsFieldNumber = 4;
+  inline const ::entity::AccountSettings& acctsettings() const;
+  inline ::entity::AccountSettings* mutable_acctsettings();
+  inline ::entity::AccountSettings* release_acctsettings();
+  
   // @@protoc_insertion_point(class_scope:entity.LoginParam)
  private:
   inline void set_has_brokerid();
@@ -1001,15 +1102,18 @@ class LoginParam : public ::google::protobuf::Message {
   inline void clear_has_userid();
   inline void set_has_password();
   inline void clear_has_password();
+  inline void set_has_acctsettings();
+  inline void clear_has_acctsettings();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* brokerid_;
   ::std::string* userid_;
   ::std::string* password_;
+  ::entity::AccountSettings* acctsettings_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3828,6 +3932,54 @@ inline ::std::string* OperationReturn::release_errormessage() {
 
 // -------------------------------------------------------------------
 
+// AccountSettings
+
+// required int32 MaxSubmit = 1;
+inline bool AccountSettings::has_maxsubmit() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void AccountSettings::set_has_maxsubmit() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void AccountSettings::clear_has_maxsubmit() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void AccountSettings::clear_maxsubmit() {
+  maxsubmit_ = 0;
+  clear_has_maxsubmit();
+}
+inline ::google::protobuf::int32 AccountSettings::maxsubmit() const {
+  return maxsubmit_;
+}
+inline void AccountSettings::set_maxsubmit(::google::protobuf::int32 value) {
+  set_has_maxsubmit();
+  maxsubmit_ = value;
+}
+
+// required int32 MaxCancel = 2;
+inline bool AccountSettings::has_maxcancel() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void AccountSettings::set_has_maxcancel() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void AccountSettings::clear_has_maxcancel() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void AccountSettings::clear_maxcancel() {
+  maxcancel_ = 0;
+  clear_has_maxcancel();
+}
+inline ::google::protobuf::int32 AccountSettings::maxcancel() const {
+  return maxcancel_;
+}
+inline void AccountSettings::set_maxcancel(::google::protobuf::int32 value) {
+  set_has_maxcancel();
+  maxcancel_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // LoginParam
 
 // required string BrokerId = 1;
@@ -4002,6 +4154,35 @@ inline ::std::string* LoginParam::release_password() {
     password_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// optional .entity.AccountSettings AcctSettings = 4;
+inline bool LoginParam::has_acctsettings() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void LoginParam::set_has_acctsettings() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void LoginParam::clear_has_acctsettings() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void LoginParam::clear_acctsettings() {
+  if (acctsettings_ != NULL) acctsettings_->::entity::AccountSettings::Clear();
+  clear_has_acctsettings();
+}
+inline const ::entity::AccountSettings& LoginParam::acctsettings() const {
+  return acctsettings_ != NULL ? *acctsettings_ : *default_instance_->acctsettings_;
+}
+inline ::entity::AccountSettings* LoginParam::mutable_acctsettings() {
+  set_has_acctsettings();
+  if (acctsettings_ == NULL) acctsettings_ = new ::entity::AccountSettings;
+  return acctsettings_;
+}
+inline ::entity::AccountSettings* LoginParam::release_acctsettings() {
+  clear_has_acctsettings();
+  ::entity::AccountSettings* temp = acctsettings_;
+  acctsettings_ = NULL;
+  return temp;
 }
 
 // -------------------------------------------------------------------

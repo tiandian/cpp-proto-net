@@ -134,7 +134,7 @@ namespace PortfolioTrading
 
         private void btnTradeLogin_Click(object sender, RoutedEventArgs e)
         {
-            OperationResult result = _client.TradeLogin("1004", AccountId, "123456");
+            OperationResult result = _client.TradeLogin("1004", AccountId, "123456", null);
         }
 
         private void btnTradeLogout_Click(object sender, RoutedEventArgs e)
@@ -255,7 +255,7 @@ namespace PortfolioTrading
                 return;
             }
 
-            OperationResult tradeLoginResult = _client.TradeLogin("1004", AccountId, "123456");
+            OperationResult tradeLoginResult = _client.TradeLogin("1004", AccountId, "123456", null);
 
             if (tradeLoginResult.Success)
             {

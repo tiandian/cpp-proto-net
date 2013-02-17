@@ -61,11 +61,17 @@ boost::tuple<bool, string> CClientAgent::TradeConnect( const std::string& addres
 	return m_tradeAgent.Open(m_tradeAddress, streamDir);
 }
 
-boost::tuple<bool, string> CClientAgent::TradeLogin( const string& brokerId, const string& userId, const string& password )
+boost::tuple<bool, string> CClientAgent::TradeLogin( const string& brokerId, const string& userId, const string& password, const entity::AccountSettings* pAcctSettings )
 {
 	m_brokerId = brokerId;
 	m_userId = userId;
 	
+	if(pAcctSettings != NULL)
+	{
+		m_orderProcessor.SetMaxOpenTimes(pAcctSettings->maxsubmit());
+		m_orderProcessor.SetMaxCancelTimes(pAcctSettings->maxcancel());
+	}
+
 	return m_tradeAgent.Login(brokerId, userId, password);
 }
 

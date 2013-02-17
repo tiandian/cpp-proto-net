@@ -206,8 +206,14 @@ void CClientManager::TradeLogin( CClientAgent* pClientAgent, const string& in_da
 	entity::LoginParam loginParam;
 	loginParam.ParseFromString(in_data);
 
+	const entity::AccountSettings* pSettings = NULL;
+	if(loginParam.has_acctsettings())
+	{
+		pSettings = &(loginParam.acctsettings());
+	}
+
 	boost::tuple<bool, string> ret = pClientAgent->TradeLogin(
-		loginParam.brokerid(), loginParam.userid(), loginParam.password());
+		loginParam.brokerid(), loginParam.userid(), loginParam.password(), pSettings);
 
 	entity::OperationReturn operRet;
 	operRet.set_success(boost::get<0>(ret));

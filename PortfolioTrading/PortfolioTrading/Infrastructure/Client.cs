@@ -41,9 +41,9 @@ namespace PortfolioTrading.Infrastructure
             ServerLogout("QuoteLogout");
         }
 
-        public OperationResult TradeLogin(string brokerId, string userId, string password)
+        public OperationResult TradeLogin(string brokerId, string userId, string password, AccountSettings acctSettings)
         {
-            return ServerLogin("TradeLogin", brokerId, userId, password);
+            return ServerLogin("TradeLogin", brokerId, userId, password, acctSettings);
         }
 
         public void TradeLogout()
@@ -294,13 +294,14 @@ namespace PortfolioTrading.Infrastructure
             byte[] void_ret = Request(method, ClientBase.VoidParam, 5000);
         }
 
-        private OperationResult ServerLogin(string method, string brokerId, string userId, string password)
+        private OperationResult ServerLogin(string method, string brokerId, string userId, string password, AccountSettings acctSettings = null)
         {
             LoginParam connParam = new LoginParam()
             {
                 BrokerId = brokerId,
                 UserId = userId,
-                Password = password
+                Password = password,
+                AcctSettings = acctSettings
             };
 
             byte[] param_data = DataTranslater.Serialize(connParam);
