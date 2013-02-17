@@ -371,6 +371,7 @@ namespace PortfolioTrading.Modules.Account
                         {
                             if (attach)
                             {
+                                uiContext.Send(o => Status = "已连接", null);
                                 EventLogger.Write("恢复连接到交易终端");
                             }
                             else

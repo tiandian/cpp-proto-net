@@ -76,12 +76,20 @@ void RunTradingFunc(CThostFtdcTraderApi* pUserApi, const char* address)
 
 CTradeAgent::~CTradeAgent(void)
 {
-	logger.Info(boost::str(boost::format("Trade Agent(%s) destructing...") % m_userID));
+	logger.Debug(boost::str(boost::format("Trade Agent(%s) BEGIN destructing...") % m_userID));
+	boost::unique_lock<boost::mutex> lock(m_mutex);
+	
+	m_condConnectDone.timed_wait(lock, boost::posix_time::seconds(DISCONNECT_TIMEOUT_SECOND),
+		boost::bind(&CTradeAgent::IsDisconnected, this));
+	
 	if(m_pUserApi != NULL)
 	{
 		m_pUserApi->RegisterSpi(NULL);
 		m_thQuoting.detach();
 	}
+	
+	m_bIsConnected = false;
+	logger.Debug(boost::str(boost::format("Trade Agent(%s) destructing DONE") % m_userID));
 }
 
 boost::tuple<bool, string> CTradeAgent::Open( const string& address, const string& streamDir )
