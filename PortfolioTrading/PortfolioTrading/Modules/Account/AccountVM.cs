@@ -27,7 +27,7 @@ namespace PortfolioTrading.Modules.Account
         private Client _client;
         private NativeHost _host;
 
-        private static int HostPortSeed = 16180;
+        private static int HostPortSeed = 16181;
 
         private IEventAggregator EventAggregator { get; set; }
 
@@ -37,6 +37,7 @@ namespace PortfolioTrading.Modules.Account
             ConnectCommand = new DelegateCommand<AccountVM>(OnConnectHost);
             DisconnectCommand = new DelegateCommand<AccountVM>(OnDisconnectHost);
             RemovePortfolioCommand = new DelegateCommand<XamDataGrid>(OnRemovePortfolio);
+            DetachCommand = new DelegateCommand<AccountVM>(OnDetachHost);
 
             _host = new NativeHost();
 
@@ -197,6 +198,12 @@ namespace PortfolioTrading.Modules.Account
             private set;
         }
 
+        public ICommand DetachCommand
+        {
+            get;
+            private set;
+        }
+
         public void QueryAccountInfo(Action<trade.AccountInfo> accountInfoCallback)
         {
             Func<trade.AccountInfo> funcQryAcctInfo = _client.QueryAccountInfo;
@@ -332,7 +339,7 @@ namespace PortfolioTrading.Modules.Account
 
             SynchronizationContext uiContext = SynchronizationContext.Current;
 
-            HostPort = Interlocked.Increment(ref HostPortSeed);
+            HostPort = HostPortSeed;
             
             EventLogger.Write(string.Format("正在为{0}建立交易终端...", acct.InvestorId));
 
@@ -493,8 +500,16 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnDisconnectHost(AccountVM acct)
         {
-            EventLogger.Write(string.Format("正在将{0}从交易终端断开连接...", acct.InvestorId));
+            EventLogger.Write(string.Format("正在将{0}关闭交易终端连接...", acct.InvestorId));
             Close();
+            EventLogger.Write(string.Format("{0}已断开", acct.InvestorId));
+            Status = "未连接";
+        }
+
+        private void OnDetachHost(AccountVM acct)
+        {
+            EventLogger.Write(string.Format("正在将{0}从交易终端断开连接...", acct.InvestorId));
+            _client.Disconnect();
             EventLogger.Write(string.Format("{0}已断开", acct.InvestorId));
             Status = "未连接";
         }
