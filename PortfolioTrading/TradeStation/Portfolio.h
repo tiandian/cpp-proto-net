@@ -50,7 +50,9 @@ public:
 
 	double Difference(){ return m_innerItem->diff(); }
 	double LongDiff(){ return m_innerItem->longdiff(); }
+	int LongSize(){ return m_innerItem->longsize(); }
 	double ShortDiff(){ return m_innerItem->shortdiff(); }
+	int ShortSize(){ return m_innerItem->shortsize(); }
 
 	int NewOrderId(string& newId);
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "DiffStrategy.h"
+#include "../Entity/gen/cpp/trade.pb.h"
 
 class CScalperStrategy : public CDiffStrategy
 {
@@ -37,5 +38,14 @@ private:
 	CValueChecker m_openPosiChecker;
 	CNonUseChecker m_stopGainChecker;
 	CNonUseChecker m_stopLossChecker;
+
+	trade::PosiDirectionType GetTradeDirection();
+
+	double m_prevAsk;
+	double m_Ask;
+	int m_AskSize;
+	double m_prevBid;
+	double m_Bid;
+	int m_BidSize;
 };
 
