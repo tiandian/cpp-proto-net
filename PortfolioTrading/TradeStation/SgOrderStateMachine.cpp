@@ -382,7 +382,7 @@ void CScalperOrderPlacer::ModifyOrderPrice()
 	double origLmtPx = m_pInputOrder->limitprice();
 	if(direction == trade::BUY)
 	{
-		double ask = origLmtPx - m_precedence;
+		double ask = origLmtPx + m_precedence;
 		logger.Trace(boost::str(boost::format("Buy: Ask(%f) ?> Lmt Px(%f)")
 			% ask % origLmtPx));
 		logger.Trace(boost::str(boost::format("Modify order(%s): Buy @ %f")
@@ -391,7 +391,7 @@ void CScalperOrderPlacer::ModifyOrderPrice()
 	}
 	else if(direction == trade::SELL)
 	{
-		double bid = origLmtPx + m_precedence;
+		double bid = origLmtPx - m_precedence;
 		logger.Trace(boost::str(boost::format("Sell: Bid(%f) ?< Lmt Px(%f)")
 			% bid % origLmtPx));
 		logger.Trace(boost::str(boost::format("Modify order(%s): Sell @ %f")
