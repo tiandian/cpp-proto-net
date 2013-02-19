@@ -8,6 +8,12 @@ bool DoubleGreaterEqual(double a, double b)
 		return b - a < DOUBLE_COMPARSION_PRECISION; 
 }
 
+bool DoubleEqual(double a, double b)
+{
+	double diff = a - b;
+	return diff < DOUBLE_COMPARSION_PRECISION && diff > -DOUBLE_COMPARSION_PRECISION;
+}
+
 COMPARE_OP ConvertCompareCondition(entity::CompareCondition compareCond)
 {
 	return (COMPARE_OP)((int)compareCond + 1);
