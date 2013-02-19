@@ -396,17 +396,49 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 	m_innerItem->set_strategyrunning(isEnabled);
 }
 
+double CPortfolio::CalcScalpeOrderProfit(const MultiLegOrderPtr& openOrder)
+{
+	double profit = 0;
+	int legCount = openOrder->legs_size();
+	for(int ordIdx = 0; ordIdx < legCount; ++ordIdx)
+	{
+		const trade::Order& legOrd = openOrder->legs(ordIdx);
+		double ordPrice = legOrd.limitprice();
+		if(ordPrice > 0)
+		{
+			if(legOrd.direction() == trade::BUY)
+			{
+				profit -= ordPrice;
+			}
+			else
+			{
+				profit += ordPrice;
+			}
+		}
+	}
+	return profit;
+}
+
 void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
 {
 	int qty = openOrder->quantity();
 	
-	double cost = CalcMlOrderCost(openOrder);
-	int origQty = PositionQuantity();
-	
-	double newAvgCost = (AvgCost() * origQty + cost * qty) / (origQty + qty);
-	AvgCost(newAvgCost);
+	if(openOrder->reason() == trade::SR_Scalpe)
+	{
+		double ord_profit = CalcScalpeOrderProfit(openOrder);
+		AddProfit(ord_profit);
+		
+		IncrementalOpenCloseTimes(qty);
+	}
+	else
+	{
+		double cost = CalcMlOrderCost(openOrder);
+		int origQty = PositionQuantity();
 
-	IncrementalOpenTimes(qty);
+		double newAvgCost = (AvgCost() * origQty + cost * qty) / (origQty + qty);
+		AvgCost(newAvgCost);
+		IncrementalOpenTimes(qty);
+	}
 }
 
 void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
@@ -427,7 +459,6 @@ void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 	else
 	{
 		AvgCost(0);
-		SetProfit(0);
 	}
 
 	IncrementalCloseTimes(qty);

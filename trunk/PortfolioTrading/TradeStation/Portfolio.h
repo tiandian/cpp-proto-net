@@ -96,6 +96,8 @@ private:
 	void UpdatePosition()
 	{
 		int posiQty = m_innerItem->opentimes() - m_innerItem->closetimes();
+		if(posiQty < 0)
+			posiQty = 0;
 		m_innerItem->set_currentposition(posiQty);
 		PushUpdate();
 	}
@@ -103,10 +105,17 @@ private:
 	void PushUpdate();
 	void IncrementalOpenTimes(int opened){ m_innerItem->set_opentimes(m_innerItem->opentimes() + opened); UpdatePosition(); }
 	void IncrementalCloseTimes(int closed){ m_innerItem->set_closetimes(m_innerItem->closetimes() + closed); UpdatePosition(); }
+	void IncrementalOpenCloseTimes(int times)
+	{ 
+		m_innerItem->set_opentimes(m_innerItem->opentimes() + times);
+		m_innerItem->set_closetimes(m_innerItem->closetimes() + times);
+		UpdatePosition(); 
+	}
 	void AddProfit(double val){ m_innerItem->set_profit(m_innerItem->profit() + val); }
 	void SetProfit(double val){ m_innerItem->set_profit(val); }
 
 	double CalcMlOrderCost(const MultiLegOrderPtr& openOrder);
+	double CalcScalpeOrderProfit(const MultiLegOrderPtr& openOrder);
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;

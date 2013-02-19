@@ -161,7 +161,7 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 	case ORDER_STATE_COMPLETE:
 		{
 			trade::MlOrderOffset offset = m_mlOrder->offset();
-			if(offset == trade::ML_OF_OPEN)
+			if(offset == trade::ML_OF_OPEN || offset == trade::ML_OF_OTHER)
 				m_pPortf->AddPosition(m_mlOrder);
 			else if(offset == trade::ML_OF_CLOSE)
 				m_pPortf->RemovePosition(m_mlOrder);
