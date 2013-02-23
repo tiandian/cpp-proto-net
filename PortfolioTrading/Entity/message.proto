@@ -129,10 +129,23 @@ message ChangePosiStrategySettings
 	required double Threshold = 4;
 }
 
+enum DirectionDepends
+{
+	IGNORE_THIS = 0;
+	ON_SMALL_SIZE = 1;
+	ON_BIG_SIZE = 2;
+	ON_SMALL_CHANGE = 3;
+	ON_BIG_CHANGE = 4; 
+}
+
 message ScalperSettings
 {
 	required double Threshold = 1;
 	required double PriceTick = 2;
+	required DirectionDepends CaseLE2Tick = 3;
+	required DirectionDepends CaseLE3Tick = 4;
+	required DirectionDepends CaseGE4Tick = 5;
+	required DirectionDepends CaseNoChange = 6;
 }
 
 message ModifyStrategyParam

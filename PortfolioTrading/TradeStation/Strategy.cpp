@@ -8,6 +8,11 @@ bool DoubleGreaterEqual(double a, double b)
 		return b - a < DOUBLE_COMPARSION_PRECISION; 
 }
 
+bool DoubleLessEqual(double a, double b)
+{
+	return DoubleGreaterEqual(b, a);
+}
+
 bool DoubleEqual(double a, double b)
 {
 	double diff = a - b;

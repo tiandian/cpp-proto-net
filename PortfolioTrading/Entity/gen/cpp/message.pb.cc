@@ -89,6 +89,7 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* SymbolInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   SymbolInfo_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* DirectionDepends_descriptor_ = NULL;
 
 }  // namespace
 
@@ -376,9 +377,13 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ChangePosiStrategySettings));
   ScalperSettings_descriptor_ = file->message_type(15);
-  static const int ScalperSettings_offsets_[2] = {
+  static const int ScalperSettings_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, threshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, pricetick_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, casele2tick_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, casele3tick_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, casege4tick_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, casenochange_),
   };
   ScalperSettings_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -534,6 +539,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SymbolInfo));
+  DirectionDepends_descriptor_ = file->enum_type(0);
 }
 
 namespace {
@@ -706,29 +712,37 @@ void protobuf_AddDesc_message_2eproto() {
     "/\n\014CloseLegSide\030\002 \002(\0162\031.entity.PosiDirec"
     "tionType\0222\n\020TriggerCondition\030\003 \002(\0162\030.ent"
     "ity.CompareCondition\022\021\n\tThreshold\030\004 \002(\001\""
-    "7\n\017ScalperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n"
-    "\tPriceTick\030\002 \002(\001\"R\n\023ModifyStrategyParam\022"
-    "\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024"
-    "\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolio"
-    "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
-    "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
-    "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
-    "lePrefer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyPara"
-    "m\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006M"
-    "axQty\030\003 \002(\005\"<\n\030ModifyRunningStatusParam\022"
-    "\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Mod"
-    "ifyPortfolioPreferredLegParam\022\017\n\007PortfId"
-    "\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrder"
-    "Param\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 "
-    "\002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n"
-    "\006Symbol\030\005 \002(\t\"\222\001\n\025ManualCloseOrderParam\022"
-    "\016\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.tra"
-    "de.TradeDirectionType\022)\n\nOffsetFlag\030\003 \002("
-    "\0162\025.trade.OffsetFlagType\022\020\n\010Quantity\030\004 \002"
-    "(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstrument\030\001 \002(\t\022\022\n"
-    "\nExchangeID\030\002 \002(\t\022\026\n\016ExchangeInstID\030\003 \002("
-    "\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016VolumeMultiple\030\005"
-    " \002(\005\022\021\n\tPriceTick\030\006 \002(\001", 2823);
+    "\364\001\n\017ScalperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021"
+    "\n\tPriceTick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030"
+    ".entity.DirectionDepends\022-\n\013CaseLE3Tick\030"
+    "\004 \002(\0162\030.entity.DirectionDepends\022-\n\013CaseG"
+    "E4Tick\030\005 \002(\0162\030.entity.DirectionDepends\022."
+    "\n\014CaseNoChange\030\006 \002(\0162\030.entity.DirectionD"
+    "epends\"R\n\023ModifyStrategyParam\022\017\n\007PortfId"
+    "\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n\014Strategy"
+    "Data\030\003 \002(\014\"\227\001\n\032ModifyPortfolioSwitchPara"
+    "m\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024\n\014"
+    "AutoStopGain\030\003 \002(\010\022\024\n\014AutoStopLoss\030\004 \002(\010"
+    "\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014EnablePrefer\030\006"
+    " \002(\010\"K\n\027ModifyPortfolioQtyParam\022\017\n\007Portf"
+    "Id\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006MaxQty\030\003 \002("
+    "\005\"<\n\030ModifyRunningStatusParam\022\017\n\007PortfId"
+    "\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n ModifyPortfol"
+    "ioPreferredLegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\t"
+    "LegSymbol\030\002 \002(\t\"j\n\020CancelOrderParam\022\020\n\010O"
+    "rderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n\010Ord"
+    "SysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 "
+    "\002(\t\"\222\001\n\025ManualCloseOrderParam\022\016\n\006Symbol\030"
+    "\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trade.TradeDi"
+    "rectionType\022)\n\nOffsetFlag\030\003 \002(\0162\025.trade."
+    "OffsetFlagType\022\020\n\010Quantity\030\004 \002(\005\"\212\001\n\nSym"
+    "bolInfo\022\022\n\nInstrument\030\001 \002(\t\022\022\n\nExchangeI"
+    "D\030\002 \002(\t\022\026\n\016ExchangeInstID\030\003 \002(\t\022\021\n\tProdu"
+    "ctID\030\004 \002(\t\022\026\n\016VolumeMultiple\030\005 \002(\005\022\021\n\tPr"
+    "iceTick\030\006 \002(\001*o\n\020DirectionDepends\022\017\n\013IGN"
+    "ORE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_"
+    "SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CH"
+    "ANGE\020\004", 3126);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -788,6 +802,23 @@ struct StaticDescriptorInitializer_message_2eproto {
     protobuf_AddDesc_message_2eproto();
   }
 } static_descriptor_initializer_message_2eproto_;
+
+const ::google::protobuf::EnumDescriptor* DirectionDepends_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return DirectionDepends_descriptor_;
+}
+bool DirectionDepends_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+      return true;
+    default:
+      return false;
+  }
+}
 
 
 // ===================================================================
@@ -6284,6 +6315,10 @@ void ChangePosiStrategySettings::Swap(ChangePosiStrategySettings* other) {
 #ifndef _MSC_VER
 const int ScalperSettings::kThresholdFieldNumber;
 const int ScalperSettings::kPriceTickFieldNumber;
+const int ScalperSettings::kCaseLE2TickFieldNumber;
+const int ScalperSettings::kCaseLE3TickFieldNumber;
+const int ScalperSettings::kCaseGE4TickFieldNumber;
+const int ScalperSettings::kCaseNoChangeFieldNumber;
 #endif  // !_MSC_VER
 
 ScalperSettings::ScalperSettings()
@@ -6304,6 +6339,10 @@ void ScalperSettings::SharedCtor() {
   _cached_size_ = 0;
   threshold_ = 0;
   pricetick_ = 0;
+  casele2tick_ = 0;
+  casele3tick_ = 0;
+  casege4tick_ = 0;
+  casenochange_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6340,6 +6379,10 @@ void ScalperSettings::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     threshold_ = 0;
     pricetick_ = 0;
+    casele2tick_ = 0;
+    casele3tick_ = 0;
+    casege4tick_ = 0;
+    casenochange_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -6378,6 +6421,90 @@ bool ScalperSettings::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(24)) goto parse_CaseLE2Tick;
+        break;
+      }
+      
+      // required .entity.DirectionDepends CaseLE2Tick = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_CaseLE2Tick:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::DirectionDepends_IsValid(value)) {
+            set_casele2tick(static_cast< entity::DirectionDepends >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(3, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_CaseLE3Tick;
+        break;
+      }
+      
+      // required .entity.DirectionDepends CaseLE3Tick = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_CaseLE3Tick:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::DirectionDepends_IsValid(value)) {
+            set_casele3tick(static_cast< entity::DirectionDepends >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(4, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_CaseGE4Tick;
+        break;
+      }
+      
+      // required .entity.DirectionDepends CaseGE4Tick = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_CaseGE4Tick:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::DirectionDepends_IsValid(value)) {
+            set_casege4tick(static_cast< entity::DirectionDepends >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(5, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(48)) goto parse_CaseNoChange;
+        break;
+      }
+      
+      // required .entity.DirectionDepends CaseNoChange = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_CaseNoChange:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::DirectionDepends_IsValid(value)) {
+            set_casenochange(static_cast< entity::DirectionDepends >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(6, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -6410,6 +6537,30 @@ void ScalperSettings::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->pricetick(), output);
   }
   
+  // required .entity.DirectionDepends CaseLE2Tick = 3;
+  if (has_casele2tick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      3, this->casele2tick(), output);
+  }
+  
+  // required .entity.DirectionDepends CaseLE3Tick = 4;
+  if (has_casele3tick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      4, this->casele3tick(), output);
+  }
+  
+  // required .entity.DirectionDepends CaseGE4Tick = 5;
+  if (has_casege4tick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      5, this->casege4tick(), output);
+  }
+  
+  // required .entity.DirectionDepends CaseNoChange = 6;
+  if (has_casenochange()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      6, this->casenochange(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -6426,6 +6577,30 @@ void ScalperSettings::SerializeWithCachedSizes(
   // required double PriceTick = 2;
   if (has_pricetick()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->pricetick(), target);
+  }
+  
+  // required .entity.DirectionDepends CaseLE2Tick = 3;
+  if (has_casele2tick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      3, this->casele2tick(), target);
+  }
+  
+  // required .entity.DirectionDepends CaseLE3Tick = 4;
+  if (has_casele3tick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      4, this->casele3tick(), target);
+  }
+  
+  // required .entity.DirectionDepends CaseGE4Tick = 5;
+  if (has_casege4tick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      5, this->casege4tick(), target);
+  }
+  
+  // required .entity.DirectionDepends CaseNoChange = 6;
+  if (has_casenochange()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      6, this->casenochange(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -6447,6 +6622,30 @@ int ScalperSettings::ByteSize() const {
     // required double PriceTick = 2;
     if (has_pricetick()) {
       total_size += 1 + 8;
+    }
+    
+    // required .entity.DirectionDepends CaseLE2Tick = 3;
+    if (has_casele2tick()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->casele2tick());
+    }
+    
+    // required .entity.DirectionDepends CaseLE3Tick = 4;
+    if (has_casele3tick()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->casele3tick());
+    }
+    
+    // required .entity.DirectionDepends CaseGE4Tick = 5;
+    if (has_casege4tick()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->casege4tick());
+    }
+    
+    // required .entity.DirectionDepends CaseNoChange = 6;
+    if (has_casenochange()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->casenochange());
     }
     
   }
@@ -6482,6 +6681,18 @@ void ScalperSettings::MergeFrom(const ScalperSettings& from) {
     if (from.has_pricetick()) {
       set_pricetick(from.pricetick());
     }
+    if (from.has_casele2tick()) {
+      set_casele2tick(from.casele2tick());
+    }
+    if (from.has_casele3tick()) {
+      set_casele3tick(from.casele3tick());
+    }
+    if (from.has_casege4tick()) {
+      set_casege4tick(from.casege4tick());
+    }
+    if (from.has_casenochange()) {
+      set_casenochange(from.casenochange());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -6499,7 +6710,7 @@ void ScalperSettings::CopyFrom(const ScalperSettings& from) {
 }
 
 bool ScalperSettings::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
   
   return true;
 }
@@ -6508,6 +6719,10 @@ void ScalperSettings::Swap(ScalperSettings* other) {
   if (other != this) {
     std::swap(threshold_, other->threshold_);
     std::swap(pricetick_, other->pricetick_);
+    std::swap(casele2tick_, other->casele2tick_);
+    std::swap(casele3tick_, other->casele3tick_);
+    std::swap(casege4tick_, other->casege4tick_);
+    std::swap(casenochange_, other->casenochange_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
