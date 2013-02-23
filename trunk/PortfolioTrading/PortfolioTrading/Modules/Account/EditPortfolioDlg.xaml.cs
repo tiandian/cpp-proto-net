@@ -160,6 +160,19 @@ namespace PortfolioTrading.Modules.Account
                 setting.CloseLeg = Symbol1;
                 setting.CloseLegSide = Side1;
             }
+            else if (StrategyName == StrategySetting.ScalperStrategyName)
+            {
+                if(!string.IsNullOrEmpty(Symbol1))
+                {
+                    entity.SymbolInfo si = portf.Account.QuerySymbolInfo(Symbol1);
+                    if (si != null)
+                    {
+                        ScalperSetting setting = (ScalperSetting)portf.StrategySetting;
+                        setting.PriceTick = si.PriceTick;
+                        setting.Threshold = 4 * setting.PriceTick;
+                    }
+                }
+            }
         }
 
         #region StrategyName

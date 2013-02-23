@@ -261,6 +261,22 @@ namespace PortfolioTrading.Infrastructure
                 };
         }
 
+        public entity.SymbolInfo QuerySymbolInfo(string symbol)
+        {
+            entity.RegQuoteParam symbParam = new entity.RegQuoteParam();
+            symbParam.Symbols.Add(symbol);
+
+            byte[] param_data = DataTranslater.Serialize(symbParam);
+            byte[] ret_data = Request("QuerySymbolInfo", param_data);
+
+            if (ret_data != null)
+            {
+                return DataTranslater.Deserialize<entity.SymbolInfo>(ret_data);
+            }
+
+            return null;
+        }
+
         private OperationResult ServerConnect(string method, string servAddress, string streamDir)
         {
             ConnectParam connParam = new ConnectParam()

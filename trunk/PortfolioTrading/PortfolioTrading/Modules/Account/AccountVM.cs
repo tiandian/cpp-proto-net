@@ -279,6 +279,14 @@ namespace PortfolioTrading.Modules.Account
                 }, null);
         }
 
+        public entity.SymbolInfo QuerySymbolInfo(string symbol)
+        {
+            if (_client.IsConnected)
+                return _client.QuerySymbolInfo(symbol);
+            else
+                return null;
+        }
+
         private void OnAddPortfolio(AccountVM acct)
         {
             PortfolioVM portf = new PortfolioVM(this);

@@ -132,6 +132,7 @@ void CClientManager::InitializeReqTranslators()
 	m_reqTransMap.insert(make_pair("ClosePosition", boost::bind(&CClientManager::ClosePosition, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("CancelOrder", boost::bind(&CClientManager::CancelOrder, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("ManualCloseOrder", boost::bind(&CClientManager::ManualCloseOrder, this, _1, _2, _3)));
+	m_reqTransMap.insert(make_pair("QuerySymbolInfo", boost::bind(&CClientManager::QuerySymbolInfo, this, _1, _2, _3)));
 	
 	m_reqTransMap.insert(make_pair("PortfChgQuantity", boost::bind(&CClientManager::PortfChgQuantity, this, _1, _2, _3)));
 	m_reqTransMap.insert(make_pair("PortfEnableStrategy", boost::bind(&CClientManager::PortfEnableStrategy, this, _1, _2, _3)));
@@ -385,6 +386,23 @@ void CClientManager::ManualCloseOrder( CClientAgent* pClientAgent, const string&
 	operRet.set_errormessage(boost::get<1>(ret));
 
 	operRet.SerializeToString(&out_data);
+}
+
+void CClientManager::QuerySymbolInfo( CClientAgent* pClientAgent, const string& in_data, string& out_data )
+{
+	entity::RegQuoteParam symbolParam;
+	symbolParam.ParseFromString(in_data);
+	int count = symbolParam.symbols_size();
+	if(count > 0)
+	{
+		const string& symbol = symbolParam.symbols(0);
+		entity::SymbolInfo* pRetSymbInfo = NULL;
+		pClientAgent->QuerySymbolInfo(symbol, &pRetSymbInfo);
+		if(pRetSymbInfo != NULL)
+		{
+			pRetSymbInfo->SerializeToString(&out_data);
+		}
+	}
 }
 
 void CClientManager::PortfChgQuantity( CClientAgent* pClientAgent, const string& in_data, string& out_data )

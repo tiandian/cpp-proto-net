@@ -13,6 +13,7 @@
                     CommandParameter="{Binding ElementName=xamDataTreeAccount}">修改</Button>
             <Button Width="50" Margin="4, 0" Command="{Binding RemoveAccountCommand}"
                     CommandParameter="{Binding ElementName=xamDataTreeAccount}">删除</Button>
+            <Button Width="50" Margin="4, 0" Name="btnServerSettings" Click="btnServerSettings_Click">设置</Button>
         </DockPanel>
         <ig:XamDataTree Name="xamDataTreeAccount" Margin="4,0,4,4" ItemsSource="{Binding Accounts}" 
                         ActiveNodeChanged="xamDataTreeAccount_ActiveNodeChanged"

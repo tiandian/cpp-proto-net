@@ -138,6 +138,10 @@
     <Compile Include="Modules\Account\PositionView.xaml.cs">
       <DependentUpon>PositionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Account\ServerAddrConfigDlg.xaml.cs">
+      <DependentUpon>ServerAddrConfigDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Account\ServerAddressRepoVM.cs" />
     <Compile Include="Modules\Portfolio\ChangeSpecifiedQtyDlg.xaml.cs">
       <DependentUpon>ChangeSpecifiedQtyDlg.xaml</DependentUpon>
     </Compile>
@@ -243,6 +247,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Account\PositionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Account\ServerAddrConfigDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

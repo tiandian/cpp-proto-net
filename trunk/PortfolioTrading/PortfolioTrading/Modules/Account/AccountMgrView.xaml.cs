@@ -18,6 +18,7 @@ using PortfolioTrading.Events;
 using System.Xml.Linq;
 using Infragistics.DragDrop;
 using Infragistics.Controls.Menus;
+using Microsoft.Practices.ServiceLocation;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -67,6 +68,14 @@ namespace PortfolioTrading.Modules.Account
 
                 ViewModel.Persist();
             }
+        }
+
+        private void btnServerSettings_Click(object sender, RoutedEventArgs e)
+        {
+            var dlgViewModel = ServiceLocator.Current.GetInstance<ServerAddressRepoVM>();
+            ServerAddrConfigDlg dlg = new ServerAddrConfigDlg(dlgViewModel);
+            dlg.Owner = Application.Current.MainWindow;
+            dlg.ShowDialog();
         }
     }
 }

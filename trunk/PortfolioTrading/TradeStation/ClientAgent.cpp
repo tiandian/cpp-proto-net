@@ -397,5 +397,16 @@ void CClientAgent::SetPortfolioQuantity( const string& pid, int qty, int maxQty 
 		portf->SetQuantity(qty, maxQty);
 }
 
+bool CClientAgent::QuerySymbolInfo( const string& symbol, entity::SymbolInfo** ppSymbInfo )
+{
+	CSymbolInfo* pMySymbolInfo = NULL;
+	bool succ = m_tradeAgent.QuerySymbolInfo(symbol, &pMySymbolInfo);
+	if(succ)
+	{
+		*ppSymbInfo = &(pMySymbolInfo->InnerItem());
+	}
+	return succ;
+}
+
 
 

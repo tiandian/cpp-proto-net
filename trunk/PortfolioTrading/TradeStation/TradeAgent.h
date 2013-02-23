@@ -5,6 +5,7 @@
 #include "SyncRequest.h"
 #include "TradeMessagePump.h"
 #include "../Entity/gen/cpp/quote.pb.h"
+#include "SymbolInfo.h"
 
 #include <string>
 #include <boost/thread.hpp>
@@ -38,6 +39,9 @@ public:
 
 	bool QuerySymbol(const std::string& symbol, entity::Quote** ppQuote);
 	bool QuerySymbolAsync(const std::string& symbol, int nReqestId);
+
+	bool QuerySymbolInfo(const std::string& symbol, CSymbolInfo** ppSymbolInfo);
+	bool QuerySymbolInfoAsync( CSymbolInfo* pSymbolInfo, int nReqestId );
 
 	bool IsConnected(){ return m_bIsConnected; }
 	bool IsDisconnected(){ return !m_bIsConnected; }
@@ -126,5 +130,7 @@ private:
 
 	CSyncRequestFactory<entity::Quote> m_requestFactory;
 	CTradeMessagePump m_messagePump;
+
+	CSyncRequestFactory<CSymbolInfo> m_symbInfoReqFactory;
 };
 

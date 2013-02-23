@@ -177,6 +177,12 @@
     <ClInclude Include="ScalperStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SymbolInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolInfoRepositry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -285,6 +291,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScalperStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolInfoRepositry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

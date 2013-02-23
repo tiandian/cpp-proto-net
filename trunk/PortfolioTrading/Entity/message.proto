@@ -132,6 +132,7 @@ message ChangePosiStrategySettings
 message ScalperSettings
 {
 	required double Threshold = 1;
+	required double PriceTick = 2;
 }
 
 message ModifyStrategyParam
@@ -185,4 +186,19 @@ message ManualCloseOrderParam
 	required trade.TradeDirectionType	Direction = 2;
 	required trade.OffsetFlagType OffsetFlag = 3;
 	required int32 Quantity = 4;
+}
+
+message SymbolInfo
+{
+	required string Instrument = 1; 
+	///交易所代码
+	required string ExchangeID = 2;
+	///合约在交易所的代码
+	required string ExchangeInstID = 3;
+	///产品代码
+	required string ProductID = 4;
+	///合约数量乘数
+	required int32	VolumeMultiple = 5;
+	///最小变动价位
+	required double PriceTick = 6;
 }

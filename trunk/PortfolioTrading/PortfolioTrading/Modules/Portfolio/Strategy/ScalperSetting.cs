@@ -27,6 +27,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region PriceTick
+        private double _priceTick;
+
+        public double PriceTick
+        {
+            get { return _priceTick; }
+            set
+            {
+                if (_priceTick != value)
+                {
+                    _priceTick = value;
+                    RaisePropertyChanged("PriceTick");
+                }
+            }
+        }
+        #endregion
+
 
         public override string Name
         {
@@ -36,7 +53,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public override string Persist()
         {
             XElement elem = new XElement("scalperStrategySetting",
-                new XAttribute("threshold", Threshold));
+                new XAttribute("threshold", Threshold),
+                new XAttribute("prickTick", PriceTick));
 
             return elem.ToString();
         }
@@ -45,6 +63,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             entity.ScalperSettings setting = new entity.ScalperSettings();
             setting.Threshold = Threshold;
+            setting.PriceTick = PriceTick;
             return DataTranslater.Serialize(setting);
         }
 

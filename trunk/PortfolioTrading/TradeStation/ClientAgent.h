@@ -33,6 +33,7 @@ public:
 	void Remove(const string& pid);
 	void RegQuote(vector<string>& symbols);
 	
+	bool QuerySymbolInfo(const string& symbol, entity::SymbolInfo** ppSymbInfo);
 	bool QueryAccountInfo(string* serializedAcctInfo);
 	void QueryPositionDetails(const string& symbol);
 	void SetPorfPreferredLeg(const entity::ModifyPortfolioPreferredLegParam& preferredLegParam);
