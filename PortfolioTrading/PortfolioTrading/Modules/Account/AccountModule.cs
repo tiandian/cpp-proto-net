@@ -37,6 +37,10 @@ namespace PortfolioTrading.Modules.Account
                 () => ServiceLocator.Current.GetInstance<AccountInfoView>());
 
             EventAgg.GetEvent<QueryPositionEvent>().Subscribe(OnQueryPosition);
+
+            // load server address list
+            var serverAddrRepoVm = ServiceLocator.Current.GetInstance<ServerAddressRepoVM>();
+            serverAddrRepoVm.LoadServerList();
         }
 
         private void OnQueryPosition(AccountVM acctVm)

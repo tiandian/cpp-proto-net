@@ -2,6 +2,7 @@
 #include "TradeAgent.h"
 #include "globalmembers.h"
 #include "FileOperations.h"
+#include "SymbolInfoRepositry.h"
 
 #include <sstream>
 #include <boost/format.hpp>
@@ -50,6 +51,8 @@ void PrintRtnOrder(CThostFtdcOrderField* pOrder)
 
 	logger.Debug(oss.str());
 }
+
+CSymbolInfoRepositry symbolInfoRepo;
 
 CTradeAgent::CTradeAgent(void):
 FRONT_ID(0),
@@ -403,9 +406,70 @@ void CTradeAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThos
 }
 
 
+bool CTradeAgent::QuerySymbolInfo( const std::string& symbol, CSymbolInfo** ppSymbolInfo )
+{
+	bool querySucc = false;
+	int reqId = RequestIDIncrement();
+	boost::shared_ptr< CSyncRequest<CSymbolInfo> > req = m_symbInfoReqFactory.Create(reqId);
+
+	CSymbolInfo* pSymbolInfo = symbolInfoRepo.Get(symbol.c_str());
+	_ASSERT(pSymbolInfo != NULL);
+	
+	if(pSymbolInfo != NULL)
+	{
+		if(pSymbolInfo->Ready())
+		{
+			*ppSymbolInfo = pSymbolInfo;
+			return true;
+		}
+		else
+		{
+			bool succ = req->Invoke(boost::bind(&CTradeAgent::QuerySymbolInfoAsync, this, pSymbolInfo, _1));
+			if(succ)
+			{
+				querySucc = req->GetResult(ppSymbolInfo);
+				m_requestFactory.Remove(reqId);
+			}
+		}
+	}
+
+	return querySucc;
+}
+
+bool CTradeAgent::QuerySymbolInfoAsync( CSymbolInfo* pSymbolInfo, int nReqestId )
+{
+	CThostFtdcQryInstrumentField req;
+	memset(&req, 0, sizeof(req));
+	strcpy_s(req.InstrumentID, (pSymbolInfo->Instrument()).c_str());
+	strcpy_s(req.ExchangeID, (pSymbolInfo->ExchangeID()).c_str());
+	strcpy_s(req.ExchangeInstID, (pSymbolInfo->ExchangeInstID()).c_str());
+	strcpy_s(req.ProductID, (pSymbolInfo->ProductID()).c_str());
+	int iResult = m_pUserApi->ReqQryInstrument(&req, nReqestId);
+
+	std::string infoText = boost::str(boost::format("Query %s information: %d, %s") 
+		% pSymbolInfo->Instrument() % iResult % ((iResult == 0) ? "³É¹¦" : "Ê§°Ü"));
+	logger.Info(infoText);
+	return (iResult == 0);
+}
+
 void CTradeAgent::OnRspQryInstrument( CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
+	if(pInstrument != NULL)
+	{
+		string symbol = pInstrument->InstrumentID;
 
+		CSymbolInfo* pSymbInfo = symbolInfoRepo.Get(symbol.c_str());
+		if(pSymbInfo != NULL)
+		{
+			pSymbInfo->PriceTick(pInstrument->PriceTick);
+			pSymbInfo->VolumeMultiple(pInstrument->VolumeMultiple);
+			pSymbInfo->Ready(true);
+			m_symbInfoReqFactory.Response(nRequestID, true, pSymbInfo);
+			return;
+		}
+	}
+	// something wrong
+	m_symbInfoReqFactory.Response(nRequestID, false, NULL);
 }
 
 void CTradeAgent::QueryAccount()
@@ -415,6 +479,8 @@ void CTradeAgent::QueryAccount()
 
 	if(m_brokerID.empty() || m_userID.empty())
 		return;
+	/*CSymbolInfo si;
+	bool succ = QuerySymbolInfo(string("if1303"), &si);*/
 
 	CThostFtdcQryTradingAccountField req;
 	memset(&req, 0, sizeof(req));
@@ -1021,4 +1087,5 @@ void CTradeAgent::SetCallbackHanlder( CTradeAgentCallback* pCallback )
 {
 	m_messagePump.Init(pCallback);
 }
+
 

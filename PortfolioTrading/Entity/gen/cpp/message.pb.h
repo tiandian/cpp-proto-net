@@ -57,6 +57,7 @@ class ModifyRunningStatusParam;
 class ModifyPortfolioPreferredLegParam;
 class CancelOrderParam;
 class ManualCloseOrderParam;
+class SymbolInfo;
 
 // ===================================================================
 
@@ -1945,17 +1946,27 @@ class ScalperSettings : public ::google::protobuf::Message {
   inline double threshold() const;
   inline void set_threshold(double value);
   
+  // required double PriceTick = 2;
+  inline bool has_pricetick() const;
+  inline void clear_pricetick();
+  static const int kPriceTickFieldNumber = 2;
+  inline double pricetick() const;
+  inline void set_pricetick(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.ScalperSettings)
  private:
   inline void set_has_threshold();
   inline void clear_has_threshold();
+  inline void set_has_pricetick();
+  inline void clear_has_pricetick();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   double threshold_;
+  double pricetick_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2773,6 +2784,154 @@ class ManualCloseOrderParam : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ManualCloseOrderParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SymbolInfo : public ::google::protobuf::Message {
+ public:
+  SymbolInfo();
+  virtual ~SymbolInfo();
+  
+  SymbolInfo(const SymbolInfo& from);
+  
+  inline SymbolInfo& operator=(const SymbolInfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SymbolInfo& default_instance();
+  
+  void Swap(SymbolInfo* other);
+  
+  // implements Message ----------------------------------------------
+  
+  SymbolInfo* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const SymbolInfo& from);
+  void MergeFrom(const SymbolInfo& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string Instrument = 1;
+  inline bool has_instrument() const;
+  inline void clear_instrument();
+  static const int kInstrumentFieldNumber = 1;
+  inline const ::std::string& instrument() const;
+  inline void set_instrument(const ::std::string& value);
+  inline void set_instrument(const char* value);
+  inline void set_instrument(const char* value, size_t size);
+  inline ::std::string* mutable_instrument();
+  inline ::std::string* release_instrument();
+  
+  // required string ExchangeID = 2;
+  inline bool has_exchangeid() const;
+  inline void clear_exchangeid();
+  static const int kExchangeIDFieldNumber = 2;
+  inline const ::std::string& exchangeid() const;
+  inline void set_exchangeid(const ::std::string& value);
+  inline void set_exchangeid(const char* value);
+  inline void set_exchangeid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeid();
+  inline ::std::string* release_exchangeid();
+  
+  // required string ExchangeInstID = 3;
+  inline bool has_exchangeinstid() const;
+  inline void clear_exchangeinstid();
+  static const int kExchangeInstIDFieldNumber = 3;
+  inline const ::std::string& exchangeinstid() const;
+  inline void set_exchangeinstid(const ::std::string& value);
+  inline void set_exchangeinstid(const char* value);
+  inline void set_exchangeinstid(const char* value, size_t size);
+  inline ::std::string* mutable_exchangeinstid();
+  inline ::std::string* release_exchangeinstid();
+  
+  // required string ProductID = 4;
+  inline bool has_productid() const;
+  inline void clear_productid();
+  static const int kProductIDFieldNumber = 4;
+  inline const ::std::string& productid() const;
+  inline void set_productid(const ::std::string& value);
+  inline void set_productid(const char* value);
+  inline void set_productid(const char* value, size_t size);
+  inline ::std::string* mutable_productid();
+  inline ::std::string* release_productid();
+  
+  // required int32 VolumeMultiple = 5;
+  inline bool has_volumemultiple() const;
+  inline void clear_volumemultiple();
+  static const int kVolumeMultipleFieldNumber = 5;
+  inline ::google::protobuf::int32 volumemultiple() const;
+  inline void set_volumemultiple(::google::protobuf::int32 value);
+  
+  // required double PriceTick = 6;
+  inline bool has_pricetick() const;
+  inline void clear_pricetick();
+  static const int kPriceTickFieldNumber = 6;
+  inline double pricetick() const;
+  inline void set_pricetick(double value);
+  
+  // @@protoc_insertion_point(class_scope:entity.SymbolInfo)
+ private:
+  inline void set_has_instrument();
+  inline void clear_has_instrument();
+  inline void set_has_exchangeid();
+  inline void clear_has_exchangeid();
+  inline void set_has_exchangeinstid();
+  inline void clear_has_exchangeinstid();
+  inline void set_has_productid();
+  inline void clear_has_productid();
+  inline void set_has_volumemultiple();
+  inline void clear_has_volumemultiple();
+  inline void set_has_pricetick();
+  inline void clear_has_pricetick();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* instrument_;
+  ::std::string* exchangeid_;
+  ::std::string* exchangeinstid_;
+  ::std::string* productid_;
+  double pricetick_;
+  ::google::protobuf::int32 volumemultiple_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static SymbolInfo* default_instance_;
 };
 // ===================================================================
 
@@ -4984,6 +5143,28 @@ inline void ScalperSettings::set_threshold(double value) {
   threshold_ = value;
 }
 
+// required double PriceTick = 2;
+inline bool ScalperSettings::has_pricetick() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ScalperSettings::set_has_pricetick() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ScalperSettings::clear_has_pricetick() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ScalperSettings::clear_pricetick() {
+  pricetick_ = 0;
+  clear_has_pricetick();
+}
+inline double ScalperSettings::pricetick() const {
+  return pricetick_;
+}
+inline void ScalperSettings::set_pricetick(double value) {
+  set_has_pricetick();
+  pricetick_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ModifyStrategyParam
@@ -6066,6 +6247,286 @@ inline ::google::protobuf::int32 ManualCloseOrderParam::quantity() const {
 inline void ManualCloseOrderParam::set_quantity(::google::protobuf::int32 value) {
   set_has_quantity();
   quantity_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// SymbolInfo
+
+// required string Instrument = 1;
+inline bool SymbolInfo::has_instrument() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SymbolInfo::set_has_instrument() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SymbolInfo::clear_has_instrument() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SymbolInfo::clear_instrument() {
+  if (instrument_ != &::google::protobuf::internal::kEmptyString) {
+    instrument_->clear();
+  }
+  clear_has_instrument();
+}
+inline const ::std::string& SymbolInfo::instrument() const {
+  return *instrument_;
+}
+inline void SymbolInfo::set_instrument(const ::std::string& value) {
+  set_has_instrument();
+  if (instrument_ == &::google::protobuf::internal::kEmptyString) {
+    instrument_ = new ::std::string;
+  }
+  instrument_->assign(value);
+}
+inline void SymbolInfo::set_instrument(const char* value) {
+  set_has_instrument();
+  if (instrument_ == &::google::protobuf::internal::kEmptyString) {
+    instrument_ = new ::std::string;
+  }
+  instrument_->assign(value);
+}
+inline void SymbolInfo::set_instrument(const char* value, size_t size) {
+  set_has_instrument();
+  if (instrument_ == &::google::protobuf::internal::kEmptyString) {
+    instrument_ = new ::std::string;
+  }
+  instrument_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SymbolInfo::mutable_instrument() {
+  set_has_instrument();
+  if (instrument_ == &::google::protobuf::internal::kEmptyString) {
+    instrument_ = new ::std::string;
+  }
+  return instrument_;
+}
+inline ::std::string* SymbolInfo::release_instrument() {
+  clear_has_instrument();
+  if (instrument_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = instrument_;
+    instrument_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ExchangeID = 2;
+inline bool SymbolInfo::has_exchangeid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SymbolInfo::set_has_exchangeid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SymbolInfo::clear_has_exchangeid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void SymbolInfo::clear_exchangeid() {
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeid_->clear();
+  }
+  clear_has_exchangeid();
+}
+inline const ::std::string& SymbolInfo::exchangeid() const {
+  return *exchangeid_;
+}
+inline void SymbolInfo::set_exchangeid(const ::std::string& value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void SymbolInfo::set_exchangeid(const char* value) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(value);
+}
+inline void SymbolInfo::set_exchangeid(const char* value, size_t size) {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  exchangeid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SymbolInfo::mutable_exchangeid() {
+  set_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeid_ = new ::std::string;
+  }
+  return exchangeid_;
+}
+inline ::std::string* SymbolInfo::release_exchangeid() {
+  clear_has_exchangeid();
+  if (exchangeid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeid_;
+    exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ExchangeInstID = 3;
+inline bool SymbolInfo::has_exchangeinstid() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void SymbolInfo::set_has_exchangeinstid() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void SymbolInfo::clear_has_exchangeinstid() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void SymbolInfo::clear_exchangeinstid() {
+  if (exchangeinstid_ != &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_->clear();
+  }
+  clear_has_exchangeinstid();
+}
+inline const ::std::string& SymbolInfo::exchangeinstid() const {
+  return *exchangeinstid_;
+}
+inline void SymbolInfo::set_exchangeinstid(const ::std::string& value) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(value);
+}
+inline void SymbolInfo::set_exchangeinstid(const char* value) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(value);
+}
+inline void SymbolInfo::set_exchangeinstid(const char* value, size_t size) {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  exchangeinstid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SymbolInfo::mutable_exchangeinstid() {
+  set_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    exchangeinstid_ = new ::std::string;
+  }
+  return exchangeinstid_;
+}
+inline ::std::string* SymbolInfo::release_exchangeinstid() {
+  clear_has_exchangeinstid();
+  if (exchangeinstid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = exchangeinstid_;
+    exchangeinstid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string ProductID = 4;
+inline bool SymbolInfo::has_productid() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void SymbolInfo::set_has_productid() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void SymbolInfo::clear_has_productid() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void SymbolInfo::clear_productid() {
+  if (productid_ != &::google::protobuf::internal::kEmptyString) {
+    productid_->clear();
+  }
+  clear_has_productid();
+}
+inline const ::std::string& SymbolInfo::productid() const {
+  return *productid_;
+}
+inline void SymbolInfo::set_productid(const ::std::string& value) {
+  set_has_productid();
+  if (productid_ == &::google::protobuf::internal::kEmptyString) {
+    productid_ = new ::std::string;
+  }
+  productid_->assign(value);
+}
+inline void SymbolInfo::set_productid(const char* value) {
+  set_has_productid();
+  if (productid_ == &::google::protobuf::internal::kEmptyString) {
+    productid_ = new ::std::string;
+  }
+  productid_->assign(value);
+}
+inline void SymbolInfo::set_productid(const char* value, size_t size) {
+  set_has_productid();
+  if (productid_ == &::google::protobuf::internal::kEmptyString) {
+    productid_ = new ::std::string;
+  }
+  productid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SymbolInfo::mutable_productid() {
+  set_has_productid();
+  if (productid_ == &::google::protobuf::internal::kEmptyString) {
+    productid_ = new ::std::string;
+  }
+  return productid_;
+}
+inline ::std::string* SymbolInfo::release_productid() {
+  clear_has_productid();
+  if (productid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = productid_;
+    productid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 VolumeMultiple = 5;
+inline bool SymbolInfo::has_volumemultiple() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SymbolInfo::set_has_volumemultiple() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SymbolInfo::clear_has_volumemultiple() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void SymbolInfo::clear_volumemultiple() {
+  volumemultiple_ = 0;
+  clear_has_volumemultiple();
+}
+inline ::google::protobuf::int32 SymbolInfo::volumemultiple() const {
+  return volumemultiple_;
+}
+inline void SymbolInfo::set_volumemultiple(::google::protobuf::int32 value) {
+  set_has_volumemultiple();
+  volumemultiple_ = value;
+}
+
+// required double PriceTick = 6;
+inline bool SymbolInfo::has_pricetick() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void SymbolInfo::set_has_pricetick() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void SymbolInfo::clear_has_pricetick() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void SymbolInfo::clear_pricetick() {
+  pricetick_ = 0;
+  clear_has_pricetick();
+}
+inline double SymbolInfo::pricetick() const {
+  return pricetick_;
+}
+inline void SymbolInfo::set_pricetick(double value) {
+  set_has_pricetick();
+  pricetick_ = value;
 }
 
 

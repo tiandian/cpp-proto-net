@@ -65,6 +65,7 @@ private:
 	void ClosePosition(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void CancelOrder(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void ManualCloseOrder(CClientAgent* pClientAgent, const string& in_data, string& out_data);
+	void QuerySymbolInfo(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 
 	void PortfChgQuantity(CClientAgent* pClientAgent, const string& in_data, string& out_data);
 	void PortfEnableStrategy(CClientAgent* pClientAgent, const string& in_data, string& out_data);

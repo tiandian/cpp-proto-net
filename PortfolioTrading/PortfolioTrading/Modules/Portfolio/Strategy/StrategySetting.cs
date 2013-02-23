@@ -105,6 +105,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     setting.Threshold = double.Parse(attr.Value);
                 }
+                attr = elem.Attribute("prickTick");
+                if (attr != null)
+                {
+                    setting.PriceTick = double.Parse(attr.Value);
+                }
                 return setting;
             }
             else
@@ -137,7 +142,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             {
                 ScalperSetting setting = new ScalperSetting();
                 setting.Threshold = 0;
-
+                setting.PriceTick = 0.2;
                 return setting;
             }
             else

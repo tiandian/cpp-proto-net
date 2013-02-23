@@ -26,11 +26,29 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region PriceTick
+        private double _priceTick;
+
+        public double PriceTick
+        {
+            get { return _priceTick; }
+            set
+            {
+                if (_priceTick != value)
+                {
+                    _priceTick = value;
+                    RaisePropertyChanged("PriceTick");
+                }
+            }
+        }
+        #endregion
+
         protected override void OnApplySetting()
         {
             ScalperSetting settings = (ScalperSetting)CurrentPortfolio.StrategySetting;
 
             settings.Threshold = this.Threshold;
+            settings.PriceTick = this.PriceTick;
 
             base.OnApplySetting();
         }
@@ -39,6 +57,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             ScalperSetting settings = (ScalperSetting)portfVm.StrategySetting;
             this.Threshold = settings.Threshold;
+            this.PriceTick = settings.PriceTick;
         }
     }
 }

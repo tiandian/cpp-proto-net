@@ -208,6 +208,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 return "套利";
             else if (name == StrategySetting.ChangePositionStrategyName)
                 return "移仓";
+            else if (name == StrategySetting.ScalperStrategyName)
+                return "高频[抢帽]";
             else
                 return "未知";
         }

@@ -86,6 +86,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ManualCloseOrderParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ManualCloseOrderParam_reflection_ = NULL;
+const ::google::protobuf::Descriptor* SymbolInfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  SymbolInfo_reflection_ = NULL;
 
 }  // namespace
 
@@ -373,8 +376,9 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ChangePosiStrategySettings));
   ScalperSettings_descriptor_ = file->message_type(15);
-  static const int ScalperSettings_offsets_[1] = {
+  static const int ScalperSettings_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, threshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, pricetick_),
   };
   ScalperSettings_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -510,6 +514,26 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ManualCloseOrderParam));
+  SymbolInfo_descriptor_ = file->message_type(23);
+  static const int SymbolInfo_offsets_[6] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, instrument_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, exchangeid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, exchangeinstid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, productid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, volumemultiple_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, pricetick_),
+  };
+  SymbolInfo_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      SymbolInfo_descriptor_,
+      SymbolInfo::default_instance_,
+      SymbolInfo_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(SymbolInfo));
 }
 
 namespace {
@@ -568,6 +592,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     CancelOrderParam_descriptor_, &CancelOrderParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ManualCloseOrderParam_descriptor_, &ManualCloseOrderParam::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    SymbolInfo_descriptor_, &SymbolInfo::default_instance());
 }
 
 }  // namespace
@@ -619,6 +645,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete CancelOrderParam_reflection_;
   delete ManualCloseOrderParam::default_instance_;
   delete ManualCloseOrderParam_reflection_;
+  delete SymbolInfo::default_instance_;
+  delete SymbolInfo_reflection_;
 }
 
 void protobuf_AddDesc_message_2eproto() {
@@ -678,25 +706,29 @@ void protobuf_AddDesc_message_2eproto() {
     "/\n\014CloseLegSide\030\002 \002(\0162\031.entity.PosiDirec"
     "tionType\0222\n\020TriggerCondition\030\003 \002(\0162\030.ent"
     "ity.CompareCondition\022\021\n\tThreshold\030\004 \002(\001\""
-    "$\n\017ScalperSettings\022\021\n\tThreshold\030\001 \002(\001\"R\n"
-    "\023ModifyStrategyParam\022\017\n\007PortfId\030\001 \002(\t\022\024\n"
-    "\014StrategyName\030\002 \002(\t\022\024\n\014StrategyData\030\003 \002("
-    "\014\"\227\001\n\032ModifyPortfolioSwitchParam\022\017\n\007Port"
-    "fId\030\001 \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024\n\014AutoStopG"
-    "ain\030\003 \002(\010\022\024\n\014AutoStopLoss\030\004 \002(\010\022\024\n\014AutoT"
-    "racking\030\005 \002(\010\022\024\n\014EnablePrefer\030\006 \002(\010\"K\n\027M"
-    "odifyPortfolioQtyParam\022\017\n\007PortfId\030\001 \002(\t\022"
-    "\017\n\007OnceQty\030\002 \002(\005\022\016\n\006MaxQty\030\003 \002(\005\"<\n\030Modi"
-    "fyRunningStatusParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n"
-    "\007Enabled\030\002 \002(\010\"F\n ModifyPortfolioPreferr"
-    "edLegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol"
-    "\030\002 \002(\t\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030\001"
-    " \002(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002"
-    "(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"\222\001\n\025M"
-    "anualCloseOrderParam\022\016\n\006Symbol\030\001 \002(\t\022,\n\t"
-    "Direction\030\002 \002(\0162\031.trade.TradeDirectionTy"
-    "pe\022)\n\nOffsetFlag\030\003 \002(\0162\025.trade.OffsetFla"
-    "gType\022\020\n\010Quantity\030\004 \002(\005", 2663);
+    "7\n\017ScalperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n"
+    "\tPriceTick\030\002 \002(\001\"R\n\023ModifyStrategyParam\022"
+    "\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024"
+    "\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolio"
+    "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
+    "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
+    "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
+    "lePrefer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyPara"
+    "m\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006M"
+    "axQty\030\003 \002(\005\"<\n\030ModifyRunningStatusParam\022"
+    "\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Mod"
+    "ifyPortfolioPreferredLegParam\022\017\n\007PortfId"
+    "\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrder"
+    "Param\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 "
+    "\002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n"
+    "\006Symbol\030\005 \002(\t\"\222\001\n\025ManualCloseOrderParam\022"
+    "\016\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.tra"
+    "de.TradeDirectionType\022)\n\nOffsetFlag\030\003 \002("
+    "\0162\025.trade.OffsetFlagType\022\020\n\010Quantity\030\004 \002"
+    "(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstrument\030\001 \002(\t\022\022\n"
+    "\nExchangeID\030\002 \002(\t\022\026\n\016ExchangeInstID\030\003 \002("
+    "\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016VolumeMultiple\030\005"
+    " \002(\005\022\021\n\tPriceTick\030\006 \002(\001", 2823);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -722,6 +754,7 @@ void protobuf_AddDesc_message_2eproto() {
   ModifyPortfolioPreferredLegParam::default_instance_ = new ModifyPortfolioPreferredLegParam();
   CancelOrderParam::default_instance_ = new CancelOrderParam();
   ManualCloseOrderParam::default_instance_ = new ManualCloseOrderParam();
+  SymbolInfo::default_instance_ = new SymbolInfo();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
   LegItem::default_instance_->InitAsDefaultInstance();
@@ -745,6 +778,7 @@ void protobuf_AddDesc_message_2eproto() {
   ModifyPortfolioPreferredLegParam::default_instance_->InitAsDefaultInstance();
   CancelOrderParam::default_instance_->InitAsDefaultInstance();
   ManualCloseOrderParam::default_instance_->InitAsDefaultInstance();
+  SymbolInfo::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_message_2eproto);
 }
 
@@ -6249,6 +6283,7 @@ void ChangePosiStrategySettings::Swap(ChangePosiStrategySettings* other) {
 
 #ifndef _MSC_VER
 const int ScalperSettings::kThresholdFieldNumber;
+const int ScalperSettings::kPriceTickFieldNumber;
 #endif  // !_MSC_VER
 
 ScalperSettings::ScalperSettings()
@@ -6268,6 +6303,7 @@ ScalperSettings::ScalperSettings(const ScalperSettings& from)
 void ScalperSettings::SharedCtor() {
   _cached_size_ = 0;
   threshold_ = 0;
+  pricetick_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6303,6 +6339,7 @@ ScalperSettings* ScalperSettings::New() const {
 void ScalperSettings::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     threshold_ = 0;
+    pricetick_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -6322,6 +6359,22 @@ bool ScalperSettings::MergePartialFromCodedStream(
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &threshold_)));
           set_has_threshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(17)) goto parse_PriceTick;
+        break;
+      }
+      
+      // required double PriceTick = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_PriceTick:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &pricetick_)));
+          set_has_pricetick();
         } else {
           goto handle_uninterpreted;
         }
@@ -6352,6 +6405,11 @@ void ScalperSettings::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(1, this->threshold(), output);
   }
   
+  // required double PriceTick = 2;
+  if (has_pricetick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->pricetick(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -6363,6 +6421,11 @@ void ScalperSettings::SerializeWithCachedSizes(
   // required double Threshold = 1;
   if (has_threshold()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(1, this->threshold(), target);
+  }
+  
+  // required double PriceTick = 2;
+  if (has_pricetick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->pricetick(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -6378,6 +6441,11 @@ int ScalperSettings::ByteSize() const {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     // required double Threshold = 1;
     if (has_threshold()) {
+      total_size += 1 + 8;
+    }
+    
+    // required double PriceTick = 2;
+    if (has_pricetick()) {
       total_size += 1 + 8;
     }
     
@@ -6411,6 +6479,9 @@ void ScalperSettings::MergeFrom(const ScalperSettings& from) {
     if (from.has_threshold()) {
       set_threshold(from.threshold());
     }
+    if (from.has_pricetick()) {
+      set_pricetick(from.pricetick());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -6428,7 +6499,7 @@ void ScalperSettings::CopyFrom(const ScalperSettings& from) {
 }
 
 bool ScalperSettings::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
   
   return true;
 }
@@ -6436,6 +6507,7 @@ bool ScalperSettings::IsInitialized() const {
 void ScalperSettings::Swap(ScalperSettings* other) {
   if (other != this) {
     std::swap(threshold_, other->threshold_);
+    std::swap(pricetick_, other->pricetick_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -8852,6 +8924,480 @@ void ManualCloseOrderParam::Swap(ManualCloseOrderParam* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = ManualCloseOrderParam_descriptor_;
   metadata.reflection = ManualCloseOrderParam_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int SymbolInfo::kInstrumentFieldNumber;
+const int SymbolInfo::kExchangeIDFieldNumber;
+const int SymbolInfo::kExchangeInstIDFieldNumber;
+const int SymbolInfo::kProductIDFieldNumber;
+const int SymbolInfo::kVolumeMultipleFieldNumber;
+const int SymbolInfo::kPriceTickFieldNumber;
+#endif  // !_MSC_VER
+
+SymbolInfo::SymbolInfo()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void SymbolInfo::InitAsDefaultInstance() {
+}
+
+SymbolInfo::SymbolInfo(const SymbolInfo& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void SymbolInfo::SharedCtor() {
+  _cached_size_ = 0;
+  instrument_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  exchangeid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  exchangeinstid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  productid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  volumemultiple_ = 0;
+  pricetick_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SymbolInfo::~SymbolInfo() {
+  SharedDtor();
+}
+
+void SymbolInfo::SharedDtor() {
+  if (instrument_ != &::google::protobuf::internal::kEmptyString) {
+    delete instrument_;
+  }
+  if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+    delete exchangeid_;
+  }
+  if (exchangeinstid_ != &::google::protobuf::internal::kEmptyString) {
+    delete exchangeinstid_;
+  }
+  if (productid_ != &::google::protobuf::internal::kEmptyString) {
+    delete productid_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void SymbolInfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* SymbolInfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return SymbolInfo_descriptor_;
+}
+
+const SymbolInfo& SymbolInfo::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+SymbolInfo* SymbolInfo::default_instance_ = NULL;
+
+SymbolInfo* SymbolInfo::New() const {
+  return new SymbolInfo;
+}
+
+void SymbolInfo::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_instrument()) {
+      if (instrument_ != &::google::protobuf::internal::kEmptyString) {
+        instrument_->clear();
+      }
+    }
+    if (has_exchangeid()) {
+      if (exchangeid_ != &::google::protobuf::internal::kEmptyString) {
+        exchangeid_->clear();
+      }
+    }
+    if (has_exchangeinstid()) {
+      if (exchangeinstid_ != &::google::protobuf::internal::kEmptyString) {
+        exchangeinstid_->clear();
+      }
+    }
+    if (has_productid()) {
+      if (productid_ != &::google::protobuf::internal::kEmptyString) {
+        productid_->clear();
+      }
+    }
+    volumemultiple_ = 0;
+    pricetick_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool SymbolInfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string Instrument = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_instrument()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->instrument().data(), this->instrument().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_ExchangeID;
+        break;
+      }
+      
+      // required string ExchangeID = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_ExchangeID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_exchangeid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->exchangeid().data(), this->exchangeid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_ExchangeInstID;
+        break;
+      }
+      
+      // required string ExchangeInstID = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_ExchangeInstID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_exchangeinstid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->exchangeinstid().data(), this->exchangeinstid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_ProductID;
+        break;
+      }
+      
+      // required string ProductID = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_ProductID:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_productid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->productid().data(), this->productid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_VolumeMultiple;
+        break;
+      }
+      
+      // required int32 VolumeMultiple = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_VolumeMultiple:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &volumemultiple_)));
+          set_has_volumemultiple();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(49)) goto parse_PriceTick;
+        break;
+      }
+      
+      // required double PriceTick = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_PriceTick:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &pricetick_)));
+          set_has_pricetick();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void SymbolInfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string Instrument = 1;
+  if (has_instrument()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->instrument().data(), this->instrument().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->instrument(), output);
+  }
+  
+  // required string ExchangeID = 2;
+  if (has_exchangeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeid().data(), this->exchangeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->exchangeid(), output);
+  }
+  
+  // required string ExchangeInstID = 3;
+  if (has_exchangeinstid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeinstid().data(), this->exchangeinstid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->exchangeinstid(), output);
+  }
+  
+  // required string ProductID = 4;
+  if (has_productid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->productid().data(), this->productid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->productid(), output);
+  }
+  
+  // required int32 VolumeMultiple = 5;
+  if (has_volumemultiple()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->volumemultiple(), output);
+  }
+  
+  // required double PriceTick = 6;
+  if (has_pricetick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->pricetick(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* SymbolInfo::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string Instrument = 1;
+  if (has_instrument()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->instrument().data(), this->instrument().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->instrument(), target);
+  }
+  
+  // required string ExchangeID = 2;
+  if (has_exchangeid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeid().data(), this->exchangeid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->exchangeid(), target);
+  }
+  
+  // required string ExchangeInstID = 3;
+  if (has_exchangeinstid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->exchangeinstid().data(), this->exchangeinstid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->exchangeinstid(), target);
+  }
+  
+  // required string ProductID = 4;
+  if (has_productid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->productid().data(), this->productid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->productid(), target);
+  }
+  
+  // required int32 VolumeMultiple = 5;
+  if (has_volumemultiple()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->volumemultiple(), target);
+  }
+  
+  // required double PriceTick = 6;
+  if (has_pricetick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->pricetick(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int SymbolInfo::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string Instrument = 1;
+    if (has_instrument()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->instrument());
+    }
+    
+    // required string ExchangeID = 2;
+    if (has_exchangeid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->exchangeid());
+    }
+    
+    // required string ExchangeInstID = 3;
+    if (has_exchangeinstid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->exchangeinstid());
+    }
+    
+    // required string ProductID = 4;
+    if (has_productid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->productid());
+    }
+    
+    // required int32 VolumeMultiple = 5;
+    if (has_volumemultiple()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->volumemultiple());
+    }
+    
+    // required double PriceTick = 6;
+    if (has_pricetick()) {
+      total_size += 1 + 8;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SymbolInfo::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const SymbolInfo* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SymbolInfo*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void SymbolInfo::MergeFrom(const SymbolInfo& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_instrument()) {
+      set_instrument(from.instrument());
+    }
+    if (from.has_exchangeid()) {
+      set_exchangeid(from.exchangeid());
+    }
+    if (from.has_exchangeinstid()) {
+      set_exchangeinstid(from.exchangeinstid());
+    }
+    if (from.has_productid()) {
+      set_productid(from.productid());
+    }
+    if (from.has_volumemultiple()) {
+      set_volumemultiple(from.volumemultiple());
+    }
+    if (from.has_pricetick()) {
+      set_pricetick(from.pricetick());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void SymbolInfo::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SymbolInfo::CopyFrom(const SymbolInfo& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SymbolInfo::IsInitialized() const {
+  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
+  
+  return true;
+}
+
+void SymbolInfo::Swap(SymbolInfo* other) {
+  if (other != this) {
+    std::swap(instrument_, other->instrument_);
+    std::swap(exchangeid_, other->exchangeid_);
+    std::swap(exchangeinstid_, other->exchangeinstid_);
+    std::swap(productid_, other->productid_);
+    std::swap(volumemultiple_, other->volumemultiple_);
+    std::swap(pricetick_, other->pricetick_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata SymbolInfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = SymbolInfo_descriptor_;
+  metadata.reflection = SymbolInfo_reflection_;
   return metadata;
 }
 

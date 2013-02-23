@@ -134,6 +134,8 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="StrategyFactory.h" />
+    <ClInclude Include="SymbolInfo.h" />
+    <ClInclude Include="SymbolInfoRepositry.h" />
     <ClInclude Include="SyncRequest.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
@@ -190,6 +192,8 @@ copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="StrategyFactory.cpp" />
+    <ClCompile Include="SymbolInfo.cpp" />
+    <ClCompile Include="SymbolInfoRepositry.cpp" />
     <ClCompile Include="SyncRequest.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeMessagePump.cpp" />
