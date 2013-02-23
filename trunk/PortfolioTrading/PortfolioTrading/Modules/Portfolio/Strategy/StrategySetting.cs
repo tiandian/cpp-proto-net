@@ -110,6 +110,26 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     setting.PriceTick = double.Parse(attr.Value);
                 }
+                attr = elem.Attribute("caseLE2Tick");
+                if(attr != null)
+                {
+                    setting.CaseLE2Tick = (entity.DirectionDepends)Enum.Parse(typeof(entity.DirectionDepends), attr.Value);
+                }
+                attr = elem.Attribute("caseLE3Tick");
+                if(attr != null)
+                {
+                    setting.CaseLE3Tick = (entity.DirectionDepends)Enum.Parse(typeof(entity.DirectionDepends), attr.Value);
+                }
+                attr = elem.Attribute("caseGE4Tick");
+                if(attr != null)
+                {
+                    setting.CaseGE4Tick = (entity.DirectionDepends)Enum.Parse(typeof(entity.DirectionDepends), attr.Value);
+                }
+                attr = elem.Attribute("caseNoChange");
+                if(attr != null)
+                {
+                    setting.CaseNoChange = (entity.DirectionDepends)Enum.Parse(typeof(entity.DirectionDepends), attr.Value);
+                }
                 return setting;
             }
             else
@@ -143,6 +163,10 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 ScalperSetting setting = new ScalperSetting();
                 setting.Threshold = 0;
                 setting.PriceTick = 0.2;
+                setting.CaseLE2Tick = entity.DirectionDepends.ON_SMALL_SIZE;
+                setting.CaseLE3Tick = entity.DirectionDepends.ON_BIG_SIZE;
+                setting.CaseGE4Tick = entity.DirectionDepends.ON_SMALL_CHANGE;
+                setting.CaseNoChange = entity.DirectionDepends.ON_BIG_SIZE;
                 return setting;
             }
             else

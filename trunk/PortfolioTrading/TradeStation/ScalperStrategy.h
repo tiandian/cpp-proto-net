@@ -41,6 +41,12 @@ private:
 
 	trade::PosiDirectionType GetTradeDirection();
 
+	double m_priceTick;
+	entity::DirectionDepends m_CaseLE2Tick;
+	entity::DirectionDepends m_CaseLE3Tick;
+	entity::DirectionDepends m_CaseGE4Tick;
+	entity::DirectionDepends m_CaseNoChange;
+
 	double m_prevAsk;
 	double m_Ask;
 	int m_AskSize;

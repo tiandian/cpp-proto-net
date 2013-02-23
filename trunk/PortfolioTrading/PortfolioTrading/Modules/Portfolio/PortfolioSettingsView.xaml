@@ -210,11 +210,59 @@
                                         </DockPanel>
                                     </DockPanel>
                                     <DockPanel Margin="12, 0, 6, 2">
-                                        <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="120">最小变动单位</TextBlock>
+                                        <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="112">最小变动单位</TextBlock>
                                         <DockPanel Margin="4, 2">
                                             <TextBlock DockPanel.Dock="Right" Margin="4, 2">点</TextBlock>
                                             <igEditor:XamTextEditor Value="{Binding PriceTick, FallbackValue=0.2, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
                                         </DockPanel>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">买卖价变化方向不同时</TextBlock>
+                                <TextBlock DockPanel.Dock="Top" Margin="10, 2" VerticalAlignment="Center">价格变化算术和</TextBlock>
+                                <StackPanel Margin="12, 0, 6, 2">
+                                    <StackPanel.Resources>
+                                        <DataTemplate x:Key="dependsItemTemplate">
+                                            <TextBlock Text="{Binding DisplayName}"/>
+                                        </DataTemplate>
+                                    </StackPanel.Resources>
+                                    <DockPanel>
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="96">
+                                            <TextBlock Margin="4, 2" VerticalAlignment="Center">&lt;=2个价位</TextBlock>
+                                            <TextBlock Margin="2" VerticalAlignment="Center">(<Run Text="{Binding TwoTick, Mode=OneWay}"/>)</TextBlock>
+                                        </StackPanel>
+                                        <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
+                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseLE2Tick, Mode=TwoWay}"
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Value" />
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="96">
+                                            <TextBlock Margin="4, 2" VerticalAlignment="Center">&lt;=3个价位</TextBlock>
+                                            <TextBlock Margin="2" VerticalAlignment="Center">(<Run Text="{Binding ThreeTick, Mode=OneWay}"/>)</TextBlock>
+                                        </StackPanel>
+                                        <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Value" 
+                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseLE3Tick, Mode=TwoWay}"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="96">
+                                            <TextBlock Margin="4, 2" VerticalAlignment="Center">&gt;=4个价位</TextBlock>
+                                            <TextBlock Margin="2" VerticalAlignment="Center">(<Run Text="{Binding FourTick, Mode=OneWay}"/>)</TextBlock>
+                                        </StackPanel>
+                                        <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Value"
+                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseGE4Tick, Mode=TwoWay}"/>
+                                    </DockPanel>
+                                    <DockPanel>
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                            <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="88">无变化</TextBlock>
+                                        </StackPanel>
+                                        <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
+                                                  DisplayMemberPath="DisplayName" SelectedValuePath="Value"
+                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseNoChange, Mode=TwoWay}"/>
                                     </DockPanel>
                                 </StackPanel>
                             </DockPanel>

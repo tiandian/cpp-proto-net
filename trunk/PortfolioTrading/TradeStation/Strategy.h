@@ -27,6 +27,7 @@ enum POSI_OPER
 };
 
 bool DoubleGreaterEqual(double a, double b);
+bool DoubleLessEqual(double a, double b);
 bool DoubleEqual(double a, double b);
 COMPARE_OP ConvertCompareCondition(entity::CompareCondition compareCond);
 const char* StrategyOpertaionText(POSI_OPER oper);

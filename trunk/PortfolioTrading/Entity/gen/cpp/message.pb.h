@@ -59,6 +59,28 @@ class CancelOrderParam;
 class ManualCloseOrderParam;
 class SymbolInfo;
 
+enum DirectionDepends {
+  IGNORE_THIS = 0,
+  ON_SMALL_SIZE = 1,
+  ON_BIG_SIZE = 2,
+  ON_SMALL_CHANGE = 3,
+  ON_BIG_CHANGE = 4
+};
+bool DirectionDepends_IsValid(int value);
+const DirectionDepends DirectionDepends_MIN = IGNORE_THIS;
+const DirectionDepends DirectionDepends_MAX = ON_BIG_CHANGE;
+const int DirectionDepends_ARRAYSIZE = DirectionDepends_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* DirectionDepends_descriptor();
+inline const ::std::string& DirectionDepends_Name(DirectionDepends value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    DirectionDepends_descriptor(), value);
+}
+inline bool DirectionDepends_Parse(
+    const ::std::string& name, DirectionDepends* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<DirectionDepends>(
+    DirectionDepends_descriptor(), name, value);
+}
 // ===================================================================
 
 class StringParam : public ::google::protobuf::Message {
@@ -1953,20 +1975,60 @@ class ScalperSettings : public ::google::protobuf::Message {
   inline double pricetick() const;
   inline void set_pricetick(double value);
   
+  // required .entity.DirectionDepends CaseLE2Tick = 3;
+  inline bool has_casele2tick() const;
+  inline void clear_casele2tick();
+  static const int kCaseLE2TickFieldNumber = 3;
+  inline entity::DirectionDepends casele2tick() const;
+  inline void set_casele2tick(entity::DirectionDepends value);
+  
+  // required .entity.DirectionDepends CaseLE3Tick = 4;
+  inline bool has_casele3tick() const;
+  inline void clear_casele3tick();
+  static const int kCaseLE3TickFieldNumber = 4;
+  inline entity::DirectionDepends casele3tick() const;
+  inline void set_casele3tick(entity::DirectionDepends value);
+  
+  // required .entity.DirectionDepends CaseGE4Tick = 5;
+  inline bool has_casege4tick() const;
+  inline void clear_casege4tick();
+  static const int kCaseGE4TickFieldNumber = 5;
+  inline entity::DirectionDepends casege4tick() const;
+  inline void set_casege4tick(entity::DirectionDepends value);
+  
+  // required .entity.DirectionDepends CaseNoChange = 6;
+  inline bool has_casenochange() const;
+  inline void clear_casenochange();
+  static const int kCaseNoChangeFieldNumber = 6;
+  inline entity::DirectionDepends casenochange() const;
+  inline void set_casenochange(entity::DirectionDepends value);
+  
   // @@protoc_insertion_point(class_scope:entity.ScalperSettings)
  private:
   inline void set_has_threshold();
   inline void clear_has_threshold();
   inline void set_has_pricetick();
   inline void clear_has_pricetick();
+  inline void set_has_casele2tick();
+  inline void clear_has_casele2tick();
+  inline void set_has_casele3tick();
+  inline void clear_has_casele3tick();
+  inline void set_has_casege4tick();
+  inline void clear_has_casege4tick();
+  inline void set_has_casenochange();
+  inline void clear_has_casenochange();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   double threshold_;
   double pricetick_;
+  int casele2tick_;
+  int casele3tick_;
+  int casege4tick_;
+  int casenochange_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -5165,6 +5227,98 @@ inline void ScalperSettings::set_pricetick(double value) {
   pricetick_ = value;
 }
 
+// required .entity.DirectionDepends CaseLE2Tick = 3;
+inline bool ScalperSettings::has_casele2tick() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ScalperSettings::set_has_casele2tick() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ScalperSettings::clear_has_casele2tick() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ScalperSettings::clear_casele2tick() {
+  casele2tick_ = 0;
+  clear_has_casele2tick();
+}
+inline entity::DirectionDepends ScalperSettings::casele2tick() const {
+  return static_cast< entity::DirectionDepends >(casele2tick_);
+}
+inline void ScalperSettings::set_casele2tick(entity::DirectionDepends value) {
+  GOOGLE_DCHECK(entity::DirectionDepends_IsValid(value));
+  set_has_casele2tick();
+  casele2tick_ = value;
+}
+
+// required .entity.DirectionDepends CaseLE3Tick = 4;
+inline bool ScalperSettings::has_casele3tick() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ScalperSettings::set_has_casele3tick() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ScalperSettings::clear_has_casele3tick() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ScalperSettings::clear_casele3tick() {
+  casele3tick_ = 0;
+  clear_has_casele3tick();
+}
+inline entity::DirectionDepends ScalperSettings::casele3tick() const {
+  return static_cast< entity::DirectionDepends >(casele3tick_);
+}
+inline void ScalperSettings::set_casele3tick(entity::DirectionDepends value) {
+  GOOGLE_DCHECK(entity::DirectionDepends_IsValid(value));
+  set_has_casele3tick();
+  casele3tick_ = value;
+}
+
+// required .entity.DirectionDepends CaseGE4Tick = 5;
+inline bool ScalperSettings::has_casege4tick() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void ScalperSettings::set_has_casege4tick() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void ScalperSettings::clear_has_casege4tick() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void ScalperSettings::clear_casege4tick() {
+  casege4tick_ = 0;
+  clear_has_casege4tick();
+}
+inline entity::DirectionDepends ScalperSettings::casege4tick() const {
+  return static_cast< entity::DirectionDepends >(casege4tick_);
+}
+inline void ScalperSettings::set_casege4tick(entity::DirectionDepends value) {
+  GOOGLE_DCHECK(entity::DirectionDepends_IsValid(value));
+  set_has_casege4tick();
+  casege4tick_ = value;
+}
+
+// required .entity.DirectionDepends CaseNoChange = 6;
+inline bool ScalperSettings::has_casenochange() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void ScalperSettings::set_has_casenochange() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void ScalperSettings::clear_has_casenochange() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void ScalperSettings::clear_casenochange() {
+  casenochange_ = 0;
+  clear_has_casenochange();
+}
+inline entity::DirectionDepends ScalperSettings::casenochange() const {
+  return static_cast< entity::DirectionDepends >(casenochange_);
+}
+inline void ScalperSettings::set_casenochange(entity::DirectionDepends value) {
+  GOOGLE_DCHECK(entity::DirectionDepends_IsValid(value));
+  set_has_casenochange();
+  casenochange_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ModifyStrategyParam
@@ -6538,6 +6692,10 @@ inline void SymbolInfo::set_pricetick(double value) {
 namespace google {
 namespace protobuf {
 
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< entity::DirectionDepends>() {
+  return entity::DirectionDepends_descriptor();
+}
 
 }  // namespace google
 }  // namespace protobuf

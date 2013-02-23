@@ -640,6 +640,41 @@ namespace entity
       get { return _Threshold; }
       set { _Threshold = value; }
     }
+    private double _PriceTick;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"PriceTick", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double PriceTick
+    {
+      get { return _PriceTick; }
+      set { _PriceTick = value; }
+    }
+    private entity.DirectionDepends _CaseLE2Tick;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"CaseLE2Tick", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.DirectionDepends CaseLE2Tick
+    {
+      get { return _CaseLE2Tick; }
+      set { _CaseLE2Tick = value; }
+    }
+    private entity.DirectionDepends _CaseLE3Tick;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"CaseLE3Tick", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.DirectionDepends CaseLE3Tick
+    {
+      get { return _CaseLE3Tick; }
+      set { _CaseLE3Tick = value; }
+    }
+    private entity.DirectionDepends _CaseGE4Tick;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"CaseGE4Tick", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.DirectionDepends CaseGE4Tick
+    {
+      get { return _CaseGE4Tick; }
+      set { _CaseGE4Tick = value; }
+    }
+    private entity.DirectionDepends _CaseNoChange;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"CaseNoChange", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.DirectionDepends CaseNoChange
+    {
+      get { return _CaseNoChange; }
+      set { _CaseNoChange = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -889,5 +924,77 @@ namespace entity
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
   }
+  
+  [global::System.Serializable, global::ProtoBuf.ProtoContract(Name=@"SymbolInfo")]
+  public partial class SymbolInfo : global::ProtoBuf.IExtensible
+  {
+    public SymbolInfo() {}
+    
+    private string _Instrument;
+    [global::ProtoBuf.ProtoMember(1, IsRequired = true, Name=@"Instrument", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string Instrument
+    {
+      get { return _Instrument; }
+      set { _Instrument = value; }
+    }
+    private string _ExchangeID;
+    [global::ProtoBuf.ProtoMember(2, IsRequired = true, Name=@"ExchangeID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string ExchangeID
+    {
+      get { return _ExchangeID; }
+      set { _ExchangeID = value; }
+    }
+    private string _ExchangeInstID;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"ExchangeInstID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string ExchangeInstID
+    {
+      get { return _ExchangeInstID; }
+      set { _ExchangeInstID = value; }
+    }
+    private string _ProductID;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"ProductID", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string ProductID
+    {
+      get { return _ProductID; }
+      set { _ProductID = value; }
+    }
+    private int _VolumeMultiple;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"VolumeMultiple", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int VolumeMultiple
+    {
+      get { return _VolumeMultiple; }
+      set { _VolumeMultiple = value; }
+    }
+    private double _PriceTick;
+    [global::ProtoBuf.ProtoMember(6, IsRequired = true, Name=@"PriceTick", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public double PriceTick
+    {
+      get { return _PriceTick; }
+      set { _PriceTick = value; }
+    }
+    private global::ProtoBuf.IExtension extensionObject;
+    global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
+      { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
+  }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"DirectionDepends")]
+    public enum DirectionDepends
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"IGNORE_THIS", Value=0)]
+      IGNORE_THIS = 0,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"ON_SMALL_SIZE", Value=1)]
+      ON_SMALL_SIZE = 1,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"ON_BIG_SIZE", Value=2)]
+      ON_BIG_SIZE = 2,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"ON_SMALL_CHANGE", Value=3)]
+      ON_SMALL_CHANGE = 3,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"ON_BIG_CHANGE", Value=4)]
+      ON_BIG_CHANGE = 4
+    }
   
 }
