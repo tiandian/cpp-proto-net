@@ -47,8 +47,10 @@ namespace PortfolioTrading.Modules.Account
         private DelegateCommand<XamDataTree> _editAccountCommand;
         private DelegateCommand<XamDataTree> _removeAccountCommand;
 
+        private ServerAddressRepoVM ServerAddrRepoVM { get; set; }
+
         [ImportingConstructor]
-        public AccountMgrVM(IEventAggregator evtAgg)
+        public AccountMgrVM(IEventAggregator evtAgg, ServerAddressRepoVM serverAddrRepoVm)
         {
             evtAgg.GetEvent<AppShutDown>().Subscribe(OnAppShutDown);
             evtAgg.GetEvent<AccountChangedEvent>().Subscribe(OnCertainAccountChanged);
@@ -59,7 +61,10 @@ namespace PortfolioTrading.Modules.Account
             _editAccountCommand = new DelegateCommand<XamDataTree>(OnEditAccount);
             _removeAccountCommand = new DelegateCommand<XamDataTree>(OnRemoveAccount);
             //_accounts.Add(new AccountVM() { BrokerId="0240", InvestorId="0240050008", Password="888888" });
-
+            
+            // load server address list
+            ServerAddrRepoVM = serverAddrRepoVm;
+            serverAddrRepoVm.LoadServerList();
             Load();
         }
 
@@ -157,6 +162,8 @@ namespace PortfolioTrading.Modules.Account
         public void Persist()
         {
             XElement acctsElem = new XElement("accounts");
+            acctsElem.Add(new XAttribute("marketData", ServerAddrRepoVM.EffectiveMarket.Name));
+            acctsElem.Add(new XAttribute("trading", ServerAddrRepoVM.EffectiveTrading.Name));
 
             foreach (var acct in _accounts)
             {
@@ -183,6 +190,13 @@ namespace PortfolioTrading.Modules.Account
             if (File.Exists(filePath))
             {
                 XElement acctsElem = XElement.Load(filePath);
+                var attr = acctsElem.Attribute("marketData");
+                string marketDataName = attr != null ? attr.Value : "";
+                ServerAddrRepoVM.SelectMarket(marketDataName);
+                attr = acctsElem.Attribute("trading");
+                string tradingName = attr != null ? attr.Value : "";
+                ServerAddrRepoVM.SelectTrading(tradingName);
+
                 foreach (var acctElem in acctsElem.Elements("account"))
                 {
                     AccountVM acctVm = AccountVM.Load(acctElem);

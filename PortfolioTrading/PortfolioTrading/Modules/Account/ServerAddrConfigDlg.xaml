@@ -11,7 +11,7 @@
             <StackPanel>
                 <DockPanel Margin="20, 10">
                     <TextBlock Margin="4, 0, 8, 0">行情</TextBlock>
-                    <ComboBox ItemsSource="{Binding MarketServers}" SelectedValuePath="Name" 
+                    <ComboBox ItemsSource="{Binding MarketServers}" 
                               SelectedValue="{Binding EffectiveMarket, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -24,7 +24,7 @@
                 </DockPanel>
                 <DockPanel Margin="20, 10">
                     <TextBlock Margin="4, 0, 8, 0">交易</TextBlock>
-                    <ComboBox ItemsSource="{Binding TradingServers}" SelectedValuePath="Name" 
+                    <ComboBox ItemsSource="{Binding TradingServers}" 
                               SelectedValue="{Binding EffectiveTrading, Mode=TwoWay}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
