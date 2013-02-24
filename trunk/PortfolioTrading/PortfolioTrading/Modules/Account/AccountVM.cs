@@ -30,6 +30,7 @@ namespace PortfolioTrading.Modules.Account
         private static int HostPortSeed = 16181;
 
         private IEventAggregator EventAggregator { get; set; }
+        private ServerAddressRepoVM AddressRepo { get; set; }
 
         public AccountVM()
         {
@@ -42,6 +43,7 @@ namespace PortfolioTrading.Modules.Account
             _host = new NativeHost();
 
             EventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            AddressRepo = ServiceLocator.Current.GetInstance<ServerAddressRepoVM>();
             
             _client = new Client();
             _client.OnError += new Action<string>(_client_OnError);
@@ -445,6 +447,7 @@ namespace PortfolioTrading.Modules.Account
                                                 {
                                                     uiContext.Send(o => Status = "连接失败", null);
                                                     EventLogger.Write(string.Format("{0}发生错误", acct.InvestorId));
+                                                    _client.Disconnect();
                                                     _host.Exit();
                                                 }
                                             }
@@ -487,7 +490,8 @@ namespace PortfolioTrading.Modules.Account
 
         private bool HaveTradeStationReady(AccountVM acct)
         {
-            OperationResult tradeConnResult = _client.TradeConnect("tcp://ctpsim-front01.gfqh.cn:43205",
+            EventLogger.Write("正在连接交易服务器: " + AddressRepo.EffectiveTrading.Name);
+            OperationResult tradeConnResult = _client.TradeConnect(AddressRepo.EffectiveTrading.Address,
                                                           acct.InvestorId);
 
             if (tradeConnResult.Success)
@@ -517,7 +521,8 @@ namespace PortfolioTrading.Modules.Account
                 return false;
             }
 
-            OperationResult quoteConnResult = _client.QuoteConnect("tcp://ctpsim-front01.gfqh.cn:43213",
+            EventLogger.Write("正在连接行情服务器: " + AddressRepo.EffectiveMarket.Name);
+            OperationResult quoteConnResult = _client.QuoteConnect(AddressRepo.EffectiveMarket.Address,
                                                           acct.InvestorId);
             if (quoteConnResult.Success)
             {
