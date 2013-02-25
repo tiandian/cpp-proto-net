@@ -64,7 +64,7 @@ bool CConfiguration::Load( int argc, _TCHAR* argv[] )
 
 		po::options_description conn("Connection");
 		conn.add_options()
-			("port", po::value<string>(&m_port)->default_value("16168"),
+			("port", po::value<string>(&m_port)->default_value("16181"),
 			"listening port")
 			("addr", po::value<string>(&m_addr)->default_value(""),
 			"listening port");

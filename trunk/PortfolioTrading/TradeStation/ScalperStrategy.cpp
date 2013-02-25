@@ -6,7 +6,8 @@
 
 CScalperStrategy::CScalperStrategy(void):
 m_prevAsk(0), m_prevBid(0),
-m_Ask(0), m_AskSize(0), m_Bid(0), m_BidSize(0) 
+m_Ask(0), m_AskSize(0), m_Bid(0), m_BidSize(0),
+m_priceTick(0)
 {
 }
 
@@ -127,7 +128,7 @@ void CScalperStrategy::DoOpenPostion()
 			% m_prevAsk % m_Ask % m_prevBid % m_Bid % m_AskSize % m_BidSize));
 		if(direction > trade::NET)
 		{
-			Client()->QuickScalpe(portf, portf->Quantity(), direction, IF_TICK);
+			Client()->QuickScalpe(portf, portf->Quantity(), direction, m_priceTick);
 		}
 	}
 }

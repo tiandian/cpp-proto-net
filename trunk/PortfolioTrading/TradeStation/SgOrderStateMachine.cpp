@@ -4,6 +4,7 @@
 #include "OrderProcessor2.h"
 #include "charsetconvert.h"
 #include "Portfolio.h"
+#include "ScalperStrategy.h"
 
 #include <boost/format.hpp>
 
@@ -398,4 +399,15 @@ void CScalperOrderPlacer::ModifyOrderPrice()
 			% Symbol() % bid));
 		m_pInputOrder->set_limitprice(bid);
 	}
+}
+
+CScalperOrderPlacer::CScalperOrderPlacer( CSgOrderStateMachine* pStateMachine, CPortfolio* pPortfolio, trade::MultiLegOrder* pMultiLegOrder, const InputOrderPtr& inputOrder, int maxRetryTimes, COrderProcessor2* pOrderProc ) :
+CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder, 
+	inputOrder, maxRetryTimes, pOrderProc)
+{
+	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(pPortfolio->Strategy());
+	if(pScalperStrategy != NULL)
+		m_precedence = pScalperStrategy->PriceTick();
+	else
+		m_precedence = 0.2;	// precedence so far only support IFxxxx
 }
