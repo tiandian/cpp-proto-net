@@ -106,12 +106,7 @@ public:
 						trade::MultiLegOrder* pMultiLegOrder,
 						const InputOrderPtr& inputOrder,
 						int maxRetryTimes,
-						COrderProcessor2* pOrderProc):
-	CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder, 
-		inputOrder, maxRetryTimes, pOrderProc)
-	{
-		m_precedence = 0.2;	// precedence so far only support IFxxxx
-	}
+						COrderProcessor2* pOrderProc);
 
 	~CScalperOrderPlacer(){}
 

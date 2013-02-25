@@ -3,6 +3,7 @@
 #include "Portfolio.h"
 #include "DiffStrategy.h"
 #include "PortfolioOrderHelper.h"
+#include "ScalperStrategy.h"
 
 #include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
@@ -246,7 +247,9 @@ void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDire
 void CClientAgent::QuickScalpe( const string& pid, int quantity )
 {
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
-	QuickScalpe(portf, quantity, trade::LONG, 0.2);
+	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(portf->Strategy());
+	if(pScalperStrategy != NULL)
+		QuickScalpe(portf, quantity, trade::LONG, pScalperStrategy->PriceTick());
 }
 
 bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)

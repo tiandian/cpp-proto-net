@@ -25,6 +25,8 @@ public:
 	bool IsAutoTracking(){ return true; }
 	bool EnablePrefer(){ return true; }
 
+	double PriceTick(){ return m_priceTick; }
+
 protected:
 	CConditionChecker<double>& GetOpenPosiCond(){ return m_openPosiChecker; }
 	CConditionChecker<double>& GetStopGainCond(){ return m_stopGainChecker; }

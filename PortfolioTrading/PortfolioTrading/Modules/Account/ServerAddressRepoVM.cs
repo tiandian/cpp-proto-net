@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using System.ComponentModel.Composition;
 using System.Xml.Linq;
+using System.IO;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -58,22 +59,26 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        private readonly string BrokersXmlPath = "brokers.xml";
         public void LoadServerList()
         {
             _mkt_servers.Add(new ServerAddress { Name = "模拟行情", Address = "tcp://ctpsim-front01.gfqh.cn:43213" });
             _td_servers.Add(new ServerAddress { Name = "模拟交易", Address = "tcp://ctpsim-front01.gfqh.cn:43205" });
 
-            XElement rootElem = XElement.Load("brokers.xml");
-            var serversElemCollection = rootElem.Descendants("Servers");
-            var serversElem = serversElemCollection.FirstOrDefault();
-            var elemServers = serversElem.Elements("Server");
-            foreach (var elemServ in elemServers)
+            if (File.Exists(BrokersXmlPath))
             {
-                string name = elemServ.Element("Name").Value;
-                var tradingItems = GetAddressItems(elemServ.Element("Trading"));
-                FillList(_td_servers, tradingItems, name);
-                var marketItems = GetAddressItems(elemServ.Element("MarketData"));
-                FillList(_mkt_servers, marketItems, name);
+                XElement rootElem = XElement.Load(BrokersXmlPath);
+                var serversElemCollection = rootElem.Descendants("Servers");
+                var serversElem = serversElemCollection.FirstOrDefault();
+                var elemServers = serversElem.Elements("Server");
+                foreach (var elemServ in elemServers)
+                {
+                    string name = elemServ.Element("Name").Value;
+                    var tradingItems = GetAddressItems(elemServ.Element("Trading"));
+                    FillList(_td_servers, tradingItems, name);
+                    var marketItems = GetAddressItems(elemServ.Element("MarketData"));
+                    FillList(_mkt_servers, marketItems, name);
+                }
             }
         }
 
