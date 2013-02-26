@@ -19,6 +19,7 @@ CClientManager::~CClientManager(void)
 
 bool CClientManager::OnConnected( Session* session, const string& clientId, bool attach )
 {
+	boost::recursive_mutex::scoped_lock lock(m_mutClntMap);
 	if(attach)
 	{
 		CClientAgent* pClientAgent = GetClientById(clientId);
@@ -51,11 +52,12 @@ void CClientManager::OnDisconnected( Session* session )
 {
 	std::string info = boost::str(boost::format("Client(%s) disconnected.") % session->SessionId().c_str());
 	logger.Info(info);
-
+	
 	const string& sessionId = session->SessionId();
 	CClientAgent* pClntAgent = GetClient(sessionId);
 	if(pClntAgent != NULL)
 	{
+		boost::recursive_mutex::scoped_lock lock(m_mutClntMap);
 		pClntAgent->SetSession(NULL);
 		if(!pClntAgent->IsConnected())
 			m_clients.erase(sessionId);
@@ -84,6 +86,7 @@ void CClientManager::DispatchPacket( const string& sessionId, const string& meth
 
 CClientAgent* CClientManager::GetClient( const string& sessionId )
 {
+	boost::recursive_mutex::scoped_lock lock(m_mutClntMap);
 	ClientMapIter clntIter = m_clients.find(sessionId);
 	if(clntIter != m_clients.end())
 	{
@@ -415,6 +418,7 @@ void CClientManager::PortfChgQuantity( CClientAgent* pClientAgent, const string&
 
 bool CClientManager::VerifyClient( const string& username, const string& password, bool* clientExisting )
 {
+	boost::recursive_mutex::scoped_lock lock(m_mutClntMap);
 	*clientExisting = false;
 	CClientAgent* pClient = GetClientById(username);
 	if(pClient == NULL)
@@ -433,6 +437,7 @@ bool CClientManager::VerifyClient( const string& username, const string& passwor
 
 void CClientManager::AttachSession( const string& clientId, Session* session )
 {
+	boost::recursive_mutex::scoped_lock lock(m_mutClntMap);
 	ClientPtr targetClient;
 	bool found = false;
 	for (ClientMapIter clntIter = m_clients.begin(); clntIter != m_clients.end(); ++clntIter)

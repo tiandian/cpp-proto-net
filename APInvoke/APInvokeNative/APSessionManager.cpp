@@ -61,6 +61,7 @@ void APSessionManager::RegisterHandler( SessionManagerHandler* handler )
 
 void APSessionManager::OnClientAccepted( connection_ptr conn )
 {
+	boost::recursive_mutex::scoped_lock lock(m_mutSessionMap);
 	boost::uuids::random_generator gen;
 	boost::uuids::uuid uuid_ = gen();
 	string sessionId = boost::uuids::to_string(uuid_);
@@ -74,6 +75,7 @@ void APSessionManager::HandleError( const string& sessionId, const boost::system
 {
 	if(e)
 	{
+		boost::recursive_mutex::scoped_lock lock(m_mutSessionMap);
 		// log error
 		std::ostringstream oss;
 		std::map<std::string, SessionPtr>::iterator foundClnt = m_clientMap.find(sessionId);
@@ -144,7 +146,7 @@ void APSessionManager::OnRequest( string sessionId, const RequestPtr& request )
 	resp.set_error(errorMsg);
 
 	APSession* pSession = GetSession(sessionId);
-	if(pSession != NULL)
+	if(pSession != NULL && pSession->IsConnected())
 	{
 		pSession->BeginSendMessage(RSP, &resp);
 	}
@@ -152,6 +154,7 @@ void APSessionManager::OnRequest( string sessionId, const RequestPtr& request )
 
 APSession* APSessionManager::GetSession( const string& sessionId )
 {
+	boost::recursive_mutex::scoped_lock lock(m_mutSessionMap);
 	ClientMapIter iter = m_clientMap.find(sessionId);
 	if(iter != m_clientMap.end())
 		return (iter->second).get();

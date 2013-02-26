@@ -7,6 +7,7 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 #include <boost/function.hpp>
+#include <boost/thread.hpp>
 
 using namespace std;
 
@@ -78,5 +79,6 @@ private:
 
 	ReqTranslatorMap m_reqTransMap;
 	ClientMap m_clients;
+	boost::recursive_mutex m_mutClntMap;
 };
 

@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include <boost/smart_ptr.hpp>
+#include <boost/thread.hpp>
 #include <boost/threadpool.hpp>
 
 using namespace std;
@@ -140,6 +141,6 @@ private:
 											boost::threadpool::resize_controller, 
 											boost::threadpool::immediately> ThreadPool;
 	ThreadPool m_threadPool;
-
+	boost::recursive_mutex m_mutSessionMap;
 };
 
