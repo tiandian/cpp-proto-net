@@ -115,6 +115,7 @@ private:
 	CThostFtdcTraderApi* m_pUserApi;
 	
 	bool m_bIsConnected;
+	bool m_bIsConnecting;
 
 	boost::condition_variable m_condConnectDone;
 	boost::mutex m_mutex;

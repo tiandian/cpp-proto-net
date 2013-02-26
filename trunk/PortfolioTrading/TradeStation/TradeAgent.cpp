@@ -60,6 +60,7 @@ SESSION_ID(0),
 m_loginSuccess(false),
 m_pUserApi(NULL),
 m_bIsConnected(false),
+m_bIsConnecting(false),
 m_maxOrderRef(0),
 m_iRequestID(0)
 {
@@ -92,6 +93,7 @@ CTradeAgent::~CTradeAgent(void)
 	}
 	
 	m_bIsConnected = false;
+	m_bIsConnecting = false;
 	logger.Debug(boost::str(boost::format("Trade Agent(%s) destructing DONE") % m_userID));
 }
 
@@ -121,12 +123,15 @@ boost::tuple<bool, string> CTradeAgent::Open( const string& address, const strin
 		// wait 15 seconds for connected event
 		{
 			boost::unique_lock<boost::mutex> lock(m_mutex);
+			m_bIsConnecting = true;
 			if(!m_condConnectDone.timed_wait(lock, boost::posix_time::seconds(CONNECT_TIMEOUT_SECONDS)))
 			{
+				m_bIsConnecting = false;
 				errMsg = "Connecting time out";
 				logger.Warning(errMsg);
 				return boost::make_tuple(false, errMsg);
 			}
+			m_bIsConnecting = false;
 
 			m_bIsConnected = true;
 		}
@@ -156,6 +161,12 @@ void CTradeAgent::OnFrontConnected()
 
 void CTradeAgent::Close()
 {
+	if(m_bIsConnecting)
+	{
+		boost::unique_lock<boost::mutex> connectingLock(m_mutex);
+		m_condConnectDone.notify_one();
+	}
+
 	if(!m_bIsConnected)
 		return;
 

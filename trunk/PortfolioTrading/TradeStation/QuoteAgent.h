@@ -28,6 +28,7 @@ public:
 	void SetCallbackHanlder(CQuoteAgentCallback* pCallback){ m_pCallback = pCallback; }
 
 	bool IsConnected(){ return m_bIsConnected; }
+	bool IsDisconnected(){ return !m_bIsConnected; }
 
 	//////////////////////////////////////////////////////////////////////////
 
@@ -83,6 +84,7 @@ private:
 
 	bool m_bIsConnected;
 	bool m_bConnectionDrop;
+	bool m_bIsConnecting;
 
 	boost::condition_variable m_condConnectDone;
 	boost::mutex m_mutex;

@@ -28,6 +28,7 @@ namespace PortfolioTrading.Modules.Account
         private NativeHost _host;
 
         private static int HostPortSeed = 16181;
+        private static int MaxRetryConnectTimes = 3;
 
         private IEventAggregator EventAggregator { get; set; }
         private ServerAddressRepoVM AddressRepo { get; set; }
@@ -466,8 +467,8 @@ namespace PortfolioTrading.Modules.Account
                         else
                         {
                             LogManager.Logger.Warn(txt);
-                            if ("交易终端拒绝连接" != t && 
-                                _connectTimes < 10 && 
+                            if ("交易终端拒绝连接" != t &&
+                                _connectTimes < MaxRetryConnectTimes && 
                                 actionLoopConnect != null)
                                 actionLoopConnect.Invoke(++_connectTimes);
                         }

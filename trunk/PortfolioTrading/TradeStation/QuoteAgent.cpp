@@ -19,6 +19,7 @@ m_pUserApi(NULL),
 m_pCallback(NULL),
 m_bIsConnected(false),
 m_bConnectionDrop(false),
+m_bIsConnecting(false),
 m_iRequestID(0)
 {
 }
@@ -26,6 +27,23 @@ m_iRequestID(0)
 
 CQuoteAgent::~CQuoteAgent(void)
 {
+	logger.Info("CQuoteAgent begin destructing...");
+	{
+		boost::unique_lock<boost::mutex> lock(m_mutex);
+		m_condConnectDone.timed_wait(lock, boost::posix_time::seconds(DISCONNECT_TIMEOUT_SECOND),
+			boost::bind(&CQuoteAgent::IsDisconnected, this));
+
+		if(m_pUserApi != NULL)
+		{
+			m_pUserApi->RegisterSpi(NULL);
+			m_thQuoting.detach();
+		}
+
+		m_bIsConnected = false;
+		m_bIsConnecting = false;
+	}
+	
+	logger.Info("CQuoteAgent destructed.");
 }
 
 void RunMarketDataFunc(CThostFtdcMdApi* pUserApi, const char* address)
@@ -61,12 +79,15 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 		// wait 1 minute for connected event
 		{
 			boost::unique_lock<boost::mutex> lock(m_mutex);
+			m_bIsConnecting = true;
 			if(!m_condConnectDone.timed_wait(lock, boost::posix_time::seconds(CONNECT_TIMEOUT_SECONDS)))
 			{
+				m_bIsConnecting = false;
 				errMsg = "Connecting time out";
 				logger.Warning(errMsg);
 				return boost::make_tuple(false, errMsg);
 			}
+			m_bIsConnecting = false;
 		}
 		return boost::make_tuple(true, errMsg);
 	}
@@ -87,6 +108,12 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 
 void CQuoteAgent::Close()
 {
+	if(m_bIsConnecting)
+	{
+		boost::unique_lock<boost::mutex> connectingLock(m_mutex);
+		m_condConnectDone.notify_one();
+	}
+
 	if(!m_bIsConnected)
 		return;
 

@@ -202,6 +202,8 @@ namespace PortfolioTrading.Modules.Account
 
             public static DateTime GetDate(string tradeDate)
             {
+                if (tradeDate.Length < 8)
+                    tradeDate = tradeDate.Insert(4, "0");
                 return DateTime.ParseExact(tradeDate, "yyyyMMdd", CultureInfo.CurrentCulture);
             }
 
