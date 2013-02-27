@@ -197,7 +197,7 @@ message ManualCloseOrderParam
 {
 	required string Symbol = 1;
 	required trade.TradeDirectionType	Direction = 2;
-	required trade.OffsetFlagType OffsetFlag = 3;
+	required string OpenDate = 3;
 	required int32 Quantity = 4;
 }
 

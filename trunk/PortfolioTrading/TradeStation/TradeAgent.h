@@ -10,6 +10,7 @@
 #include <string>
 #include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/date_time.hpp>
 
 using namespace std;
 
@@ -45,6 +46,8 @@ public:
 
 	bool IsConnected(){ return m_bIsConnected; }
 	bool IsDisconnected(){ return !m_bIsConnected; }
+
+	const boost::gregorian::date& TradingDay(){ return m_tradingDay; }
 
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
@@ -128,6 +131,7 @@ private:
 	TThostFtdcFrontIDType	FRONT_ID;	//前置编号
 	TThostFtdcSessionIDType	SESSION_ID;	//会话编号
 	int m_maxOrderRef;					//报单引用
+	boost::gregorian::date m_tradingDay;
 
 	CSyncRequestFactory<entity::Quote> m_requestFactory;
 	CTradeMessagePump m_messagePump;

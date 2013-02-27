@@ -39,7 +39,7 @@ public:
 
 	boost::tuple<bool, string> PlaceOrder( const string& symbol, 
 										   trade::TradeDirectionType direction, 
-										   trade::OffsetFlagType offsetFlag, 
+										   const string& openDate, 
 										   PlaceOrderContext* placeOrderCtx);
 	bool QuerySymbol( const std::string& symbol, entity::Quote** ppQuote );
 
@@ -108,7 +108,7 @@ private:
 	static void PrintOrderStatus(trade::Order* order);
 	static bool GetOrderEvent(trade::Order* order, COrderEvent** ppOrderEvt);
 	
-	trade::InputOrder* BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
+	trade::InputOrder* BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx);
 	void AddOpenTimes() { ++m_totalOpenTimes; }
 	void AddCancelTimes() { ++m_totalCancelTimes; }
 

@@ -1,43 +1,48 @@
 #include "StdAfx.h"
 #include "SymbolInfoRepositry.h"
 
+const char EX_SHFE[] = "SHFE";
+const char EX_DCE[] = "DCE";
+const char EX_CZCE[] = "CZCE";
+const char EX_FFEX[] = "FFEX";
+
 
 CSymbolInfoRepositry::CSymbolInfoRepositry(void)
 {
-	m_prodExchMap.insert(make_pair("rb", "SHFE"));
-	m_prodExchMap.insert(make_pair("wr", "SHFE"));
-	m_prodExchMap.insert(make_pair("cu", "SHFE"));
-	m_prodExchMap.insert(make_pair("al", "SHFE"));
-	m_prodExchMap.insert(make_pair("ru", "SHFE"));
-	m_prodExchMap.insert(make_pair("fu", "SHFE"));
-	m_prodExchMap.insert(make_pair("zn", "SHFE"));
-	m_prodExchMap.insert(make_pair("au", "SHFE"));
-	m_prodExchMap.insert(make_pair("pb", "SHFE"));
-	m_prodExchMap.insert(make_pair("ag", "SHFE"));
+	m_prodExchMap.insert(make_pair("rb", EX_SHFE));
+	m_prodExchMap.insert(make_pair("wr", EX_SHFE));
+	m_prodExchMap.insert(make_pair("cu", EX_SHFE));
+	m_prodExchMap.insert(make_pair("al", EX_SHFE));
+	m_prodExchMap.insert(make_pair("ru", EX_SHFE));
+	m_prodExchMap.insert(make_pair("fu", EX_SHFE));
+	m_prodExchMap.insert(make_pair("zn", EX_SHFE));
+	m_prodExchMap.insert(make_pair("au", EX_SHFE));
+	m_prodExchMap.insert(make_pair("pb", EX_SHFE));
+	m_prodExchMap.insert(make_pair("ag", EX_SHFE));
 
-	m_prodExchMap.insert(make_pair("m", "DCE"));
-	m_prodExchMap.insert(make_pair("a", "DCE"));
-	m_prodExchMap.insert(make_pair("c", "DCE"));
-	m_prodExchMap.insert(make_pair("b", "DCE"));
-	m_prodExchMap.insert(make_pair("y", "DCE"));
-	m_prodExchMap.insert(make_pair("l", "DCE"));
-	m_prodExchMap.insert(make_pair("p", "DCE"));
-	m_prodExchMap.insert(make_pair("v", "DCE"));
-	m_prodExchMap.insert(make_pair("j", "DCE"));
+	m_prodExchMap.insert(make_pair("m", EX_DCE));
+	m_prodExchMap.insert(make_pair("a", EX_DCE));
+	m_prodExchMap.insert(make_pair("c", EX_DCE));
+	m_prodExchMap.insert(make_pair("b", EX_DCE));
+	m_prodExchMap.insert(make_pair("y", EX_DCE));
+	m_prodExchMap.insert(make_pair("l", EX_DCE));
+	m_prodExchMap.insert(make_pair("p", EX_DCE));
+	m_prodExchMap.insert(make_pair("v", EX_DCE));
+	m_prodExchMap.insert(make_pair("j", EX_DCE));
 
-	m_prodExchMap.insert(make_pair("wt", "CZCE"));
-	m_prodExchMap.insert(make_pair("ws", "CZCE"));
-	m_prodExchMap.insert(make_pair("cf", "CZCE"));
-	m_prodExchMap.insert(make_pair("sr", "CZCE"));
-	m_prodExchMap.insert(make_pair("ta", "CZCE"));
-	m_prodExchMap.insert(make_pair("ro", "CZCE"));
-	m_prodExchMap.insert(make_pair("er", "CZCE"));
-	m_prodExchMap.insert(make_pair("me", "CZCE"));
-	m_prodExchMap.insert(make_pair("fg", "CZCE"));
-	m_prodExchMap.insert(make_pair("rm", "CZCE"));
-	m_prodExchMap.insert(make_pair("rs", "CZCE"));
+	m_prodExchMap.insert(make_pair("WT", EX_CZCE));
+	m_prodExchMap.insert(make_pair("WS", EX_CZCE));
+	m_prodExchMap.insert(make_pair("CF", EX_CZCE));
+	m_prodExchMap.insert(make_pair("SR", EX_CZCE));
+	m_prodExchMap.insert(make_pair("TA", EX_CZCE));
+	m_prodExchMap.insert(make_pair("RO", EX_CZCE));
+	m_prodExchMap.insert(make_pair("ER", EX_CZCE));
+	m_prodExchMap.insert(make_pair("ME", EX_CZCE));
+	m_prodExchMap.insert(make_pair("FG", EX_CZCE));
+	m_prodExchMap.insert(make_pair("RM", EX_CZCE));
+	m_prodExchMap.insert(make_pair("RS", EX_CZCE));
 
-	m_prodExchMap.insert(make_pair("if", "FFEX"));
+	m_prodExchMap.insert(make_pair("IF", EX_FFEX));
 }
 
 CSymbolInfoRepositry::~CSymbolInfoRepositry(void)
@@ -76,4 +81,19 @@ int CSymbolInfoRepositry::GetProductId( const string& symbol, string& prodId )
 
 	prodId = symbol.substr(0, nonNumberPos);
 	return nonNumberPos;
+}
+
+string CSymbolInfoRepositry::GetExchangeId( const string& instrument )
+{
+	string prodId;
+	int prodLen = GetProductId(instrument, prodId);
+	if(prodLen > 0)
+	{
+		map<string, string>::iterator iterExch = m_prodExchMap.find(prodId);
+		if(iterExch != m_prodExchMap.end())
+		{
+			return iterExch->second;
+		}
+	}
+	return "";
 }

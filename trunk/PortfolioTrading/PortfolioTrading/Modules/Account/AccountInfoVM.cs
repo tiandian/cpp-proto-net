@@ -209,6 +209,8 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnQueryPosition()
         {
+            if (!CurrentAccount.IsConnected) return;
+
             EventAggregator.GetEvent<QueryPositionEvent>().Publish(CurrentAccount);
         }
 

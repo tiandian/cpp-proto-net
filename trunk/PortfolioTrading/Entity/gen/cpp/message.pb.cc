@@ -505,7 +505,7 @@ void protobuf_AssignDesc_message_2eproto() {
   static const int ManualCloseOrderParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, direction_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, offsetflag_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, opendate_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, quantity_),
   };
   ManualCloseOrderParam_reflection_ =
@@ -732,17 +732,16 @@ void protobuf_AddDesc_message_2eproto() {
     "LegSymbol\030\002 \002(\t\"j\n\020CancelOrderParam\022\020\n\010O"
     "rderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n\010Ord"
     "SysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 "
-    "\002(\t\"\222\001\n\025ManualCloseOrderParam\022\016\n\006Symbol\030"
-    "\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trade.TradeDi"
-    "rectionType\022)\n\nOffsetFlag\030\003 \002(\0162\025.trade."
-    "OffsetFlagType\022\020\n\010Quantity\030\004 \002(\005\"\212\001\n\nSym"
-    "bolInfo\022\022\n\nInstrument\030\001 \002(\t\022\022\n\nExchangeI"
-    "D\030\002 \002(\t\022\026\n\016ExchangeInstID\030\003 \002(\t\022\021\n\tProdu"
-    "ctID\030\004 \002(\t\022\026\n\016VolumeMultiple\030\005 \002(\005\022\021\n\tPr"
-    "iceTick\030\006 \002(\001*o\n\020DirectionDepends\022\017\n\013IGN"
-    "ORE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_"
-    "SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CH"
-    "ANGE\020\004", 3126);
+    "\002(\t\"y\n\025ManualCloseOrderParam\022\016\n\006Symbol\030\001"
+    " \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trade.TradeDir"
+    "ectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020\n\010Quantity"
+    "\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstrument\030\001 \002("
+    "\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016ExchangeInstID\030"
+    "\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016VolumeMultip"
+    "le\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*o\n\020Direction"
+    "Depends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SIZ"
+    "E\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020"
+    "\003\022\021\n\rON_BIG_CHANGE\020\004", 3100);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   StringParam::default_instance_ = new StringParam();
@@ -8791,7 +8790,7 @@ void CancelOrderParam::Swap(CancelOrderParam* other) {
 #ifndef _MSC_VER
 const int ManualCloseOrderParam::kSymbolFieldNumber;
 const int ManualCloseOrderParam::kDirectionFieldNumber;
-const int ManualCloseOrderParam::kOffsetFlagFieldNumber;
+const int ManualCloseOrderParam::kOpenDateFieldNumber;
 const int ManualCloseOrderParam::kQuantityFieldNumber;
 #endif  // !_MSC_VER
 
@@ -8813,7 +8812,7 @@ void ManualCloseOrderParam::SharedCtor() {
   _cached_size_ = 0;
   symbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   direction_ = 48;
-  offsetflag_ = 48;
+  opendate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   quantity_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -8825,6 +8824,9 @@ ManualCloseOrderParam::~ManualCloseOrderParam() {
 void ManualCloseOrderParam::SharedDtor() {
   if (symbol_ != &::google::protobuf::internal::kEmptyString) {
     delete symbol_;
+  }
+  if (opendate_ != &::google::protobuf::internal::kEmptyString) {
+    delete opendate_;
   }
   if (this != default_instance_) {
   }
@@ -8858,7 +8860,11 @@ void ManualCloseOrderParam::Clear() {
       }
     }
     direction_ = 48;
-    offsetflag_ = 48;
+    if (has_opendate()) {
+      if (opendate_ != &::google::protobuf::internal::kEmptyString) {
+        opendate_->clear();
+      }
+    }
     quantity_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -8904,24 +8910,20 @@ bool ManualCloseOrderParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_OffsetFlag;
+        if (input->ExpectTag(26)) goto parse_OpenDate;
         break;
       }
       
-      // required .trade.OffsetFlagType OffsetFlag = 3;
+      // required string OpenDate = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_OffsetFlag:
-          int value;
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
-                 input, &value)));
-          if (trade::OffsetFlagType_IsValid(value)) {
-            set_offsetflag(static_cast< trade::OffsetFlagType >(value));
-          } else {
-            mutable_unknown_fields()->AddVarint(3, value);
-          }
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_OpenDate:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_opendate()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->opendate().data(), this->opendate().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -8978,10 +8980,13 @@ void ManualCloseOrderParam::SerializeWithCachedSizes(
       2, this->direction(), output);
   }
   
-  // required .trade.OffsetFlagType OffsetFlag = 3;
-  if (has_offsetflag()) {
-    ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      3, this->offsetflag(), output);
+  // required string OpenDate = 3;
+  if (has_opendate()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->opendate().data(), this->opendate().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->opendate(), output);
   }
   
   // required int32 Quantity = 4;
@@ -9013,10 +9018,14 @@ void ManualCloseOrderParam::SerializeWithCachedSizes(
       2, this->direction(), target);
   }
   
-  // required .trade.OffsetFlagType OffsetFlag = 3;
-  if (has_offsetflag()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      3, this->offsetflag(), target);
+  // required string OpenDate = 3;
+  if (has_opendate()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->opendate().data(), this->opendate().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->opendate(), target);
   }
   
   // required int32 Quantity = 4;
@@ -9048,10 +9057,11 @@ int ManualCloseOrderParam::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->direction());
     }
     
-    // required .trade.OffsetFlagType OffsetFlag = 3;
-    if (has_offsetflag()) {
+    // required string OpenDate = 3;
+    if (has_opendate()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::EnumSize(this->offsetflag());
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->opendate());
     }
     
     // required int32 Quantity = 4;
@@ -9094,8 +9104,8 @@ void ManualCloseOrderParam::MergeFrom(const ManualCloseOrderParam& from) {
     if (from.has_direction()) {
       set_direction(from.direction());
     }
-    if (from.has_offsetflag()) {
-      set_offsetflag(from.offsetflag());
+    if (from.has_opendate()) {
+      set_opendate(from.opendate());
     }
     if (from.has_quantity()) {
       set_quantity(from.quantity());
@@ -9126,7 +9136,7 @@ void ManualCloseOrderParam::Swap(ManualCloseOrderParam* other) {
   if (other != this) {
     std::swap(symbol_, other->symbol_);
     std::swap(direction_, other->direction_);
-    std::swap(offsetflag_, other->offsetflag_);
+    std::swap(opendate_, other->opendate_);
     std::swap(quantity_, other->quantity_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

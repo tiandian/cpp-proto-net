@@ -4,8 +4,17 @@
 #include "orderhelper.h"
 #include "TradeAgent.h"
 #include "charsetconvert.h"
+#include "SymbolInfoRepositry.h"
 
 #include <boost/format.hpp>
+#include <boost/date_time.hpp>
+
+extern CSymbolInfoRepositry symbolInfoRepo;
+
+const char EX_SHFE[] = "SHFE";
+const char EX_DCE[] = "DCE";
+const char EX_CZCE[] = "CZCE";
+const char EX_FFEX[] = "FFEX";
 
 const char* TRADE_DIRECTION[] = {"Buy", "Sell"};
 
@@ -320,7 +329,20 @@ void COrderProcessor2::QueryPositionDetails( const string& symbol )
 	m_pTradeAgent->QueryPositionDetails(symbol);
 }
 
-trade::InputOrder* COrderProcessor2::BuildCloseOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
+trade::OffsetFlagType GetTradeOffset(const string& exchId, boost::gregorian::date openDate, boost::gregorian::date tradingDay)
+{
+	if(exchId == EX_SHFE)
+	{
+		if(openDate < tradingDay)
+			return trade::OF_CLOSE_YESTERDAY;
+		else
+			return trade::OF_CLOSE_TODAY;
+	}
+	else
+		return trade::OF_CLOSE;
+}
+
+trade::InputOrder* COrderProcessor2::BuildCloseOrder( const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx )
 {
 	entity::Quote* pQuote = NULL;
 	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
@@ -330,6 +352,10 @@ trade::InputOrder* COrderProcessor2::BuildCloseOrder( const string& symbol, trad
 			% symbol.c_str() % pQuote->last()));
 
 		double limitPrice = direction == trade::SELL ? pQuote->bid(): pQuote->ask();
+
+		boost::gregorian::date openDt = boost::gregorian::from_undelimited_string(openDate);
+		string exchId = symbolInfoRepo.GetExchangeId(symbol);
+		trade::OffsetFlagType offsetFlag = GetTradeOffset(exchId, openDt, m_pTradeAgent->TradingDay());
 
 		trade::InputOrder* closeOrder(
 			BuildSingleOrder(symbol, limitPrice, direction, offsetFlag, placeOrderCtx));
@@ -345,9 +371,9 @@ trade::InputOrder* COrderProcessor2::BuildCloseOrder( const string& symbol, trad
 	return NULL;
 }
 
-boost::tuple<bool, string> COrderProcessor2::PlaceOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx )
+boost::tuple<bool, string> COrderProcessor2::PlaceOrder( const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx )
 {
-	boost::shared_ptr<trade::InputOrder> pInputOrder(BuildCloseOrder(symbol, direction, offsetFlag, placeOrderCtx));
+	boost::shared_ptr<trade::InputOrder> pInputOrder(BuildCloseOrder(symbol, direction, openDate, placeOrderCtx));
 	if(pInputOrder.get() == NULL)
 		return boost::make_tuple(false, string("Failed to build close order"));
 

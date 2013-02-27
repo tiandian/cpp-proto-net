@@ -180,7 +180,12 @@ namespace op2
 	class RejectEvent: public CSgOrderEvent
 	{
 	public:
-		RejectEvent(trade::Order* rtnOrder) : CSgOrderEvent(ORDER_EVENT_REJECTED, rtnOrder){}
+		RejectEvent(trade::Order* rtnOrder) : CSgOrderEvent(ORDER_EVENT_REJECTED, rtnOrder),
+		m_errMsg(rtnOrder->statusmsg()){}
+
+		virtual const string& StatusMsg(){ return m_errMsg; }
+	private:
+		string m_errMsg;
 	};
 
 	class PendingEvent : public CSgOrderEvent

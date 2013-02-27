@@ -17,6 +17,7 @@ public:
 	~CSymbolInfoRepositry(void);
 
 	CSymbolInfo* Get(const char* instrument);
+	string GetExchangeId(const string& instrument);
 
 private:
 	int GetProductId(const string& symbol, string& prodId);
