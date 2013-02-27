@@ -233,12 +233,12 @@ namespace PortfolioTrading.Infrastructure
         }
 
         public OperationResult ManualCloseOrder(string symbol, trade.TradeDirectionType direction,
-            trade.OffsetFlagType offsetFlag, int quantity)
+            DateTime openDate, int quantity)
         {
             entity.ManualCloseOrderParam closeOrdParam = new entity.ManualCloseOrderParam();
             closeOrdParam.Symbol = symbol;
             closeOrdParam.Direction = direction;
-            closeOrdParam.OffsetFlag = offsetFlag;
+            closeOrdParam.OpenDate = openDate.ToString("yyyyMMdd");
             closeOrdParam.Quantity = quantity;
 
             byte[] param_data = DataTranslater.Serialize(closeOrdParam);

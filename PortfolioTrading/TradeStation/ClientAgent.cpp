@@ -370,7 +370,7 @@ void CClientAgent::QueryPositionDetails( const string& symbol )
 	m_orderProcessor.QueryPositionDetails(symbol);
 }
 
-boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, int quantity )
+boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol, trade::TradeDirectionType direction, const string& openDate, int quantity )
 {
 	PlaceOrderContext placeOrderCtx;
 	placeOrderCtx.quantity = quantity;
@@ -379,7 +379,7 @@ boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol,
 	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
 	placeOrderCtx.limitPriceType = entity::Opposite;
 
-	return m_orderProcessor.PlaceOrder(symbol, direction, offsetFlag, &placeOrderCtx);
+	return m_orderProcessor.PlaceOrder(symbol, direction, openDate, &placeOrderCtx);
 }
 
 void CClientAgent::VirtualOpenPosition( const string& pid, int quantity )

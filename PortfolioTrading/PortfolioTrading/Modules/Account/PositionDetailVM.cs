@@ -78,7 +78,7 @@ namespace PortfolioTrading.Modules.Account
                         positionItem.IsClosing = true;
 
                         _acctVm.ManualCloseOrder(positionItem.Symbol, positionItem.CloseDirection,
-                            positionItem.OffsetFlag, positionItem.Volume, 
+                            positionItem.OpenDate, positionItem.Volume, 
                             (b, err) =>
                             {
                                 syncCtx.Send(o =>
@@ -146,8 +146,8 @@ namespace PortfolioTrading.Modules.Account
 
                 posiItem.CloseDirection = posiDetail.Direction == trade.TradeDirectionType.BUY ? 
                     trade.TradeDirectionType.SELL : trade.TradeDirectionType.BUY;
-                posiItem.OffsetFlag = GetOffsetFlag(posiItem.Symbol, posiItem.OpenDate, posiItem.TradingDay);
-
+                //posiItem.OffsetFlag = GetOffsetFlag(posiItem.Symbol, posiItem.OpenDate, posiItem.TradingDay);
+                
                 _positionDetailItems.Add(posiItem);
 
                 UpdateTime = DateTime.Now;

@@ -259,12 +259,12 @@ namespace PortfolioTrading.Modules.Account
         }
 
         public void ManualCloseOrder(string symbol, trade.TradeDirectionType direction,
-            trade.OffsetFlagType offsetFlag, int quantity, Action<bool, string> closeDoneHandler)
+            DateTime openDate, int quantity, Action<bool, string> closeDoneHandler)
         {
-            Func<string, trade.TradeDirectionType, trade.OffsetFlagType, int, OperationResult> closeFunc = 
-                new Func<string, trade.TradeDirectionType, trade.OffsetFlagType, int, OperationResult>
+            Func<string, trade.TradeDirectionType, DateTime, int, OperationResult> closeFunc =
+                new Func<string, trade.TradeDirectionType, DateTime, int, OperationResult>
                     (_client.ManualCloseOrder);
-            closeFunc.BeginInvoke(symbol, direction, offsetFlag, quantity, 
+            closeFunc.BeginInvoke(symbol, direction, openDate, quantity, 
                 delegate(IAsyncResult ar)
                 {
                     try

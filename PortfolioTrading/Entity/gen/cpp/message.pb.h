@@ -2805,12 +2805,16 @@ class ManualCloseOrderParam : public ::google::protobuf::Message {
   inline trade::TradeDirectionType direction() const;
   inline void set_direction(trade::TradeDirectionType value);
   
-  // required .trade.OffsetFlagType OffsetFlag = 3;
-  inline bool has_offsetflag() const;
-  inline void clear_offsetflag();
-  static const int kOffsetFlagFieldNumber = 3;
-  inline trade::OffsetFlagType offsetflag() const;
-  inline void set_offsetflag(trade::OffsetFlagType value);
+  // required string OpenDate = 3;
+  inline bool has_opendate() const;
+  inline void clear_opendate();
+  static const int kOpenDateFieldNumber = 3;
+  inline const ::std::string& opendate() const;
+  inline void set_opendate(const ::std::string& value);
+  inline void set_opendate(const char* value);
+  inline void set_opendate(const char* value, size_t size);
+  inline ::std::string* mutable_opendate();
+  inline ::std::string* release_opendate();
   
   // required int32 Quantity = 4;
   inline bool has_quantity() const;
@@ -2825,16 +2829,16 @@ class ManualCloseOrderParam : public ::google::protobuf::Message {
   inline void clear_has_symbol();
   inline void set_has_direction();
   inline void clear_has_direction();
-  inline void set_has_offsetflag();
-  inline void clear_has_offsetflag();
+  inline void set_has_opendate();
+  inline void clear_has_opendate();
   inline void set_has_quantity();
   inline void clear_has_quantity();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* symbol_;
+  ::std::string* opendate_;
   int direction_;
-  int offsetflag_;
   ::google::protobuf::int32 quantity_;
   
   mutable int _cached_size_;
@@ -6358,27 +6362,62 @@ inline void ManualCloseOrderParam::set_direction(trade::TradeDirectionType value
   direction_ = value;
 }
 
-// required .trade.OffsetFlagType OffsetFlag = 3;
-inline bool ManualCloseOrderParam::has_offsetflag() const {
+// required string OpenDate = 3;
+inline bool ManualCloseOrderParam::has_opendate() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void ManualCloseOrderParam::set_has_offsetflag() {
+inline void ManualCloseOrderParam::set_has_opendate() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void ManualCloseOrderParam::clear_has_offsetflag() {
+inline void ManualCloseOrderParam::clear_has_opendate() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void ManualCloseOrderParam::clear_offsetflag() {
-  offsetflag_ = 48;
-  clear_has_offsetflag();
+inline void ManualCloseOrderParam::clear_opendate() {
+  if (opendate_ != &::google::protobuf::internal::kEmptyString) {
+    opendate_->clear();
+  }
+  clear_has_opendate();
 }
-inline trade::OffsetFlagType ManualCloseOrderParam::offsetflag() const {
-  return static_cast< trade::OffsetFlagType >(offsetflag_);
+inline const ::std::string& ManualCloseOrderParam::opendate() const {
+  return *opendate_;
 }
-inline void ManualCloseOrderParam::set_offsetflag(trade::OffsetFlagType value) {
-  GOOGLE_DCHECK(trade::OffsetFlagType_IsValid(value));
-  set_has_offsetflag();
-  offsetflag_ = value;
+inline void ManualCloseOrderParam::set_opendate(const ::std::string& value) {
+  set_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    opendate_ = new ::std::string;
+  }
+  opendate_->assign(value);
+}
+inline void ManualCloseOrderParam::set_opendate(const char* value) {
+  set_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    opendate_ = new ::std::string;
+  }
+  opendate_->assign(value);
+}
+inline void ManualCloseOrderParam::set_opendate(const char* value, size_t size) {
+  set_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    opendate_ = new ::std::string;
+  }
+  opendate_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ManualCloseOrderParam::mutable_opendate() {
+  set_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    opendate_ = new ::std::string;
+  }
+  return opendate_;
+}
+inline ::std::string* ManualCloseOrderParam::release_opendate() {
+  clear_has_opendate();
+  if (opendate_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = opendate_;
+    opendate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
 // required int32 Quantity = 4;

@@ -132,9 +132,13 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 					// real submit order and unlock to allow next order ref generation
 					bool succ = m_pOrderProcessor->SubmitAndUnlock(m_pInputOrder.get());
 
-					CLeg* pLeg = m_pPortf->GetLeg(Symbol());
-					_ASSERT(pLeg != NULL);
-					m_quoteTimestamp = pLeg->GetTimestamp();
+					if(m_pPortf != NULL)
+					{
+						CLeg* pLeg = m_pPortf->GetLeg(Symbol());
+						_ASSERT(pLeg != NULL);
+						if(pLeg != NULL)
+							m_quoteTimestamp = pLeg->GetTimestamp();
+					}
 
 					++m_submitTimes;
 				}

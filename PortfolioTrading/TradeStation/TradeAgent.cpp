@@ -302,6 +302,9 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		SESSION_ID = pRspUserLogin->SessionID;
 		m_maxOrderRef = atoi(pRspUserLogin->MaxOrderRef);
 
+		std::string ds(pRspUserLogin->TradingDay);
+		m_tradingDay = boost::gregorian::from_undelimited_string(ds);
+
 		ostringstream ss;
 		ss << "Trading day: " << pRspUserLogin->TradingDay << endl;
 		ss << "Login Time: " << pRspUserLogin->LoginTime << endl;
