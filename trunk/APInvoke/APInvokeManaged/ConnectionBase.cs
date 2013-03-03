@@ -304,7 +304,8 @@ namespace APInvokeManaged
                 _status = Status.Closed;
             };
             _status = Status.Closing;
-            _tcpClient.BeginDisconnect(false, new AsyncCallback(disconnectDoneAction), null);
+            if(_tcpClient.Connected)
+                _tcpClient.BeginDisconnect(false, new AsyncCallback(disconnectDoneAction), null);
         }
     }
 }

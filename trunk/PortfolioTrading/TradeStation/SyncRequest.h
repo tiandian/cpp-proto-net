@@ -11,7 +11,7 @@ template<typename T>
 class CSyncRequest
 {
 public:
-	CSyncRequest(int nRequestId, int timeout = 50):
+	CSyncRequest(int nRequestId, int timeout = 5):
 		  m_nRequestId(nRequestId), m_invokeSucc(false), m_timeoutSec(timeout) {}
 
 	~CSyncRequest(void){}

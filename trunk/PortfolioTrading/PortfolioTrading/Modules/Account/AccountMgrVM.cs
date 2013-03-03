@@ -162,8 +162,11 @@ namespace PortfolioTrading.Modules.Account
         public void Persist()
         {
             XElement acctsElem = new XElement("accounts");
-            acctsElem.Add(new XAttribute("marketData", ServerAddrRepoVM.EffectiveMarket.Name));
-            acctsElem.Add(new XAttribute("trading", ServerAddrRepoVM.EffectiveTrading.Name));
+            if (ServerAddrRepoVM.EffectiveMarket != null)
+            {
+                acctsElem.Add(new XAttribute("marketData", ServerAddrRepoVM.EffectiveMarket.Name));
+                acctsElem.Add(new XAttribute("trading", ServerAddrRepoVM.EffectiveTrading.Name));
+            }
 
             foreach (var acct in _accounts)
             {

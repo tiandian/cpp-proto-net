@@ -906,12 +906,12 @@ namespace entity
       get { return _Direction; }
       set { _Direction = value; }
     }
-    private trade.OffsetFlagType _OffsetFlag;
-    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"OffsetFlag", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
-    public trade.OffsetFlagType OffsetFlag
+    private string _OpenDate;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"OpenDate", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string OpenDate
     {
-      get { return _OffsetFlag; }
-      set { _OffsetFlag = value; }
+      get { return _OpenDate; }
+      set { _OpenDate = value; }
     }
     private int _Quantity;
     [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"Quantity", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]

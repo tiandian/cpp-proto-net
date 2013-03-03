@@ -208,7 +208,9 @@ namespace PortfolioTrading.Modules.Account
         {
             lock (_acctPortfolios)
             {
-                _acctPortfolios.Remove(portfVm);
+                int idx = _acctPortfolios.IndexOf(portfVm);
+                if(idx >= 0 && idx < _acctPortfolios.Count)
+                    _acctPortfolios.RemoveAt(idx);
             }
         }
 
@@ -364,11 +366,40 @@ namespace PortfolioTrading.Modules.Account
             get { return _status == "已连接"; }
         }
 
+        #region IsBusy
+        private bool _isBusy = false;
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                if (_isBusy != value)
+                {
+                    _isBusy = value;
+                    RaisePropertyChanged("IsBusy");
+                }
+            }
+        }
+        #endregion
+
+
+        #region IsExpanded
+        private bool _isExpanded;
+
         public bool IsExpanded
         {
-            get { return true; }
-            set { }
+            get { return _isExpanded; }
+            set
+            {
+                if (_isExpanded != value)
+                {
+                    _isExpanded = value;
+                    RaisePropertyChanged("IsExpanded");
+                }
+            }
         }
+        #endregion
 
         public void Close()
         {
@@ -379,9 +410,15 @@ namespace PortfolioTrading.Modules.Account
 
         private int _connectTimes;
 
+        void ChangeStatus(string statusTxt, bool begin)
+        {
+            Status = statusTxt;
+            IsBusy = begin ? true : false;
+        }
+
         private void OnConnectHost(AccountVM acct)
         {
-            Status = "连接中...";
+            ChangeStatus("连接中...", true);
 
             SynchronizationContext uiContext = SynchronizationContext.Current;
 
@@ -424,7 +461,7 @@ namespace PortfolioTrading.Modules.Account
                         {
                             if (attach)
                             {
-                                uiContext.Send(o => Status = "已连接", null);
+                                uiContext.Send(o => ChangeStatus("已连接", false), null);
                                 EventLogger.Write("恢复连接到交易终端");
                             }
                             else
@@ -440,13 +477,13 @@ namespace PortfolioTrading.Modules.Account
                                                 bool ok = actionReady.EndInvoke(ar);
                                                 if (ok)
                                                 {
-                                                    uiContext.Send(o => Status = "已连接", null);
+                                                    uiContext.Send(o => ChangeStatus("已连接", false), null);
                                                     EventLogger.Write(string.Format("{0}准备就绪", acct.InvestorId));
                                                     SyncToHost();
                                                 }
                                                 else
                                                 {
-                                                    uiContext.Send(o => Status = "连接失败", null);
+                                                    uiContext.Send(o => ChangeStatus("连接失败", false), null);
                                                     EventLogger.Write(string.Format("{0}发生错误", acct.InvestorId));
                                                     _client.Disconnect();
                                                     _host.Exit();
@@ -471,12 +508,22 @@ namespace PortfolioTrading.Modules.Account
                                 _connectTimes < MaxRetryConnectTimes && 
                                 actionLoopConnect != null)
                                 actionLoopConnect.Invoke(++_connectTimes);
+                            else
+                            {
+                                uiContext.Send(o => ChangeStatus("连接失败", false), null);
+                                EventLogger.Write(string.Format("为{0}尝试{1}次连接均发生错误"
+                                    , acct.InvestorId, MaxRetryConnectTimes));
+                                _client.Disconnect();
+                            }
+
                         }
                     };
 
                     actionLoopConnect = new Action<int>(delegate(int times)
                     {
-                        Thread.Sleep(3000);
+                        if(times > 1)
+                            Thread.Sleep(1000);
+
                         string host = NativeHost.GetLocalIP();
                         LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
                         _client.AuthClientId = this.Id;

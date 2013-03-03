@@ -24,14 +24,15 @@ namespace PortfolioTrading
 #endif
         }
 
-        private static void RunInDebugMode()
+        private void RunInDebugMode()
         {
             PtBootstrapper bootstrapper = new PtBootstrapper();
             bootstrapper.Run();
         }
 
-        private static void RunInReleaseMode()
+        private void RunInReleaseMode()
         {
+            this.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(App_DispatcherUnhandledException);
             AppDomain.CurrentDomain.UnhandledException += AppDomainUnhandledException;
             try
             {
@@ -44,19 +45,28 @@ namespace PortfolioTrading
             }
         }
 
-        private static void AppDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            HandleException(e.ExceptionObject as Exception);
+            e.Handled = true;
+            HandleException(e.Exception);
         }
 
-        private static void HandleException(Exception ex)
+        private static void AppDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            HandleException(e.ExceptionObject as Exception, e.IsTerminating);
+        }
+
+        private static void HandleException(Exception ex, bool isFatal = false)
         {
             if (ex == null)
                 return;
 
-            LogManager.Logger.Fatal(ex);
-            MessageBox.Show(ex.Message, "Unhandled Exception", MessageBoxButton.OK, MessageBoxImage.Stop);
-            Environment.Exit(1);
+            if (isFatal)
+                LogManager.Logger.Fatal(ex);
+            else
+                LogManager.Logger.Error(ex);
+
+            MessageBox.Show(ex.Message, "程序出现异常", MessageBoxButton.OK, MessageBoxImage.Stop);
         }
     }
 }

@@ -334,7 +334,7 @@ trade::OffsetFlagType GetTradeOffset(const string& exchId, boost::gregorian::dat
 	if(exchId == EX_SHFE)
 	{
 		if(openDate < tradingDay)
-			return trade::OF_CLOSE_YESTERDAY;
+			return trade::OF_CLOSE;
 		else
 			return trade::OF_CLOSE_TODAY;
 	}

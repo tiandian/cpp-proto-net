@@ -30,8 +30,26 @@ namespace PortfolioTrading.Modules.Account
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            _viewModel.To(Portfolio);
-            DialogResult = true;
+            this._viewModel.IsBusy = true;
+            Action<PortfolioVM> toPortfolioAction = _viewModel.To;
+            toPortfolioAction.BeginInvoke(Portfolio, new AsyncCallback(
+                delegate(IAsyncResult ar)
+                {
+                    try
+                    {
+                        toPortfolioAction.EndInvoke(ar);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogManager.Logger.ErrorFormat("Error Creating PortfolioVM due to {0}", ex);
+                    }
+
+                    this.Dispatcher.BeginInvoke(new Action(delegate
+                    {
+                        this._viewModel.IsBusy = false;
+                        this.DialogResult = true;
+                    }));
+                }), null);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -409,6 +427,23 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _preferLeg2 = value;
                     RaisePropertyChanged("PreferLeg2");
+                }
+            }
+        }
+        #endregion
+
+        #region IsBusy
+        private bool _isBusy;
+
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                if (_isBusy != value)
+                {
+                    _isBusy = value;
+                    RaisePropertyChanged("IsBusy");
                 }
             }
         }
