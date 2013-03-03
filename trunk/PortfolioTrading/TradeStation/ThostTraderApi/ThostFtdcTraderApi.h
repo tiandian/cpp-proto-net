@@ -45,6 +45,9 @@ public:
 	///@param nTimeLapse 距离上次接收报文的时间
 	virtual void OnHeartBeatWarning(int nTimeLapse){};
 	
+	///客户端认证响应
+	virtual void OnRspAuthenticate(CThostFtdcRspAuthenticateField *pRspAuthenticateField, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+	
 
 	///登录请求响应
 	virtual void OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
@@ -141,6 +144,9 @@ public:
 
 	///请求查询转帐流水响应
 	virtual void OnRspQryTransferSerial(CThostFtdcTransferSerialField *pTransferSerial, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+
+	///请求查询银期签约关系响应
+	virtual void OnRspQryAccountregister(CThostFtdcAccountregisterField *pAccountregister, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
 
 	///错误应答
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
@@ -240,6 +246,15 @@ public:
 
 	///期货发起查询银行余额应答
 	virtual void OnRspQueryBankAccountMoneyByFuture(CThostFtdcReqQueryAccountField *pReqQueryAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast) {};
+
+	///银行发起银期开户通知
+	virtual void OnRtnOpenAccountByBank(CThostFtdcOpenAccountField *pOpenAccount) {};
+
+	///银行发起银期销户通知
+	virtual void OnRtnCancelAccountByBank(CThostFtdcCancelAccountField *pCancelAccount) {};
+
+	///银行发起变更银行账号通知
+	virtual void OnRtnChangeAccountByBank(CThostFtdcChangeAccountField *pChangeAccount) {};
 };
 
 class TRADER_API_EXPORT CThostFtdcTraderApi
@@ -274,6 +289,13 @@ public:
 	///@remark “tcp”代表传输协议，“127.0.0.1”代表服务器地址。”17001”代表服务器端口号。
 	virtual void RegisterFront(char *pszFrontAddress) = 0;
 	
+	///注册名字服务器网络地址
+	///@param pszNsAddress：名字服务器网络地址。
+	///@remark 网络地址的格式为：“protocol://ipaddress:port”，如：”tcp://127.0.0.1:12001”。 
+	///@remark “tcp”代表传输协议，“127.0.0.1”代表服务器地址。”12001”代表服务器端口号。
+	///@remark RegisterNameServer优先于RegisterFront
+	virtual void RegisterNameServer(char *pszNsAddress) = 0;
+	
 	///注册回调接口
 	///@param pSpi 派生自回调接口类的实例
 	virtual void RegisterSpi(CThostFtdcTraderSpi *pSpi) = 0;
@@ -293,6 +315,9 @@ public:
 	///        THOST_TERT_QUICK:只传送登录后公共流的内容
 	///@remark 该方法要在Init方法前调用。若不调用则不会收到公共流的数据。
 	virtual void SubscribePublicTopic(THOST_TE_RESUME_TYPE nResumeType) = 0;
+
+	///客户端认证请求
+	virtual int ReqAuthenticate(CThostFtdcReqAuthenticateField *pReqAuthenticateField, int nRequestID) = 0;
 
 	///用户登录请求
 	virtual int ReqUserLogin(CThostFtdcReqUserLoginField *pReqUserLoginField, int nRequestID) = 0;
@@ -390,6 +415,9 @@ public:
 
 	///请求查询转帐流水
 	virtual int ReqQryTransferSerial(CThostFtdcQryTransferSerialField *pQryTransferSerial, int nRequestID) = 0;
+
+	///请求查询银期签约关系
+	virtual int ReqQryAccountregister(CThostFtdcQryAccountregisterField *pQryAccountregister, int nRequestID) = 0;
 
 	///请求查询签约银行
 	virtual int ReqQryContractBank(CThostFtdcQryContractBankField *pQryContractBank, int nRequestID) = 0;

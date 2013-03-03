@@ -10,6 +10,7 @@ message ConnectAck
 {
 	required bool	success = 1;
 	required string session = 2;
+	required bool   attach_existing = 3;
 }
 
 message Request

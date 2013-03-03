@@ -53,6 +53,13 @@ namespace AP
       get { return _session; }
       set { _session = value; }
     }
+    private bool _attach_existing;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"attach_existing", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool attach_existing
+    {
+      get { return _attach_existing; }
+      set { _attach_existing = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -108,6 +115,20 @@ namespace AP
       get { return _return_data; }
       set { _return_data = value; }
     }
+    private bool _invoke;
+    [global::ProtoBuf.ProtoMember(3, IsRequired = true, Name=@"invoke", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool invoke
+    {
+      get { return _invoke; }
+      set { _invoke = value; }
+    }
+    private string _error;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"error", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string error
+    {
+      get { return _error; }
+      set { _error = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -162,6 +183,20 @@ namespace AP
     {
       get { return _return_data; }
       set { _return_data = value; }
+    }
+    private bool _invoke;
+    [global::ProtoBuf.ProtoMember(4, IsRequired = true, Name=@"invoke", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public bool invoke
+    {
+      get { return _invoke; }
+      set { _invoke = value; }
+    }
+    private string _error;
+    [global::ProtoBuf.ProtoMember(5, IsRequired = true, Name=@"error", DataFormat = global::ProtoBuf.DataFormat.Default)]
+    public string error
+    {
+      get { return _error; }
+      set { _error = value; }
     }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
