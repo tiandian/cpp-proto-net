@@ -4,7 +4,9 @@
         xmlns:utils="clr-namespace:PortfolioTrading.Utils"
         xmlns:local="clr-namespace:PortfolioTrading.Modules.Account"
         xmlns:ctrls="clr-namespace:PortfolioTrading.Controls"
-        Title="EditPortfolioDlg" Height="300" Width="300"
+        xmlns:igWindows="http://infragistics.com/Windows"
+        xmlns:igEditor="http://infragistics.com/Editors"
+        Title="新建组合" Height="300" Width="300"
         WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
     <Window.Resources>
@@ -12,6 +14,18 @@
         <local:EditPortfolioVM x:Key="editPortfolioVM" />
     </Window.Resources>
     <DockPanel DataContext="{StaticResource editPortfolioVM}" >
+        <StackPanel DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <TextBlock VerticalAlignment="Center">组合编号</TextBlock>
+                <TextBlock Text="{Binding PortfId, FallbackValue=1}" Margin="10, 2" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="4">
+                <TextBlock VerticalAlignment="Center" Margin="4, 2">每次数量</TextBlock>
+                <TextBox Width="50" TextAlignment="Right"  Text="{Binding Quantity}" Margin="2"/>
+                <TextBlock VerticalAlignment="Center" Margin="10, 2, 4, 2">最大数量</TextBlock>
+                <TextBox Width="50" TextAlignment="Right"  Text="{Binding MaxQuantity}" Margin="2"/>
+            </StackPanel>
+        </StackPanel>
         <Grid  DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel.Style>
@@ -47,63 +61,58 @@
                 正在获取合约信息...
             </TextBlock>
         </Grid>
-        <StackPanel Margin="4">
-            <StackPanel.Resources>
-                <DataTemplate x:Key="sideItemTempl">
-                    <TextBlock Text="{Binding DisplayText}"></TextBlock>
-                </DataTemplate>
-            </StackPanel.Resources>
-            <StackPanel Orientation="Horizontal" Margin="4">
-                <TextBlock>组合编号</TextBlock>
-                <TextBlock Text="{Binding PortfId}" Margin="10, 2"/>
-            </StackPanel>
-
-            <DockPanel Margin="2">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                    <CheckBox Margin="2" IsChecked="{Binding Leg1}" Name="chkFirstLeg">第一腿</CheckBox>
-                    <ctrls:RadioButtonExtended VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
+        <igWindows:XamTabControl x:Name="tabControl" Margin="4, 2">
+            <igWindows:TabItemEx Header="套利" Name="tabArbitrage" Width="60" Tag="ArbitrageStrategy">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <DataTemplate x:Key="sideItemTempl">
+                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                        </DataTemplate>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+                   
+                    <DockPanel Margin="2">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <CheckBox Margin="2" IsChecked="{Binding Leg1}" Name="chkFirstLeg">第一腿</CheckBox>
+                            <ctrls:RadioButtonExtended VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
                                  IsCheckedReal="{Binding PreferLeg1, Mode=TwoWay}">优先成交</ctrls:RadioButtonExtended>
-                </StackPanel>
-                
-                <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
-                    <TextBlock>商品</TextBlock>
-                    <TextBox Width="60" Text="{Binding Symbol1}"></TextBox>
-                    <TextBlock>多空</TextBlock>
-                    <ComboBox Width="60" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
-                              ItemTemplate="{StaticResource sideItemTempl}"
+                        </StackPanel>
+
+                        <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
+                            <TextBlock>商品</TextBlock>
+                            <TextBox Width="60" Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
+                            <TextBlock>多空</TextBlock>
+                            <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
+                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
                               SelectedValuePath="Side" SelectedValue="{Binding Side1}">
-                    </ComboBox>
-                    <TextBlock>比率</TextBlock>
-                    <TextBox Text="{Binding Ratio1}" TextAlignment="Right"></TextBox>
-                </DockPanel>
-            </DockPanel>
-            <DockPanel Margin="2">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                    <CheckBox Margin="2" IsChecked="{Binding Leg2}" Name="chkSecondLeg">第二腿</CheckBox>
-                    <ctrls:RadioButtonExtended VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
+                            </ComboBox>
+                            <TextBlock>比率</TextBlock>
+                            <TextBox Text="{Binding Ratio1}" TextAlignment="Right"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="2">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <CheckBox Margin="2" IsChecked="{Binding Leg2}" Name="chkSecondLeg">第二腿</CheckBox>
+                            <ctrls:RadioButtonExtended VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
                                  IsCheckedReal="{Binding PreferLeg2, Mode=TwoWay}">优先成交</ctrls:RadioButtonExtended>
-                </StackPanel>
-                
-                <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkSecondLeg}">
-                    <TextBlock>商品</TextBlock>
-                    <TextBox Width="60" Text="{Binding Symbol2}"></TextBox>
-                    <TextBlock>多空</TextBlock>
-                    <ComboBox Width="60" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
-                              ItemTemplate="{StaticResource sideItemTempl}"
+                        </StackPanel>
+
+                        <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkSecondLeg}">
+                            <TextBlock>商品</TextBlock>
+                            <TextBox Width="60" Text="{Binding Symbol2}" Margin="0, 0, 4, 0"></TextBox>
+                            <TextBlock>多空</TextBlock>
+                            <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
+                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
                               SelectedValuePath="Side" SelectedValue="{Binding Side2}"></ComboBox>
-                    <TextBlock>比率</TextBlock>
-                    <TextBox Text="{Binding Ratio2}" TextAlignment="Right"></TextBox>
-                </DockPanel>
-            </DockPanel>
+                            <TextBlock>比率</TextBlock>
+                            <TextBox Text="{Binding Ratio2}" TextAlignment="Right"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="4">
-                <TextBlock VerticalAlignment="Center" Margin="4, 2">每次数量</TextBlock>
-                <TextBox Width="50" TextAlignment="Right"  Text="{Binding Quantity}" Margin="2"/>
-                <TextBlock VerticalAlignment="Center" Margin="10, 2, 4, 2">最大数量</TextBlock>
-                <TextBox Width="50" TextAlignment="Right"  Text="{Binding MaxQuantity}" Margin="2"/>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal" Margin="4">
+                    <!--<StackPanel Orientation="Horizontal" Margin="4">
                 <TextBlock VerticalAlignment="Center">组合策略</TextBlock>
                 <ComboBox Width="80" SelectedIndex="0" ItemsSource="{Binding StrategyItemsSource}"
                           SelectedValuePath="Name" SelectedValue="{Binding StrategyName, Mode=TwoWay}">
@@ -113,7 +122,127 @@
                         </DataTemplate>
                     </ComboBox.ItemTemplate>
                 </ComboBox>
-            </StackPanel>
-        </StackPanel>
+            </StackPanel>-->
+                </StackPanel>
+            </igWindows:TabItemEx>
+
+            <igWindows:TabItemEx Header="趋势" Name="tabTrend" Width="60" Tag="ArbitrageStrategy">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <DataTemplate x:Key="sideItemTempl">
+                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                        </DataTemplate>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <TextBlock>多空</TextBlock>
+                            <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
+                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
+                              SelectedValuePath="Side" SelectedValue="{Binding Side1}">
+                            </ComboBox>
+                        </StackPanel>
+                        <DockPanel>
+                            <TextBlock>商品</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 10, 0"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    
+                </StackPanel>
+            </igWindows:TabItemEx>
+
+            <igWindows:TabItemEx Header="高频" Name="tabScalper" Width="60" Tag="Scalper">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">商品</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">最小变动价位</TextBlock>
+                            <Button DockPanel.Dock="Right" Margin="4, 2" Name="btnQuerySymbol" Click="btnQuerySymbol_Click">查询</Button>
+                            <TextBox Text="{Binding PriceTick, Mode=TwoWay}"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">开仓价差</TextBlock>
+                            <igEditor:XamNumericEditor Margin="0, 0, 4, 0" SpinButtonDisplayMode="Always"
+                                                       Value="{Binding Threshold, Mode=TwoWay}"
+                                                       SpinIncrement="{Binding PriceTick}"/>
+                        </DockPanel>
+                    </DockPanel>
+                    
+
+                </StackPanel>
+            </igWindows:TabItemEx>
+
+            <igWindows:TabItemEx Header="移仓" Name="tabSwitchPosition" Width="60" Tag="ChangePosition">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <DataTemplate x:Key="sideItemTempl">
+                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                        </DataTemplate>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <DockPanel Margin="2">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Margin="2">已有合约</TextBlock>
+                            <ctrls:RadioButtonExtended VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
+                                 IsCheckedReal="{Binding PreferLeg1, Mode=TwoWay}">优先成交</ctrls:RadioButtonExtended>
+                        </StackPanel>
+
+                        <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <TextBlock>多空</TextBlock>
+                                <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
+                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
+                              SelectedValuePath="Side" SelectedValue="{Binding Side1}">
+                                </ComboBox>
+                            </StackPanel>
+                            <TextBlock>商品</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="2">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Margin="2">目标合约</TextBlock>
+                            <ctrls:RadioButtonExtended VerticalAlignment="Center" Margin="6,2" GroupName="PreferDeal"
+                                 IsCheckedReal="{Binding PreferLeg2, Mode=TwoWay}">优先成交</ctrls:RadioButtonExtended>
+                        </StackPanel>
+
+                        <DockPanel Margin="10, 4, 10, 8">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <TextBlock>多空</TextBlock>
+                                <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
+                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
+                              SelectedValuePath="Side" SelectedValue="{Binding Side2}"></ComboBox>
+                            </StackPanel>
+                            
+                            <TextBlock>商品</TextBlock>
+                            <TextBox Text="{Binding Symbol2}" Margin="0, 0, 4, 0"></TextBox>
+                           
+                        </DockPanel>
+                    </DockPanel>
+                </StackPanel>
+            </igWindows:TabItemEx>
+        </igWindows:XamTabControl>
+        
     </DockPanel>
 </Window>

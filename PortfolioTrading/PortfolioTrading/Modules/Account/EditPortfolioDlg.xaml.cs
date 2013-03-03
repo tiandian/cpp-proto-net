@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Practices.Prism.ViewModel;
 using PortfolioTrading.Modules.Portfolio.Strategy;
+using Microsoft.Practices.Prism.Commands;
+using Infragistics.Windows.Controls;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -30,26 +32,12 @@ namespace PortfolioTrading.Modules.Account
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
-            this._viewModel.IsBusy = true;
-            Action<PortfolioVM> toPortfolioAction = _viewModel.To;
-            toPortfolioAction.BeginInvoke(Portfolio, new AsyncCallback(
-                delegate(IAsyncResult ar)
-                {
-                    try
-                    {
-                        toPortfolioAction.EndInvoke(ar);
-                    }
-                    catch (Exception ex)
-                    {
-                        LogManager.Logger.ErrorFormat("Error Creating PortfolioVM due to {0}", ex);
-                    }
+            TabItemEx tabItem = tabControl.SelectedItem as TabItemEx;
+            if (tabItem != null)
+                _viewModel.StrategyName = tabItem.Tag.ToString();
 
-                    this.Dispatcher.BeginInvoke(new Action(delegate
-                    {
-                        this._viewModel.IsBusy = false;
-                        this.DialogResult = true;
-                    }));
-                }), null);
+            _viewModel.To(Portfolio);
+            this.DialogResult = true;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -69,32 +57,47 @@ namespace PortfolioTrading.Modules.Account
             _viewModel = this.FindResource("editPortfolioVM") as EditPortfolioVM;
             _viewModel.From(Portfolio);
         }
+
+        private void btnQuerySymbol_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(_viewModel.Symbol1))
+            {
+                MessageBox.Show("请指定合约", "缺少参数", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            this.btnQuerySymbol.IsEnabled = false;
+
+            if (Portfolio.Account.VerifyStatus())
+            {
+                Func<string, entity.SymbolInfo> funcQuerySymbol = Portfolio.Account.QuerySymbolInfo;
+                _viewModel.IsBusy = true;
+                funcQuerySymbol.BeginInvoke(_viewModel.Symbol1, new AsyncCallback(
+                    delegate(IAsyncResult ar)
+                    {
+                        entity.SymbolInfo si = funcQuerySymbol.EndInvoke(ar);
+                        if (si != null)
+                        {
+                            this.Dispatcher.BeginInvoke(new Action<entity.SymbolInfo>(
+                                delegate(entity.SymbolInfo symbolInfo)
+                                {
+                                    _viewModel.PriceTick = symbolInfo.PriceTick;
+                                    _viewModel.Threshold = 4 * symbolInfo.PriceTick;
+                                    this.btnQuerySymbol.IsEnabled = true;
+                                    _viewModel.IsBusy = false;
+                                }), si);
+                        }
+                    }), null);
+            }
+        }
     }
 
     public class EditPortfolioVM : NotificationObject
     {
         public EditPortfolioVM()
         {
-            this.StrategyItemsSource = new List<StrategyItem>();
-            this.StrategyItemsSource.Add(new StrategyItem
-            {
-                Name = StrategySetting.ArbitrageStrategyName,
-                DisplayName = "套利"
-            });
-            this.StrategyItemsSource.Add(new StrategyItem
-            {
-                Name = StrategySetting.ChangePositionStrategyName,
-                DisplayName = "移仓"
-            });
-            this.StrategyItemsSource.Add(new StrategyItem 
-            {
-                Name = StrategySetting.ScalperStrategyName,
-                DisplayName = "高频"
-            });
         }
 
-        public List<StrategyItem> StrategyItemsSource { get; private set; }
-        
         public void From(PortfolioVM portf)
         {
             PortfId = portf.Id;
@@ -148,7 +151,7 @@ namespace PortfolioTrading.Modules.Account
                 leg.SetIsPreferred(PreferLeg1);
             }
 
-            if (Leg2)
+            if (Leg2 || StrategyName == StrategySetting.ChangePositionStrategyName)
             {
                 LegVM leg;
                 if (portf.LegCount < 2)
@@ -182,13 +185,9 @@ namespace PortfolioTrading.Modules.Account
             {
                 if(!string.IsNullOrEmpty(Symbol1))
                 {
-                    entity.SymbolInfo si = portf.Account.QuerySymbolInfo(Symbol1);
-                    if (si != null)
-                    {
-                        ScalperSetting setting = (ScalperSetting)portf.StrategySetting;
-                        setting.PriceTick = si.PriceTick;
-                        setting.Threshold = 4 * setting.PriceTick;
-                    }
+                    ScalperSetting setting = (ScalperSetting)portf.StrategySetting;
+                    setting.PriceTick = this.PriceTick;
+                    setting.Threshold = this.Threshold;
                 }
             }
         }
@@ -449,6 +448,40 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region PriceTick
+        private double _tick;
+
+        public double PriceTick
+        {
+            get { return _tick; }
+            set
+            {
+                if (_tick != value)
+                {
+                    _tick = value;
+                    RaisePropertyChanged("PriceTick");
+                }
+            }
+        }
+        #endregion
+
+        #region Threshold
+        private double _threshold;
+
+        public double Threshold
+        {
+            get { return _threshold; }
+            set
+            {
+                if (_threshold != value)
+                {
+                    _threshold = value;
+                    RaisePropertyChanged("Threshold");
+                }
+            }
+        }
+        #endregion
+        
     }
 
     public class StrategyItem

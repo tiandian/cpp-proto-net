@@ -145,8 +145,7 @@ namespace PortfolioTrading.Modules.Account
             }
         }
         #endregion
-
-
+        
         #region HostPort
         private int _hostPort;
 
@@ -752,6 +751,19 @@ namespace PortfolioTrading.Modules.Account
         internal Client Host
         {
             get { return _client; }
+        }
+
+        public bool VerifyStatus()
+        {
+            if (IsConnected)
+                return true;
+            else
+            {
+                MessageBox.Show( 
+                    "请先连接帐户!", "帐户错误",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
         }
     }
 }

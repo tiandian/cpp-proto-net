@@ -209,9 +209,10 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnQueryPosition()
         {
-            if (!CurrentAccount.IsConnected) return;
-
-            EventAggregator.GetEvent<QueryPositionEvent>().Publish(CurrentAccount);
+            if (CurrentAccount.VerifyStatus())
+            {
+                EventAggregator.GetEvent<QueryPositionEvent>().Publish(CurrentAccount);
+            }
         }
 
         private void OnQueryAccount()
@@ -223,14 +224,13 @@ namespace PortfolioTrading.Modules.Account
         private void QueryAccountInfoWithContext(SynchronizationContext uiContext)
         {
             if (!CurrentAccount.IsConnected) return;
-
             CurrentAccount.QueryAccountInfo(ai =>
-            {
-                if (uiContext != null)
                 {
-                    uiContext.Post(o => UpdateAccoutnInfo(ai), null);
-                }
-            });
+                    if (uiContext != null)
+                    {
+                        uiContext.Post(o => UpdateAccoutnInfo(ai), null);
+                    }
+                });
         }
 
         private void UpdateAccoutnInfo(trade.AccountInfo acctInfoData)
