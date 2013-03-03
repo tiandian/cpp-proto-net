@@ -11,12 +11,29 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public const string ArbitrageStrategyName = "ArbitrageStrategy";
         public const string ChangePositionStrategyName = "ChangePosition";
         public const string ScalperStrategyName = "Scalper";
+        public const string TrendStrategyName = "ArbitrageStrategy";
 
         public abstract string Name { get; }
 
         public abstract string Persist();
 
         public abstract byte[] Serialize();
+
+        public static string GetDisplayStrategyName(string strategyName)
+        {
+            switch (strategyName)
+            {
+                case "ArbitrageStrategy":
+                    return "套利";
+                case "ChangePosition":
+                    return "移仓";
+                case "Scalper":
+                    return "高频";
+                case "TrendStrategy":
+                    return "趋势";
+            }
+            return "未知";
+        }
 
         public static StrategySetting Load(string name, string xmlText)
         {

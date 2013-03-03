@@ -378,6 +378,8 @@ namespace PortfolioTrading.Modules.Account
             get
             {
                 StringBuilder txt = new StringBuilder();
+                txt.AppendFormat("[{0}] ", StrategySetting.GetDisplayStrategyName(StrategySetting.Name));
+
                 txt.AppendFormat("{0}: ", Id);
                 for (int i = 0; i < _legs.Count; ++i)
                 {
@@ -613,20 +615,23 @@ namespace PortfolioTrading.Modules.Account
 
         private void OnOpenPosition()
         {
-            if (StrategySetting.Name == StrategySetting.ChangePositionStrategyName)
+            if (_accountVm.VerifyStatus())
             {
-                _accountVm.Host.SwitchPosition(Id, Quantity);
+                if (StrategySetting.Name == StrategySetting.ChangePositionStrategyName)
+                {
+                    _accountVm.Host.SwitchPosition(Id, Quantity);
+                }
+                else if (StrategySetting.Name == StrategySetting.ScalperStrategyName)
+                {
+                    _accountVm.Host.ScalperOpenPosition(Id, Quantity);
+                }
+                else
+                {
+                    _accountVm.Host.PorfOpenPosition(Id, Quantity, false);
+                }
+
+                EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, Quantity);
             }
-            else if (StrategySetting.Name == StrategySetting.ScalperStrategyName)
-            {
-                _accountVm.Host.ScalperOpenPosition(Id, Quantity);
-            }
-            else
-            {
-                _accountVm.Host.PorfOpenPosition(Id, Quantity, false);
-            }
-            
-            EventLogger.Write("{0} 开仓组合 {1}, 数量 {2}", _accountVm.InvestorId, DisplayText, Quantity);
         }
 
         private void OnOpenQtyPosition()
@@ -639,16 +644,22 @@ namespace PortfolioTrading.Modules.Account
             {
                 int qty = viewModel.Quantity;
                 bool isVirtual = viewModel.IsVirtual;
-                _accountVm.Host.PorfOpenPosition(Id, qty, isVirtual);
-                EventLogger.Write("{0} 开仓组合 {1}, 数量 {2} - ({3})", _accountVm.InvestorId, DisplayText, qty,
-                    isVirtual ? "虚拟" : "真实");
+                if (_accountVm.VerifyStatus())
+                {
+                    _accountVm.Host.PorfOpenPosition(Id, qty, isVirtual);
+                    EventLogger.Write("{0} 开仓组合 {1}, 数量 {2} - ({3})", _accountVm.InvestorId, DisplayText, qty,
+                        isVirtual ? "虚拟" : "真实");
+                }
             }
         }
 
         private void OnClosePosition()
         {
-            _accountVm.Host.PorfClosePosition(Id, 0, false);
-            EventLogger.Write("{0} 平仓组合 {1}", _accountVm.InvestorId, DisplayText);
+            if (_accountVm.VerifyStatus())
+            {
+                _accountVm.Host.PorfClosePosition(Id, 0, false);
+                EventLogger.Write("{0} 平仓组合 {1}", _accountVm.InvestorId, DisplayText);
+            }
         }
 
         private void OnCloseQtyPosition()
@@ -661,9 +672,13 @@ namespace PortfolioTrading.Modules.Account
             {
                 int qty = viewModel.Quantity;
                 bool isVirtual = viewModel.IsVirtual;
-                _accountVm.Host.PorfClosePosition(Id, qty, isVirtual);
-                EventLogger.Write("{0} 平仓组合 {1}, 数量 {2} - ({3})", _accountVm.InvestorId, DisplayText, qty,
-                    isVirtual ? "虚拟" : "真实");
+
+                if (_accountVm.VerifyStatus())
+                {
+                    _accountVm.Host.PorfClosePosition(Id, qty, isVirtual);
+                    EventLogger.Write("{0} 平仓组合 {1}, 数量 {2} - ({3})", _accountVm.InvestorId, DisplayText, qty,
+                        isVirtual ? "虚拟" : "真实");
+                }
             }
         }
 
@@ -681,9 +696,12 @@ namespace PortfolioTrading.Modules.Account
                 int onceQty = viewModel.OnceQuantity;
                 int maxQty = viewModel.MaxQuantity;
 
-                _accountVm.Host.PortfModifyQuantity(Id, onceQty, maxQty);
-                EventLogger.Write("{0} 修改组合 {1}数量: 每次 {2}, 最大 {3}",
-                    _accountVm.InvestorId, DisplayText, onceQty, maxQty);
+                if (_accountVm.VerifyStatus())
+                {
+                    _accountVm.Host.PortfModifyQuantity(Id, onceQty, maxQty);
+                    EventLogger.Write("{0} 修改组合 {1}数量: 每次 {2}, 最大 {3}",
+                        _accountVm.InvestorId, DisplayText, onceQty, maxQty);
+                }
             }
             
         }
