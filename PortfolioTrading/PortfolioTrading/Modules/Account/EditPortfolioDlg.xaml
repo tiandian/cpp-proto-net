@@ -12,16 +12,41 @@
         <local:EditPortfolioVM x:Key="editPortfolioVM" />
     </Window.Resources>
     <DockPanel DataContext="{StaticResource editPortfolioVM}" >
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-            <StackPanel.Resources>
-                <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
-                    <Setter Property="Width" Value="80" />
-                    <Setter Property="Margin" Value="8" />
-                </Style>
-            </StackPanel.Resources>
-            <Button IsDefault="True" Name="btnOK" Click="btnOK_Click">确定</Button>
-            <Button IsCancel="True" Name="btnCancel" Click="btnCancel_Click">取消</Button>
-        </StackPanel>
+        <Grid  DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <StackPanel.Style>
+                    <Style TargetType="StackPanel">
+                        <Setter Property="Visibility" Value="Visible"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Style>
+                <StackPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                        <Setter Property="Width" Value="80" />
+                        <Setter Property="Margin" Value="8" />
+                    </Style>
+                </StackPanel.Resources>
+                <Button IsDefault="True" Name="btnOK" Click="btnOK_Click">确定</Button>
+                <Button IsCancel="True" Name="btnCancel" Click="btnCancel_Click">取消</Button>
+            </StackPanel>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock.Style>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Visibility" Value="Hidden"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsBusy}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+                正在获取合约信息...
+            </TextBlock>
+        </Grid>
         <StackPanel Margin="4">
             <StackPanel.Resources>
                 <DataTemplate x:Key="sideItemTempl">
