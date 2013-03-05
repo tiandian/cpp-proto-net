@@ -27,6 +27,7 @@ void CScalperStrategy::ApplySettings( const std::string& settingData )
 	m_CaseLE3Tick = settings.casele3tick();
 	m_CaseGE4Tick = settings.casege4tick();
 	m_CaseNoChange = settings.casenochange();
+	m_closeStrategy = settings.stoplossstrategy();
 
 	logger.Info(boost::str(boost::format("Scalper Threshold: %f") % settings.threshold()));
 }

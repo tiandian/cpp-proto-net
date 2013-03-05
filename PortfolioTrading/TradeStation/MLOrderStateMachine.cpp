@@ -81,7 +81,8 @@ void CMLOrderPlacer::Do()
 	for(InputOrderVector::iterator iter = vecInputOrders->begin();
 		iter != vecInputOrders->end(); ++iter)
 	{
-		m_sgOrderPlacers.push_back(CreateSgOrderPlacer(*iter, autoTracking ? 2 : 0));
+		CSgOrderPlacer* pPlacer = CreateSgOrderPlacer(*iter, autoTracking ? 2 : 0);
+		m_sgOrderPlacers.push_back(pPlacer);
 	}
 
 	// Wrap into smart pointer and let state machine manage the life cycle
@@ -113,18 +114,32 @@ void CMLOrderPlacer::Send()
 	}
 }
 
-bool CMLOrderPlacer::SendNext()
+bool CMLOrderPlacer::SendNext(COrderEvent* transEvent)
 {
 	if(++m_sendingIdx < m_sgOrderPlacers.size())
 	{
-		(m_sgOrderPlacers.at(m_sendingIdx))->Do();
+		CSgOrderPlacer*& pSgPlacer = m_sgOrderPlacers.at(m_sendingIdx);
+		
+		// Partically for Scalper strategy
+		// ensure close order qty align to opened quantity
+		if(m_pPortf->SelfClose())
+		{
+			LegCompletedEvent* pLegCompleteEvent = dynamic_cast<LegCompletedEvent*>(transEvent);
+			if(pLegCompleteEvent != NULL)
+			{
+				int finished = pLegCompleteEvent->Finished();
+				pSgPlacer->AdjustQuantity(finished);
+			}
+		}
+
+		pSgPlacer->Do();
 		return true;
 	}
 
 	return false;
 }
 
-COrderPlacer* CMLOrderPlacer::CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes)
+CSgOrderPlacer* CMLOrderPlacer::CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes)
 {
 	return m_pOrderProcessor->CreateSingleOrderPlacer(m_pPortf, m_mlOrder.get(), inputOrder, retryTimes);
 }
@@ -147,7 +162,7 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 		{
 			if(m_isSequential)
 			{
-				if(SendNext())
+				if(SendNext(transEvent))
 					break;
 				//else if there is no next placer to do
 				// go to next case "ORDER_STATE_COMPLETE"

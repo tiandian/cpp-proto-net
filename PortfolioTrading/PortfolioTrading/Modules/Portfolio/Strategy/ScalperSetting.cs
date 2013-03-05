@@ -111,7 +111,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             }
         }
         #endregion
-        
+
+        #region StopLossCloseMethod
+        private entity.StopLossCloseMethods _closeMethod;
+
+        public entity.StopLossCloseMethods StopLossCloseMethod
+        {
+            get { return _closeMethod; }
+            set
+            {
+                if (_closeMethod != value)
+                {
+                    _closeMethod = value;
+                    RaisePropertyChanged("StopLossCloseMethod");
+                }
+            }
+        }
+        #endregion
 
         public override string Name
         {
@@ -126,7 +142,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 new XAttribute("caseLE2Tick", CaseLE2Tick),
                 new XAttribute("caseLE3Tick", CaseLE3Tick),
                 new XAttribute("caseGE4Tick", CaseGE4Tick),
-                new XAttribute("caseNoChange", CaseNoChange));
+                new XAttribute("caseNoChange", CaseNoChange),
+                new XAttribute("stopLossCloseStrategy", StopLossCloseMethod));
 
             return elem.ToString();
         }
@@ -140,6 +157,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             setting.CaseLE2Tick = CaseLE2Tick;
             setting.CaseLE3Tick = CaseLE3Tick;
             setting.CaseNoChange = CaseNoChange;
+            setting.StopLossStrategy = StopLossCloseMethod;
             return DataTranslater.Serialize(setting);
         }
 

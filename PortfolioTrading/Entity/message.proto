@@ -138,6 +138,12 @@ enum DirectionDepends
 	ON_BIG_CHANGE = 4; 
 }
 
+enum StopLossCloseMethods
+{
+	BASED_ON_NEXT_QUOTE = 0;
+	BASED_ON_INPUT_LIMIT = 1;
+}
+
 message ScalperSettings
 {
 	required double Threshold = 1;
@@ -146,6 +152,7 @@ message ScalperSettings
 	required DirectionDepends CaseLE3Tick = 4;
 	required DirectionDepends CaseGE4Tick = 5;
 	required DirectionDepends CaseNoChange = 6;
+	required StopLossCloseMethods StopLossStrategy = 7;
 }
 
 message ModifyStrategyParam

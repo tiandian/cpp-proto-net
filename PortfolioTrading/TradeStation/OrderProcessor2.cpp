@@ -178,7 +178,7 @@ void COrderProcessor2::CancelOrder( const std::string& ordRef, const std::string
 	}
 }
 
-COrderPlacer* COrderProcessor2::CreateSingleOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes)
+CSgOrderPlacer* COrderProcessor2::CreateSingleOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes)
 {
 	if(pMlOrder->reason() == trade::SR_Scalpe)
 	{

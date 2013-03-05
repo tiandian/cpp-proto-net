@@ -138,6 +138,24 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region StopLossCloseMethod
+        private entity.StopLossCloseMethods _closeMethod;
+
+        public entity.StopLossCloseMethods StopLossCloseMethod
+        {
+            get { return _closeMethod; }
+            set
+            {
+                if (_closeMethod != value)
+                {
+                    _closeMethod = value;
+                    RaisePropertyChanged("StopLossCloseMethod");
+                }
+            }
+        }
+        #endregion
+
+
         protected override void OnApplySetting()
         {
             ScalperSetting settings = (ScalperSetting)CurrentPortfolio.StrategySetting;
@@ -148,6 +166,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             settings.CaseLE2Tick = this.CaseLE2Tick;
             settings.CaseLE3Tick = this.CaseLE3Tick;
             settings.CaseNoChange = this.CaseNoChange;
+            settings.StopLossCloseMethod = this.StopLossCloseMethod;
 
             base.OnApplySetting();
         }
@@ -161,12 +180,19 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             this.CaseLE2Tick = settings.CaseLE2Tick;
             this.CaseLE3Tick = settings.CaseLE3Tick;
             this.CaseNoChange = settings.CaseNoChange;
+            this.StopLossCloseMethod = settings.StopLossCloseMethod;
         }
 
-        public List<DirectionDependsItem> _directionDependsItems = new List<DirectionDependsItem>();
+        private List<DirectionDependsItem> _directionDependsItems = new List<DirectionDependsItem>();
         public IEnumerable<DirectionDependsItem> DependsItems
         {
             get { return _directionDependsItems; }
+        }
+
+        private List<StopLossStrategyItem> _closeStrategyItems = new List<StopLossStrategyItem>();
+        public IEnumerable<StopLossStrategyItem> CloseStrategyItems
+        {
+            get { return _closeStrategyItems; }
         }
 
         public ScalperSettingVM()
@@ -191,12 +217,30 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 Value = entity.DirectionDepends.IGNORE_THIS,
                 DisplayName = "忽略"
             });
+
+            _closeStrategyItems.Add(new StopLossStrategyItem
+            {
+                Value = entity.StopLossCloseMethods.BASED_ON_NEXT_QUOTE,
+                DisplayName = "下一个报价"
+            });
+
+            _closeStrategyItems.Add(new StopLossStrategyItem
+            {
+                Value = entity.StopLossCloseMethods.BASED_ON_INPUT_LIMIT,
+                DisplayName = "本次限价"
+            });
         }
     }
 
     public class DirectionDependsItem
     {
         public entity.DirectionDepends Value { get; set; }
+        public string DisplayName { get; set; }
+    }
+
+    public class StopLossStrategyItem
+    {
+        public entity.StopLossCloseMethods Value { get; set; }
         public string DisplayName { get; set; }
     }
 }

@@ -147,6 +147,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     setting.CaseNoChange = (entity.DirectionDepends)Enum.Parse(typeof(entity.DirectionDepends), attr.Value);
                 }
+                attr = elem.Attribute("stopLossCloseStrategy");
+                if (attr != null)
+                {
+                    setting.StopLossCloseMethod = (entity.StopLossCloseMethods)Enum.Parse(typeof(entity.StopLossCloseMethods), attr.Value);
+                }
                 return setting;
             }
             else
@@ -184,6 +189,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 setting.CaseLE3Tick = entity.DirectionDepends.ON_BIG_SIZE;
                 setting.CaseGE4Tick = entity.DirectionDepends.ON_SMALL_CHANGE;
                 setting.CaseNoChange = entity.DirectionDepends.ON_BIG_SIZE;
+                setting.StopLossCloseMethod = entity.StopLossCloseMethods.BASED_ON_NEXT_QUOTE;
                 return setting;
             }
             else
