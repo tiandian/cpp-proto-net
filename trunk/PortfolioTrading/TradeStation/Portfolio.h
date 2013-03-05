@@ -62,7 +62,10 @@ public:
 
 	bool EnablePrefer();
 	bool AutoTracking();
-	
+
+	bool SelfClose(){ return m_selfClose; }
+	void SelfClose(bool val){ m_selfClose = val; }
+
 	void EnableStrategy(bool isEnabled);
 
 	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss, bool isAutoTracking, bool enablePrefer);
@@ -129,7 +132,7 @@ private:
 
 	boost::shared_ptr<CDiffStrategy> m_strategy;
 		
-	bool m_openOnce;
+	bool m_selfClose;
 	bool m_isPlacingOrder;
 };
 

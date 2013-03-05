@@ -54,8 +54,7 @@
                                 <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
                                 <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
                                   SelectedValuePath="Direction" SelectedValue="{Binding PositionDirection, Mode=TwoWay}"
-                                  ItemTemplate="{StaticResource combItemTemplate}" Name="combArbitrageDirection"
-                                  SelectionChanged="combArbitrageDirection_SelectionChanged">
+                                  ItemTemplate="{StaticResource combItemTemplate}" Name="combArbitrageDirection">
                                 </ComboBox>
                             </DockPanel>
                         </Border>
@@ -263,6 +262,25 @@
                                         <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
                                                   DisplayMemberPath="DisplayName" SelectedValuePath="Value"
                                                   ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseNoChange, Mode=TwoWay}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">平仓策略</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 2">
+                                        <DockPanel.Resources>
+                                            <DataTemplate x:Key="closeItemTemplate">
+                                                <TextBlock Text="{Binding DisplayName}"/>
+                                            </DataTemplate>
+                                        </DockPanel.Resources>
+                                        <TextBlock Margin="4, 2" VerticalAlignment="Center">平仓失败后改价基于</TextBlock>
+
+                                        <ComboBox Margin="4, 2" ItemsSource="{Binding CloseStrategyItems}" 
+                                                ItemTemplate="{StaticResource closeItemTemplate}" SelectedValue="{Binding StopLossCloseMethod, Mode=TwoWay}"
+                                                DisplayMemberPath="DisplayName" SelectedValuePath="Value" />
                                     </DockPanel>
                                 </StackPanel>
                             </DockPanel>

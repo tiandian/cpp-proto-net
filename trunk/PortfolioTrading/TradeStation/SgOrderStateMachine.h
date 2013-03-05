@@ -4,6 +4,7 @@
 #include "OrderStateMachine.h"
 #include "orderhelper.h"
 #include "../Entity/gen/cpp/trade.pb.h"
+#include "../Entity/gen/cpp/message.pb.h"
 
 class CSgOrderStateMachine;
 class COrderProcessor2;
@@ -45,6 +46,7 @@ public:
 	bool OnEnter(ORDER_STATE state, COrderEvent* transEvent, ORDER_STATE lastState);
 
 	void Do();
+	void AdjustQuantity(int qty);
 
 protected:
 	virtual void RaiseMultiLegOrderEvent(COrderEvent& orderEvent);
@@ -118,7 +120,7 @@ protected:
 
 private:
 	double m_precedence;
-	
+	entity::StopLossCloseMethods m_closeMethod;
 };
 
 class CSgOrderStateMachine : public COrderStateMachine
@@ -127,7 +129,7 @@ public:
 	CSgOrderStateMachine(void);
 	~CSgOrderStateMachine(void);
 
-	COrderPlacer* CreatePlacer( CPortfolio* pPortfolio,
+	CSgOrderPlacer* CreatePlacer( CPortfolio* pPortfolio,
 								trade::MultiLegOrder* pMultiLegOrder,
 								const InputOrderPtr& pInputOrder,
 								int retryTimes,

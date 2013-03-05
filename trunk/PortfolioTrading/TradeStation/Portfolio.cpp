@@ -162,7 +162,7 @@ int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType)
 CPortfolio::CPortfolio(void):
 m_porfMgr(NULL),
 m_openedOrderCount(0),
-m_openOnce(true),
+m_selfClose(false),
 m_isPlacingOrder(false)
 {
 }

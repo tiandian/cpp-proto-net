@@ -82,7 +82,7 @@
                         </StackPanel>
 
                         <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
-                            <TextBlock>商品</TextBlock>
+                            <TextBlock>品种</TextBlock>
                             <TextBox Width="60" Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
                             <TextBlock>多空</TextBlock>
                             <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
@@ -101,7 +101,7 @@
                         </StackPanel>
 
                         <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkSecondLeg}">
-                            <TextBlock>商品</TextBlock>
+                            <TextBlock>品种</TextBlock>
                             <TextBox Width="60" Text="{Binding Symbol2}" Margin="0, 0, 4, 0"></TextBox>
                             <TextBlock>多空</TextBlock>
                             <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
@@ -125,70 +125,6 @@
             </StackPanel>-->
                 </StackPanel>
             </igWindows:TabItemEx>
-
-            <igWindows:TabItemEx Header="趋势" Name="tabTrend" Width="60" Tag="ArbitrageStrategy">
-                <StackPanel Margin="4">
-                    <StackPanel.Resources>
-                        <DataTemplate x:Key="sideItemTempl">
-                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
-                        </DataTemplate>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Margin" Value="2"/>
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </StackPanel.Resources>
-
-                    <DockPanel Margin="10, 4, 10, 8">
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                            <TextBlock>多空</TextBlock>
-                            <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
-                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
-                              SelectedValuePath="Side" SelectedValue="{Binding Side1}">
-                            </ComboBox>
-                        </StackPanel>
-                        <DockPanel>
-                            <TextBlock>商品</TextBlock>
-                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 10, 0"></TextBox>
-                        </DockPanel>
-                    </DockPanel>
-                    
-                </StackPanel>
-            </igWindows:TabItemEx>
-
-            <igWindows:TabItemEx Header="高频" Name="tabScalper" Width="60" Tag="Scalper">
-                <StackPanel Margin="4">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Margin" Value="2"/>
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <DockPanel Margin="10, 4, 10, 8">
-                        <DockPanel>
-                            <TextBlock Width="80">商品</TextBlock>
-                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
-                        </DockPanel>
-                    </DockPanel>
-                    <DockPanel Margin="10, 4, 10, 8">
-                        <DockPanel>
-                            <TextBlock Width="80">最小变动价位</TextBlock>
-                            <Button DockPanel.Dock="Right" Margin="4, 2" Name="btnQuerySymbol" Click="btnQuerySymbol_Click">查询</Button>
-                            <TextBox Text="{Binding PriceTick, Mode=TwoWay}"></TextBox>
-                        </DockPanel>
-                    </DockPanel>
-                    <DockPanel Margin="10, 4, 10, 8">
-                        <DockPanel>
-                            <TextBlock Width="80">开仓价差</TextBlock>
-                            <igEditor:XamNumericEditor Margin="0, 0, 4, 0" SpinButtonDisplayMode="Always"
-                                                       Value="{Binding Threshold, Mode=TwoWay}"
-                                                       SpinIncrement="{Binding PriceTick}"/>
-                        </DockPanel>
-                    </DockPanel>
-                    
-
-                </StackPanel>
-            </igWindows:TabItemEx>
-
             <igWindows:TabItemEx Header="移仓" Name="tabSwitchPosition" Width="60" Tag="ChangePosition">
                 <StackPanel Margin="4">
                     <StackPanel.Resources>
@@ -216,7 +152,7 @@
                               SelectedValuePath="Side" SelectedValue="{Binding Side1}">
                                 </ComboBox>
                             </StackPanel>
-                            <TextBlock>商品</TextBlock>
+                            <TextBlock>品种</TextBlock>
                             <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
                         </DockPanel>
                     </DockPanel>
@@ -234,12 +170,74 @@
                               ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
                               SelectedValuePath="Side" SelectedValue="{Binding Side2}"></ComboBox>
                             </StackPanel>
-                            
-                            <TextBlock>商品</TextBlock>
+
+                            <TextBlock>品种</TextBlock>
                             <TextBox Text="{Binding Symbol2}" Margin="0, 0, 4, 0"></TextBox>
-                           
+
                         </DockPanel>
                     </DockPanel>
+                </StackPanel>
+            </igWindows:TabItemEx>
+            <igWindows:TabItemEx Header="趋势" Name="tabTrend" Width="60" Tag="ArbitrageStrategy">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <DataTemplate x:Key="sideItemTempl">
+                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                        </DataTemplate>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <TextBlock>多空</TextBlock>
+                            <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
+                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
+                              SelectedValuePath="Side" SelectedValue="{Binding Side1}">
+                            </ComboBox>
+                        </StackPanel>
+                        <DockPanel>
+                            <TextBlock>品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 10, 0"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    
+                </StackPanel>
+            </igWindows:TabItemEx>
+
+            <igWindows:TabItemEx Header="高频" Name="tabScalper" Width="60" Tag="Scalper">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">最小变动价位</TextBlock>
+                            <Button DockPanel.Dock="Right" Margin="4, 2" Name="btnQuerySymbol" Click="btnQuerySymbol_Click">查询</Button>
+                            <TextBox Text="{Binding PriceTick, Mode=TwoWay}"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">开仓价差</TextBlock>
+                            <igEditor:XamNumericEditor Margin="0, 0, 4, 0" SpinButtonDisplayMode="Always"
+                                                       Value="{Binding Threshold, Mode=TwoWay}"
+                                                       SpinIncrement="{Binding PriceTick}"/>
+                        </DockPanel>
+                    </DockPanel>
+                    
+
                 </StackPanel>
             </igWindows:TabItemEx>
         </igWindows:XamTabControl>

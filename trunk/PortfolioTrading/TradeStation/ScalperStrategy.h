@@ -26,6 +26,7 @@ public:
 	bool EnablePrefer(){ return true; }
 
 	double PriceTick(){ return m_priceTick; }
+	entity::StopLossCloseMethods CloseMethod() { return m_closeStrategy; }
 
 protected:
 	CConditionChecker<double>& GetOpenPosiCond(){ return m_openPosiChecker; }
@@ -48,6 +49,8 @@ private:
 	entity::DirectionDepends m_CaseLE3Tick;
 	entity::DirectionDepends m_CaseGE4Tick;
 	entity::DirectionDepends m_CaseNoChange;
+
+	entity::StopLossCloseMethods m_closeStrategy;
 
 	double m_prevAsk;
 	double m_Ask;

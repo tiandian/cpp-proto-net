@@ -19,6 +19,7 @@ CDiffStrategy* CreateStrategy( CPortfolio* pPortf, const string& name, const str
 	else if(name == "Scalper")
 	{
 		pStrategy = new CScalperStrategy();
+		pPortf->SelfClose(true);
 	}
 	
 	_ASSERT(pStrategy != NULL);

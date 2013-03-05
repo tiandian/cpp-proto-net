@@ -52,6 +52,8 @@ void CSgOrderStateMachine::Initialize()
 	m_orderStates.insert(make_pair(complete->State(), complete));
 	OrderStatePtr failed(new OrderPlaceFailed);
 	m_orderStates.insert(make_pair(failed->State(), failed));
+	OrderStatePtr partiallyFilled(new OrderPartiallyFilled);
+	m_orderStates.insert(make_pair(partiallyFilled->State(), partiallyFilled));
 
 	sending->AddEventState(ORDER_EVENT_SUBMIT_SUCCESS, sent.get());
 	sending->AddEventState(ORDER_EVENT_REJECTED, failed.get());
@@ -61,11 +63,16 @@ void CSgOrderStateMachine::Initialize()
 	sent->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 	sent->AddEventState(ORDER_EVENT_PENDING, pending.get());
 	sent->AddEventState(ORDER_EVENT_REJECTED, failed.get());
+	sent->AddEventState(ORDER_EVENT_PARTIALLY_FILLED, partiallyFilled.get());
 
 	pending->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
 	pending->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sending.get());
 	pending->AddEventState(ORDER_EVENT_PENDING, pending.get());
 	pending->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
+	pending->AddEventState(ORDER_EVENT_PARTIALLY_FILLED, partiallyFilled.get());
+
+	partiallyFilled->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, complete.get());
+	partiallyFilled->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 }
 
 void CSgOrderStateMachine::Transition( const string& orderId/*orderRef*/, COrderEvent& event )
@@ -192,11 +199,14 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 		break;
 	case ORDER_STATE_COMPLETE:
 		{
-			OnOrderUpdate(pSgOrderEvent->RtnOrder());
+			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
+			int remained = pOrd->volumetotal();
+			int finished = pOrd->volumetraded();
+			OnOrderUpdate(pOrd);
 			m_succ = true;
 			isTerminal = true;
 
-			RaiseMultiLegOrderEvent(LegCompletedEvent(Symbol()));
+			RaiseMultiLegOrderEvent(LegCompletedEvent(Symbol(), remained, finished));
 		}
 		break;
 	case ORDER_STATE_PLACE_FAILED:
@@ -216,7 +226,26 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 			RaiseMultiLegOrderEvent(LegRejectedEvent(Symbol()));
 		}
 		break;
-	
+	case ORDER_STATE_PARTIALLY_FILLED:
+		{
+			// Need to do same thing as order pending
+			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
+			if(pOrd != NULL)
+			{
+				OnOrderUpdate(pOrd);
+
+				if(!m_allowPending)
+				{
+					const std::string& ordRef = pOrd->orderref();
+					const std::string& exchId = pOrd->exchangeid();
+					const std::string& ordSysId = pOrd->ordersysid(); 
+					const std::string& userId = pOrd->userid();
+					const std::string& symbol = pOrd->instrumentid();
+					m_pOrderProcessor->CancelOrder(ordRef, exchId, ordSysId, userId, symbol);
+				}
+			}
+		}
+		break;
 	default:
 		logger.Warning(boost::str(boost::format("Entering Single order UNHANDLED state %s")
 			% PrintState(state)));
@@ -314,6 +343,11 @@ void CSgOrderPlacer::OnOrderPlaceFailed( COrderEvent* pOrdEvent )
 	}
 }
 
+void CSgOrderPlacer::AdjustQuantity( int qty )
+{
+	m_pInputOrder->set_volumetotaloriginal(qty);
+}
+
 void CManualSgOrderPlacer::ModifyOrderPrice()
 {
 	entity::Quote* pQuote = NULL;
@@ -384,21 +418,46 @@ void CManualSgOrderPlacer::OnOrderPlaceFailed( COrderEvent* pOrdEvent )
 void CScalperOrderPlacer::ModifyOrderPrice()
 {
 	trade::TradeDirectionType direction = m_pInputOrder->direction();
-	double origLmtPx = m_pInputOrder->limitprice();
+	double basePx = 0;
+	if(m_closeMethod == entity::BASED_ON_NEXT_QUOTE)
+	{
+		CLeg* pLeg = m_pPortf->GetLeg(Symbol());
+		_ASSERT(pLeg != NULL);
+		if(pLeg != NULL)
+		{
+			bool quoteUpdated = pLeg->IsQuoteUpdated(m_quoteTimestamp);
+			if(!quoteUpdated)
+			{
+				logger.Warning(boost::str(boost::format("Order(%s)'s quote didn't get updated after cancelled")
+					% Symbol()));
+			}
+			if(direction == trade::BUY)
+			{
+				basePx = pLeg->Ask();
+			}
+			else
+				basePx = pLeg->Bid();
+		}
+	}
+	else
+	{
+		basePx = m_pInputOrder->limitprice();
+	}
+	
 	if(direction == trade::BUY)
 	{
-		double ask = origLmtPx + m_precedence;
+		double ask = basePx + m_precedence;
 		logger.Trace(boost::str(boost::format("Buy: Ask(%f) ?> Lmt Px(%f)")
-			% ask % origLmtPx));
+			% ask % basePx));
 		logger.Trace(boost::str(boost::format("Modify order(%s): Buy @ %f")
 			% Symbol() % ask));
 		m_pInputOrder->set_limitprice(ask);
 	}
 	else if(direction == trade::SELL)
 	{
-		double bid = origLmtPx - m_precedence;
+		double bid = basePx - m_precedence;
 		logger.Trace(boost::str(boost::format("Sell: Bid(%f) ?< Lmt Px(%f)")
-			% bid % origLmtPx));
+			% bid % basePx));
 		logger.Trace(boost::str(boost::format("Modify order(%s): Sell @ %f")
 			% Symbol() % bid));
 		m_pInputOrder->set_limitprice(bid);
@@ -411,7 +470,13 @@ CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder,
 {
 	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(pPortfolio->Strategy());
 	if(pScalperStrategy != NULL)
+	{
 		m_precedence = pScalperStrategy->PriceTick();
+		m_closeMethod = pScalperStrategy->CloseMethod();
+	}
 	else
+	{
 		m_precedence = 0.2;	// precedence so far only support IFxxxx
+		m_closeMethod = entity::BASED_ON_NEXT_QUOTE;
+	}
 }

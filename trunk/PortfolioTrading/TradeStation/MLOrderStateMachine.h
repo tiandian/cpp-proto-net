@@ -8,6 +8,7 @@
 class CMLOrderStateMachine;
 class CPortfolio;
 class COrderProcessor2;
+class CSgOrderPlacer;
 
 class CMLOrderPlacer : public COrderPlacer
 {
@@ -32,8 +33,8 @@ public:
 private:
 
 	void Send();
-	bool SendNext();
-	COrderPlacer* CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
+	bool SendNext(COrderEvent* transEvent);
+	CSgOrderPlacer* CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
 	void OutputStatus(const string& statusMsg);
 
 	CMLOrderStateMachine* m_pStateMachine;
@@ -41,7 +42,7 @@ private:
 	MultiLegOrderPtr m_mlOrder;
 	COrderProcessor2* m_pOrderProcessor;
 
-	std::vector<COrderPlacer*> m_sgOrderPlacers;
+	std::vector<CSgOrderPlacer*> m_sgOrderPlacers;
 	bool m_isSequential;
 	int m_sendingIdx;
 };
@@ -79,7 +80,17 @@ namespace op2
 	class LegCompletedEvent : public CMLegOrderEvent
 	{
 	public:
-		LegCompletedEvent(const std::string& symbol):CMLegOrderEvent(symbol, ORDER_EVENT_COMPLETE){}
+		LegCompletedEvent(const std::string& symbol, int remained, int finished):
+		  CMLegOrderEvent(symbol, ORDER_EVENT_COMPLETE),
+			  m_remained(remained), m_finished(finished)
+		  {}
+
+		int Remained(){ return m_remained; }
+		int Finished(){ return m_finished; }
+
+	private:
+		int m_remained;
+		int m_finished;
 	};
 
 	class LegCanceledEvent : public CMLegOrderEvent
