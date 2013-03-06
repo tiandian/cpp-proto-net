@@ -81,6 +81,25 @@ inline bool DirectionDepends_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<DirectionDepends>(
     DirectionDepends_descriptor(), name, value);
 }
+enum StopLossCloseMethods {
+  BASED_ON_NEXT_QUOTE = 0,
+  BASED_ON_INPUT_LIMIT = 1
+};
+bool StopLossCloseMethods_IsValid(int value);
+const StopLossCloseMethods StopLossCloseMethods_MIN = BASED_ON_NEXT_QUOTE;
+const StopLossCloseMethods StopLossCloseMethods_MAX = BASED_ON_INPUT_LIMIT;
+const int StopLossCloseMethods_ARRAYSIZE = StopLossCloseMethods_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* StopLossCloseMethods_descriptor();
+inline const ::std::string& StopLossCloseMethods_Name(StopLossCloseMethods value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    StopLossCloseMethods_descriptor(), value);
+}
+inline bool StopLossCloseMethods_Parse(
+    const ::std::string& name, StopLossCloseMethods* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<StopLossCloseMethods>(
+    StopLossCloseMethods_descriptor(), name, value);
+}
 // ===================================================================
 
 class StringParam : public ::google::protobuf::Message {
@@ -2003,6 +2022,13 @@ class ScalperSettings : public ::google::protobuf::Message {
   inline entity::DirectionDepends casenochange() const;
   inline void set_casenochange(entity::DirectionDepends value);
   
+  // required .entity.StopLossCloseMethods StopLossStrategy = 7;
+  inline bool has_stoplossstrategy() const;
+  inline void clear_stoplossstrategy();
+  static const int kStopLossStrategyFieldNumber = 7;
+  inline entity::StopLossCloseMethods stoplossstrategy() const;
+  inline void set_stoplossstrategy(entity::StopLossCloseMethods value);
+  
   // @@protoc_insertion_point(class_scope:entity.ScalperSettings)
  private:
   inline void set_has_threshold();
@@ -2017,6 +2043,8 @@ class ScalperSettings : public ::google::protobuf::Message {
   inline void clear_has_casege4tick();
   inline void set_has_casenochange();
   inline void clear_has_casenochange();
+  inline void set_has_stoplossstrategy();
+  inline void clear_has_stoplossstrategy();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2026,9 +2054,10 @@ class ScalperSettings : public ::google::protobuf::Message {
   int casele3tick_;
   int casege4tick_;
   int casenochange_;
+  int stoplossstrategy_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -5323,6 +5352,29 @@ inline void ScalperSettings::set_casenochange(entity::DirectionDepends value) {
   casenochange_ = value;
 }
 
+// required .entity.StopLossCloseMethods StopLossStrategy = 7;
+inline bool ScalperSettings::has_stoplossstrategy() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void ScalperSettings::set_has_stoplossstrategy() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void ScalperSettings::clear_has_stoplossstrategy() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void ScalperSettings::clear_stoplossstrategy() {
+  stoplossstrategy_ = 0;
+  clear_has_stoplossstrategy();
+}
+inline entity::StopLossCloseMethods ScalperSettings::stoplossstrategy() const {
+  return static_cast< entity::StopLossCloseMethods >(stoplossstrategy_);
+}
+inline void ScalperSettings::set_stoplossstrategy(entity::StopLossCloseMethods value) {
+  GOOGLE_DCHECK(entity::StopLossCloseMethods_IsValid(value));
+  set_has_stoplossstrategy();
+  stoplossstrategy_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ModifyStrategyParam
@@ -6734,6 +6786,10 @@ namespace protobuf {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::DirectionDepends>() {
   return entity::DirectionDepends_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< entity::StopLossCloseMethods>() {
+  return entity::StopLossCloseMethods_descriptor();
 }
 
 }  // namespace google

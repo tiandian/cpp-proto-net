@@ -111,10 +111,11 @@ public:
 					bool succ = GetOpenPosiCond().Test(valueToTest);
 					if(succ)
 					{
-						if(!(Client()->ReachOpenTimesLimit()))
+						// TODO: open times will be at portfolio level
+						//if(!(Client()->ReachOpenTimesLimit()))
 							DoOpenPostion();
-						else
-							m_pPortfolio->EnableStrategy(false);
+						//else
+						//	m_pPortfolio->EnableStrategy(false);
 					}
 				}
 			}
