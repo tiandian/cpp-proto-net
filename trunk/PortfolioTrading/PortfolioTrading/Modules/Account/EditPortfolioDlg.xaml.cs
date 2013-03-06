@@ -296,7 +296,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region Side1
-        private entity.PosiDirectionType _side1 = entity.PosiDirectionType.LONG;
+        private entity.PosiDirectionType _side1 = entity.PosiDirectionType.SHORT;
 
         public entity.PosiDirectionType Side1
         {
@@ -381,7 +381,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region Side2
-        private entity.PosiDirectionType _side2 = entity.PosiDirectionType.SHORT;
+        private entity.PosiDirectionType _side2 = entity.PosiDirectionType.LONG;
 
         public entity.PosiDirectionType Side2
         {

@@ -17,9 +17,9 @@ public:
 	int quantity;
 };
 
-trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx);
+trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, entity::PosiDirectionType direction, PlaceOrderContext* placeOrderCtx);
 
-trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::MultiLegOrder* multilegOpenOrder, int quantity, PlaceOrderContext* placeOrderCtx);
+trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, entity::PosiDirectionType portfDirection, const trade::MultiLegOrder* multilegOpenOrder, int quantity, PlaceOrderContext* placeOrderCtx);
 
 trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, const std::string& closeSymbol, entity::PosiDirectionType existingPosition, PlaceOrderContext* placeOrderCtx);
 

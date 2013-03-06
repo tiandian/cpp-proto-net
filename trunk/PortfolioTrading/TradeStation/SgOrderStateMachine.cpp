@@ -433,34 +433,34 @@ void CScalperOrderPlacer::ModifyOrderPrice()
 			}
 			if(direction == trade::BUY)
 			{
-				basePx = pLeg->Ask();
+				basePx = pLeg->Bid();
 			}
 			else
-				basePx = pLeg->Bid();
+				basePx = pLeg->Ask();
+
+			logger.Trace(boost::str(boost::format("In coming new quote's %s : %f") 
+				% (direction == trade::BUY ? "Bid" : "Ask") % basePx));
 		}
 	}
 	else
 	{
 		basePx = m_pInputOrder->limitprice();
+		logger.Trace(boost::str(boost::format("Last order limit price: %f") % basePx));
 	}
 	
 	if(direction == trade::BUY)
 	{
-		double ask = basePx + m_precedence;
-		logger.Trace(boost::str(boost::format("Buy: Ask(%f) ?> Lmt Px(%f)")
-			% ask % basePx));
+		double buy = basePx + m_precedence;
 		logger.Trace(boost::str(boost::format("Modify order(%s): Buy @ %f")
-			% Symbol() % ask));
-		m_pInputOrder->set_limitprice(ask);
+			% Symbol() % buy));
+		m_pInputOrder->set_limitprice(buy);
 	}
 	else if(direction == trade::SELL)
 	{
-		double bid = basePx - m_precedence;
-		logger.Trace(boost::str(boost::format("Sell: Bid(%f) ?< Lmt Px(%f)")
-			% bid % basePx));
+		double sell = basePx - m_precedence;
 		logger.Trace(boost::str(boost::format("Modify order(%s): Sell @ %f")
-			% Symbol() % bid));
-		m_pInputOrder->set_limitprice(bid);
+			% Symbol() % sell));
+		m_pInputOrder->set_limitprice(sell);
 	}
 }
 

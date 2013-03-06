@@ -150,6 +150,7 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty, trade::SubmitReason
 {
 	bool autoTracking = portf->Strategy()->IsAutoTracking();
 	bool enablePrefer = portf->Strategy()->EnablePrefer();
+	entity::PosiDirectionType direction = portf->Strategy()->Direction();
 
 	PlaceOrderContext placeOrderCtx;
 	placeOrderCtx.quantity = qty;
@@ -158,7 +159,7 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty, trade::SubmitReason
 	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
 	placeOrderCtx.limitPriceType = entity::Opposite;
 
-	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, &placeOrderCtx));
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildOpenPosiOrder(portf, direction, &placeOrderCtx));
 	multilegOrder->set_reason(submitReason);
 
 	// send to order processor
@@ -171,6 +172,7 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 
 	bool autoTracking = portf->Strategy()->IsAutoTracking();
 	bool enablePrefer = portf->Strategy()->EnablePrefer();
+	entity::PosiDirectionType portfDirection = portf->Strategy()->Direction();
 
 	PlaceOrderContext placeOrderCtx;
 	placeOrderCtx.brokerId = m_brokerId;
@@ -178,7 +180,7 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
 	placeOrderCtx.limitPriceType = entity::Opposite;
 
-	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildClosePosiOrder(portf,
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildClosePosiOrder(portf, portfDirection,
 		&openMlOrd, openMlOrd.quantity(), &placeOrderCtx));
 	multilegOrder->set_reason(submitReason);
 
@@ -201,6 +203,7 @@ void CClientAgent::ClosePosition(const string& portfolioId, int quantity, trade:
 
 	bool autoTracking = portf->Strategy()->IsAutoTracking();
 	bool enablePrefer = portf->Strategy()->EnablePrefer();
+	entity::PosiDirectionType portfDirection = portf->Strategy()->Direction();
 
 	PlaceOrderContext placeOrderCtx;
 	placeOrderCtx.brokerId = m_brokerId;
@@ -208,7 +211,7 @@ void CClientAgent::ClosePosition(const string& portfolioId, int quantity, trade:
 	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
 	placeOrderCtx.limitPriceType = entity::Opposite;
 
-	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildClosePosiOrder(portf,
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildClosePosiOrder(portf, portfDirection,
 		NULL, quantity, &placeOrderCtx));
 	multilegOrder->set_reason(submitReason);
 

@@ -675,6 +675,13 @@ namespace entity
       get { return _CaseNoChange; }
       set { _CaseNoChange = value; }
     }
+    private entity.StopLossCloseMethods _StopLossStrategy;
+    [global::ProtoBuf.ProtoMember(7, IsRequired = true, Name=@"StopLossStrategy", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public entity.StopLossCloseMethods StopLossStrategy
+    {
+      get { return _StopLossStrategy; }
+      set { _StopLossStrategy = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }
@@ -995,6 +1002,17 @@ namespace entity
             
       [global::ProtoBuf.ProtoEnum(Name=@"ON_BIG_CHANGE", Value=4)]
       ON_BIG_CHANGE = 4
+    }
+  
+    [global::ProtoBuf.ProtoContract(Name=@"StopLossCloseMethods")]
+    public enum StopLossCloseMethods
+    {
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BASED_ON_NEXT_QUOTE", Value=0)]
+      BASED_ON_NEXT_QUOTE = 0,
+            
+      [global::ProtoBuf.ProtoEnum(Name=@"BASED_ON_INPUT_LIMIT", Value=1)]
+      BASED_ON_INPUT_LIMIT = 1
     }
   
 }

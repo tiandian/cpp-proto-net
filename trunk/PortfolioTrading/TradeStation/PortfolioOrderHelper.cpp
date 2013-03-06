@@ -4,7 +4,7 @@
 #include <boost/date_time.hpp>
 
 
-trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContext* placeOrderCtx)
+trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, entity::PosiDirectionType direction, PlaceOrderContext* placeOrderCtx)
 {
 	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
 	string mOrderId;
@@ -28,16 +28,24 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, PlaceOrderContex
 		entity::PosiDirectionType side = leg->Side();
 		
 		double limitPrice = 0;
+		trade::TradeDirectionType legDirection;
 		// in case wanna open position
-		if(side == entity::LONG)
+		if(direction == entity::LONG)
+		{
+			legDirection = side == entity::LONG ? trade::BUY : trade::SELL; 
+		}
+		else
+		{
+			legDirection = side == entity::LONG ? trade::SELL : trade::BUY;
+		}
+		order->set_direction(legDirection);
+		if(legDirection == trade::BUY)
 		{
 			// open long position
-			order->set_direction(trade::BUY);
 			limitPrice = leg->Ask();
 		}
-		else if(side == entity::SHORT)
+		else if(legDirection == trade::SELL)
 		{
-			order->set_direction(trade::SELL);
 			limitPrice = leg->Bid();
 		}
 		else
@@ -114,7 +122,7 @@ trade::OffsetFlagType GetCloseFlag(const string& symbol, const string& openDate)
 	return trade::OF_CLOSE_TODAY;
 }
 
-trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::MultiLegOrder* multilegOpenOrder, int quantity, PlaceOrderContext* placeOrderCtx)
+trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, entity::PosiDirectionType portfDirection, const trade::MultiLegOrder* multilegOpenOrder, int quantity, PlaceOrderContext* placeOrderCtx)
 {
 	trade::MultiLegOrder* pMultiLegOrder = new trade::MultiLegOrder;
 	string mOrderId;
@@ -143,17 +151,26 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, const trade::Mu
 		entity::PosiDirectionType side = leg->Side();
 
 		double limitPrice = 0;
+		trade::TradeDirectionType legDirection;
 		// in case wanna open position
-		if(side == entity::LONG)
+		if(portfDirection == entity::LONG)
+		{
+			legDirection = side == entity::LONG ? trade::SELL : trade::BUY; 
+		}
+		else
+		{
+			legDirection = side == entity::LONG ? trade::BUY : trade::SELL;
+		}
+		order->set_direction(legDirection);
+
+		if(legDirection == trade::BUY)
 		{
 			// open long position
-			order->set_direction(trade::SELL);
-			limitPrice = leg->Bid();
-		}
-		else if(side == entity::SHORT)
-		{
-			order->set_direction(trade::BUY);
 			limitPrice = leg->Ask();
+		}
+		else if(legDirection == trade::SELL)
+		{
+			limitPrice = leg->Bid();
 		}
 		else
 		{

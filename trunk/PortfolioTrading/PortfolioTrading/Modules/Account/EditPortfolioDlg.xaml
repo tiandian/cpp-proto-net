@@ -82,15 +82,12 @@
                         </StackPanel>
 
                         <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkFirstLeg}">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <TextBlock>比率</TextBlock>
+                                <TextBox Text="{Binding Ratio1}" TextAlignment="Right" Width="40"></TextBox>
+                            </StackPanel>
                             <TextBlock>品种</TextBlock>
-                            <TextBox Width="60" Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
-                            <TextBlock>多空</TextBlock>
-                            <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
-                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
-                              SelectedValuePath="Side" SelectedValue="{Binding Side1}">
-                            </ComboBox>
-                            <TextBlock>比率</TextBlock>
-                            <TextBox Text="{Binding Ratio1}" TextAlignment="Right"></TextBox>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
                         </DockPanel>
                     </DockPanel>
                     <DockPanel Margin="2">
@@ -101,14 +98,12 @@
                         </StackPanel>
 
                         <DockPanel Margin="10, 4, 10, 8" IsEnabled="{Binding IsChecked, ElementName=chkSecondLeg}">
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <TextBlock>比率</TextBlock>
+                                <TextBox Text="{Binding Ratio2}" Width="40" TextAlignment="Right"></TextBox>
+                            </StackPanel>
                             <TextBlock>品种</TextBlock>
-                            <TextBox Width="60" Text="{Binding Symbol2}" Margin="0, 0, 4, 0"></TextBox>
-                            <TextBlock>多空</TextBlock>
-                            <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
-                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
-                              SelectedValuePath="Side" SelectedValue="{Binding Side2}"></ComboBox>
-                            <TextBlock>比率</TextBlock>
-                            <TextBox Text="{Binding Ratio2}" TextAlignment="Right"></TextBox>
+                            <TextBox Text="{Binding Symbol2}" Margin="0, 0, 4, 0"></TextBox>
                         </DockPanel>
                     </DockPanel>
 
