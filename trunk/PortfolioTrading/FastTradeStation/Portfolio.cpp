@@ -240,6 +240,7 @@ bool CLeg::IsQuoteUpdated(long timestamp)
 
 void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem )
 {
+	m_pClientAgent = pClient;
 	m_innerItem = PortfItemPtr(pPortfItem);
 	
 	// backup current legs given by initialization

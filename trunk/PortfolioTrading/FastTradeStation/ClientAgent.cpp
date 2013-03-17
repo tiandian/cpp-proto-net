@@ -13,6 +13,7 @@ m_clientId(clntId),
 m_pSession(NULL)
 {
 	m_orderProcessor.Initialize(this, &m_tradeAgent);
+	m_quoteAgent.SetCallbackHanlder(this);
 }
 
 CClientAgent::~CClientAgent(void)
@@ -29,6 +30,7 @@ void CClientAgent::Add( entity::PortfolioItem* portfolioItem )
 	if(m_pActPortfolio.get() == NULL)
 	{
 		m_pActPortfolio = boost::shared_ptr<CPortfolio>(pPortf);
+		m_pActPortfolio->SubscribeQuotes();
 	}
 	else
 	{
@@ -53,7 +55,7 @@ void CClientAgent::AddPortfolios( entity::AddPortfolioParam& addPortfParam )
 
 void CClientAgent::Remove( const string& pid )
 {
-	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() == pid)
+	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() != pid)
 	{
 		m_pActPortfolio.reset();
 	}
@@ -124,7 +126,7 @@ void CClientAgent::UnregQuote( vector<string>& symbols)
 
 void CClientAgent::OpenPosition( const string& pid, int quantity)
 {
-	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() == pid)
+	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() != pid)
 	{
 		OpenPosition(m_pActPortfolio.get(), quantity, trade::SR_Manual);
 	}
@@ -246,7 +248,7 @@ void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDire
 
 void CClientAgent::QuickScalpe( const string& pid, int quantity )
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == pid)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != pid)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
@@ -396,7 +398,7 @@ boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol,
 
 void CClientAgent::VirtualOpenPosition( const string& pid, int quantity )
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == pid)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != pid)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
@@ -406,7 +408,7 @@ void CClientAgent::VirtualOpenPosition( const string& pid, int quantity )
 
 void CClientAgent::VirtualClosePosition( const string& pid, int quantity )
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == pid)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != pid)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
@@ -416,7 +418,7 @@ void CClientAgent::VirtualClosePosition( const string& pid, int quantity )
 
 void CClientAgent::SetPortfolioQuantity( const string& pid, int qty, int maxQty )
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == pid)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != pid)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
