@@ -2,36 +2,24 @@
 #include "Configuration.h"
 
 #include <iostream>
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
 
-#include <boost/log/common.hpp>
-#include <boost/log/formatters.hpp>
-#include <boost/log/filters.hpp>
+#include <log4cpp/Portability.hh>
+#include <log4cpp/Category.hh>
+#include <log4cpp/PropertyConfigurator.hh>
 
-#include <boost/log/utility/init/to_file.hpp>
-#include <boost/log/utility/init/to_console.hpp>
-#include <boost/log/utility/init/common_attributes.hpp>
-
-#include <boost/log/attributes/timer.hpp>
-
-#include "LogSeverityLevel.h"
-
-namespace logging = boost::log;
-namespace fmt = boost::log::formatters;
-namespace flt = boost::log::filters;
-namespace sinks = boost::log::sinks;
-namespace attrs = boost::log::attributes;
-namespace src = boost::log::sources;
-namespace keywords = boost::log::keywords;
-
-using boost::shared_ptr;
 using namespace std;
 
-// Now, let's try logging with severity
-src::severity_logger< severity_level > slg;
-
 extern CConfiguration config;
+
+log4cpp::Category& GetLogger()
+{
+	return log4cpp::Category::getRoot();
+}
+
+log4cpp::Category& GetLogger(const char* loggerName)
+{
+	return log4cpp::Category::getInstance(std::string(loggerName));
+}
 
 CLogManager::CLogManager(void):
 	m_isEnabled(false)
@@ -52,31 +40,8 @@ void CLogManager::Init()
 
 	try
 	{
-		// The first thing we have to do to get using the library is
-		// to set up the logging sinks - i.e. where the logs will be written to.
-		logging::init_log_to_console(std::clog, keywords::format = "%TimeStamp%: %_%");
-
-		// One can also use lambda expressions to setup filters and formatters
-		logging::init_log_to_file
-			(
-			keywords::file_name = config.GetLogFilePath(),       // file name pattern
-			keywords::rotation_size = 1024 * 1024,             // rotate files every 1 MiB...
-			// ...or at midnight
-			keywords::time_based_rotation = sinks::file::rotation_at_time_point(0, 0, 0),
-
-			keywords::filter = flt::attr< severity_level >("Severity", std::nothrow) >= config.GetLogLevel(),
-			keywords::format = fmt::format("%1% [%2%] <%3%> %4%")
-			% fmt::date_time("TimeStamp", std::nothrow)
-			% fmt::time_duration("Uptime", std::nothrow)
-			% fmt::attr< severity_level >("Severity", std::nothrow)
-			% fmt::message()
-			);
-
-		// Also let's add some commonly used attributes, like timestamp and record counter.
-		logging::add_common_attributes();
-
-		// Let's pretend we also want to profile our code, so add a special timer attribute.
-		slg.add_attribute("Uptime", boost::make_shared< attrs::timer >());
+		std::string initFileName = "./log4cpp.property";
+		log4cpp::PropertyConfigurator::configure(initFileName);
 
 		m_isEnabled = true;
 		cout << "Log initialized successfully" << endl;
@@ -91,7 +56,7 @@ void CLogManager::Trace( const char* text )
 {
 	if(m_isEnabled)
 	{
-		BOOST_LOG_SEV(slg, trace) << text;
+		Debug(text);
 	}
 }
 
@@ -104,7 +69,7 @@ void CLogManager::Debug( const char* text )
 {
 	if(m_isEnabled)
 	{
-		BOOST_LOG_SEV(slg, debug) << text;
+		GetLogger().debug(text);
 	}
 }
 
@@ -117,7 +82,7 @@ void CLogManager::Info( const char* text )
 {
 	if(m_isEnabled)
 	{
-		BOOST_LOG_SEV(slg, info) << text;
+		GetLogger().info(text);
 	}
 }
 
@@ -130,7 +95,7 @@ void CLogManager::Warning( const char* text )
 {
 	if(m_isEnabled)
 	{
-		BOOST_LOG_SEV(slg, warning) << text;
+		GetLogger().warn(text);
 	}
 }
 
@@ -143,7 +108,7 @@ void CLogManager::Error( const char* text )
 {
 	if(m_isEnabled)
 	{
-		BOOST_LOG_SEV(slg, error) << text;
+		GetLogger().error(text);
 	}
 }
 
@@ -156,7 +121,7 @@ void CLogManager::Fatal( const char* text )
 {
 	if(m_isEnabled)
 	{
-		BOOST_LOG_SEV(slg, fatal) << text;
+		GetLogger().fatal(text);
 	}
 }
 

@@ -251,6 +251,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="makefile" />
+    <None Include="log4cpp.property" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FastTradeStation.rc">
