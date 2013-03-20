@@ -11,14 +11,16 @@ using namespace std;
 
 extern CConfiguration config;
 
-log4cpp::Category& GetLogger()
+log4cpp::Category& GetRootLogger()
 {
 	return log4cpp::Category::getRoot();
 }
 
-log4cpp::Category& GetLogger(const char* loggerName)
+std::string loggerName("logger");
+
+log4cpp::Category& GetLogger()
 {
-	return log4cpp::Category::getInstance(std::string(loggerName));
+	return log4cpp::Category::getInstance(loggerName);
 }
 
 CLogManager::CLogManager(void):
@@ -69,7 +71,7 @@ void CLogManager::Debug( const char* text )
 {
 	if(m_isEnabled)
 	{
-		GetLogger().debug(text);
+		GetRootLogger().debug(text);
 	}
 }
 

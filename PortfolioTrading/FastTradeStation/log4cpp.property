@@ -1,13 +1,13 @@
-# property configurator test file
+log4cpp.rootCategory=DEBUG, rollingAppender
+log4cpp.category.logger=INFO, consoleAppender
 
-log4cpp.rootCategory=DEBUG, rootAppender, rollingAppender
-
-log4cpp.appender.rootAppender=ConsoleAppender
-log4cpp.appender.rootAppender.layout=BasicLayout
+log4cpp.appender.consoleAppender=ConsoleAppender
+log4cpp.appender.consoleAppender.layout=PatternLayout
+log4cpp.appender.consoleAppender.layout.ConversionPattern=%d{%H:%M:%S,%l} [%p] %m%n
 
 log4cpp.appender.rollingAppender=RollingFileAppender
-log4cpp.appender.rollingAppender.fileName=A3.log
-log4cpp.appender.rollingAppender.maxFileSize=1024
-log4cpp.appender.rollingAppender.maxBackupIndex=1
+log4cpp.appender.rollingAppender.fileName=./log/fs_log.txt
+log4cpp.appender.rollingAppender.maxFileSize=1024000
+log4cpp.appender.rollingAppender.maxBackupIndex=10
 log4cpp.appender.rollingAppender.layout=PatternLayout
 log4cpp.appender.rollingAppender.layout.ConversionPattern=%d [%p] %m%n
