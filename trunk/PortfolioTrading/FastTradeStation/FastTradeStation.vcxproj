@@ -50,8 +50,7 @@
       <AdditionalDependencies>libprotobuf.lib;log4cppD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>copy /y log4cpp.property $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -69,6 +68,9 @@
       <AdditionalLibraryDirectories>D:\Dev\boost_1_49_0\stage\lib;D:\Dev\log4cpp\lib\release;D:\Dev\protobuf-2.4.1\lib\Release</AdditionalLibraryDirectories>
       <AdditionalDependencies>libprotobuf.lib;log4cppLIB.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y log4cpp.property $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ap_invoke\apsessionmanager.cpp" />
