@@ -22,7 +22,7 @@ bool CClientManager::OnConnected( Session* session, const string& clientId, bool
 	if(attach)
 	{
 		CClientAgent* pClientAgent = GetClientById(clientId);
-		_ASSERT(pClientAgent != NULL);
+		assert(pClientAgent != NULL);
 		if(pClientAgent != NULL)
 		{
 			if(pClientAgent->Detached())

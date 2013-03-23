@@ -101,7 +101,7 @@ void CMLOrderPlacer::Send()
 	{
 		// Only start the first one
 		m_sendingIdx = 0;
-		_ASSERT(m_sgOrderPlacers.size() > 0);
+		assert(m_sgOrderPlacers.size() > 0);
 		(m_sgOrderPlacers.at(0))->Do();
 	}
 	else
@@ -218,7 +218,7 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 			m_mlOrder->set_haswarn(true);
 
 			CMLegOrderEvent* pOrderEvent = dynamic_cast<CMLegOrderEvent*>(transEvent);
-			_ASSERT(pOrderEvent != NULL);
+			assert(pOrderEvent != NULL);
 			if(pOrderEvent == NULL)
 				return isTerminal;
 
