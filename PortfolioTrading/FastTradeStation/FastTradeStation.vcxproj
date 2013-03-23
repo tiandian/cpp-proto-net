@@ -150,8 +150,9 @@
     <ClInclude Include="TradeAgentCallback.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="extract.bat" />
     <None Include="log4cpp.property" />
-    <None Include="makefile" />
+    <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FastTradeStation.rc" />

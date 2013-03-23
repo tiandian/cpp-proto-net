@@ -78,7 +78,7 @@ public:
 	void Response(int nReqestId, bool succ, T* pResult)
 	{
 		boost::mutex::scoped_lock lock(m_mut);
-		map<int, boost::shared_ptr< CSyncRequest<T> > >::iterator iter = 
+		typename map<int, boost::shared_ptr< CSyncRequest<T> > >::iterator iter = 
 			m_requesterMap.find(nReqestId);
 		if(iter != m_requesterMap.end())
 		{

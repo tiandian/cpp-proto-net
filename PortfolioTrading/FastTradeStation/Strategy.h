@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Entity/gen/cpp/message.pb.h"
+#include "entity/message.pb.h"
 #include "ClientAgent.h"
 #include "Portfolio.h"
 #include "globalmembers.h"

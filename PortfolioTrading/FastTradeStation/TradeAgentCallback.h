@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../Entity/gen/cpp/trade.pb.h"
+#include "entity/trade.pb.h"
 
 class CTradeAgentCallback
 {

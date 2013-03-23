@@ -250,8 +250,9 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="makefile" />
     <None Include="log4cpp.property" />
+    <None Include="Makefile" />
+    <None Include="extract.bat" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="FastTradeStation.rc">

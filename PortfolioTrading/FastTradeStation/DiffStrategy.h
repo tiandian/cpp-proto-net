@@ -30,8 +30,9 @@ public:
 
 	bool Test(double valToTest)
 	{
+#ifdef WIN32
 		_ASSERT(valToTest < DBL_TEST_UPPER_BOUNDERY && valToTest > DBL_TEST_LOWER_BOUNDERY);
-
+#endif
 		double targetVal = TargetVal();
 
 		if(valToTest < DBL_TEST_UPPER_BOUNDERY && 
