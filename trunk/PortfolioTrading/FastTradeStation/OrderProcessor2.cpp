@@ -9,6 +9,10 @@
 #include <boost/format.hpp>
 #include <boost/date_time.hpp>
 
+#ifndef WIN32
+#define sprintf_s sprintf 
+#endif
+
 extern CSymbolInfoRepositry symbolInfoRepo;
 
 const char EX_SHFE[] = "SHFE";

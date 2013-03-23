@@ -2,6 +2,23 @@
 #include <boost/foreach.hpp>
 #include <boost/date_time.hpp>
 
+class CUnexpectedSideException : public std::exception
+{
+public:
+	virtual const char* what() const throw()
+	{
+		return "unexpected leg side";
+	}
+};
+
+class CUnexpectedPositionDirectionException : public std::exception
+{
+public:
+	virtual const char* what() const throw()
+	{
+		return "unexpected position direction";
+	}
+};
 
 trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, entity::PosiDirectionType direction, PlaceOrderContext* placeOrderCtx)
 {
@@ -49,7 +66,7 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, entity::PosiDire
 		}
 		else
 		{
-			throw std::exception("unexpected leg side");
+			throw CUnexpectedSideException();
 		}
 
 		if(placeOrderCtx->limitPriceType == entity::Last)
@@ -173,7 +190,7 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, entity::PosiDir
 		}
 		else
 		{
-			throw std::exception("unexpected leg side");
+			throw CUnexpectedSideException();
 		}
 
 		if(placeOrderCtx->limitPriceType == entity::Last)
@@ -268,7 +285,7 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 		}
 		else
 		{
-			throw std::exception("unexpected leg side");
+			throw CUnexpectedSideException();
 		}
 
 		if(placeOrderCtx->limitPriceType == entity::Last)
@@ -319,7 +336,7 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 	return pMultiLegOrder;
 }
 
-int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders)
+int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder> > * genInputOrders)
 {
 	assert(genInputOrders != NULL);
 
@@ -426,18 +443,18 @@ trade::MultiLegOrder* BuildScalperOrder( CPortfolio* portfolio, trade::PosiDirec
 	
 		double limitPrice = 0;
 		// in case wanna open position
-		if(posiDirection == entity::LONG)
+		if(posiDirection == trade::LONG)
 		{
 			// open long position
 			order->set_direction(LONG_TRADE_SEQ[i]);
 		}
-		else if(posiDirection == entity::SHORT)
+		else if(posiDirection == trade::SHORT)
 		{
 			order->set_direction(SHORT_TRADE_SEQ[i]);
 		}
 		else
 		{
-			throw std::exception("unexpected position direction");
+			throw CUnexpectedPositionDirectionException();
 		}
 
 		limitPrice = order->direction() == trade::BUY ?

@@ -6,7 +6,12 @@
 #include <sstream>
 #include <boost/format.hpp>
 
+#if defined(WIN32)
 #pragma comment(lib, "./ThostTraderApi/thosttraderapi.lib")
+#else
+#define strcpy_s strcpy
+#define _strdup strdup
+#endif
 
 #define CONNECT_TIMEOUT_SECONDS 15
 #define DISCONNECT_TIMEOUT_SECOND 1
@@ -336,8 +341,8 @@ void CTradeAgent::ReqSettlementInfoConfirm()
 {
 	CThostFtdcSettlementInfoConfirmField req;
 	memset(&req, 0, sizeof(req));
-	strcpy(req.BrokerID, m_brokerID.c_str());
-	strcpy(req.InvestorID, m_userID.c_str());
+	strcpy_s(req.BrokerID, m_brokerID.c_str());
+	strcpy_s(req.InvestorID, m_userID.c_str());
 	int iResult = m_pUserApi->ReqSettlementInfoConfirm(&req, RequestIDIncrement());
 
 	ostringstream debugSS;
@@ -491,8 +496,8 @@ void CTradeAgent::OnRspQryInstrument( CThostFtdcInstrumentField *pInstrument, CT
 
 void CTradeAgent::QueryAccount()
 {
-	assert(!m_brokerID.empty(), "Broker Id cannot be empty");
-	assert(!m_userID.empty(), "Account Id cannot be empty");
+	assert(!m_brokerID.empty()); // , "Broker Id cannot be empty");
+	assert(!m_userID.empty());	//, "Account Id cannot be empty");
 
 	if(m_brokerID.empty() || m_userID.empty())
 		return;
