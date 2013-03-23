@@ -96,7 +96,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 	if(ORDER_STATE_SENDING != state)
 	{
 		pSgOrderEvent = dynamic_cast<CSgOrderEvent*>(transEvent);
-		_ASSERT(pSgOrderEvent != NULL);
+		assert(pSgOrderEvent != NULL);
 		if(pSgOrderEvent == NULL)
 			return isTerminal;
 	}
@@ -141,7 +141,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 					if(m_pPortf != NULL)
 					{
 						CLeg* pLeg = m_pPortf->GetLeg(Symbol());
-						_ASSERT(pLeg != NULL);
+						assert(pLeg != NULL);
 						if(pLeg != NULL)
 							m_quoteTimestamp = pLeg->GetTimestamp();
 					}
@@ -272,7 +272,7 @@ void CSgOrderPlacer::OnOrderUpdate( trade::Order* pOrd )
 void CSgOrderPlacer::ModifyOrderPrice()
 {
 	CLeg* pLeg = m_pPortf->GetLeg(Symbol());
-	_ASSERT(pLeg != NULL);
+	assert(pLeg != NULL);
 	if(pLeg != NULL)
 	{
 		bool quoteUpdated = pLeg->IsQuoteUpdated(m_quoteTimestamp);
@@ -421,7 +421,7 @@ void CScalperOrderPlacer::ModifyOrderPrice()
 	if(m_closeMethod == entity::BASED_ON_NEXT_QUOTE)
 	{
 		CLeg* pLeg = m_pPortf->GetLeg(Symbol());
-		_ASSERT(pLeg != NULL);
+		assert(pLeg != NULL);
 		if(pLeg != NULL)
 		{
 			bool quoteUpdated = pLeg->IsQuoteUpdated(m_quoteTimestamp);

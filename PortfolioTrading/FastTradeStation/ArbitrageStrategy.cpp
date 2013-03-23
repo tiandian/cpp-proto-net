@@ -49,9 +49,7 @@ void CArbitrageStrategy::ClosePosition(trade::SubmitReason submitReason)
 	{
 		int qty = portf->Quantity();
 		int positionQty = portf->PositionQuantity();
-#ifdef WIN32	
-		_ASSERT(positionQty > 0);
-#endif	
+		assert(positionQty > 0);
 	
 		const string& portfId = portf->ID();
 		Client()->ClosePosition(portfId, qty, submitReason);

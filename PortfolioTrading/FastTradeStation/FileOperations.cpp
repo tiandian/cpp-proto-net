@@ -3,7 +3,7 @@
 
 #include <boost/filesystem.hpp>
 
-using namespace boost::filesystem3;
+using namespace boost::filesystem;
 
 bool CreateFolderIfNotExists(const string& folderName)
 {

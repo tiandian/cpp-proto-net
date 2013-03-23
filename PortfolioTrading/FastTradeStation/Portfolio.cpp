@@ -92,8 +92,8 @@ double CalcDiff(vector<LegPtr>& legs)
 
 double CalcPortfProfit(trade::MultiLegOrder* openOrder, trade::MultiLegOrder* closeOrder)
 {
-	_ASSERT(openOrder != NULL);
-	_ASSERT(closeOrder != NULL);
+	assert(openOrder != NULL);
+	assert(closeOrder != NULL);
 
 	double totalProfit = 0;
 	int legCount = openOrder->legs_size();

@@ -430,7 +430,7 @@ bool CTradeAgent::QuerySymbolInfo( const std::string& symbol, CSymbolInfo** ppSy
 	boost::shared_ptr< CSyncRequest<CSymbolInfo> > req = m_symbInfoReqFactory.Create(reqId);
 
 	CSymbolInfo* pSymbolInfo = symbolInfoRepo.Get(symbol.c_str());
-	_ASSERT(pSymbolInfo != NULL);
+	assert(pSymbolInfo != NULL);
 	
 	if(pSymbolInfo != NULL)
 	{
@@ -491,8 +491,8 @@ void CTradeAgent::OnRspQryInstrument( CThostFtdcInstrumentField *pInstrument, CT
 
 void CTradeAgent::QueryAccount()
 {
-	_ASSERT(!m_brokerID.empty(), "Broker Id cannot be empty");
-	_ASSERT(!m_userID.empty(), "Account Id cannot be empty");
+	assert(!m_brokerID.empty(), "Broker Id cannot be empty");
+	assert(!m_userID.empty(), "Account Id cannot be empty");
 
 	if(m_brokerID.empty() || m_userID.empty())
 		return;

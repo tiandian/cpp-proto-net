@@ -21,7 +21,7 @@ CDiffStrategy* CreateStrategy( CPortfolio* pPortf, const string& name, const str
 		pPortf->SelfClose(true);
 	}
 	
-	_ASSERT(pStrategy != NULL);
+	assert(pStrategy != NULL);
 	pStrategy->Portfolio(pPortf);
 	pStrategy->ApplySettings(data);
 

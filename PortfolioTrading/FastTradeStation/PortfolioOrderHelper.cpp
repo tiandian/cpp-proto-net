@@ -412,7 +412,7 @@ trade::MultiLegOrder* BuildScalperOrder( CPortfolio* portfolio, trade::PosiDirec
 	pMultiLegOrder->set_haswarn(false);
 	pMultiLegOrder->set_statusmsg("");
 
-	_ASSERT(portfolio->Count() == 1);
+	assert(portfolio->Count() == 1);
 
 	CLeg* leg = portfolio->GetLeg(1);
 
