@@ -72,7 +72,7 @@ public:
 		return NULL;
 	}
 
-	virtual void Transition(const string& orderId, COrderEvent& event);
+	virtual void Transition(const string& orderId, COrderEvent* event);
 
 protected:
 	

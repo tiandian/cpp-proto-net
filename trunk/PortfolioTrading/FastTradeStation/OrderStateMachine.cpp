@@ -7,10 +7,10 @@
 extern const char* ORDER_STATE_TEXT[];
 extern const char* ORDER_EVENT_TEXT[];
 
-void COrderStateMachine::Transition( const string& orderId, COrderEvent& event )
+void COrderStateMachine::Transition( const string& orderId, COrderEvent* event )
 {
 	boost::recursive_mutex::scoped_lock lock(m_mut);
-	ORDER_EVENT ordEvt = event.Event();
+	ORDER_EVENT ordEvt = event->Event();
 	logger.Debug(boost::str(boost::format("Order(%s) transition event %s")
 		% orderId.c_str() % ORDER_EVENT_TEXT[ordEvt]));
 
@@ -22,7 +22,7 @@ void COrderStateMachine::Transition( const string& orderId, COrderEvent& event )
 		COrderState* pNextState = currentState->Next(event);
 		if(pNextState != NULL)
 		{
-			bool isTerminated = pNextState->Run((iter->second).get(), &event);
+			bool isTerminated = pNextState->Run((iter->second).get(), event);
 			
 			// If the state has no NEXT state, it's considered as terminal state
 			// And erase this order placer from map.

@@ -65,7 +65,8 @@ void COrderProcessor2::OnRspUserLogin( bool succ, std::string& msg, int initOrde
 
 void COrderProcessor2::OnRspOrderInsert( bool succ, const std::string& orderRef, const std::string& msg )
 {
-	m_sgOrderStateMachine.Transition(orderRef, SubmitFailedEvent(msg));
+	SubmitFailedEvent submitFailedEvt(msg);
+	m_sgOrderStateMachine.Transition(orderRef, &submitFailedEvt);
 }
 
 void COrderProcessor2::OnRspOrderAction( bool succ, const std::string& orderRef, const std::string& msg )
@@ -77,7 +78,8 @@ void COrderProcessor2::OnRspOrderAction( bool succ, const std::string& orderRef,
 		logger.Info(boost::str(boost::format("Cancel order(%s) failed. message: %s") 
 			% orderRef.c_str() % msg.c_str()));
 
-		m_sgOrderStateMachine.Transition(orderRef, CancelFailedEvent(NULL));
+		CancelFailedEvent cancelFailedEvt(NULL);
+		m_sgOrderStateMachine.Transition(orderRef, &cancelFailedEvt);
 	}
 }
 
@@ -89,7 +91,7 @@ void COrderProcessor2::OnRtnOrder( trade::Order* order )
 	{
 		boost::shared_ptr<COrderEvent> orderEvtPtr(pEvent);
 		string ordRef = order->orderref();
-		m_sgOrderStateMachine.Transition(ordRef, *pEvent);
+		m_sgOrderStateMachine.Transition(ordRef, pEvent);
 	}
 }
 
@@ -191,7 +193,7 @@ CSgOrderPlacer* COrderProcessor2::CreateSingleOrderPlacer(CPortfolio* pPortf, tr
 		return m_sgOrderStateMachine.CreatePlacer(pPortf, pMlOrder, pInputOrder, retryTimes, this);
 }
 
-void COrderProcessor2::RaiseMLOrderPlacerEvent( const string& mlOrdPlacerId, COrderEvent& orderEvent )
+void COrderProcessor2::RaiseMLOrderPlacerEvent( const string& mlOrdPlacerId, COrderEvent* orderEvent )
 {
 	m_mlOrderStateMachine.Transition(mlOrdPlacerId, orderEvent);
 }

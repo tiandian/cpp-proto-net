@@ -188,7 +188,7 @@ int CPortfolio::Count()
 
 CLeg* CPortfolio::GetLeg( int legId )
 {
-	if(legId <= m_vecLegs.size())
+	if(legId <= (int)m_vecLegs.size())
 		return m_vecLegs[legId - 1].get();
 
 	return NULL;

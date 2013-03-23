@@ -102,9 +102,9 @@ public:
 		return false;
 	}
 
-	virtual COrderState* Next(COrderEvent& evt)
+	virtual COrderState* Next(COrderEvent* evt)
 	{ 
-		map<ORDER_EVENT, COrderState*>::iterator iter = eventStateMap.find(evt.Event());
+		map<ORDER_EVENT, COrderState*>::iterator iter = eventStateMap.find(evt->Event());
 		if(iter != eventStateMap.end())
 		{
 			return iter->second;

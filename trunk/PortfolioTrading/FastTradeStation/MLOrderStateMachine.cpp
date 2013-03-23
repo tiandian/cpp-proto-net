@@ -9,7 +9,7 @@
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
 
-typedef std::vector<boost::shared_ptr<trade::InputOrder>> InputOrderVector;
+typedef std::vector<boost::shared_ptr<trade::InputOrder> > InputOrderVector;
 typedef InputOrderVector* InputOrderVectorPtr;
 
 CMLOrderStateMachine::CMLOrderStateMachine(void)
@@ -63,7 +63,7 @@ void CMLOrderStateMachine::Initialize()
 	
 }
 
-void CMLOrderStateMachine::Transition( const string& orderId, COrderEvent& event )
+void CMLOrderStateMachine::Transition( const string& orderId, COrderEvent* event )
 {
 	COrderStateMachine::Transition(orderId, event);
 }
@@ -115,7 +115,7 @@ void CMLOrderPlacer::Send()
 
 bool CMLOrderPlacer::SendNext(COrderEvent* transEvent)
 {
-	if(++m_sendingIdx < m_sgOrderPlacers.size())
+	if(++m_sendingIdx < (int)m_sgOrderPlacers.size())
 	{
 		CSgOrderPlacer*& pSgPlacer = m_sgOrderPlacers.at(m_sendingIdx);
 		

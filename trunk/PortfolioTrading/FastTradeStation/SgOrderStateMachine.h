@@ -49,7 +49,7 @@ public:
 	void AdjustQuantity(int qty);
 
 protected:
-	virtual void RaiseMultiLegOrderEvent(COrderEvent& orderEvent);
+	virtual void RaiseMultiLegOrderEvent(COrderEvent* orderEvent);
 	virtual void OnOrderUpdate(trade::Order* pOrd);
 	virtual void ModifyOrderPrice();
 	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent);
@@ -90,7 +90,7 @@ public:
 	bool AutoDispose() { return false; }
 
 protected:
-	virtual void RaiseMultiLegOrderEvent(COrderEvent& orderEvent);
+	virtual void RaiseMultiLegOrderEvent(COrderEvent* orderEvent);
 	virtual void OnOrderUpdate(trade::Order* pOrd){}
 	virtual void ModifyOrderPrice();
 	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent);
@@ -155,7 +155,7 @@ public:
 	}
 
 	virtual void Initialize();
-	void Transition(const string& orderId, COrderEvent& event);
+	void Transition(const string& orderId, COrderEvent* event);
 };
 
 namespace op2
