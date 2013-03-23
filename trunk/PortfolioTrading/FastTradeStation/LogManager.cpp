@@ -62,9 +62,9 @@ void CLogManager::Trace( const char* text )
 	}
 }
 
-void CLogManager::Trace( std::string& text)
+void CLogManager::Trace( const std::string& text)
 {
-	Trace(text.c_str());
+	Debug(text);
 }
 
 void CLogManager::Debug( const char* text )
@@ -75,9 +75,12 @@ void CLogManager::Debug( const char* text )
 	}
 }
 
-void CLogManager::Debug( std::string& text)
+void CLogManager::Debug( const std::string& text)
 {
-	Debug(text.c_str());
+	if(m_isEnabled)
+	{
+		GetRootLogger().debug(text);
+	}
 }
 
 void CLogManager::Info( const char* text )
@@ -88,9 +91,12 @@ void CLogManager::Info( const char* text )
 	}
 }
 
-void CLogManager::Info( std::string& text)
+void CLogManager::Info( const std::string& text)
 {
-	Info(text.c_str());
+	if(m_isEnabled)
+	{
+		GetLogger().info(text);
+	}
 }
 
 void CLogManager::Warning( const char* text )
@@ -101,9 +107,12 @@ void CLogManager::Warning( const char* text )
 	}
 }
 
-void CLogManager::Warning( std::string& text)
+void CLogManager::Warning( const std::string& text)
 {
-	Warning(text.c_str());
+	if(m_isEnabled)
+	{
+		GetLogger().warn(text);
+	}
 }
 
 void CLogManager::Error( const char* text )
@@ -114,9 +123,12 @@ void CLogManager::Error( const char* text )
 	}
 }
 
-void CLogManager::Error( std::string& text)
+void CLogManager::Error( const std::string& text)
 {
-	Error(text.c_str());
+	if(m_isEnabled)
+	{
+		GetLogger().error(text);
+	}
 }
 
 void CLogManager::Fatal( const char* text )
@@ -127,7 +139,10 @@ void CLogManager::Fatal( const char* text )
 	}
 }
 
-void CLogManager::Fatal( std::string& text)
+void CLogManager::Fatal( const std::string& text)
 {
-	Fatal(text.c_str());
+	if(m_isEnabled)
+	{
+		GetLogger().fatal(text);
+	}
 }

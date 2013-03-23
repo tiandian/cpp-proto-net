@@ -25,6 +25,6 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio, const std::str
 
 trade::MultiLegOrder* BuildScalperOrder(CPortfolio* portfolio, trade::PosiDirectionType posiDirection, double precedence, PlaceOrderContext* placeOrderCtx);
 
-int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector<boost::shared_ptr<trade::InputOrder>>* genInputOrders);
+int GetInputOrders(trade::MultiLegOrder* multilegOrder, std::vector< boost::shared_ptr< trade::InputOrder> > * genInputOrders);
 
 trade::InputOrder* BuildSingleOrder(const string& symbol, double limitPrice, trade::TradeDirectionType direction, trade::OffsetFlagType offsetFlag, PlaceOrderContext* placeOrderCtx);
