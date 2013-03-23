@@ -5,7 +5,12 @@
 #include <boost/format.hpp>
 #include <sstream>
 
+#if defined(WIN32)
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
+#else
+#define strcpy_s strcpy
+#define _strdup strdup
+#endif
 
 #define SYMBOL_MAX_LENGTH 10
 #define CONNECT_TIMEOUT_SECONDS 15
@@ -287,7 +292,7 @@ bool CQuoteAgent::SubscribesQuotes( vector<string>& subscribeArr )
 			iter != subscribeArr.end(); ++iter, ++idx)
 		{
 			symbols[idx] = new char[SYMBOL_MAX_LENGTH];
-			strcpy_s(symbols[idx], SYMBOL_MAX_LENGTH, iter->c_str());
+			strncpy(symbols[idx], iter->c_str(), SYMBOL_MAX_LENGTH);
 			info << iter->c_str() << " ";
 		}
 
@@ -429,7 +434,7 @@ bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 			iter !=unSubscribeArr.end(); ++iter, ++idx)
 		{
 			symbols[idx] = new char[SYMBOL_MAX_LENGTH];
-			strcpy_s(symbols[idx], SYMBOL_MAX_LENGTH, iter->c_str());
+			strncpy(symbols[idx], iter->c_str(), SYMBOL_MAX_LENGTH);
 			info << iter->c_str() << " ";
 		}
 
