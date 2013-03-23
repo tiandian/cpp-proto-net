@@ -59,7 +59,7 @@ public:
 	}
 
 	virtual void Initialize();
-	void Transition(const string& orderId, COrderEvent& event);
+	void Transition(const string& orderId, COrderEvent* event);
 };
 
 namespace op2

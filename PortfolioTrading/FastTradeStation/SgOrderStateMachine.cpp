@@ -74,7 +74,7 @@ void CSgOrderStateMachine::Initialize()
 	partiallyFilled->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 }
 
-void CSgOrderStateMachine::Transition( const string& orderId/*orderRef*/, COrderEvent& event )
+void CSgOrderStateMachine::Transition( const string& orderId/*orderRef*/, COrderEvent* event )
 {
 	COrderStateMachine::Transition(orderId, event);
 }
@@ -164,7 +164,8 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 				{
 					OnOrderUpdate(pOrd);
 				}
-				RaiseMultiLegOrderEvent(LegCanceledEvent(Symbol()));
+				LegCanceledEvent legCxlEvt(Symbol());
+				RaiseMultiLegOrderEvent(&legCxlEvt);
 			}
 		}
 		break;
@@ -205,7 +206,8 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 			m_succ = true;
 			isTerminal = true;
 
-			RaiseMultiLegOrderEvent(LegCompletedEvent(Symbol(), remained, finished));
+			LegCompletedEvent legCompletedEvt(Symbol(), remained, finished);
+			RaiseMultiLegOrderEvent(&legCompletedEvt);
 		}
 		break;
 	case ORDER_STATE_PLACE_FAILED:
@@ -222,7 +224,8 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 			}
 			isTerminal = true;
 
-			RaiseMultiLegOrderEvent(LegRejectedEvent(Symbol()));
+			LegRejectedEvent legRejEvt(Symbol());
+			RaiseMultiLegOrderEvent(&legRejEvt);
 		}
 		break;
 	case ORDER_STATE_PARTIALLY_FILLED:
@@ -306,7 +309,7 @@ void CSgOrderPlacer::ModifyOrderPrice()
 	
 }
 
-void CSgOrderPlacer::RaiseMultiLegOrderEvent( COrderEvent& orderEvent )
+void CSgOrderPlacer::RaiseMultiLegOrderEvent( COrderEvent* orderEvent )
 {
 	m_pOrderProcessor->RaiseMLOrderPlacerEvent(ParentOrderId(), orderEvent);
 }
@@ -395,7 +398,7 @@ bool CManualSgOrderPlacer::DoAndWait()
 	return m_succ;
 }
 
-void CManualSgOrderPlacer::RaiseMultiLegOrderEvent( COrderEvent& orderEvent )
+void CManualSgOrderPlacer::RaiseMultiLegOrderEvent( COrderEvent* orderEvent )
 {
 	boost::mutex::scoped_lock l(m_mut);
 	m_cond.notify_one();

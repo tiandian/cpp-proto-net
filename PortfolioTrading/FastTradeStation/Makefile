@@ -6,7 +6,7 @@ ENTITY_DIR = ./src/entity
 AP_DIR = ./src/ap_invoke
 OBJ_DIR = ./obj
 
-_ENTITY_FILES = packet enum message quote trade 
+_ENTITY_FILES = packet enum quote trade message  
 ENTITY_FILES = $(patsubst %, $(ENTITY_DIR)/%.pb.cc, $(_ENTITY_FILES))
 ENTITY_OBJS = $(patsubst %, $(OBJ_DIR)/%.pb.o, $(_ENTITY_FILES))
 
