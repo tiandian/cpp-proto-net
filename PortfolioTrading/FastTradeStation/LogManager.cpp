@@ -71,7 +71,11 @@ void CLogManager::Debug( const char* text )
 {
 	if(m_isEnabled)
 	{
-		GetRootLogger().debug(text);
+		log4cpp::Category& logger = GetLogger();
+		if(logger.isDebugEnabled())
+			logger.debug(text);
+		else
+			GetRootLogger().debug(text);
 	}
 }
 
@@ -79,7 +83,11 @@ void CLogManager::Debug( const std::string& text)
 {
 	if(m_isEnabled)
 	{
-		GetRootLogger().debug(text);
+		log4cpp::Category& logger = GetLogger();
+		if(logger.isDebugEnabled())
+			logger.debug(text);
+		else
+			GetRootLogger().debug(text);
 	}
 }
 
@@ -87,7 +95,11 @@ void CLogManager::Info( const char* text )
 {
 	if(m_isEnabled)
 	{
-		GetLogger().info(text);
+		log4cpp::Category& logger = GetLogger();
+		if(logger.isInfoEnabled())
+			logger.info(text);
+		else
+			GetRootLogger().info(text);
 	}
 }
 
@@ -95,7 +107,11 @@ void CLogManager::Info( const std::string& text)
 {
 	if(m_isEnabled)
 	{
-		GetLogger().info(text);
+		log4cpp::Category& logger = GetLogger();
+		if(logger.isInfoEnabled())
+			logger.info(text);
+		else
+			GetRootLogger().info(text);
 	}
 }
 
@@ -103,7 +119,11 @@ void CLogManager::Warning( const char* text )
 {
 	if(m_isEnabled)
 	{
-		GetLogger().warn(text);
+		log4cpp::Category& logger = GetLogger();
+		if(logger.isWarnEnabled())
+			logger.warn(text);
+		else
+			GetRootLogger().warn(text);
 	}
 }
 
@@ -111,7 +131,11 @@ void CLogManager::Warning( const std::string& text)
 {
 	if(m_isEnabled)
 	{
-		GetLogger().warn(text);
+		log4cpp::Category& logger = GetLogger();
+		if(logger.isWarnEnabled())
+			logger.warn(text);
+		else
+			GetRootLogger().warn(text);
 	}
 }
 
