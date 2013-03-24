@@ -154,7 +154,7 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty, trade::SubmitReason
 
 void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, trade::SubmitReason submitReason, string& msg)
 {
-	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() == openMlOrd.portfolioid())
+	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() != openMlOrd.portfolioid())
 	{
 		CPortfolio* portf = m_pActPortfolio.get();
 
@@ -179,7 +179,7 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 
 void CClientAgent::SimpleCloseOrderPosition(const string& portfolioId, trade::SubmitReason submitReason)
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == portfolioId)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfolioId)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
@@ -192,7 +192,7 @@ void CClientAgent::SimpleCloseOrderPosition(const string& portfolioId, trade::Su
 
 void CClientAgent::ClosePosition(const string& portfolioId, int quantity, trade::SubmitReason submitReason)
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == portfolioId)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfolioId)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
@@ -306,7 +306,7 @@ void CClientAgent::OnLegOrderUpdated( const string& portfId, const string& mlOrd
 void CClientAgent::ApplyStrategySetting( const entity::ModifyStrategyParam& settings )
 {
 	const string& portfId = settings.portfid();
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == portfId)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfId)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
@@ -319,7 +319,7 @@ void CClientAgent::ApplyStrategySetting( const entity::ModifyStrategyParam& sett
 void CClientAgent::EnableStrategy(const entity::ModifyRunningStatusParam& runningStatusParam)
 {
 	const string& portfId = runningStatusParam.portfid();
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == portfId)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfId)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
@@ -333,7 +333,7 @@ void CClientAgent::EnableStrategy(const entity::ModifyRunningStatusParam& runnin
 void CClientAgent::TurnPortfSwitches( const entity::ModifyPortfolioSwitchParam& switchesParam )
 {
 	const string& portfId = switchesParam.portfid();
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == portfId)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfId)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();
@@ -348,7 +348,7 @@ void CClientAgent::TurnPortfSwitches( const entity::ModifyPortfolioSwitchParam& 
 void CClientAgent::SetPorfPreferredLeg( const entity::ModifyPortfolioPreferredLegParam& preferredLegParam )
 {
 	const string& portfId = preferredLegParam.portfid();
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() == portfId)
+	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfId)
 		return;
 
 	CPortfolio* portf = m_pActPortfolio.get();

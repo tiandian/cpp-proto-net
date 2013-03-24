@@ -682,6 +682,13 @@ namespace entity
       get { return _StopLossStrategy; }
       set { _StopLossStrategy = value; }
     }
+    private int _RetryTimes;
+    [global::ProtoBuf.ProtoMember(8, IsRequired = true, Name=@"RetryTimes", DataFormat = global::ProtoBuf.DataFormat.TwosComplement)]
+    public int RetryTimes
+    {
+      get { return _RetryTimes; }
+      set { _RetryTimes = value; }
+    }
     private global::ProtoBuf.IExtension extensionObject;
     global::ProtoBuf.IExtension global::ProtoBuf.IExtensible.GetExtensionObject(bool createIfMissing)
       { return global::ProtoBuf.Extensible.GetExtensionObject(ref extensionObject, createIfMissing); }

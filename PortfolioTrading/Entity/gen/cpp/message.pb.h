@@ -2029,6 +2029,13 @@ class ScalperSettings : public ::google::protobuf::Message {
   inline entity::StopLossCloseMethods stoplossstrategy() const;
   inline void set_stoplossstrategy(entity::StopLossCloseMethods value);
   
+  // required int32 RetryTimes = 8;
+  inline bool has_retrytimes() const;
+  inline void clear_retrytimes();
+  static const int kRetryTimesFieldNumber = 8;
+  inline ::google::protobuf::int32 retrytimes() const;
+  inline void set_retrytimes(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:entity.ScalperSettings)
  private:
   inline void set_has_threshold();
@@ -2045,6 +2052,8 @@ class ScalperSettings : public ::google::protobuf::Message {
   inline void clear_has_casenochange();
   inline void set_has_stoplossstrategy();
   inline void clear_has_stoplossstrategy();
+  inline void set_has_retrytimes();
+  inline void clear_has_retrytimes();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2055,9 +2064,10 @@ class ScalperSettings : public ::google::protobuf::Message {
   int casege4tick_;
   int casenochange_;
   int stoplossstrategy_;
+  ::google::protobuf::int32 retrytimes_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -5373,6 +5383,28 @@ inline void ScalperSettings::set_stoplossstrategy(entity::StopLossCloseMethods v
   GOOGLE_DCHECK(entity::StopLossCloseMethods_IsValid(value));
   set_has_stoplossstrategy();
   stoplossstrategy_ = value;
+}
+
+// required int32 RetryTimes = 8;
+inline bool ScalperSettings::has_retrytimes() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void ScalperSettings::set_has_retrytimes() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void ScalperSettings::clear_has_retrytimes() {
+  _has_bits_[0] &= ~0x00000080u;
+}
+inline void ScalperSettings::clear_retrytimes() {
+  retrytimes_ = 0;
+  clear_has_retrytimes();
+}
+inline ::google::protobuf::int32 ScalperSettings::retrytimes() const {
+  return retrytimes_;
+}
+inline void ScalperSettings::set_retrytimes(::google::protobuf::int32 value) {
+  set_has_retrytimes();
+  retrytimes_ = value;
 }
 
 // -------------------------------------------------------------------

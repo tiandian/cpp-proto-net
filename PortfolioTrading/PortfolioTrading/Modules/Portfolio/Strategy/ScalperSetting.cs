@@ -129,6 +129,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region RetryTimes
+        private int _retryTimes;
+
+        public int RetryTimes
+        {
+            get { return _retryTimes; }
+            set
+            {
+                if (_retryTimes != value)
+                {
+                    _retryTimes = value;
+                    RaisePropertyChanged("RetryTimes");
+                }
+            }
+        }
+        #endregion
+
         public override string Name
         {
             get { return ScalperStrategyName; }
@@ -143,7 +160,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 new XAttribute("caseLE3Tick", CaseLE3Tick),
                 new XAttribute("caseGE4Tick", CaseGE4Tick),
                 new XAttribute("caseNoChange", CaseNoChange),
-                new XAttribute("stopLossCloseStrategy", StopLossCloseMethod));
+                new XAttribute("stopLossCloseStrategy", StopLossCloseMethod),
+                new XAttribute("retryTimes", RetryTimes));
 
             return elem.ToString();
         }
@@ -158,6 +176,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             setting.CaseLE3Tick = CaseLE3Tick;
             setting.CaseNoChange = CaseNoChange;
             setting.StopLossStrategy = StopLossCloseMethod;
+            setting.RetryTimes = RetryTimes;
             return DataTranslater.Serialize(setting);
         }
 

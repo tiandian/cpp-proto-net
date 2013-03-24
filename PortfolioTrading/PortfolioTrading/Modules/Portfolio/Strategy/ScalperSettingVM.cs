@@ -121,6 +121,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region RetryTimes
+        private int _retryTimes;
+
+        public int RetryTimes
+        {
+            get { return _retryTimes; }
+            set
+            {
+                if (_retryTimes != value)
+                {
+                    _retryTimes = value;
+                    RaisePropertyChanged("RetryTimes");
+                }
+            }
+        }
+        #endregion
+
         #region CaseNoChange
         private entity.DirectionDepends _caseNoChange;
 
@@ -167,6 +184,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             settings.CaseLE3Tick = this.CaseLE3Tick;
             settings.CaseNoChange = this.CaseNoChange;
             settings.StopLossCloseMethod = this.StopLossCloseMethod;
+            settings.RetryTimes = this.RetryTimes;
 
             base.OnApplySetting();
         }
@@ -181,6 +199,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             this.CaseLE3Tick = settings.CaseLE3Tick;
             this.CaseNoChange = settings.CaseNoChange;
             this.StopLossCloseMethod = settings.StopLossCloseMethod;
+            this.RetryTimes = settings.RetryTimes;
         }
 
         private List<DirectionDependsItem> _directionDependsItems = new List<DirectionDependsItem>();

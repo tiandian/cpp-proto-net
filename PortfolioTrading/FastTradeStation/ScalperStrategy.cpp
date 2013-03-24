@@ -6,7 +6,8 @@
 CScalperStrategy::CScalperStrategy(void):
 m_prevAsk(0), m_prevBid(0),
 m_Ask(0), m_AskSize(0), m_Bid(0), m_BidSize(0),
-m_priceTick(0)
+m_priceTick(0),
+m_maxRetryTimes(8)
 {
 }
 
@@ -27,6 +28,7 @@ void CScalperStrategy::ApplySettings( const std::string& settingData )
 	m_CaseGE4Tick = settings.casege4tick();
 	m_CaseNoChange = settings.casenochange();
 	m_closeStrategy = settings.stoplossstrategy();
+	m_maxRetryTimes = settings.retrytimes();
 
 	logger.Info(boost::str(boost::format("Scalper Threshold: %f") % settings.threshold()));
 }

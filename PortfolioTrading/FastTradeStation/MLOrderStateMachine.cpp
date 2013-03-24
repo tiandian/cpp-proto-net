@@ -76,11 +76,12 @@ void CMLOrderPlacer::Do()
 	int ordCount = GetInputOrders(m_mlOrder.get(), vecInputOrders);
 	
 	bool autoTracking = m_pPortf->AutoTracking();
+	int retryTimes = m_pPortf->RetryTimes();
 	
 	for(InputOrderVector::iterator iter = vecInputOrders->begin();
 		iter != vecInputOrders->end(); ++iter)
 	{
-		CSgOrderPlacer* pPlacer = CreateSgOrderPlacer(*iter, autoTracking ? 2 : 0);
+		CSgOrderPlacer* pPlacer = CreateSgOrderPlacer(*iter, autoTracking ? retryTimes : 0);
 		m_sgOrderPlacers.push_back(pPlacer);
 	}
 

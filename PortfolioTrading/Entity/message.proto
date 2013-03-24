@@ -153,6 +153,7 @@ message ScalperSettings
 	required DirectionDepends CaseGE4Tick = 5;
 	required DirectionDepends CaseNoChange = 6;
 	required StopLossCloseMethods StopLossStrategy = 7;
+	required int32 RetryTimes = 8;
 }
 
 message ModifyStrategyParam

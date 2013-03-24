@@ -9,6 +9,7 @@
 #include <boost/format.hpp>
 
 #define DOUBLE_COMPARSION_PRECISION (0.01)
+#define DEFAULT_MAX_RETRY_TIMES 2
 
 enum COMPARE_OP
 {
@@ -157,6 +158,8 @@ public:
 	}
 
 	virtual void ApplySettings(const std::string& settingData) = 0;
+
+	virtual int RetryTimes(){ return DEFAULT_MAX_RETRY_TIMES; }
 
 protected:
 	virtual CConditionChecker<T>& GetOpenPosiCond() = 0;

@@ -60,6 +60,7 @@ public:
 
 	bool EnablePrefer();
 	bool AutoTracking();
+	int RetryTimes();
 
 	bool SelfClose(){ return m_selfClose; }
 	void SelfClose(bool val){ m_selfClose = val; }

@@ -28,6 +28,8 @@ public:
 	double PriceTick(){ return m_priceTick; }
 	entity::StopLossCloseMethods CloseMethod() { return m_closeStrategy; }
 
+	virtual int RetryTimes(){ return m_maxRetryTimes; }
+
 protected:
 	CConditionChecker<double>& GetOpenPosiCond(){ return m_openPosiChecker; }
 	CConditionChecker<double>& GetStopGainCond(){ return m_stopGainChecker; }
@@ -58,5 +60,7 @@ private:
 	double m_prevBid;
 	double m_Bid;
 	int m_BidSize;
+
+	int m_maxRetryTimes;
 };
 

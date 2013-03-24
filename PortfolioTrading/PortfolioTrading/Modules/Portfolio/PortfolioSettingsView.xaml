@@ -282,6 +282,10 @@
                                                 ItemTemplate="{StaticResource closeItemTemplate}" SelectedValue="{Binding StopLossCloseMethod, Mode=TwoWay}"
                                                 DisplayMemberPath="DisplayName" SelectedValuePath="Value" />
                                     </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 2">
+                                        <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="112">平仓追价次数</TextBlock>
+                                        <igEditor:XamTextEditor Margin="4, 2" Value="{Binding RetryTimes, FallbackValue=7, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </DockPanel>
                         </Border>
