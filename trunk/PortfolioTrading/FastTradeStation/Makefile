@@ -5,6 +5,8 @@ SRC = ./src
 ENTITY_DIR = ./src/entity
 AP_DIR = ./src/ap_invoke
 OBJ_DIR = ./obj
+LIBS = -lboost_thread -lboost_program_options -lboost_filesystem \
+ -lboost_date_time -lprotobuf -llog4cpp -lthostmduserapi -lthosttraderapi
 
 _ENTITY_FILES = packet enum quote trade message  
 ENTITY_FILES = $(patsubst %, $(ENTITY_DIR)/%.pb.cc, $(_ENTITY_FILES))
@@ -23,7 +25,7 @@ _FS_OBJS = ArbitrageStrategy ChangePositionStrategy charsetconvert \
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
 fast-trade-stion: $(ENTITY_OBJS) $(AP_INVOKE_OBJS) $(FS_OBJS)
-	ls $(OBJ_DIR)
+	$(CC) -o FastTradeStation $^ $(LIBS) -Wall
 
 # Compile entity
 $(OBJ_DIR)/%.pb.o: $(ENTITY_DIR)/%.pb.cc
