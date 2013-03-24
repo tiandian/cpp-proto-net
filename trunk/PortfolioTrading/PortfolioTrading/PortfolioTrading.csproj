@@ -81,6 +81,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -193,6 +194,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="ShellViewModel.cs" />
+    <Compile Include="Utils\ConfigurationHelper.cs" />
     <Compile Include="Utils\DispatcherHelper.cs" />
     <Compile Include="Utils\EventLogger.cs" />
     <Compile Include="Utils\ILog.cs" />

@@ -511,7 +511,7 @@ namespace PortfolioTrading.Modules.Account
                             {
                                 uiContext.Send(o => ChangeStatus("连接失败", false), null);
                                 EventLogger.Write(string.Format("为{0}尝试{1}次连接均发生错误"
-                                    , acct.InvestorId, MaxRetryConnectTimes));
+                                    , acct.InvestorId, _connectTimes));
                                 _client.Disconnect();
                             }
 
@@ -523,10 +523,21 @@ namespace PortfolioTrading.Modules.Account
                         if(times > 1)
                             Thread.Sleep(1000);
 
-                        string host = NativeHost.GetLocalIP();
+                        string localHostIP = NativeHost.GetLocalIP();
+                        string host = ConfigurationHelper.GetAppSettingValue("tradeHostIP", localHostIP);
                         LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
                         _client.AuthClientId = this.Id;
-                        _client.ConnectAsync(host, HostPort, actionClntConnectDone);
+                        
+                        try
+                        {
+                            _client.ConnectAsync(host, HostPort, actionClntConnectDone);
+                        }
+                        catch (System.Exception ex)
+                        {
+                            LogManager.Logger.ErrorFormat("Error connecting host due to : {0}", ex.Message);
+                            if (actionClntConnectDone != null)
+                                actionClntConnectDone(false, "交易终端拒绝连接", false);
+                        }
                     });
 
                     actionLoopConnect.Invoke(_connectTimes);
