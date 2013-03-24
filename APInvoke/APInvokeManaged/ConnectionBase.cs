@@ -303,9 +303,11 @@ namespace APInvokeManaged
             {
                 _status = Status.Closed;
             };
-            _status = Status.Closing;
-            if(_tcpClient.Connected)
+            if (_tcpClient != null && _tcpClient.Connected)
+            {
+                _status = Status.Closing;
                 _tcpClient.BeginDisconnect(false, new AsyncCallback(disconnectDoneAction), null);
+            }
         }
     }
 }
