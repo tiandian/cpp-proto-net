@@ -19,7 +19,7 @@ public:
 					CPortfolio* pPortfolio,
 					trade::MultiLegOrder* pMultiLegOrder,
 					const InputOrderPtr& inputOrder,
-					int maxRetryTimes,
+					int maxRetryTimes, bool allowPending,
 					COrderProcessor2* pOrderProc)
 					:m_pStateMachine(pStateMachine),
 					m_pPortf(pPortfolio),
@@ -27,7 +27,7 @@ public:
 					m_pInputOrder(inputOrder),
 					m_maxRetryTimes(maxRetryTimes),
 					m_submitTimes(0), m_succ(false), 
-					m_allowPending(maxRetryTimes <= 0),
+					m_allowPending(allowPending),
 					m_quoteTimestamp(0),
 					m_pOrderProcessor(pOrderProc)
 	{
@@ -81,7 +81,7 @@ public:
 		int retryTimes,
 		COrderProcessor2* pOrderProc):
 	CSgOrderPlacer(pStateMachine, NULL, NULL, 
-		pInputOrder, retryTimes, pOrderProc){}
+		pInputOrder, retryTimes, retryTimes <= 0, pOrderProc){}
 
 	~CManualSgOrderPlacer(){}
 
@@ -135,7 +135,8 @@ public:
 								int retryTimes,
 								COrderProcessor2* pOrderProc)
 	{
-		return new CSgOrderPlacer(this, pPortfolio, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
+		return new CSgOrderPlacer(this, pPortfolio, pMultiLegOrder, pInputOrder, 
+			retryTimes, retryTimes <= 0, pOrderProc);
 	}
 
 	CManualSgOrderPlacer* CreateManualPlacer(const InputOrderPtr& pInputOrder,

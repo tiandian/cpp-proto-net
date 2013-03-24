@@ -499,3 +499,7 @@ bool CPortfolio::AutoTracking()
 	return m_strategy->IsAutoTracking();
 }
 
+int CPortfolio::RetryTimes()
+{
+	return m_strategy->RetryTimes();
+}

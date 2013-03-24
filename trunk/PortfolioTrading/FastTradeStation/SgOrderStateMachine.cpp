@@ -183,8 +183,6 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
 			if(pOrd != NULL)
 			{
-				OnOrderUpdate(pOrd);
-
 				if(!m_allowPending)
 				{
 					const std::string& ordRef = pOrd->orderref();
@@ -194,6 +192,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 					const std::string& symbol = pOrd->instrumentid();
 					m_pOrderProcessor->CancelOrder(ordRef, exchId, ordSysId, userId, symbol);
 				}
+				OnOrderUpdate(pOrd);
 			}
 		}
 		break;
@@ -234,8 +233,6 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
 			if(pOrd != NULL)
 			{
-				OnOrderUpdate(pOrd);
-
 				if(!m_allowPending)
 				{
 					const std::string& ordRef = pOrd->orderref();
@@ -245,6 +242,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 					const std::string& symbol = pOrd->instrumentid();
 					m_pOrderProcessor->CancelOrder(ordRef, exchId, ordSysId, userId, symbol);
 				}
+				OnOrderUpdate(pOrd);
 			}
 		}
 		break;
@@ -468,7 +466,7 @@ void CScalperOrderPlacer::ModifyOrderPrice()
 
 CScalperOrderPlacer::CScalperOrderPlacer( CSgOrderStateMachine* pStateMachine, CPortfolio* pPortfolio, trade::MultiLegOrder* pMultiLegOrder, const InputOrderPtr& inputOrder, int maxRetryTimes, COrderProcessor2* pOrderProc ) :
 CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder, 
-	inputOrder, maxRetryTimes, pOrderProc)
+	inputOrder, maxRetryTimes, false, pOrderProc)
 {
 	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(pPortfolio->Strategy());
 	if(pScalperStrategy != NULL)

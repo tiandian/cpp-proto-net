@@ -152,6 +152,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     setting.StopLossCloseMethod = (entity.StopLossCloseMethods)Enum.Parse(typeof(entity.StopLossCloseMethods), attr.Value);
                 }
+                attr = elem.Attribute("retryTimes");
+                if (attr != null)
+                {
+                    setting.RetryTimes = int.Parse(attr.Value);
+                }
                 return setting;
             }
             else
@@ -190,6 +195,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 setting.CaseGE4Tick = entity.DirectionDepends.ON_SMALL_CHANGE;
                 setting.CaseNoChange = entity.DirectionDepends.ON_BIG_SIZE;
                 setting.StopLossCloseMethod = entity.StopLossCloseMethods.BASED_ON_NEXT_QUOTE;
+                setting.RetryTimes = 8;
                 return setting;
             }
             else
