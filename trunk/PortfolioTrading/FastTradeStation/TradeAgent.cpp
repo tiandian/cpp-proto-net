@@ -106,13 +106,13 @@ boost::tuple<bool, string> CTradeAgent::Open( const string& address, const strin
 {
 	string errMsg;
 	try{
-		string streamFolder = streamDir + "\\Td";
+		string streamFolder = streamDir + "/Td";
 		if(!CreateFolderIfNotExists(streamFolder))
 		{
 			errMsg = boost::str(boost::format("Cannot create stream folder (%s) for trading") % streamFolder);
 			return boost::make_tuple(false, errMsg);
 		}
-		streamFolder += "\\";
+		streamFolder += "/";
 		// 初始化UserApi
 		m_pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi(streamFolder.c_str());			// 创建UserApi
 		

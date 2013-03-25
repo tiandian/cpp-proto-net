@@ -60,6 +60,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>D:\Dev\log4cpp\include;D:\Dev\boost_1_49_0;D:\Dev\protobuf-2.4.1\include;</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_MBCS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
