@@ -65,13 +65,13 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 {
 	string errMsg;
 	try{
-		string streamFolder = streamDir + "\\Md";
+		string streamFolder = streamDir + "/Md";
 		if(!CreateFolderIfNotExists(streamFolder))
 		{
 			errMsg = boost::str(boost::format("Cannot create stream folder (%s)") % streamFolder);
 			return boost::make_tuple(false, errMsg);
 		}
-		streamFolder += "\\";
+		streamFolder += "/";
 		// 初始化UserApi
 		m_pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(streamFolder.c_str());			// 创建UserApi
 		m_pUserApi->RegisterSpi(this);						// 注册事件类

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 using System.Net;
+using System.Diagnostics;
 
 namespace APInvokeManaged
 {
@@ -83,8 +84,25 @@ namespace APInvokeManaged
             if (IsConnected)
                 throw new InvalidOperationException("Cannot connect again during connected");
 
-            IPHostEntry hostEntry = Dns.GetHostEntry(Address);
-            IPAddress ipAddr = hostEntry.AddressList.FirstOrDefault(h => h.AddressFamily == AddressFamily.InterNetwork);
+            IPAddress ipAddr;
+            if (Address == "127.0.0.1")
+            {
+                IPHostEntry hostEntry = Dns.GetHostEntry(Address);
+                ipAddr = hostEntry.AddressList.FirstOrDefault(h => h.AddressFamily == AddressFamily.InterNetwork);
+            }
+            else
+            {
+                try
+                {
+                    ipAddr = IPAddress.Parse(Address);
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    IPHostEntry hostEntry = Dns.GetHostEntry(Address);
+                    ipAddr = hostEntry.AddressList.FirstOrDefault(h => h.AddressFamily == AddressFamily.InterNetwork);
+                }
+            }
             IPEndPoint ipe = new IPEndPoint(ipAddr, Port);
 
             _tcpClient =

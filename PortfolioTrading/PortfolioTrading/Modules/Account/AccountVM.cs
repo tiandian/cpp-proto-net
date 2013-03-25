@@ -421,7 +421,7 @@ namespace PortfolioTrading.Modules.Account
 
             SynchronizationContext uiContext = SynchronizationContext.Current;
 
-            HostPort = HostPortSeed;
+            HostPort = ConfigurationHelper.GetAppSettingValue("tradeHostPort", 16181); ;
             
             EventLogger.Write(string.Format("正在为{0}建立交易终端...", acct.InvestorId));
 
@@ -525,6 +525,7 @@ namespace PortfolioTrading.Modules.Account
 
                         string localHostIP = NativeHost.GetLocalIP();
                         string host = ConfigurationHelper.GetAppSettingValue("tradeHostIP", localHostIP);
+                        EventLogger.Write("Connect to {0}:{1}", host, HostPort);
                         LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
                         _client.AuthClientId = this.Id;
                         
