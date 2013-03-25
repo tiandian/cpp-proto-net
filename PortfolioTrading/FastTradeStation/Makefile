@@ -21,7 +21,7 @@ _FS_OBJS = ArbitrageStrategy ChangePositionStrategy charsetconvert \
 	   OrderState OrderStateMachine Portfolio PortfolioOrderHelper \
 	   QuoteAgent ScalperStrategy SgOrderStateMachine Strategy \
 	   StrategyFactory SymbolInfo SymbolInfoRepositry TradeAgent \
-	   TradeStationMain
+	   ClientMessagePump TradeStationMain
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
 fast-trade-stion: $(ENTITY_OBJS) $(AP_INVOKE_OBJS) $(FS_OBJS)
