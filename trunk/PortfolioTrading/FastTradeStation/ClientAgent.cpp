@@ -267,24 +267,30 @@ void CClientAgent::OnPortfolioUpdated(entity::PortfolioItem* portfolioItem)
 {
 	std::string callbackData;
 	portfolioItem->SerializeToString(&callbackData);
-	if(m_pSession != NULL)
-		m_pSession->BeginCallback("PortfolioPush", callbackData);
+	ClientMsgPacketPtr packet(new CClientMessagePacket("PortfolioPush", callbackData));
+	m_clientMsgPump.Enqueue(packet);
+	//if(m_pSession != NULL)
+	//	m_pSession->BeginCallback("PortfolioPush", callbackData);
 }
 
 void CClientAgent::OnMultiLegOrderUpdated( trade::MultiLegOrder* order )
 {
 	std::string callbackData;
 	order->SerializeToString(&callbackData);
-	if(m_pSession != NULL)
-		m_pSession->BeginCallback("MultiLegOrderPush", callbackData);
+	ClientMsgPacketPtr packet(new CClientMessagePacket("MultiLegOrderPush", callbackData));
+	m_clientMsgPump.Enqueue(packet);
+	/*if(m_pSession != NULL)
+		m_pSession->BeginCallback("MultiLegOrderPush", callbackData);*/
 }
 
 void CClientAgent::OnTradeUpdated( trade::Trade* trade )
 {
 	std::string callbackData;
 	trade->SerializeToString(&callbackData);
-	if(m_pSession != NULL)
-		m_pSession->BeginCallback("TradePush", callbackData);
+	ClientMsgPacketPtr packet(new CClientMessagePacket("TradePush", callbackData));
+	m_clientMsgPump.Enqueue(packet);
+	//if(m_pSession != NULL)
+	//	m_pSession->BeginCallback("TradePush", callbackData);
 }
 
 void CClientAgent::OnLegOrderUpdated( const string& portfId, const string& mlOrderId, trade::Order* legOrd )
@@ -299,8 +305,10 @@ void CClientAgent::OnLegOrderUpdated( const string& portfId, const string& mlOrd
 	    
 	std::string callbackData;
 	orderUpdate.SerializeToString(&callbackData);
-	if(m_pSession != NULL)
-		m_pSession->BeginCallback("LegOrderPush", callbackData);
+	ClientMsgPacketPtr packet(new CClientMessagePacket("LegOrderPush", callbackData));
+	m_clientMsgPump.Enqueue(packet);
+	//if(m_pSession != NULL)
+	//	m_pSession->BeginCallback("LegOrderPush", callbackData);
 }
 
 void CClientAgent::ApplyStrategySetting( const entity::ModifyStrategyParam& settings )

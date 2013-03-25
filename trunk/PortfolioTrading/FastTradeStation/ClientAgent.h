@@ -5,6 +5,7 @@
 #include "Portfolio.h"
 #include "OrderProcessor2.h"
 #include "PortfolioOrderHelper.h"
+#include "ClientMessagePump.h"
 #include "ap_invoke/session.h"
 
 #include <string>
@@ -21,7 +22,8 @@ public:
 
 	void SetSession(Session* pSession) 
 	{ 
-		m_pSession = pSession; 
+		m_pSession = pSession;
+		m_clientMsgPump.Init(pSession);
 	}
 
 	bool Detached(){ return m_pSession == NULL; }
@@ -92,6 +94,7 @@ private:
 	CQuoteAgent			m_quoteAgent;
 	CTradeAgent			m_tradeAgent;
 	COrderProcessor2	m_orderProcessor;
+	CClientMessagePump	m_clientMsgPump;
 	boost::shared_ptr<CPortfolio> m_pActPortfolio;
 
 	string m_quoteAddress;

@@ -81,6 +81,7 @@
     <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientAgent.cpp" />
     <ClCompile Include="ClientManager.cpp" />
+    <ClCompile Include="ClientMessagePump.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="entity\enum.pb.cc" />
     <ClCompile Include="entity\message.pb.cc" />
@@ -118,6 +119,7 @@
     <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientAgent.h" />
     <ClInclude Include="ClientManager.h" />
+    <ClInclude Include="ClientMessagePump.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="DiffStrategy.h" />
     <ClInclude Include="entity\enum.pb.h" />
