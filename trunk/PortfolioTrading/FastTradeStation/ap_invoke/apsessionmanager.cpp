@@ -98,8 +98,8 @@ void APSessionManager::HandleError( const string& sessionId, const boost::system
 		int eVal = e.value();
 
 		// client close the connection
-		if(eVal == 10054 ||			// socket closed: client abnormally shut down
-			eVal == 2)				// end of file: client call close
+		if(eVal == boost::asio::error::connection_reset ||	// socket closed: client abnormally shut down
+			eVal == boost::asio::error::eof)				// end of file: client call close
 		{
 			// close myself
 			(foundClnt->second)->Close();

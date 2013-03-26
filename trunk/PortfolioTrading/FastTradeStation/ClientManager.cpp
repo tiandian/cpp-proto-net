@@ -419,17 +419,24 @@ bool CClientManager::VerifyClient( const string& username, const string& passwor
 {
 	boost::recursive_mutex::scoped_lock lock(m_mutClntMap);
 	*clientExisting = false;
+	logger.Info(boost::str(boost::format("Verifying client:%s") % username));
 	CClientAgent* pClient = GetClientById(username);
 	if(pClient == NULL)
+	{
+		logger.Info("Verification succeeded. This is new client");
 		return true;
+	}
 	else
 	{
+		logger.Info(boost::str(boost::format("Client(%s) already exists, try to reconnect") % username));
 		*clientExisting = true;
 
 		if(pClient->Detached())
 		{
+			logger.Info(boost::str(boost::format("Client(%s) gets reconnected") % username));
 			return true;
 		}
+		logger.Warning(boost::str(boost::format("Client(%s) reconnect FAILED") % username));
 		return false;
 	}
 }
