@@ -38,13 +38,13 @@ public:
 	{
 		boost::unique_lock<boost::mutex> lock(_write_mutex);
 
-		if(in_fault())
-			return;		// if socket in fault status, don't allow writing any longer
-
 		while (!_ready_to_write)
 		{
 			_writable_cond.wait(lock);
 		}
+
+		if(in_fault())
+			return;		// if socket in fault status, don't allow writing any longer
 
 		_ready_to_write = false;
 
@@ -92,12 +92,16 @@ public:
 	template <typename Handler>
 	void handle_write(const boost::system::error_code& e, std::size_t bytes_transferred, boost::tuple<Handler> handler)
 	{
-		boost::get<0>(handler)(e, bytes_transferred);
 		{
 			boost::lock_guard<boost::mutex> lock(_write_mutex);
 			_ready_to_write = true;
+		
+			if(e)
+				fault();
+
+			_writable_cond.notify_one();
 		}
-		_writable_cond.notify_one();
+		boost::get<0>(handler)(e, bytes_transferred);
 	}
 
 	bool is_read_to_write()
