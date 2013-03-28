@@ -232,6 +232,30 @@ namespace op2
 	private:
 		string m_errMsg;
 	};
+
+	class PendingTimeUpEvent : public CSgOrderEvent
+	{
+	public:
+		PendingTimeUpEvent():
+		CSgOrderEvent(ORDER_EVENT_PENDING_TIMEUP, NULL){}
+	};
+
+	class NextQuoteInEvent : public CSgOrderEvent
+	{
+	public:
+		NextQuoteInEvent(double last, double ask, double bid):
+		CSgOrderEvent(ORDER_EVENT_NEXT_QUOTE_IN, NULL),
+		m_last(last), m_ask(ask), m_bid(bid){}
+
+		double Last(){ return m_last; }
+		double Ask(){ return m_ask; }
+		double Bid(){ return m_bid; }
+
+	private:
+		double m_last;
+		double m_ask;
+		double m_bid;
+	};
 };
 
 
