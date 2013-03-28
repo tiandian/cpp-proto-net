@@ -13,7 +13,8 @@ const char* ORDER_STATE_TEXT[] = {
 const char* ORDER_EVENT_TEXT[] = {"Order COMPLETED", "Order is PENDING",
 	"Order CANCEL Success", "Order CANCEL Failed", 
 	"Order SUBMIT Success", "Order SUBMIT Failed", 
-	"Order REJECTED", "Order PARTIALLY Filled"};
+	"Order REJECTED", "Order PARTIALLY Filled", 
+	"Order pending Time up", "Next quote coming"};
 
 string op2::COrderEvent::m_defaultStatusMsg = "";
 

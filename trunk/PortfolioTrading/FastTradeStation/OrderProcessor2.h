@@ -24,6 +24,7 @@ public:
 	void SubmitPortfOrder(CPortfolio* pPortf, const MultiLegOrderPtr& multilegOrder);
 	CSgOrderPlacer* CreateSingleOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes);
 	void RaiseMLOrderPlacerEvent(const string& mlOrdPlacerId, COrderEvent* orderEvent);
+	void RaiseSGOrderPlacerEvent(const string& orderRef, COrderEvent* orderEvent);
 	
 	int LockForSubmit(string& outOrdRef);
 	bool SubmitAndUnlock(trade::InputOrder* pOrder);

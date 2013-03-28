@@ -77,6 +77,7 @@
     <ClCompile Include="ap_invoke\apsessionmanager.cpp" />
     <ClCompile Include="ap_invoke\server.cpp" />
     <ClCompile Include="ArbitrageStrategy.cpp" />
+    <ClCompile Include="AsyncScalperEventFirer.cpp" />
     <ClCompile Include="ChangePositionStrategy.cpp" />
     <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientAgent.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="ap_invoke\server.h" />
     <ClInclude Include="ap_invoke\session.h" />
     <ClInclude Include="ArbitrageStrategy.h" />
+    <ClInclude Include="AsyncScalperEventFirer.h" />
     <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="ChangePositionStrategy.h" />
     <ClInclude Include="charsetconvert.h" />

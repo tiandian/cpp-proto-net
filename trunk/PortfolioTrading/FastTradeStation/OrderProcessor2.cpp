@@ -202,6 +202,11 @@ void COrderProcessor2::RaiseMLOrderPlacerEvent( const string& mlOrdPlacerId, COr
 	m_mlOrderStateMachine.Transition(mlOrdPlacerId, orderEvent);
 }
 
+void COrderProcessor2::RaiseSGOrderPlacerEvent( const string& orderRef, COrderEvent* orderEvent )
+{
+	m_sgOrderStateMachine.Transition(orderRef, orderEvent);
+}
+
 int COrderProcessor2::LockForSubmit( string& outOrdRef )
 {
 	int retOrderRef = -1;
@@ -369,3 +374,4 @@ bool COrderProcessor2::QuerySymbol( const std::string& symbol, entity::Quote** p
 {
 	return m_pTradeAgent->QuerySymbol(symbol, ppQuote);
 }
+
