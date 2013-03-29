@@ -99,6 +99,7 @@
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="PortfolioOrderHelper.cpp" />
     <ClCompile Include="QuoteAgent.cpp" />
+    <ClCompile Include="ScalperPortfolioOrderPlacer.cpp" />
     <ClCompile Include="ScalperStrategy.cpp" />
     <ClCompile Include="SgOrderStateMachine.cpp" />
     <ClCompile Include="Strategy.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="QuoteAgent.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="ScalperPortfolioOrderPlacer.h" />
     <ClInclude Include="ScalperStrategy.h" />
     <ClInclude Include="SgOrderStateMachine.h" />
     <ClInclude Include="Strategy.h" />

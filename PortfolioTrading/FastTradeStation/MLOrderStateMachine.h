@@ -30,10 +30,10 @@ public:
 	const string& Id(){ return m_mlOrder->orderid(); }
 	void Do();
 
-private:
+protected:
 
-	void Send();
-	bool SendNext(COrderEvent* transEvent);
+	virtual void Send();
+	virtual bool SendNext(COrderEvent* transEvent);
 	CSgOrderPlacer* CreateSgOrderPlacer(const boost::shared_ptr<trade::InputOrder>& inputOrder, int retryTimes);
 	void OutputStatus(const string& statusMsg);
 

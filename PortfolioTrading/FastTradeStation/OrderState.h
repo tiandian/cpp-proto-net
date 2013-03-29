@@ -52,7 +52,8 @@ enum ORDER_STATE
 	ORDER_STATE_PARTIALLY_CANCELED,
 	ORDER_STATE_PLACE_FAILED,
 	ORDER_STATE_PARTIALLY_FAILED,
-	ORDER_STATE_WARNING
+	ORDER_STATE_WARNING,
+	ORDER_STATE_CANCELING
 };
 
 class CStateOwner
@@ -181,6 +182,12 @@ class OrderWarningState : public COrderState
 {
 public:
 	OrderWarningState():COrderState(ORDER_STATE_WARNING){}
+};
+
+class OrderCanceling : public COrderState
+{
+public:
+	OrderCanceling():COrderState(ORDER_STATE_CANCELING){}
 };
 
 };

@@ -9,7 +9,8 @@ const char* ORDER_STATE_TEXT[] = {
 	"Order PENDING", 
 	"Order COMPLETE", "Partially Filled",
 	"Order CANCELED", "Partially Canceled",
-	"Place FAILED", "Partialy Failed", };
+	"Place FAILED", "Partialy Failed", 
+	"Order CANCELING"};
 const char* ORDER_EVENT_TEXT[] = {"Order COMPLETED", "Order is PENDING",
 	"Order CANCEL Success", "Order CANCEL Failed", 
 	"Order SUBMIT Success", "Order SUBMIT Failed", 
