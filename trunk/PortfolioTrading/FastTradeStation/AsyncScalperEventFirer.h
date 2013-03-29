@@ -1,7 +1,11 @@
 #pragma once
 
+#include <string>
+
 #include <boost/thread.hpp>
 #include <boost/asio/steady_timer.hpp>
+
+using namespace std;
 
 class COrderProcessor2;
 class CLeg;
@@ -9,8 +13,8 @@ class CLeg;
 class CAsyncScalperEventFirer
 {
 public:
-	CAsyncScalperEventFirer(COrderProcessor2* pOrdProc):
-	  m_pOrdProc(pOrdProc)
+	CAsyncScalperEventFirer(COrderProcessor2* pOrdProc, const string& ordRef):
+	  m_pOrdProc(pOrdProc), m_orderRef(ordRef)
 	{}
 	virtual ~CAsyncScalperEventFirer(void){}
 
@@ -20,13 +24,14 @@ public:
 protected:
 
 	COrderProcessor2* m_pOrdProc;
+	string m_orderRef;
 };
 
 class CAsyncOpenOrderTimer : public CAsyncScalperEventFirer
 {
 public:
-	CAsyncOpenOrderTimer(COrderProcessor2* pOrdProc, int expireMilliseconds):
-	CAsyncScalperEventFirer(pOrdProc),
+	CAsyncOpenOrderTimer(COrderProcessor2* pOrdProc, const string& ordRef, int expireMilliseconds):
+	CAsyncScalperEventFirer(pOrdProc, ordRef),
 	m_timer(m_io, boost::chrono::milliseconds(expireMilliseconds))
 	{
 	}
@@ -47,8 +52,8 @@ private:
 class CAsyncNextQuoteWaiter : public CAsyncScalperEventFirer
 {
 public:
-	CAsyncNextQuoteWaiter(COrderProcessor2* pOrdProc, CLeg* pLeg, long quoteTimestamp):
-	CAsyncScalperEventFirer(pOrdProc), m_pLeg(pLeg), m_quoteTimestamp(quoteTimestamp)
+	CAsyncNextQuoteWaiter(COrderProcessor2* pOrdProc, const string& ordRef, CLeg* pLeg, long quoteTimestamp):
+	CAsyncScalperEventFirer(pOrdProc, ordRef), m_pLeg(pLeg), m_quoteTimestamp(quoteTimestamp)
 	, m_canceled(false)
 	{
 	}

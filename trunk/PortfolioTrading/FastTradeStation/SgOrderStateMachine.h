@@ -47,12 +47,20 @@ public:
 
 	void Do();
 	void AdjustQuantity(int qty);
+	long QuoteTimestamp(){ return m_quoteTimestamp; }
 
 protected:
+	void CancelOrder(trade::Order* pOrd);
+
 	virtual void RaiseMultiLegOrderEvent(COrderEvent* orderEvent);
-	virtual void OnOrderUpdate(trade::Order* pOrd);
 	virtual void ModifyOrderPrice();
+
+	virtual void OnOrderUpdate(trade::Order* pOrd);
 	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent);
+	virtual void OnPending(trade::Order* pOrd);
+	virtual void OnCanceling(){}
+
+
 
 	static string EmptyParentOrderId;
 
@@ -117,10 +125,13 @@ public:
 
 protected:
 	virtual void ModifyOrderPrice();
+	virtual void OnPending(trade::Order* pOrd);
+	virtual void OnCanceling();
 
 private:
 	double m_precedence;
 	entity::StopLossCloseMethods m_closeMethod;
+	trade::Order* m_pendingOrder;
 };
 
 class CSgOrderStateMachine : public COrderStateMachine

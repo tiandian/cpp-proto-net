@@ -53,6 +53,8 @@ void CSgOrderStateMachine::Initialize()
 	m_orderStates.insert(make_pair(failed->State(), failed));
 	OrderStatePtr partiallyFilled(new OrderPartiallyFilled);
 	m_orderStates.insert(make_pair(partiallyFilled->State(), partiallyFilled));
+	OrderStatePtr canceling(new OrderCanceling);
+	m_orderStates.insert(make_pair(canceling->State(), canceling));
 
 	sending->AddEventState(ORDER_EVENT_SUBMIT_SUCCESS, sent.get());
 	sending->AddEventState(ORDER_EVENT_REJECTED, failed.get());
@@ -69,6 +71,12 @@ void CSgOrderStateMachine::Initialize()
 	pending->AddEventState(ORDER_EVENT_PENDING, pending.get());
 	pending->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 	pending->AddEventState(ORDER_EVENT_PARTIALLY_FILLED, partiallyFilled.get());
+
+	pending->AddEventState(ORDER_EVENT_PENDING_TIMEUP, canceling.get());
+	pending->AddEventState(ORDER_EVENT_NEXT_QUOTE_IN, canceling.get());
+
+	canceling->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sending.get());
+	canceling->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
 
 	partiallyFilled->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, complete.get());
 	partiallyFilled->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
@@ -183,17 +191,15 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
 			if(pOrd != NULL)
 			{
-				if(!m_allowPending)
-				{
-					const std::string& ordRef = pOrd->orderref();
-					const std::string& exchId = pOrd->exchangeid();
-					const std::string& ordSysId = pOrd->ordersysid(); 
-					const std::string& userId = pOrd->userid();
-					const std::string& symbol = pOrd->instrumentid();
-					m_pOrderProcessor->CancelOrder(ordRef, exchId, ordSysId, userId, symbol);
-				}
+				OnPending(pOrd);
+				
 				OnOrderUpdate(pOrd);
 			}
+		}
+		break;
+	case ORDER_STATE_CANCELING:
+		{
+			OnCanceling();
 		}
 		break;
 	case ORDER_STATE_COMPLETE:
@@ -348,6 +354,24 @@ void CSgOrderPlacer::AdjustQuantity( int qty )
 	m_pInputOrder->set_volumetotaloriginal(qty);
 }
 
+void CSgOrderPlacer::OnPending( trade::Order* pOrd )
+{
+	if(!m_allowPending)
+	{
+		CancelOrder(pOrd);
+	}
+}
+
+void CSgOrderPlacer::CancelOrder( trade::Order* pOrd )
+{
+	const std::string& ordRef = pOrd->orderref();
+	const std::string& exchId = pOrd->exchangeid();
+	const std::string& ordSysId = pOrd->ordersysid(); 
+	const std::string& userId = pOrd->userid();
+	const std::string& symbol = pOrd->instrumentid();
+	m_pOrderProcessor->CancelOrder(ordRef, exchId, ordSysId, userId, symbol);
+}
+
 void CManualSgOrderPlacer::ModifyOrderPrice()
 {
 	entity::Quote* pQuote = NULL;
@@ -466,7 +490,7 @@ void CScalperOrderPlacer::ModifyOrderPrice()
 
 CScalperOrderPlacer::CScalperOrderPlacer( CSgOrderStateMachine* pStateMachine, CPortfolio* pPortfolio, trade::MultiLegOrder* pMultiLegOrder, const InputOrderPtr& inputOrder, int maxRetryTimes, COrderProcessor2* pOrderProc ) :
 CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder, 
-	inputOrder, maxRetryTimes, false, pOrderProc)
+	inputOrder, maxRetryTimes, true, pOrderProc), m_pendingOrder(NULL)
 {
 	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(pPortfolio->Strategy());
 	if(pScalperStrategy != NULL)
@@ -479,4 +503,16 @@ CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder,
 		m_precedence = 0.2;	// precedence so far only support IFxxxx
 		m_closeMethod = entity::BASED_ON_NEXT_QUOTE;
 	}
+}
+
+void CScalperOrderPlacer::OnPending( trade::Order* pOrd )
+{
+	m_pendingOrder = pOrd;
+	CSgOrderPlacer::OnPending(pOrd);
+}
+
+void CScalperOrderPlacer::OnCanceling()
+{
+	if(m_pendingOrder != NULL)
+		CancelOrder(m_pendingOrder);
 }

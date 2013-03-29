@@ -9,13 +9,13 @@
 void CAsyncOpenOrderTimer::FireEvent( const boost::system::error_code& e )
 {
 	PendingTimeUpEvent timeupEvent;
-	m_pOrdProc->RaiseSGOrderPlacerEvent("", &timeupEvent);
+	m_pOrdProc->RaiseSGOrderPlacerEvent(m_orderRef, &timeupEvent);
 }
 
 void CAsyncNextQuoteWaiter::FireEvent(double last, double ask, double bid)
 {
 	NextQuoteInEvent nextQuoteEvent(last, ask, bid);
-	m_pOrdProc->RaiseSGOrderPlacerEvent("", &nextQuoteEvent);
+	m_pOrdProc->RaiseSGOrderPlacerEvent(m_orderRef, &nextQuoteEvent);
 }
 
 void CAsyncNextQuoteWaiter::GetUpdateQuote()
