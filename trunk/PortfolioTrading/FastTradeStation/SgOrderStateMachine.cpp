@@ -4,6 +4,7 @@
 #include "charsetconvert.h"
 #include "Portfolio.h"
 #include "ScalperStrategy.h"
+#include "ScalperOrderPlacer.h"
 
 #include <boost/format.hpp>
 
@@ -87,6 +88,11 @@ void CSgOrderStateMachine::Transition( const string& orderId/*orderRef*/, COrder
 	COrderStateMachine::Transition(orderId, event);
 }
 
+CSgOrderPlacer* CSgOrderStateMachine::CreateScalperPlacer( CPortfolio* pPortfolio, trade::MultiLegOrder* pMultiLegOrder, const InputOrderPtr& pInputOrder, int retryTimes, COrderProcessor2* pOrderProc )
+{
+	return new CScalperOrderPlacer(this, pPortfolio, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
+}
+
 void CSgOrderPlacer::Do()
 {
 	COrderState* sentState = m_pStateMachine->GetState(ORDER_STATE_SENDING);
@@ -143,6 +149,9 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 					string submitInfo = boost::str(boost::format("Submit Order(%s - %s) [No. %d time(s)]")
 						% ParentOrderId() % Symbol() % (m_submitTimes + 1));
 					logger.Info(submitInfo);
+
+					OnSubmittingOrder();
+
 					// real submit order and unlock to allow next order ref generation
 					bool succ = m_pOrderProcessor->SubmitAndUnlock(m_pInputOrder.get());
 
@@ -437,82 +446,4 @@ void CManualSgOrderPlacer::OnOrderPlaceFailed( COrderEvent* pOrdEvent )
 	{
 		m_errorMsg = "Order not completed";
 	}
-}
-
-void CScalperOrderPlacer::ModifyOrderPrice()
-{
-	trade::TradeDirectionType direction = m_pInputOrder->direction();
-	double basePx = 0;
-	if(m_closeMethod == entity::BASED_ON_NEXT_QUOTE)
-	{
-		CLeg* pLeg = m_pPortf->GetLeg(Symbol());
-		assert(pLeg != NULL);
-		if(pLeg != NULL)
-		{
-			bool quoteUpdated = pLeg->IsQuoteUpdated(m_quoteTimestamp);
-			if(!quoteUpdated)
-			{
-				logger.Warning(boost::str(boost::format("Order(%s)'s quote didn't get updated after cancelled")
-					% Symbol()));
-			}
-			if(direction == trade::BUY)
-			{
-				basePx = pLeg->Bid();
-			}
-			else
-				basePx = pLeg->Ask();
-
-			logger.Trace(boost::str(boost::format("In coming new quote's %s : %f") 
-				% (direction == trade::BUY ? "Bid" : "Ask") % basePx));
-		}
-	}
-	else
-	{
-		basePx = m_pInputOrder->limitprice();
-		logger.Trace(boost::str(boost::format("Last order limit price: %f") % basePx));
-	}
-	
-	if(direction == trade::BUY)
-	{
-		double buy = basePx + m_precedence;
-		logger.Trace(boost::str(boost::format("Modify order(%s): Buy @ %f")
-			% Symbol() % buy));
-		m_pInputOrder->set_limitprice(buy);
-	}
-	else if(direction == trade::SELL)
-	{
-		double sell = basePx - m_precedence;
-		logger.Trace(boost::str(boost::format("Modify order(%s): Sell @ %f")
-			% Symbol() % sell));
-		m_pInputOrder->set_limitprice(sell);
-	}
-}
-
-CScalperOrderPlacer::CScalperOrderPlacer( CSgOrderStateMachine* pStateMachine, CPortfolio* pPortfolio, trade::MultiLegOrder* pMultiLegOrder, const InputOrderPtr& inputOrder, int maxRetryTimes, COrderProcessor2* pOrderProc ) :
-CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder, 
-	inputOrder, maxRetryTimes, true, pOrderProc), m_pendingOrder(NULL)
-{
-	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(pPortfolio->Strategy());
-	if(pScalperStrategy != NULL)
-	{
-		m_precedence = pScalperStrategy->PriceTick();
-		m_closeMethod = pScalperStrategy->CloseMethod();
-	}
-	else
-	{
-		m_precedence = 0.2;	// precedence so far only support IFxxxx
-		m_closeMethod = entity::BASED_ON_NEXT_QUOTE;
-	}
-}
-
-void CScalperOrderPlacer::OnPending( trade::Order* pOrd )
-{
-	m_pendingOrder = pOrd;
-	CSgOrderPlacer::OnPending(pOrd);
-}
-
-void CScalperOrderPlacer::OnCanceling()
-{
-	if(m_pendingOrder != NULL)
-		CancelOrder(m_pendingOrder);
 }

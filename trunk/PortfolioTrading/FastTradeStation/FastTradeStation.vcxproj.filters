@@ -126,7 +126,7 @@
     <ClCompile Include="AsyncScalperEventFirer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScalperPortfolioOrderPlacer.cpp">
+    <ClCompile Include="ScalperOrderPlacer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -263,7 +263,7 @@
     <ClInclude Include="AsyncScalperEventFirer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScalperPortfolioOrderPlacer.h">
+    <ClInclude Include="ScalperOrderPlacer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

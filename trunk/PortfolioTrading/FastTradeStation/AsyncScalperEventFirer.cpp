@@ -8,12 +8,14 @@
 
 void CAsyncOpenOrderTimer::FireEvent( const boost::system::error_code& e )
 {
+	logger.Info(boost::str(boost::format("Opening order ref(%s) Time up") % m_orderRef));
 	PendingTimeUpEvent timeupEvent;
 	m_pOrdProc->RaiseSGOrderPlacerEvent(m_orderRef, &timeupEvent);
 }
 
 void CAsyncNextQuoteWaiter::FireEvent(double last, double ask, double bid)
 {
+	logger.Info(boost::str(boost::format("Closing order ref(%s) Next quote Arrival") % m_orderRef));
 	NextQuoteInEvent nextQuoteEvent(last, ask, bid);
 	m_pOrdProc->RaiseSGOrderPlacerEvent(m_orderRef, &nextQuoteEvent);
 }
