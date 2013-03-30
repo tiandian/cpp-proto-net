@@ -55,11 +55,11 @@ protected:
 	virtual void RaiseMultiLegOrderEvent(COrderEvent* orderEvent);
 	virtual void ModifyOrderPrice();
 
+	virtual void OnSubmittingOrder(){}
 	virtual void OnOrderUpdate(trade::Order* pOrd);
 	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent);
 	virtual void OnPending(trade::Order* pOrd);
 	virtual void OnCanceling(){}
-
 
 
 	static string EmptyParentOrderId;
@@ -108,32 +108,6 @@ private:
 	boost::mutex m_mut;
 };
 
-class CScalperOrderPlacer : public CSgOrderPlacer
-{
-public:
-	CScalperOrderPlacer(CSgOrderStateMachine* pStateMachine,
-						CPortfolio* pPortfolio,
-						trade::MultiLegOrder* pMultiLegOrder,
-						const InputOrderPtr& inputOrder,
-						int maxRetryTimes,
-						COrderProcessor2* pOrderProc);
-
-	~CScalperOrderPlacer(){}
-
-	double Precedence() const { return m_precedence; }
-	void SetPrecedence(double val) { m_precedence = val; }
-
-protected:
-	virtual void ModifyOrderPrice();
-	virtual void OnPending(trade::Order* pOrd);
-	virtual void OnCanceling();
-
-private:
-	double m_precedence;
-	entity::StopLossCloseMethods m_closeMethod;
-	trade::Order* m_pendingOrder;
-};
-
 class CSgOrderStateMachine : public COrderStateMachine
 {
 public:
@@ -157,14 +131,11 @@ public:
 		return new CManualSgOrderPlacer(this, pInputOrder, retryTimes, pOrderProc);
 	}
 
-	CScalperOrderPlacer* CreateScalperPlacer(CPortfolio* pPortfolio,
+	CSgOrderPlacer* CreateScalperPlacer(CPortfolio* pPortfolio,
 		trade::MultiLegOrder* pMultiLegOrder,
 		const InputOrderPtr& pInputOrder,
 		int retryTimes,
-		COrderProcessor2* pOrderProc)
-	{
-		return new CScalperOrderPlacer(this, pPortfolio, pMultiLegOrder, pInputOrder, retryTimes, pOrderProc);
-	}
+		COrderProcessor2* pOrderProc);
 
 	virtual void Initialize();
 	void Transition(const string& orderId, COrderEvent* event);
