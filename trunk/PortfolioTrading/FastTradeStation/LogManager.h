@@ -2,9 +2,8 @@
 
 #include <string>
 
-#define LOG_DEBUG(lg, txt) LOG_WRITE(lg, txt, Debug)
-#define LOG_INFO(lg, txt) LOG_WRITE(lg, txt, Info)
-#define LOG_WRITE(lg, txt, lvl) if(lg.Is##lvl##Enabled()) lg.##lvl##(txt)
+#define LOG_DEBUG(lg, txt) if(lg.IsDebugEnabled()) lg.Debug(txt)
+#define LOG_INFO(lg, txt) if(lg.IsInfoEnabled()) lg.Info(txt)
 
 class CLogManager
 {

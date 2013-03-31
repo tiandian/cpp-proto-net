@@ -5,7 +5,7 @@ SRC = ./src
 ENTITY_DIR = ./src/entity
 AP_DIR = ./src/ap_invoke
 OBJ_DIR = ./obj
-LIBS = -lboost_thread -lboost_program_options -lboost_filesystem \
+LIBS = -lboost_thread -lboost_program_options -lboost_filesystem -lboost_chrono \
  -lboost_date_time -lprotobuf -llog4cpp -lthostmduserapi -lthosttraderapi
 
 _ENTITY_FILES = packet enum quote trade message  
@@ -15,13 +15,14 @@ ENTITY_OBJS = $(patsubst %, $(OBJ_DIR)/%.pb.o, $(_ENTITY_FILES))
 _AP_INVOKE_OBJS = server.o apsessionmanager.o
 AP_INVOKE_OBJS = $(patsubst %, $(OBJ_DIR)/%, $(_AP_INVOKE_OBJS))
 
-_FS_OBJS = ArbitrageStrategy ChangePositionStrategy charsetconvert \
-	   ClientAgent ClientManager Configuration FileOperations \
-	   LogManager MLOrderStateMachine orderhelper OrderProcessor2 \
-	   OrderState OrderStateMachine Portfolio PortfolioOrderHelper \
-	   QuoteAgent ScalperStrategy SgOrderStateMachine Strategy \
+_FS_OBJS = ArbitrageStrategy AsyncScalperEventFirer ChangePositionStrategy \
+	   charsetconvert ClientAgent ClientManager ClientMessagePump \
+	   Configuration FileOperations LogManager MLOrderStateMachine \
+	   orderhelper OrderProcessor2 OrderState OrderStateMachine \
+	   Portfolio PortfolioOrderHelper QuoteAgent ScalperOrderPlacer \
+	   ScalperStrategy SgOrderStateMachine Strategy \
 	   StrategyFactory SymbolInfo SymbolInfoRepositry TradeAgent \
-	   ClientMessagePump TradeStationMain
+	   TradeStationMain
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
 fast-trade-stion: $(ENTITY_OBJS) $(AP_INVOKE_OBJS) $(FS_OBJS)
