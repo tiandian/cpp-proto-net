@@ -61,6 +61,7 @@ public:
 	bool EnablePrefer();
 	bool AutoTracking();
 	int RetryTimes();
+	int OpenPendingTimeout();
 
 	bool SelfClose(){ return m_selfClose; }
 	void SelfClose(bool val){ m_selfClose = val; }
@@ -74,7 +75,7 @@ public:
 	void RemovePosition(const MultiLegOrderPtr& closeOrder);
 
 	bool HasPosition(){ return PositionQuantity() > 0; }
-	bool PositionReachLimit(){ return PositionQuantity() >= m_innerItem->maxposition(); }
+	bool PositionReachLimit(){ return m_innerItem->opentimes() >= m_innerItem->maxposition(); }
 
 	bool IsPlacingOrder() { return m_isPlacingOrder; }
 	void BeginPlaceOrder() { m_isPlacingOrder = true; }

@@ -59,7 +59,7 @@ protected:
 	virtual void OnOrderUpdate(trade::Order* pOrd);
 	virtual void OnOrderPlaceFailed(COrderEvent* pOrdEvent);
 	virtual void OnPending(trade::Order* pOrd);
-	virtual void OnCanceling(){}
+	virtual void OnCanceling(COrderEvent* transEvent){}
 
 
 	static string EmptyParentOrderId;

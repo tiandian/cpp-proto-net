@@ -27,7 +27,7 @@ protected:
 
 	virtual void OnSubmittingOrder();
 	virtual void OnPending(trade::Order* pOrd);
-	virtual void OnCanceling();
+	virtual void OnCanceling(COrderEvent* transEvent);
 
 private:
 	bool IsOpenOrder();
@@ -38,5 +38,9 @@ private:
 
 	boost::shared_ptr<CAsyncOpenOrderTimer> m_openOrderTimer;
 	boost::shared_ptr<CAsyncNextQuoteWaiter> m_nextQuoteWaiter;
+
+	double m_nextLast;
+	double m_nextAsk;
+	double m_nextBid;
 };
 

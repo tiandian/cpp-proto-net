@@ -2036,6 +2036,13 @@ class ScalperSettings : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 retrytimes() const;
   inline void set_retrytimes(::google::protobuf::int32 value);
   
+  // optional int32 OpenTimeout = 9;
+  inline bool has_opentimeout() const;
+  inline void clear_opentimeout();
+  static const int kOpenTimeoutFieldNumber = 9;
+  inline ::google::protobuf::int32 opentimeout() const;
+  inline void set_opentimeout(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:entity.ScalperSettings)
  private:
   inline void set_has_threshold();
@@ -2054,6 +2061,8 @@ class ScalperSettings : public ::google::protobuf::Message {
   inline void clear_has_stoplossstrategy();
   inline void set_has_retrytimes();
   inline void clear_has_retrytimes();
+  inline void set_has_opentimeout();
+  inline void clear_has_opentimeout();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2065,9 +2074,10 @@ class ScalperSettings : public ::google::protobuf::Message {
   int casenochange_;
   int stoplossstrategy_;
   ::google::protobuf::int32 retrytimes_;
+  ::google::protobuf::int32 opentimeout_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -5405,6 +5415,28 @@ inline ::google::protobuf::int32 ScalperSettings::retrytimes() const {
 inline void ScalperSettings::set_retrytimes(::google::protobuf::int32 value) {
   set_has_retrytimes();
   retrytimes_ = value;
+}
+
+// optional int32 OpenTimeout = 9;
+inline bool ScalperSettings::has_opentimeout() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void ScalperSettings::set_has_opentimeout() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void ScalperSettings::clear_has_opentimeout() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void ScalperSettings::clear_opentimeout() {
+  opentimeout_ = 0;
+  clear_has_opentimeout();
+}
+inline ::google::protobuf::int32 ScalperSettings::opentimeout() const {
+  return opentimeout_;
+}
+inline void ScalperSettings::set_opentimeout(::google::protobuf::int32 value) {
+  set_has_opentimeout();
+  opentimeout_ = value;
 }
 
 // -------------------------------------------------------------------

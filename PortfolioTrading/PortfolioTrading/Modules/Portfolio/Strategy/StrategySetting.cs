@@ -157,6 +157,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     setting.RetryTimes = int.Parse(attr.Value);
                 }
+                attr = elem.Attribute("openTimeout");
+                if (attr != null)
+                {
+                    setting.OpenTimeout = int.Parse(attr.Value);
+                }
                 return setting;
             }
             else

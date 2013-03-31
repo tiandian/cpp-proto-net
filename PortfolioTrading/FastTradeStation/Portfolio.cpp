@@ -503,3 +503,10 @@ int CPortfolio::RetryTimes()
 {
 	return m_strategy->RetryTimes();
 }
+
+int CPortfolio::OpenPendingTimeout()
+{
+	return m_strategy->OpenTimeout();
+}
+
+

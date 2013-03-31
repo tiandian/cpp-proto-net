@@ -54,6 +54,11 @@ void CLogManager::Init()
 	}
 }
 
+bool CLogManager::IsTraceEnabled()
+{
+	return IsDebugEnabled();
+}
+
 void CLogManager::Trace( const char* text )
 {
 	if(m_isEnabled)
@@ -65,6 +70,14 @@ void CLogManager::Trace( const char* text )
 void CLogManager::Trace( const std::string& text)
 {
 	Debug(text);
+}
+
+bool CLogManager::IsDebugEnabled()
+{
+	if(m_isEnabled)
+		return GetLogger().isDebugEnabled() && GetRootLogger().isDebugEnabled();
+
+	return false;
 }
 
 void CLogManager::Debug( const char* text )
@@ -91,6 +104,13 @@ void CLogManager::Debug( const std::string& text)
 	}
 }
 
+bool CLogManager::IsInfoEnabled()
+{
+	if(m_isEnabled)
+		return GetLogger().isInfoEnabled() && GetRootLogger().isInfoEnabled();
+	return false;
+}
+
 void CLogManager::Info( const char* text )
 {
 	if(m_isEnabled)
@@ -113,6 +133,13 @@ void CLogManager::Info( const std::string& text)
 		else
 			GetRootLogger().info(text);
 	}
+}
+
+bool CLogManager::IsWarningEnabled()
+{
+	if(m_isEnabled)
+		return GetLogger().isWarnEnabled() && GetRootLogger().isWarnEnabled();
+	return false;
 }
 
 void CLogManager::Warning( const char* text )
@@ -139,6 +166,13 @@ void CLogManager::Warning( const std::string& text)
 	}
 }
 
+bool CLogManager::IsErrorEnabled()
+{
+	if(m_isEnabled)
+		return GetLogger().isErrorEnabled() && GetRootLogger().isErrorEnabled();
+	return false;
+}
+
 void CLogManager::Error( const char* text )
 {
 	if(m_isEnabled)
@@ -153,6 +187,13 @@ void CLogManager::Error( const std::string& text)
 	{
 		GetLogger().error(text);
 	}
+}
+
+bool CLogManager::IsFatalEnabled()
+{
+	if(m_isEnabled)
+		return GetLogger().isFatalEnabled() && GetRootLogger().isFatalEnabled();
+	return false;
 }
 
 void CLogManager::Fatal( const char* text )
