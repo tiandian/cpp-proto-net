@@ -208,7 +208,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 		break;
 	case ORDER_STATE_CANCELING:
 		{
-			OnCanceling();
+			OnCanceling(transEvent);
 		}
 		break;
 	case ORDER_STATE_COMPLETE:

@@ -10,6 +10,7 @@
 
 #define DOUBLE_COMPARSION_PRECISION (0.01)
 #define DEFAULT_MAX_RETRY_TIMES 2
+#define DEFAULT_OPEN_PENDING_TIMEOUT 200
 
 enum COMPARE_OP
 {
@@ -96,7 +97,7 @@ public:
 		{
 			if(testFor == DO_NOTHING || testFor == OPEN_POSI)
 			{
-				logger.Debug(boost::str(boost::format("[OPEN Test]Portfolio(%s): Reach Limit %d, Placing Order %d, Auto Open %d")
+				LOG_DEBUG(logger, boost::str(boost::format("[OPEN Test]Portfolio(%s): Reach Limit %d, Placing Order %d, Auto Open %d")
 					% m_pPortfolio->ID() 
 					% m_pPortfolio->PositionReachLimit() 
 					% m_pPortfolio->IsPlacingOrder()
@@ -106,7 +107,7 @@ public:
 					&& !m_pPortfolio->IsPlacingOrder()
 					&& IsAutoOpen())
 				{
-					logger.Info(boost::str(boost::format("Test for %s") 
+					LOG_INFO(logger, boost::str(boost::format("Test for %s") 
 						% StrategyOpertaionText(OPEN_POSI)));
 
 					bool succ = GetOpenPosiCond().Test(valueToTest);
@@ -123,7 +124,7 @@ public:
 
 			if(testFor == DO_NOTHING || testFor == CLOSE_POSI)
 			{
-				logger.Debug(boost::str(boost::format("[CLOSE Test]Portfolio(%s): Has position %d,  Placing Order %d")
+				LOG_DEBUG(logger, boost::str(boost::format("[CLOSE Test]Portfolio(%s): Has position %d,  Placing Order %d")
 					% m_pPortfolio->ID() 
 					% m_pPortfolio->HasPosition() 
 					% m_pPortfolio->IsPlacingOrder()));
@@ -132,7 +133,7 @@ public:
 				{
 					if(IsStopGain())
 					{
-						logger.Info(boost::str(boost::format("Test for %s") 
+						LOG_INFO(logger, boost::str(boost::format("Test for %s") 
 							% "Stop Gain"));
 
 						bool succ = GetStopGainCond().Test(valueToTest);
@@ -143,7 +144,7 @@ public:
 					}
 					if(IsStopLoss())
 					{
-						logger.Info(boost::str(boost::format("Test for %s") 
+						LOG_INFO(logger, boost::str(boost::format("Test for %s") 
 							% "Stop Loss"));
 
 						bool succ = GetStopLossCond().Test(valueToTest);
@@ -160,6 +161,7 @@ public:
 	virtual void ApplySettings(const std::string& settingData) = 0;
 
 	virtual int RetryTimes(){ return DEFAULT_MAX_RETRY_TIMES; }
+	virtual int OpenTimeout() { return DEFAULT_OPEN_PENDING_TIMEOUT; }
 
 protected:
 	virtual CConditionChecker<T>& GetOpenPosiCond() = 0;

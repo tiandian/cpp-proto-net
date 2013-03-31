@@ -29,6 +29,7 @@ public:
 	entity::StopLossCloseMethods CloseMethod() { return m_closeStrategy; }
 
 	virtual int RetryTimes(){ return m_maxRetryTimes; }
+	virtual int OpenTimeout() { return m_openTimeout; }
 
 protected:
 	CConditionChecker<double>& GetOpenPosiCond(){ return m_openPosiChecker; }
@@ -62,5 +63,6 @@ private:
 	int m_BidSize;
 
 	int m_maxRetryTimes;
+	int m_openTimeout;
 };
 

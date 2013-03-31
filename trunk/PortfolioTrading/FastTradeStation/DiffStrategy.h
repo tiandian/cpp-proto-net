@@ -39,19 +39,19 @@ public:
 			switch(EffectiveComparsion())
 			{
 			case GREATER_THAN:
-				logger.Info(boost::str(boost::format("? %f > %f")
+				LOG_DEBUG(logger, boost::str(boost::format("? %f > %f")
 					% valToTest % targetVal));
 				return valToTest > targetVal;
 			case GREATER_EQUAL_THAN:
-				logger.Info(boost::str(boost::format("? %f >= %f")
+				LOG_DEBUG(logger, boost::str(boost::format("? %f >= %f")
 					% valToTest % targetVal));
 				return DoubleGreaterEqual(valToTest, targetVal);
 			case LESS_THAN:
-				logger.Info(boost::str(boost::format("? %f < %f")
+				LOG_DEBUG(logger, boost::str(boost::format("? %f < %f")
 					% valToTest % targetVal));
 				return valToTest < targetVal;
 			case LESS_EQUAL_THAN:
-				logger.Info(boost::str(boost::format("? %f <= %f")
+				LOG_DEBUG(logger, boost::str(boost::format("? %f <= %f")
 					% valToTest % targetVal));
 				return DoubleGreaterEqual(targetVal, valToTest);
 			default:

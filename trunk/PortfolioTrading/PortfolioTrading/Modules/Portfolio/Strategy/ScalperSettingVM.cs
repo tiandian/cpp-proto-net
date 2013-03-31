@@ -138,6 +138,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region OpenTimeout
+        private int _openTimeout;
+
+        public int OpenTimeout
+        {
+            get { return _openTimeout; }
+            set
+            {
+                if (_openTimeout != value)
+                {
+                    _openTimeout = value;
+                    RaisePropertyChanged("OpenTimeout");
+                }
+            }
+        }
+        #endregion
+
         #region CaseNoChange
         private entity.DirectionDepends _caseNoChange;
 
@@ -185,6 +202,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             settings.CaseNoChange = this.CaseNoChange;
             settings.StopLossCloseMethod = this.StopLossCloseMethod;
             settings.RetryTimes = this.RetryTimes;
+            settings.OpenTimeout = this.OpenTimeout;
 
             base.OnApplySetting();
         }
@@ -200,6 +218,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             this.CaseNoChange = settings.CaseNoChange;
             this.StopLossCloseMethod = settings.StopLossCloseMethod;
             this.RetryTimes = settings.RetryTimes;
+            this.OpenTimeout = settings.OpenTimeout;
         }
 
         private List<DirectionDependsItem> _directionDependsItems = new List<DirectionDependsItem>();

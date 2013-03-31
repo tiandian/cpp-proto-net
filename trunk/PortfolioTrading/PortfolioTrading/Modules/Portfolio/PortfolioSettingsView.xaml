@@ -199,20 +199,27 @@
                                 <StackPanel>
                                     <DockPanel Margin="12, 0, 6, 2">
                                         <DockPanel >
-                                            <TextBlock Margin="4, 2" VerticalAlignment="Center">价差</TextBlock>
-                                            <TextBlock Margin="4, 2" Width="80" VerticalAlignment="Center">大于等于
+                                            <TextBlock Margin="4, 0" VerticalAlignment="Center">价差</TextBlock>
+                                            <TextBlock Margin="4, 0" Width="80" VerticalAlignment="Center">大于等于
                                             </TextBlock>
                                         </DockPanel>
-                                        <DockPanel Margin="4, 2">
+                                        <DockPanel Margin="4, 0">
                                             <TextBlock DockPanel.Dock="Right" Margin="4, 2">点</TextBlock>
                                             <igEditor:XamTextEditor Value="{Binding Threshold, FallbackValue=0.8, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
                                         </DockPanel>
                                     </DockPanel>
                                     <DockPanel Margin="12, 0, 6, 2">
-                                        <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="112">最小变动单位</TextBlock>
-                                        <DockPanel Margin="4, 2">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="112">最小变动单位</TextBlock>
+                                        <DockPanel Margin="4, 0">
                                             <TextBlock DockPanel.Dock="Right" Margin="4, 2">点</TextBlock>
                                             <igEditor:XamTextEditor Value="{Binding PriceTick, FallbackValue=0.2, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                        </DockPanel>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 2">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="112">开仓挂单等待</TextBlock>
+                                        <DockPanel Margin="4, 0">
+                                            <TextBlock DockPanel.Dock="Right" Margin="4, 2">毫秒</TextBlock>
+                                            <igEditor:XamTextEditor Value="{Binding OpenTimeout, FallbackValue=200, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
                                         </DockPanel>
                                     </DockPanel>
                                 </StackPanel>
@@ -276,14 +283,14 @@
                                                 <TextBlock Text="{Binding DisplayName}"/>
                                             </DataTemplate>
                                         </DockPanel.Resources>
-                                        <TextBlock Margin="4, 2" VerticalAlignment="Center">平仓失败后改价基于</TextBlock>
+                                        <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="110">平仓失败后改价基于</TextBlock>
 
                                         <ComboBox Margin="4, 2" ItemsSource="{Binding CloseStrategyItems}" 
                                                 ItemTemplate="{StaticResource closeItemTemplate}" SelectedValue="{Binding StopLossCloseMethod, Mode=TwoWay}"
                                                 DisplayMemberPath="DisplayName" SelectedValuePath="Value" />
                                     </DockPanel>
                                     <DockPanel Margin="12, 0, 6, 2">
-                                        <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="112">平仓追价次数</TextBlock>
+                                        <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="110">平仓追价次数</TextBlock>
                                         <igEditor:XamTextEditor Margin="4, 2" Value="{Binding RetryTimes, FallbackValue=7, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
                                     </DockPanel>
                                 </StackPanel>
