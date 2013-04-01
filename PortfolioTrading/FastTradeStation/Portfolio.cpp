@@ -12,10 +12,12 @@ enum DIFF_TYPE
 	LAST_DIFF, LONG_DIFF, SHORT_DIFF
 };
 
-boost::posix_time::ptime CLeg::m_stEpochTime(boost::gregorian::date(2000, 1, 1)); 
+boost::chrono::steady_clock::time_point CLeg::m_stBeginTime(boost::chrono::steady_clock::now());
 
 double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType)
 {
+	boost::chrono::steady_clock::time_point tp = boost::chrono::steady_clock::now();
+	
 	// calculate the diff
 	double diff = 0;
 	for(vector<LegPtr>::iterator iter = legs.begin(); iter != legs.end(); ++iter)
@@ -216,23 +218,33 @@ void CLeg::SetInnerItem(entity::LegItem* pItem)
 void CLeg::UpdateTimestamp()
 {
 	boost::unique_lock<boost::mutex> l(m_mut);
-	boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
-	boost::posix_time::time_duration diff = now - m_stEpochTime;
-	m_timestamp = diff.total_milliseconds();
+	boost::chrono::steady_clock::time_point tpNow = boost::chrono::steady_clock::now();
+	boost::chrono::steady_clock::duration diff = tpNow - m_stBeginTime;
+	boost::chrono::milliseconds msDiff = 
+		boost::chrono::duration_cast<boost::chrono::milliseconds>(diff);
+
+	m_timestamp = msDiff.count();
 	m_condQuoteUpdated.notify_one();
 }
 
 bool CLeg::CompareTimestamp(long destTs)
 {
+	LOG_DEBUG(logger, boost::str(boost::format("Current TS:%d ?> Testing TS:%d")
+		% m_timestamp % destTs));
 	return m_timestamp > destTs;
 }
 
 bool CLeg::IsQuoteUpdated(long timestamp)
 {
+	boost::chrono::steady_clock::time_point tpEnter = boost::chrono::steady_clock::now();
+	LOG_DEBUG(logger, boost::str(boost::format("Trying to test timestamp: %d ms") % timestamp));
 	boost::unique_lock<boost::mutex> l(m_mut);
 	if(m_condQuoteUpdated.timed_wait(l, boost::posix_time::seconds(3), 
 		boost::bind(&CLeg::CompareTimestamp, this, timestamp)))
 	{
+		boost::chrono::milliseconds elapse = 
+			boost::chrono::duration_cast<boost::chrono::milliseconds>(boost::chrono::steady_clock::now() - tpEnter);
+		LOG_DEBUG(logger, boost::str(boost::format("Waiting quote for  %d ms") % elapse.count()));
 		return true;
 	}
 	return false;
@@ -391,6 +403,7 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 	{
 		logger.Info(boost::str(boost::format("Portf (%s) STOP strategy <<<") % ID().c_str()));
 		m_strategy->Stop();
+		EndPlaceOrder();
 	}
 	m_innerItem->set_strategyrunning(isEnabled);
 }

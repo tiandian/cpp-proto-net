@@ -9,7 +9,7 @@
 #include <map>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
-#include <boost/date_time.hpp>
+#include <boost/chrono.hpp>
 
 using namespace std;
 
@@ -185,7 +185,7 @@ private:
 	void SetInnerItem(entity::LegItem* pItem);
 	bool CompareTimestamp(long destTs);
 	
-	static boost::posix_time::ptime m_stEpochTime; 
+	static boost::chrono::steady_clock::time_point m_stBeginTime; 
 
 	int m_legId;
 	entity::LegItem* m_pInnerItem;
