@@ -66,6 +66,8 @@ void CSgOrderStateMachine::Initialize()
 	sent->AddEventState(ORDER_EVENT_PENDING, pending.get());
 	sent->AddEventState(ORDER_EVENT_REJECTED, failed.get());
 	sent->AddEventState(ORDER_EVENT_PARTIALLY_FILLED, partiallyFilled.get());
+	sent->AddEventState(ORDER_EVENT_PENDING_TIMEUP, canceling.get());
+	sent->AddEventState(ORDER_EVENT_NEXT_QUOTE_IN, canceling.get());
 
 	pending->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
 	pending->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sending.get());
@@ -150,11 +152,6 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 						% ParentOrderId() % Symbol() % (m_submitTimes + 1));
 					logger.Info(submitInfo);
 
-					OnSubmittingOrder();
-
-					// real submit order and unlock to allow next order ref generation
-					bool succ = m_pOrderProcessor->SubmitAndUnlock(m_pInputOrder.get());
-
 					if(m_pPortf != NULL)
 					{
 						CLeg* pLeg = m_pPortf->GetLeg(Symbol());
@@ -162,6 +159,11 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 						if(pLeg != NULL)
 							m_quoteTimestamp = pLeg->GetTimestamp();
 					}
+
+					OnSubmittingOrder();
+
+					// real submit order and unlock to allow next order ref generation
+					bool succ = m_pOrderProcessor->SubmitAndUnlock(m_pInputOrder.get());
 
 					++m_submitTimes;
 				}

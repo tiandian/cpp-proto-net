@@ -107,7 +107,7 @@ public:
 					&& !m_pPortfolio->IsPlacingOrder()
 					&& IsAutoOpen())
 				{
-					LOG_INFO(logger, boost::str(boost::format("Test for %s") 
+					LOG_DEBUG(logger, boost::str(boost::format("Test for %s") 
 						% StrategyOpertaionText(OPEN_POSI)));
 
 					bool succ = GetOpenPosiCond().Test(valueToTest);

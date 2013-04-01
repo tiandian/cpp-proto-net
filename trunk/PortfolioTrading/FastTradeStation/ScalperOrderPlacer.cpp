@@ -1,11 +1,11 @@
 #include "ScalperOrderPlacer.h"
-#include "AsyncScalperEventFirer.h"
 #include "OrderProcessor2.h"
 #include "SgOrderStateMachine.h"
 #include "globalmembers.h"
 #include "ScalperStrategy.h"
 
 #include <boost/format.hpp>
+#include <boost/date_time.hpp>
 
 void CScalperOrderPlacer::ModifyOrderPrice()
 {
@@ -47,7 +47,7 @@ void CScalperOrderPlacer::ModifyOrderPrice()
 
 CScalperOrderPlacer::CScalperOrderPlacer( CSgOrderStateMachine* pStateMachine, CPortfolio* pPortfolio, trade::MultiLegOrder* pMultiLegOrder, const InputOrderPtr& inputOrder, int maxRetryTimes, COrderProcessor2* pOrderProc ) :
 CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder, 
-	inputOrder, maxRetryTimes, true, pOrderProc), m_pendingOrder(NULL),
+	inputOrder, maxRetryTimes, true, pOrderProc),
 	m_nextLast(0), m_nextAsk(0), m_nextBid(0)
 {
 	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(pPortfolio->Strategy());
@@ -65,8 +65,15 @@ CSgOrderPlacer(pStateMachine, pPortfolio, pMultiLegOrder,
 
 void CScalperOrderPlacer::OnPending( trade::Order* pOrd )
 {
-	m_pendingOrder = pOrd;
-	CSgOrderPlacer::OnPending(pOrd);
+	boost::unique_lock<boost::mutex> lock(m_mut);
+	m_pendingOrder = boost::shared_ptr<trade::Order>(new trade::Order);
+	if(pOrd != NULL)
+	{
+		// back up pending order
+		m_pendingOrder->CopyFrom(*pOrd);
+		m_condCancelingWaitPendingOrder.notify_one();		
+		CSgOrderPlacer::OnPending(pOrd);
+	}
 }
 
 void CScalperOrderPlacer::OnCanceling(COrderEvent* transEvent)
@@ -82,8 +89,26 @@ void CScalperOrderPlacer::OnCanceling(COrderEvent* transEvent)
 		}
 	}
 
-	if(m_pendingOrder != NULL)
-		CancelOrder(m_pendingOrder);
+	if(m_pendingOrder.get() != NULL)
+		CancelOrder(m_pendingOrder.get());
+	else
+	{
+		// has to wait pending order come out in a thread
+		boost::thread th(boost::bind(&CScalperOrderPlacer::WaitForPendingOrderProc, this));
+	}
+}
+
+
+void CScalperOrderPlacer::WaitForPendingOrderProc()
+{
+	boost::unique_lock<boost::mutex> lock(m_mut);
+	if(m_condCancelingWaitPendingOrder.timed_wait(lock, boost::posix_time::seconds(1),
+		boost::bind(&CScalperOrderPlacer::IsPendingOrderReady, this)))
+	{
+		CancelOrder(m_pendingOrder.get());
+	}
+	else
+		logger.Warning("Pending order is empty when scalper order placer trying to cancel order");
 }
 
 void CScalperOrderPlacer::OnSubmittingOrder()
@@ -99,8 +124,10 @@ void CScalperOrderPlacer::OnSubmittingOrder()
 	{
 		CLeg* pLeg = m_pPortf->GetLeg(Symbol());
 		
+		long quoteTimestamp = QuoteTimestamp();
+		assert(quoteTimestamp > 0);
 		m_nextQuoteWaiter = boost::shared_ptr<CAsyncNextQuoteWaiter>(
-				new CAsyncNextQuoteWaiter(m_pOrderProcessor, m_currentOrdRef, pLeg, QuoteTimestamp()));
+				new CAsyncNextQuoteWaiter(m_pOrderProcessor, m_currentOrdRef, pLeg, quoteTimestamp));
 		m_nextQuoteWaiter->Run();
 	}
 }
@@ -114,4 +141,5 @@ bool CScalperOrderPlacer::IsOpenOrder()
 
 	return true;
 }
+
 

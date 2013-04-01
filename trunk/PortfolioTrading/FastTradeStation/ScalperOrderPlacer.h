@@ -1,11 +1,10 @@
 #pragma once
 
+#include "AsyncScalperEventFirer.h"
 #include "SgOrderStateMachine.h"
 
 #include <boost/shared_ptr.hpp>
-
-class CAsyncOpenOrderTimer;
-class CAsyncNextQuoteWaiter;
+#include <boost/thread.hpp>
 
 class CScalperOrderPlacer : public CSgOrderPlacer
 {
@@ -31,16 +30,21 @@ protected:
 
 private:
 	bool IsOpenOrder();
+	void WaitForPendingOrderProc();
+	bool IsPendingOrderReady(){ return m_pendingOrder.get() != NULL; }
 
 	double m_precedence;
 	entity::StopLossCloseMethods m_closeMethod;
-	trade::Order* m_pendingOrder;
+	boost::shared_ptr<trade::Order> m_pendingOrder;
 
-	boost::shared_ptr<CAsyncOpenOrderTimer> m_openOrderTimer;
-	boost::shared_ptr<CAsyncNextQuoteWaiter> m_nextQuoteWaiter;
+	boost::shared_ptr<CAsyncScalperEventFirer> m_openOrderTimer;
+	boost::shared_ptr<CAsyncScalperEventFirer> m_nextQuoteWaiter;
 
 	double m_nextLast;
 	double m_nextAsk;
 	double m_nextBid;
+
+	boost::condition_variable m_condCancelingWaitPendingOrder;
+	boost::mutex m_mut;
 };
 
