@@ -60,6 +60,8 @@ void CSgOrderStateMachine::Initialize()
 	sending->AddEventState(ORDER_EVENT_SUBMIT_SUCCESS, sent.get());
 	sending->AddEventState(ORDER_EVENT_REJECTED, failed.get());
 	sending->AddEventState(ORDER_EVENT_SUBMIT_FAILED, failed.get());
+	sending->AddEventState(ORDER_EVENT_PENDING_TIMEUP, canceling.get());
+	sending->AddEventState(ORDER_EVENT_NEXT_QUOTE_IN, canceling.get());
 
 	sent->AddEventState(ORDER_EVENT_SUBMIT_SUCCESS, sent.get());
 	sent->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
@@ -80,6 +82,8 @@ void CSgOrderStateMachine::Initialize()
 
 	canceling->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, sending.get());
 	canceling->AddEventState(ORDER_EVENT_CANCEL_FAILED, failed.get());
+	canceling->AddEventState(ORDER_EVENT_PARTIALLY_FILLED, partiallyFilled.get());
+	canceling->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
 
 	partiallyFilled->AddEventState(ORDER_EVENT_CANCEL_SUCCESS, complete.get());
 	partiallyFilled->AddEventState(ORDER_EVENT_COMPLETE, complete.get());
@@ -193,6 +197,8 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
 			if(pOrd != NULL)
 			{
+				OnOrderAccept(pOrd);
+
 				OnOrderUpdate(pOrd);
 			}
 		}
@@ -216,6 +222,8 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 	case ORDER_STATE_COMPLETE:
 		{
 			trade::Order* pOrd = pSgOrderEvent->RtnOrder();
+			OnOrderComplete(pOrd);
+
 			int remained = pOrd->volumetotal();
 			int finished = pOrd->volumetraded();
 			OnOrderUpdate(pOrd);

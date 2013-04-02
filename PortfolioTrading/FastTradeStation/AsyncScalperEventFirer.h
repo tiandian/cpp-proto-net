@@ -41,6 +41,7 @@ public:
 		m_timer.async_wait(boost::bind(&CAsyncOpenOrderTimer::FireEvent, this, _1));
 		boost::thread th(boost::bind(&boost::asio::io_service::run, &m_io));
 	}
+	virtual void Cancel() { m_timer.cancel(); }
 
 private:
 	void FireEvent(const boost::system::error_code& e);

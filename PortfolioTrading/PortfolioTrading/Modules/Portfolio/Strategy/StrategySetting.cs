@@ -201,6 +201,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 setting.CaseNoChange = entity.DirectionDepends.ON_BIG_SIZE;
                 setting.StopLossCloseMethod = entity.StopLossCloseMethods.BASED_ON_NEXT_QUOTE;
                 setting.RetryTimes = 8;
+                setting.OpenTimeout = 100;
                 return setting;
             }
             else
