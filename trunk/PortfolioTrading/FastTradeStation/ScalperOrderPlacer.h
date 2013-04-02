@@ -16,17 +16,19 @@ public:
 		int maxRetryTimes,
 		COrderProcessor2* pOrderProc);
 
-	~CScalperOrderPlacer(){}
+	~CScalperOrderPlacer();
 
 	double Precedence() const { return m_precedence; }
 	void SetPrecedence(double val) { m_precedence = val; }
 
 protected:
-	virtual void ModifyOrderPrice();
+	//virtual void ModifyOrderPrice();
 
 	virtual void OnSubmittingOrder();
+	virtual void OnOrderAccept(trade::Order* pOrd);
 	virtual void OnPending(trade::Order* pOrd);
 	virtual void OnCanceling(COrderEvent* transEvent);
+	virtual void OnOrderComplete(trade::Order* pOrd);
 
 private:
 	bool IsOpenOrder();
@@ -46,5 +48,6 @@ private:
 
 	boost::condition_variable m_condCancelingWaitPendingOrder;
 	boost::mutex m_mut;
+	boost::thread m_thWaitPending;
 };
 

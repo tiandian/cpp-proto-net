@@ -1,5 +1,5 @@
 log4cpp.rootCategory=DEBUG, rollingAppender
-log4cpp.category.logger=INFO, consoleAppender
+log4cpp.category.logger=DEBUG, consoleAppender
 
 log4cpp.appender.consoleAppender=ConsoleAppender
 log4cpp.appender.consoleAppender.layout=PatternLayout

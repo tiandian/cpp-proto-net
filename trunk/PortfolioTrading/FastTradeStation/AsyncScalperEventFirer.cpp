@@ -8,6 +8,9 @@
 
 void CAsyncOpenOrderTimer::FireEvent( const boost::system::error_code& e )
 {
+	if(e.value() == boost::asio::error::operation_aborted)
+		return; // timer canceled
+
 	logger.Info(boost::str(boost::format("Opening order ref(%s) Time up") % m_orderRef));
 	PendingTimeUpEvent timeupEvent;
 	m_pOrdProc->RaiseSGOrderPlacerEvent(m_orderRef, &timeupEvent);
