@@ -3,8 +3,10 @@
 #include "QuoteAgent.h"
 #include "TradeAgent.h"
 #include "Portfolio.h"
+#include "PortfolioManager.h"
 #include "OrderProcessor2.h"
 #include "PortfolioOrderHelper.h"
+#include "QuoteRepositry.h"
 #include "ClientMessagePump.h"
 #include "ap_invoke/session.h"
 
@@ -14,7 +16,7 @@
 
 using namespace std;
 
-class CClientAgent : public CQuoteAgentCallback
+class CClientAgent
 {
 public:
 	CClientAgent(const string& clntId);
@@ -83,17 +85,13 @@ public:
 
 	bool IsConnected(){ return (m_quoteAgent.IsConnected() && m_tradeAgent.IsConnected()); }
 
-	// CQuoteAgentCallback
-	virtual void OnSubscribeCompleted(){}
-	virtual void OnUnsubscribeCompleted(){}
-	virtual void OnQuoteReceived(entity::Quote* pQuote);
-	virtual void OnReconnected(){}
-
 private:
 
 	CQuoteAgent			m_quoteAgent;
 	CTradeAgent			m_tradeAgent;
 	COrderProcessor2	m_orderProcessor;
+	CQuoteRepositry		m_quoteRepositry;
+	CPortfolioManager	m_portfolioMgr;
 	CClientMessagePump	m_clientMsgPump;
 	boost::shared_ptr<CPortfolio> m_pActPortfolio;
 

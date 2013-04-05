@@ -1,6 +1,6 @@
 #pragma once
 
-#include "entity/quote.pb.h"
+#include "ThostTraderApi/ThostFtdcMdApi.h"
 
 class CQuoteAgentCallback
 {
@@ -12,7 +12,7 @@ public:
 
 	virtual void OnUnsubscribeCompleted() = 0;
 
-	virtual void OnQuoteReceived(entity::Quote* pQuote) = 0;
+	virtual void OnQuoteReceived(CThostFtdcDepthMarketDataField* marketData) = 0;
 
-	virtual void OnReconnected() = 0;
+	virtual void OnConnected(bool reconnected) = 0;
 };

@@ -358,54 +358,7 @@ void CQuoteAgent::OnRtnDepthMarketData( CThostFtdcDepthMarketDataField *pDepthMa
 
 	if(m_pCallback != NULL)
 	{
-		entity::Quote* quote = new entity::Quote();	// it will be managed by quote aggregator
-
-		quote->set_symbol(pDepthMarketData->InstrumentID);
-		quote->set_trading_day(pDepthMarketData->TradingDay);
-		quote->set_exchange_id(pDepthMarketData->ExchangeID);
-		quote->set_exchange_symbol_id(pDepthMarketData->ExchangeInstID);
-		quote->set_last(pDepthMarketData->LastPrice);
-		quote->set_prev_settlement_price(pDepthMarketData->PreSettlementPrice);
-		quote->set_prev_close(pDepthMarketData->PreClosePrice);
-		quote->set_prev_open_interest(pDepthMarketData->PreOpenInterest);
-		quote->set_open(pDepthMarketData->OpenPrice);
-		quote->set_high(pDepthMarketData->HighestPrice);
-		quote->set_low(pDepthMarketData->LowestPrice);
-		quote->set_volume(pDepthMarketData->Volume);
-		quote->set_turnover(pDepthMarketData->Turnover);
-		quote->set_open_interest(pDepthMarketData->OpenInterest);
-		quote->set_close(pDepthMarketData->ClosePrice);
-		quote->set_settlement_price(pDepthMarketData->SettlementPrice);
-		quote->set_upper_limit_price(pDepthMarketData->UpperLimitPrice);
-		quote->set_lower_limit_price(pDepthMarketData->LowerLimitPrice);
-		quote->set_prev_delta(pDepthMarketData->PreDelta);
-		quote->set_curr_delta(pDepthMarketData->CurrDelta);
-		quote->set_update_time(pDepthMarketData->UpdateTime);
-		quote->set_update_millisec(pDepthMarketData->UpdateMillisec);
-
-		quote->set_bid(pDepthMarketData->BidPrice1);
-		quote->set_bid_size(pDepthMarketData->BidVolume1);
-		quote->set_ask(pDepthMarketData->AskPrice1);
-		quote->set_ask_size(pDepthMarketData->AskVolume1);
-		quote->set_bid_2(pDepthMarketData->BidPrice2);
-		quote->set_bid_size_2(pDepthMarketData->BidVolume2);
-		quote->set_ask_2(pDepthMarketData->AskPrice2);
-		quote->set_ask_size_2(pDepthMarketData->AskVolume2);
-		quote->set_bid_3(pDepthMarketData->BidPrice3);
-		quote->set_bid_size_3(pDepthMarketData->BidVolume3);
-		quote->set_ask_3(pDepthMarketData->AskPrice3);
-		quote->set_ask_size_3(pDepthMarketData->AskVolume3);
-		quote->set_bid_4(pDepthMarketData->BidPrice4);
-		quote->set_bid_size_4(pDepthMarketData->BidVolume4);
-		quote->set_ask_4(pDepthMarketData->AskPrice4);
-		quote->set_ask_size_4(pDepthMarketData->AskVolume4);
-		quote->set_bid_5(pDepthMarketData->BidPrice5);
-		quote->set_bid_size_5(pDepthMarketData->BidVolume5);
-		quote->set_ask_5(pDepthMarketData->AskPrice5);
-		quote->set_ask_size_5(pDepthMarketData->AskVolume5);
-		quote->set_average_price(pDepthMarketData->AveragePrice);
-
-		m_pCallback->OnQuoteReceived(quote);
+		m_pCallback->OnQuoteReceived(pDepthMarketData);
 	}
 }
 
@@ -502,9 +455,11 @@ void CQuoteAgent::OnFrontConnected()
 
 	if(m_bConnectionDrop)
 	{
-		m_pCallback->OnReconnected();
+		m_pCallback->OnConnected(true);
 		m_bConnectionDrop = false;
 	}
+	else
+		m_pCallback->OnConnected(false);
 }
 
 void CQuoteAgent::OnFrontDisconnected( int nReason )

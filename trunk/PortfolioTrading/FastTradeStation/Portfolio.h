@@ -16,6 +16,8 @@ using namespace std;
 class CLeg;
 class CClientAgent;
 class CDiffStrategy;
+class CQuoteRepositry;
+class CQuoteFetcher;
 
 typedef boost::shared_ptr<entity::PortfolioItem> PortfItemPtr;
 typedef boost::shared_ptr<CLeg> LegPtr;
@@ -37,7 +39,7 @@ public:
 	CLeg* GetLeg(int legId);
 	CLeg* GetLeg(const string& symbol);
 
-	void SubscribeQuotes();
+	void SubscribeQuotes(CQuoteRepositry* pQuoteRepo);
 
 	vector<LegPtr>& Legs(){ return m_vecLegs; }
 
@@ -124,9 +126,11 @@ private:
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;
-	vector<string> m_listenSymbols;
 	
 	CClientAgent* m_pClientAgent;
+
+	CQuoteRepositry* m_pQuoteRepo;
+	vector<CQuoteFetcher*> m_quoteFetcherVec;
 
 	int m_openedOrderCount;
 	boost::mutex m_mut;
