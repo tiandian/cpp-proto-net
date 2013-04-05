@@ -2,7 +2,7 @@
 #include "StrategyFactory.h"
 #include "DiffStrategy.h"
 #include "globalmembers.h"
-
+#include "QuoteFetcher.h"
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
@@ -164,7 +164,8 @@ CPortfolio::CPortfolio(void):
 m_pClientAgent(NULL),
 m_openedOrderCount(0),
 m_selfClose(false),
-m_isPlacingOrder(false)
+m_isPlacingOrder(false),
+m_pQuoteRepo(NULL)
 {
 }
 
@@ -334,22 +335,29 @@ void CPortfolio::OnQuoteRecevied( entity::Quote* pQuote )
 	PushUpdate();
 }
 
-void CPortfolio::SubscribeQuotes()
+void CPortfolio::SubscribeQuotes(CQuoteRepositry* pQuoteRepo)
 {
+	assert(pQuoteRepo != NULL);
+	m_pQuoteRepo = pQuoteRepo;
+
 	BOOST_FOREACH(const LegPtr& leg, m_vecLegs)
 	{
-		m_listenSymbols.push_back(leg->Symbol());
+		const string& symbol = leg->Symbol();
+		CQuoteFetcher* pFetcher = m_pQuoteRepo->CreateFetcher(symbol);
+		m_quoteFetcherVec.push_back(pFetcher);
+		pFetcher->Run(boost::bind(&CPortfolio::OnQuoteRecevied, this, _1));
 	}
-
-	m_pClientAgent->RegQuote(m_listenSymbols);
 }
 
 void CPortfolio::Cleanup()
 {
-	if(m_pClientAgent != NULL)
+	if(m_pQuoteRepo != NULL)
 	{
-		m_pClientAgent->UnregQuote(m_listenSymbols);
-		m_listenSymbols.clear();
+		BOOST_FOREACH(CQuoteFetcher* pFetcher, m_quoteFetcherVec)
+		{
+			m_pQuoteRepo->DestoryFetcher(pFetcher);
+		}
+		m_quoteFetcherVec.clear();
 	}
 }
 

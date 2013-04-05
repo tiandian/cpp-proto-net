@@ -13,7 +13,8 @@ m_clientId(clntId),
 m_pSession(NULL)
 {
 	m_orderProcessor.Initialize(this, &m_tradeAgent);
-	m_quoteAgent.SetCallbackHanlder(this);
+	m_quoteRepositry.Init(&m_quoteAgent);
+	m_quoteAgent.SetCallbackHanlder(&m_quoteRepositry);
 }
 
 CClientAgent::~CClientAgent(void)
@@ -26,39 +27,26 @@ CClientAgent::~CClientAgent(void)
 void CClientAgent::Add( entity::PortfolioItem* portfolioItem )
 {
 	// let CPortfolio wrap and hold entity::PortfolioItem instance
-	CPortfolio* pPortf = CPortfolio::Create(this, portfolioItem);
-	if(m_pActPortfolio.get() == NULL)
-	{
-		m_pActPortfolio = boost::shared_ptr<CPortfolio>(pPortf);
-		m_pActPortfolio->SubscribeQuotes();
-	}
-	else
-	{
-		logger.Warning("Fast Trade Station only support ONE portfolio for an account");
-	}
+	CPortfolio* pPortf = CPortfolio::Create(this, portfolioItem); 
+	m_portfolioMgr.Add(pPortf);
+	pPortf->SubscribeQuotes(&m_quoteRepositry);
 }
 
 void CClientAgent::AddPortfolios( entity::AddPortfolioParam& addPortfParam )
 {
 	int count = addPortfParam.portfolioitems_size();
-	
 	for(int i = 0; i < count; ++i )
 	{
 		const entity::PortfolioItem& portfItem = addPortfParam.portfolioitems(i);
 		entity::PortfolioItem* pClonedItem = new entity::PortfolioItem;
 		pClonedItem->CopyFrom(portfItem);
 		Add(pClonedItem);
-
-		break;
 	}
 }
 
 void CClientAgent::Remove( const string& pid )
 {
-	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() != pid)
-	{
-		m_pActPortfolio.reset();
-	}
+	m_portfolioMgr.Remove(pid);
 }
 
 boost::tuple<bool, string> CClientAgent::TradeConnect( const std::string& address, const std::string& streamDir )
@@ -116,20 +104,12 @@ void CClientAgent::QuoteDisconnect()
 
 void CClientAgent::RegQuote( vector<string>& symbols )
 {
-	m_quoteAgent.SubscribesQuotes(symbols);
-}
-
-void CClientAgent::UnregQuote( vector<string>& symbols)
-{
-	m_quoteAgent.UnSubscribesQuotes(symbols);
 }
 
 void CClientAgent::OpenPosition( const string& pid, int quantity)
 {
-	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() != pid)
-	{
-		OpenPosition(m_pActPortfolio.get(), quantity, trade::SR_Manual);
-	}
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
+	OpenPosition(portf, quantity, trade::SR_Manual);
 }
 
 void CClientAgent::OpenPosition( CPortfolio* portf, int qty, trade::SubmitReason submitReason)
@@ -154,35 +134,28 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty, trade::SubmitReason
 
 void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, trade::SubmitReason submitReason, string& msg)
 {
-	if(m_pActPortfolio.get() != NULL && m_pActPortfolio->ID() != openMlOrd.portfolioid())
-	{
-		CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(openMlOrd.portfolioid());
 
-		bool autoTracking = portf->Strategy()->IsAutoTracking();
-		bool enablePrefer = portf->Strategy()->EnablePrefer();
-		entity::PosiDirectionType portfDirection = portf->Strategy()->Direction();
+	bool autoTracking = portf->Strategy()->IsAutoTracking();
+	bool enablePrefer = portf->Strategy()->EnablePrefer();
+	entity::PosiDirectionType portfDirection = portf->Strategy()->Direction();
 
-		PlaceOrderContext placeOrderCtx;
-		placeOrderCtx.brokerId = m_brokerId;
-		placeOrderCtx.investorId = m_userId;
-		placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
-		placeOrderCtx.limitPriceType = entity::Opposite;
+	PlaceOrderContext placeOrderCtx;
+	placeOrderCtx.brokerId = m_brokerId;
+	placeOrderCtx.investorId = m_userId;
+	placeOrderCtx.orderPriceType = trade::LIMIT_PRICE;
+	placeOrderCtx.limitPriceType = entity::Opposite;
 
-		boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildClosePosiOrder(portf, portfDirection,
-			&openMlOrd, openMlOrd.quantity(), &placeOrderCtx));
-		multilegOrder->set_reason(submitReason);
+	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildClosePosiOrder(portf, portfDirection,
+		&openMlOrd, openMlOrd.quantity(), &placeOrderCtx));
+	multilegOrder->set_reason(submitReason);
 
-		m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
-	}
-	
+	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
 }
 
 void CClientAgent::SimpleCloseOrderPosition(const string& portfolioId, trade::SubmitReason submitReason)
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfolioId)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(portfolioId);
 	int qty = portf->Quantity();
 	if(portf->HasPosition())
 	{
@@ -192,10 +165,7 @@ void CClientAgent::SimpleCloseOrderPosition(const string& portfolioId, trade::Su
 
 void CClientAgent::ClosePosition(const string& portfolioId, int quantity, trade::SubmitReason submitReason)
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfolioId)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(portfolioId);
 
 	bool autoTracking = portf->Strategy()->IsAutoTracking();
 	bool enablePrefer = portf->Strategy()->EnablePrefer();
@@ -248,10 +218,7 @@ void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDire
 
 void CClientAgent::QuickScalpe( const string& pid, int quantity )
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != pid)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(portf->Strategy());
 	if(pScalperStrategy != NULL)
 		QuickScalpe(portf, quantity, trade::LONG, pScalperStrategy->PriceTick());
@@ -267,10 +234,8 @@ void CClientAgent::OnPortfolioUpdated(entity::PortfolioItem* portfolioItem)
 {
 	std::string callbackData;
 	portfolioItem->SerializeToString(&callbackData);
-	ClientMsgPacketPtr packet(new CClientMessagePacket("PortfolioPush", callbackData));
-	m_clientMsgPump.Enqueue(packet);
-	//if(m_pSession != NULL)
-	//	m_pSession->BeginCallback("PortfolioPush", callbackData);
+	if(m_pSession != NULL)
+		m_pSession->BeginCallback("PortfolioPush", callbackData);
 }
 
 void CClientAgent::OnMultiLegOrderUpdated( trade::MultiLegOrder* order )
@@ -314,10 +279,7 @@ void CClientAgent::OnLegOrderUpdated( const string& portfId, const string& mlOrd
 void CClientAgent::ApplyStrategySetting( const entity::ModifyStrategyParam& settings )
 {
 	const string& portfId = settings.portfid();
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfId)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(portfId);
 	if(portf != NULL)
 	{
 		portf->ApplyStrategySetting(settings.strategyname(), settings.strategydata());
@@ -327,10 +289,7 @@ void CClientAgent::ApplyStrategySetting( const entity::ModifyStrategyParam& sett
 void CClientAgent::EnableStrategy(const entity::ModifyRunningStatusParam& runningStatusParam)
 {
 	const string& portfId = runningStatusParam.portfid();
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfId)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(portfId);
 	if(portf != NULL)
 	{
 		bool isEnabled = runningStatusParam.enabled();
@@ -341,10 +300,7 @@ void CClientAgent::EnableStrategy(const entity::ModifyRunningStatusParam& runnin
 void CClientAgent::TurnPortfSwitches( const entity::ModifyPortfolioSwitchParam& switchesParam )
 {
 	const string& portfId = switchesParam.portfid();
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfId)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(portfId);
 	if(portf != NULL)
 	{
 		portf->TurnSwitches(switchesParam.autoopen(),
@@ -356,10 +312,7 @@ void CClientAgent::TurnPortfSwitches( const entity::ModifyPortfolioSwitchParam& 
 void CClientAgent::SetPorfPreferredLeg( const entity::ModifyPortfolioPreferredLegParam& preferredLegParam )
 {
 	const string& portfId = preferredLegParam.portfid();
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != portfId)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(portfId);
 	const string& legName = preferredLegParam.legsymbol();
 	if(portf != NULL)
 	{
@@ -406,30 +359,21 @@ boost::tuple<bool, string> CClientAgent::ManualCloseOrder( const string& symbol,
 
 void CClientAgent::VirtualOpenPosition( const string& pid, int quantity )
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != pid)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	if(portf != NULL)
 		portf->VirtualOpen(quantity);
 }
 
 void CClientAgent::VirtualClosePosition( const string& pid, int quantity )
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != pid)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	if(portf != NULL)
 		portf->VirtualClose(quantity);
 }
 
 void CClientAgent::SetPortfolioQuantity( const string& pid, int qty, int maxQty )
 {
-	if(m_pActPortfolio.get() == NULL || m_pActPortfolio->ID() != pid)
-		return;
-
-	CPortfolio* portf = m_pActPortfolio.get();
+	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	if(portf != NULL)
 		portf->SetQuantity(qty, maxQty);
 }
@@ -443,11 +387,6 @@ bool CClientAgent::QuerySymbolInfo( const string& symbol, entity::SymbolInfo** p
 		*ppSymbInfo = &(pMySymbolInfo->InnerItem());
 	}
 	return succ;
-}
-
-void CClientAgent::OnQuoteReceived( entity::Quote* pQuote )
-{
-	m_pActPortfolio->OnQuoteRecevied(pQuote);
 }
 
 

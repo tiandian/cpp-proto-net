@@ -97,8 +97,12 @@
     <ClCompile Include="OrderState.cpp" />
     <ClCompile Include="OrderStateMachine.cpp" />
     <ClCompile Include="Portfolio.cpp" />
+    <ClCompile Include="PortfolioManager.cpp" />
     <ClCompile Include="PortfolioOrderHelper.cpp" />
     <ClCompile Include="QuoteAgent.cpp" />
+    <ClCompile Include="QuoteRepositry.cpp" />
+    <ClCompile Include="QuoteFetcher.cpp" />
+    <ClCompile Include="QuoteStore.cpp" />
     <ClCompile Include="ScalperOrderPlacer.cpp" />
     <ClCompile Include="ScalperStrategy.cpp" />
     <ClCompile Include="SgOrderStateMachine.cpp" />
@@ -141,9 +145,13 @@
     <ClInclude Include="OrderState.h" />
     <ClInclude Include="OrderStateMachine.h" />
     <ClInclude Include="Portfolio.h" />
+    <ClInclude Include="PortfolioManager.h" />
     <ClInclude Include="PortfolioOrderHelper.h" />
     <ClInclude Include="QuoteAgent.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
+    <ClInclude Include="QuoteRepositry.h" />
+    <ClInclude Include="QuoteFetcher.h" />
+    <ClInclude Include="QuoteStore.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScalperOrderPlacer.h" />
     <ClInclude Include="ScalperStrategy.h" />

@@ -129,6 +129,18 @@
     <ClCompile Include="ScalperOrderPlacer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QuoteFetcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteStore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteRepositry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ap_invoke\apsessionmanager.h">
@@ -264,6 +276,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScalperOrderPlacer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteFetcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteStore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteRepositry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
