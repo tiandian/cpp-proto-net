@@ -5,10 +5,11 @@
 #include <string>
 #include <boost/thread.hpp>
 #include <boost/atomic.hpp>
+#include <boost/chrono.hpp>
 
 using namespace std;
 
-typedef boost::function<void(entity::Quote*)> QuoteUpdateFunc;
+typedef boost::function<void(boost::chrono::steady_clock::time_point, entity::Quote*)> QuoteUpdateFunc;
 
 class CQuoteStore;
 
@@ -30,6 +31,6 @@ private:
 	boost::atomic<bool> m_isRunning;
 	
 	QuoteUpdateFunc m_cbFunc;
-	long m_timestamp;
+	boost::chrono::steady_clock::time_point m_timestamp;
 };
 

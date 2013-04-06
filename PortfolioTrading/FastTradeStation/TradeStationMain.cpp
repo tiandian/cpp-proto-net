@@ -10,6 +10,8 @@
 #include <iostream>
 #include <google/protobuf/stubs/common.h>
 
+#define FST_VERSION "1.0"
+
 using namespace std;
 
 CConfiguration config;
@@ -19,6 +21,8 @@ CClientManager g_ClientManager;
 
 int main(int argc, char* argv[])
 {
+	cout << "Fast Trade Station v" << FST_VERSION << endl;
+
 	if(!config.Load(argc, argv))
 		return 1;
 

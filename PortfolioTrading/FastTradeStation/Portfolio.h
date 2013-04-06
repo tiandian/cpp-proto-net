@@ -43,7 +43,7 @@ public:
 
 	vector<LegPtr>& Legs(){ return m_vecLegs; }
 
-	void OnQuoteRecevied(entity::Quote* pQuote);
+	void OnQuoteRecevied(boost::chrono::steady_clock::time_point timestamp, entity::Quote* pQuote);
 
 	// Need to be done before remove from manager
 	void Cleanup();
@@ -134,6 +134,7 @@ private:
 
 	int m_openedOrderCount;
 	boost::mutex m_mut;
+	boost::mutex m_mutQuoting;
 
 	boost::shared_ptr<CDiffStrategy> m_strategy;
 		

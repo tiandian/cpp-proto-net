@@ -42,8 +42,6 @@ CQuoteFetcher* CQuoteRepositry::CreateFetcher( const string& symbol )
 
 void CQuoteRepositry::DestoryFetcher( CQuoteFetcher* pFetcher )
 {
-	//boost::thread th(boost::bind(&CQuoteRepositry::DestoryFetcherProc, this, pFetcher));
-
 	boost::unique_lock<boost::mutex> lock(m_storeMapMutex);
 
 	if(pFetcher == NULL)
@@ -64,11 +62,6 @@ void CQuoteRepositry::DestoryFetcher( CQuoteFetcher* pFetcher )
 			m_quoteStoreMap.erase(iterStore);
 		}
 	}
-}
-
-void CQuoteRepositry::DestoryFetcherProc( CQuoteFetcher* pFetcher )
-{
-	
 }
 
 void CQuoteRepositry::OnQuoteReceived( CThostFtdcDepthMarketDataField* marketData )

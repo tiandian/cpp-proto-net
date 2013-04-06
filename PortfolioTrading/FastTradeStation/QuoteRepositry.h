@@ -30,7 +30,6 @@ public:
 
 private:
 	bool IsMarketReady();
-	void DestoryFetcherProc(CQuoteFetcher* pFetcher);
 	void SubscribeQuote(const string& symbol);
 	void UnsubscribeQuote(const string& symbol);
 
