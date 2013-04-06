@@ -291,8 +291,10 @@ void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfIte
 	m_strategy = strategy;
 }
 
-void CPortfolio::OnQuoteRecevied( entity::Quote* pQuote )
+void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point timestamp, entity::Quote* pQuote )
 {
+	boost::unique_lock<boost::mutex> l(m_mutQuoting);
+
 	// update last
 	for(vector<LegPtr>::iterator iter = m_vecLegs.begin(); iter != m_vecLegs.end(); ++iter)
 	{
@@ -332,6 +334,11 @@ void CPortfolio::OnQuoteRecevied( entity::Quote* pQuote )
 
 	m_strategy->Test();
 	
+	boost::chrono::steady_clock::duration elapsed = 
+		boost::chrono::steady_clock::now() - timestamp;
+	long usElapse = boost::chrono::duration_cast<boost::chrono::microseconds>(elapsed).count();
+	LOG_INFO(logger, boost::str(boost::format("Total consumed %dus for one Quote") % usElapse));
+
 	PushUpdate();
 }
 
@@ -345,7 +352,7 @@ void CPortfolio::SubscribeQuotes(CQuoteRepositry* pQuoteRepo)
 		const string& symbol = leg->Symbol();
 		CQuoteFetcher* pFetcher = m_pQuoteRepo->CreateFetcher(symbol);
 		m_quoteFetcherVec.push_back(pFetcher);
-		pFetcher->Run(boost::bind(&CPortfolio::OnQuoteRecevied, this, _1));
+		pFetcher->Run(boost::bind(&CPortfolio::OnQuoteRecevied, this, _1, _2));
 	}
 }
 

@@ -38,15 +38,12 @@ public:
 	{
 		boost::unique_lock<boost::mutex> lock(_write_mutex);
 
-		while (!_ready_to_write)
-		{
-			_writable_cond.wait(lock);
-		}
+		_writable_cond.wait(lock, boost::bind(&connection::is_read_to_write, this));
 
 		if(in_fault())
 			return;		// if socket in fault status, don't allow writing any longer
 
-		_ready_to_write = false;
+		set_write_flag(false);
 
 		void (connection::*f)(
 			const boost::system::error_code&, std::size_t bytes_transferred, boost::tuple<Handler>)
@@ -94,7 +91,7 @@ public:
 	{
 		{
 			boost::lock_guard<boost::mutex> lock(_write_mutex);
-			_ready_to_write = true;
+			set_write_flag(true);
 		
 			if(e)
 				fault();
@@ -106,8 +103,12 @@ public:
 
 	bool is_read_to_write()
 	{
-		boost::lock_guard<boost::mutex> lock(_write_mutex);
 		return _ready_to_write;
+	}
+
+	void set_write_flag(bool flag)
+	{
+		_ready_to_write = flag;
 	}
 
 	/// Asynchronously read a data structure from the socket.

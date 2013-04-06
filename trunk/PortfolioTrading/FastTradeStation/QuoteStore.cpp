@@ -3,19 +3,9 @@
 #include "globalmembers.h"
 
 #include <boost/format.hpp>
-#include <boost/chrono.hpp>
-
-long GetTimestamp()
-{
-	boost::chrono::milliseconds msTs = 
-		boost::chrono::duration_cast<boost::chrono::milliseconds>(
-		boost::chrono::steady_clock::now().time_since_epoch());
-	return msTs.count();
-}
 
 CQuoteStore::CQuoteStore(const string& symbol):
 m_symbol(symbol)
-, m_quoteTimestamp(0)
 {
 	memset(&m_cachedQuoteData, 0, sizeof(m_cachedQuoteData));
 }
@@ -40,14 +30,17 @@ void CQuoteStore::Set( CThostFtdcDepthMarketDataField* pQuoteData )
 {
 	// as struct is value type, this should be correct
 	boost::unique_lock<boost::mutex> lock(m_quoteMutex);
-	m_quoteTimestamp = GetTimestamp();
+	m_quoteTimestamp = boost::chrono::steady_clock::now();
 	m_cachedQuoteData = *pQuoteData;
 	m_cond.notify_all();
 }
 
-long CQuoteStore::Get( long timestamp, entity::Quote* outQuote )
+boost::chrono::steady_clock::time_point CQuoteStore::Get( 
+	boost::chrono::steady_clock::time_point timestamp, entity::Quote* outQuote )
 {
-	if(timestamp == 0 && m_quoteTimestamp > 0)
+	static boost::chrono::steady_clock::time_point zeroPoint;
+	if(timestamp == zeroPoint 
+		&& m_quoteTimestamp > zeroPoint)
 	{
 		// It's the first time of Fetcher getting quote and 
 		// store already has cached quote
@@ -139,7 +132,7 @@ void CQuoteStore::EndIfOnlyOneLeft()
 	boost::unique_lock<boost::mutex> lock(m_quoteMutex);
 	if(m_fetcherSet.size() == 1)
 	{
-		m_quoteTimestamp = -1;
+		m_quoteTimestamp = boost::chrono::steady_clock::time_point();
 		m_cond.notify_all();
 	}
 }

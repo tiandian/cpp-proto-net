@@ -7,7 +7,6 @@
 CQuoteFetcher::CQuoteFetcher(CQuoteStore* pStore):
 m_pQuoteStore(pStore)
 , m_isRunning(false)
-, m_timestamp(0)
 {
 }
 
@@ -42,16 +41,18 @@ void CQuoteFetcher::FetchingProc()
 {
 	while(m_isRunning.load(boost::memory_order_relaxed))
 	{
+		static boost::chrono::steady_clock::time_point zeroTP;
 		entity::Quote quote;
-		long retTimestamp = m_pQuoteStore->Get(m_timestamp, &quote);
-		if(retTimestamp > 0)
+		boost::chrono::steady_clock::time_point retTimestamp = 
+			m_pQuoteStore->Get(m_timestamp, &quote);
+		if(retTimestamp > zeroTP)
 		{
 			if(m_isRunning.load(boost::memory_order_acquire))
 			{
 				m_timestamp = retTimestamp;
 				if(!m_cbFunc.empty())
 				{
-					m_cbFunc(&quote);
+					m_cbFunc(m_timestamp, &quote);
 				}
 			}
 			else
@@ -61,7 +62,7 @@ void CQuoteFetcher::FetchingProc()
 		}
 		else
 		{
-			LOG_DEBUG(logger, "Quote store passing negative timestamp for exit");
+			LOG_DEBUG(logger, "Quote store passing ZERO timestamp for exit");
 			break;
 		}
 	}

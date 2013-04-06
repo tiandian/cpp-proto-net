@@ -8,6 +8,8 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/thread.hpp>
+#include <boost/chrono.hpp>
+
 
 using namespace std;
 
@@ -25,7 +27,8 @@ public:
 	int ReclaimFetcher(CQuoteFetcher* pFetcher);
 
 	void Set(CThostFtdcDepthMarketDataField* pQuoteData);
-	long Get(long timestamp, entity::Quote* outQuote);
+	boost::chrono::steady_clock::time_point Get(
+		boost::chrono::steady_clock::time_point timestamp, entity::Quote* outQuote);
 
 	void EndIfOnlyOneLeft();
 
@@ -42,7 +45,7 @@ private:
 	boost::mutex m_quoteMutex;
 
 	CThostFtdcDepthMarketDataField m_cachedQuoteData;
-	long m_quoteTimestamp;
+	boost::chrono::steady_clock::time_point m_quoteTimestamp;
 };
 
 typedef boost::shared_ptr<CQuoteStore> QuoteStorePtr;
