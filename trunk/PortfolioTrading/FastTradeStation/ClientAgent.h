@@ -84,6 +84,7 @@ public:
 	bool ReachCancelTimesLimit() { return m_orderProcessor.ReachCancelTimesLimit(); }
 
 	bool IsConnected(){ return (m_quoteAgent.IsConnected() && m_tradeAgent.IsConnected()); }
+	COrderProcessor2& OrderProcessor(){ return m_orderProcessor; }
 
 private:
 

@@ -22,7 +22,7 @@ void COrderStateMachine::Transition( const string& orderId, COrderEvent* event )
 		COrderState* pNextState = currentState->Next(event);
 		if(pNextState != NULL)
 		{
-			bool isTerminated = pNextState->Run((iter->second).get(), event);
+			bool isTerminated = pNextState->Run(iter->second, event);
 			
 			// If the state has no NEXT state, it's considered as terminal state
 			// And erase this order placer from map.

@@ -86,7 +86,7 @@ void CMLOrderPlacer::Do()
 	}
 
 	// Wrap into smart pointer and let state machine manage the life cycle
-	m_pStateMachine->AddPlacer(OrderPlacerPtr(this));
+	m_pStateMachine->AddPlacer(this);
 
 	COrderState* sentState = m_pStateMachine->GetState(ORDER_STATE_SENT);
 	sentState->Run(this, NULL);
@@ -177,9 +177,9 @@ bool CMLOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 		{
 			trade::MlOrderOffset offset = m_mlOrder->offset();
 			if(offset == trade::ML_OF_OPEN || offset == trade::ML_OF_OTHER)
-				m_pPortf->AddPosition(m_mlOrder);
+				m_pPortf->AddPosition(*m_mlOrder);
 			else if(offset == trade::ML_OF_CLOSE)
-				m_pPortf->RemovePosition(m_mlOrder);
+				m_pPortf->RemovePosition(*m_mlOrder);
 
 			isTerminal = true;
 		}

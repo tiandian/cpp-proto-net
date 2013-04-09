@@ -127,7 +127,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 		{
 			if(m_submitTimes <= m_maxRetryTimes)
 			{
-				OrderPlacerPtr tmp_self;
+				COrderPlacer* tmp_self;
 
 				if(m_submitTimes > 0)
 				{
@@ -136,7 +136,7 @@ bool CSgOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_
 				}
 				else
 				{
-					tmp_self = OrderPlacerPtr(this);
+					tmp_self = this;
 				}
 
 				// lock and generate order ref

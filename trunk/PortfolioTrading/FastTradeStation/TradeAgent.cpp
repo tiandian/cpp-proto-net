@@ -919,11 +919,9 @@ bool CTradeAgent::SubmitOrderAction( trade::InputOrderAction* pInputOrderAction 
 
 	int iResult = m_pUserApi->ReqOrderAction(&req, iRequestID);
 
-#ifdef _DEBUG
 	ostringstream oss;
 	oss << "--->>> 报单操作请求 ( Canel OrdRef:" << pInputOrderAction->orderref() << ", ReqestID:" << iRequestID << "): " << iResult << ((iResult == 0) ? ", 成功" : ", 失败");
 	logger.Debug(oss.str());
-#endif
 
 	return iResult == 0;
 }

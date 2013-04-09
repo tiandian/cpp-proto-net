@@ -3,6 +3,7 @@
 #include "DiffStrategy.h"
 #include "globalmembers.h"
 #include "QuoteFetcher.h"
+#include "ClientAgent.h"
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
@@ -160,11 +161,12 @@ int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType)
 	return diffSize;
 }
 
-CPortfolio::CPortfolio(void):
-m_pClientAgent(NULL),
+CPortfolio::CPortfolio(CClientAgent* pClient):
+m_pClientAgent(pClient),
 m_openedOrderCount(0),
 m_selfClose(false),
 m_isPlacingOrder(false),
+m_portfOrdPlacer(this, &(pClient->OrderProcessor())),
 m_pQuoteRepo(NULL)
 {
 }
@@ -251,9 +253,8 @@ bool CLeg::IsQuoteUpdated(long timestamp)
 	return false;
 }
 
-void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem )
+void CPortfolio::SetItem(entity::PortfolioItem* pPortfItem )
 {
-	m_pClientAgent = pClient;
 	m_innerItem = PortfItemPtr(pPortfItem);
 	
 	// backup current legs given by initialization
@@ -281,7 +282,6 @@ void CPortfolio::SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfIte
 	}
 
 	boost::shared_ptr<CDiffStrategy> strategy(CreateStrategy(this, pPortfItem->strategyname(), pPortfItem->strategydata()));
-	strategy->Client(pClient);
 	
 	strategy->SetAutoOpen(pPortfItem->autoopen());
 	strategy->SetStopGain(pPortfItem->autostopgain());
@@ -390,8 +390,8 @@ void CPortfolio::ApplyStrategySetting( const string& name, const string& data )
 
 CPortfolio* CPortfolio::Create( CClientAgent* pClient, entity::PortfolioItem* pPortfItem )
 {
-	CPortfolio* pPortf = new CPortfolio();
-	pPortf->SetItem(pClient, pPortfItem);
+	CPortfolio* pPortf = new CPortfolio(pClient);
+	pPortf->SetItem(pPortfItem);
 	return pPortf;
 }
 
@@ -411,6 +411,7 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 {
 	if(isEnabled)
 	{
+		m_portfOrdPlacer.Prepare();
 		logger.Info(boost::str(boost::format("Portf (%s) START strategy >>>") % ID().c_str()));
 		m_strategy->Start();
 	}
@@ -423,13 +424,13 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 	m_innerItem->set_strategyrunning(isEnabled);
 }
 
-double CPortfolio::CalcScalpeOrderProfit(const MultiLegOrderPtr& openOrder)
+double CPortfolio::CalcScalpeOrderProfit(trade::MultiLegOrder& openOrder)
 {
 	double profit = 0;
-	int legCount = openOrder->legs_size();
+	int legCount = openOrder.legs_size();
 	for(int ordIdx = 0; ordIdx < legCount; ++ordIdx)
 	{
-		const trade::Order& legOrd = openOrder->legs(ordIdx);
+		const trade::Order& legOrd = openOrder.legs(ordIdx);
 		double ordPrice = legOrd.limitprice();
 		if(ordPrice > 0)
 		{
@@ -446,11 +447,11 @@ double CPortfolio::CalcScalpeOrderProfit(const MultiLegOrderPtr& openOrder)
 	return profit;
 }
 
-void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
+void CPortfolio::AddPosition( trade::MultiLegOrder& openOrder )
 {
-	int qty = openOrder->quantity();
+	int qty = openOrder.quantity();
 	
-	if(openOrder->reason() == trade::SR_Scalpe)
+	if(openOrder.reason() == trade::SR_Scalpe)
 	{
 		double ord_profit = CalcScalpeOrderProfit(openOrder);
 		AddProfit(ord_profit);
@@ -468,9 +469,9 @@ void CPortfolio::AddPosition( const MultiLegOrderPtr& openOrder )
 	}
 }
 
-void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
+void CPortfolio::RemovePosition( trade::MultiLegOrder& closeOrder )
 {
-	int qty = closeOrder->quantity();
+	int qty = closeOrder.quantity();
 	double cost = CalcMlOrderCost(closeOrder);
 
 	double orderProfit = (cost - AvgCost()) * qty;
@@ -491,13 +492,13 @@ void CPortfolio::RemovePosition( const MultiLegOrderPtr& closeOrder )
 	IncrementalCloseTimes(qty);
 }
 
-double CPortfolio::CalcMlOrderCost( const MultiLegOrderPtr& openOrder )
+double CPortfolio::CalcMlOrderCost( trade::MultiLegOrder& openOrder )
 {
 	double cost = 0;
-	int legCount = openOrder->legs_size();
+	int legCount = openOrder.legs_size();
 	for(int ordIdx = 0; ordIdx < legCount; ++ordIdx)
 	{
-		const trade::Order& legOrd = openOrder->legs(ordIdx);
+		const trade::Order& legOrd = openOrder.legs(ordIdx);
 		double ordPrice = legOrd.limitprice();
 		if(ordPrice > 0)
 		{

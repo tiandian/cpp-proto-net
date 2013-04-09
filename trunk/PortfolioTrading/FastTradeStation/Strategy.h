@@ -1,8 +1,8 @@
 #pragma once
 
 #include "entity/message.pb.h"
-#include "ClientAgent.h"
 #include "Portfolio.h"
+#include "PortfolioOrderPlacer.h"
 #include "globalmembers.h"
 
 #include <string>
@@ -49,8 +49,8 @@ template <typename T>
 class CStrategy
 {
 public:
-	CStrategy(void):
-		m_isRunning(false),
+	CStrategy():
+	    m_isRunning(false),
 		m_isAutoOpen(false),
 		m_isStopGain(false),
 		m_isStopLoss(false),
@@ -84,9 +84,6 @@ public:
 
 	virtual bool EnablePrefer(){ return m_enablePrefer; }
 	void SetEnablePrefer(bool flag) { m_enablePrefer = flag; }
-
-	CClientAgent* Client() const { return m_pClient; }
-	void Client(CClientAgent* val) { m_pClient = val; }
 
 	CPortfolio* Portfolio() const { return m_pPortfolio; }
 	void Portfolio(CPortfolio* val) { m_pPortfolio = val; }
@@ -185,8 +182,6 @@ protected:
 	bool m_isAutoTracking;
 	bool m_enablePrefer;
 
-	CClientAgent* m_pClient;
 	CPortfolio* m_pPortfolio;
-
 };
 

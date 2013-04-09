@@ -37,7 +37,7 @@ void CArbitrageStrategy::DoOpenPostion()
 
 	CPortfolio *portf = Portfolio();
 	if(portf != NULL)
-		Client()->OpenPosition(portf, portf->Quantity(), trade::SR_AutoOpen);
+		;//Client()->OpenPosition(portf, portf->Quantity(), trade::SR_AutoOpen);
 }
 
 void CArbitrageStrategy::ClosePosition(trade::SubmitReason submitReason)
@@ -52,7 +52,7 @@ void CArbitrageStrategy::ClosePosition(trade::SubmitReason submitReason)
 		assert(positionQty > 0);
 	
 		const string& portfId = portf->ID();
-		Client()->ClosePosition(portfId, qty, submitReason);
+		//Client()->ClosePosition(portfId, qty, submitReason);
 	}
 }
 

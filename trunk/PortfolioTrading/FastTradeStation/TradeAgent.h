@@ -46,6 +46,9 @@ public:
 	bool IsConnected(){ return m_bIsConnected; }
 	bool IsDisconnected(){ return !m_bIsConnected; }
 
+	const string& BrokerId(){ return m_brokerID; }
+	const string& InvestorId(){ return m_userID; }
+
 	const boost::gregorian::date& TradingDay(){ return m_tradingDay; }
 
 	//////////////////////////////////////////////////////////////////////////

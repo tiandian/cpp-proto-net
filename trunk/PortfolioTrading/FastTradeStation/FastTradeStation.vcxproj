@@ -90,6 +90,8 @@
     <ClCompile Include="entity\quote.pb.cc" />
     <ClCompile Include="entity\trade.pb.cc" />
     <ClCompile Include="FileOperations.cpp" />
+    <ClCompile Include="InputOrder.cpp" />
+    <ClCompile Include="InputOrderPlacer.cpp" />
     <ClCompile Include="LogManager.cpp" />
     <ClCompile Include="MLOrderStateMachine.cpp" />
     <ClCompile Include="orderhelper.cpp" />
@@ -99,6 +101,8 @@
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="PortfolioManager.cpp" />
     <ClCompile Include="PortfolioOrderHelper.cpp" />
+    <ClCompile Include="PortfolioOrderPlacer.cpp" />
+    <ClCompile Include="PortfolioScalperOrderPlacer.cpp" />
     <ClCompile Include="QuoteAgent.cpp" />
     <ClCompile Include="QuoteRepositry.cpp" />
     <ClCompile Include="QuoteFetcher.cpp" />
@@ -122,6 +126,7 @@
     <ClInclude Include="ArbitrageStrategy.h" />
     <ClInclude Include="AsyncScalperEventFirer.h" />
     <ClInclude Include="BufferRunner.h" />
+    <ClInclude Include="BuildOrderException.h" />
     <ClInclude Include="ChangePositionStrategy.h" />
     <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientAgent.h" />
@@ -136,6 +141,8 @@
     <ClInclude Include="entity\trade.pb.h" />
     <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
+    <ClInclude Include="InputOrder.h" />
+    <ClInclude Include="InputOrderPlacer.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
     <ClInclude Include="MLOrderStateMachine.h" />
@@ -147,6 +154,8 @@
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioManager.h" />
     <ClInclude Include="PortfolioOrderHelper.h" />
+    <ClInclude Include="PortfolioOrderPlacer.h" />
+    <ClInclude Include="PortfolioScalperOrderPlacer.h" />
     <ClInclude Include="QuoteAgent.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="QuoteRepositry.h" />

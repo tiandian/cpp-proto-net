@@ -132,7 +132,20 @@ void CScalperStrategy::DoOpenPostion()
 			% m_prevAsk % m_Ask % m_prevBid % m_Bid % m_AskSize % m_BidSize));
 		if(direction > trade::NET)
 		{
-			Client()->QuickScalpe(portf, portf->Quantity(), direction, m_priceTick);
+			double lmtPrice[2];
+			if(direction == trade::BUY)
+			{
+				lmtPrice[0] = m_Bid + m_priceTick;
+				lmtPrice[1] = m_Ask - m_priceTick;
+			}
+			else // Sell
+			{
+				lmtPrice[0] = m_Ask - m_priceTick;
+				lmtPrice[1] = m_Bid + m_priceTick;
+			}
+			
+			(m_pPortfolio->OrderPlacer()).Run(direction, lmtPrice, 2);
+			//Client()->QuickScalpe(portf, portf->Quantity(), direction, m_priceTick);
 		}
 	}
 }

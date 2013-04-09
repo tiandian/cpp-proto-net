@@ -109,6 +109,7 @@ void CScalperOrderPlacer::OnCanceling(COrderEvent* transEvent)
 		CancelOrder(m_pendingOrder.get());
 	else
 	{
+		logger.Error("Scalper Order Trying to cancel order However pending Order is NULL");
 		// has to wait pending order come out in a thread
 		m_thWaitPending = boost::thread(boost::bind(&CScalperOrderPlacer::WaitForPendingOrderProc, this));
 	}
