@@ -12,6 +12,8 @@
 class CPortfolio;
 class CTradeAgent;
 class CClientAgent;
+class CInputOrder;
+class CInputOrderPlacer;
 
 class COrderProcessor2 : public CTradeAgentCallback
 {
@@ -23,6 +25,12 @@ public:
 
 	void SubmitPortfOrder(CPortfolio* pPortf, const MultiLegOrderPtr& multilegOrder);
 	CSgOrderPlacer* CreateSingleOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes);
+	CInputOrderPlacer* CreateInputOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, 
+		const boost::shared_ptr<CInputOrder>& pInputOrder, int retryTimes);
+
+	void AddPortfolioOrderPlacer(COrderPlacer* pOrdPlacer);
+	void AddInputOrderPlacer(COrderPlacer* pOrdPlacer);
+
 	void RaiseMLOrderPlacerEvent(const string& mlOrdPlacerId, COrderEvent* orderEvent);
 	void RaiseSGOrderPlacerEvent(const string& orderRef, COrderEvent* orderEvent);
 	
@@ -95,6 +103,9 @@ public:
 
 	void SetMaxOpenTimes(int maxOpenTimes){ m_maxTotalOpenTimes = maxOpenTimes; }
 	void SetMaxCancelTimes(int maxCancelTimes){ m_maxTotalCancelTimes = maxCancelTimes; }
+
+	const string& BrokerId();
+	const string& InvestorId();
 
 private:
 

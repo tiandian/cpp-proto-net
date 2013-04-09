@@ -5,6 +5,7 @@
 #include "ClientAgent.h"
 #include "charsetconvert.h"
 #include "SymbolInfoRepositry.h"
+#include "InputOrderPlacer.h"
 
 #include <boost/format.hpp>
 #include <boost/date_time.hpp>
@@ -373,5 +374,31 @@ boost::tuple<bool, string> COrderProcessor2::PlaceOrder( const string& symbol, t
 bool COrderProcessor2::QuerySymbol( const std::string& symbol, entity::Quote** ppQuote )
 {
 	return m_pTradeAgent->QuerySymbol(symbol, ppQuote);
+}
+
+CInputOrderPlacer* COrderProcessor2::CreateInputOrderPlacer( CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const boost::shared_ptr<CInputOrder>& pInputOrder, int retryTimes )
+{
+	return new CInputOrderPlacer(&m_sgOrderStateMachine, pPortf, pMlOrder, pInputOrder, 
+		retryTimes, true, this);
+}
+
+const string& COrderProcessor2::BrokerId()
+{
+	return m_pTradeAgent->BrokerId();
+}
+
+const string& COrderProcessor2::InvestorId()
+{
+	return m_pTradeAgent->InvestorId();
+}
+
+void COrderProcessor2::AddPortfolioOrderPlacer( COrderPlacer* pOrdPlacer )
+{
+	m_mlOrderStateMachine.AddPlacer(pOrdPlacer);
+}
+
+void COrderProcessor2::AddInputOrderPlacer( COrderPlacer* pOrdPlacer )
+{
+	m_sgOrderStateMachine.AddPlacer(pOrdPlacer);
 }
 

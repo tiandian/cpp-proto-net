@@ -21,8 +21,7 @@ public:
 	virtual bool AutoDispose() { return true; }
 };
 
-typedef boost::shared_ptr<COrderPlacer> OrderPlacerPtr;
-typedef map<string, OrderPlacerPtr> OrderPlacerMap;
+typedef map<string, COrderPlacer*> OrderPlacerMap;
 typedef OrderPlacerMap::iterator OrderPlacerMapIter;
 
 typedef boost::shared_ptr<COrderState> OrderStatePtr;
@@ -36,7 +35,7 @@ public:
 	{}
 	virtual ~COrderStateMachine(void){}
 
-	void AddPlacer(const OrderPlacerPtr& placer)
+	void AddPlacer(COrderPlacer* placer)
 	{
 		boost::recursive_mutex::scoped_lock lock(m_mut);
 		m_orderPlacerMap.insert(make_pair(placer->Id(), placer));
@@ -47,14 +46,14 @@ public:
 		m_orderPlacerMap.erase(placerId);
 	}
 
-	bool RemovePlacer(const string& placerId, OrderPlacerPtr* pRemovedPlacer)
+	bool RemovePlacer(const string& placerId, COrderPlacer** ppRemovedPlacer)
 	{
 		boost::recursive_mutex::scoped_lock lock(m_mut);
 		OrderPlacerMapIter iter = m_orderPlacerMap.find(placerId);
 		if(iter != m_orderPlacerMap.end())
 		{
-			if(pRemovedPlacer != NULL)
-				*pRemovedPlacer = iter->second;
+			if(ppRemovedPlacer != NULL)
+				*ppRemovedPlacer = iter->second;
 			m_orderPlacerMap.erase(iter);
 			return true;
 		}

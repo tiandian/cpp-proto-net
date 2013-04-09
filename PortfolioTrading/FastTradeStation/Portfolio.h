@@ -3,6 +3,7 @@
 #include "entity/message.pb.h"
 #include "entity/quote.pb.h"
 #include "multilegorderptr.h"
+#include "PortfolioOrderPlacer.h"
 
 #include <string>
 #include <vector>
@@ -24,7 +25,7 @@ typedef boost::shared_ptr<CLeg> LegPtr;
 
 class CPortfolio
 {
-	CPortfolio(void);
+	CPortfolio(CClientAgent* pClient);
 
 public:
 	~CPortfolio(void);
@@ -59,6 +60,7 @@ public:
 	int Quantity() { return m_innerItem->quantity(); }
 
 	CDiffStrategy* Strategy(){ return m_strategy.get(); }
+	CPortfolioOrderPlacer& OrderPlacer(){ return m_portfOrdPlacer; }
 
 	bool EnablePrefer();
 	bool AutoTracking();
@@ -73,8 +75,8 @@ public:
 	void TurnSwitches(bool isAutoOpen, bool isAutoStopGain, bool isAutoStopLoss, bool isAutoTracking, bool enablePrefer);
 	void ApplyStrategySetting(const string& name, const string& data);
 
-	void AddPosition(const MultiLegOrderPtr& openOrder);
-	void RemovePosition(const MultiLegOrderPtr& closeOrder);
+	void AddPosition(trade::MultiLegOrder& openOrder);
+	void RemovePosition(trade::MultiLegOrder& closeOrder);
 
 	bool HasPosition(){ return PositionQuantity() > 0; }
 	bool PositionReachLimit(){ return m_innerItem->opentimes() >= m_innerItem->maxposition(); }
@@ -98,7 +100,7 @@ public:
 	}
 	
 private:
-	void SetItem(CClientAgent* pClient, entity::PortfolioItem* pPortfItem);
+	void SetItem(entity::PortfolioItem* pPortfItem);
 
 	void UpdatePosition()
 	{
@@ -121,8 +123,8 @@ private:
 	void AddProfit(double val){ m_innerItem->set_profit(m_innerItem->profit() + val); }
 	void SetProfit(double val){ m_innerItem->set_profit(val); }
 
-	double CalcMlOrderCost(const MultiLegOrderPtr& openOrder);
-	double CalcScalpeOrderProfit(const MultiLegOrderPtr& openOrder);
+	double CalcMlOrderCost(trade::MultiLegOrder& openOrder);
+	double CalcScalpeOrderProfit(trade::MultiLegOrder& openOrder);
 
 	vector<LegPtr> m_vecLegs;
 	PortfItemPtr m_innerItem;
@@ -140,6 +142,8 @@ private:
 		
 	bool m_selfClose;
 	bool m_isPlacingOrder;
+
+	CPortfolioOrderPlacer m_portfOrdPlacer;
 };
 
 class CLeg
@@ -198,6 +202,7 @@ private:
 	long m_timestamp;
 	boost::condition_variable m_condQuoteUpdated;
 	boost::mutex m_mut;
+
 };
 
 

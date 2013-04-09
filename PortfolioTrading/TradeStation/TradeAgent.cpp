@@ -661,7 +661,11 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 		return;
 
 	ostringstream oss;
-	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
+	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef 
+		<< " OrderLocalID:" << pOrder->OrderLocalID
+		<< " OrderSysID:" << pOrder->OrderSysID
+		<< " BrokerOrderSeq:" << pOrder->BrokerOrderSeq
+		<< ") Status:" << pOrder->StatusMsg;
 	logger.Info(oss.str());
 
 	trade::Order* pOrd(new trade::Order);
