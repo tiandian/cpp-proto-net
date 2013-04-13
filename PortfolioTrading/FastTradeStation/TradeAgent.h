@@ -28,6 +28,7 @@ public:
 	void SetCallbackHanlder(CTradeAgentCallback* pCallback);
 
 	bool SubmitOrder(trade::InputOrder* pInputOrder);
+	bool SubmitOrder(CThostFtdcInputOrderField& inputOrderField);
 	bool SubmitOrderAction(trade::InputOrderAction* pInputOrderAction);
 
 	void ReqSettlementInfoConfirm();

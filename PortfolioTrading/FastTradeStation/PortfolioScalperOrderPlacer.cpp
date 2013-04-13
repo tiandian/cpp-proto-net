@@ -1,6 +1,6 @@
 #include "PortfolioScalperOrderPlacer.h"
 #include "Portfolio.h"
-#include "InputOrderPlacer.h"
+#include "InputOrder.h"
 #include "OrderProcessor2.h"
 #include "BuildOrderException.h"
 
@@ -108,12 +108,12 @@ void CPortfolioScalperOrderPlacer::SetDirection( trade::PosiDirectionType posiDi
 		{
 			// open long position
 			pOrd->set_direction(LONG_TRADE_SEQ[i]);
-			m_inputOrderPlacers[i]->SetDirection(LONG_TRADE_SEQ[i]);
+			m_inputOrders[i]->set_direction(LONG_TRADE_SEQ[i]);
 		}
 		else if(posiDirection == trade::SHORT)
 		{
 			pOrd->set_direction(SHORT_TRADE_SEQ[i]);
-			m_inputOrderPlacers[i]->SetDirection(SHORT_TRADE_SEQ[i]);
+			m_inputOrders[i]->set_direction(SHORT_TRADE_SEQ[i]);
 		}
 		else
 		{
@@ -129,7 +129,7 @@ void CPortfolioScalperOrderPlacer::SetLimitPrice(double* pLmtPxArr, int iPxSize)
 		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
 		double lmtPx = pLmtPxArr[i];
 		pOrd->set_limitprice(lmtPx);
-		m_inputOrderPlacers[i]->SetPrice(lmtPx);
+		m_inputOrders[i]->set_limitprice(lmtPx);
 	}
 }
 

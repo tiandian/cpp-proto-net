@@ -129,7 +129,7 @@ void CClientAgent::OpenPosition( CPortfolio* portf, int qty, trade::SubmitReason
 	multilegOrder->set_reason(submitReason);
 
 	// send to order processor
-	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
 }
 
 void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const string& legOrdRef, trade::SubmitReason submitReason, string& msg)
@@ -150,7 +150,7 @@ void CClientAgent::ClosePosition( const trade::MultiLegOrder& openMlOrd, const s
 		&openMlOrd, openMlOrd.quantity(), &placeOrderCtx));
 	multilegOrder->set_reason(submitReason);
 
-	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
 }
 
 void CClientAgent::SimpleCloseOrderPosition(const string& portfolioId, trade::SubmitReason submitReason)
@@ -181,7 +181,7 @@ void CClientAgent::ClosePosition(const string& portfolioId, int quantity, trade:
 		NULL, quantity, &placeOrderCtx));
 	multilegOrder->set_reason(submitReason);
 
-	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
 }
 
 void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, entity::PosiDirectionType existingPosition, int qty, trade::SubmitReason submitReason)
@@ -198,7 +198,7 @@ void CClientAgent::ChangePosition(CPortfolio* portf, const string& closeSymbol, 
 	bool autoTracking = portf->Strategy()->IsAutoTracking();
 	multilegOrder->set_reason(submitReason);
 
-	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
 }
 
 void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDirectionType posiDirection, double precedence )
@@ -213,7 +213,7 @@ void CClientAgent::QuickScalpe( CPortfolio* portf, int quantity, trade::PosiDire
 	boost::shared_ptr<trade::MultiLegOrder> multilegOrder(BuildScalperOrder(portf, posiDirection, precedence, &placeOrderCtx));
 	multilegOrder->set_reason(trade::SR_Scalpe);
 
-	m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
+	//m_orderProcessor.SubmitPortfOrder(portf, multilegOrder);
 }
 
 void CClientAgent::QuickScalpe( const string& pid, int quantity )
@@ -221,7 +221,14 @@ void CClientAgent::QuickScalpe( const string& pid, int quantity )
 	CPortfolio* portf = m_portfolioMgr.Get(pid);
 	CScalperStrategy* pScalperStrategy = dynamic_cast<CScalperStrategy*>(portf->Strategy());
 	if(pScalperStrategy != NULL)
-		QuickScalpe(portf, quantity, trade::LONG, pScalperStrategy->PriceTick());
+	{
+		CLeg* leg = portf->GetLeg(1);
+		double lmtPx[2];
+		double pxTick = pScalperStrategy->PriceTick();
+		lmtPx[0] = leg->Bid() + pxTick;
+		lmtPx[1] = leg->Ask() - pxTick;
+		portf->OrderPlacer().Run(trade::LONG, lmtPx, 2);
+	}
 }
 
 bool CClientAgent::QueryAccountInfo(string* serializedAcctInfo)

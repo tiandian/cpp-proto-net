@@ -78,16 +78,7 @@
     <ClCompile Include="OrderProcessor2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MLOrderStateMachine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OrderStateMachine.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PortfolioOrderHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SgOrderStateMachine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ArbitrageStrategy.cpp">
@@ -117,16 +108,10 @@
     <ClCompile Include="FileOperations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrderState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ClientMessagePump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AsyncScalperEventFirer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ScalperOrderPlacer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QuoteFetcher.cpp">
@@ -148,9 +133,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputOrder.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InputOrderPlacer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -224,16 +206,7 @@
     <ClInclude Include="OrderProcessor2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MLOrderStateMachine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OrderStateMachine.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PortfolioOrderHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SgOrderStateMachine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ArbitrageStrategy.h">
@@ -275,9 +248,6 @@
     <ClInclude Include="FileOperations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrderState.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -285,9 +255,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AsyncScalperEventFirer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScalperOrderPlacer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="QuoteFetcher.h">
@@ -314,7 +281,7 @@
     <ClInclude Include="InputOrder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputOrderPlacer.h">
+    <ClInclude Include="OrderEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

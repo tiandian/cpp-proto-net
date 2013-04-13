@@ -5,7 +5,8 @@
 #include "ClientAgent.h"
 #include "charsetconvert.h"
 #include "SymbolInfoRepositry.h"
-#include "InputOrderPlacer.h"
+#include "PortfolioOrderPlacer.h"
+#include "InputOrder.h"
 
 #include <boost/format.hpp>
 #include <boost/date_time.hpp>
@@ -23,13 +24,13 @@ const char EX_FFEX[] = "FFEX";
 
 const char* TRADE_DIRECTION[] = {"Buy", "Sell"};
 
-void PrintInputOrder(trade::InputOrder* order)
+void PrintInputOrder(CInputOrder* order)
 {
 	if(order != NULL)
 	{
 		string orderInfo = boost::str(boost::format("%s %s @ %.2f")
-			% TRADE_DIRECTION[order->direction() - trade::BUY]
-			% order->instrumentid() % order->limitprice());
+			% TRADE_DIRECTION[order->Direction() - trade::BUY]
+			% order->Symbol() % order->LimitPrice());
 		logger.Info(orderInfo);
 	}
 }
@@ -51,12 +52,6 @@ COrderProcessor2::~COrderProcessor2(void)
 {
 }
 
-void COrderProcessor2::SubmitPortfOrder( CPortfolio* pPortf, const MultiLegOrderPtr& multilegOrder )
-{
-	COrderPlacer* pOrdPlacer = m_mlOrderStateMachine.CreatePlacer(pPortf, multilegOrder, this);
-	pOrdPlacer->Do();
-}
-
 void COrderProcessor2::OnRspUserLogin( bool succ, std::string& msg, int initOrderRefID )
 {
 	if(succ)
@@ -70,34 +65,37 @@ void COrderProcessor2::OnRspUserLogin( bool succ, std::string& msg, int initOrde
 
 void COrderProcessor2::OnRspOrderInsert( bool succ, const std::string& orderRef, const std::string& msg )
 {
-	SubmitFailedEvent submitFailedEvt(msg);
-	m_sgOrderStateMachine.Transition(orderRef, &submitFailedEvt);
+	boost::lock_guard<boost::recursive_mutex> lock(m_ordPlacersMapMutex);
+	boost::unordered_map<string, CPortfolioOrderPlacer*>::iterator iter 
+		= m_workingOrderPlacers.find(orderRef);
+	if(iter != m_workingOrderPlacers.end())
+	{
+		(iter->second)->OnOrderPlaceFailed(msg);
+	}
+	else
+	{
+		logger.Warning(boost::str(boost::format("Unexpected order(ref:%s) returned after order insert!") % orderRef));
+	}
 }
 
 void COrderProcessor2::OnRspOrderAction( bool succ, const std::string& orderRef, const std::string& msg )
 {
-	if(succ)
-		logger.Info(boost::str(boost::format("Cancel order(%s) succeeded.") % orderRef));
+	boost::lock_guard<boost::recursive_mutex> lock(m_ordPlacersMapMutex);
+	boost::unordered_map<string, CPortfolioOrderPlacer*>::iterator iter 
+		= m_workingOrderPlacers.find(orderRef);
+	if(iter != m_workingOrderPlacers.end())
+	{
+		(iter->second)->OnOrderCancelFailed(msg);
+	}
 	else
 	{
-		logger.Info(boost::str(boost::format("Cancel order(%s) failed. message: %s") 
-			% orderRef.c_str() % msg.c_str()));
-
-		CancelFailedEvent cancelFailedEvt(NULL);
-		m_sgOrderStateMachine.Transition(orderRef, &cancelFailedEvt);
+		logger.Warning(boost::str(boost::format("Unexpected order(ref:%s) returned after order cancel!") % orderRef));
 	}
 }
 
 void COrderProcessor2::OnRtnOrder( trade::Order* order )
 {
-	COrderEvent* pEvent = NULL;
-	bool succ = GetOrderEvent(order, &pEvent);
-	if(succ)
-	{
-		boost::shared_ptr<COrderEvent> orderEvtPtr(pEvent);
-		string ordRef = order->orderref();
-		m_sgOrderStateMachine.Transition(ordRef, pEvent);
-	}
+	DispatchRtnOrder(order);
 }
 
 void COrderProcessor2::OnRtnTrade( trade::Trade* pTrade )
@@ -116,46 +114,6 @@ void COrderProcessor2::PrintOrderStatus( trade::Order* order )
 	trade::OrderStatusType status = order->orderstatus();
 	logger.Debug(boost::str(boost::format("Order(%s) - submit status(%s), order status(%s)")
 		% order->orderref().c_str() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
-}
-
-bool COrderProcessor2::GetOrderEvent( trade::Order* order, COrderEvent** ppOrderEvt )
-{
-	*ppOrderEvt = NULL;
-
-	trade::OrderSubmitStatusType submitStatus = order->ordersubmitstatus();
-	trade::OrderStatusType status = order->orderstatus();
-	logger.Debug(boost::str(boost::format("Order(%s) - submit status(%s), order status(%s)")
-		% order->orderref().c_str() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
-
-	if(submitStatus > trade::NOT_SUBMITTED && 
-		submitStatus <= trade::ACCEPTED && status >= trade::STATUS_UNKNOWN)
-	{
-		*ppOrderEvt = new SubmitSuccessEvent(order);
-	}
-	if(submitStatus > trade::ACCEPTED)
-	{
-		*ppOrderEvt = new RejectEvent(order);
-	}
-	else if(status == trade::ALL_TRADED)
-	{
-		*ppOrderEvt = new CompleteEvent(order);
-	}
-	else if(status == trade::ORDER_CANCELED)
-	{
-		*ppOrderEvt = new CancelSuccessEvent(order);
-	}
-	else if(status == trade::NO_TRADE_QUEUEING ||
-		status == trade::NO_TRADE_NOT_QUEUEING)
-	{
-		*ppOrderEvt = new PendingEvent(order);
-	}
-	else if(status == trade::PART_TRADED_QUEUEING ||
-		status == trade::PART_TRADED_NOT_QUEUEING)
-	{
-		*ppOrderEvt = new PartiallyFilledEvent(order);
-	}
-
-	return *ppOrderEvt != NULL;
 }
 
 void COrderProcessor2::CancelOrder( const std::string& ordRef, const std::string& exchId, const std::string& ordSysId, const std::string& userId, const std::string& symbol )
@@ -186,28 +144,6 @@ void COrderProcessor2::CancelOrder( const std::string& ordRef, const std::string
 	}
 }
 
-CSgOrderPlacer* COrderProcessor2::CreateSingleOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes)
-{
-	if(pMlOrder->reason() == trade::SR_Scalpe)
-	{
-		// if scalpe open order, don't need to retry
-		int actRetryTimes = pInputOrder->comboffsetflag() == "0" ? 0 : retryTimes;
-		return m_sgOrderStateMachine.CreateScalperPlacer(pPortf, pMlOrder, pInputOrder, actRetryTimes, this);
-	}
-	else
-		return m_sgOrderStateMachine.CreatePlacer(pPortf, pMlOrder, pInputOrder, retryTimes, this);
-}
-
-void COrderProcessor2::RaiseMLOrderPlacerEvent( const string& mlOrdPlacerId, COrderEvent* orderEvent )
-{
-	m_mlOrderStateMachine.Transition(mlOrdPlacerId, orderEvent);
-}
-
-void COrderProcessor2::RaiseSGOrderPlacerEvent( const string& orderRef, COrderEvent* orderEvent )
-{
-	m_sgOrderStateMachine.Transition(orderRef, orderEvent);
-}
-
 int COrderProcessor2::LockForSubmit( string& outOrdRef )
 {
 	int retOrderRef = -1;
@@ -224,13 +160,16 @@ int COrderProcessor2::LockForSubmit( string& outOrdRef )
 	return retOrderRef;
 }
 
-bool COrderProcessor2::SubmitAndUnlock( trade::InputOrder* pOrder )
+bool COrderProcessor2::SubmitAndUnlock(CInputOrder* pInputOrder)
 {
 	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
 
-	PrintInputOrder(pOrder);
+	PrintInputOrder(pInputOrder);
 
-	bool succ = SubmitOrderToTradeAgent(pOrder);
+	bool succ = m_pTradeAgent->SubmitOrder(pInputOrder->InnerOrder());
+	if(succ)
+		AddOpenTimes();
+	
 	m_bIsSubmitting = false;
 	m_condSubmit.notify_one();
 	return succ;
@@ -243,16 +182,6 @@ int COrderProcessor2::GenerateOrderRef( string& outOrdRef )
 	outOrdRef = orderRef;
 	int currOrdRef = m_maxOrderRef++;
 	return currOrdRef;
-}
-
-bool COrderProcessor2::SubmitOrderToTradeAgent( trade::InputOrder* pOrder )
-{
-	logger.Trace(boost::str(boost::format("Truly sumbit order(%s) to trade agent") 
-		% pOrder->orderref()));
-	bool succ = m_pTradeAgent->SubmitOrder(pOrder);
-	if(succ)
-		AddOpenTimes();
-	return succ;
 }
 
 void COrderProcessor2::PublishMultiLegOrderUpdate( trade::MultiLegOrder* pOrder )
@@ -355,6 +284,8 @@ trade::InputOrder* COrderProcessor2::BuildCloseOrder( const string& symbol, trad
 
 boost::tuple<bool, string> COrderProcessor2::PlaceOrder( const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx )
 {
+	return boost::make_tuple(false, string("Failed to build close order"));
+	/*
 	boost::shared_ptr<trade::InputOrder> pInputOrder(BuildCloseOrder(symbol, direction, openDate, placeOrderCtx));
 	if(pInputOrder.get() == NULL)
 		return boost::make_tuple(false, string("Failed to build close order"));
@@ -369,17 +300,12 @@ boost::tuple<bool, string> COrderProcessor2::PlaceOrder( const string& symbol, t
 	m_sgOrderStateMachine.RemovePlacer(pId);
 
 	return boost::make_tuple(succ, errMsg);
+	*/
 }
 
 bool COrderProcessor2::QuerySymbol( const std::string& symbol, entity::Quote** ppQuote )
 {
 	return m_pTradeAgent->QuerySymbol(symbol, ppQuote);
-}
-
-CInputOrderPlacer* COrderProcessor2::CreateInputOrderPlacer( CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const boost::shared_ptr<CInputOrder>& pInputOrder, int retryTimes )
-{
-	return new CInputOrderPlacer(&m_sgOrderStateMachine, pPortf, pMlOrder, pInputOrder, 
-		retryTimes, true, this);
 }
 
 const string& COrderProcessor2::BrokerId()
@@ -392,13 +318,33 @@ const string& COrderProcessor2::InvestorId()
 	return m_pTradeAgent->InvestorId();
 }
 
-void COrderProcessor2::AddPortfolioOrderPlacer( COrderPlacer* pOrdPlacer )
+void COrderProcessor2::AddOrderPlacer( CPortfolioOrderPlacer* pOrdPlacer )
 {
-	m_mlOrderStateMachine.AddPlacer(pOrdPlacer);
+	boost::lock_guard<boost::recursive_mutex> lock(m_ordPlacersMapMutex);
+	m_workingOrderPlacers.insert(std::make_pair(pOrdPlacer->Id(), pOrdPlacer));
 }
 
-void COrderProcessor2::AddInputOrderPlacer( COrderPlacer* pOrdPlacer )
+void COrderProcessor2::RemoveOrderPlacer( const string& placerId /* order ref*/ )
 {
-	m_sgOrderStateMachine.AddPlacer(pOrdPlacer);
+	boost::lock_guard<boost::recursive_mutex> lock(m_ordPlacersMapMutex);
+	m_workingOrderPlacers.erase(placerId);
 }
+
+void COrderProcessor2::DispatchRtnOrder( trade::Order* rtnOrder )
+{
+	boost::lock_guard<boost::recursive_mutex> lock(m_ordPlacersMapMutex);
+	const string& orderRef = rtnOrder->orderref();
+	boost::unordered_map<string, CPortfolioOrderPlacer*>::iterator iter 
+		= m_workingOrderPlacers.find(orderRef);
+	if(iter != m_workingOrderPlacers.end())
+	{
+		(iter->second)->OnOrderReturned(rtnOrder);
+	}
+	else
+	{
+		logger.Warning(boost::str(boost::format("Unexpected order(ref:%s) returned!") % orderRef));
+	}
+}
+
+
 

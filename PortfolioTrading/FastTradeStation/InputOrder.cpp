@@ -26,11 +26,13 @@ void CInputOrder::set_investorid( const string& investorId )
 
 void CInputOrder::set_symbol( const string& symbol )
 {
+	m_symbol = symbol;
 	strcpy_s(m_innerOrderItem.InstrumentID, symbol.c_str());
 }
 
 void CInputOrder::set_orderref( const string& orderRef )
 {
+	m_orderRef = orderRef;
 	strcpy_s(m_innerOrderItem.OrderRef, orderRef.c_str());
 }
 
@@ -41,6 +43,7 @@ void CInputOrder::set_orderpricetype( trade::OrderPriceTypeType ordPriceType )
 
 void CInputOrder::set_direction( trade::TradeDirectionType tradeDirection )
 {
+	m_direction = tradeDirection;
 	m_innerOrderItem.Direction = tradeDirection;
 }
 
@@ -51,6 +54,7 @@ void CInputOrder::set_combhedgeflag( const string& hedgeFlag )
 
 void CInputOrder::set_comboffsetflag( const string& offsetFlag )
 {
+	m_offsetFlag = offsetFlag;
 	m_innerOrderItem.CombOffsetFlag[0] = offsetFlag[0];
 }
 

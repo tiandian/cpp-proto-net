@@ -13,7 +13,7 @@ public:
 	CInputOrder(void);
 	~CInputOrder(void);
 
-	const string& Symbol(){ return string(m_innerOrderItem.InstrumentID); }
+	const string& Symbol(){ return m_symbol; }
 
 	void set_brokerid(const string& brokerId);
 	///投资者代码
@@ -22,18 +22,22 @@ public:
 	void set_symbol(const string& symbol);
 	///报单引用
 	void set_orderref(const string& orderRef);
+	const string& OrderRef(){ return m_orderRef; }
 	///用户代码
 	void set_userid(const string& userId){}
 	///报单价格条件: 限价
 	void set_orderpricetype(trade::OrderPriceTypeType ordPriceType);
 	///买卖方向: 
 	void set_direction(trade::TradeDirectionType tradeDirection);
+	trade::TradeDirectionType Direction(){ return m_direction; }
 	///组合开平标志: 开仓
 	void set_comboffsetflag(const string& offsetFlag);
+	const string& OffsetFlag(){ return m_offsetFlag; }
 	///组合投机套保标志
 	void set_combhedgeflag(const string& hedgeFlag);
 	///价格
 	void set_limitprice(double lmtPx);
+	double LimitPrice(){ return m_innerOrderItem.LimitPrice; }
 	///数量: 1
 	void set_volumetotaloriginal(int volTotal);
 	///有效期类型: 当日有效
@@ -59,7 +63,13 @@ public:
 	///用户强评标志: 否
 	void set_userforceclose(bool userForceClose);
 
+	CThostFtdcInputOrderField& InnerOrder(){ return m_innerOrderItem; }
+
 private:
+	string m_symbol;
+	string m_orderRef;
+	string m_offsetFlag;
+	trade::TradeDirectionType m_direction;
 
 	CThostFtdcInputOrderField m_innerOrderItem;
 };

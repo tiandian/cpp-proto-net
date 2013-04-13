@@ -583,6 +583,16 @@ int CTradeAgent::RequestIDIncrement()
 	return ++m_iRequestID;
 }
 
+bool CTradeAgent::SubmitOrder(CThostFtdcInputOrderField& inputOrderField)
+{
+	int iRequestID = RequestIDIncrement();
+
+	inputOrderField.RequestID = iRequestID;
+	int iResult = m_pUserApi->ReqOrderInsert(&inputOrderField, iRequestID);
+
+	return iResult == 0;
+}
+
 bool CTradeAgent::SubmitOrder( trade::InputOrder* pInputOrder )
 {
 	CThostFtdcInputOrderField req;

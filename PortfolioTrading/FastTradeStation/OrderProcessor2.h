@@ -1,19 +1,22 @@
 #pragma once
 
 #include "TradeAgentCallback.h"
-#include "multilegorderptr.h"
-#include "MLOrderStateMachine.h"
-#include "SgOrderStateMachine.h"
 #include "PortfolioOrderHelper.h"
+#include "entity/quote.pb.h"
 
-#include "boost/thread.hpp"
+#include <string>
+
+#include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
+#include <boost/unordered_map.hpp>
 
 class CPortfolio;
 class CTradeAgent;
 class CClientAgent;
 class CInputOrder;
-class CInputOrderPlacer;
+class CPortfolioOrderPlacer;
+
+using namespace std;
 
 class COrderProcessor2 : public CTradeAgentCallback
 {
@@ -23,32 +26,24 @@ public:
 
 	void Initialize(CClientAgent* pClientAgent, CTradeAgent* pTradeAgent);
 
-	void SubmitPortfOrder(CPortfolio* pPortf, const MultiLegOrderPtr& multilegOrder);
-	CSgOrderPlacer* CreateSingleOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, const InputOrderPtr& pInputOrder, int retryTimes);
-	CInputOrderPlacer* CreateInputOrderPlacer(CPortfolio* pPortf, trade::MultiLegOrder* pMlOrder, 
-		const boost::shared_ptr<CInputOrder>& pInputOrder, int retryTimes);
-
-	void AddPortfolioOrderPlacer(COrderPlacer* pOrdPlacer);
-	void AddInputOrderPlacer(COrderPlacer* pOrdPlacer);
-
-	void RaiseMLOrderPlacerEvent(const string& mlOrdPlacerId, COrderEvent* orderEvent);
-	void RaiseSGOrderPlacerEvent(const string& orderRef, COrderEvent* orderEvent);
+	void AddOrderPlacer(CPortfolioOrderPlacer* pOrdPlacer);
+	void RemoveOrderPlacer(const string& placerId /* order ref*/);
 	
 	int LockForSubmit(string& outOrdRef);
-	bool SubmitAndUnlock(trade::InputOrder* pOrder);
+	bool SubmitAndUnlock(CInputOrder* pInputOrder);
 	int GenerateOrderRef(string& outOrdRef);
-	bool SubmitOrderToTradeAgent(trade::InputOrder* pOrder);
 
-	void CancelOrder(const std::string& ordRef, 
-					 const std::string& exchId, 
-					 const std::string& ordSysId, 
-					 const std::string& userId,
-					 const std::string& symbol);
+	void CancelOrder(const string& ordRef, 
+					 const string& exchId, 
+					 const string& ordSysId, 
+					 const string& userId,
+					 const string& symbol);
 
 	boost::tuple<bool, string> PlaceOrder( const string& symbol, 
 										   trade::TradeDirectionType direction, 
 										   const string& openDate, 
 										   PlaceOrderContext* placeOrderCtx);
+
 	bool QuerySymbol( const std::string& symbol, entity::Quote** ppQuote );
 
 	bool QueryAccountInfo(string* outSerializedAcctInfo);
@@ -110,14 +105,15 @@ public:
 private:
 
 	static void PrintOrderStatus(trade::Order* order);
-	static bool GetOrderEvent(trade::Order* order, COrderEvent** ppOrderEvt);
 	
+	void DispatchRtnOrder(trade::Order* rtnOrder);
+
 	trade::InputOrder* BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx);
 	void AddOpenTimes() { ++m_totalOpenTimes; }
 	void AddCancelTimes() { ++m_totalCancelTimes; }
 
-	CMLOrderStateMachine m_mlOrderStateMachine;
-	CSgOrderStateMachine m_sgOrderStateMachine;
+	boost::unordered_map<string, CPortfolioOrderPlacer*> m_workingOrderPlacers;
+	boost::recursive_mutex m_ordPlacersMapMutex;
 
 	int m_maxOrderRef;
 	boost::mutex m_mutOrdRefIncr;
