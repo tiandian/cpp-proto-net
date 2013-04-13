@@ -42,7 +42,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>D:\Dev\log4cpp\include;D:\Dev\boost_1_53_0;D:\Dev\protobuf-2.4.1\include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_MBCS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;WIN32;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -60,7 +60,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>D:\Dev\log4cpp\include;D:\Dev\boost_1_53_0;D:\Dev\protobuf-2.4.1\include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_MBCS;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_MBCS;WIN32;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -91,13 +91,9 @@
     <ClCompile Include="entity\trade.pb.cc" />
     <ClCompile Include="FileOperations.cpp" />
     <ClCompile Include="InputOrder.cpp" />
-    <ClCompile Include="InputOrderPlacer.cpp" />
     <ClCompile Include="LogManager.cpp" />
-    <ClCompile Include="MLOrderStateMachine.cpp" />
     <ClCompile Include="orderhelper.cpp" />
     <ClCompile Include="OrderProcessor2.cpp" />
-    <ClCompile Include="OrderState.cpp" />
-    <ClCompile Include="OrderStateMachine.cpp" />
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="PortfolioManager.cpp" />
     <ClCompile Include="PortfolioOrderHelper.cpp" />
@@ -107,9 +103,7 @@
     <ClCompile Include="QuoteRepositry.cpp" />
     <ClCompile Include="QuoteFetcher.cpp" />
     <ClCompile Include="QuoteStore.cpp" />
-    <ClCompile Include="ScalperOrderPlacer.cpp" />
     <ClCompile Include="ScalperStrategy.cpp" />
-    <ClCompile Include="SgOrderStateMachine.cpp" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="StrategyFactory.cpp" />
     <ClCompile Include="SymbolInfo.cpp" />
@@ -142,15 +136,12 @@
     <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
     <ClInclude Include="InputOrder.h" />
-    <ClInclude Include="InputOrderPlacer.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="LogSeverityLevel.h" />
-    <ClInclude Include="MLOrderStateMachine.h" />
     <ClInclude Include="multilegorderptr.h" />
+    <ClInclude Include="OrderEvent.h" />
     <ClInclude Include="orderhelper.h" />
     <ClInclude Include="OrderProcessor2.h" />
-    <ClInclude Include="OrderState.h" />
-    <ClInclude Include="OrderStateMachine.h" />
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioManager.h" />
     <ClInclude Include="PortfolioOrderHelper.h" />
@@ -162,9 +153,7 @@
     <ClInclude Include="QuoteFetcher.h" />
     <ClInclude Include="QuoteStore.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ScalperOrderPlacer.h" />
     <ClInclude Include="ScalperStrategy.h" />
-    <ClInclude Include="SgOrderStateMachine.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="StrategyFactory.h" />
     <ClInclude Include="SymbolInfo.h" />

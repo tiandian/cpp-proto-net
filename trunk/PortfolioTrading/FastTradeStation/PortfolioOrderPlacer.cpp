@@ -1,20 +1,238 @@
 #include "PortfolioOrderPlacer.h"
 #include "InputOrder.h"
-#include "InputOrderPlacer.h"
 #include "Portfolio.h"
 #include "OrderProcessor2.h"
 #include "globalmembers.h"
+#include "orderhelper.h"
+#include "OrderEvent.h"
+#include "charsetconvert.h"
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
+// back-end
+#include <boost/msm/back/state_machine.hpp>
+//front-end
+#include <boost/msm/front/state_machine_def.hpp>
+// functors
+#include <boost/msm/front/functor_row.hpp>
+#include <boost/msm/front/euml/common.hpp>
+// for func_state and func_state_machine
+#include <boost/msm/front/euml/state_grammar.hpp>
 
+namespace msm = boost::msm;
+namespace mpl = boost::mpl;
+using namespace msm::front;
+
+namespace // Concrete FSM implementation
+{
+	struct OrderPlacer_ : public msm::front::state_machine_def<OrderPlacer_>
+	{
+		CPortfolioOrderPlacer* m_pPlacer;
+
+		// constructor with arguments
+		OrderPlacer_(CPortfolioOrderPlacer* pPlacer):m_pPlacer(pPlacer)
+		{}
+
+		// state machines also have entry/exit actions 
+		template <class Event, class Fsm> 
+		void on_entry(Event const&, Fsm& fsm) 
+		{
+			// Set Order placer pointer to Submachine Sent
+			OrderPlacer_::Sent& s = fsm.get_state<OrderPlacer_::Sent&>();
+			s.m_pPlacer = fsm.m_pPlacer;
+		} 
+
+		// States definition
+		struct Sending : public msm::front::state<> 
+		{
+			// every (optional) entry/exit methods get the event passed.
+			template <class Event,class FSM>
+			void on_entry(Event const&,FSM& fsm) 
+			{
+				LOG_DEBUG(logger, "entering: Sending");
+				fsm.m_pPlacer->OnSend();
+			}
+
+			template <class Event,class FSM>
+			void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Sending"); }
+		};
+
+		struct LegOrderFilled : public msm::front::state<> 
+		{
+			template <class Event,class FSM>
+			void on_entry(Event const& evt,FSM& fsm) 
+			{
+				LOG_DEBUG(logger, "entering: LegOrderFilled");
+				fsm.m_pPlacer->OnFilled(evt.m_pOrd);
+			}
+
+			template <class Event,class FSM>
+			void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: LegOrderFilled"); }
+		};
+
+		struct LegOrderCanceled : public msm::front::state<> 
+		{
+			template <class Event,class FSM>
+			void on_entry(Event const& evt,FSM& fsm) 
+			{
+				fsm.m_pPlacer->OnLegCanceled(evt.m_pOrd);
+			}
+
+			template <class Event,class FSM>
+			void on_exit(Event const&,FSM& ) {}
+		};
+
+		struct Completed :  public msm::front::terminate_state<>
+		{
+			template <class Event,class FSM>
+			void on_entry(Event const&,FSM& fsm) 
+			{
+				fsm.m_pPlacer->OnCompleted();
+			}
+			template <class Event,class FSM>
+			void on_exit(Event const&,FSM& ) {}
+		};
+
+		struct Canceled :  public msm::front::terminate_state<>
+		{
+			template <class Event,class FSM>
+			void on_entry(Event const&,FSM& fsm) 
+			{
+				fsm.m_pPlacer->OnPortfolioCanceled();
+			}
+			template <class Event,class FSM>
+			void on_exit(Event const&,FSM& ) {}
+		};
+
+		struct AllOk : public msm::front::state<> {};
+
+		struct Error :  public msm::front::terminate_state<>
+		{
+			template <class Event,class FSM>
+			void on_entry(Event const& evt,FSM& fsm) 
+			{
+				fsm.m_pPlacer->OnError(evt.m_ErrorMsg);
+			}
+			template <class Event,class FSM>
+			void on_exit(Event const&,FSM& ) {}
+		};
+		
+		struct Sent_ : public msm::front::state_machine_def<Sent_>
+		{
+			CPortfolioOrderPlacer* m_pPlacer;
+
+			struct Accepted : public msm::front::state<> 
+			{
+				// every (optional) entry/exit methods get the event passed.
+				template <class Event,class FSM>
+				void on_entry(Event const& evt,FSM& fsm) 
+				{
+					LOG_DEBUG(logger, "entering: Accepted");
+					fsm.m_pPlacer->OnAccept(evt.m_pOrd);
+				}
+
+				template <class Event,class FSM>
+				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Accepted"); }
+			};
+
+			struct Pending : public msm::front::state<> 
+			{
+				template <class Event,class FSM>
+				void on_entry(Event const& evt,FSM& fsm) 
+				{ 
+					LOG_DEBUG(logger, "entering: Pending");
+					fsm.m_pPlacer->OnPending(evt.m_pOrd);
+				}
+
+				template <class Event,class FSM>
+				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Pending"); }
+			};
+
+			struct PartiallyFilled : public msm::front::state<> 
+			{
+				template <class Event,class FSM>
+				void on_entry(Event const& evt, FSM& fsm) 
+				{ 
+					LOG_DEBUG(logger, "entering: PartiallyFilled");
+					fsm.m_pPlacer->OnPartiallyFilled(evt.m_pOrd);
+				}
+
+				template <class Event,class FSM>
+				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: PartiallyFilled"); }
+			};
+
+			struct Canceling : public msm::front::state<> 
+			{
+				template <class Event,class FSM>
+				void on_entry(Event const& evt, FSM& fsm) 
+				{ 
+					LOG_DEBUG(logger, "entering: PartiallyFilled");
+					fsm.m_pPlacer->OnCanceling();
+				}
+			};
+
+			// the initial state. Must be defined
+			typedef Accepted initial_state;
+
+			// Transition table for OrderPlacer
+			struct transition_table : mpl::vector<
+				//    Start				Event				Next			Action                     Guard
+				//  +------------+--------------------+-----------------+---------------------------+----------------------+
+				_row < Accepted  , evtPending	      , Pending		    >,
+				_row < Accepted  , evtPartiallyFilled , PartiallyFilled >,
+				_row < Pending	 , evtPendingTimeUp   , Canceling		>,
+				_row < Pending	 , evtNextQuoteIn	  , Canceling		>,
+				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >
+			> {};
+
+		};
+		// back-end
+		typedef msm::back::state_machine<Sent_> Sent;
+
+		typedef mpl::vector<Sending, AllOk> initial_state;
+
+		// transitions
+
+		// Transition table for OrderPlacer
+		struct transition_table : mpl::vector<
+			//    Start					Event					Next			Action                     Guard
+			//  +-------------------+-------------------+-------------------+---------------------------+----------------------+
+			_row < Sending			, evtSubmit			, Sent				>,
+			_row < Sent				, evtFilled			, LegOrderFilled	>,
+			_row < Sent				, evtSubmitFailure	, Error			    >,
+			_row < Sent				, evtCancelSuccess	, LegOrderCanceled	>,
+			_row < Sent				, evtCancelFailure	, Error			    >,
+			_row < LegOrderFilled	, evtAllFilled		, Completed			>,
+			_row < LegOrderFilled	, evtNextLeg		, Sending		    >,
+			_row < LegOrderCanceled	, evtRetry			, Sending			>,
+			_row < LegOrderCanceled	, evtFirstCanceled	, Canceled			>,
+			_row < LegOrderCanceled	, evtFilledCanceled	, Error				>,
+			_row < AllOk			, evtErrorFound		, Error				>
+		> {};
+		// Replaces the default no-transition response.
+		template <class FSM,class Event>
+		void no_transition(Event const& e, FSM&, int state)
+		{
+			LOG_DEBUG(logger, boost::str(boost::format(
+				 "no transition from state %d on event %s")
+				 % state % typeid(e).name()));
+		}
+	};
+	// Pick a back-end
+	typedef msm::back::state_machine<OrderPlacer_> OrderPlacerFsm;
+}
 
 CPortfolioOrderPlacer::CPortfolioOrderPlacer(CPortfolio* pPortf, COrderProcessor2* pOrderProc)
 	: m_pPortf(pPortf)
 	, m_pOrderProcessor(pOrderProc)
+	, m_fsm(new OrderPlacerFsm(this))
 	, m_isWorking(false)
+	, m_isReady(false)
 	, m_isSequential(false)
+	, m_isClosingOrder(false)
 	, m_sendingIdx(0)
+	, m_submitTimes(0)
+	, m_maxRetryTimes(0)
 {
 }
 
@@ -22,7 +240,7 @@ CPortfolioOrderPlacer::~CPortfolioOrderPlacer(void)
 {
 }
 
-void CPortfolioOrderPlacer::SetMlOrderId( const string& mlOrdId )
+void CPortfolioOrderPlacer::Initialize( const string& mlOrdId )
 {
 	m_multiLegOrderTemplate->set_orderid(mlOrdId);
 	m_multiLegOrderTemplate->set_openorderid(mlOrdId);
@@ -35,26 +253,17 @@ void CPortfolioOrderPlacer::Prepare()
 {
 	BuildTemplateOrder();
 
-	// Create input orders from template multi-leg order
-	vector<boost::shared_ptr<CInputOrder> > inputOrders;
-	int inputOrdCount = GetInputOrders(&inputOrders);
+	// Create input orders from template multi-leg order, then m_inputOrders will have items
+	int inputOrdCount = GenInputOrders();
 
 	bool autoTracking = m_pPortf->AutoTracking();
 	int retryTimes = m_pPortf->RetryTimes();
 
-	for(vector<boost::shared_ptr<CInputOrder> >::iterator iter = inputOrders.begin();
-		iter != inputOrders.end(); ++iter)
-	{
-		boost::shared_ptr<CInputOrderPlacer> pPlacer(
-			CreateInputOrderPlacer(*iter, autoTracking ? retryTimes : 0));
-		m_inputOrderPlacers.push_back(pPlacer);
-	}
+	m_isReady = true;
 }
 
-int CPortfolioOrderPlacer::GetInputOrders( vector<boost::shared_ptr<CInputOrder> > * genInputOrders )
+int CPortfolioOrderPlacer::GenInputOrders()
 {
-	assert(genInputOrders != NULL);
-
 	BOOST_FOREACH(const trade::Order& o, m_multiLegOrderTemplate->legs())
 	{
 		boost::shared_ptr<CInputOrder> inputOrder(new CInputOrder);
@@ -83,38 +292,25 @@ int CPortfolioOrderPlacer::GetInputOrders( vector<boost::shared_ptr<CInputOrder>
 		inputOrder->set_userforceclose(o.userforceclose());
 
 		if(o.preferred())	// always put preferred order at front
-			genInputOrders->insert(genInputOrders->begin(), inputOrder);
+			m_inputOrders.insert(m_inputOrders.begin(), inputOrder);
 		else
-			genInputOrders->push_back(inputOrder);
+			m_inputOrders.push_back(inputOrder);
 	}
 
-	return genInputOrders->size();
-}
-
-CInputOrderPlacer* CPortfolioOrderPlacer::CreateInputOrderPlacer(const boost::shared_ptr<CInputOrder>& inputOrder, int retryTimes)
-{
-	return m_pOrderProcessor->CreateInputOrderPlacer(m_pPortf, m_multiLegOrderTemplate.get(), inputOrder, retryTimes);
-}
-
-void CPortfolioOrderPlacer::Do()
-{
-	// Send Order immediately
-	Send();
-
-	UpdateMultiLegOrder();
+	return m_inputOrders.size();
 }
 
 void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize)
 {
+	if(!m_isReady)
+		Prepare();
+
 	m_isWorking = true;
 
 	// Generate order Id
 	string mlOrderId;
 	m_pPortf->NewOrderId(mlOrderId);
-	SetMlOrderId(mlOrderId);
-
-	// Add to MlOrderStateMachine
-	m_pOrderProcessor->AddPortfolioOrderPlacer(this);
+	Initialize(mlOrderId);
 
 	// Direction
 	SetDirection(posiDirection);
@@ -122,165 +318,207 @@ void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* 
 	// Limit price
 	SetLimitPrice(pLmtPxArr, iPxSize);
 
-	// Just do it;
-	Do();
+	// Sending the first leg
+	m_sendingIdx = 0;
+
+	// start fsm
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->start();
 }
 
-void CPortfolioOrderPlacer::Send()
+void CPortfolioOrderPlacer::OnSend()
 {
-	bool m_isSequential = m_pPortf->EnablePrefer();
-	if(m_isSequential)
+	if(m_submitTimes > 0)
 	{
-		// Only start the first one
-		m_sendingIdx = 0;
-		assert(m_inputOrderPlacers.size() > 0);
-		(m_inputOrderPlacers.at(0))->Do();
+		m_pOrderProcessor->RemoveOrderPlacer(Id());
+		ModifyOrderPrice();
+	}
+		
+	// lock and generate order ref
+	int iOrdRef = m_pOrderProcessor->LockForSubmit(m_sendingOrderRef);
+	assert(iOrdRef > 0);
+		
+	assert(m_sendingIdx >= 0);
+	assert(m_sendingIdx < (int)m_inputOrders.size());
+
+	CInputOrder* pInputOrder = m_inputOrders[m_sendingIdx].get();
+	pInputOrder->set_orderref(m_sendingOrderRef);
+
+	// Add this to order processor, so that return order can get back
+	m_pOrderProcessor->AddOrderPlacer(this);
+
+	LOG_INFO(logger, boost::str(boost::format("Submit Order(%s - %s) [No. %d time(s)]")
+		% m_multiLegOrderTemplate->orderid() % pInputOrder->Symbol() % (m_submitTimes + 1)));
+
+	// real submit order and unlock to allow next order ref generation
+	bool succ = m_pOrderProcessor->SubmitAndUnlock(pInputOrder);
+
+	++m_submitTimes;
+
+	if(m_sendingIdx == 0 && m_submitTimes == 1)	// Only publish it for the first time
+		UpdateMultiLegOrder();
+}
+
+void CPortfolioOrderPlacer::OnAccept(trade::Order* pRtnOrder)
+{
+	UpdateLegOrder(pRtnOrder);
+}
+
+void CPortfolioOrderPlacer::OnPending( trade::Order* pRtnOrder )
+{
+	SetPendingOrderInfo(pRtnOrder);
+
+	if(m_pendingOrderInfo.offsetFlag == trade::OF_OPEN)
+	{
+		int openTimeout = m_pPortf->OpenPendingTimeout();
+		m_openOrderTimer = boost::shared_ptr<CAsyncOpenOrderTimer>(
+			new CAsyncOpenOrderTimer(this, m_pendingOrderInfo.ordRef, openTimeout));
+		m_openOrderTimer->Run();
 	}
 	else
 	{
-		BOOST_FOREACH(const boost::shared_ptr<CInputOrderPlacer>& placer, m_inputOrderPlacers)
-		{
-			placer->Do();
-		}
+		m_isClosingOrder = true;
+	}
+
+	UpdateLegOrder(pRtnOrder);
+}
+
+void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
+{
+	++m_sendingIdx;
+	if(m_sendingIdx < (int)m_inputOrders.size())
+	{
+		AfterLegDone();
+		// Go to send next order
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
+	}
+	else
+	{
+		// All leg order done
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtAllFilled());
+	}
+
+	UpdateLegOrder(pRtnOrder);
+}
+
+void CPortfolioOrderPlacer::OnPartiallyFilled( trade::Order* pRtnOrder )
+{
+	int remained = pRtnOrder->volumetotal();
+	int finished = pRtnOrder->volumetraded();
+
+	SetPendingOrderInfo(pRtnOrder);
+	// Cancel remaining
+	OnCanceling();
+	UpdateLegOrder(pRtnOrder);
+}
+
+void CPortfolioOrderPlacer::OnCompleted()
+{
+	trade::MlOrderOffset offset = m_multiLegOrderTemplate->offset();
+	if(offset == trade::ML_OF_OPEN || offset == trade::ML_OF_OTHER)
+		m_pPortf->AddPosition(*m_multiLegOrderTemplate);
+	else if(offset == trade::ML_OF_CLOSE)
+		m_pPortf->RemovePosition(*m_multiLegOrderTemplate);
+
+	AfterPortfolioDone();
+}
+
+void CPortfolioOrderPlacer::OnCanceling()
+{
+	LOG_DEBUG(logger, boost::str(boost::format("Canceling order (ref:%s, sysId:%s)")
+		% m_pendingOrderInfo.ordRef % m_pendingOrderInfo.ordSysId));
+	m_pOrderProcessor->CancelOrder(m_pendingOrderInfo.ordRef, 
+		m_pendingOrderInfo.exchId, m_pendingOrderInfo.ordSysId, 
+		m_pendingOrderInfo.userId, m_pendingOrderInfo.symbol);
+}
+
+void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
+{
+	AfterLegDone(true);
+	if(m_submitTimes < m_maxRetryTimes)
+	{
+		// retry
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtRetry());
+	}
+	else
+	{
+		LOG_INFO(logger, boost::str(boost::format("Retry times is used up. Order(%s) has been retried %d times")
+			% pRtnOrder->instrumentid() % m_submitTimes));
+		if(m_sendingIdx == 0)
+			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtFirstCanceled());
+		else
+			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(
+				evtFilledCanceled("µ¥ÍÈ:Æ½²ÖÊ§°Ü"));
+	}
+	UpdateLegOrder(pRtnOrder);
+}
+
+void CPortfolioOrderPlacer::OnPortfolioCanceled()
+{
+	AfterPortfolioDone();
+}
+
+void CPortfolioOrderPlacer::OnError(const string& errMsg)
+{
+	AfterPortfolioDone();
+
+	string ordStatusMsg;
+	GB2312ToUTF_8(ordStatusMsg, errMsg.c_str());
+
+	m_multiLegOrderTemplate->set_haswarn(true);
+	m_multiLegOrderTemplate->set_statusmsg(ordStatusMsg);
+
+	UpdateMultiLegOrder();
+}
+
+void CPortfolioOrderPlacer::OnPendingTimeUp()
+{
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPendingTimeUp());
+}
+
+void CPortfolioOrderPlacer::OnQuoteReceived( entity::Quote* pQuote )
+{
+	if(m_isClosingOrder)
+	{
+		m_nextQuote.last = pQuote->last();
+		m_nextQuote.ask = pQuote->ask();
+		m_nextQuote.bid = pQuote->bid();
+
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextQuoteIn());
+		m_isClosingOrder = false;
 	}
 }
 
-bool CPortfolioOrderPlacer::SendNext( COrderEvent* transEvent )
+void CPortfolioOrderPlacer::ModifyOrderPrice()
 {
-	if(++m_sendingIdx < (int)m_inputOrderPlacers.size())
+	CInputOrder* pInputOrder = m_inputOrders[m_sendingIdx].get();
+	trade::TradeDirectionType direction = pInputOrder->Direction();
+	double basePx = 0;
+	if(direction == trade::BUY)
 	{
-		boost::shared_ptr<CInputOrderPlacer>& pSgPlacer = m_inputOrderPlacers.at(m_sendingIdx);
-
-		// Partically for Scalper strategy
-		// ensure close order qty align to opened quantity
-		if(m_pPortf->SelfClose())
-		{
-			LegCompletedEvent* pLegCompleteEvent = dynamic_cast<LegCompletedEvent*>(transEvent);
-			if(pLegCompleteEvent != NULL)
-			{
-				int finished = pLegCompleteEvent->Finished();
-				pSgPlacer->AdjustQuantity(finished);
-			}
-		}
-
-		pSgPlacer->Do();
-		return true;
+		basePx = m_nextQuote.bid;
 	}
+	else
+		basePx = m_nextQuote.ask;
 
-	return false;
-}
+	LOG_DEBUG(logger, boost::str(boost::format("In coming new quote's %s : %f") 
+		% (direction == trade::BUY ? "Bid" : "Ask") % basePx));
 
-bool CPortfolioOrderPlacer::OnEnter( ORDER_STATE state, COrderEvent* transEvent, ORDER_STATE lastState )
-{
-	LOG_DEBUG(logger, boost::str(boost::format("MultiLeg Order(%s) enter %s") 
-		% Id() % PrintState(state)));
-	
-	bool isTerminal = false;
+	double priceTick = 0.2;
 
-	switch(state)
+	if(direction == trade::BUY)
 	{
-	case ORDER_STATE_SENT:
-		{
-			Send();
-		}
-		break;
-	case ORDER_STATE_PARTIALLY_FILLED:
-		{
-			if(m_isSequential)
-			{
-				if(SendNext(transEvent))
-					break;
-				//else if there is no next placer to do
-				// go to next case "ORDER_STATE_COMPLETE"
-				logger.Debug("There is no next placer to do. GO to Complete state");
-			}
-			else if (m_inputOrderPlacers.size() > 1)
-				break;	// if there is only 1 order in portfolio, recognized as partially filled
-			// otherwise got to complete state
-		}
-		//break;
-	case ORDER_STATE_COMPLETE:
-		{
-			trade::MlOrderOffset offset = m_multiLegOrderTemplate->offset();
-			if(offset == trade::ML_OF_OPEN || offset == trade::ML_OF_OTHER)
-				m_pPortf->AddPosition(*m_multiLegOrderTemplate);
-			else if(offset == trade::ML_OF_CLOSE)
-				m_pPortf->RemovePosition(*m_multiLegOrderTemplate);
-
-			isTerminal = true;
-		}
-		break;
-	case ORDER_STATE_PARTIALLY_CANCELED:
-		{
-			if(m_isSequential)
-			{
-				isTerminal = true;
-				OutputStatus("Portfolio Order Canceled");
-			}
-		}
-		break;
-	case ORDER_STATE_CANCELED:
-		{
-			isTerminal = true;
-			OutputStatus("Portfolio Order Canceled");
-		}
-		break;
-	case ORDER_STATE_PARTIALLY_FAILED:
-		{
-			if(m_isSequential)
-			{
-				isTerminal = true;
-				OutputStatus("Portfolio order place failed");
-			}
-		}
-		break;
-	case ORDER_STATE_PLACE_FAILED:
-		{
-			isTerminal = true;
-			OutputStatus("Portfolio order place failed");
-		}
-		break;
-	case ORDER_STATE_WARNING:
-		{
-			m_multiLegOrderTemplate->set_haswarn(true);
-
-			CMLegOrderEvent* pOrderEvent = dynamic_cast<CMLegOrderEvent*>(transEvent);
-			assert(pOrderEvent != NULL);
-			if(pOrderEvent == NULL)
-				return isTerminal;
-
-			string warnMsg;
-			ORDER_EVENT evt = pOrderEvent->Event();
-			switch(evt)
-			{
-			case ORDER_EVENT_CANCEL_SUCCESS:
-				warnMsg = "Leg Order Canceled though prior order filled";
-				break;
-			case ORDER_EVENT_SUBMIT_FAILED:
-				warnMsg = "Leg Order Failed though prior order filled";
-				break;
-			case ORDER_EVENT_COMPLETE:
-				warnMsg = "A Leg Order gets Filled but prior order doesn't";
-				break;
-			default:
-				logger.Warning(
-					boost::str(boost::format(
-					"MultiLeg Order enter WARN state due to unexpected event(%s)")
-					% PrintEvent(evt)));
-			}
-			OutputStatus(warnMsg);
-			isTerminal = true;
-		}
-		break;
-	default:
-		logger.Warning(boost::str(boost::format("Entering MultiLeg order UNHANDLED state %s")
-			% PrintState(state)));
+		double buy = basePx + priceTick;
+		LOG_DEBUG(logger, boost::str(boost::format("Modify order(%s): Buy @ %f")
+			% pInputOrder->Symbol() % buy));
+		pInputOrder->set_limitprice(buy);
 	}
-
-	if(isTerminal)
-		m_isWorking = false;
-
-	return isTerminal;
+	else if(direction == trade::SELL)
+	{
+		double sell = basePx - priceTick;
+		LOG_DEBUG(logger, boost::str(boost::format("Modify order(%s): Sell @ %f")
+			% pInputOrder->Symbol() % sell));
+		pInputOrder->set_limitprice(sell);
+	}
 }
 
 void CPortfolioOrderPlacer::UpdateMultiLegOrder()
@@ -293,6 +531,148 @@ void CPortfolioOrderPlacer::OutputStatus( const string& statusMsg )
 	m_multiLegOrderTemplate->set_statusmsg(statusMsg);
 	UpdateMultiLegOrder();
 }
+
+void CPortfolioOrderPlacer::OnOrderReturned( trade::Order* pRtnOrder )
+{
+	trade::OrderSubmitStatusType submitStatus = pRtnOrder->ordersubmitstatus();
+	trade::OrderStatusType status = pRtnOrder->orderstatus();
+
+	LOG_DEBUG(logger, boost::str(boost::format("Order(%s, %s) - submit status(%s), order status(%s)")
+		% pRtnOrder->orderref() %  pRtnOrder->ordersysid() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
+
+	if(submitStatus > trade::NOT_SUBMITTED && 
+		submitStatus <= trade::ACCEPTED && status >= trade::STATUS_UNKNOWN)
+	{
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtSubmit(pRtnOrder));
+	}
+	else if(submitStatus > trade::ACCEPTED)
+	{
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtReject(pRtnOrder));
+	}
+	else if(status == trade::ALL_TRADED)
+	{
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtFilled(pRtnOrder));
+	}
+	else if(status == trade::ORDER_CANCELED)
+	{
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtCancelSuccess(pRtnOrder));
+	}
+	else if(status == trade::NO_TRADE_QUEUEING ||
+		status == trade::NO_TRADE_NOT_QUEUEING)
+	{
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPending(pRtnOrder));
+	}
+	else if(status == trade::PART_TRADED_QUEUEING ||
+		status == trade::PART_TRADED_NOT_QUEUEING)
+	{
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPartiallyFilled(pRtnOrder));
+	}
+	else
+	{
+		logger.Warning(boost::str(boost::format("Cannot identify status of order (ref: %s, sysId: %s)") 
+			% pRtnOrder->orderref() % pRtnOrder->ordersysid()));
+	}
+}
+
+void CPortfolioOrderPlacer::UpdateLegOrder( trade::Order* pRtnOrder )
+{
+	if(pRtnOrder != NULL)
+	{
+		trade::Order* pLegOrder = GetOrderBySymbol(pRtnOrder->instrumentid(), pRtnOrder->direction());
+
+		pLegOrder->CopyFrom(*pRtnOrder);
+
+		string ordStatusMsg;
+		GB2312ToUTF_8(ordStatusMsg, pRtnOrder->statusmsg().c_str());
+		pLegOrder->set_statusmsg(ordStatusMsg);
+
+		m_pOrderProcessor->PublishOrderUpdate(m_multiLegOrderTemplate->portfolioid(), 
+			m_multiLegOrderTemplate->orderid(), pLegOrder);
+	}
+}
+
+trade::Order* CPortfolioOrderPlacer::GetOrderBySymbol(const string& symbol, trade::TradeDirectionType direction)
+{
+	trade::Order* pOrdFound = NULL;
+	int count = m_multiLegOrderTemplate->legs_size();
+	google::protobuf::RepeatedPtrField<trade::Order>* legs = m_multiLegOrderTemplate->mutable_legs();
+	for(int i = 0; i < count; ++i)
+	{
+		trade::Order* pOrd = legs->Mutable(i);
+		if(pOrd->instrumentid() == symbol && pOrd->direction() == direction)
+		{
+			// find it
+			pOrdFound = pOrd;
+			break;
+		}
+	}
+	return pOrdFound;
+}
+
+void CPortfolioOrderPlacer::SetPendingOrderInfo( trade::Order* pRtnOrder )
+{
+	if(pRtnOrder == NULL)
+	{
+		m_pendingOrderInfo.ordRef.clear();
+		m_pendingOrderInfo.exchId.clear();
+		m_pendingOrderInfo.ordSysId.clear(); 
+		m_pendingOrderInfo.userId.clear();
+		m_pendingOrderInfo.symbol.clear();
+		m_pendingOrderInfo.offsetFlag = 0;
+	}
+	else
+	{
+		m_pendingOrderInfo.ordRef = pRtnOrder->orderref();
+		m_pendingOrderInfo.exchId = pRtnOrder->exchangeid();
+		m_pendingOrderInfo.ordSysId = pRtnOrder->ordersysid(); 
+		m_pendingOrderInfo.userId = pRtnOrder->userid();
+		m_pendingOrderInfo.symbol = pRtnOrder->instrumentid();
+		m_pendingOrderInfo.offsetFlag = pRtnOrder->comboffsetflag()[0];
+	}
+}
+
+void CPortfolioOrderPlacer::Reset()
+{
+	m_maxRetryTimes = 0;
+	m_isClosingOrder = false;
+	m_sendingOrderRef.clear();
+	m_openOrderTimer.reset();
+	SetPendingOrderInfo(NULL);
+}
+
+void CPortfolioOrderPlacer::AfterLegDone( bool isCanceled /*= false*/ )
+{
+	if(!isCanceled)
+		m_submitTimes = 0;
+
+	if(m_openOrderTimer.get() != NULL)
+		m_openOrderTimer->Cancel();
+	m_pOrderProcessor->RemoveOrderPlacer(Id());
+	Reset();
+}
+
+void CPortfolioOrderPlacer::AfterPortfolioDone()
+{
+	AfterLegDone();
+	m_isWorking = false;
+	m_isClosingOrder = false;
+	m_sendingIdx = 0;
+}
+
+void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )
+{
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtSubmitFailure(errMsg));
+}
+
+void CPortfolioOrderPlacer::OnOrderCancelFailed( const string& errMsg )
+{
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtCancelFailure(errMsg));
+}
+
+
+
+
+
 
 
 
