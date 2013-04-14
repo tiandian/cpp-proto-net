@@ -38,7 +38,7 @@ namespace // Concrete FSM implementation
 		void on_entry(Event const&, Fsm& fsm) 
 		{
 			// Set Order placer pointer to Submachine Sent
-			OrderPlacer_::Sent& s = fsm.get_state<OrderPlacer_::Sent&>();
+			OrderPlacer_::Sent& s = fsm.template get_state<OrderPlacer_::Sent&>();
 			s.m_pPlacer = fsm.m_pPlacer;
 		} 
 

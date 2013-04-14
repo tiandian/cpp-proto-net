@@ -46,7 +46,7 @@ void CScalperStrategy2::Test( entity::Quote* pQuote )
 			if(direction > trade::NET)
 			{
 				double lmtPrice[2];
-				if(direction == trade::BUY)
+				if(direction == trade::LONG)
 				{
 					lmtPrice[0] = m_Bid + m_priceTick;
 					lmtPrice[1] = m_Ask - m_priceTick;

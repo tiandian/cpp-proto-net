@@ -17,10 +17,11 @@ AP_INVOKE_OBJS = $(patsubst %, $(OBJ_DIR)/%, $(_AP_INVOKE_OBJS))
 
 _FS_OBJS = ArbitrageStrategy AsyncScalperEventFirer ChangePositionStrategy \
 	   charsetconvert ClientAgent ClientManager ClientMessagePump \
-	   Configuration FileOperations LogManager MLOrderStateMachine \
-	   orderhelper OrderProcessor2 OrderState OrderStateMachine \
-	   Portfolio PortfolioOrderHelper QuoteAgent ScalperOrderPlacer \
-	   ScalperStrategy SgOrderStateMachine Strategy \
+	   Configuration FileOperations InputOrder LogManager \
+	   orderhelper OrderProcessor2 Portfolio PortfolioManager \
+	   PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer \
+	   QuoteAgent QuoteFetcher QuoteRepositry QuoteStore \
+	   ScalperStrategy ScalperStrategy2 Strategy \
 	   StrategyFactory SymbolInfo SymbolInfoRepositry TradeAgent \
 	   TradeStationMain
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
