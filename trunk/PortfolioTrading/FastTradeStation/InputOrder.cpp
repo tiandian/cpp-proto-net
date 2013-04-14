@@ -7,6 +7,7 @@
 
 CInputOrder::CInputOrder(void)
 {
+	memset(&m_innerOrderItem, 0, sizeof(m_innerOrderItem));
 }
 
 
@@ -21,7 +22,7 @@ void CInputOrder::set_brokerid( const string& brokerId )
 
 void CInputOrder::set_investorid( const string& investorId )
 {
-	strcpy_s(m_innerOrderItem.BrokerID, investorId.c_str());
+	strcpy_s(m_innerOrderItem.InvestorID, investorId.c_str());
 }
 
 void CInputOrder::set_symbol( const string& symbol )

@@ -82,6 +82,18 @@ namespace // Concrete FSM implementation
 			void on_exit(Event const&,FSM& ) {}
 		};
 
+		struct LegOrderRejected : public msm::front::terminate_state<>
+		{
+			template <class Event,class FSM>
+			void on_entry(Event const& evt,FSM& fsm) 
+			{
+				fsm.m_pPlacer->OnLegRejected(evt.m_pOrd);
+			}
+
+			template <class Event,class FSM>
+			void on_exit(Event const&,FSM& ) {}
+		};
+
 		struct Completed :  public msm::front::terminate_state<>
 		{
 			template <class Event,class FSM>
@@ -120,6 +132,8 @@ namespace // Concrete FSM implementation
 		struct Sent_ : public msm::front::state_machine_def<Sent_>
 		{
 			CPortfolioOrderPlacer* m_pPlacer;
+
+			Sent_():m_pPlacer(NULL){}
 
 			struct Accepted : public msm::front::state<> 
 			{
@@ -166,10 +180,15 @@ namespace // Concrete FSM implementation
 				template <class Event,class FSM>
 				void on_entry(Event const& evt, FSM& fsm) 
 				{ 
-					LOG_DEBUG(logger, "entering: PartiallyFilled");
+					LOG_DEBUG(logger, "entering: Canceling");
 					fsm.m_pPlacer->OnCanceling();
 				}
+
+				template <class Event,class FSM>
+				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Canceling"); }
 			};
+
+			struct Canceling2 : public msm::front::state<> {};
 
 			// the initial state. Must be defined
 			typedef Accepted initial_state;
@@ -180,9 +199,12 @@ namespace // Concrete FSM implementation
 				//  +------------+--------------------+-----------------+---------------------------+----------------------+
 				_row < Accepted  , evtPending	      , Pending		    >,
 				_row < Accepted  , evtPartiallyFilled , PartiallyFilled >,
+				_row < Accepted  , evtSubmit	      , Accepted		>,
 				_row < Pending	 , evtPendingTimeUp   , Canceling		>,
 				_row < Pending	 , evtNextQuoteIn	  , Canceling		>,
-				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >
+				_row < Pending   , evtPending	      , Pending			>,
+				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >,
+				_row < Canceling , evtPending	      , Canceling2		>
 			> {};
 
 		};
@@ -198,10 +220,11 @@ namespace // Concrete FSM implementation
 			//    Start					Event					Next			Action                     Guard
 			//  +-------------------+-------------------+-------------------+---------------------------+----------------------+
 			_row < Sending			, evtSubmit			, Sent				>,
+			_row < Sending			, evtSubmitFailure	, Error			    >,
 			_row < Sent				, evtFilled			, LegOrderFilled	>,
-			_row < Sent				, evtSubmitFailure	, Error			    >,
 			_row < Sent				, evtCancelSuccess	, LegOrderCanceled	>,
 			_row < Sent				, evtCancelFailure	, Error			    >,
+			_row < Sent				, evtReject			, LegOrderRejected	>,
 			_row < LegOrderFilled	, evtAllFilled		, Completed			>,
 			_row < LegOrderFilled	, evtNextLeg		, Sending		    >,
 			_row < LegOrderCanceled	, evtRetry			, Sending			>,
@@ -211,21 +234,21 @@ namespace // Concrete FSM implementation
 		> {};
 		// Replaces the default no-transition response.
 		template <class FSM,class Event>
-		void no_transition(Event const& e, FSM&, int state)
+		void no_transition(Event const& e, FSM& fsm, int state)
 		{
 			LOG_DEBUG(logger, boost::str(boost::format(
 				 "no transition from state %d on event %s")
 				 % state % typeid(e).name()));
+			fsm.process_event(evtErrorFound("遇到无法处理的事件"));
 		}
 	};
 	// Pick a back-end
 	typedef msm::back::state_machine<OrderPlacer_> OrderPlacerFsm;
 }
 
-CPortfolioOrderPlacer::CPortfolioOrderPlacer(CPortfolio* pPortf, COrderProcessor2* pOrderProc)
-	: m_pPortf(pPortf)
-	, m_pOrderProcessor(pOrderProc)
-	, m_fsm(new OrderPlacerFsm(this))
+CPortfolioOrderPlacer::CPortfolioOrderPlacer(void)
+	: m_pPortf(NULL)
+	, m_pOrderProcessor(NULL)
 	, m_isWorking(false)
 	, m_isReady(false)
 	, m_isSequential(false)
@@ -234,6 +257,7 @@ CPortfolioOrderPlacer::CPortfolioOrderPlacer(CPortfolio* pPortf, COrderProcessor
 	, m_submitTimes(0)
 	, m_maxRetryTimes(0)
 {
+	m_fsm = boost::shared_ptr<void>(new OrderPlacerFsm(this));
 }
 
 CPortfolioOrderPlacer::~CPortfolioOrderPlacer(void)
@@ -257,7 +281,7 @@ void CPortfolioOrderPlacer::Prepare()
 	int inputOrdCount = GenInputOrders();
 
 	bool autoTracking = m_pPortf->AutoTracking();
-	int retryTimes = m_pPortf->RetryTimes();
+	m_maxRetryTimes = m_pPortf->RetryTimes();
 
 	m_isReady = true;
 }
@@ -329,7 +353,6 @@ void CPortfolioOrderPlacer::OnSend()
 {
 	if(m_submitTimes > 0)
 	{
-		m_pOrderProcessor->RemoveOrderPlacer(Id());
 		ModifyOrderPrice();
 	}
 		
@@ -365,21 +388,25 @@ void CPortfolioOrderPlacer::OnAccept(trade::Order* pRtnOrder)
 
 void CPortfolioOrderPlacer::OnPending( trade::Order* pRtnOrder )
 {
-	SetPendingOrderInfo(pRtnOrder);
-
-	if(m_pendingOrderInfo.offsetFlag == trade::OF_OPEN)
+	if(SetPendingOrderInfo(pRtnOrder))
 	{
-		int openTimeout = m_pPortf->OpenPendingTimeout();
-		m_openOrderTimer = boost::shared_ptr<CAsyncOpenOrderTimer>(
-			new CAsyncOpenOrderTimer(this, m_pendingOrderInfo.ordRef, openTimeout));
-		m_openOrderTimer->Run();
+		if(m_pendingOrderInfo.offsetFlag == trade::OF_OPEN)
+		{
+			int openTimeout = m_pPortf->OpenPendingTimeout();
+			m_openOrderTimer = boost::shared_ptr<CAsyncOpenOrderTimer>(
+				new CAsyncOpenOrderTimer(this, m_pendingOrderInfo.ordRef, openTimeout));
+			m_openOrderTimer->Run();
+		}
+		else
+		{
+			m_isClosingOrder = true;
+		}
+
+		UpdateLegOrder(pRtnOrder);
 	}
 	else
-	{
-		m_isClosingOrder = true;
-	}
-
-	UpdateLegOrder(pRtnOrder);
+		LOG_DEBUG(logger, boost::str(boost::format("Duplicate pending order event.(ordRef: %s, sysId: %s)")
+					% pRtnOrder->orderref() % pRtnOrder->ordersysid()));
 }
 
 void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
@@ -434,22 +461,33 @@ void CPortfolioOrderPlacer::OnCanceling()
 void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 {
 	AfterLegDone(true);
-	if(m_submitTimes < m_maxRetryTimes)
+
+	if(m_sendingIdx == 0)
+	{
+		UpdateLegOrder(pRtnOrder);
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtFirstCanceled());
+	}
+	else if(m_submitTimes < m_maxRetryTimes)
 	{
 		// retry
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtRetry());
+		UpdateLegOrder(pRtnOrder);
 	}
 	else
 	{
 		LOG_INFO(logger, boost::str(boost::format("Retry times is used up. Order(%s) has been retried %d times")
 			% pRtnOrder->instrumentid() % m_submitTimes));
-		if(m_sendingIdx == 0)
-			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtFirstCanceled());
-		else
-			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(
-				evtFilledCanceled("单腿:平仓失败"));
+		
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(
+			evtFilledCanceled("单腿:平仓失败"));
 	}
+}
+
+void CPortfolioOrderPlacer::OnLegRejected( trade::Order* pRtnOrder )
+{
+	AfterLegDone();
 	UpdateLegOrder(pRtnOrder);
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtErrorFound(pRtnOrder->statusmsg()));
 }
 
 void CPortfolioOrderPlacer::OnPortfolioCanceled()
@@ -459,6 +497,7 @@ void CPortfolioOrderPlacer::OnPortfolioCanceled()
 
 void CPortfolioOrderPlacer::OnError(const string& errMsg)
 {
+	AfterLegDone();
 	AfterPortfolioDone();
 
 	string ordStatusMsg;
@@ -609,7 +648,7 @@ trade::Order* CPortfolioOrderPlacer::GetOrderBySymbol(const string& symbol, trad
 	return pOrdFound;
 }
 
-void CPortfolioOrderPlacer::SetPendingOrderInfo( trade::Order* pRtnOrder )
+bool CPortfolioOrderPlacer::SetPendingOrderInfo( trade::Order* pRtnOrder )
 {
 	if(pRtnOrder == NULL)
 	{
@@ -622,6 +661,9 @@ void CPortfolioOrderPlacer::SetPendingOrderInfo( trade::Order* pRtnOrder )
 	}
 	else
 	{
+		if(m_pendingOrderInfo.ordRef == pRtnOrder->orderref())
+			return false;
+
 		m_pendingOrderInfo.ordRef = pRtnOrder->orderref();
 		m_pendingOrderInfo.exchId = pRtnOrder->exchangeid();
 		m_pendingOrderInfo.ordSysId = pRtnOrder->ordersysid(); 
@@ -629,6 +671,8 @@ void CPortfolioOrderPlacer::SetPendingOrderInfo( trade::Order* pRtnOrder )
 		m_pendingOrderInfo.symbol = pRtnOrder->instrumentid();
 		m_pendingOrderInfo.offsetFlag = pRtnOrder->comboffsetflag()[0];
 	}
+
+	return true;
 }
 
 void CPortfolioOrderPlacer::Reset()
@@ -647,13 +691,15 @@ void CPortfolioOrderPlacer::AfterLegDone( bool isCanceled /*= false*/ )
 
 	if(m_openOrderTimer.get() != NULL)
 		m_openOrderTimer->Cancel();
-	m_pOrderProcessor->RemoveOrderPlacer(Id());
+	
+	if(!m_sendingOrderRef.empty())
+		m_pOrderProcessor->RemoveOrderPlacer(Id());
+	
 	Reset();
 }
 
 void CPortfolioOrderPlacer::AfterPortfolioDone()
 {
-	AfterLegDone();
 	m_isWorking = false;
 	m_isClosingOrder = false;
 	m_sendingIdx = 0;
@@ -667,6 +713,15 @@ void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )
 void CPortfolioOrderPlacer::OnOrderCancelFailed( const string& errMsg )
 {
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtCancelFailure(errMsg));
+}
+
+void CPortfolioOrderPlacer::Cleanup()
+{
+	AfterLegDone();
+	AfterPortfolioDone();
+
+	m_multiLegOrderTemplate.reset();
+	m_inputOrders.clear();
 }
 
 

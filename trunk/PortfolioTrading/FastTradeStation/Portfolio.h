@@ -3,7 +3,7 @@
 #include "entity/message.pb.h"
 #include "entity/quote.pb.h"
 #include "multilegorderptr.h"
-#include "PortfolioOrderPlacer.h"
+#include "PortfolioScalperOrderPlacer.h"
 
 #include <string>
 #include <vector>
@@ -19,6 +19,7 @@ class CClientAgent;
 class CDiffStrategy;
 class CQuoteRepositry;
 class CQuoteFetcher;
+class CScalperStrategy2;
 
 typedef boost::shared_ptr<entity::PortfolioItem> PortfItemPtr;
 typedef boost::shared_ptr<CLeg> LegPtr;
@@ -139,11 +140,12 @@ private:
 	boost::mutex m_mutQuoting;
 
 	boost::shared_ptr<CDiffStrategy> m_strategy;
+	boost::shared_ptr<CScalperStrategy2> m_scalperStrategy;
 		
 	bool m_selfClose;
 	bool m_isPlacingOrder;
 
-	CPortfolioOrderPlacer m_portfOrdPlacer;
+	CPortfolioScalperOrderPlacer m_portfOrdPlacer;
 };
 
 class CLeg

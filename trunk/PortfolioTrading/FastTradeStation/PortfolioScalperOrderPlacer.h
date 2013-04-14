@@ -5,12 +5,14 @@
 class CPortfolioScalperOrderPlacer : public CPortfolioOrderPlacer
 {
 public:
-	CPortfolioScalperOrderPlacer(CPortfolio* pPortf, COrderProcessor2* pOrderProc);
+	CPortfolioScalperOrderPlacer(void);
 	~CPortfolioScalperOrderPlacer(void);
 
 	virtual void BuildTemplateOrder();
 
 	virtual void SetDirection(trade::PosiDirectionType posiDirection);
 	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize);
+
+	virtual void OnLegCanceled(trade::Order* pRtnOrder);
 };
 

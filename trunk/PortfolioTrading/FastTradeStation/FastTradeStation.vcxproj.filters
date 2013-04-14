@@ -135,6 +135,9 @@
     <ClCompile Include="InputOrder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScalperStrategy2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ap_invoke\apsessionmanager.h">
@@ -282,6 +285,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="OrderEvent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScalperStrategy2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
