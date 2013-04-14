@@ -4,8 +4,9 @@
 #include "OrderProcessor2.h"
 #include "BuildOrderException.h"
 
-CPortfolioScalperOrderPlacer::CPortfolioScalperOrderPlacer(CPortfolio* pPortf, COrderProcessor2* pOrderProc)
-	:CPortfolioOrderPlacer(pPortf, pOrderProc)
+#include <boost/date_time.hpp>
+
+CPortfolioScalperOrderPlacer::CPortfolioScalperOrderPlacer(void)
 {
 }
 
@@ -26,6 +27,10 @@ void CPortfolioScalperOrderPlacer::BuildTemplateOrder()
 	pMultiLegOrder->set_offset(trade::ML_OF_OTHER);
 	pMultiLegOrder->set_haswarn(false);
 	pMultiLegOrder->set_statusmsg("");
+
+	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
+	pMultiLegOrder->set_opendate(boost::gregorian::to_iso_string(d));
+	pMultiLegOrder->set_reason(trade::SR_Scalpe);
 
 	assert(m_pPortf->Count() == 1);
 
@@ -131,5 +136,10 @@ void CPortfolioScalperOrderPlacer::SetLimitPrice(double* pLmtPxArr, int iPxSize)
 		pOrd->set_limitprice(lmtPx);
 		m_inputOrders[i]->set_limitprice(lmtPx);
 	}
+}
+
+void CPortfolioScalperOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
+{
+	CPortfolioOrderPlacer::OnLegCanceled(pRtnOrder);
 }
 

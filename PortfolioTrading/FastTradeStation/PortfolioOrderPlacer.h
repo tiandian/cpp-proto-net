@@ -17,11 +17,19 @@ using namespace std;
 class CPortfolioOrderPlacer
 {
 public:
-	CPortfolioOrderPlacer(CPortfolio* pPortf, COrderProcessor2* pOrderProc);
+	CPortfolioOrderPlacer(void);
 	~CPortfolioOrderPlacer(void);
 	
+	void Initialize(CPortfolio* pPortf, COrderProcessor2* pOrderProc)
+	{
+		m_pPortf = pPortf;
+		m_pOrderProcessor = pOrderProc;
+	}
+
 	// Prepare multileg order template and input orders for sending
 	void Prepare();
+
+	void Cleanup();
 
 	// Truly submit order to trade agent
 	void Run(trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize);
@@ -35,13 +43,16 @@ public:
 		return m_sendingOrderRef; 
 	}
 
+	bool IsWorking(){ return m_isWorking; }
+
 	// For Fsm to begin sending leg order
 	void OnSend();
 	// On leg order submit done
 	void OnAccept(trade::Order* pRtnOrder);
 	
 	void OnCanceling();
-	void OnLegCanceled(trade::Order* pRtnOrder);
+	virtual void OnLegCanceled(trade::Order* pRtnOrder);
+	void OnLegRejected(trade::Order* pRtnOrder);
 	void OnPortfolioCanceled();
 
 	void OnPending(trade::Order* pRtnOrder);
@@ -75,7 +86,7 @@ protected:
 	
 	int GenInputOrders();
 	trade::Order* GetOrderBySymbol(const string& symbol, trade::TradeDirectionType direction);
-	void SetPendingOrderInfo(trade::Order* pRtnOrder);
+	bool SetPendingOrderInfo(trade::Order* pRtnOrder);
 	
 	void UpdateMultiLegOrder();
 	void UpdateLegOrder(trade::Order* pRtnOrder);

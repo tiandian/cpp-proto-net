@@ -4,6 +4,7 @@
 #include "globalmembers.h"
 #include "QuoteFetcher.h"
 #include "ClientAgent.h"
+#include "ScalperStrategy2.h"
 
 #include <boost/foreach.hpp>
 #include <boost/format.hpp>
@@ -166,11 +167,10 @@ m_pClientAgent(pClient),
 m_openedOrderCount(0),
 m_selfClose(false),
 m_isPlacingOrder(false),
-m_portfOrdPlacer(this, &(pClient->OrderProcessor())),
 m_pQuoteRepo(NULL)
 {
+	m_portfOrdPlacer.Initialize(this, &(pClient->OrderProcessor()));
 }
-
 
 CPortfolio::~CPortfolio(void)
 {
@@ -289,11 +289,25 @@ void CPortfolio::SetItem(entity::PortfolioItem* pPortfItem )
 	strategy->SetAutoTracking(pPortfItem->autotrack());
 	strategy->SetEnablePrefer(pPortfItem->enableprefer());
 	m_strategy = strategy;
+
+	if(pPortfItem->strategyname() == "Scalper")
+	{
+		m_scalperStrategy = boost::shared_ptr<CScalperStrategy2>
+			(new CScalperStrategy2(&m_portfOrdPlacer));
+		m_scalperStrategy->ApplySettings(pPortfItem->strategydata());
+	}
 }
 
 void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point timestamp, entity::Quote* pQuote )
 {
 	boost::unique_lock<boost::mutex> l(m_mutQuoting);
+
+	m_scalperStrategy->Test(pQuote);
+
+	boost::chrono::steady_clock::duration elapsed = 
+		boost::chrono::steady_clock::now() - timestamp;
+	long usElapse = boost::chrono::duration_cast<boost::chrono::microseconds>(elapsed).count();
+	LOG_INFO(logger, boost::str(boost::format("Total consumed %dus for one Quote") % usElapse));
 
 	// update last
 	for(vector<LegPtr>::iterator iter = m_vecLegs.begin(); iter != m_vecLegs.end(); ++iter)
@@ -332,13 +346,8 @@ void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point timest
 		m_innerItem->set_shortsize(pQuote->bid_size());
 	}
 
-	m_strategy->Test();
+	//m_strategy->Test();
 	
-	boost::chrono::steady_clock::duration elapsed = 
-		boost::chrono::steady_clock::now() - timestamp;
-	long usElapse = boost::chrono::duration_cast<boost::chrono::microseconds>(elapsed).count();
-	LOG_INFO(logger, boost::str(boost::format("Total consumed %dus for one Quote") % usElapse));
-
 	PushUpdate();
 }
 
@@ -386,6 +395,11 @@ void CPortfolio::ApplyStrategySetting( const string& name, const string& data )
 		boost::str(
 			boost::format("Portfolio (%s) apply %s settings") % ID().c_str() % name.c_str()));
 	m_strategy->ApplySettings(data);
+
+	if(name == "Scalper")
+	{
+		m_scalperStrategy->ApplySettings(data);
+	}
 }
 
 CPortfolio* CPortfolio::Create( CClientAgent* pClient, entity::PortfolioItem* pPortfItem )
@@ -414,11 +428,16 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 		m_portfOrdPlacer.Prepare();
 		logger.Info(boost::str(boost::format("Portf (%s) START strategy >>>") % ID().c_str()));
 		m_strategy->Start();
+		if(m_scalperStrategy.get() != NULL)
+			m_scalperStrategy->Start();
 	}
 	else
 	{
+		m_portfOrdPlacer.Cleanup();
 		logger.Info(boost::str(boost::format("Portf (%s) STOP strategy <<<") % ID().c_str()));
 		m_strategy->Stop();
+		if(m_scalperStrategy.get() != NULL)
+			m_scalperStrategy->Stop();
 		EndPlaceOrder();
 	}
 	m_innerItem->set_strategyrunning(isEnabled);
