@@ -433,11 +433,11 @@ void CPortfolio::EnableStrategy( bool isEnabled )
 	}
 	else
 	{
-		m_portfOrdPlacer.Cleanup();
 		logger.Info(boost::str(boost::format("Portf (%s) STOP strategy <<<") % ID().c_str()));
 		m_strategy->Stop();
 		if(m_scalperStrategy.get() != NULL)
 			m_scalperStrategy->Stop();
+		m_portfOrdPlacer.Cleanup();
 		EndPlaceOrder();
 	}
 	m_innerItem->set_strategyrunning(isEnabled);
@@ -549,12 +549,26 @@ bool CPortfolio::AutoTracking()
 
 int CPortfolio::RetryTimes()
 {
+	if(m_scalperStrategy.get() != NULL)
+		return m_scalperStrategy->RetryTimes();
+
 	return m_strategy->RetryTimes();
 }
 
 int CPortfolio::OpenPendingTimeout()
 {
+	if(m_scalperStrategy.get() != NULL)
+		return m_scalperStrategy->OpenTimeout();
+
 	return m_strategy->OpenTimeout();
+}
+
+double CPortfolio::PriceTick()
+{
+	if(m_scalperStrategy.get() != NULL)
+		return m_scalperStrategy->PriceTick();
+
+	return 0.2;
 }
 
 

@@ -36,30 +36,37 @@ void CScalperStrategy2::Test( entity::Quote* pQuote )
 	{
 		LOG_DEBUG(logger, boost::str(boost::format("Diff: %.2f ?>= %.2f. Placer ready? %s") 
 			% diff % m_threshold % (!(m_pOrdPlacer->IsWorking()) ? "Y" : "N")));
-		if(DoubleGreaterEqual(diff, m_threshold) && !m_pOrdPlacer->IsWorking())
+		if(!(m_pOrdPlacer->IsWorking()))
 		{
-			trade::PosiDirectionType direction = GetTradeDirection();
-
-			logger.Info(boost::str(boost::format("[%s] Ask: %.2f => %.2f, Bid: %.2f => %.2f, Ask size VS Bid size: %d vs %d")
-				% (direction > trade::NET ? (direction == trade::LONG ? "LONG" : "SHORT") : "IGNORE") 
-				% m_prevAsk % m_Ask % m_prevBid % m_Bid % m_AskSize % m_BidSize));
-			if(direction > trade::NET)
+			if(DoubleGreaterEqual(diff, m_threshold))
 			{
-				double lmtPrice[2];
-				if(direction == trade::LONG)
-				{
-					lmtPrice[0] = m_Bid + m_priceTick;
-					lmtPrice[1] = m_Ask - m_priceTick;
-				}
-				else // Sell
-				{
-					lmtPrice[0] = m_Ask - m_priceTick;
-					lmtPrice[1] = m_Bid + m_priceTick;
-				}
+				trade::PosiDirectionType direction = GetTradeDirection();
 
-				m_pOrdPlacer->Run(direction, lmtPrice, 2);
+				logger.Info(boost::str(boost::format("[%s] Ask: %.2f => %.2f, Bid: %.2f => %.2f, Ask size VS Bid size: %d vs %d")
+					% (direction > trade::NET ? (direction == trade::LONG ? "LONG" : "SHORT") : "IGNORE") 
+					% m_prevAsk % m_Ask % m_prevBid % m_Bid % m_AskSize % m_BidSize));
+				if(direction > trade::NET)
+				{
+					double lmtPrice[2];
+					if(direction == trade::LONG)
+					{
+						lmtPrice[0] = m_Bid + m_priceTick;
+						lmtPrice[1] = m_Ask - m_priceTick;
+					}
+					else // Sell
+					{
+						lmtPrice[0] = m_Ask - m_priceTick;
+						lmtPrice[1] = m_Bid + m_priceTick;
+					}
 
+					m_pOrdPlacer->Run(direction, lmtPrice, 2);
+
+				}
 			}
+		}
+		else
+		{
+			m_pOrdPlacer->OnQuoteReceived(pQuote);
 		}
 	}
 

@@ -21,6 +21,9 @@ public:
 	void Start(){ m_isRunning = true; }
 	void Stop(){ m_isRunning = false; }
 
+	int RetryTimes(){ return m_maxRetryTimes; }
+	int OpenTimeout() { return m_openTimeout; }
+	double PriceTick() { return m_priceTick; }
 private:
 
 	bool DoubleGreaterEqual(double a, double b)

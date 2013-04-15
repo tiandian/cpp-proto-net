@@ -67,6 +67,7 @@ public:
 	bool AutoTracking();
 	int RetryTimes();
 	int OpenPendingTimeout();
+	double PriceTick();
 
 	bool SelfClose(){ return m_selfClose; }
 	void SelfClose(bool val){ m_selfClose = val; }
