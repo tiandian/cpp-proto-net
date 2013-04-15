@@ -23,6 +23,9 @@ namespace msm = boost::msm;
 namespace mpl = boost::mpl;
 using namespace msm::front;
 
+string PendingTimeUpEventName("struct evtPendingTimeUp");
+string NextQuoteInEventName("struct evtNextQuoteIn");
+
 namespace // Concrete FSM implementation
 {
 	struct OrderPlacer_ : public msm::front::state_machine_def<OrderPlacer_>
@@ -204,7 +207,8 @@ namespace // Concrete FSM implementation
 				_row < Pending	 , evtNextQuoteIn	  , Canceling		>,
 				_row < Pending   , evtPending	      , Pending			>,
 				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >,
-				_row < Canceling , evtPending	      , Canceling2		>
+				_row < Canceling , evtPending	      , Canceling2		>,
+				_row < Canceling2, evtPending	      , Canceling2		>
 			> {};
 
 		};
@@ -236,10 +240,20 @@ namespace // Concrete FSM implementation
 		template <class FSM,class Event>
 		void no_transition(Event const& e, FSM& fsm, int state)
 		{
+			string unExpectedEvtName = typeid(e).name();
 			LOG_DEBUG(logger, boost::str(boost::format(
-				 "no transition from state %d on event %s")
-				 % state % typeid(e).name()));
-			fsm.process_event(evtErrorFound("遇到无法处理的事件"));
+				"no transition from state %d on event %s")
+				% state % unExpectedEvtName));
+
+			if(PendingTimeUpEventName == unExpectedEvtName ||
+				NextQuoteInEventName == unExpectedEvtName)
+			{
+				logger.Warning(boost::str(boost::format("Event %s is ignored") % unExpectedEvtName));
+			}
+			else
+			{
+				fsm.process_event(evtErrorFound("遇到无法处理的事件"));
+			}
 		}
 	};
 	// Pick a back-end
@@ -249,7 +263,6 @@ namespace // Concrete FSM implementation
 CPortfolioOrderPlacer::CPortfolioOrderPlacer(void)
 	: m_pPortf(NULL)
 	, m_pOrderProcessor(NULL)
-	, m_isWorking(false)
 	, m_isReady(false)
 	, m_isSequential(false)
 	, m_isClosingOrder(false)
@@ -257,6 +270,7 @@ CPortfolioOrderPlacer::CPortfolioOrderPlacer(void)
 	, m_submitTimes(0)
 	, m_maxRetryTimes(0)
 {
+	m_isWorking.store(false, boost::memory_order_relaxed);
 	m_fsm = boost::shared_ptr<void>(new OrderPlacerFsm(this));
 }
 
@@ -329,7 +343,7 @@ void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* 
 	if(!m_isReady)
 		Prepare();
 
-	m_isWorking = true;
+	m_isWorking.store(true, boost::memory_order_release);
 
 	// Generate order Id
 	string mlOrderId;
@@ -411,10 +425,11 @@ void CPortfolioOrderPlacer::OnPending( trade::Order* pRtnOrder )
 
 void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 {
+	AfterLegDone();
+
 	++m_sendingIdx;
 	if(m_sendingIdx < (int)m_inputOrders.size())
 	{
-		AfterLegDone();
 		// Go to send next order
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
 	}
@@ -492,6 +507,7 @@ void CPortfolioOrderPlacer::OnLegRejected( trade::Order* pRtnOrder )
 
 void CPortfolioOrderPlacer::OnPortfolioCanceled()
 {
+	m_submitTimes = 0;
 	AfterPortfolioDone();
 }
 
@@ -522,6 +538,9 @@ void CPortfolioOrderPlacer::OnQuoteReceived( entity::Quote* pQuote )
 		m_nextQuote.ask = pQuote->ask();
 		m_nextQuote.bid = pQuote->bid();
 
+		LOG_DEBUG(logger, boost::str(boost::format("Next quote (%s) - L:%.2f, A:%.2f, B:%.2f")
+			% pQuote->symbol() % m_nextQuote.last % m_nextQuote.ask % m_nextQuote.bid));
+
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextQuoteIn());
 		m_isClosingOrder = false;
 	}
@@ -542,7 +561,7 @@ void CPortfolioOrderPlacer::ModifyOrderPrice()
 	LOG_DEBUG(logger, boost::str(boost::format("In coming new quote's %s : %f") 
 		% (direction == trade::BUY ? "Bid" : "Ask") % basePx));
 
-	double priceTick = 0.2;
+	double priceTick = m_pPortf->PriceTick();
 
 	if(direction == trade::BUY)
 	{
@@ -677,7 +696,6 @@ bool CPortfolioOrderPlacer::SetPendingOrderInfo( trade::Order* pRtnOrder )
 
 void CPortfolioOrderPlacer::Reset()
 {
-	m_maxRetryTimes = 0;
 	m_isClosingOrder = false;
 	m_sendingOrderRef.clear();
 	m_openOrderTimer.reset();
@@ -687,7 +705,9 @@ void CPortfolioOrderPlacer::Reset()
 void CPortfolioOrderPlacer::AfterLegDone( bool isCanceled /*= false*/ )
 {
 	if(!isCanceled)
+	{
 		m_submitTimes = 0;
+	}
 
 	if(m_openOrderTimer.get() != NULL)
 		m_openOrderTimer->Cancel();
@@ -700,9 +720,9 @@ void CPortfolioOrderPlacer::AfterLegDone( bool isCanceled /*= false*/ )
 
 void CPortfolioOrderPlacer::AfterPortfolioDone()
 {
-	m_isWorking = false;
 	m_isClosingOrder = false;
 	m_sendingIdx = 0;
+	m_isWorking.store(false, boost::memory_order_release);
 }
 
 void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )

@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/atomic.hpp>
 
 class CPortfolio;
 class COrderProcessor2;
@@ -37,13 +38,12 @@ public:
 	// Identification for order processor to lookup while order returned
 	const string& Id() 
 	{
-		assert(m_isWorking);
 		assert(m_sendingOrderRef.length() > 0);
 		
 		return m_sendingOrderRef; 
 	}
 
-	bool IsWorking(){ return m_isWorking; }
+	bool IsWorking(){ return m_isWorking.load(boost::memory_order_consume); }
 
 	// For Fsm to begin sending leg order
 	void OnSend();
@@ -117,7 +117,7 @@ protected:
 	boost::shared_ptr<trade::MultiLegOrder> m_multiLegOrderTemplate;
 	vector<boost::shared_ptr<CInputOrder> > m_inputOrders;
 
-	bool m_isWorking;
+	boost::atomic<bool> m_isWorking;
 	bool m_isReady;
 	bool m_isSequential;
 	bool m_isClosingOrder;
