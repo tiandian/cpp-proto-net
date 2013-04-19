@@ -44,29 +44,7 @@ void CPortfolioScalperOrderPlacer::BuildTemplateOrder()
 		order->set_instrumentid(leg->Symbol());
 		order->set_orderref("");
 
-		/*
-		double limitPrice = 0;
-		// in case wanna open position
-		if(posiDirection == trade::LONG)
-		{
-			// open long position
-			order->set_direction(LONG_TRADE_SEQ[i]);
-		}
-		else if(posiDirection == trade::SHORT)
-		{
-			order->set_direction(SHORT_TRADE_SEQ[i]);
-		}
-		else
-		{
-			throw CUnexpectedPositionDirectionException();
-		}
-		
-		limitPrice = order->direction() == trade::BUY ?
-			(leg->Bid() + precedence) : (leg->Ask() - precedence);
-		*/
-
 		order->set_orderpricetype(trade::LIMIT_PRICE);
-		//order->set_limitprice(limitPrice);
 
 		static char CombOffset[1];
 		CombOffset[0] = OFFSET_FLAGS[i];
@@ -76,7 +54,6 @@ void CPortfolioScalperOrderPlacer::BuildTemplateOrder()
 		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
-		// 	order->set_limitprice(0);
 		int qty = pMultiLegOrder->quantity() * leg->Ratio();
 		order->set_volumetotaloriginal(qty);
 
@@ -113,12 +90,12 @@ void CPortfolioScalperOrderPlacer::SetDirection( trade::PosiDirectionType posiDi
 		{
 			// open long position
 			pOrd->set_direction(LONG_TRADE_SEQ[i]);
-			m_inputOrders[i]->set_direction(LONG_TRADE_SEQ[i]);
+			m_legPlacers[i]->InputOrder().set_direction(LONG_TRADE_SEQ[i]);
 		}
 		else if(posiDirection == trade::SHORT)
 		{
 			pOrd->set_direction(SHORT_TRADE_SEQ[i]);
-			m_inputOrders[i]->set_direction(SHORT_TRADE_SEQ[i]);
+			m_legPlacers[i]->InputOrder().set_direction(SHORT_TRADE_SEQ[i]);
 		}
 		else
 		{
@@ -134,7 +111,7 @@ void CPortfolioScalperOrderPlacer::SetLimitPrice(double* pLmtPxArr, int iPxSize)
 		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
 		double lmtPx = pLmtPxArr[i];
 		pOrd->set_limitprice(lmtPx);
-		m_inputOrders[i]->set_limitprice(lmtPx);
+		m_legPlacers[i]->InputOrder().set_limitprice(lmtPx);
 	}
 }
 

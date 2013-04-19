@@ -20,7 +20,7 @@ CScalperStrategy2::~CScalperStrategy2(void)
 {
 }
 
-void CScalperStrategy2::Test( entity::Quote* pQuote )
+void CScalperStrategy2::Test( boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote )
 {
 	if(!m_isRunning) return;
 	
@@ -59,14 +59,14 @@ void CScalperStrategy2::Test( entity::Quote* pQuote )
 						lmtPrice[1] = m_Bid + m_priceTick;
 					}
 
-					m_pOrdPlacer->Run(direction, lmtPrice, 2);
+					m_pOrdPlacer->Run(direction, lmtPrice, 2, timestamp);
 
 				}
 			}
 		}
 		else
 		{
-			m_pOrdPlacer->OnQuoteReceived(pQuote);
+			m_pOrdPlacer->OnQuoteReceived(timestamp, pQuote);
 		}
 	}
 
