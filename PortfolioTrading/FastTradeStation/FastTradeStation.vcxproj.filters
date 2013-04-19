@@ -111,9 +111,6 @@
     <ClCompile Include="ClientMessagePump.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AsyncScalperEventFirer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QuoteFetcher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -136,6 +133,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ScalperStrategy2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LegOrderPlacer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AsyncOrderPendingTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -257,9 +260,6 @@
     <ClInclude Include="ClientMessagePump.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AsyncScalperEventFirer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="QuoteFetcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -288,6 +288,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScalperStrategy2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LegOrderPlacer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AsyncOrderPendingTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

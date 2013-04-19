@@ -5,6 +5,7 @@
 #include "entity/trade.pb.h"
 
 #include <string>
+#include <boost/chrono.hpp>
 
 using namespace std;
 
@@ -16,7 +17,7 @@ public:
 	CScalperStrategy2(CPortfolioOrderPlacer* pOrdPlacer);
 	~CScalperStrategy2(void);
 
-	void Test(entity::Quote* pQuote);
+	void Test(boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote);
 	void ApplySettings( const string& settingData );
 	void Start(){ m_isRunning = true; }
 	void Stop(){ m_isRunning = false; }

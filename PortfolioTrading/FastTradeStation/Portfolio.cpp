@@ -302,12 +302,7 @@ void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point timest
 {
 	boost::unique_lock<boost::mutex> l(m_mutQuoting);
 
-	m_scalperStrategy->Test(pQuote);
-
-	boost::chrono::steady_clock::duration elapsed = 
-		boost::chrono::steady_clock::now() - timestamp;
-	long usElapse = boost::chrono::duration_cast<boost::chrono::microseconds>(elapsed).count();
-	LOG_INFO(logger, boost::str(boost::format("Total consumed %dus for one Quote") % usElapse));
+	m_scalperStrategy->Test(timestamp, pQuote);
 
 	// update last
 	for(vector<LegPtr>::iterator iter = m_vecLegs.begin(); iter != m_vecLegs.end(); ++iter)
