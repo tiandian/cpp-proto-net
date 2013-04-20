@@ -6,6 +6,10 @@
 #include "entity/quote.pb.h"
 #include "SymbolInfo.h"
 
+#ifdef FAKE_DEAL
+#include "FakeDealer.h"
+#endif
+
 #include <string>
 #include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
@@ -140,5 +144,9 @@ private:
 	CSyncRequestFactory<CSymbolInfo> m_symbInfoReqFactory;
 
 	CTradeAgentCallback* m_orderProcessor;
+
+#ifdef FAKE_DEAL
+	CFakeDealer m_fakeDealer;
+#endif
 };
 
