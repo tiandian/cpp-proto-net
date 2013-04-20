@@ -69,6 +69,11 @@ m_bIsConnecting(false),
 m_maxOrderRef(0),
 m_iRequestID(0)
 {
+#ifdef FAKE_DEAL
+	m_fakeDealer.Init(boost::bind(&CTradeAgent::OnRtnOrder, this, _1)
+		, boost::bind(&CTradeAgent::OnRspOrderInsert, this, _1, _2, _3, _4)
+		, boost::bind(&CTradeAgent::OnRspOrderAction, this, _1, _2, _3, _4));
+#endif
 }
 
 void RunTradingFunc(CThostFtdcTraderApi* pUserApi, const char* address)
@@ -588,7 +593,13 @@ bool CTradeAgent::SubmitOrder(CThostFtdcInputOrderField& inputOrderField)
 	int iRequestID = RequestIDIncrement();
 
 	inputOrderField.RequestID = iRequestID;
+
+#ifdef FAKE_DEAL
+	int iResult = m_fakeDealer.ReqOrderInsert(&inputOrderField, iRequestID);
+#else
 	int iResult = m_pUserApi->ReqOrderInsert(&inputOrderField, iRequestID);
+#endif
+	
 
 	return iResult == 0;
 }

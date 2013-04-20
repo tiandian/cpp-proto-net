@@ -42,7 +42,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>D:\Dev\log4cpp\include;D:\Dev\boost_1_53_0;D:\Dev\protobuf-2.4.1\include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;_MBCS;WIN32;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_MBCS;WIN32;_WIN32_WINNT=0x0501;FAKE_DEAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -89,6 +89,7 @@
     <ClCompile Include="entity\packet.pb.cc" />
     <ClCompile Include="entity\quote.pb.cc" />
     <ClCompile Include="entity\trade.pb.cc" />
+    <ClCompile Include="FakeDealer.cpp" />
     <ClCompile Include="FileOperations.cpp" />
     <ClCompile Include="InputOrder.cpp" />
     <ClCompile Include="LegOrderPlacer.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="entity\packet.pb.h" />
     <ClInclude Include="entity\quote.pb.h" />
     <ClInclude Include="entity\trade.pb.h" />
+    <ClInclude Include="FakeDealer.h" />
     <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
     <ClInclude Include="InputOrder.h" />

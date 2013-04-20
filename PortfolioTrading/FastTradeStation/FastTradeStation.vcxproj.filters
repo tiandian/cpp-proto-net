@@ -141,6 +141,9 @@
     <ClCompile Include="AsyncOrderPendingTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FakeDealer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ap_invoke\apsessionmanager.h">
@@ -294,6 +297,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AsyncOrderPendingTimer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FakeDealer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
