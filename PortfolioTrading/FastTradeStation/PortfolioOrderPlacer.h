@@ -74,6 +74,9 @@ public:
 	void OnOrderPlaceFailed(const string& errMsg);
 	void OnOrderCancelFailed(const string& errMsg);
 
+	bool IsActiveFirstLeg();
+	void UpdateLegOrder(trade::Order* pRtnOrder);
+
 protected:
 
 	virtual void BuildTemplateOrder(){}
@@ -87,7 +90,6 @@ protected:
 	void GenLegOrderPlacers();
 	
 	void UpdateMultiLegOrder();
-	void UpdateLegOrder(trade::Order* pRtnOrder);
 	void OutputStatus(const string& statusMsg);
 
 	struct NextQuote
