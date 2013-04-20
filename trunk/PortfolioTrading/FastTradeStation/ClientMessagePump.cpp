@@ -2,9 +2,9 @@
 
 
 CClientMessagePump::CClientMessagePump(void):
-m_pSession(NULL),
-m_bufferRunner(boost::bind(&CClientMessagePump::DispatchMessage, this, _1))
+m_pSession(NULL)
 {
+	m_bufferRunner.Init(boost::bind(&CClientMessagePump::DispatchMessage, this, _1));
 }
 
 

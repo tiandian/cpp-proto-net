@@ -9,31 +9,41 @@ template < typename T >
 class CBufferRunner
 {
 public:
-	CBufferRunner(boost::function<void(T)> callback):
-	  m_jobCallback(callback), m_isRunning(false), m_hasStuff(false)
-	  {
-		  SetCapacity(BUFFER_DEFAULT_CAPACITY);
-	  }
-	  ~CBufferRunner(void)
-	  {
-	  }
+	CBufferRunner()
+		: m_isRunning(false), m_hasStuff(false)
+	{
+		SetCapacity(BUFFER_DEFAULT_CAPACITY);
+	}
+	CBufferRunner(boost::function<void(T)> callback)
+		: CBufferRunner()
+		, m_jobCallback(callback)
+	{
+	}
+	~CBufferRunner(void)
+	{
+	}
 
-	  void SetCapacity(int capacity)
-	  {
-		  m_cbQuotes.set_capacity(capacity);
-	  }
+	void Init(boost::function<void(T)> callback)
+	{
+		m_jobCallback = callback;
+	}
 
-	  void Start()
-	  {
-		  m_isRunning = true;
-		  m_thread = boost::thread(boost::bind(&CBufferRunner::Dequeue, this));
-	  }
+	void SetCapacity(int capacity)
+	{
+		m_cbQuotes.set_capacity(capacity);
+	}
+
+	void Start()
+	{
+		m_isRunning = true;
+		m_thread = boost::thread(boost::bind(&CBufferRunner::Dequeue, this));
+	}
 
 	  void Stop()
 	  {
-		  m_isRunning = false;
 		  {
 			  boost::lock_guard<boost::mutex> lock(m_mutex);
+			  m_isRunning = false;
 			  m_cond.notify_all();
 		  }
 		  m_thread.join();
@@ -42,11 +52,14 @@ public:
 	  void Enqueue(T stuff, bool front = false)
 	  {
 		  boost::lock_guard<boost::mutex> lock(m_mutex);
-		  if(front)
-			  m_cbQuotes.push_front(stuff);
-		  else
-			  m_cbQuotes.push_back(stuff);
-		  m_cond.notify_all();
+		  if(m_isRunning)
+		  {
+			  if(front)
+				  m_cbQuotes.push_front(stuff);
+			  else
+				  m_cbQuotes.push_back(stuff);
+			  m_cond.notify_all();
+		  }
 	  }
 
 private:
@@ -66,7 +79,8 @@ private:
 
 			T& stuff = m_cbQuotes.front();
 
-			m_jobCallback(stuff);
+			if(!m_jobCallback.empty())
+				m_jobCallback(stuff);
 
 			m_cbQuotes.pop_front();
 		}  

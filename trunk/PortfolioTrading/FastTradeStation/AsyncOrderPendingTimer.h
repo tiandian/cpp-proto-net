@@ -29,17 +29,7 @@ public:
 
 	void SetLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer) { m_legPlacer = pLegOrderPlacer; }
 	
-	void Run(boost::chrono::steady_clock::time_point expireTimePoint)
-	{
-		if(IsStop())
-		{
-			m_isStop.store(false, boost::memory_order_relaxed);
-			m_timer.expires_at(expireTimePoint);
-			m_timer.async_wait(boost::bind(&CAsyncOrderPendingTimer::FireEvent, this, _1));
-			boost::thread th(boost::bind(&boost::asio::io_service::run, &m_io));
-			m_thWaiting.swap(th);
-		}
-	}
+	void Run(boost::chrono::steady_clock::time_point expireTimePoint);
 
 	void Cancel() 
 	{ 

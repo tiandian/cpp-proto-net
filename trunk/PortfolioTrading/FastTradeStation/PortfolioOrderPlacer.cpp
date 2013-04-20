@@ -197,10 +197,13 @@ namespace // Concrete FSM implementation
 				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Canceling"); }
 			};
 
-			struct Canceling2 : public msm::front::state<> {};
+			// transitions internal to Empty
+			void duplicate_pending(evtPending const&){ LOG_DEBUG(logger, "Ignore duplicate pending"); }
 
 			// the initial state. Must be defined
 			typedef Accepted initial_state;
+
+			typedef Sent_ s;
 
 			// Transition table for OrderPlacer
 			struct transition_table : mpl::vector<
@@ -210,10 +213,9 @@ namespace // Concrete FSM implementation
 				_row < Accepted  , evtPartiallyFilled , PartiallyFilled >,
 				_row < Accepted  , evtSubmit	      , Accepted		>,
 				_row < Pending	 , evtPendingTimeUp   , Canceling		>,
-				_row < Pending   , evtPending	      , Pending			>,
+			  a_irow < Pending   , evtPending		  ,					   &s::duplicate_pending	>,
 				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >,
-				_row < Canceling , evtPending	      , Canceling2		>,
-				_row < Canceling2, evtPending	      , Canceling2		>
+			  a_irow < Canceling , evtPending	      ,					   &s::duplicate_pending	>
 			> {};
 
 		};
@@ -223,6 +225,22 @@ namespace // Concrete FSM implementation
 		typedef mpl::vector<Sending, AllOk> initial_state;
 
 		// transitions
+		void on_cancel_success(evtCancelSuccess const& evt)       
+		{
+			m_pPlacer->UpdateLegOrder(evt.m_pOrd);
+		}
+
+		// guards
+		bool first_leg_canceled(evtCancelSuccess const&)
+		{
+			return m_pPlacer->IsActiveFirstLeg();
+		}
+		bool other_leg_canceled(evtCancelSuccess const&)
+		{
+			return !(m_pPlacer->IsActiveFirstLeg());
+		}
+
+		typedef OrderPlacer_ p;
 
 		// Transition table for OrderPlacer
 		struct transition_table : mpl::vector<
@@ -231,14 +249,14 @@ namespace // Concrete FSM implementation
 			_row < Sending			, evtSubmit			, Sent				>,
 			_row < Sending			, evtSubmitFailure	, Error			    >,
 			_row < Sent				, evtFilled			, LegOrderFilled	>,
-			_row < Sent				, evtCancelSuccess	, LegOrderCanceled	>,
+			 row < Sent				, evtCancelSuccess	, LegOrderCanceled	 , &p::on_cancel_success	, &p::other_leg_canceled>,
+			 row < Sent				, evtCancelSuccess	, Canceled			 , &p::on_cancel_success	, &p::first_leg_canceled>,
 			_row < Sent				, evtCancelFailure	, Error			    >,
 			_row < Sent				, evtReject			, LegOrderRejected	>,
-			 Row < Sent				, evtRetry		    , none				 , Defer					, none >,
+			 Row < Sent				, evtRetry		    , none				 , Defer					, none					>,
 			_row < LegOrderFilled	, evtAllFilled		, Completed			>,
 			_row < LegOrderFilled	, evtNextLeg		, Sending		    >,
 			_row < LegOrderCanceled	, evtRetry			, Sending			>,
-			_row < LegOrderCanceled	, evtFirstCanceled	, Canceled			>,
 			_row < LegOrderCanceled	, evtFilledCanceled	, Error				>,
 			_row < AllOk			, evtErrorFound		, Error				>
 		> {};
@@ -504,13 +522,7 @@ void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 {
 	assert(m_activeOrdPlacer != NULL);
 
-	UpdateLegOrder(pRtnOrder);
-
-	if(m_activeOrdPlacer->SequenceNo() == 0)
-	{
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtFirstCanceled());
-	}
-	else if(m_activeOrdPlacer->CanRetry())
+	if(m_activeOrdPlacer->CanRetry())
 	{
 		// wait until next quote in
 	}
@@ -684,6 +696,12 @@ void CPortfolioOrderPlacer::Cleanup()
 	m_multiLegOrderTemplate.reset();
 	m_legPlacers.clear();
 	
+}
+
+bool CPortfolioOrderPlacer::IsActiveFirstLeg()
+{
+	assert(m_activeOrdPlacer != NULL);
+	return m_activeOrdPlacer->SequenceNo() == 0;
 }
 
 
