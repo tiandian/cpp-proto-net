@@ -68,7 +68,7 @@ namespace // Concrete FSM implementation
 			void on_entry(Event const& evt,FSM& fsm) 
 			{
 				LOG_DEBUG(logger, "entering: LegOrderFilled");
-				fsm.m_pPlacer->OnFilled(evt.m_pOrd);
+				fsm.m_pPlacer->OnFilled(evt.m_pOrd.get());
 			}
 
 			template <class Event,class FSM>
@@ -80,7 +80,7 @@ namespace // Concrete FSM implementation
 			template <class Event,class FSM>
 			void on_entry(Event const& evt,FSM& fsm) 
 			{
-				fsm.m_pPlacer->OnLegCanceled(evt.m_pOrd);
+				fsm.m_pPlacer->OnLegCanceled(evt.m_pOrd.get());
 			}
 
 			template <class Event,class FSM>
@@ -92,7 +92,7 @@ namespace // Concrete FSM implementation
 			template <class Event,class FSM>
 			void on_entry(Event const& evt,FSM& fsm) 
 			{
-				fsm.m_pPlacer->OnLegRejected(evt.m_pOrd);
+				fsm.m_pPlacer->OnLegRejected(evt.m_pOrd.get());
 			}
 
 			template <class Event,class FSM>
@@ -151,7 +151,7 @@ namespace // Concrete FSM implementation
 				void on_entry(Event const& evt,FSM& fsm) 
 				{
 					LOG_DEBUG(logger, "entering: Accepted");
-					fsm.m_pPlacer->OnAccept(evt.m_pOrd);
+					fsm.m_pPlacer->OnAccept(evt.m_pOrd.get());
 				}
 
 				template <class Event,class FSM>
@@ -164,7 +164,7 @@ namespace // Concrete FSM implementation
 				void on_entry(Event const& evt,FSM& fsm) 
 				{ 
 					LOG_DEBUG(logger, "entering: Pending");
-					fsm.m_pPlacer->OnPending(evt.m_pOrd);
+					fsm.m_pPlacer->OnPending(evt.m_pOrd.get());
 				}
 
 				template <class Event,class FSM>
@@ -177,7 +177,7 @@ namespace // Concrete FSM implementation
 				void on_entry(Event const& evt, FSM& fsm) 
 				{ 
 					LOG_DEBUG(logger, "entering: PartiallyFilled");
-					fsm.m_pPlacer->OnPartiallyFilled(evt.m_pOrd);
+					fsm.m_pPlacer->OnPartiallyFilled(evt.m_pOrd.get());
 				}
 
 				template <class Event,class FSM>
@@ -227,7 +227,7 @@ namespace // Concrete FSM implementation
 		// transitions
 		void on_cancel_success(evtCancelSuccess const& evt)       
 		{
-			m_pPlacer->UpdateLegOrder(evt.m_pOrd);
+			m_pPlacer->UpdateLegOrder(evt.m_pOrd.get());
 		}
 
 		// guards
@@ -297,6 +297,7 @@ CPortfolioOrderPlacer::CPortfolioOrderPlacer(void)
 
 CPortfolioOrderPlacer::~CPortfolioOrderPlacer(void)
 {
+	m_thCleanup.join();
 }
 
 void CPortfolioOrderPlacer::Initialize( const string& mlOrdId )
@@ -412,6 +413,8 @@ void CPortfolioOrderPlacer::Run( trade::PosiDirectionType posiDirection, double*
 void CPortfolioOrderPlacer::OnSend()
 {
 	assert(m_activeOrdPlacer != NULL);
+	LOG_DEBUG(logger, boost::str(boost::format("Sending Active Order placer's Id:%d ") 
+		% m_activeOrdPlacer->SequenceNo()));
 	m_activeOrdPlacer->AddSubmitTimes();
 
 	// lock and generate order ref
@@ -468,7 +471,11 @@ void CPortfolioOrderPlacer::OnPending( trade::Order* pRtnOrder )
 
 void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 {
+	// The first thing is to cancel pending timer
+	m_activeOrdPlacer->CancelPending();
+
 	int sendingIdx = m_activeOrdPlacer->SequenceNo();
+	LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer gets filled") % sendingIdx));
 	++sendingIdx;
 	if(sendingIdx < (int)m_legPlacers.size())
 	{
@@ -481,6 +488,7 @@ void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 	}
 	else
 	{
+		m_activeOrdPlacer->Reset();
 		// All leg order done
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtAllFilled());
 	}
@@ -570,6 +578,7 @@ void CPortfolioOrderPlacer::OnError(const string& errMsg)
 
 void CPortfolioOrderPlacer::OnPendingTimeUp()
 {
+	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPendingTimeUp());
 }
 
@@ -580,10 +589,13 @@ void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_p
 	{
 		if(m_activeOrdPlacer->CanRetry())
 		{
+			boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
+
 			m_activeOrdPlacer->ModifyPrice(pQuote);
 
 			m_trigQuoteTimestamp = quoteTimestamp;
 
+			LOG_DEBUG(logger, boost::str(boost::format("Active Order Placer(No.%d) Go to retry ") % m_activeOrdPlacer->SequenceNo()));
 			// retry
 			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtRetry());
 		}
@@ -612,8 +624,10 @@ void CPortfolioOrderPlacer::OutputStatus( const string& statusMsg )
 	UpdateMultiLegOrder();
 }
 
-void CPortfolioOrderPlacer::OnOrderReturned( trade::Order* pRtnOrder )
+void CPortfolioOrderPlacer::OnOrderReturned( boost::shared_ptr<trade::Order>& pRtnOrder )
 {
+	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
+
 	trade::OrderSubmitStatusType submitStatus = pRtnOrder->ordersubmitstatus();
 	trade::OrderStatusType status = pRtnOrder->orderstatus();
 
@@ -683,24 +697,31 @@ void CPortfolioOrderPlacer::AfterPortfolioDone()
 
 void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )
 {
+	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtSubmitFailure(errMsg));
 }
 
 void CPortfolioOrderPlacer::OnOrderCancelFailed( const string& errMsg )
 {
+	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtCancelFailure(errMsg));
 }
 
 void CPortfolioOrderPlacer::Cleanup()
 {
-	m_isWorking.store(false, boost::memory_order_relaxed);
+	m_thCleanup = boost::thread(boost::bind(&CPortfolioOrderPlacer::CleanupProc, this));
+}
 
-	AfterPortfolioDone();
+void CPortfolioOrderPlacer::CleanupProc()
+{
+	while(m_isWorking.load(boost::memory_order_acquire))
+	{
+		boost::this_thread::sleep_for(boost::chrono::seconds(1));
+	}
 
 	m_activeOrdPlacer = NULL;
 	m_multiLegOrderTemplate.reset();
 	m_legPlacers.clear();
-	
 }
 
 bool CPortfolioOrderPlacer::IsActiveFirstLeg()
@@ -708,6 +729,8 @@ bool CPortfolioOrderPlacer::IsActiveFirstLeg()
 	assert(m_activeOrdPlacer != NULL);
 	return m_activeOrdPlacer->SequenceNo() == 0;
 }
+
+
 
 
 

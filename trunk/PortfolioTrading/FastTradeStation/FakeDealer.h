@@ -4,6 +4,8 @@
 #include "ThostTraderApi/ThostFtdcTraderApi.h"
 
 #include <string>
+#include <sstream>
+#include <boost/date_time.hpp>
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/atomic.hpp>
@@ -107,5 +109,8 @@ private:
 	TThostFtdcSessionIDType	SESSION_ID;	//»á»°±àºÅ
 
 	string m_tradingDay;
+	
+	std::ostringstream m_timeStream;
+	//boost::mutex m_mutTimeFormat;
 };
 

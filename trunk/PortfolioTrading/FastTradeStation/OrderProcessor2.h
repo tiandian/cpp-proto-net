@@ -106,7 +106,7 @@ private:
 
 	static void PrintOrderStatus(trade::Order* order);
 	
-	void DispatchRtnOrder(trade::Order* rtnOrder);
+	void DispatchRtnOrder(boost::shared_ptr<trade::Order>& rtnOrder);
 
 	trade::InputOrder* BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx);
 	void AddOpenTimes() { ++m_totalOpenTimes; }

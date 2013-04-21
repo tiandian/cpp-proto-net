@@ -70,7 +70,7 @@ public:
 	void OnError(const string& errMsg);
 
 	// Belows is for OrderProcess to invoke
-	void OnOrderReturned(trade::Order* pRtnOrder);
+	void OnOrderReturned(boost::shared_ptr<trade::Order>& pRtnOrder);
 	void OnOrderPlaceFailed(const string& errMsg);
 	void OnOrderCancelFailed(const string& errMsg);
 
@@ -91,6 +91,7 @@ protected:
 	
 	void UpdateMultiLegOrder();
 	void OutputStatus(const string& statusMsg);
+	void CleanupProc();
 
 	struct NextQuote
 	{
@@ -111,6 +112,9 @@ protected:
 	bool m_isReady;
 	boost::chrono::steady_clock::time_point m_trigQuoteTimestamp;
 
+	boost::thread m_thCleanup;
+
 	boost::shared_ptr<void> m_fsm;
+	boost::mutex m_mutOuterAccessFsm;
 };
 
