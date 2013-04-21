@@ -16,6 +16,7 @@ CLegOrderPlacer::CLegOrderPlacer(CPortfolioOrderPlacer* portfOrdPlacer, int open
 	, m_openTimeout(openTimeout)
 	, m_isPending(false)
 	, m_bOrderReady(false)
+	, m_isReadyForNextQuote(false)
 {
 	m_pendingTimer.SetLegOrderPlacer(this);
 }
@@ -109,4 +110,11 @@ void CLegOrderPlacer::UpdateOrder( const trade::Order& order )
 {
 	m_legOrder.CopyFrom(order);
 	m_bOrderReady = true;
+}
+
+bool CLegOrderPlacer::WaitForNextQuote()
+{
+	if(!IsOpen()) 
+		m_isReadyForNextQuote = true; 
+	return m_isReadyForNextQuote;
 }

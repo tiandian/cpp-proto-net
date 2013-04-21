@@ -245,15 +245,15 @@ namespace // Concrete FSM implementation
 		// Transition table for OrderPlacer
 		struct transition_table : mpl::vector<
 			//    Start					Event					Next			Action                     Guard
-			//  +-------------------+-------------------+-------------------+---------------------------+----------------------+
+			//  +-------------------+-------------------+-------------------+---------------------------+--------------------------+
 			_row < Sending			, evtSubmit			, Sent				>,
 			_row < Sending			, evtSubmitFailure	, Error			    >,
 			_row < Sent				, evtFilled			, LegOrderFilled	>,
-			 row < Sent				, evtCancelSuccess	, LegOrderCanceled	 , &p::on_cancel_success	, &p::other_leg_canceled>,
-			 row < Sent				, evtCancelSuccess	, Canceled			 , &p::on_cancel_success	, &p::first_leg_canceled>,
+			 row < Sent				, evtCancelSuccess	, LegOrderCanceled	 , &p::on_cancel_success	, &p::other_leg_canceled >,
+			 row < Sent				, evtCancelSuccess	, Canceled			 , &p::on_cancel_success	, &p::first_leg_canceled >,
 			_row < Sent				, evtCancelFailure	, Error			    >,
 			_row < Sent				, evtReject			, LegOrderRejected	>,
-			 Row < Sent				, evtRetry		    , none				 , Defer					, none					>,
+			 Row < Sent				, evtRetry		    , none				 , Defer					, none					 >,
 			_row < LegOrderFilled	, evtAllFilled		, Completed			>,
 			_row < LegOrderFilled	, evtNextLeg		, Sending		    >,
 			_row < LegOrderCanceled	, evtRetry			, Sending			>,
@@ -365,6 +365,9 @@ void CPortfolioOrderPlacer::GenLegOrderPlacers()
 		legOrderPlacer->InputOrder().set_userforceclose(o.userforceclose());
 
 		legOrderPlacer->LegIndex(legIdx++);
+		double pxTick = m_pPortf->PriceTick();
+		legOrderPlacer->SetPriceTick(pxTick);
+
 		if(o.preferred())	// always put preferred order at front
 		{
 			m_legPlacers.insert(m_legPlacers.begin(), legOrderPlacer);
@@ -452,7 +455,7 @@ void CPortfolioOrderPlacer::OnAccept(trade::Order* pRtnOrder)
 void CPortfolioOrderPlacer::OnPending( trade::Order* pRtnOrder )
 {
 	assert(m_activeOrdPlacer != NULL);
-	if(m_activeOrdPlacer->IsPending())
+	if(!m_activeOrdPlacer->IsPending())
 	{
 		m_activeOrdPlacer->StartPending(pRtnOrder);
 
@@ -513,6 +516,8 @@ void CPortfolioOrderPlacer::OnCanceling()
 	assert(m_activeOrdPlacer->IsPending());
 	LOG_DEBUG(logger, boost::str(boost::format("Canceling order (ref:%s, sysId:%s)")
 		% m_activeOrdPlacer->OrderRef() % m_activeOrdPlacer->OrderSysId()));
+	
+	m_activeOrdPlacer->WaitForNextQuote();
 	m_pOrderProcessor->CancelOrder(m_activeOrdPlacer->OrderRef(), 
 		m_activeOrdPlacer->ExchId(), m_activeOrdPlacer->OrderSysId(), 
 		m_activeOrdPlacer->UserId(), m_activeOrdPlacer->Symbol());
@@ -571,7 +576,7 @@ void CPortfolioOrderPlacer::OnPendingTimeUp()
 void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_point& quoteTimestamp, entity::Quote* pQuote )
 {
 	// Only for close order
-	if(!m_activeOrdPlacer->IsOpen())
+	if(m_activeOrdPlacer->IsReadyForNextQuote())
 	{
 		if(m_activeOrdPlacer->CanRetry())
 		{

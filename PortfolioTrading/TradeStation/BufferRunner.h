@@ -31,9 +31,9 @@ public:
 
 	  void Stop()
 	  {
-		  m_isRunning = false;
 		  {
 			  boost::lock_guard<boost::mutex> lock(m_mutex);
+			  m_isRunning = false;
 			  m_cond.notify_all();
 		  }
 		  m_thread.join();
@@ -42,11 +42,14 @@ public:
 	  void Enqueue(T stuff, bool front = false)
 	  {
 		  boost::lock_guard<boost::mutex> lock(m_mutex);
-		  if(front)
-			  m_cbQuotes.push_front(stuff);
-		  else
-			  m_cbQuotes.push_back(stuff);
-		  m_cond.notify_all();
+		  if(m_isRunning)
+		  {
+			  if(front)
+				  m_cbQuotes.push_front(stuff);
+			  else
+				  m_cbQuotes.push_back(stuff);
+			  m_cond.notify_all();
+		  }
 	  }
 
 private:
