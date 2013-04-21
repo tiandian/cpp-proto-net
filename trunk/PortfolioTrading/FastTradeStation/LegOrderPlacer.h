@@ -47,10 +47,11 @@ public:
 	void Reset();
 	bool IsPending(){ return m_isPending; }
 
-	double SetPriceTick(double pxTick){ m_priceTick = pxTick; }
+	void SetPriceTick(double pxTick){ m_priceTick = pxTick; }
 	void UpdateOrder(const trade::Order& order);
 	bool IsOrderReady(){ return m_bOrderReady; }
-
+	bool IsReadyForNextQuote() { return m_isReadyForNextQuote; }
+	bool WaitForNextQuote();
 private:
 
 	CInputOrder m_inputOrder;
@@ -67,6 +68,7 @@ private:
 
 	trade::Order m_legOrder;
 	bool m_bOrderReady;
+	bool m_isReadyForNextQuote;
 
 	// pending Info;
 	bool m_isPending;

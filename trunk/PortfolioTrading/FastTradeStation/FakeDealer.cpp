@@ -10,6 +10,9 @@ void CopyCommonField(CThostFtdcInputOrderField * pInputOrder, CThostFtdcOrderFie
 
 
 CFakeDealer::CFakeDealer(void)
+	: m_orderNum(1000)
+	, FRONT_ID(0)
+	, SESSION_ID(0)
 {
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
 	m_tradingDay = boost::gregorian::to_iso_string(d);
@@ -144,6 +147,10 @@ CFakeRtnOrder* CFakeDealer::CreateOrderTemplate( CThostFtdcInputOrderField * pIn
 	CThostFtdcOrderField* pOrdField = pFakeOrder->Msg();
 	CopyCommonField(pInputOrder, pOrdField);
 	SetDateField(pOrdField);
+
+	pOrdField->FrontID = FRONT_ID;
+	pOrdField->SessionID = SESSION_ID;
+
 	return pFakeOrder;
 }
 

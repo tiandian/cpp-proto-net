@@ -78,6 +78,12 @@ public:
 
 	void DispatchMsg(FakeMsgPtr& fakeMsg);
 
+	void SetSessionParams(int frontId, int sessionId)
+	{
+		FRONT_ID = frontId;
+		SESSION_ID = sessionId;
+	}
+
 private:
 	CFakeRtnOrder* CreateOrderTemplate(CThostFtdcInputOrderField * pInputOrder, int nRequestID);
 
@@ -95,6 +101,10 @@ private:
 
 	CBufferRunner<FakeMsgPtr> m_msgPump;
 	boost::atomic<int> m_orderNum;
+
+	// 会话参数
+	TThostFtdcFrontIDType	FRONT_ID;	//前置编号
+	TThostFtdcSessionIDType	SESSION_ID;	//会话编号
 
 	string m_tradingDay;
 };

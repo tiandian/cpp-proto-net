@@ -310,6 +310,10 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		// 保存会话参数
 		FRONT_ID = pRspUserLogin->FrontID;
 		SESSION_ID = pRspUserLogin->SessionID;
+#ifdef FAKE_DEAL
+		m_fakeDealer.SetSessionParams(FRONT_ID, SESSION_ID);
+#endif
+
 		m_maxOrderRef = atoi(pRspUserLogin->MaxOrderRef);
 
 		std::string ds(pRspUserLogin->TradingDay);
