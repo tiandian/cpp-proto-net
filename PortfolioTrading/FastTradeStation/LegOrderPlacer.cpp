@@ -118,3 +118,8 @@ bool CLegOrderPlacer::WaitForNextQuote()
 		m_isReadyForNextQuote = true; 
 	return m_isReadyForNextQuote;
 }
+
+void CLegOrderPlacer::CancelPending()
+{
+	m_pendingTimer.Cancel();
+}

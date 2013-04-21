@@ -693,7 +693,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
 	logger.Info(oss.str());
 
-	boost::shared_ptr<trade::Order> pOrd(new trade::Order);
+	trade::Order* pOrd(new trade::Order);
 
 	///经纪公司代码
 	pOrd->set_brokerid(pOrder->BrokerID);
@@ -821,7 +821,8 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	if(pOrder->OrderSubmitStatus >= THOST_FTDC_OSS_InsertRejected)
 		PrintRtnOrder(pOrder);
 
-	m_orderProcessor->OnRtnOrder(pOrd.get());
+	// Order will be actually managed by underlying evtOrder
+	m_orderProcessor->OnRtnOrder(pOrd);
 }
 
 void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )

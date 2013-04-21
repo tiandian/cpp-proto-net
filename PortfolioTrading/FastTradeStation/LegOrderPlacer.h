@@ -46,6 +46,7 @@ public:
 	bool IsOpen();
 	void Reset();
 	bool IsPending(){ return m_isPending; }
+	void CancelPending();
 
 	void SetPriceTick(double pxTick){ m_priceTick = pxTick; }
 	void UpdateOrder(const trade::Order& order);

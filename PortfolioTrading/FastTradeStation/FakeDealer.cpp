@@ -1,6 +1,6 @@
 #include "FakeDealer.h"
 
-#include <boost/date_time.hpp>
+
 
 #ifndef WIN32
 #define strcpy_s strcpy
@@ -17,6 +17,9 @@ CFakeDealer::CFakeDealer(void)
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
 	m_tradingDay = boost::gregorian::to_iso_string(d);
 
+	boost::posix_time::time_facet* const timeFormat = new boost::posix_time::time_facet("%H:%M:%S");
+	m_timeStream.imbue(std::locale(m_timeStream.getloc(), timeFormat));
+
 	m_msgPump.Init(boost::bind(&CFakeDealer::DispatchMsg, this, _1));
 	m_msgPump.Start();
 }
@@ -28,7 +31,9 @@ CFakeDealer::~CFakeDealer(void)
 
 int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRequestID )
 {
-	FullFillOrder(pInputOrder, nRequestID);
+	boost::thread thIns(boost::bind(
+		&CFakeDealer::FullFillOrder, this, pInputOrder, nRequestID)
+		);
 	return 0;
 }
 
@@ -139,6 +144,16 @@ void CFakeDealer::SetDateField( CThostFtdcOrderField* pRtnOrder )
 {
 	strcpy_s(pRtnOrder->InsertDate, m_tradingDay.c_str());
 	strcpy_s(pRtnOrder->TradingDay, m_tradingDay.c_str());
+
+	{
+		//boost::lock_guard<boost::mutex> lock(m_mutTimeFormat);
+		const boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
+		m_timeStream << now;
+		string timeText = m_timeStream.str();
+		strcpy_s(pRtnOrder->InsertTime, timeText.c_str());
+		m_timeStream.str("");
+		m_timeStream.clear();
+	}
 }
 
 CFakeRtnOrder* CFakeDealer::CreateOrderTemplate( CThostFtdcInputOrderField * pInputOrder, int nRequestID )

@@ -3,39 +3,40 @@
 #include "entity/trade.pb.h"
 
 #include <string>
+#include <boost/shared_ptr.hpp>
 
 using namespace std;
 
 struct evtOrder
 {
-	evtOrder(trade::Order* pOrd):m_pOrd(pOrd){}
+	evtOrder(boost::shared_ptr<trade::Order>& pOrd):m_pOrd(pOrd){}
 
-	trade::Order* m_pOrd;
+	boost::shared_ptr<trade::Order> m_pOrd;
 };
 
 struct evtSubmit : public evtOrder 
 {
-	evtSubmit(trade::Order* pOrd):evtOrder(pOrd){}
+	evtSubmit(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
 };
 
 struct evtPending : public evtOrder 
 {
-	evtPending(trade::Order* pOrd):evtOrder(pOrd){}
+	evtPending(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
 };
 
 struct evtReject: public evtOrder 
 {
-	evtReject(trade::Order* pOrd):evtOrder(pOrd){}
+	evtReject(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
 };
 
 struct evtFilled : public evtOrder 
 {
-	evtFilled(trade::Order* pOrd):evtOrder(pOrd){}
+	evtFilled(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
 };
 
 struct evtPartiallyFilled : public evtOrder 
 {
-	evtPartiallyFilled(trade::Order* pOrd):evtOrder(pOrd){}
+	evtPartiallyFilled(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
 };
 
 struct evtAllFilled {};
@@ -43,7 +44,7 @@ struct evtNextLeg {};
 
 struct evtCancelSuccess : public evtOrder 
 {
-	evtCancelSuccess(trade::Order* pOrd):evtOrder(pOrd){}
+	evtCancelSuccess(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
 };
 
 struct evtRetry {};
