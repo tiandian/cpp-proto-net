@@ -62,8 +62,8 @@ struct evtSubmitFailure
 
 struct evtCancelFailure
 {
-	evtCancelFailure(const string& errMsg):m_ErrorMsg(errMsg){}
-
+	evtCancelFailure(int errorId, const string& errMsg):m_ErrorId(errorId),m_ErrorMsg(errMsg){}
+	int m_ErrorId;
 	string m_ErrorMsg;
 };
 

@@ -58,14 +58,21 @@ void CLegOrderPlacer::StartPending(trade::Order* pendingOrder)
 	}
 }
 
-void CLegOrderPlacer::Reset()
+void CLegOrderPlacer::Reset(bool afterCancel)
 {
-	m_submitTimes = 0;
+	if(!afterCancel)
+		m_submitTimes = 0;
 	
 	m_isPending = false;
 	m_exchId.clear();
 	m_ordSysId.clear();
 	m_userId.clear();
+
+	m_legOrder.set_volumetotaloriginal(0);
+	m_legOrder.set_volumetraded(0);
+	m_legOrder.set_ordersubmitstatus(trade::NOT_SUBMITTED);
+	m_legOrder.set_orderstatus(trade::STATUS_UNKNOWN);
+	m_legOrder.set_statusmsg("");
 }
 
 void CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )

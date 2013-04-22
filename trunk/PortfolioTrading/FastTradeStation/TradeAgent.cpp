@@ -943,7 +943,11 @@ bool CTradeAgent::SubmitOrderAction( trade::InputOrderAction* pInputOrderAction 
 	///合约代码
 	strcpy_s(req.InstrumentID, pInputOrderAction->instrumentid().c_str());
 
+#ifdef FAKE_DEAL
+	int iResult = m_fakeDealer.ReqOrderAction(&req, iRequestID);
+#else
 	int iResult = m_pUserApi->ReqOrderAction(&req, iRequestID);
+#endif
 
 	ostringstream oss;
 	oss << "--->>> 报单操作请求 ( Canel OrdRef:" << pInputOrderAction->orderref() << ", ReqestID:" << iRequestID << "): " << iResult << ((iResult == 0) ? ", 成功" : ", 失败");
@@ -958,7 +962,7 @@ void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrder
 	string orderRef = pInputOrderAction->OrderRef;
 	string errorMsg = pRspInfo->ErrorMsg;
 	
-	m_orderProcessor->OnRspOrderAction(insertSucess, orderRef, errorMsg);
+	m_orderProcessor->OnRspOrderAction(insertSucess, orderRef, pRspInfo->ErrorID, errorMsg);
 }
 
 void CTradeAgent::QueryPositionDetails( const std::string& symbol )

@@ -227,7 +227,7 @@ namespace // Concrete FSM implementation
 		// transitions
 		void on_cancel_success(evtCancelSuccess const& evt)       
 		{
-			m_pPlacer->UpdateLegOrder(evt.m_pOrd.get());
+			m_pPlacer->OnOrderCanceled(evt.m_pOrd.get());
 		}
 
 		// guards
@@ -239,7 +239,11 @@ namespace // Concrete FSM implementation
 		{
 			return !(m_pPlacer->IsActiveFirstLeg());
 		}
-
+		bool if_cancel_failed(evtCancelFailure const& evt)
+		{
+			// If Cancel failed due to order finished, DON'T go to Error
+			return evt.m_ErrorId != 26;
+		}
 		typedef OrderPlacer_ p;
 
 		// Transition table for OrderPlacer
@@ -251,7 +255,7 @@ namespace // Concrete FSM implementation
 			_row < Sent				, evtFilled			, LegOrderFilled	>,
 			 row < Sent				, evtCancelSuccess	, LegOrderCanceled	 , &p::on_cancel_success	, &p::other_leg_canceled >,
 			 row < Sent				, evtCancelSuccess	, Canceled			 , &p::on_cancel_success	, &p::first_leg_canceled >,
-			_row < Sent				, evtCancelFailure	, Error			    >,
+		   g_row < Sent				, evtCancelFailure	, Error											, &p::if_cancel_failed   >,
 			_row < Sent				, evtReject			, LegOrderRejected	>,
 			 Row < Sent				, evtRetry		    , none				 , Defer					, none					 >,
 			_row < LegOrderFilled	, evtAllFilled		, Completed			>,
@@ -473,27 +477,23 @@ void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 {
 	// The first thing is to cancel pending timer
 	m_activeOrdPlacer->CancelPending();
+	AfterLegDone();
+	UpdateLegOrder(pRtnOrder);
 
 	int sendingIdx = m_activeOrdPlacer->SequenceNo();
 	LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer gets filled") % sendingIdx));
 	++sendingIdx;
 	if(sendingIdx < (int)m_legPlacers.size())
 	{
-		CLegOrderPlacer* priorLegPlacer = m_activeOrdPlacer;
 		// Go to send next order
 		m_activeOrdPlacer = m_legPlacers[sendingIdx].get();
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
-		// Reset prior leg after filled
-		priorLegPlacer->Reset();
 	}
 	else
 	{
-		m_activeOrdPlacer->Reset();
 		// All leg order done
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtAllFilled());
 	}
-
-	UpdateLegOrder(pRtnOrder);
 }
 
 void CPortfolioOrderPlacer::OnPartiallyFilled( trade::Order* pRtnOrder )
@@ -507,6 +507,13 @@ void CPortfolioOrderPlacer::OnPartiallyFilled( trade::Order* pRtnOrder )
 	UpdateLegOrder(pRtnOrder);
 }
 
+void CPortfolioOrderPlacer::OnOrderCanceled( trade::Order* pRtnOrder )
+{
+	UpdateLegOrder(pRtnOrder);
+	m_activeOrdPlacer->Reset(true);
+	m_pOrderProcessor->RemoveOrderPlacer(Id());
+}
+
 void CPortfolioOrderPlacer::OnCompleted()
 {
 	trade::MlOrderOffset offset = m_multiLegOrderTemplate->offset();
@@ -514,7 +521,7 @@ void CPortfolioOrderPlacer::OnCompleted()
 		m_pPortf->AddPosition(*m_multiLegOrderTemplate);
 	else if(offset == trade::ML_OF_CLOSE)
 		m_pPortf->RemovePosition(*m_multiLegOrderTemplate);
-
+	
 	AfterPortfolioDone();
 }
 
@@ -541,6 +548,7 @@ void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 	}
 	else
 	{
+		AfterLegDone();
 		LOG_INFO(logger, boost::str(boost::format("Retry times is used up. Order(%s) has been retried %d times")
 			% pRtnOrder->instrumentid() % m_activeOrdPlacer->SubmitTimes()));
 		
@@ -559,6 +567,7 @@ void CPortfolioOrderPlacer::OnLegRejected( trade::Order* pRtnOrder )
 
 void CPortfolioOrderPlacer::OnPortfolioCanceled()
 {
+	AfterLegDone();
 	AfterPortfolioDone();
 }
 
@@ -701,10 +710,10 @@ void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtSubmitFailure(errMsg));
 }
 
-void CPortfolioOrderPlacer::OnOrderCancelFailed( const string& errMsg )
+void CPortfolioOrderPlacer::OnOrderCancelFailed( int errorId, const string& errMsg )
 {
 	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
-	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtCancelFailure(errMsg));
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtCancelFailure(errorId, errMsg));
 }
 
 void CPortfolioOrderPlacer::Cleanup()

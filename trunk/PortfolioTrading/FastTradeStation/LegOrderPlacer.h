@@ -44,7 +44,7 @@ public:
 	void StartPending(trade::Order* pendingOrder);
 
 	bool IsOpen();
-	void Reset();
+	void Reset(bool afterCancel = false);
 	bool IsPending(){ return m_isPending; }
 	void CancelPending();
 

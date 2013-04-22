@@ -78,14 +78,14 @@ void COrderProcessor2::OnRspOrderInsert( bool succ, const std::string& orderRef,
 	}
 }
 
-void COrderProcessor2::OnRspOrderAction( bool succ, const std::string& orderRef, const std::string& msg )
+void COrderProcessor2::OnRspOrderAction( bool succ, const std::string& orderRef, int errorId, const std::string& msg )
 {
 	boost::lock_guard<boost::recursive_mutex> lock(m_ordPlacersMapMutex);
 	boost::unordered_map<string, CPortfolioOrderPlacer*>::iterator iter 
 		= m_workingOrderPlacers.find(orderRef);
 	if(iter != m_workingOrderPlacers.end())
 	{
-		(iter->second)->OnOrderCancelFailed(msg);
+		(iter->second)->OnOrderCancelFailed(errorId, msg);
 	}
 	else
 	{

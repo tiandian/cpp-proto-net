@@ -65,17 +65,17 @@ public:
 
 	void OnFilled(trade::Order* pRtnOrder);
 	void OnPartiallyFilled(trade::Order* pRtnOrder);
-	
+	void OnOrderCanceled(trade::Order* pRtnOrder);
 	void OnCompleted();
 	void OnError(const string& errMsg);
 
 	// Belows is for OrderProcess to invoke
 	void OnOrderReturned(boost::shared_ptr<trade::Order>& pRtnOrder);
 	void OnOrderPlaceFailed(const string& errMsg);
-	void OnOrderCancelFailed(const string& errMsg);
+	void OnOrderCancelFailed(int errorId, const string& errMsg);
 
 	bool IsActiveFirstLeg();
-	void UpdateLegOrder(trade::Order* pRtnOrder);
+	
 
 protected:
 
@@ -88,7 +88,7 @@ protected:
 	void AfterPortfolioDone();
 	
 	void GenLegOrderPlacers();
-	
+	void UpdateLegOrder(trade::Order* pRtnOrder);
 	void UpdateMultiLegOrder();
 	void OutputStatus(const string& statusMsg);
 	void CleanupProc();

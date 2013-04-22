@@ -17,7 +17,7 @@ public:
 	virtual void OnRspOrderInsert(bool succ, const std::string& orderRef, const std::string& msg) = 0;
 
 	///报单操作请求响应
-	virtual void OnRspOrderAction(bool succ, const std::string& orderRef, const std::string& msg) = 0;
+	virtual void OnRspOrderAction(bool succ, const std::string& orderRef, int errorId, const std::string& msg) = 0;
 
 	///报单通知
 	virtual void OnRtnOrder(trade::Order* order) = 0;
