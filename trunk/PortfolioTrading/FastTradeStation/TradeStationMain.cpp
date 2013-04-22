@@ -10,7 +10,7 @@
 #include <iostream>
 #include <google/protobuf/stubs/common.h>
 
-#define FST_VERSION "1.0"
+#define FST_VERSION "1.1"
 
 using namespace std;
 

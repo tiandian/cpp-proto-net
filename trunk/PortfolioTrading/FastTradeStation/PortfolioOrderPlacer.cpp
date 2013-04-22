@@ -387,7 +387,7 @@ void CPortfolioOrderPlacer::GenLegOrderPlacers()
 }
 
 void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize,
-		boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
+		const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
 {
 	if(!m_isReady)
 		Prepare();
