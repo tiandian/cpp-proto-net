@@ -15,9 +15,9 @@ ENTITY_OBJS = $(patsubst %, $(OBJ_DIR)/%.pb.o, $(_ENTITY_FILES))
 _AP_INVOKE_OBJS = server.o apsessionmanager.o
 AP_INVOKE_OBJS = $(patsubst %, $(OBJ_DIR)/%, $(_AP_INVOKE_OBJS))
 
-_FS_OBJS = ArbitrageStrategy AsyncScalperEventFirer ChangePositionStrategy \
+_FS_OBJS = ArbitrageStrategy AsyncOrderPendingTimer ChangePositionStrategy \
 	   charsetconvert ClientAgent ClientManager ClientMessagePump \
-	   Configuration FileOperations InputOrder LogManager \
+	   Configuration FileOperations InputOrder LegOrderPlacer LogManager \
 	   orderhelper OrderProcessor2 Portfolio PortfolioManager \
 	   PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer \
 	   QuoteAgent QuoteFetcher QuoteRepositry QuoteStore \

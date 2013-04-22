@@ -36,7 +36,7 @@ public:
 	// Truly submit order to trade agent
 	void Run(trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize);
 	void Run(trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, 
-		boost::chrono::steady_clock::time_point& trigQuoteTimestamp);
+		const boost::chrono::steady_clock::time_point& trigQuoteTimestamp);
 	
 	// Identification for order processor to lookup while order returned
 	const string& Id() 
