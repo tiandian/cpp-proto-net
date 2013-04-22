@@ -92,8 +92,11 @@ private:
 	CFakeRtnOrder* GetAcceptOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID);
 	CFakeRtnOrder* GetPendingOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId);
 	CFakeRtnOrder* GetFilledOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId);
+	CFakeRtnOrder* GetCanceledOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId);
 
 	void FullFillOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID);
+	void PendingOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID);
+	void CancelOrder(CThostFtdcInputOrderActionField *pInputOrderAction, int nRequestID);
 	
 	void SetDateField(CThostFtdcOrderField* pRtnOrder);
 
@@ -110,6 +113,9 @@ private:
 
 	string m_tradingDay;
 	
+	CThostFtdcInputOrderField m_pendingInputOrder;
+	int m_pendingOrdSysId;
+
 	std::ostringstream m_timeStream;
 	//boost::mutex m_mutTimeFormat;
 };

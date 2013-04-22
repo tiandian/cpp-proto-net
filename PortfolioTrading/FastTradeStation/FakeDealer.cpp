@@ -13,12 +13,15 @@ CFakeDealer::CFakeDealer(void)
 	: m_orderNum(1000)
 	, FRONT_ID(0)
 	, SESSION_ID(0)
+	, m_pendingOrdSysId(0)
 {
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
 	m_tradingDay = boost::gregorian::to_iso_string(d);
 
 	boost::posix_time::time_facet* const timeFormat = new boost::posix_time::time_facet("%H:%M:%S");
 	m_timeStream.imbue(std::locale(m_timeStream.getloc(), timeFormat));
+
+	memset(&m_pendingInputOrder, 0, sizeof(m_pendingInputOrder));
 
 	m_msgPump.Init(boost::bind(&CFakeDealer::DispatchMsg, this, _1));
 	m_msgPump.Start();
@@ -31,14 +34,31 @@ CFakeDealer::~CFakeDealer(void)
 
 int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRequestID )
 {
-	boost::thread thIns(boost::bind(
-		&CFakeDealer::FullFillOrder, this, pInputOrder, nRequestID)
-		);
+	static int times = 0;
+	++times;
+	if(times % 2 == 1)
+	{
+		boost::thread thIns(boost::bind(
+			&CFakeDealer::FullFillOrder, this, pInputOrder, nRequestID)
+			//&CFakeDealer::PendingOrder, this, pInputOrder, nRequestID)
+			);
+	}
+	else
+	{
+		boost::thread thIns(boost::bind(
+			//&CFakeDealer::FullFillOrder, this, pInputOrder, nRequestID)
+			&CFakeDealer::PendingOrder, this, pInputOrder, nRequestID)
+			);
+	}
+	
 	return 0;
 }
 
 int CFakeDealer::ReqOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, int nRequestID )
 {
+	boost::thread thIns(boost::bind(
+		&CFakeDealer::CancelOrder, this, pInputOrderAction, nRequestID)
+		);
 	return 0;
 }
 
@@ -123,6 +143,22 @@ CFakeRtnOrder* CFakeDealer::GetFilledOrder( CThostFtdcInputOrderField * pInputOr
 	return pFakeOrder;
 }
 
+CFakeRtnOrder* CFakeDealer::GetCanceledOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId )
+{
+	CFakeRtnOrder* pFakeOrder = CreateOrderTemplate(pInputOrder, nRequestID);
+	CThostFtdcOrderField* pOrdField = pFakeOrder->Msg();
+	sprintf(pOrdField->OrderSysID, "%d", orderSysId);
+
+	pOrdField->OrderSubmitStatus = THOST_FTDC_OSS_Accepted;
+	pOrdField->OrderStatus = THOST_FTDC_OST_Canceled;
+	pOrdField->VolumeTraded = 0;
+	pOrdField->VolumeTotal = pInputOrder->VolumeTotalOriginal;
+	strcpy_s(pOrdField->StatusMsg, "ÒÑ³·µ¥");
+
+	return pFakeOrder;
+}
+
+
 void CFakeDealer::FullFillOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID )
 {
 	FakeMsgPtr msgAccept(GetAcceptOrder(pInputOrder, nRequestID));
@@ -138,6 +174,31 @@ void CFakeDealer::FullFillOrder( CThostFtdcInputOrderField * pInputOrder, int nR
 
 	FakeMsgPtr msgFilled(GetFilledOrder(pInputOrder, nRequestID, orderSysId));
 	m_msgPump.Enqueue(msgFilled);
+}
+
+
+void CFakeDealer::PendingOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID )
+{
+	m_pendingInputOrder = *pInputOrder;
+
+	FakeMsgPtr msgAccept(GetAcceptOrder(pInputOrder, nRequestID));
+	m_msgPump.Enqueue(msgAccept);
+
+	int orderSysId = ++m_orderNum;
+
+	FakeMsgPtr msgPending(GetPendingOrder(pInputOrder, nRequestID, orderSysId));
+	m_msgPump.Enqueue(msgPending);
+}
+
+void CFakeDealer::CancelOrder( CThostFtdcInputOrderActionField *pInputOrderAction, int nRequestID )
+{
+	int orderSysId = atoi(pInputOrderAction->OrderSysID);
+
+	FakeMsgPtr msgPending(GetPendingOrder(&m_pendingInputOrder, nRequestID, orderSysId));
+	m_msgPump.Enqueue(msgPending);
+
+	FakeMsgPtr msgCanceled(GetCanceledOrder(&m_pendingInputOrder, nRequestID, orderSysId));
+	m_msgPump.Enqueue(msgCanceled);
 }
 
 void CFakeDealer::SetDateField( CThostFtdcOrderField* pRtnOrder )
