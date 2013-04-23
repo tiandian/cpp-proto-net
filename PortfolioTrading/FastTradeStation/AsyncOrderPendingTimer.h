@@ -36,7 +36,6 @@ public:
 		if(m_isStop.exchange(true, boost::memory_order_acquire) == false)
 		{
 			m_timer.cancel();
-			m_thWaiting.join();
 		}
 		
 	}
