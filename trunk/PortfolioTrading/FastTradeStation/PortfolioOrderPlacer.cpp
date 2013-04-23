@@ -213,6 +213,7 @@ namespace // Concrete FSM implementation
 				_row < Accepted  , evtPartiallyFilled , PartiallyFilled >,
 				_row < Accepted  , evtSubmit	      , Accepted		>,
 				_row < Pending	 , evtPendingTimeUp   , Canceling		>,
+				_row < Pending	 , evtNextQuoteIn	  , Canceling		>,
 			  a_irow < Pending   , evtPending		  ,					   &s::duplicate_pending	>,
 				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >,
 			  a_irow < Canceling , evtPending	      ,					   &s::duplicate_pending	>
@@ -280,7 +281,8 @@ namespace // Concrete FSM implementation
 			}
 			else
 			{
-				fsm.process_event(evtErrorFound("遇到无法处理的事件"));
+				//fsm.process_event(evtErrorFound("遇到无法处理的事件"));
+				logger.Error("Encounter unexpected event");
 			}
 		}
 	};
@@ -532,7 +534,6 @@ void CPortfolioOrderPlacer::OnCanceling()
 	LOG_DEBUG(logger, boost::str(boost::format("Canceling order (ref:%s, sysId:%s)")
 		% m_activeOrdPlacer->OrderRef() % m_activeOrdPlacer->OrderSysId()));
 	
-	m_activeOrdPlacer->WaitForNextQuote();
 	m_pOrderProcessor->CancelOrder(m_activeOrdPlacer->OrderRef(), 
 		m_activeOrdPlacer->ExchId(), m_activeOrdPlacer->OrderSysId(), 
 		m_activeOrdPlacer->UserId(), m_activeOrdPlacer->Symbol());
@@ -541,6 +542,7 @@ void CPortfolioOrderPlacer::OnCanceling()
 void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 {
 	assert(m_activeOrdPlacer != NULL);
+	m_activeOrdPlacer->WaitForNextQuote();
 
 	if(m_activeOrdPlacer->CanRetry())
 	{
@@ -554,6 +556,34 @@ void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 		
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(
 			evtFilledCanceled("单腿:平仓失败"));
+	}
+}
+
+void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_point& quoteTimestamp, entity::Quote* pQuote )
+{
+	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
+
+	if(m_activeOrdPlacer->CanRetry())
+	{
+		m_activeOrdPlacer->ModifyPrice(pQuote);
+		m_trigQuoteTimestamp = quoteTimestamp;
+	}
+
+	// Only for close order
+	if(m_activeOrdPlacer->IsReadyForNextQuote())
+	{
+		if(m_activeOrdPlacer->CanRetry())
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("Active Order Placer(No.%d) Go to retry ") % m_activeOrdPlacer->SequenceNo()));
+			// retry
+			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtRetry());
+		}
+	}
+	else // Pending Order has not been canceled
+	{
+		m_activeOrdPlacer->CancelPending();
+		LOG_DEBUG(logger, boost::str(boost::format("Pending Order of Placer(No.%d) has not been canceled.") % m_activeOrdPlacer->SequenceNo()));
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextQuoteIn());
 	}
 }
 
@@ -589,26 +619,6 @@ void CPortfolioOrderPlacer::OnPendingTimeUp()
 {
 	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPendingTimeUp());
-}
-
-void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_point& quoteTimestamp, entity::Quote* pQuote )
-{
-	// Only for close order
-	if(m_activeOrdPlacer->IsReadyForNextQuote())
-	{
-		if(m_activeOrdPlacer->CanRetry())
-		{
-			boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
-
-			m_activeOrdPlacer->ModifyPrice(pQuote);
-
-			m_trigQuoteTimestamp = quoteTimestamp;
-
-			LOG_DEBUG(logger, boost::str(boost::format("Active Order Placer(No.%d) Go to retry ") % m_activeOrdPlacer->SequenceNo()));
-			// retry
-			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtRetry());
-		}
-	}
 }
 
 void CPortfolioOrderPlacer::UpdateMultiLegOrder()

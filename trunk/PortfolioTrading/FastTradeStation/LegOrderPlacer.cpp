@@ -63,7 +63,9 @@ void CLegOrderPlacer::Reset(bool afterCancel)
 	if(!afterCancel)
 		m_submitTimes = 0;
 	
+	m_isReadyForNextQuote = false;
 	m_isPending = false;
+	m_bOrderReady = false;
 	m_exchId.clear();
 	m_ordSysId.clear();
 	m_userId.clear();
@@ -77,7 +79,6 @@ void CLegOrderPlacer::Reset(bool afterCancel)
 
 void CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 {
-	m_isPending = false;
 	m_exchId.clear();
 	m_ordSysId.clear();
 	m_userId.clear();
