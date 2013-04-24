@@ -70,6 +70,7 @@ void CLegOrderPlacer::Reset(bool afterCancel)
 	m_ordSysId.clear();
 	m_userId.clear();
 
+	m_inputOrder.set_volumetotaloriginal(m_volumeOriginial);
 	m_legOrder.set_volumetotaloriginal(0);
 	m_legOrder.set_volumetraded(0);
 	m_legOrder.set_ordersubmitstatus(trade::NOT_SUBMITTED);
@@ -130,4 +131,9 @@ bool CLegOrderPlacer::WaitForNextQuote()
 void CLegOrderPlacer::CancelPending()
 {
 	m_pendingTimer.Cancel();
+}
+
+void CLegOrderPlacer::AdjustVolume( int adjustedVolume )
+{
+	m_inputOrder.set_volumetotaloriginal(adjustedVolume);
 }

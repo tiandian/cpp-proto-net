@@ -216,7 +216,9 @@ namespace // Concrete FSM implementation
 				_row < Pending	 , evtNextQuoteIn	  , Canceling		>,
 			  a_irow < Pending   , evtPending		  ,					   &s::duplicate_pending	>,
 				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >,
-			  a_irow < Canceling , evtPending	      ,					   &s::duplicate_pending	>
+			  a_irow < Canceling , evtPending	      ,					   &s::duplicate_pending	>,
+			    _row < PartiallyFilled , evtPendingTimeUp   , Canceling	>,
+			   _irow < PartiallyFilled , evtPartiallyFilled				>
 			> {};
 
 		};
@@ -359,6 +361,7 @@ void CPortfolioOrderPlacer::GenLegOrderPlacers()
 		legOrderPlacer->InputOrder().set_comboffsetflag(o.comboffsetflag());
 		legOrderPlacer->InputOrder().set_limitprice(o.limitprice());
 		legOrderPlacer->InputOrder().set_volumetotaloriginal(o.volumetotaloriginal());
+		legOrderPlacer->SetVolumeOriginal(o.volumetotaloriginal());
 		legOrderPlacer->InputOrder().set_timecondition(o.timecondition());
 		legOrderPlacer->InputOrder().set_gtddate(o.gtddate());
 		legOrderPlacer->InputOrder().set_volumecondition(	o.volumecondition());
@@ -503,9 +506,7 @@ void CPortfolioOrderPlacer::OnPartiallyFilled( trade::Order* pRtnOrder )
 	int remained = pRtnOrder->volumetotal();
 	int finished = pRtnOrder->volumetraded();
 
-	assert(false);
-	// Cancel remaining
-	OnCanceling();
+	m_activeOrdPlacer->PartiallyFill(finished);
 	UpdateLegOrder(pRtnOrder);
 }
 
@@ -544,6 +545,41 @@ void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 	assert(m_activeOrdPlacer != NULL);
 	m_activeOrdPlacer->WaitForNextQuote();
 
+	int remained = pRtnOrder->volumetotal();
+	int finished = pRtnOrder->volumetraded();
+	if(finished > 0)	// partially filled
+	{
+		LOG_INFO(logger, boost::str(boost::format("OrderRef(%s) canceled as %d/%d filled")
+			% m_activeOrdPlacer->OrderRef() % finished % pRtnOrder->volumetotaloriginal()));
+
+		if(m_activeOrdPlacer->IsOpen())
+		{
+			// adjust next order placer volume
+			m_activeOrdPlacer->Reset();
+			
+			int sendingIdx = m_activeOrdPlacer->SequenceNo();
+			LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer(OPEN) gets partially filled") % sendingIdx));
+			++sendingIdx;
+			if(sendingIdx < (int)m_legPlacers.size())
+			{
+				// Go to send next order
+				m_activeOrdPlacer = m_legPlacers[sendingIdx].get();
+				m_activeOrdPlacer->AdjustVolume(finished);
+				boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
+			}
+			else
+			{
+				logger.Error("Partially filled order is not OPEN order ???");
+			}
+		}
+		else // if close
+		{
+			m_activeOrdPlacer->AdjustVolume(remained);
+			LOG_DEBUG(logger, boost::str(boost::format("Partially filled close Order adjust volume from %d to %d")
+				% pRtnOrder->volumetotaloriginal() % pRtnOrder->volumetotal()));
+		}
+	}
+	else
 	if(m_activeOrdPlacer->CanRetry())
 	{
 		// wait until next quote in
