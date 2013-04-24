@@ -53,6 +53,11 @@ public:
 	bool IsOrderReady(){ return m_bOrderReady; }
 	bool IsReadyForNextQuote() { return m_isReadyForNextQuote; }
 	bool WaitForNextQuote();
+
+	void PartiallyFill(int tradedCount) { m_isPartiallyFilled = true; }
+	bool IsPartiallyFilled(){ return m_isPartiallyFilled; }
+	void SetVolumeOriginal(int volOrig) { m_volumeOriginial = volOrig; }
+	void AdjustVolume(int adjustedVolume);
 private:
 
 	CInputOrder m_inputOrder;
@@ -76,6 +81,10 @@ private:
 	string m_exchId;
 	string m_ordSysId; 
 	string m_userId;
+
+	// partially filled
+	bool m_isPartiallyFilled;
+	int m_volumeOriginial;
 };
 
 typedef boost::shared_ptr<CLegOrderPlacer> LegOrderPlacerPtr;
