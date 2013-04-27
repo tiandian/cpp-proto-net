@@ -3,6 +3,7 @@
 #include "FileOperations.h"
 
 #include <boost/format.hpp>
+#include <boost/algorithm/string.hpp>
 #include <sstream>
 
 #if defined(WIN32)
@@ -72,13 +73,26 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 			return boost::make_tuple(false, errMsg);
 		}
 		streamFolder += "/";
-		// 初始化UserApi
-		m_pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(streamFolder.c_str());			// 创建UserApi
-		m_pUserApi->RegisterSpi(this);						// 注册事件类
+
+		bool isUdp = boost::istarts_with(address, "udp");
+		// 创建UserApi
+		m_pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(streamFolder.c_str(), isUdp);
+		// 注册事件类
+		m_pUserApi->RegisterSpi(this);
 
 		logger.Info(boost::str(boost::format("Try to connect market (%s) ...") % address));
+		string connAddress;
+		if(isUdp)
+		{
+			// Populate udp address with prefix tcp://
+			connAddress = boost::ireplace_first_copy(address, "udp", "tcp");
+		}
+		else
+		{
+			connAddress = address;
+		}
 
-		m_thQuoting = boost::thread(&RunMarketDataFunc, m_pUserApi, address.c_str());
+		m_thQuoting = boost::thread(&RunMarketDataFunc, m_pUserApi, connAddress.c_str());
 
 		// wait 1 minute for connected event
 		{

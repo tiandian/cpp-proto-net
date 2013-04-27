@@ -118,10 +118,10 @@ boost::tuple<bool, string> CTradeAgent::Open( const string& address, const strin
 			return boost::make_tuple(false, errMsg);
 		}
 		streamFolder += "/";
-		// 初始化UserApi
-		m_pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi(streamFolder.c_str());			// 创建UserApi
-		
-		m_pUserApi->RegisterSpi(this);						// 注册事件类
+		// 创建UserApi
+		m_pUserApi = CThostFtdcTraderApi::CreateFtdcTraderApi(streamFolder.c_str());
+		// 注册事件类
+		m_pUserApi->RegisterSpi(this);
 
 		m_pUserApi->SubscribePrivateTopic(THOST_TERT_QUICK);
 		m_pUserApi->SubscribePublicTopic(THOST_TERT_QUICK);
