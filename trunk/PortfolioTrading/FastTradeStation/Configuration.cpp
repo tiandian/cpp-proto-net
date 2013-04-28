@@ -7,30 +7,15 @@
 #include <boost/program_options.hpp>
 
 #define APP_VERSION "0.1.704"
-#define DEFAULT_LOG_PATH "log\\ts_%N.txt"
+#define DEFAULT_LOG_PATH "~/fast-trade/log4cpp.property"
 
 namespace po = boost::program_options;
 using namespace std;
 
-std::string DATETIME_LOG_PATH;
-
-void GetCurrentDateTimeString()
-{
-	//boost::gregorian::date d = boost::gregorian::day_clock::local_day();
-	//string dateText = boost::gregorian::to_iso_string(d);
-	boost::posix_time::ptime t1 = boost::posix_time::second_clock::local_time();
-	string timeText = boost::posix_time::to_iso_string(t1);
-	DATETIME_LOG_PATH = boost::str(boost::format("log\\ts_%s_%%N.txt")
-		% timeText);
-}
-
 CConfiguration::CConfiguration(void):
 	m_enableLogging(true),
-	//m_logFilePath(DEFAULT_LOG_PATH),
-	m_logLevel(trace)
+	m_logConfigFilePath(DEFAULT_LOG_PATH)
 {
-	GetCurrentDateTimeString();
-	m_logFilePath = DATETIME_LOG_PATH;
 }
 
 CConfiguration::~CConfiguration(void)
@@ -54,11 +39,9 @@ bool CConfiguration::Load( int argc, char* argv[] )
 		po::options_description logging("Logging");
 		logging.add_options()
 			("enableLogging", po::value<bool>(&m_enableLogging)->default_value(true), 
-			"logging enable or not")
-			("logFilePath", po::value<string>(&m_logFilePath)->default_value(DATETIME_LOG_PATH), 
-			"specify log file path")
-			("logLevel", po::value<severity_level>(&m_logLevel)->default_value(trace), 
-			"specify minimum severity to log")
+			"Logging enable or not")
+			("logConfig", po::value<string>(&m_logConfigFilePath)->default_value(DEFAULT_LOG_PATH), 
+			"Specify log config file path")
 			;
 
 		po::options_description conn("Connection");
@@ -105,14 +88,9 @@ bool CConfiguration::IsLogEnabled()
 	return m_enableLogging;
 }
 
-const char* CConfiguration::GetLogFilePath()
+const string& CConfiguration::LogConfigPath()
 {
-	return m_logFilePath.c_str();
-}
-
-severity_level CConfiguration::GetLogLevel()
-{
-	return m_logLevel;
+	return m_logConfigFilePath;
 }
 
 const string& CConfiguration::GetPort()

@@ -31,7 +31,7 @@ public:
 	void Fatal(const std::string& text);
 
 	void Init();
-
+	void Init(const std::string& configPath);
 private:
 	
 	bool m_isEnabled;
