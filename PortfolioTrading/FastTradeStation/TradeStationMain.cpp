@@ -7,8 +7,6 @@
 #include <boost/format.hpp> 
 #include <boost/algorithm/string.hpp>
 #include <google/protobuf/stubs/common.h>
-#include <iostream>
-#include <google/protobuf/stubs/common.h>
 
 #define FST_VERSION "1.1"
 

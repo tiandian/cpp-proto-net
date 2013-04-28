@@ -144,6 +144,9 @@
     <ClCompile Include="FakeDealer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TradeStationDaemon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ap_invoke\apsessionmanager.h">

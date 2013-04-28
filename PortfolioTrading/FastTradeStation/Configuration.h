@@ -2,8 +2,6 @@
 
 #include <string>
 
-#include "LogSeverityLevel.h"
-
 using namespace std;
 
 class CConfiguration
@@ -15,8 +13,7 @@ public:
 	bool Load(int argc, char* argv[]);
 
 	bool IsLogEnabled();
-	const char* GetLogFilePath();
-	severity_level GetLogLevel();
+	const string& LogConfigPath();
 
 	const string& GetPort();
 	const string& GetAddr();
@@ -24,8 +21,7 @@ public:
 private:
 	// Logging
 	bool m_enableLogging;
-	std::string m_logFilePath;
-	severity_level m_logLevel;
+	std::string m_logConfigFilePath;
 
 	// Connection
 	std::string m_addr;

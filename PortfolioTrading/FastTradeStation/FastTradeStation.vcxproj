@@ -112,6 +112,9 @@
     <ClCompile Include="SymbolInfo.cpp" />
     <ClCompile Include="SymbolInfoRepositry.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
+    <ClCompile Include="TradeStationDaemon.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="TradeStationMain.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -34,6 +34,12 @@ CLogManager::~CLogManager(void)
 
 void CLogManager::Init()
 {
+	std::string configFilePath("./log4cpp.property");
+	Init(configFilePath);
+}
+
+void CLogManager::Init(const std::string& configPath)
+{
 	bool enabled = config.IsLogEnabled();
 	if(!enabled){
 		cout << "Log is DISABLED" << endl;
@@ -42,8 +48,7 @@ void CLogManager::Init()
 
 	try
 	{
-		std::string initFileName = "./log4cpp.property";
-		log4cpp::PropertyConfigurator::configure(initFileName);
+		log4cpp::PropertyConfigurator::configure(configPath);
 
 		m_isEnabled = true;
 		cout << "Log initialized successfully" << endl;
