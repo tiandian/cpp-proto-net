@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
 	// that need to be private to the new process.
 	io_service.notify_fork(boost::asio::io_service::fork_child);
 
-	logger.Init();
+	logger.Init(config.LogConfigPath());
 
 	CClientManager clientManager;
 	boost::shared_ptr<SessionManager> pSessionManager(SessionManager::Create());
@@ -131,5 +131,7 @@ int main(int argc, char* argv[])
 	// The io_service is now waiting for signal terminate
 	io_service.run();
 	
+	logger.Info("Daemon stop normally.");
+
 	return 0;
 }
