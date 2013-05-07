@@ -298,7 +298,7 @@ void CPortfolio::SetItem(entity::PortfolioItem* pPortfItem )
 	}
 }
 
-void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point timestamp, entity::Quote* pQuote )
+void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote )
 {
 	boost::unique_lock<boost::mutex> l(m_mutQuoting);
 

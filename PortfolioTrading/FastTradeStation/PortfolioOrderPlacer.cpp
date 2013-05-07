@@ -54,12 +54,16 @@ namespace // Concrete FSM implementation
 			template <class Event,class FSM>
 			void on_entry(Event const&,FSM& fsm) 
 			{
+#ifdef LOG_FOR_TRADE
 				LOG_DEBUG(logger, "entering: Sending");
+#endif
 				fsm.m_pPlacer->OnSend();
 			}
 
+#ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
 			void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Sending"); }
+#endif
 		};
 
 		struct LegOrderFilled : public msm::front::state<> 
@@ -67,12 +71,15 @@ namespace // Concrete FSM implementation
 			template <class Event,class FSM>
 			void on_entry(Event const& evt,FSM& fsm) 
 			{
+#ifdef LOG_FOR_TRADE
 				LOG_DEBUG(logger, "entering: LegOrderFilled");
+#endif
 				fsm.m_pPlacer->OnFilled(evt.m_pOrd.get());
 			}
-
+#ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
 			void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: LegOrderFilled"); }
+#endif
 		};
 
 		struct LegOrderCanceled : public msm::front::state<> 
@@ -82,9 +89,10 @@ namespace // Concrete FSM implementation
 			{
 				fsm.m_pPlacer->OnLegCanceled(evt.m_pOrd.get());
 			}
-
+#ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
 			void on_exit(Event const&,FSM& ) {}
+#endif
 		};
 
 		struct LegOrderRejected : public msm::front::state<>
@@ -94,9 +102,10 @@ namespace // Concrete FSM implementation
 			{
 				fsm.m_pPlacer->OnLegRejected(evt.m_pOrd.get());
 			}
-
+#ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
 			void on_exit(Event const&,FSM& ) {}
+#endif
 		};
 
 		struct Completed :  public msm::front::terminate_state<>
@@ -106,8 +115,10 @@ namespace // Concrete FSM implementation
 			{
 				fsm.m_pPlacer->OnCompleted();
 			}
+#ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
 			void on_exit(Event const&,FSM& ) {}
+#endif
 		};
 
 		struct Canceled :  public msm::front::terminate_state<>
@@ -117,8 +128,10 @@ namespace // Concrete FSM implementation
 			{
 				fsm.m_pPlacer->OnPortfolioCanceled();
 			}
+#ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
 			void on_exit(Event const&,FSM& ) {}
+#endif
 		};
 
 		struct AllOk : public msm::front::state<> {};
@@ -130,8 +143,10 @@ namespace // Concrete FSM implementation
 			{
 				fsm.m_pPlacer->OnError(evt.m_ErrorMsg);
 			}
+#ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
 			void on_exit(Event const&,FSM& ) {}
+#endif
 		};
 		
 		struct Sent_ : public msm::front::state_machine_def<Sent_>
@@ -150,12 +165,15 @@ namespace // Concrete FSM implementation
 				template <class Event,class FSM>
 				void on_entry(Event const& evt,FSM& fsm) 
 				{
+#ifdef LOG_FOR_TRADE
 					LOG_DEBUG(logger, "entering: Accepted");
+#endif
 					fsm.m_pPlacer->OnAccept(evt.m_pOrd.get());
 				}
-
+#ifdef LOG_FOR_TRADE
 				template <class Event,class FSM>
 				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Accepted"); }
+#endif
 			};
 
 			struct Pending : public msm::front::state<> 
@@ -163,12 +181,15 @@ namespace // Concrete FSM implementation
 				template <class Event,class FSM>
 				void on_entry(Event const& evt,FSM& fsm) 
 				{ 
+#ifdef LOG_FOR_TRADE
 					LOG_DEBUG(logger, "entering: Pending");
+#endif
 					fsm.m_pPlacer->OnPending(evt.m_pOrd.get());
 				}
-
+#ifdef LOG_FOR_TRADE
 				template <class Event,class FSM>
 				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Pending"); }
+#endif
 			};
 
 			struct PartiallyFilled : public msm::front::state<> 
@@ -176,12 +197,15 @@ namespace // Concrete FSM implementation
 				template <class Event,class FSM>
 				void on_entry(Event const& evt, FSM& fsm) 
 				{ 
+#ifdef LOG_FOR_TRADE
 					LOG_DEBUG(logger, "entering: PartiallyFilled");
+#endif
 					fsm.m_pPlacer->OnPartiallyFilled(evt.m_pOrd.get());
 				}
-
+#ifdef LOG_FOR_TRADE
 				template <class Event,class FSM>
 				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: PartiallyFilled"); }
+#endif
 			};
 
 			struct Canceling : public msm::front::state<> 
@@ -189,17 +213,31 @@ namespace // Concrete FSM implementation
 				template <class Event,class FSM>
 				void on_entry(Event const& evt, FSM& fsm) 
 				{ 
+#ifdef LOG_FOR_TRADE
 					LOG_DEBUG(logger, "entering: Canceling");
+#endif
 					fsm.m_pPlacer->OnCanceling();
 				}
-
+#ifdef LOG_FOR_TRADE
 				template <class Event,class FSM>
 				void on_exit(Event const&,FSM& ) { LOG_DEBUG(logger, "leaving: Canceling"); }
+#endif
 			};
 
 			// transitions internal to Empty
-			void duplicate_pending(evtPending const&){ LOG_DEBUG(logger, "Ignore duplicate pending"); }
-			void duplicate_partially(evtPartiallyFilled const&){ LOG_DEBUG(logger, "Ignore duplicate partially filled"); }
+			void duplicate_pending(evtPending const&)
+			{
+#ifdef LOG_FOR_TRADE
+				LOG_DEBUG(logger, "Ignore duplicate pending"); 
+#endif
+			}
+
+			void duplicate_partially(evtPartiallyFilled const&)
+			{
+#ifdef LOG_FOR_TRADE
+				LOG_DEBUG(logger, "Ignore duplicate partially filled"); 
+#endif
+			}
 
 			// the initial state. Must be defined
 			typedef Accepted initial_state;
@@ -424,8 +462,10 @@ void CPortfolioOrderPlacer::Run( trade::PosiDirectionType posiDirection, double*
 void CPortfolioOrderPlacer::OnSend()
 {
 	assert(m_activeOrdPlacer != NULL);
+#ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("Sending Active Order placer's Id:%d ") 
 		% m_activeOrdPlacer->SequenceNo()));
+#endif
 	m_activeOrdPlacer->AddSubmitTimes();
 
 	// lock and generate order ref
@@ -488,7 +528,9 @@ void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 	UpdateLegOrder(pRtnOrder);
 
 	int sendingIdx = m_activeOrdPlacer->SequenceNo();
+#ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer gets filled") % sendingIdx));
+#endif
 	++sendingIdx;
 	if(sendingIdx < (int)m_legPlacers.size())
 	{
@@ -687,10 +729,10 @@ void CPortfolioOrderPlacer::OnOrderReturned( boost::shared_ptr<trade::Order>& pR
 
 	trade::OrderSubmitStatusType submitStatus = pRtnOrder->ordersubmitstatus();
 	trade::OrderStatusType status = pRtnOrder->orderstatus();
-
+#ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("Order(%s, %s) - submit status(%s), order status(%s)")
 		% pRtnOrder->orderref() %  pRtnOrder->ordersysid() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
-
+#endif
 	if(submitStatus > trade::NOT_SUBMITTED && 
 		submitStatus <= trade::ACCEPTED && status >= trade::STATUS_UNKNOWN)
 	{
