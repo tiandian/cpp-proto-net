@@ -829,6 +829,7 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 {
 	ostringstream oss;
 	oss << "--->>> " << "OnRtnTrade (OrdRef:"  << pTrade->OrderRef << ") TradeId:" << pTrade->TradeID;
+	oss << " " << pTrade->Volume << " traded.";
 	logger.Info(oss.str());
 
 	boost::shared_ptr<trade::Trade> pTd(new trade::Trade);

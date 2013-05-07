@@ -40,6 +40,7 @@ public:
 	double LimitPrice(){ return m_innerOrderItem.LimitPrice; }
 	///数量: 1
 	void set_volumetotaloriginal(int volTotal);
+	int VolumeTotalOriginal(){ return m_innerOrderItem.VolumeTotalOriginal; }
 	///有效期类型: 当日有效
 	void set_timecondition(trade::TimeConditionType timeConditionType);
 	///GTD日期

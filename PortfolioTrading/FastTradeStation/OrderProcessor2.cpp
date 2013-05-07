@@ -28,9 +28,9 @@ void PrintInputOrder(CInputOrder* order)
 {
 	if(order != NULL)
 	{
-		LOG_INFO(logger, boost::str(boost::format("[%s] - %s %s @ %.2f")
+		LOG_INFO(logger, boost::str(boost::format("[%s] - %s %d %s @ %.2f")
 			% ((order->OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
-			% TRADE_DIRECTION[order->Direction() - trade::BUY]
+			% TRADE_DIRECTION[order->Direction() - trade::BUY] % order->VolumeTotalOriginal()
 			% order->Symbol() % order->LimitPrice()));
 	}
 }

@@ -199,6 +199,7 @@ namespace // Concrete FSM implementation
 
 			// transitions internal to Empty
 			void duplicate_pending(evtPending const&){ LOG_DEBUG(logger, "Ignore duplicate pending"); }
+			void duplicate_partially(evtPartiallyFilled const&){ LOG_DEBUG(logger, "Ignore duplicate partially filled"); }
 
 			// the initial state. Must be defined
 			typedef Accepted initial_state;
@@ -217,6 +218,7 @@ namespace // Concrete FSM implementation
 			  a_irow < Pending   , evtPending		  ,					   &s::duplicate_pending	>,
 				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >,
 			  a_irow < Canceling , evtPending	      ,					   &s::duplicate_pending	>,
+			  a_irow < Canceling , evtPartiallyFilled ,					   &s::duplicate_partially  >,
 			    _row < PartiallyFilled , evtPendingTimeUp   , Canceling	>,
 			   _irow < PartiallyFilled , evtPartiallyFilled				>
 			> {};
