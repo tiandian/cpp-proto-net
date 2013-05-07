@@ -75,6 +75,7 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 		streamFolder += "/";
 
 		bool isUdp = boost::istarts_with(address, "udp");
+		LOG_INFO(logger, boost::str(boost::format("UDP Connection: %s") % (isUdp ? "Yes" : "No")));
 		// 创建UserApi
 		m_pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(streamFolder.c_str(), isUdp);
 		// 注册事件类
@@ -91,7 +92,7 @@ boost::tuple<bool, string> CQuoteAgent::Open( const string& address, const strin
 		{
 			connAddress = address;
 		}
-
+		LOG_INFO(logger, boost::str(boost::format("Final connection string: %s") % connAddress));
 		m_thQuoting = boost::thread(&RunMarketDataFunc, m_pUserApi, connAddress.c_str());
 
 		// wait 1 minute for connected event

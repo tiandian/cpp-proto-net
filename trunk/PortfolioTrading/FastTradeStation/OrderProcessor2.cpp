@@ -164,9 +164,9 @@ int COrderProcessor2::LockForSubmit( string& outOrdRef )
 bool COrderProcessor2::SubmitAndUnlock(CInputOrder* pInputOrder)
 {
 	boost::mutex::scoped_lock lock(m_mutOrdRefIncr);
-
+#ifdef LOG_FOR_TRADE
 	PrintInputOrder(pInputOrder);
-
+#endif
 	bool succ = m_pTradeAgent->SubmitOrder(pInputOrder->InnerOrder());
 	if(succ)
 		AddOpenTimes();

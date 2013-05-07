@@ -45,7 +45,7 @@ public:
 
 	vector<LegPtr>& Legs(){ return m_vecLegs; }
 
-	void OnQuoteRecevied(boost::chrono::steady_clock::time_point timestamp, entity::Quote* pQuote);
+	void OnQuoteRecevied(boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote);
 
 	// Need to be done before remove from manager
 	void Cleanup();

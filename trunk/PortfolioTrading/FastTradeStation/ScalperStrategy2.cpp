@@ -34,17 +34,20 @@ void CScalperStrategy2::Test( boost::chrono::steady_clock::time_point& timestamp
 	// Don't need to test for the first time quote coming in
 	if(m_AskSize > 0 && m_BidSize > 0)
 	{
+#ifdef LOG_FOR_TRADE
 		LOG_DEBUG(logger, boost::str(boost::format("Diff: %.2f ?>= %.2f. Placer ready? %s") 
 			% diff % m_threshold % (!(m_pOrdPlacer->IsWorking()) ? "Y" : "N")));
+#endif
 		if(!(m_pOrdPlacer->IsWorking()))
 		{
 			if(DoubleGreaterEqual(diff, m_threshold))
 			{
 				trade::PosiDirectionType direction = GetTradeDirection();
-
+#ifdef LOG_FOR_TRADE
 				logger.Info(boost::str(boost::format("[%s] Ask: %.2f => %.2f, Bid: %.2f => %.2f, Ask size VS Bid size: %d vs %d")
 					% (direction > trade::NET ? (direction == trade::LONG ? "LONG" : "SHORT") : "IGNORE") 
 					% m_prevAsk % m_Ask % m_prevBid % m_Bid % m_AskSize % m_BidSize));
+#endif
 				if(direction > trade::NET)
 				{
 					double lmtPrice[2];

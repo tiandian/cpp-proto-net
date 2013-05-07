@@ -9,7 +9,7 @@
 
 using namespace std;
 
-typedef boost::function<void(boost::chrono::steady_clock::time_point, entity::Quote*)> QuoteUpdateFunc;
+typedef boost::function<void(boost::chrono::steady_clock::time_point&, entity::Quote*)> QuoteUpdateFunc;
 
 class CQuoteStore;
 
