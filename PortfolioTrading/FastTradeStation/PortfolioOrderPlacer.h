@@ -89,6 +89,7 @@ protected:
 	
 	void GenLegOrderPlacers();
 	void UpdateLegOrder(trade::Order* pRtnOrder);
+	void UpdateLastDoneOrder();
 	void UpdateMultiLegOrder();
 	void OutputStatus(const string& statusMsg);
 	void CleanupProc();
@@ -107,6 +108,7 @@ protected:
 	boost::shared_ptr<trade::MultiLegOrder> m_multiLegOrderTemplate;
 	vector< LegOrderPlacerPtr > m_legPlacers;
 	CLegOrderPlacer* m_activeOrdPlacer;
+	CLegOrderPlacer* m_lastDoneOrdPlacer;
 	bool m_isFirstLeg;
 	boost::atomic<bool> m_isWorking;
 	bool m_isReady;

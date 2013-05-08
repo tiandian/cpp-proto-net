@@ -336,6 +336,7 @@ CPortfolioOrderPlacer::CPortfolioOrderPlacer(void)
 	: m_pPortf(NULL)
 	, m_pOrderProcessor(NULL)
 	, m_activeOrdPlacer(NULL)
+	, m_lastDoneOrdPlacer(NULL)
 	, m_isReady(false)
 	, m_isWorking(false)
 	, m_isFirstLeg(false)
@@ -486,7 +487,8 @@ void CPortfolioOrderPlacer::OnSend()
 		boost::chrono::steady_clock::now() - m_trigQuoteTimestamp;
 	long usElapse = boost::chrono::duration_cast<boost::chrono::microseconds>(elapsed).count();
 
-	LOG_INFO(logger, boost::str(boost::format("Submit Order(%s - %s) [No. %d time(s)] in %d us after the lastest QUOTE")
+	LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the lastest QUOTE")
+		% ((m_activeOrdPlacer->InputOrder().OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
 		% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() % m_activeOrdPlacer->SubmitTimes() % usElapse));
 
 	if(m_isFirstLeg && m_activeOrdPlacer->SubmitTimes() == 1)	// Only publish it for the first time
@@ -499,6 +501,12 @@ void CPortfolioOrderPlacer::OnSend()
 
 		m_pOrderProcessor->PublishMultiLegOrderUpdate(m_multiLegOrderTemplate.get());
 	}
+	else
+	{
+		// if second leg
+		UpdateLastDoneOrder();
+	}
+
 }
 
 void CPortfolioOrderPlacer::OnAccept(trade::Order* pRtnOrder)
@@ -525,8 +533,7 @@ void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 	// The first thing is to cancel pending timer
 	m_activeOrdPlacer->CancelPending();
 	AfterLegDone();
-	UpdateLegOrder(pRtnOrder);
-
+	
 	int sendingIdx = m_activeOrdPlacer->SequenceNo();
 #ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer gets filled") % sendingIdx));
@@ -534,15 +541,19 @@ void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 	++sendingIdx;
 	if(sendingIdx < (int)m_legPlacers.size())
 	{
+		m_activeOrdPlacer->UpdateOrder(*pRtnOrder);
+		m_lastDoneOrdPlacer = m_activeOrdPlacer;
 		// Go to send next order
 		m_activeOrdPlacer = m_legPlacers[sendingIdx].get();
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
 	}
 	else
 	{
+		UpdateLegOrder(pRtnOrder);
 		// All leg order done
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtAllFilled());
 	}
+
 }
 
 void CPortfolioOrderPlacer::OnPartiallyFilled( trade::Order* pRtnOrder )
@@ -780,6 +791,23 @@ void CPortfolioOrderPlacer::UpdateLegOrder( trade::Order* pRtnOrder )
 
 		m_pOrderProcessor->PublishOrderUpdate(m_multiLegOrderTemplate->portfolioid(), 
 			m_multiLegOrderTemplate->orderid(), &legOrder);
+	}
+}
+
+void CPortfolioOrderPlacer::UpdateLastDoneOrder()
+{
+	if(m_lastDoneOrdPlacer != NULL)
+	{
+		trade::Order& legOrder = m_lastDoneOrdPlacer->Order();
+
+		string ordStatusMsg;
+		GB2312ToUTF_8(ordStatusMsg, legOrder.statusmsg().c_str());
+		legOrder.set_statusmsg(ordStatusMsg);
+
+		m_pOrderProcessor->PublishOrderUpdate(m_multiLegOrderTemplate->portfolioid(), 
+			m_multiLegOrderTemplate->orderid(), &legOrder);
+
+		m_lastDoneOrdPlacer = NULL;
 	}
 }
 
