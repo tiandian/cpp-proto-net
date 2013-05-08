@@ -83,10 +83,10 @@ void CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 	m_exchId.clear();
 	m_ordSysId.clear();
 	m_userId.clear();
-
+#ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("Next quote (%s) - L:%.2f, A:%.2f, B:%.2f")
 		% pQuote->symbol() % pQuote->last() % pQuote->ask() % pQuote->bid()));
-
+#endif
 	trade::TradeDirectionType direction = m_inputOrder.Direction();
 	double basePx = 0;
 	if(direction == trade::BUY)
@@ -95,22 +95,26 @@ void CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 	}
 	else
 		basePx = pQuote->ask();
-
+#ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("In coming new quote's %s : %f") 
 		% (direction == trade::BUY ? "Bid" : "Ask") % basePx));
-
+#endif
 	if(direction == trade::BUY)
 	{
 		double buy = basePx + m_priceTick;
+#ifdef LOG_FOR_TRADE
 		LOG_DEBUG(logger, boost::str(boost::format("Modify order(%s): Buy @ %f")
 			% Symbol() % buy));
+#endif
 		m_inputOrder.set_limitprice(buy);
 	}
 	else if(direction == trade::SELL)
 	{
 		double sell = basePx - m_priceTick;
+#ifdef LOG_FOR_TRADE
 		LOG_DEBUG(logger, boost::str(boost::format("Modify order(%s): Sell @ %f")
 			% Symbol() % sell));
+#endif
 		m_inputOrder.set_limitprice(sell);
 	}
 }
