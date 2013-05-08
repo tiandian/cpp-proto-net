@@ -6,6 +6,8 @@ using Microsoft.Practices.Prism.ViewModel;
 using System.ComponentModel.Composition;
 using System.Xml.Linq;
 using System.IO;
+using PortfolioTrading.Infrastructure;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Account
 {
@@ -14,6 +16,7 @@ namespace PortfolioTrading.Modules.Account
     {
         private List<ServerAddress> _mkt_servers = new List<ServerAddress>();
         private List<ServerAddress> _td_servers = new List<ServerAddress>();
+        private List<ServerAddress> _trade_stations = new List<ServerAddress>();
 
         public IEnumerable<ServerAddress> MarketServers
         {
@@ -23,6 +26,11 @@ namespace PortfolioTrading.Modules.Account
         public IEnumerable<ServerAddress> TradingServers
         {
             get { return _td_servers; }
+        }
+
+        public IEnumerable<ServerAddress> TradeStations
+        {
+            get { return _trade_stations;  }
         }
 
         #region EffectiveMarket
@@ -59,6 +67,23 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region EffectiveTradeStation
+        private ServerAddress _effectiveTradeStation;
+
+        public ServerAddress EffectiveTradeStation
+        {
+            get { return _effectiveTradeStation; }
+            set
+            {
+                if (_effectiveTradeStation != value)
+                {
+                    _effectiveTradeStation = value;
+                    RaisePropertyChanged("EffectiveTradeStation");
+                }
+            }
+        }
+        #endregion
+
         private readonly string BrokersXmlPath = "brokers.xml";
         public void LoadServerList()
         {
@@ -80,6 +105,14 @@ namespace PortfolioTrading.Modules.Account
                     FillList(_mkt_servers, marketItems, name);
                 }
             }
+
+            _trade_stations.Add(new ServerAddress { Name = "交易服务42", Address = ConfigurationHelper.GetAppSettingValue("42", "116.228.246.94:62248") });
+            _trade_stations.Add(new ServerAddress { Name = "交易服务47", Address = ConfigurationHelper.GetAppSettingValue("47", "116.228.246.94:62249") });
+
+            string localHostIP = NativeHost.GetLocalIP();
+            string localPort = "16181";
+            _trade_stations.Add(new ServerAddress { Name = "本地服务", Address = string.Format("{0}:{1}", 
+                localHostIP, localPort)});
         }
 
         public void SelectMarket(string name)
@@ -92,6 +125,12 @@ namespace PortfolioTrading.Modules.Account
         {
             ServerAddress addr = _td_servers.Find(s => s.Name == name);
             EffectiveTrading = addr != null ? addr : _td_servers.FirstOrDefault();
+        }
+
+        public void SelectTradeStation(string name)
+        {
+            ServerAddress addr = _trade_stations.Find(s => s.Name == name);
+            EffectiveTradeStation = addr != null ? addr : _trade_stations.FirstOrDefault();
         }
 
         private IEnumerable<XElement> GetAddressItems(XElement elem)

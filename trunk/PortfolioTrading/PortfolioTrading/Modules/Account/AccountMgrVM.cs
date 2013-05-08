@@ -166,6 +166,7 @@ namespace PortfolioTrading.Modules.Account
             {
                 acctsElem.Add(new XAttribute("marketData", ServerAddrRepoVM.EffectiveMarket.Name));
                 acctsElem.Add(new XAttribute("trading", ServerAddrRepoVM.EffectiveTrading.Name));
+                acctsElem.Add(new XAttribute("tradeStation", ServerAddrRepoVM.EffectiveTradeStation.Name));
             }
 
             foreach (var acct in _accounts)
@@ -199,6 +200,9 @@ namespace PortfolioTrading.Modules.Account
                 attr = acctsElem.Attribute("trading");
                 string tradingName = attr != null ? attr.Value : "";
                 ServerAddrRepoVM.SelectTrading(tradingName);
+                attr = acctsElem.Attribute("tradeStation");
+                string tradeStationName = attr != null ? attr.Value : "";
+                ServerAddrRepoVM.SelectTradeStation(tradeStationName);
 
                 foreach (var acctElem in acctsElem.Elements("account"))
                 {
