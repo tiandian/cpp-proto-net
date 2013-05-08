@@ -83,6 +83,13 @@ namespace APInvokeManaged
             }
         }
 
+        public void ConnectAsync(string addressWithPort, Action<bool, string, bool> connectCompletionHandler)
+        {
+            string[] tmp = addressWithPort.Split(':');
+            int port = int.Parse(tmp[1]);
+            ConnectAsync(tmp[0], port, connectCompletionHandler);
+        }
+
         public void ConnectAsync(string address, int port, Action<bool, string, bool> connectCompletionHandler)
         {
             _connection.Address = address;

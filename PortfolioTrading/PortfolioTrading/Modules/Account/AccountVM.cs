@@ -523,15 +523,14 @@ namespace PortfolioTrading.Modules.Account
                         if(times > 1)
                             Thread.Sleep(1000);
 
-                        string localHostIP = NativeHost.GetLocalIP();
-                        string host = ConfigurationHelper.GetAppSettingValue("tradeHostIP", localHostIP);
-                        EventLogger.Write("Connect to {0}:{1}", host, HostPort);
-                        LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
+                        string effectiveTradeStation = AddressRepo.EffectiveTradeStation.Address;
+                        EventLogger.Write("Connect to {0}", effectiveTradeStation);
+                        LogManager.Logger.InfoFormat("Connect to {0}", effectiveTradeStation);
                         _client.AuthClientId = this.Id;
                         
                         try
                         {
-                            _client.ConnectAsync(host, HostPort, actionClntConnectDone);
+                            _client.ConnectAsync(effectiveTradeStation, actionClntConnectDone);
                         }
                         catch (System.Exception ex)
                         {
