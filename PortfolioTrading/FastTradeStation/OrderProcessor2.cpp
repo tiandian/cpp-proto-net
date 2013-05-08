@@ -45,6 +45,7 @@ m_totalCancelTimes(0),
 m_maxTotalOpenTimes(450),
 m_maxTotalCancelTimes(900)
 {
+	memset(&m_orderRefBuf, 0, sizeof(m_orderRefBuf));
 }
 
 
@@ -178,9 +179,8 @@ bool COrderProcessor2::SubmitAndUnlock(CInputOrder* pInputOrder)
 
 int COrderProcessor2::GenerateOrderRef( string& outOrdRef )
 {
-	static char orderRef[10];
-	sprintf_s(orderRef, "%d", m_maxOrderRef);
-	outOrdRef = orderRef;
+	sprintf_s(m_orderRefBuf, "%d", m_maxOrderRef);
+	outOrdRef = m_orderRefBuf;
 	int currOrdRef = m_maxOrderRef++;
 	return currOrdRef;
 }
