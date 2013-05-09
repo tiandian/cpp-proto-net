@@ -51,6 +51,7 @@ m_maxTotalCancelTimes(900)
 
 COrderProcessor2::~COrderProcessor2(void)
 {
+	m_condQryAcct.notify_one();
 }
 
 void COrderProcessor2::OnRspUserLogin( bool succ, std::string& msg, int initOrderRefID )
@@ -227,7 +228,7 @@ bool COrderProcessor2::QueryAccountInfo( string* outSerializedAcctInfo )
 	m_serializedQryAcctInfo.clear();
 	m_pTradeAgent->QueryAccount();
 
-	if(m_condQryAcct.timed_wait(lock, boost::posix_time::seconds(15)))
+	if(m_condQryAcct.timed_wait(lock, boost::posix_time::seconds(3)))
 	{
 		*outSerializedAcctInfo = m_serializedQryAcctInfo;
 		ret = true;
