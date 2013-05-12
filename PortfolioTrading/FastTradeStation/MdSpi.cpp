@@ -1,10 +1,17 @@
 #include "MdSpi.h"
 #include "QS_Configuration.h"
+#include "SubscribeQuoteObj.h"
+
+#include <boost/interprocess/shared_memory_object.hpp>  
+#include <boost/interprocess/mapped_region.hpp>  
+#include <boost/interprocess/sync/scoped_lock.hpp> 
 
 #ifndef WIN32
 #define strcpy_s strcpy
 #define _strdup strdup
 #endif
+
+using namespace boost::interprocess;
 
 extern CQSConfiguration qsConfig;
 
@@ -64,7 +71,7 @@ void CMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 		///获取当前交易日
 		cout << "--->>> 获取当前交易日 = " << m_pUserApi->GetTradingDay() << endl;
 		// 请求订阅行情
-		SubscribeMarketData();	
+		m_thSubscribe = boost::thread(boost::bind(&CMdSpi::SubscribeMarketData, this));	
 	}
 }
 
@@ -74,23 +81,91 @@ int iInstrumentID = 1;
 
 void CMdSpi::SubscribeMarketData()
 {
-	int iResult = m_pUserApi->SubscribeMarketData(ppInstrumentID, iInstrumentID);
-	cout << "--->>> 发送行情订阅请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+	string shmName = "SubscribeQuote-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+
+	cout << "Open memory object: " << shmName << endl;
+	//Create a shared memory object.  
+	shared_memory_object shm  
+		(open_only                    //only create  
+		,shmName.c_str()              //name  
+		,read_write                   //read-write mode  
+		);  
+
+	try{  
+		//Map the whole shared memory in this process  
+		mapped_region region  
+			(shm                       //What to map  
+			,read_write //Map it as read-write  
+			);  
+		cout << "get region address" << endl;
+		//Get the address of the mapped region  
+		void * addr       = region.get_address();  
+
+		//Obtain a pointer to the shared structure  
+		SubscribeQuoteObj * data = static_cast<SubscribeQuoteObj*>(addr);  
+
+		//Print messages until the other process marks the end  
+		bool end_loop = false;  
+		do{  
+			scoped_lock<interprocess_mutex> lock(data->mutex);
+			cout << "wait for condition of submit" << endl;
+			data->cond_submit.wait(lock);
+			cout << "begin subscribing/unsubscribing" << endl;
+			if(data->running)
+			{
+				char** symbols = new char*[1];
+				symbols[0] = data->items[0];
+
+				if(data->subscribe)
+				{
+					cout << "Subscribing " << symbols[0] << endl;
+					int iResult = m_pUserApi->SubscribeMarketData(symbols, 1);
+					cout << "--->>> 发送行情订阅请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+				}
+				else
+				{
+					cout << "Unsubscribing " << symbols[0] << endl;
+					int iResult = m_pUserApi->UnSubscribeMarketData(symbols, 1);
+					cout << "--->>> 发送行情退订请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+				}
+
+				data->clear();
+				data->message_in = false;
+				data->cond_ready.notify_one();
+			}
+			else
+				end_loop = true;
+		}  
+		while(!end_loop);
+	}  
+	catch(interprocess_exception &ex){  
+		std::cout << ex.what() << std::endl;  
+		return;  
+	}  
+
+	cout << "Proc SubscribeMarketData exit." << endl;
+	//int iResult = m_pUserApi->SubscribeMarketData(ppInstrumentID, iInstrumentID);
+	//cout << "--->>> 发送行情订阅请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
 void CMdSpi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "OnRspSubMarketData" << endl;
+	cout << "OnRspSubMarketData - " << pSpecificInstrument->InstrumentID << 
+		(pRspInfo->ErrorID == 0 ? " Succeeded" : " Failed") << endl;
 }
 
 void CMdSpi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "OnRspUnSubMarketData" << endl;
+	cout << "OnRspUnSubMarketData - " << pSpecificInstrument->InstrumentID << 
+		(pRspInfo->ErrorID == 0 ? " Succeeded" : " Failed") << endl;
 }
 
 void CMdSpi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	cout << "OnRtnDepthMarketData" << endl;
+	cout << "OnRtnDepthMarketData : " << pDepthMarketData->InstrumentID << ", "
+		<< pDepthMarketData->LastPrice << ", "
+		<< pDepthMarketData->UpdateTime << ", "
+		<< pDepthMarketData->UpdateMillisec << endl;
 }
 
 bool CMdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)

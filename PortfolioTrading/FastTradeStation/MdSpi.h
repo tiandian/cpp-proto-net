@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <boost/atomic.hpp>
+#include <boost/thread.hpp>
 
 using namespace std;
 
@@ -53,5 +54,6 @@ private:
 
 	CThostFtdcMdApi* m_pUserApi;
 	boost::atomic<int> m_iRequestId;
+	boost::thread m_thSubscribe;
 };
 
