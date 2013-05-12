@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TradeStation", "TradeStatio
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FastTradeStation", "FastTradeStation\FastTradeStation.vcxproj", "{1F942B2F-F300-4C0A-A117-F4786F2E7B1F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QuoteStation", "FastTradeStation\QuoteStation.vcxproj", "{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -87,6 +89,18 @@ Global
 		{1F942B2F-F300-4C0A-A117-F4786F2E7B1F}.Release|Win32.ActiveCfg = Release|Win32
 		{1F942B2F-F300-4C0A-A117-F4786F2E7B1F}.Release|Win32.Build.0 = Release|Win32
 		{1F942B2F-F300-4C0A-A117-F4786F2E7B1F}.Release|x86.ActiveCfg = Release|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Debug|Win32.Build.0 = Debug|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Debug|x86.ActiveCfg = Debug|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|Any CPU.ActiveCfg = Release|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|Win32.ActiveCfg = Release|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|Win32.Build.0 = Release|Win32
+		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|x86.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
