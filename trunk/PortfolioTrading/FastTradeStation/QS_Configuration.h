@@ -17,11 +17,15 @@ public:
 	const std::string& Username() const { return m_username; }
 	const std::string& Password() const { return m_password; }
 
+	bool TestHost() { return m_testHost; }
+
 private:
 	
 	string m_connectionString;
 	string m_brokerId;
 	string m_username;
 	string m_password;
+
+	bool m_testHost;
 };
 

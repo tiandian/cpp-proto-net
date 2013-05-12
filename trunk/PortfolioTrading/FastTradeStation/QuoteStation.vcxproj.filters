@@ -32,5 +32,8 @@
     <ClInclude Include="QS_Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SubscribeQuoteObj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@
 namespace po = boost::program_options;
 
 CQSConfiguration::CQSConfiguration(void)
+	: m_testHost(false)
 {
 }
 
@@ -26,7 +27,9 @@ bool CQSConfiguration::Load( int argc, char* argv[] )
 			("user,u", po::value<string>(&m_username),
 				"Account for quote login")
 			("pwd,p", po::value<string>(&m_password),
-				"Password for quote login");
+				"Password for quote login")
+			("test,t", po::value<bool>(&m_testHost)->default_value(false),
+				"Indicates whether it's a test host");
 
 		po::options_description cmdline_options;
 		cmdline_options.add(generic);
