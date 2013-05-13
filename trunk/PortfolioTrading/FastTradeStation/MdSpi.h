@@ -1,10 +1,12 @@
 #pragma once
 
+#include "ShmQuoteSubscribe.h"
 #include ".\ThostTraderApi\ThostFtdcMdApi.h"
 
 #include <iostream>
 #include <boost/atomic.hpp>
 #include <boost/thread.hpp>
+#include <boost/shared_ptr.hpp>
 
 using namespace std;
 
@@ -48,12 +50,13 @@ public:
 
 private:
 	void ReqUserLogin();
-	void SubscribeMarketData();
+	void SubscribeMarketData(char** symbolArr, int symCount);
+	void UnsubscribeMarketData(char** symbolArr, int symCount);
 	// 
 	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo);
 
 	CThostFtdcMdApi* m_pUserApi;
 	boost::atomic<int> m_iRequestId;
-	boost::thread m_thSubscribe;
+	boost::shared_ptr<CShmQuoteSubscribeConsumer> m_quoteSubscriber;
 };
 

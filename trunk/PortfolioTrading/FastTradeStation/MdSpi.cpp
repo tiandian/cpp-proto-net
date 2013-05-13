@@ -1,6 +1,5 @@
 #include "MdSpi.h"
 #include "QS_Configuration.h"
-#include "SubscribeQuoteObj.h"
 
 #include <boost/interprocess/shared_memory_object.hpp>  
 #include <boost/interprocess/mapped_region.hpp>  
@@ -70,82 +69,36 @@ void CMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 	{
 		///获取当前交易日
 		cout << "--->>> 获取当前交易日 = " << m_pUserApi->GetTradingDay() << endl;
-		// 请求订阅行情
-		m_thSubscribe = boost::thread(boost::bind(&CMdSpi::SubscribeMarketData, this));	
+
+		string shmName = "SubscribeQuote-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+
+		m_quoteSubscriber = boost::shared_ptr<CShmQuoteSubscribeConsumer>
+			( new CShmQuoteSubscribeConsumer(shmName,
+				boost::bind(&CMdSpi::SubscribeMarketData, this, _1, _2),
+				boost::bind(&CMdSpi::UnsubscribeMarketData, this, _1, _2)));
+		m_quoteSubscriber->Init();
+		m_quoteSubscriber->Start();
 	}
 }
 
-// Following is only for test
-char *ppInstrumentID[] = { "IF1305" };			// 行情订阅列表
-int iInstrumentID = 1;	
-
-void CMdSpi::SubscribeMarketData()
+void CMdSpi::SubscribeMarketData( char** symbolArr, int symCount )
 {
-	string shmName = "SubscribeQuote-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+	if(symbolArr != NULL && symCount > 0)
+	{
+		cout << "Subscribing " << symCount << " symbol(s). The first is " << symbolArr[0] << endl;
+		int iResult = m_pUserApi->SubscribeMarketData(symbolArr, symCount);
+		cout << "--->>> 发送行情订阅请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+	}
+}
 
-	cout << "Open memory object: " << shmName << endl;
-	//Create a shared memory object.  
-	shared_memory_object shm  
-		(open_only                    //only create  
-		,shmName.c_str()              //name  
-		,read_write                   //read-write mode  
-		);  
-
-	try{  
-		//Map the whole shared memory in this process  
-		mapped_region region  
-			(shm                       //What to map  
-			,read_write //Map it as read-write  
-			);  
-		cout << "get region address" << endl;
-		//Get the address of the mapped region  
-		void * addr       = region.get_address();  
-
-		//Obtain a pointer to the shared structure  
-		SubscribeQuoteObj * data = static_cast<SubscribeQuoteObj*>(addr);  
-
-		//Print messages until the other process marks the end  
-		bool end_loop = false;  
-		do{  
-			scoped_lock<interprocess_mutex> lock(data->mutex);
-			cout << "wait for condition of submit" << endl;
-			data->cond_submit.wait(lock);
-			cout << "begin subscribing/unsubscribing" << endl;
-			if(data->running)
-			{
-				char** symbols = new char*[1];
-				symbols[0] = data->items[0];
-
-				if(data->subscribe)
-				{
-					cout << "Subscribing " << symbols[0] << endl;
-					int iResult = m_pUserApi->SubscribeMarketData(symbols, 1);
-					cout << "--->>> 发送行情订阅请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
-				}
-				else
-				{
-					cout << "Unsubscribing " << symbols[0] << endl;
-					int iResult = m_pUserApi->UnSubscribeMarketData(symbols, 1);
-					cout << "--->>> 发送行情退订请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
-				}
-
-				data->clear();
-				data->message_in = false;
-				data->cond_ready.notify_one();
-			}
-			else
-				end_loop = true;
-		}  
-		while(!end_loop);
-	}  
-	catch(interprocess_exception &ex){  
-		std::cout << ex.what() << std::endl;  
-		return;  
-	}  
-
-	cout << "Proc SubscribeMarketData exit." << endl;
-	//int iResult = m_pUserApi->SubscribeMarketData(ppInstrumentID, iInstrumentID);
-	//cout << "--->>> 发送行情订阅请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+void CMdSpi::UnsubscribeMarketData( char** symbolArr, int symCount )
+{
+	if(symbolArr != NULL && symCount > 0)
+	{
+		cout << "Unsubscribing " << symCount << " symbol(s). The first is " << symbolArr[0] << endl;
+		int iResult = m_pUserApi->UnSubscribeMarketData(symbolArr, symCount);
+		cout << "--->>> 发送行情退订请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+	}
 }
 
 void CMdSpi::OnRspSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)

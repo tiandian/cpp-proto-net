@@ -74,11 +74,13 @@
     <ClCompile Include="MdSpi.cpp" />
     <ClCompile Include="QS_Configuration.cpp" />
     <ClCompile Include="QuoteMain.cpp" />
+    <ClCompile Include="ShmQuoteSubscribe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MdSpi.h" />
     <ClInclude Include="QS_Configuration.h" />
-    <ClInclude Include="SubscribeQuoteObj.h" />
+    <ClInclude Include="ShmQuoteSubscribe.h" />
+    <ClInclude Include="shm_remover.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
