@@ -24,6 +24,9 @@
     <ClCompile Include="QS_Configuration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShmQuoteSubscribe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MdSpi.h">
@@ -32,7 +35,10 @@
     <ClInclude Include="QS_Configuration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SubscribeQuoteObj.h">
+    <ClInclude Include="ShmQuoteSubscribe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shm_remover.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
