@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ShmQuoteSubscribe.h"
+#include "ShmQuoteFeed.h"
 #include ".\ThostTraderApi\ThostFtdcMdApi.h"
 
 #include <iostream>
@@ -52,11 +53,13 @@ private:
 	void ReqUserLogin();
 	void SubscribeMarketData(char** symbolArr, int symCount);
 	void UnsubscribeMarketData(char** symbolArr, int symCount);
+	void OnTerminateNotified();
 	// 
 	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo);
 
 	CThostFtdcMdApi* m_pUserApi;
 	boost::atomic<int> m_iRequestId;
 	boost::shared_ptr<CShmQuoteSubscribeConsumer> m_quoteSubscriber;
+	boost::shared_ptr<CShmQuoteFeedProducer> m_quoteFeeder;
 };
 

@@ -22,6 +22,8 @@ CMdSpi::CMdSpi(CThostFtdcMdApi* pUserApi)
 
 CMdSpi::~CMdSpi(void)
 {
+	cout << "CMdSpi destructing..." << endl;
+	m_pUserApi = NULL;
 }
 
 void CMdSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo,
@@ -71,12 +73,17 @@ void CMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 		cout << "--->>> 获取当前交易日 = " << m_pUserApi->GetTradingDay() << endl;
 
 		string shmName = "SubscribeQuote-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
-
 		m_quoteSubscriber = boost::shared_ptr<CShmQuoteSubscribeConsumer>
 			( new CShmQuoteSubscribeConsumer(shmName,
 				boost::bind(&CMdSpi::SubscribeMarketData, this, _1, _2),
-				boost::bind(&CMdSpi::UnsubscribeMarketData, this, _1, _2)));
+				boost::bind(&CMdSpi::UnsubscribeMarketData, this, _1, _2),
+				boost::bind(&CMdSpi::OnTerminateNotified, this)));
 		m_quoteSubscriber->Init();
+		
+		string quoteFeedName = "QuoteFeed-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+		m_quoteFeeder = boost::shared_ptr<CShmQuoteFeedProducer>( new CShmQuoteFeedProducer(quoteFeedName));
+		m_quoteFeeder->Init();
+		
 		m_quoteSubscriber->Start();
 	}
 }
@@ -115,10 +122,12 @@ void CMdSpi::OnRspUnSubMarketData(CThostFtdcSpecificInstrumentField *pSpecificIn
 
 void CMdSpi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData)
 {
-	cout << "OnRtnDepthMarketData : " << pDepthMarketData->InstrumentID << ", "
-		<< pDepthMarketData->LastPrice << ", "
-		<< pDepthMarketData->UpdateTime << ", "
-		<< pDepthMarketData->UpdateMillisec << endl;
+	//cout << "CMdSpi::OnRtnDepthMarketData : " << pDepthMarketData->InstrumentID << ", "
+	//	<< pDepthMarketData->LastPrice << ", "
+	//	<< pDepthMarketData->UpdateTime << ", "
+	//	<< pDepthMarketData->UpdateMillisec << endl;
+
+	m_quoteFeeder->Put(pDepthMarketData);
 }
 
 bool CMdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
@@ -128,4 +137,10 @@ bool CMdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 	if (bResult)
 		cerr << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
 	return bResult;
+}
+
+void CMdSpi::OnTerminateNotified()
+{
+	if(m_pUserApi != NULL)
+		m_pUserApi->Release();
 }

@@ -1,6 +1,7 @@
 
 #include "QS_Configuration.h"
 #include "ShmQuoteSubscribe.h"
+#include "ShmQuoteFeed.h"
 #include "MdSpi.h"
 
 #include <iostream>
@@ -26,6 +27,7 @@ CThostFtdcMdApi* pUserApi = NULL;
 int launchChildTest(int argc, char* argv[]);
 void signalHandler( int signum );
 void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer);
+void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField);
 
 int main(int argc, char* argv[])
 {
@@ -85,6 +87,11 @@ int launchChildTest(int argc, char* argv[])
 	CShmQuoteSubscribeProducer producer(shmName);
 	producer.Init();
 
+	string quoteFeedName = "QuoteFeed-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+	CShmQuoteFeedConsumer feedee(quoteFeedName, boost::bind(&OnQuotePush, _1));
+	feedee.Init();
+	feedee.Start();
+
 	boost::thread th(boost::bind(&subscribeQuoteProc, &producer));
 
 	string cmd = sCmd.str();
@@ -101,7 +108,7 @@ void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer)
 	symbols.push_back("IF1305");
 	symbols.push_back("IF1306");
 
-	for(int i = 0; i < 4; ++i)
+	for(int i = 0; i < 5; ++i)
 	{
 		boost::this_thread::sleep_for(boost::chrono::seconds(15));
 		if(i < 4)
@@ -111,8 +118,18 @@ void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer)
 			else
 				producer->Put(symbols, false);
 		}
+		else
+			producer->NotifyTerminate();
 	}
 	cout << "Test subscribeQuoteProc done." << endl;
+}
+
+void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField)
+{
+	cout << "[Parent process] OnQuotePush : " << mktDataField->InstrumentID << ", "
+		<< mktDataField->LastPrice << ", "
+		<< mktDataField->UpdateTime << ", "
+		<< mktDataField->UpdateMillisec << endl;
 }
 
 void signalHandler( int signum )
