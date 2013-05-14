@@ -27,6 +27,9 @@
     <ClCompile Include="ShmQuoteSubscribe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShmQuoteFeed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MdSpi.h">
@@ -39,6 +42,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shm_remover.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShmQuoteFeed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

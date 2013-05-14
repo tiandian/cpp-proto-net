@@ -69,6 +69,16 @@ void CShmQuoteSubscribeProducer::Put(vector<string>& symbols, bool subscribe)
 	}
 }
 
+void CShmQuoteSubscribeProducer::NotifyTerminate()
+{
+	if(m_pData != NULL)
+	{
+		scoped_lock<interprocess_mutex> lock(m_pData->mutex);
+		m_pData->running = false;
+		m_pData->cond_submit.notify_one();
+	}
+}
+
 bool CShmQuoteSubscribeConsumer::Init()
 {
 	try
@@ -146,5 +156,8 @@ void CShmQuoteSubscribeConsumer::GetProc()
 			end_loop = true;
 	}  
 	while(!end_loop);
+
+	if(!m_onTerminateFunc.empty())
+		m_onTerminateFunc();
 }
 

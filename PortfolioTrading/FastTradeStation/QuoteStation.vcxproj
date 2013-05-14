@@ -74,11 +74,13 @@
     <ClCompile Include="MdSpi.cpp" />
     <ClCompile Include="QS_Configuration.cpp" />
     <ClCompile Include="QuoteMain.cpp" />
+    <ClCompile Include="ShmQuoteFeed.cpp" />
     <ClCompile Include="ShmQuoteSubscribe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MdSpi.h" />
     <ClInclude Include="QS_Configuration.h" />
+    <ClInclude Include="ShmQuoteFeed.h" />
     <ClInclude Include="ShmQuoteSubscribe.h" />
     <ClInclude Include="shm_remover.h" />
   </ItemGroup>

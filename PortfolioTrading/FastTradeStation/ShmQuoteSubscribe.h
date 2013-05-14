@@ -61,6 +61,7 @@ public:
 
 	bool Init();
 	void Put(vector<string>& symbols, bool subscribe);
+	void NotifyTerminate();
 
 private:
 	string m_shmName;
@@ -73,13 +74,16 @@ private:
 };
 
 typedef boost::function<void(char**,int)> SubscribeFunc;
+typedef boost::function<void()> TerminateFunc;
 
 class CShmQuoteSubscribeConsumer
 {
 public:
-	CShmQuoteSubscribeConsumer(const string& shmName, SubscribeFunc subFunc, SubscribeFunc unsubFunc)
+	CShmQuoteSubscribeConsumer(const string& shmName, SubscribeFunc subFunc, SubscribeFunc unsubFunc,
+								TerminateFunc onTerminate)
 		: m_shmName(shmName), m_pData(NULL)
-		, m_subscribeSymbolFunc(subFunc), m_unsubSymbolFunc(unsubFunc){}
+		, m_subscribeSymbolFunc(subFunc), m_unsubSymbolFunc(unsubFunc)
+		, m_onTerminateFunc(onTerminate){}
 	~CShmQuoteSubscribeConsumer()
 	{
 		if(m_pData != NULL)
@@ -108,6 +112,7 @@ private:
 
 	SubscribeFunc m_subscribeSymbolFunc;
 	SubscribeFunc m_unsubSymbolFunc;
+	TerminateFunc m_onTerminateFunc;
 
 	boost::thread m_thread;
 };
