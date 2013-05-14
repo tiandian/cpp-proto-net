@@ -2,6 +2,7 @@
 
 #include "ShmQuoteSubscribe.h"
 #include "ShmQuoteFeed.h"
+#include "MarketLoginWaiter.h"
 #include ".\ThostTraderApi\ThostFtdcMdApi.h"
 
 #include <iostream>
@@ -16,6 +17,8 @@ class CMdSpi : public CThostFtdcMdSpi
 public:
 	CMdSpi(CThostFtdcMdApi* pUserApi);
 	~CMdSpi(void);
+
+	int ExitCode(){ return m_exitCode; }
 
 	///´íÎóÓ¦´ð
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo,
@@ -57,7 +60,10 @@ private:
 	// 
 	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo);
 
+	int m_exitCode;
 	CThostFtdcMdApi* m_pUserApi;
+	CMarketLoginWaiter m_loginWaiter;
+
 	boost::atomic<int> m_iRequestId;
 	boost::shared_ptr<CShmQuoteSubscribeConsumer> m_quoteSubscriber;
 	boost::shared_ptr<CShmQuoteFeedProducer> m_quoteFeeder;
