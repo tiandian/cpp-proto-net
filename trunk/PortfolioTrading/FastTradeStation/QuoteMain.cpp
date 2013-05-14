@@ -66,8 +66,9 @@ int main(int argc, char* argv[])
 	pUserApi->Init();
 
 	pUserApi->Join();
-
-	return 0;
+	int ret = mdSpiImpl.ExitCode();
+	cout << "Exit code: " << ret << endl;
+	return ret;
 }
 
 int launchChildTest(int argc, char* argv[])

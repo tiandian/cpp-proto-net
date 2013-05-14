@@ -71,6 +71,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MarketLoginWaiter.cpp" />
     <ClCompile Include="MdSpi.cpp" />
     <ClCompile Include="QS_Configuration.cpp" />
     <ClCompile Include="QuoteMain.cpp" />
@@ -78,6 +79,7 @@
     <ClCompile Include="ShmQuoteSubscribe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MarketLoginWaiter.h" />
     <ClInclude Include="MdSpi.h" />
     <ClInclude Include="QS_Configuration.h" />
     <ClInclude Include="ShmQuoteFeed.h" />

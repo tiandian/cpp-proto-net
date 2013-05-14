@@ -30,6 +30,9 @@
     <ClCompile Include="ShmQuoteFeed.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MarketLoginWaiter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MdSpi.h">
@@ -45,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShmQuoteFeed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketLoginWaiter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

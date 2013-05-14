@@ -16,8 +16,12 @@ extern CQSConfiguration qsConfig;
 
 CMdSpi::CMdSpi(CThostFtdcMdApi* pUserApi)
 	: m_pUserApi(pUserApi)
+	, m_loginWaiter(pUserApi)
 	, m_iRequestId(0)
+	, m_exitCode(-1)
 {
+	// Wait Login success for 10 seconds 
+	m_loginWaiter.BeginWait(10);
 }
 
 CMdSpi::~CMdSpi(void)
@@ -69,6 +73,8 @@ void CMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 	cout << "--->>> " << "OnRspUserLogin" << endl;
 	if (bIsLast && !IsErrorRspInfo(pRspInfo))
 	{
+		m_loginWaiter.Cancel();
+
 		///获取当前交易日
 		cout << "--->>> 获取当前交易日 = " << m_pUserApi->GetTradingDay() << endl;
 
@@ -142,5 +148,8 @@ bool CMdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 void CMdSpi::OnTerminateNotified()
 {
 	if(m_pUserApi != NULL)
+	{
+		m_exitCode = 0; 
 		m_pUserApi->Release();
+	}
 }
