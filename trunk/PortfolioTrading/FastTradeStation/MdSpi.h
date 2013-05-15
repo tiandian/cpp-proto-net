@@ -3,7 +3,7 @@
 #include "ShmQuoteSubscribe.h"
 #include "ShmQuoteFeed.h"
 #include "MarketLoginWaiter.h"
-#include ".\ThostTraderApi\ThostFtdcMdApi.h"
+#include "ThostTraderApi/ThostFtdcMdApi.h"
 
 #include <iostream>
 #include <boost/atomic.hpp>
