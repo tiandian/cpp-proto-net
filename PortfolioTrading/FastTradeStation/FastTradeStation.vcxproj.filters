@@ -147,6 +147,12 @@
     <ClCompile Include="TradeStationDaemon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ShmQuoteFeed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShmQuoteSubscribe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ap_invoke\apsessionmanager.h">
@@ -303,6 +309,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FakeDealer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShmQuoteFeed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShmQuoteSubscribe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

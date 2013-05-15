@@ -107,6 +107,8 @@
     <ClCompile Include="QuoteStore.cpp" />
     <ClCompile Include="ScalperStrategy.cpp" />
     <ClCompile Include="ScalperStrategy2.cpp" />
+    <ClCompile Include="ShmQuoteFeed.cpp" />
+    <ClCompile Include="ShmQuoteSubscribe.cpp" />
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="StrategyFactory.cpp" />
     <ClCompile Include="SymbolInfo.cpp" />
@@ -164,6 +166,8 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="ScalperStrategy.h" />
     <ClInclude Include="ScalperStrategy2.h" />
+    <ClInclude Include="ShmQuoteFeed.h" />
+    <ClInclude Include="ShmQuoteSubscribe.h" />
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="StrategyFactory.h" />
     <ClInclude Include="SymbolInfo.h" />

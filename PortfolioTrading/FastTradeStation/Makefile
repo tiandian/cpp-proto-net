@@ -21,13 +21,20 @@ _FS_OBJS = ArbitrageStrategy AsyncOrderPendingTimer ChangePositionStrategy \
 	   orderhelper OrderProcessor2 Portfolio PortfolioManager \
 	   PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer \
 	   QuoteAgent QuoteFetcher QuoteRepositry QuoteStore \
-	   ScalperStrategy ScalperStrategy2 Strategy \
+	   ScalperStrategy ScalperStrategy2 ShmQuoteFeed ShmQuoteSubscribe Strategy \
 	   StrategyFactory SymbolInfo SymbolInfoRepositry TradeAgent \
 	   TradeStationMain
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
-fast-trade-stion: $(ENTITY_OBJS) $(AP_INVOKE_OBJS) $(FS_OBJS)
+_QS_OBJS = FileOperations MarketLoginWaiter MdSpi QS_Configuration QuoteMain \
+		ShmQuoteFeed ShmQuoteSubscribe
+QS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_QS_OBJS))
+
+fast-trade-station: $(ENTITY_OBJS) $(AP_INVOKE_OBJS) $(FS_OBJS)
 	$(CC) -o FastTradeStation $^ $(LIBS) -Wall
+
+quote-station: $(QS_OBJS)
+	$(CC) -o QuoteStation $^ $(LIBS) -Wall
 
 # Compile entity
 $(OBJ_DIR)/%.pb.o: $(ENTITY_DIR)/%.pb.cc
