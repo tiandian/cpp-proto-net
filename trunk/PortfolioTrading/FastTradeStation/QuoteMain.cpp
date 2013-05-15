@@ -3,6 +3,7 @@
 #include "ShmQuoteSubscribe.h"
 #include "ShmQuoteFeed.h"
 #include "MdSpi.h"
+#include "FileOperations.h"
 
 #include <iostream>
 #include <sstream>
@@ -12,6 +13,7 @@
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
 #include <boost/shared_array.hpp>
+#include <boost/algorithm/string.hpp>
 
 
 #ifdef WIN32
@@ -51,17 +53,38 @@ int main(int argc, char* argv[])
 	signal(SIGINT, signalHandler);
 	signal(SIGTERM, signalHandler);
 
+	string flowFolder = qsConfig.Username() + "/Md";
+	if(!CreateFolderIfNotExists(flowFolder))
+	{
+		cerr << "Cannot create stream folder (" << flowFolder << ")" << endl;
+		return 1;
+	}
+	flowFolder += "/";
+
+	bool isUdp = boost::istarts_with(qsConfig.ConnectionString(), "udp");
 	// 创建UserApi
-	pUserApi = CThostFtdcMdApi::CreateFtdcMdApi();
+	pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(flowFolder.c_str(), isUdp);
 	assert(pUserApi != NULL);
 
 	CMdSpi mdSpiImpl(pUserApi);
 	// 注册事件类
 	pUserApi->RegisterSpi(&mdSpiImpl);
+
+	string connAddress;
+	if(isUdp)
+	{
+		// Populate udp address with prefix tcp://
+		connAddress = boost::ireplace_first_copy(qsConfig.ConnectionString(), "udp", "tcp");
+	}
+	else
+	{
+		connAddress = qsConfig.ConnectionString();
+	}
+
 	// connect
-	int conStrLen = qsConfig.ConnectionString().length();
+	int conStrLen = connAddress.length();
 	boost::shared_array<char> FRONT_ADDR(new char[conStrLen + 1]);
-	strncpy(FRONT_ADDR.get(), qsConfig.ConnectionString().c_str(), conStrLen);
+	strncpy(FRONT_ADDR.get(), connAddress.c_str(), conStrLen);
 	pUserApi->RegisterFront(FRONT_ADDR.get());	
 	pUserApi->Init();
 

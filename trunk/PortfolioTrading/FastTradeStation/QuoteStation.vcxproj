@@ -38,6 +38,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)Bin\$(MSBuildProjectName)\$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\$(MSBuildProjectName)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -71,6 +72,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileOperations.cpp" />
     <ClCompile Include="MarketLoginWaiter.cpp" />
     <ClCompile Include="MdSpi.cpp" />
     <ClCompile Include="QS_Configuration.cpp" />
@@ -79,6 +81,7 @@
     <ClCompile Include="ShmQuoteSubscribe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FileOperations.h" />
     <ClInclude Include="MarketLoginWaiter.h" />
     <ClInclude Include="MdSpi.h" />
     <ClInclude Include="QS_Configuration.h" />
