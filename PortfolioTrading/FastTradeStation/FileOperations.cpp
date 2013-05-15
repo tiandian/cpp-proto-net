@@ -1,5 +1,4 @@
 #include "FileOperations.h"
-#include "globalmembers.h"
 
 #include <boost/filesystem.hpp>
 
@@ -21,7 +20,6 @@ bool CreateFolderIfNotExists(const string& folderName)
 			}
 			catch (const filesystem_error& ex)
 			{
-				logger.Error(ex.what());
 				return false;
 			}
 		}
