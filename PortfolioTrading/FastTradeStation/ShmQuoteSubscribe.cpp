@@ -33,7 +33,14 @@ bool CShmQuoteSubscribeProducer::Init()
 		//Construct the shared structure in memory  
 		m_pData = new (addr) SubscribeQuoteObj;
 		m_pData->running = true;
-		return m_pData != NULL;
+
+		bool succ = m_pData != NULL;
+
+		// Another way to notify Quote Subscriber ready. Disabled for now
+		//if(succ)
+		//	m_thWaitingForReady = boost::thread(boost::bind(&CShmQuoteSubscribeProducer::CheckReadyProc, this));
+
+		return succ;
 	}
 	catch (interprocess_exception &ex)
 	{
@@ -77,6 +84,33 @@ void CShmQuoteSubscribeProducer::NotifyTerminate()
 		m_pData->running = false;
 		m_pData->cond_submit.notify_one();
 	}
+}
+
+void CShmQuoteSubscribeProducer::CheckReadyProc()
+{
+	if(m_funcOnReady.empty())
+		return;
+	else
+	{
+		scoped_lock<interprocess_mutex> lock(m_pData->mutex);
+		if(!m_pData->ready)
+		{
+			boost::system_time expireTime = boost::get_system_time() + boost::posix_time::seconds(10);
+			bool succ = m_pData->cond_ready.timed_wait(lock, expireTime);
+			m_funcOnReady(m_pData->ready);
+		}
+	}
+}
+
+bool CShmQuoteSubscribeProducer::GetReady(int timeout)
+{
+	scoped_lock<interprocess_mutex> lock(m_pData->mutex);
+	if(!m_pData->ready)
+	{
+		boost::system_time expireTime = boost::get_system_time() + boost::posix_time::seconds(timeout);
+		bool succ = m_pData->cond_ready.timed_wait(lock, expireTime);
+	}
+	return m_pData->ready;
 }
 
 bool CShmQuoteSubscribeConsumer::Init()
@@ -150,7 +184,7 @@ void CShmQuoteSubscribeConsumer::GetProc()
 			
 			m_pData->clear();
 			m_pData->ready = true;
-			m_pData->cond_ready.notify_one();
+			m_pData->cond_ready.notify_all();
 		}
 		else
 			end_loop = true;

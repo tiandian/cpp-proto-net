@@ -68,9 +68,10 @@ boost::tuple<bool, string> CQuoteAgent::Login( const string& brokerId, const str
 	logger.Info(boost::str(boost::format("Launch Child with %s") % cmd));
 	m_thLaunch = boost::thread(boost::bind(&CQuoteAgent::LaunchChildProc, this, cmd));
 	
-	m_bIsConnected.store(true, boost::memory_order_relaxed);
+	bool isSubscriberReady = m_quoteSubscriber->GetReady(6);
+	m_bIsConnected.store(isSubscriberReady, boost::memory_order_relaxed);
 
-	return boost::make_tuple(true, "");
+	return boost::make_tuple(isSubscriberReady, isSubscriberReady ? "" : "QuoteStation is not ready yet");
 }
 
 void CQuoteAgent::Logout()
