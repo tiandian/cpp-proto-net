@@ -6,6 +6,8 @@
 #include <vector>
 
 #include <boost/thread.hpp>
+#include <boost/date_time.hpp>
+
 #include <boost/interprocess/shared_memory_object.hpp>
 #include <boost/interprocess/mapped_region.hpp>
 #include <boost/interprocess/sync/scoped_lock.hpp>
@@ -52,25 +54,40 @@ struct SubscribeQuoteObj
 	char	items[SymbolSize][MaxCount];
 };  
 
+typedef boost::function<void(bool)> OnSubscriberReadyFunc;
+
 class CShmQuoteSubscribeProducer
 {
 public:
 	CShmQuoteSubscribeProducer(const string& shmName)
 		: m_shmName(shmName), m_remover(shmName), m_pData(NULL){}
-	~CShmQuoteSubscribeProducer(){}
+	~CShmQuoteSubscribeProducer()
+	{
+		m_thWaitingForReady.join();
+	}
 
 	bool Init();
 	void Put(vector<string>& symbols, bool subscribe);
 	void NotifyTerminate();
+	
+	bool GetReady(int timeout);
+	void SetOnReadyHandler(OnSubscriberReadyFunc onReady)
+	{
+		m_funcOnReady = onReady;
+	}
 
 private:
+	void CheckReadyProc();
+
 	string m_shmName;
 	shm_remove m_remover;
 	shared_memory_object m_shm;
 	mapped_region m_region;
 
 	SubscribeQuoteObj* m_pData;
-	
+
+	boost::thread m_thWaitingForReady;
+	OnSubscriberReadyFunc m_funcOnReady;
 };
 
 typedef boost::function<void(char**,int)> SubscribeFunc;
