@@ -50,7 +50,7 @@ public:
 	bool IsWorking(){ return m_isWorking.load(boost::memory_order_consume); }
 
 	// For Fsm to begin sending leg order
-	void OnSend();
+	void Send();
 	// On leg order submit done
 	void OnAccept(trade::Order* pRtnOrder);
 	
@@ -84,6 +84,8 @@ protected:
 	virtual void SetDirection(trade::PosiDirectionType posiDirection){}
 	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize){}
 	
+	void SetFirstLeg();
+	void GotoRetry(trade::Order* pRtnOrder);
 	void AfterLegDone();
 	void AfterPortfolioDone();
 	
