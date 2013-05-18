@@ -51,14 +51,13 @@ namespace // Concrete FSM implementation
 		struct Sending : public msm::front::state<> 
 		{
 			// every (optional) entry/exit methods get the event passed.
+#ifdef LOG_FOR_TRADE			
 			template <class Event,class FSM>
 			void on_entry(Event const&,FSM& fsm) 
 			{
-#ifdef LOG_FOR_TRADE
 				LOG_DEBUG(logger, "entering: Sending");
-#endif
-				fsm.m_pPlacer->OnSend();
 			}
+#endif
 
 #ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
@@ -268,6 +267,12 @@ namespace // Concrete FSM implementation
 		typedef mpl::vector<Sending, AllOk> initial_state;
 
 		// transitions
+		template <class Event>
+		void on_send(Event const&)
+		{
+			m_pPlacer->Send();
+		}
+		
 		void on_cancel_success(evtCancelSuccess const& evt)       
 		{
 			m_pPlacer->OnOrderCanceled(evt.m_pOrd.get());
@@ -302,8 +307,8 @@ namespace // Concrete FSM implementation
 			_row < Sent				, evtReject			, LegOrderRejected	>,
 			 Row < Sent				, evtRetry		    , none				 , Defer					, none					 >,
 			_row < LegOrderFilled	, evtAllFilled		, Completed			>,
-			_row < LegOrderFilled	, evtNextLeg		, Sending		    >,
-			_row < LegOrderCanceled	, evtRetry			, Sending			>,
+		   a_row < LegOrderFilled	, evtNextLeg		, Sending		     , &p::on_send		       >,
+		   a_row < LegOrderCanceled	, evtRetry			, Sending			 , &p::on_send		       >,
 			_row < LegOrderCanceled	, evtFilledCanceled	, Error				>,
 			_row < AllOk			, evtErrorFound		, Error				>
 		> {};
@@ -378,6 +383,8 @@ void CPortfolioOrderPlacer::Prepare()
 	// Create input orders from template multi-leg order, then m_inputOrders will have items
 	GenLegOrderPlacers();
 	
+	SetFirstLeg();
+
 	m_isReady = true;
 }
 
@@ -446,12 +453,12 @@ void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* 
 	// Limit price
 	SetLimitPrice(pLmtPxArr, iPxSize);
 
-	// Sending the first leg
-	m_activeOrdPlacer = m_legPlacers[0].get();
-	m_isFirstLeg = true;
 	m_trigQuoteTimestamp = trigQuoteTimestamp;
 
-	// start fsm
+	// Sending the first leg
+	Send();
+
+	// And then start fsm, fsm goes into Sending status
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->start();
 }
 
@@ -460,15 +467,14 @@ void CPortfolioOrderPlacer::Run( trade::PosiDirectionType posiDirection, double*
 	Run(posiDirection, pLmtPxArr, iPxSize, boost::chrono::steady_clock::now());
 }
 
-void CPortfolioOrderPlacer::OnSend()
+void CPortfolioOrderPlacer::Send()
 {
 	assert(m_activeOrdPlacer != NULL);
 #ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("Sending Active Order placer's Id:%d ") 
 		% m_activeOrdPlacer->SequenceNo()));
 #endif
-	m_activeOrdPlacer->AddSubmitTimes();
-
+	
 	// lock and generate order ref
 	string sendingOrderRef;
 	int iOrdRef = m_pOrderProcessor->LockForSubmit(sendingOrderRef);
@@ -482,6 +488,8 @@ void CPortfolioOrderPlacer::OnSend()
 
 	// real submit order and unlock to allow next order ref generation
 	bool succ = m_pOrderProcessor->SubmitAndUnlock(&(m_activeOrdPlacer->InputOrder()));
+
+	m_activeOrdPlacer->AddSubmitTimes();
 
 	boost::chrono::steady_clock::duration elapsed = 
 		boost::chrono::steady_clock::now() - m_trigQuoteTimestamp;
@@ -587,9 +595,10 @@ void CPortfolioOrderPlacer::OnCanceling()
 {
 	assert(m_activeOrdPlacer != NULL);
 	assert(m_activeOrdPlacer->IsPending());
+#ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("Canceling order (ref:%s, sysId:%s)")
 		% m_activeOrdPlacer->OrderRef() % m_activeOrdPlacer->OrderSysId()));
-	
+#endif	
 	m_pOrderProcessor->CancelOrder(m_activeOrdPlacer->OrderRef(), 
 		m_activeOrdPlacer->ExchId(), m_activeOrdPlacer->OrderSysId(), 
 		m_activeOrdPlacer->UserId(), m_activeOrdPlacer->Symbol());
@@ -598,11 +607,10 @@ void CPortfolioOrderPlacer::OnCanceling()
 void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 {
 	assert(m_activeOrdPlacer != NULL);
-	m_activeOrdPlacer->WaitForNextQuote();
 
 	int remained = pRtnOrder->volumetotal();
 	int finished = pRtnOrder->volumetraded();
-	if(finished > 0)	// partially filled
+	if(finished > 0)	// partially fill order has been canceled
 	{
 		LOG_INFO(logger, boost::str(boost::format("OrderRef(%s) canceled as %d/%d filled")
 			% m_activeOrdPlacer->OrderRef() % finished % pRtnOrder->volumetotaloriginal()));
@@ -630,23 +638,14 @@ void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 		else // if close
 		{
 			m_activeOrdPlacer->AdjustVolume(remained);
-			LOG_DEBUG(logger, boost::str(boost::format("Partially filled close Order adjust volume from %d to %d")
+			LOG_DEBUG(logger, boost::str(boost::format("Partially filled close Order adjust volume from %d to %d, And Goto Retry...")
 				% pRtnOrder->volumetotaloriginal() % pRtnOrder->volumetotal()));
+			GotoRetry(pRtnOrder);
 		}
 	}
 	else
-	if(m_activeOrdPlacer->CanRetry())
 	{
-		// wait until next quote in
-	}
-	else
-	{
-		AfterLegDone();
-		LOG_INFO(logger, boost::str(boost::format("Retry times is used up. Order(%s) has been retried %d times")
-			% pRtnOrder->instrumentid() % m_activeOrdPlacer->SubmitTimes()));
-		
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(
-			evtFilledCanceled("µ•Õ»:∆Ω≤÷ ß∞‹"));
+		GotoRetry(pRtnOrder);
 	}
 }
 
@@ -656,25 +655,16 @@ void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_p
 
 	if(m_activeOrdPlacer->CanRetry())
 	{
-		m_activeOrdPlacer->ModifyPrice(pQuote);
-		m_trigQuoteTimestamp = quoteTimestamp;
-	}
-
-	// Only for close order
-	if(m_activeOrdPlacer->IsReadyForNextQuote())
-	{
-		if(m_activeOrdPlacer->CanRetry())
+		bool needCancel = m_activeOrdPlacer->ModifyPrice(pQuote);
+		if(needCancel)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("Active Order Placer(No.%d) Go to retry ") % m_activeOrdPlacer->SequenceNo()));
-			// retry
-			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtRetry());
+#ifdef LOG_FOR_TRADE
+			LOG_DEBUG(logger, boost::str(boost::format("Notify Pending Order of Placer(No.%d) to Cancel") % m_activeOrdPlacer->SequenceNo()));
+#endif
+			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextQuoteIn());
+
 		}
-	}
-	else // Pending Order has not been canceled
-	{
-		m_activeOrdPlacer->CancelPending();
-		LOG_DEBUG(logger, boost::str(boost::format("Pending Order of Placer(No.%d) has not been canceled.") % m_activeOrdPlacer->SequenceNo()));
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextQuoteIn());
+		m_trigQuoteTimestamp = quoteTimestamp;
 	}
 }
 
@@ -820,6 +810,8 @@ void CPortfolioOrderPlacer::AfterLegDone()
 void CPortfolioOrderPlacer::AfterPortfolioDone()
 {
 	m_isWorking.store(false, boost::memory_order_release);
+	// set first leg for next start
+	SetFirstLeg();
 }
 
 void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )
@@ -841,9 +833,13 @@ void CPortfolioOrderPlacer::Cleanup()
 
 void CPortfolioOrderPlacer::CleanupProc()
 {
+	int retryTimes = 0;
 	while(m_isWorking.load(boost::memory_order_acquire))
 	{
 		boost::this_thread::sleep_for(boost::chrono::seconds(1));
+		++retryTimes;
+		if(retryTimes > 3)
+			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtErrorFound("Force terminate due to already wait 3 seconds"));
 	}
 
 	m_activeOrdPlacer = NULL;
@@ -855,6 +851,33 @@ bool CPortfolioOrderPlacer::IsActiveFirstLeg()
 {
 	assert(m_activeOrdPlacer != NULL);
 	return m_activeOrdPlacer->SequenceNo() == 0;
+}
+
+void CPortfolioOrderPlacer::SetFirstLeg()
+{
+	m_activeOrdPlacer = m_legPlacers[0].get();
+	m_isFirstLeg = true;
+}
+
+void CPortfolioOrderPlacer::GotoRetry(trade::Order* pRtnOrder)
+{
+	if(m_activeOrdPlacer->CanRetry())
+	{
+#ifdef LOG_FOR_TRADE
+		LOG_DEBUG(logger, boost::str(boost::format("Active Order Placer(No.%d) Go to retry ") % m_activeOrdPlacer->SequenceNo()));
+#endif
+		// retry
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtRetry());
+	}
+	else
+	{
+		AfterLegDone();
+		LOG_INFO(logger, boost::str(boost::format("Retry times is used up. Order(%s) has been retried %d times")
+			% pRtnOrder->instrumentid() % m_activeOrdPlacer->SubmitTimes()));
+
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(
+			evtFilledCanceled("µ•Õ»:∆Ω≤÷ ß∞‹"));
+	}
 }
 
 

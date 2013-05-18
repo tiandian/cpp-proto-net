@@ -39,7 +39,7 @@ public:
 	int SubmitTimes() { return m_submitTimes; }
 	int AddSubmitTimes() { return ++m_submitTimes; }
 	bool CanRetry(){ return m_submitTimes <= m_maxRetry; }
-	void ModifyPrice(entity::Quote* pQuote);
+	bool ModifyPrice(entity::Quote* pQuote);
 
 	void StartPending(trade::Order* pendingOrder);
 
@@ -51,8 +51,6 @@ public:
 	void SetPriceTick(double pxTick){ m_priceTick = pxTick; }
 	void UpdateOrder(const trade::Order& order);
 	bool IsOrderReady(){ return m_bOrderReady; }
-	bool IsReadyForNextQuote() { return m_isReadyForNextQuote; }
-	bool WaitForNextQuote();
 
 	void PartiallyFill(int tradedCount) { m_isPartiallyFilled = true; }
 	bool IsPartiallyFilled(){ return m_isPartiallyFilled; }
@@ -74,7 +72,6 @@ private:
 
 	trade::Order m_legOrder;
 	bool m_bOrderReady;
-	bool m_isReadyForNextQuote;
 
 	// pending Info;
 	bool m_isPending;
