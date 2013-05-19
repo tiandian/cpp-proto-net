@@ -17,15 +17,18 @@ public:
 
 	const string& GetPort();
 	const string& GetAddr();
+	const string& GetWorkingDir();
 
 private:
 	// Logging
 	bool m_enableLogging;
-	std::string m_logConfigFilePath;
+	string m_logConfigFilePath;
 
 	// Connection
-	std::string m_addr;
-	std::string m_port;
-
+	string m_addr;
+	string m_port;
+	
+	// Working directory
+	string m_workingDir;
 };
 

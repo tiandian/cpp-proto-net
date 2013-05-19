@@ -11,7 +11,7 @@
 #include <boost/algorithm/string.hpp>
 #include <google/protobuf/stubs/common.h>
 
-#define FST_VERSION "1.2"
+#define FST_VERSION "1.4"
 
 using namespace std;
 
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 	// on a mounted filesystem, which means that the running daemon would
 	// prevent this filesystem from being unmounted. Changing to the root
 	// directory avoids this problem.
-	chdir("/");
+	chdir(config.GetWorkingDir().c_str());
 
 	// The file mode creation mask is also inherited from the parent process.
 	// We don't want to restrict the permissions on files created by the
@@ -114,7 +114,7 @@ int main(int argc, char* argv[])
 	// that need to be private to the new process.
 	io_service.notify_fork(boost::asio::io_service::fork_child);
 
-	logger.Init(config.LogConfigPath());
+	logger.Init();
 
 	CClientManager clientManager;
 	boost::shared_ptr<SessionManager> pSessionManager(SessionManager::Create());
@@ -122,8 +122,8 @@ int main(int argc, char* argv[])
 	const string& sAddr = config.GetAddr();
 	const string& sPort = config.GetPort();
 	pSessionManager->Listen(sAddr, sPort);
-	logger.Info(boost::str(boost::format("Start listening at %s:%s") 
-		% (sAddr.empty() ? "localhost" : sAddr.c_str()) % sPort.c_str()));
+	logger.Info(boost::str(boost::format("Daemon v%s start listening at %s:%s") 
+		% FST_VERSION % (sAddr.empty() ? "localhost" : sAddr.c_str()) % sPort.c_str()));
 
 	signals.async_wait(
 		boost::bind(&SessionManager::Close, pSessionManager.get()));

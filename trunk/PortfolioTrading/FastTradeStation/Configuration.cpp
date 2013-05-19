@@ -8,6 +8,7 @@
 
 #define APP_VERSION "0.1.704"
 #define DEFAULT_LOG_PATH "~/fast-trade/log4cpp.property"
+#define DEFAULT_WORKING_DIR "~/"
 
 namespace po = boost::program_options;
 using namespace std;
@@ -42,7 +43,8 @@ bool CConfiguration::Load( int argc, char* argv[] )
 			"Logging enable or not")
 			("logConfig", po::value<string>(&m_logConfigFilePath)->default_value(DEFAULT_LOG_PATH), 
 			"Specify log config file path")
-			;
+			("workingDir", po::value<string>(&m_workingDir)->default_value(DEFAULT_WORKING_DIR), 
+			"Specify working directory");
 
 		po::options_description conn("Connection");
 		conn.add_options()
@@ -101,5 +103,10 @@ const string& CConfiguration::GetPort()
 const string& CConfiguration::GetAddr()
 {
 	return m_addr;
+}
+
+const string& CConfiguration::GetWorkingDir()
+{
+	return m_workingDir;
 }
 
