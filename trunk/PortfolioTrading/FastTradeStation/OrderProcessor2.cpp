@@ -180,7 +180,7 @@ bool COrderProcessor2::SubmitAndUnlock(CInputOrder* pInputOrder)
 
 int COrderProcessor2::GenerateOrderRef( string& outOrdRef )
 {
-	sprintf_s(m_orderRefBuf, "%d", m_maxOrderRef);
+	sprintf_s(m_orderRefBuf, "%12d", m_maxOrderRef);
 	outOrdRef = m_orderRefBuf;
 	int currOrdRef = m_maxOrderRef++;
 	return currOrdRef;

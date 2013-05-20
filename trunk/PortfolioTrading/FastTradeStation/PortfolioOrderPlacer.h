@@ -79,11 +79,14 @@ public:
 
 protected:
 
+	void Initialize(const string& mlOrdId);
+
 	virtual void BuildTemplateOrder(){}
-	virtual void Initialize(const string& mlOrdId);
 	virtual void SetDirection(trade::PosiDirectionType posiDirection){}
 	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize){}
 	
+	void SetNewOrderId(const string& mlOrdId);
+	void ResetTemplate();
 	void SetFirstLeg();
 	void GotoRetry(trade::Order* pRtnOrder);
 	void AfterLegDone();
