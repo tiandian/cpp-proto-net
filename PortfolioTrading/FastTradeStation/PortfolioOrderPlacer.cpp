@@ -354,11 +354,14 @@ CPortfolioOrderPlacer::~CPortfolioOrderPlacer(void)
 	m_thCleanup.join();
 }
 
-void CPortfolioOrderPlacer::Initialize( const string& mlOrdId )
+void CPortfolioOrderPlacer::SetNewOrderId(const string& mlOrdId)
 {
 	m_multiLegOrderTemplate->set_orderid(mlOrdId);
 	m_multiLegOrderTemplate->set_openorderid(mlOrdId);
+}
 
+void CPortfolioOrderPlacer::ResetTemplate()
+{
 	m_multiLegOrderTemplate->set_haswarn(false);
 	m_multiLegOrderTemplate->set_statusmsg("");
 
@@ -495,22 +498,28 @@ void CPortfolioOrderPlacer::Send()
 		boost::chrono::steady_clock::now() - m_trigQuoteTimestamp;
 	long usElapse = boost::chrono::duration_cast<boost::chrono::microseconds>(elapsed).count();
 
-	LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the lastest QUOTE")
-		% ((m_activeOrdPlacer->InputOrder().OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
-		% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() % m_activeOrdPlacer->SubmitTimes() % usElapse));
-
 	if(m_isFirstLeg && m_activeOrdPlacer->SubmitTimes() == 1)	// Only publish it for the first time
 	{
 		// Generate order Id
 		string mlOrderId;
 		m_pPortf->NewOrderId(mlOrderId);
-		Initialize(mlOrderId);
+		SetNewOrderId(mlOrderId);
+
+		LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the lastest QUOTE")
+			% ((m_activeOrdPlacer->InputOrder().OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
+			% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() % m_activeOrdPlacer->SubmitTimes() % usElapse));
+
+		ResetTemplate();
 		m_isFirstLeg = false;
 
 		m_pOrderProcessor->PublishMultiLegOrderUpdate(m_multiLegOrderTemplate.get());
 	}
 	else
 	{
+		LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the lastest QUOTE")
+			% ((m_activeOrdPlacer->InputOrder().OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
+			% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() % m_activeOrdPlacer->SubmitTimes() % usElapse));
+
 		// if second leg
 		UpdateLastDoneOrder();
 	}

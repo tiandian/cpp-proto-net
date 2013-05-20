@@ -115,7 +115,7 @@ private:
 	boost::unordered_map<string, CPortfolioOrderPlacer*> m_workingOrderPlacers;
 	boost::recursive_mutex m_ordPlacersMapMutex;
 
-	char m_orderRefBuf[10];
+	char m_orderRefBuf[13];
 	int m_maxOrderRef;
 	boost::mutex m_mutOrdRefIncr;
 	boost::condition_variable m_condSubmit;
