@@ -42,3 +42,8 @@ message CallbackRsp
 	required bool invoke = 4;
 	required string error = 5;
 }
+
+message Heartbeat
+{
+	required int32 timestamp = 1;
+}

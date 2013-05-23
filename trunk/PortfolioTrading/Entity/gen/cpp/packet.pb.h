@@ -38,6 +38,7 @@ class Request;
 class Response;
 class CallbackReq;
 class CallbackRsp;
+class Heartbeat;
 
 // ===================================================================
 
@@ -720,6 +721,88 @@ class CallbackRsp : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static CallbackRsp* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class Heartbeat : public ::google::protobuf::Message {
+ public:
+  Heartbeat();
+  virtual ~Heartbeat();
+  
+  Heartbeat(const Heartbeat& from);
+  
+  inline Heartbeat& operator=(const Heartbeat& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const Heartbeat& default_instance();
+  
+  void Swap(Heartbeat* other);
+  
+  // implements Message ----------------------------------------------
+  
+  Heartbeat* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const Heartbeat& from);
+  void MergeFrom(const Heartbeat& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required int32 timestamp = 1;
+  inline bool has_timestamp() const;
+  inline void clear_timestamp();
+  static const int kTimestampFieldNumber = 1;
+  inline ::google::protobuf::int32 timestamp() const;
+  inline void set_timestamp(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:AP.Heartbeat)
+ private:
+  inline void set_has_timestamp();
+  inline void clear_has_timestamp();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::int32 timestamp_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_packet_2eproto();
+  friend void protobuf_AssignDesc_packet_2eproto();
+  friend void protobuf_ShutdownFile_packet_2eproto();
+  
+  void InitAsDefaultInstance();
+  static Heartbeat* default_instance_;
 };
 // ===================================================================
 
@@ -1704,6 +1787,32 @@ inline ::std::string* CallbackRsp::release_error() {
     error_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
+}
+
+// -------------------------------------------------------------------
+
+// Heartbeat
+
+// required int32 timestamp = 1;
+inline bool Heartbeat::has_timestamp() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void Heartbeat::set_has_timestamp() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void Heartbeat::clear_has_timestamp() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void Heartbeat::clear_timestamp() {
+  timestamp_ = 0;
+  clear_has_timestamp();
+}
+inline ::google::protobuf::int32 Heartbeat::timestamp() const {
+  return timestamp_;
+}
+inline void Heartbeat::set_timestamp(::google::protobuf::int32 value) {
+  set_has_timestamp();
+  timestamp_ = value;
 }
 
 
