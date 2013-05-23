@@ -49,6 +49,7 @@
     <Compile Include="MsgType.cs" />
     <Compile Include="Packet\Callback.cs" />
     <Compile Include="Packet\Connect.cs" />
+    <Compile Include="Packet\Heartbeat.cs" />
     <Compile Include="Packet\RequestResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataTranslater.cs" />

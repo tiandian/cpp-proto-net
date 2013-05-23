@@ -27,8 +27,10 @@ namespace APInvokeManaged
             set { _authPwd = value; }
         }
 
-        public TimeSpan SyncInvocationTimeout { get; set; } 
+        public TimeSpan SyncInvocationTimeout { get; set; }
 
+        private System.Threading.Timer _heartbeatTimer;
+        private const int HEARTBEAT_INTERVAL = 60 * 1000;
         private ConnectionBase _connection;
         private Dictionary<string, Delegate> _requestDic = new Dictionary<string, Delegate>();
         private object _syncObj = new object();
@@ -57,6 +59,22 @@ namespace APInvokeManaged
             _connection = new ConnectionBase();
             _connection.OnDataReceived += new Action<MsgType, byte[]>(_connection_OnDataReceived);
             _connection.OnError += new Action<string>(_connection_OnError);
+            _heartbeatTimer = new Timer(new TimerCallback(HeartbeatProc));
+        }
+
+        private void HeartbeatProc(object state)
+        {
+            try
+            {
+                Packet.Heartbeat hb = new Packet.Heartbeat();
+                hb.timestamp = (int)DateTime.Now.TimeOfDay.TotalSeconds;
+                byte[] data = DataTranslater.Serialize(hb);
+                _connection.SendAsync(MsgType.HEARTBEAT, data, null);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.WriteLine("Sending heartbeat failed due to {0}", ex.Message);
+            }
         }
 
         public bool Connect(string address, int port)
@@ -115,6 +133,7 @@ namespace APInvokeManaged
 
         public void Disconnect()
         {
+            _heartbeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
             _connection.Close();
         }
 
@@ -208,7 +227,10 @@ namespace APInvokeManaged
         void _connection_OnError(string errMsg)
         {
             if (!_connection.IsConnected)
+            {
                 IsConnected = false;
+                _heartbeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            }
 
             RaiseError(errMsg);
         }
@@ -263,6 +285,11 @@ namespace APInvokeManaged
                 Action<bool, string, bool> connCompletion = callback as Action<bool, string, bool>;
                 if (connCompletion != null)
                     connCompletion(IsConnected, errMsg, attachExisting);
+            }
+
+            if (IsConnected)
+            {
+                _heartbeatTimer.Change(0, HEARTBEAT_INTERVAL);
             }
         }
 

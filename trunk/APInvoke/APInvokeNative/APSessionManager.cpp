@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "APSessionManager.h"
 
+#include <iostream>
 #include <sstream>
 #include <boost/bind.hpp>
 #include <boost/uuid/uuid_io.hpp>
@@ -245,6 +246,13 @@ void APSession::OnReadCompleted( const boost::system::error_code& e, MSG_TYPE ms
 				callbackRsp->ParseFromString(data);
 
 				m_callbackRspHandler->OnCallbackResponse(callbackRsp->method(), callbackRsp->return_data());
+			}
+			break;
+		case HEARTBEAT:
+			{
+				AP::Heartbeat hb;
+				hb.ParseFromString(data);
+				std::cout << "Client heartbeat " << hb.timestamp() << std::endl;
 			}
 			break;
 		}
