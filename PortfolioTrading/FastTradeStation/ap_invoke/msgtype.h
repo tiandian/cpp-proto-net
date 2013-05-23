@@ -20,6 +20,9 @@ typedef enum _MsgType
 	CALLBK_REQ,
 
 	// Callback Rsp
-	CALLBK_RSP
+	CALLBK_RSP,
+
+	// Heartbeat
+	HEARTBEAT
 
 } MSG_TYPE;

@@ -25,6 +25,9 @@ namespace APInvokeManaged
         CALLBK_REQ,
 
         // Callback Rsp
-        CALLBK_RSP
+        CALLBK_RSP,
+
+        // Heartbeat
+        HEARTBEAT
     }
 }
