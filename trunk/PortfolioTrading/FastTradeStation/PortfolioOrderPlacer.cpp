@@ -279,13 +279,13 @@ namespace // Concrete FSM implementation
 		}
 
 		// guards
-		bool first_leg_canceled(evtCancelSuccess const&)
+		bool if_portfolio_canceled(evtCancelSuccess const&)
 		{
-			return m_pPlacer->IsActiveFirstLeg();
+			return m_pPlacer->IfPortfolioCanceled();
 		}
-		bool other_leg_canceled(evtCancelSuccess const&)
+		bool if_leg_canceled(evtCancelSuccess const&)
 		{
-			return !(m_pPlacer->IsActiveFirstLeg());
+			return !(m_pPlacer->IfPortfolioCanceled());
 		}
 		bool if_cancel_failed(evtCancelFailure const& evt)
 		{
@@ -301,11 +301,11 @@ namespace // Concrete FSM implementation
 			_row < Sending			, evtSubmit			, Sent				>,
 			_row < Sending			, evtSubmitFailure	, Error			    >,
 			_row < Sent				, evtFilled			, LegOrderFilled	>,
-			 row < Sent				, evtCancelSuccess	, LegOrderCanceled	 , &p::on_cancel_success	, &p::other_leg_canceled >,
-			 row < Sent				, evtCancelSuccess	, Canceled			 , &p::on_cancel_success	, &p::first_leg_canceled >,
-		   g_row < Sent				, evtCancelFailure	, Error											, &p::if_cancel_failed   >,
+			 row < Sent				, evtCancelSuccess	, LegOrderCanceled	 , &p::on_cancel_success	, &p::if_leg_canceled		>,
+			 row < Sent				, evtCancelSuccess	, Canceled			 , &p::on_cancel_success	, &p::if_portfolio_canceled >,
+		   g_row < Sent				, evtCancelFailure	, Error											, &p::if_cancel_failed		>,
 			_row < Sent				, evtReject			, LegOrderRejected	>,
-			 Row < Sent				, evtRetry		    , none				 , Defer					, none					 >,
+			 Row < Sent				, evtRetry		    , none				 , Defer					, none						>,
 			_row < LegOrderFilled	, evtAllFilled		, Completed			>,
 		   a_row < LegOrderFilled	, evtNextLeg		, Sending		     , &p::on_send		       >,
 		   a_row < LegOrderCanceled	, evtRetry			, Sending			 , &p::on_send		       >,
@@ -856,10 +856,10 @@ void CPortfolioOrderPlacer::CleanupProc()
 	m_legPlacers.clear();
 }
 
-bool CPortfolioOrderPlacer::IsActiveFirstLeg()
+bool CPortfolioOrderPlacer::IfPortfolioCanceled()
 {
 	assert(m_activeOrdPlacer != NULL);
-	return m_activeOrdPlacer->SequenceNo() == 0;
+	return m_activeOrdPlacer->SequenceNo() == 0 && !m_activeOrdPlacer->IsPartiallyFilled();
 }
 
 void CPortfolioOrderPlacer::SetFirstLeg()

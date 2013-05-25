@@ -16,6 +16,7 @@ CLegOrderPlacer::CLegOrderPlacer(CPortfolioOrderPlacer* portfOrdPlacer, int open
 	, m_openTimeout(openTimeout)
 	, m_isPending(false)
 	, m_bOrderReady(false)
+	, m_isPartiallyFilled(false)
 {
 	m_pendingTimer.SetLegOrderPlacer(this);
 }
@@ -66,6 +67,7 @@ void CLegOrderPlacer::Reset(bool afterCancel)
 	
 	m_isPending = false;
 	m_bOrderReady = false;
+	m_isPartiallyFilled = false;
 	m_exchId.clear();
 	m_ordSysId.clear();
 	m_userId.clear();

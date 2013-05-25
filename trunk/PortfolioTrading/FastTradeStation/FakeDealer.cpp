@@ -36,10 +36,14 @@ int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRe
 {
 	static int times = 0;
 	++times;
+
+	boost::shared_ptr<CThostFtdcInputOrderField> tmpInputOrder( new CThostFtdcInputOrderField);
+	memcpy(tmpInputOrder.get(), pInputOrder, sizeof(CThostFtdcInputOrderField));
+
 	if(times % 2 == 1)
 	{
 		boost::thread thIns(boost::bind(
-			&CFakeDealer::FullFillOrder, this, pInputOrder, nRequestID)
+			&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
 			//&CFakeDealer::PendingOrder, this, pInputOrder, nRequestID)
 			);
 	}
@@ -47,7 +51,7 @@ int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRe
 	{
 		boost::thread thIns(boost::bind(
 			//&CFakeDealer::FullFillOrder, this, pInputOrder, nRequestID)
-			&CFakeDealer::PendingOrder, this, pInputOrder, nRequestID)
+			&CFakeDealer::PendingOrder, this, tmpInputOrder, nRequestID)
 			);
 	}
 	
@@ -56,8 +60,11 @@ int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRe
 
 int CFakeDealer::ReqOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, int nRequestID )
 {
+	boost::shared_ptr<CThostFtdcInputOrderActionField> tmpInputOrderAct( new CThostFtdcInputOrderActionField);
+	memcpy(tmpInputOrderAct.get(), pInputOrderAction, sizeof(CThostFtdcInputOrderActionField));
+
 	boost::thread thIns(boost::bind(
-		&CFakeDealer::CancelOrder, this, pInputOrderAction, nRequestID)
+		&CFakeDealer::CancelOrder, this, tmpInputOrderAct, nRequestID)
 		);
 	return 0;
 }
@@ -159,38 +166,38 @@ CFakeRtnOrder* CFakeDealer::GetCanceledOrder( CThostFtdcInputOrderField * pInput
 }
 
 
-void CFakeDealer::FullFillOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID )
+void CFakeDealer::FullFillOrder( boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID )
 {
-	FakeMsgPtr msgAccept(GetAcceptOrder(pInputOrder, nRequestID));
+	FakeMsgPtr msgAccept(GetAcceptOrder(pInputOrder.get(), nRequestID));
 	m_msgPump.Enqueue(msgAccept);
 
 	int orderSysId = ++m_orderNum;
 
-	FakeMsgPtr msgPending(GetPendingOrder(pInputOrder, nRequestID, orderSysId));
+	FakeMsgPtr msgPending(GetPendingOrder(pInputOrder.get(), nRequestID, orderSysId));
 	m_msgPump.Enqueue(msgPending);
 
-	FakeMsgPtr msgPending2(GetPendingOrder(pInputOrder, nRequestID, orderSysId));
+	FakeMsgPtr msgPending2(GetPendingOrder(pInputOrder.get(), nRequestID, orderSysId));
 	m_msgPump.Enqueue(msgPending2);
 
-	FakeMsgPtr msgFilled(GetFilledOrder(pInputOrder, nRequestID, orderSysId));
+	FakeMsgPtr msgFilled(GetFilledOrder(pInputOrder.get(), nRequestID, orderSysId));
 	m_msgPump.Enqueue(msgFilled);
 }
 
 
-void CFakeDealer::PendingOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID )
+void CFakeDealer::PendingOrder( boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID )
 {
 	m_pendingInputOrder = *pInputOrder;
 
-	FakeMsgPtr msgAccept(GetAcceptOrder(pInputOrder, nRequestID));
+	FakeMsgPtr msgAccept(GetAcceptOrder(pInputOrder.get(), nRequestID));
 	m_msgPump.Enqueue(msgAccept);
 
 	int orderSysId = ++m_orderNum;
 
-	FakeMsgPtr msgPending(GetPendingOrder(pInputOrder, nRequestID, orderSysId));
+	FakeMsgPtr msgPending(GetPendingOrder(pInputOrder.get(), nRequestID, orderSysId));
 	m_msgPump.Enqueue(msgPending);
 }
 
-void CFakeDealer::CancelOrder( CThostFtdcInputOrderActionField *pInputOrderAction, int nRequestID )
+void CFakeDealer::CancelOrder( boost::shared_ptr<CThostFtdcInputOrderActionField> pInputOrderAction, int nRequestID )
 {
 	int orderSysId = atoi(pInputOrderAction->OrderSysID);
 
