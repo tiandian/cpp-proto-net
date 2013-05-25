@@ -257,6 +257,7 @@ namespace // Concrete FSM implementation
 			  a_irow < Canceling , evtPending	      ,					   &s::duplicate_pending	>,
 			  a_irow < Canceling , evtPartiallyFilled ,					   &s::duplicate_partially  >,
 			    _row < PartiallyFilled , evtPendingTimeUp   , Canceling	>,
+				_row < PartiallyFilled , evtNextQuoteIn	    , Canceling	>,
 			   _irow < PartiallyFilled , evtPartiallyFilled				>
 			> {};
 
@@ -308,6 +309,7 @@ namespace // Concrete FSM implementation
 			 Row < Sent				, evtRetry		    , none				 , Defer					, none						>,
 			_row < LegOrderFilled	, evtAllFilled		, Completed			>,
 		   a_row < LegOrderFilled	, evtNextLeg		, Sending		     , &p::on_send		       >,
+		   a_row < LegOrderCanceled	, evtNextLeg		, Sending		     , &p::on_send		       >,
 		   a_row < LegOrderCanceled	, evtRetry			, Sending			 , &p::on_send		       >,
 			_row < LegOrderCanceled	, evtFilledCanceled	, Error				>,
 			_row < AllOk			, evtErrorFound		, Error				>
