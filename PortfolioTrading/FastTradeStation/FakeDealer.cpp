@@ -14,6 +14,7 @@ CFakeDealer::CFakeDealer(void)
 	, FRONT_ID(0)
 	, SESSION_ID(0)
 	, m_pendingOrdSysId(0)
+	, m_partiallyFilledAmount(1)
 {
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
 	m_tradingDay = boost::gregorian::to_iso_string(d);
@@ -40,6 +41,37 @@ int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRe
 	boost::shared_ptr<CThostFtdcInputOrderField> tmpInputOrder( new CThostFtdcInputOrderField);
 	memcpy(tmpInputOrder.get(), pInputOrder, sizeof(CThostFtdcInputOrderField));
 
+	/* Partially fill test
+	if(times % 4 == 1)
+	{
+		boost::thread thIns(boost::bind(
+			//&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
+			&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+			);
+	}
+	else if(times % 4 == 2)
+	{
+		boost::thread thIns(boost::bind(
+			//&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+			&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
+			);
+	}
+	else if(times % 4 == 3)
+	{
+		boost::thread thIns(boost::bind(
+			//&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+			&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
+			);
+	}
+	else{
+		boost::thread thIns(boost::bind(
+			//&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
+			&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+			);
+	}
+	*/
+	
+	// Fill and pending
 	if(times % 2 == 1)
 	{
 		boost::thread thIns(boost::bind(
@@ -54,7 +86,7 @@ int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRe
 			&CFakeDealer::PendingOrder, this, tmpInputOrder, nRequestID)
 			);
 	}
-	
+
 	return 0;
 }
 
@@ -119,7 +151,7 @@ CFakeRtnOrder* CFakeDealer::GetAcceptOrder( CThostFtdcInputOrderField * pInputOr
 	return pFakeOrder;
 }
 
-CFakeRtnOrder* CFakeDealer::GetPendingOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId)
+CFakeRtnOrder* CFakeDealer::GetPendingOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId, int amount )
 {
 	CFakeRtnOrder* pFakeOrder = CreateOrderTemplate(pInputOrder, nRequestID);
 	CThostFtdcOrderField* pOrdField = pFakeOrder->Msg();
@@ -127,10 +159,11 @@ CFakeRtnOrder* CFakeDealer::GetPendingOrder( CThostFtdcInputOrderField * pInputO
 	sprintf(pOrdField->OrderSysID, "%d", orderSysId);
 	
 	pOrdField->OrderSubmitStatus = THOST_FTDC_OSS_Accepted;
-	pOrdField->OrderStatus = THOST_FTDC_OST_NoTradeQueueing;
-	pOrdField->VolumeTraded = 0;
-	pOrdField->VolumeTotal = pInputOrder->VolumeTotalOriginal;
-	strcpy_s(pOrdField->StatusMsg, "未成交");
+	pOrdField->OrderStatus = amount > 0 ? THOST_FTDC_OST_PartTradedQueueing : THOST_FTDC_OST_NoTradeQueueing;
+	pOrdField->VolumeTraded = amount;
+	pOrdField->VolumeTotal = pInputOrder->VolumeTotalOriginal - amount;
+
+	strcpy_s(pOrdField->StatusMsg, amount > 0 ? "部分成交" : "未成交");
 
 	return pFakeOrder;
 }
@@ -150,7 +183,24 @@ CFakeRtnOrder* CFakeDealer::GetFilledOrder( CThostFtdcInputOrderField * pInputOr
 	return pFakeOrder;
 }
 
-CFakeRtnOrder* CFakeDealer::GetCanceledOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId )
+CFakeRtnOrder* CFakeDealer::GetPartiallyFilledOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId, int amount )
+{
+	CFakeRtnOrder* pFakeOrder = CreateOrderTemplate(pInputOrder, nRequestID);
+	CThostFtdcOrderField* pOrdField = pFakeOrder->Msg();
+	sprintf(pOrdField->OrderSysID, "%d", orderSysId);
+
+	pOrdField->OrderSubmitStatus = THOST_FTDC_OSS_Accepted;
+	pOrdField->OrderStatus = THOST_FTDC_OST_PartTradedQueueing;
+	pOrdField->VolumeTraded = amount;
+	pOrdField->VolumeTotal = pInputOrder->VolumeTotalOriginal - amount;
+	strcpy_s(pOrdField->StatusMsg, "部分成交");
+
+	return pFakeOrder;
+
+}
+
+
+CFakeRtnOrder* CFakeDealer::GetCanceledOrder( CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId, int amount )
 {
 	CFakeRtnOrder* pFakeOrder = CreateOrderTemplate(pInputOrder, nRequestID);
 	CThostFtdcOrderField* pOrdField = pFakeOrder->Msg();
@@ -158,8 +208,8 @@ CFakeRtnOrder* CFakeDealer::GetCanceledOrder( CThostFtdcInputOrderField * pInput
 
 	pOrdField->OrderSubmitStatus = THOST_FTDC_OSS_Accepted;
 	pOrdField->OrderStatus = THOST_FTDC_OST_Canceled;
-	pOrdField->VolumeTraded = 0;
-	pOrdField->VolumeTotal = pInputOrder->VolumeTotalOriginal;
+	pOrdField->VolumeTraded = amount;
+	pOrdField->VolumeTotal = pInputOrder->VolumeTotalOriginal - amount;
 	strcpy_s(pOrdField->StatusMsg, "已撤单");
 
 	return pFakeOrder;
@@ -184,6 +234,26 @@ void CFakeDealer::FullFillOrder( boost::shared_ptr<CThostFtdcInputOrderField> pI
 }
 
 
+void CFakeDealer::PartiallyFillOrder( boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID )
+{
+	m_pendingInputOrder = *pInputOrder;
+
+	FakeMsgPtr msgAccept(GetAcceptOrder(pInputOrder.get(), nRequestID));
+	m_msgPump.Enqueue(msgAccept);
+
+	int orderSysId = ++m_orderNum;
+
+	FakeMsgPtr msgPending(GetPendingOrder(pInputOrder.get(), nRequestID, orderSysId));
+	m_msgPump.Enqueue(msgPending);
+
+	FakeMsgPtr msgPending2(GetPendingOrder(pInputOrder.get(), nRequestID, orderSysId));
+	m_msgPump.Enqueue(msgPending2);
+
+	FakeMsgPtr msgFilled(GetPartiallyFilledOrder(pInputOrder.get(), nRequestID, orderSysId, m_partiallyFilledAmount));
+	m_msgPump.Enqueue(msgFilled);
+}
+
+
 void CFakeDealer::PendingOrder( boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID )
 {
 	m_pendingInputOrder = *pInputOrder;
@@ -201,10 +271,10 @@ void CFakeDealer::CancelOrder( boost::shared_ptr<CThostFtdcInputOrderActionField
 {
 	int orderSysId = atoi(pInputOrderAction->OrderSysID);
 
-	FakeMsgPtr msgPending(GetPendingOrder(&m_pendingInputOrder, nRequestID, orderSysId));
+	FakeMsgPtr msgPending(GetPendingOrder(&m_pendingInputOrder, nRequestID, orderSysId, m_partiallyFilledAmount));
 	m_msgPump.Enqueue(msgPending);
 
-	FakeMsgPtr msgCanceled(GetCanceledOrder(&m_pendingInputOrder, nRequestID, orderSysId));
+	FakeMsgPtr msgCanceled(GetCanceledOrder(&m_pendingInputOrder, nRequestID, orderSysId, m_partiallyFilledAmount));
 	m_msgPump.Enqueue(msgCanceled);
 }
 

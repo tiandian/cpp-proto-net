@@ -90,11 +90,13 @@ private:
 	CFakeRtnOrder* CreateOrderTemplate(CThostFtdcInputOrderField * pInputOrder, int nRequestID);
 
 	CFakeRtnOrder* GetAcceptOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID);
-	CFakeRtnOrder* GetPendingOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId);
+	CFakeRtnOrder* GetPendingOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId, int amount = 0);
 	CFakeRtnOrder* GetFilledOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId);
-	CFakeRtnOrder* GetCanceledOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId);
+	CFakeRtnOrder* GetPartiallyFilledOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId, int amount);
+	CFakeRtnOrder* GetCanceledOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId, int amount = 0);
 
 	void FullFillOrder(boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID);
+	void PartiallyFillOrder( boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID );
 	void PendingOrder(boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID);
 	void CancelOrder(boost::shared_ptr<CThostFtdcInputOrderActionField> pInputOrderAction, int nRequestID);
 	
@@ -118,5 +120,7 @@ private:
 
 	std::ostringstream m_timeStream;
 	//boost::mutex m_mutTimeFormat;
+
+	int m_partiallyFilledAmount;
 };
 
