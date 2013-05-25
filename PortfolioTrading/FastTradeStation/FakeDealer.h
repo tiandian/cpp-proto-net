@@ -94,9 +94,9 @@ private:
 	CFakeRtnOrder* GetFilledOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId);
 	CFakeRtnOrder* GetCanceledOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID, int orderSysId);
 
-	void FullFillOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID);
-	void PendingOrder(CThostFtdcInputOrderField * pInputOrder, int nRequestID);
-	void CancelOrder(CThostFtdcInputOrderActionField *pInputOrderAction, int nRequestID);
+	void FullFillOrder(boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID);
+	void PendingOrder(boost::shared_ptr<CThostFtdcInputOrderField> pInputOrder, int nRequestID);
+	void CancelOrder(boost::shared_ptr<CThostFtdcInputOrderActionField> pInputOrderAction, int nRequestID);
 	
 	void SetDateField(CThostFtdcOrderField* pRtnOrder);
 

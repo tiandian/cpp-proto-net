@@ -74,8 +74,7 @@ public:
 	void OnOrderPlaceFailed(const string& errMsg);
 	void OnOrderCancelFailed(int errorId, const string& errMsg);
 
-	bool IsActiveFirstLeg();
-	
+	bool IfPortfolioCanceled();
 
 protected:
 
