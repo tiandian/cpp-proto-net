@@ -78,17 +78,29 @@ void CMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 		///获取当前交易日
 		cout << "--->>> 获取当前交易日 = " << m_pUserApi->GetTradingDay() << endl;
 
-		string shmName = "SubscribeQuote-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+		string shmName = SHM_SUBSCRIBE_NAME + qsConfig.BrokerId() + "-" + qsConfig.Username();
+		cout << "Opening shm " << shmName << " for quote subscribe" << endl;
 		m_quoteSubscriber = boost::shared_ptr<CShmQuoteSubscribeConsumer>
 			( new CShmQuoteSubscribeConsumer(shmName,
 				boost::bind(&CMdSpi::SubscribeMarketData, this, _1, _2),
 				boost::bind(&CMdSpi::UnsubscribeMarketData, this, _1, _2),
 				boost::bind(&CMdSpi::OnTerminateNotified, this)));
-		m_quoteSubscriber->Init();
-		
-		string quoteFeedName = "QuoteFeed-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+		bool initSucc = m_quoteSubscriber->Init();
+		if(!initSucc)
+		{
+			cout << "[QuoteStation] Quote subscriber initializtion failed" << endl;
+			return;
+		}
+
+		string quoteFeedName = SHM_QUOTE_FEED_NAME + qsConfig.BrokerId() + "-" + qsConfig.Username();
+		cout << "Open shm " << quoteFeedName << " for quote feeding" << endl;
 		m_quoteFeeder = boost::shared_ptr<CShmQuoteFeedProducer>( new CShmQuoteFeedProducer(quoteFeedName));
-		m_quoteFeeder->Init();
+		initSucc = m_quoteFeeder->Init();
+		if(!initSucc)
+		{
+			cout << "[QuoteStation] Quote feeder initializtion failed" << endl;
+			return;
+		}
 		
 		m_quoteSubscriber->Start();
 	}

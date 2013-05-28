@@ -72,7 +72,9 @@ copy /y log4cpp.property $(OutDir)</Command>
       <AdditionalDependencies>libprotobuf.lib;log4cppLIB.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y log4cpp.property $(OutDir)</Command>
+      <Command>copy /y .\ThostTraderApi\thostMduserapi.dll $(OutDir)
+copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)
+copy /y log4cpp.property $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

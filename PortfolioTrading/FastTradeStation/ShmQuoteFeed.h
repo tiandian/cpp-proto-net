@@ -15,6 +15,8 @@
 using namespace std;
 using namespace boost::interprocess;
 
+#define SHM_QUOTE_FEED_NAME "QuoteFeed_1-"
+
 struct MarketDataObj
 {  
 	MarketDataObj()  
