@@ -47,14 +47,19 @@ boost::tuple<bool, string> CQuoteAgent::Login( const string& brokerId, const str
 	m_brokerID = brokerId;
 	m_userID = userId;
 	
-	string shmName = "SubscribeQuote-" + m_brokerID + "-" + m_userID;
+	string shmName = SHM_SUBSCRIBE_NAME + m_brokerID + "-" + m_userID;
 	m_quoteSubscriber = boost::shared_ptr<CShmQuoteSubscribeProducer>( new CShmQuoteSubscribeProducer(shmName) );
-	m_quoteSubscriber->Init();
+	bool initSucc = m_quoteSubscriber->Init();
+	if(!initSucc)
+		return boost::make_tuple(false, "Quote subscriber initialization failed");
 
-	string quoteFeedName = "QuoteFeed-" + m_brokerID + "-" + m_userID;
+	string quoteFeedName = SHM_QUOTE_FEED_NAME + m_brokerID + "-" + m_userID;
 	m_quoteFeedee = boost::shared_ptr<CShmQuoteFeedConsumer>( new CShmQuoteFeedConsumer(quoteFeedName,
 		boost::bind(&CQuoteAgent::OnQuotePush, this, _1)) );
-	m_quoteFeedee->Init();
+	initSucc = m_quoteFeedee->Init();
+	if(!initSucc)
+		return boost::make_tuple(false, "Quote feedee initialization failed");
+
 	m_quoteFeedee->Start();
 
 	stringstream sCmd;

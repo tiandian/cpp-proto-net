@@ -17,6 +17,8 @@
 using namespace std;
 using namespace boost::interprocess;
 
+#define SHM_SUBSCRIBE_NAME "SubscribeQuote_1-"
+
 struct SubscribeQuoteObj  
 {  
 	enum { MaxCount = 10, SymbolSize = 10 };  

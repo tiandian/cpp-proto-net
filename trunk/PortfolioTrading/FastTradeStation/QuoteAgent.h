@@ -1,5 +1,7 @@
 #pragma once
 
+#define IN_QUOTE_AGENT
+
 #include "ShmQuoteSubscribe.h"
 #include "ShmQuoteFeed.h"
 #include "QuoteAgentCallback.h"

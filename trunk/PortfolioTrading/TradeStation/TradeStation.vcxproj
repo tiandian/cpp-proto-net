@@ -81,8 +81,8 @@
       <AdditionalDependencies>libprotobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy /y .\ThostTraderApi\thostMduserapi.dll $(OutDir)
-copy /y .\ThostTraderApi\thosttraderapi.dll $(OutDir)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
