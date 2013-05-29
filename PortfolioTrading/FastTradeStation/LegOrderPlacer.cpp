@@ -63,7 +63,10 @@ void CLegOrderPlacer::StartPending(trade::Order* pendingOrder)
 void CLegOrderPlacer::Reset(bool afterCancel)
 {
 	if(!afterCancel)
+	{
 		m_submitTimes = 0;
+		m_inputOrder.set_volumetotaloriginal(m_volumeOriginial);
+	}
 	
 	m_isPending = false;
 	m_bOrderReady = false;
@@ -71,8 +74,7 @@ void CLegOrderPlacer::Reset(bool afterCancel)
 	m_exchId.clear();
 	m_ordSysId.clear();
 	m_userId.clear();
-
-	m_inputOrder.set_volumetotaloriginal(m_volumeOriginial);
+	
 	m_legOrder.set_volumetotaloriginal(0);
 	m_legOrder.set_volumetraded(0);
 	m_legOrder.set_ordersubmitstatus(trade::NOT_SUBMITTED);
