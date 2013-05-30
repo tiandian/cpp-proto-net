@@ -19,6 +19,8 @@ using namespace boost::interprocess;
 
 #ifdef WIN32
 #define longlong __int64
+#else
+#define longlong long long
 #endif
 
 struct MarketDataObj
