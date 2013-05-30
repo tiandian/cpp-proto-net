@@ -4,6 +4,8 @@
 
 #ifdef WIN32
 #define longlong __int64
+#else
+#define longlong long long
 #endif
 
 class CQuoteAgentCallback
