@@ -26,11 +26,11 @@ CQuoteStore::~CQuoteStore(void)
 		% m_symbol));
 }
 
-void CQuoteStore::Set( CThostFtdcDepthMarketDataField* pQuoteData )
+void CQuoteStore::Set( CThostFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp )
 {
 	// as struct is value type, this should be correct
 	boost::unique_lock<boost::mutex> lock(m_quoteMutex);
-	m_quoteTimestamp = boost::chrono::steady_clock::now();
+	m_quoteTimestamp = tpTimestamp;
 	m_cachedQuoteData = *pQuoteData;
 	m_cond.notify_all();
 }

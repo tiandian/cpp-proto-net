@@ -577,9 +577,14 @@ void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 
 void CPortfolioOrderPlacer::OnPartiallyFilled( trade::Order* pRtnOrder )
 {
+	if(!m_activeOrdPlacer->IsPending())
+	{
+		m_activeOrdPlacer->StartPending(pRtnOrder);
+	}
+
 	int remained = pRtnOrder->volumetotal();
 	int finished = pRtnOrder->volumetraded();
-
+	
 	m_activeOrdPlacer->PartiallyFill(finished);
 	UpdateLegOrder(pRtnOrder);
 }

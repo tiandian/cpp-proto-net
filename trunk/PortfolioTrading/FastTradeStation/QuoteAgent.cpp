@@ -55,7 +55,7 @@ boost::tuple<bool, string> CQuoteAgent::Login( const string& brokerId, const str
 
 	string quoteFeedName = SHM_QUOTE_FEED_NAME + m_brokerID + "-" + m_userID;
 	m_quoteFeedee = boost::shared_ptr<CShmQuoteFeedConsumer>( new CShmQuoteFeedConsumer(quoteFeedName,
-		boost::bind(&CQuoteAgent::OnQuotePush, this, _1)) );
+		boost::bind(&CQuoteAgent::OnQuotePush, this, _1, _2)) );
 	initSucc = m_quoteFeedee->Init();
 	if(!initSucc)
 		return boost::make_tuple(false, "Quote feedee initialization failed");
@@ -132,10 +132,10 @@ bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 	return retVal;
 }
 
-void CQuoteAgent::OnQuotePush( CThostFtdcDepthMarketDataField* mktDataField )
+void CQuoteAgent::OnQuotePush( CThostFtdcDepthMarketDataField* mktDataField, longlong timestamp )
 {
 	if(m_pCallback != NULL)
 	{
-		m_pCallback->OnQuoteReceived(mktDataField);
+		m_pCallback->OnQuoteReceived(mktDataField, timestamp);
 	}
 }
