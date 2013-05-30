@@ -11,7 +11,7 @@
 #include <boost/algorithm/string.hpp>
 #include <google/protobuf/stubs/common.h>
 
-#define FST_VERSION "1.4.2"
+#define FST_VERSION "1.4.3"
 
 using namespace std;
 
