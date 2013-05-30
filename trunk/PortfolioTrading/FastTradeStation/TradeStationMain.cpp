@@ -8,7 +8,7 @@
 #include <boost/algorithm/string.hpp>
 #include <google/protobuf/stubs/common.h>
 
-#define FST_VERSION "1.3.2"
+#define FST_VERSION "1.3.3"
 
 using namespace std;
 
