@@ -37,7 +37,7 @@ public:
 	bool IsDisconnected(){ return !m_bIsConnected; }
 
 private:
-	void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField);
+	void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField, longlong timestamp);
 	void LaunchChildProc(string cmd);
 
 	CQuoteAgentCallback* m_pCallback;

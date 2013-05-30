@@ -1,5 +1,6 @@
 #include "ShmQuoteFeed.h"
 
+#include <boost/chrono.hpp>
 
 bool CShmQuoteFeedConsumer::Init()
 {
@@ -56,7 +57,7 @@ void CShmQuoteFeedConsumer::PopProc()
 		{
 			if(!m_pushQuoteFunc.empty())
 			{
-				m_pushQuoteFunc(&(m_pData->mktDataField));
+				m_pushQuoteFunc(&(m_pData->mktDataField), m_pData->timestamp);
 			}
 
 			m_pData->ready = false;
@@ -106,6 +107,7 @@ void CShmQuoteFeedProducer::Put( CThostFtdcDepthMarketDataField* quoteData )
 	if(m_pData->running)
 	{
 		memcpy(&(m_pData->mktDataField), quoteData, sizeof(CThostFtdcDepthMarketDataField));
+		m_pData->timestamp = boost::chrono::steady_clock::now().time_since_epoch().count();
 		m_pData->ready = true;
 		m_pData->cond_ready.notify_one();
 	}

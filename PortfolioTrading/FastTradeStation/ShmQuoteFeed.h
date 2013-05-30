@@ -17,6 +17,10 @@ using namespace boost::interprocess;
 
 #define SHM_QUOTE_FEED_NAME "QuoteFeed_1-"
 
+#ifdef WIN32
+#define longlong __int64
+#endif
+
 struct MarketDataObj
 {  
 	MarketDataObj()  
@@ -41,6 +45,7 @@ struct MarketDataObj
 	bool	running;
 
 	CThostFtdcDepthMarketDataField mktDataField;
+	longlong timestamp;
 };  
 
 class CShmQuoteFeedProducer
@@ -61,7 +66,7 @@ private:
 	MarketDataObj* m_pData;
 };
 
-typedef boost::function<void(CThostFtdcDepthMarketDataField*)> PushQuoteFunc;
+typedef boost::function<void(CThostFtdcDepthMarketDataField*, longlong)> PushQuoteFunc;
 
 class CShmQuoteFeedConsumer
 {

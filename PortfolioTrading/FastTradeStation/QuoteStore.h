@@ -26,7 +26,7 @@ public:
 	CQuoteFetcher* GetFetcher();
 	int ReclaimFetcher(CQuoteFetcher* pFetcher);
 
-	void Set(CThostFtdcDepthMarketDataField* pQuoteData);
+	void Set(CThostFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp);
 	boost::chrono::steady_clock::time_point Get(
 		boost::chrono::steady_clock::time_point timestamp, entity::Quote* outQuote);
 

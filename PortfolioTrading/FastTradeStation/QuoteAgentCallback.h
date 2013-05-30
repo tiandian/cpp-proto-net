@@ -2,6 +2,10 @@
 
 #include "ThostTraderApi/ThostFtdcMdApi.h"
 
+#ifdef WIN32
+#define longlong __int64
+#endif
+
 class CQuoteAgentCallback
 {
 public:
@@ -12,7 +16,7 @@ public:
 
 	virtual void OnUnsubscribeCompleted() = 0;
 
-	virtual void OnQuoteReceived(CThostFtdcDepthMarketDataField* marketData) = 0;
+	virtual void OnQuoteReceived(CThostFtdcDepthMarketDataField* marketData, longlong timestamp) = 0;
 
 	virtual void OnConnected(bool reconnected) = 0;
 };

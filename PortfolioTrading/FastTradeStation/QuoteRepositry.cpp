@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <boost/format.hpp>
-
+#include <boost/chrono.hpp>
 
 CQuoteRepositry::CQuoteRepositry(void):
 m_pQuoteAgent(NULL)
@@ -64,15 +64,18 @@ void CQuoteRepositry::DestoryFetcher( CQuoteFetcher* pFetcher )
 	}
 }
 
-void CQuoteRepositry::OnQuoteReceived( CThostFtdcDepthMarketDataField* marketData )
+void CQuoteRepositry::OnQuoteReceived( CThostFtdcDepthMarketDataField* marketData, longlong timestamp )
 {
 	boost::unique_lock<boost::mutex> lock(m_storeMapMutex);
+
+	boost::chrono::steady_clock::duration dd(timestamp);
+	boost::chrono::steady_clock::time_point tp(dd);
 
 	const string& symbol = marketData->InstrumentID;
 	QuoteStoreMapIter iterStore = m_quoteStoreMap.find(symbol);
 	if(iterStore != m_quoteStoreMap.end())
 	{
-		(iterStore->second)->Set(marketData);
+		(iterStore->second)->Set(marketData, tp);
 	}
 	else
 	{
