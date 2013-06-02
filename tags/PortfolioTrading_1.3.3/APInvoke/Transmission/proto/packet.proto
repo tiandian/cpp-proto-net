@@ -1,0 +1,44 @@
+package AP;
+
+message Connect
+{
+	required string userid = 1;
+	required string password = 2;
+}
+
+message ConnectAck
+{
+	required bool	success = 1;
+	required string session = 2;
+	required bool   attach_existing = 3;
+}
+
+message Request
+{	
+	required string session = 1;
+	required string method = 2;
+	required bytes param_data = 3;
+}
+
+message Response
+{
+	required string method = 1;
+	required bytes return_data = 2;
+	required bool invoke = 3;
+	required string error = 4;
+}
+
+message CallbackReq
+{
+	required string method = 1;
+	required bytes param_data = 2;
+}
+
+message CallbackRsp
+{
+	required string session = 1;
+	required string method = 2;
+	required bytes return_data = 3;
+	required bool invoke = 4;
+	required string error = 5;
+}

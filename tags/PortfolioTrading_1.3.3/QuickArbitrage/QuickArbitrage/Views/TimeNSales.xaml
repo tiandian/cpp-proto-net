@@ -1,0 +1,84 @@
+﻿<UserControl x:Class="QuickArbitrage.Main.Views.TimeNSales"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:igDP="http://infragistics.com/DataPresenter"
+             xmlns:igEditors="http://infragistics.com/Editors"
+             xmlns:views="clr-namespace:QuickArbitrage.Main.Views"
+             xmlns:conv="clr-namespace:QuickArbitrage.Main.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400">
+    <Grid>
+        <Grid.Resources>
+            <views:TimeNSalesViewModel x:Key="timeNSalesViewModel" />
+            <conv:ActionTextConverter x:Key="actionTextConverter" />
+        </Grid.Resources>
+        <Border BorderThickness="5" BorderBrush="Chartreuse">
+            <igDP:XamDataGrid Name="xamGridTNS" DataSource="{StaticResource timeNSalesViewModel}" 
+                              AutoFit="True" GroupByAreaLocation="None">
+                <igDP:XamDataGrid.Resources>
+                    <!-- Action column type -->
+                    <Style x:Key="actionColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock.Text>
+                                            <Binding Path="Record.DataItem.Action"
+                                                        RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                                        Converter="{StaticResource actionTextConverter}"
+                                                        />
+                                        </TextBlock.Text>
+                                    </TextBlock>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style x:Key="timeFormatStyle" TargetType="igEditors:XamTextEditor">
+                        <Setter Property="Format" Value="T"/>
+                    </Style>
+                </igDP:XamDataGrid.Resources>
+                <igDP:XamDataGrid.FieldLayouts>
+                    <igDP:FieldLayout>
+                        <igDP:Field Name="Code" Label="代码" />
+                        <igDP:Field Name="Name" Label="名称" />
+                        <igDP:Field Name="Price" Label="成交价" />
+                        <igDP:Field Name="Quantity" Label="数量" />
+                        <igDP:Field Name="Action" Label="开平" >
+                            <igDP:Field.Settings>
+                                <igDP:FieldSettings CellValuePresenterStyle="{StaticResource actionColStyle}" />
+                            </igDP:Field.Settings>
+                        </igDP:Field>
+                        <igDP:Field Name="ExecuteTime" Label="时间" >
+                            <igDP:Field.Settings>
+                                <igDP:FieldSettings EditorStyle="{StaticResource timeFormatStyle}"/>
+                            </igDP:Field.Settings>
+                        </igDP:Field>
+                    </igDP:FieldLayout>
+                </igDP:XamDataGrid.FieldLayouts>
+                <igDP:XamDataGrid.FieldSettings>
+                    <igDP:FieldSettings AllowEdit="False" Width="Auto"/>
+                </igDP:XamDataGrid.FieldSettings>
+                <igDP:XamDataGrid.FieldLayoutSettings>
+                    <igDP:FieldLayoutSettings  AutoGenerateFields="False" RecordSelectorLocation="None"
+                                               />
+                </igDP:XamDataGrid.FieldLayoutSettings>
+            </igDP:XamDataGrid>
+        </Border>
+        <!--<ig:XamGrid Name="xamGridTNS" ItemsSource="{StaticResource timeNSalesViewModel}" AutoGenerateColumns="False">
+            <ig:XamGrid.SelectionSettings>
+            <ig:SelectionSettings CellClickAction="SelectRow" CellSelection="None" />
+            </ig:XamGrid.SelectionSettings>
+            <ig:XamGrid.Columns>
+                <ig:TextColumn Key="Code" HeaderText="代码"/>
+                <ig:TextColumn Key="Name" HeaderText="名称"/>
+                <ig:TextColumn Key="Price" HeaderText="成交价"/>
+                <ig:TextColumn Key="Quantity" HeaderText="数量"/>
+                <ig:TextColumn Key="Action" HeaderText="开平" ValueConverter="{StaticResource actionTextConverter}"/>
+                <ig:TextColumn Key="ExecuteTime" HeaderText="时间"/>
+            </ig:XamGrid.Columns>
+        </ig:XamGrid>-->
+    </Grid>
+</UserControl>

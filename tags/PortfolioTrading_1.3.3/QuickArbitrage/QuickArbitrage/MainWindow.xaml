@@ -1,0 +1,31 @@
+﻿<Window x:Class="QuickArbitrage.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:igDock="http://infragistics.com/DockManager"
+        xmlns:uc="clr-namespace:QuickArbitrage.Main.Views"
+        xmlns:ctrl="clr-namespace:QuickArbitrage.Main.Controls"
+        Title="MainWindow" Height="600" Width="800" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <DockPanel Height="38" Background="Blue" DockPanel.Dock="Top">
+            <uc:AccountSummary DockPanel.Dock="Right" x:Name="accountInfoUC"/>
+            
+            <StackPanel Orientation="Horizontal">
+                <Button Width="100" Name="btnNewPortfolio" Click="btnNewPortfolio_Click">新建套利组合</Button>
+            </StackPanel>
+        </DockPanel>
+        <StatusBar Name="statusBar1" DockPanel.Dock="Bottom" Height="32"/>
+        
+        <DockPanel Name="mainContainer">
+
+            <DockPanel DockPanel.Dock="Bottom" MinHeight="100" Height="200">
+                <uc:Positions DockPanel.Dock="Left" Width="400"/>
+                <ctrl:DockPanelSplitter DockPanel.Dock="Left"/>
+                <uc:TimeNSales ></uc:TimeNSales>
+            </DockPanel>
+            <ctrl:DockPanelSplitter DockPanel.Dock="Bottom"/>
+            <uc:RunningPortfolioPool x:Name="portfolioPool"/>
+            
+        </DockPanel>
+        
+    </DockPanel>
+</Window>

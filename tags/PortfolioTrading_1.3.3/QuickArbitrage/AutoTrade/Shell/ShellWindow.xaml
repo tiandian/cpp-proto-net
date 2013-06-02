@@ -1,0 +1,55 @@
+﻿<Window x:Class="AutoTrade.MainFrame.ShellWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:igDock="http://infragistics.com/DockManager"
+        xmlns:cal="http://www.codeplex.com/CompositeWPF"
+        xmlns:account="clr-namespace:AutoTrade.MainFrame.Modules.Account"
+        xmlns:portfolio="clr-namespace:AutoTrade.MainFrame.Modules.Portfolio"
+        xmlns:region="clr-namespace:AutoTrade.MainFrame.Region"
+        Title="ShellWindow" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <DockPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="{StaticResource TabControlContentBrush}">
+                <Button Command="{Binding AddAccountCommand}">添加帐号</Button>
+                <Button Command="{Binding AddPortfolioCommand}">添加组合</Button>
+                <Button Name="btnSaveLayout" Click="btnSaveLayout_Click">Save layout</Button>
+                <Button Name="btnLoadLayout" Click="btnLoadLayout_Click">Load layout</Button>
+            </StackPanel>
+
+            <StatusBar DockPanel.Dock="Bottom" Background="{StaticResource TabControlContentBrush}">Ready</StatusBar>
+            
+            <igDock:XamDockManager Name="dockManager" Theme="Office2k7Blue">
+                <igDock:XamDockManager.Panes>
+                    <igDock:SplitPane x:Name="leftSplitPane" igDock:XamDockManager.InitialLocation="DockedLeft" 
+                                      Width="200" SplitterOrientation="Horizontal">
+                        <igDock:ContentPane x:Name="accountTreeViewPane" Header="Account OverView"
+                                            cal:RegionManager.RegionName="{x:Static region:RegionNames.AccountTreeRegion}">
+                        </igDock:ContentPane>
+                        <igDock:ContentPane x:Name="accountDetailsViewPane" Header="Account Detail"
+                                            cal:RegionManager.RegionName="{x:Static region:RegionNames.AccountDetailsRegion}">
+                        </igDock:ContentPane>
+                    </igDock:SplitPane>
+                    <igDock:SplitPane x:Name="bottomSplitPane" SplitterOrientation="Vertical" Height="200"
+                              igDock:XamDockManager.InitialLocation="DockedBottom">
+                        <igDock:ContentPane x:Name="positionPane" 
+                                    Header="Position View" />
+                        <igDock:ContentPane x:Name="timeNSalesPane" 
+                                    Header="Time N Sales Pane" />
+                    </igDock:SplitPane>
+                </igDock:XamDockManager.Panes>
+                <igDock:DocumentContentHost>
+                    <igDock:SplitPane x:Name="rootDocSplit">
+                        <igDock:TabGroupPane x:Name="mainGroup">
+                            <igDock:ContentPane x:Name="file1a" Header="File 1" >
+                                <portfolio:PortfolioList />
+                            </igDock:ContentPane>
+                            <igDock:ContentPane x:Name="file2a" Header="File 2" />
+                        </igDock:TabGroupPane>
+                    </igDock:SplitPane>
+                </igDock:DocumentContentHost>
+
+            </igDock:XamDockManager>
+        </DockPanel>
+        
+    </Grid>
+</Window>

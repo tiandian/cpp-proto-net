@@ -1,0 +1,17 @@
+﻿<Window x:Class="ManagedClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <StackPanel Orientation="Vertical" Width="100" HorizontalAlignment="Left">
+            <CheckBox Name="chkHideConsole">Hide Console</CheckBox>
+            <Button Name="btnLaunch" Click="btnLaunch_Click">Launch</Button>
+            <Button Name="btnConnect" Click="btnConnect_Click">Connect</Button>
+            <Button Name="btnSyncConnect" Click="btnSyncConnect_Click">Sync Connect</Button>
+            <Button Name="btnSend" Click="btnSend_Click">Send</Button>
+            <Button Name="btnDisconnect" Click="btnDisconnect_Click">Disconnect</Button>
+            <Button Name="btnShutdown" Click="btnShutdown_Click">Shut Down</Button>
+        </StackPanel>
+        
+    </Grid>
+</Window>
