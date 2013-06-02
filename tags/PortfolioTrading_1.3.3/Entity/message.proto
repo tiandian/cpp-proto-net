@@ -1,0 +1,226 @@
+import "enum.proto";
+import "trade.proto";
+
+package entity;
+
+message StringParam
+{
+	required string Data = 1;
+}
+
+message IntParam
+{
+	required int32 Data = 2;
+}
+
+message LegItem
+{
+	required string Symbol = 1;
+	required int32 Ratio = 2;
+	required PosiDirectionType Side = 3;
+	required LegStatus Status = 4;
+	required double Last = 5;
+	required double Ask = 6;
+	required int32 AskSize = 7;
+	required double Bid = 8;
+	required int32 BidSize = 9;
+	required bool IsPreferred = 10;
+}
+
+message PortfolioItem
+{
+	required string ID = 1;
+	required int32 Quantity = 2;
+	required double Diff = 3;
+	required double LongDiff = 4;
+	required double ShortDiff = 5;
+	required int32 LongSize = 6;
+	required int32 ShortSize = 7;
+	required bool AutoOpen = 8;
+	required bool AutoStopGain = 9;
+	required bool AutoStopLoss = 10;
+	required bool AutoTrack = 11;
+	required bool EnablePrefer = 12;
+	repeated LegItem Legs = 13; 
+	required string StrategyName = 14;
+	required bytes StrategyData = 15; 
+	required bool StrategyRunning = 16;
+	required int32 OpenTimes = 17;
+	required int32 CloseTimes = 18;
+	required double Profit = 19;
+	required int32 MaxPosition = 20;
+	required int32 CurrentPosition = 21;
+	required double AvgCost = 22;
+}
+
+message ConnectParam
+{
+	required string QuoteAddress = 1;
+	required string StreamFolder = 2;
+}
+
+message OperationReturn
+{
+	required bool Success = 1;
+	required string ErrorMessage = 2;
+}
+
+message AccountSettings
+{
+	required int32 MaxSubmit = 1;
+	required int32 MaxCancel = 2;
+}
+
+message LoginParam
+{
+	required string BrokerId = 1;
+	required string UserId = 2;
+	required string Password = 3;
+	optional AccountSettings AcctSettings = 4;
+}
+
+message RegQuoteParam
+{
+	repeated string Symbols = 1;
+}
+
+message AddPortfolioParam
+{
+	repeated PortfolioItem PortfolioItems = 1;
+}
+
+message PorfOpenPosiParam
+{
+	required string PortfId = 1;
+	required int32 Quantity = 2;
+	required bool IsVirtual = 3;
+}
+
+message ClosePositionParam
+{
+	required trade.MultiLegOrder MultiLegOrder = 1;
+	optional string LegOrdRef = 2;
+}
+
+message LegOrderUpdateParam
+{
+	required string PortfId = 1;
+	required string MultiLegOrderId = 2;
+	required string LegOrderRef = 3;
+	required trade.Order LegOrder = 4;
+}
+
+message ArbitrageStrategySettings
+{
+	required PosiDirectionType Side = 1;
+	required CompareCondition OpenCondition = 2;
+	required double OpenPosiThreshold = 3;
+	required CompareCondition StopGainCondition = 4;
+	required double StopGainThreshold = 5;
+	required CompareCondition StopLossCondition = 6;
+	required double StopLossThreshold = 7;
+}
+
+message ChangePosiStrategySettings
+{
+	required string CloseLeg = 1;
+	required PosiDirectionType CloseLegSide = 2;
+	required CompareCondition TriggerCondition = 3;
+	required double Threshold = 4;
+}
+
+enum DirectionDepends
+{
+	IGNORE_THIS = 0;
+	ON_SMALL_SIZE = 1;
+	ON_BIG_SIZE = 2;
+	ON_SMALL_CHANGE = 3;
+	ON_BIG_CHANGE = 4; 
+}
+
+enum StopLossCloseMethods
+{
+	BASED_ON_NEXT_QUOTE = 0;
+	BASED_ON_INPUT_LIMIT = 1;
+}
+
+message ScalperSettings
+{
+	required double Threshold = 1;
+	required double PriceTick = 2;
+	required DirectionDepends CaseLE2Tick = 3;
+	required DirectionDepends CaseLE3Tick = 4;
+	required DirectionDepends CaseGE4Tick = 5;
+	required DirectionDepends CaseNoChange = 6;
+	required StopLossCloseMethods StopLossStrategy = 7;
+	required int32 RetryTimes = 8;
+	optional int32 OpenTimeout = 9;
+}
+
+message ModifyStrategyParam
+{
+	required string PortfId = 1;
+	required string StrategyName = 2;
+	required bytes StrategyData = 3;
+}
+
+message ModifyPortfolioSwitchParam
+{
+	required string PortfId = 1;
+	required bool AutoOpen = 2;
+	required bool AutoStopGain = 3;
+	required bool AutoStopLoss = 4;
+	required bool AutoTracking = 5;
+	required bool EnablePrefer = 6;
+}
+
+message ModifyPortfolioQtyParam
+{
+	required string PortfId = 1;
+	required int32 OnceQty = 2;
+	required int32 MaxQty = 3;
+}
+
+message ModifyRunningStatusParam
+{
+	required string PortfId = 1;
+	required bool Enabled = 2;
+}
+
+message ModifyPortfolioPreferredLegParam
+{
+	required string PortfId = 1;
+	required string LegSymbol = 2;
+}
+
+message CancelOrderParam
+{
+	required string OrderRef = 1; 
+	required string ExchangeId = 2; 
+	required string OrdSysId = 3; 
+	required string UserId = 4;
+	required string Symbol = 5;
+}
+
+message ManualCloseOrderParam
+{
+	required string Symbol = 1;
+	required trade.TradeDirectionType	Direction = 2;
+	required string OpenDate = 3;
+	required int32 Quantity = 4;
+}
+
+message SymbolInfo
+{
+	required string Instrument = 1; 
+	///交易所代码
+	required string ExchangeID = 2;
+	///合约在交易所的代码
+	required string ExchangeInstID = 3;
+	///产品代码
+	required string ProductID = 4;
+	///合约数量乘数
+	required int32	VolumeMultiple = 5;
+	///最小变动价位
+	required double PriceTick = 6;
+}
