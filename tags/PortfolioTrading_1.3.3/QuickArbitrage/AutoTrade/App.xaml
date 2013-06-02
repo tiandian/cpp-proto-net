@@ -1,7 +1,0 @@
-﻿<Application x:Class="AutoTrade.MainFrame.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Application.Resources>
-        <ResourceDictionary Source="WPF Themes/BureauBlue.xaml"/>
-    </Application.Resources>
-</Application>
