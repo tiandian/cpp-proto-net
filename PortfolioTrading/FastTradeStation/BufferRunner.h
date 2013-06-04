@@ -21,6 +21,9 @@ public:
 	}
 	~CBufferRunner(void)
 	{
+		if(m_isRunning)
+			Stop();
+		m_thread.join();
 	}
 
 	void Init(boost::function<void(T)> callback)
@@ -39,28 +42,25 @@ public:
 		m_thread = boost::thread(boost::bind(&CBufferRunner::Dequeue, this));
 	}
 
-	  void Stop()
-	  {
-		  {
-			  boost::lock_guard<boost::mutex> lock(m_mutex);
-			  m_isRunning = false;
-			  m_cond.notify_all();
-		  }
-		  m_thread.join();
-	  }
+	void Stop()
+	{
+		boost::unique_lock<boost::mutex> lock(m_mutex);
+		m_isRunning = false;
+		m_cond.notify_all();
+	}
 
-	  void Enqueue(T stuff, bool front = false)
-	  {
-		  boost::lock_guard<boost::mutex> lock(m_mutex);
-		  if(m_isRunning)
-		  {
-			  if(front)
-				  m_cbQuotes.push_front(stuff);
-			  else
-				  m_cbQuotes.push_back(stuff);
-			  m_cond.notify_all();
-		  }
-	  }
+	void Enqueue(T stuff, bool front = false)
+	{
+		boost::unique_lock<boost::mutex> lock(m_mutex);
+		if(m_isRunning)
+		{
+			if(front)
+				m_cbQuotes.push_front(stuff);
+			else
+				m_cbQuotes.push_back(stuff);
+			m_cond.notify_all();
+		}
+	}
 
 private:
 

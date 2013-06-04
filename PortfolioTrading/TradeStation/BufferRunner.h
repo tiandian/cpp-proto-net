@@ -16,6 +16,7 @@ public:
 	  }
 	  ~CBufferRunner(void)
 	  {
+		  m_thread.join();
 	  }
 
 	  void SetCapacity(int capacity)
@@ -32,16 +33,15 @@ public:
 	  void Stop()
 	  {
 		  {
-			  boost::lock_guard<boost::mutex> lock(m_mutex);
+			  boost::unique_lock<boost::mutex> lock(m_mutex);
 			  m_isRunning = false;
 			  m_cond.notify_all();
 		  }
-		  m_thread.join();
 	  }
 
 	  void Enqueue(T stuff, bool front = false)
 	  {
-		  boost::lock_guard<boost::mutex> lock(m_mutex);
+		  boost::unique_lock<boost::mutex> lock(m_mutex);
 		  if(m_isRunning)
 		  {
 			  if(front)
