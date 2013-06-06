@@ -19,7 +19,6 @@ m_pSession(NULL)
 
 CClientAgent::~CClientAgent(void)
 {
-	logger.Debug("Client Agent disposed.");
 	m_tradeAgent.Close();
 	m_quoteAgent.Close();
 }
