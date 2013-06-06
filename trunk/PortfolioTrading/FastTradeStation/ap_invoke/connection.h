@@ -188,8 +188,11 @@ public:
 	{
 		if(e)
 		{
+			fault();
 			_in_msg_type = UNKNOWN;
 			_in_data = "";
+
+			notify_stop_writing();
 		}
 
 		boost::get<0>(handler)(e, _in_msg_type, _in_data);
@@ -200,6 +203,14 @@ public:
 
 	void fault() { _in_fault = true; }
 	bool in_fault() { return _in_fault; }
+
+	void notify_stop_writing()
+	{
+		boost::lock_guard<boost::mutex> lock(_write_mutex);
+		set_write_flag(true);
+		fault();
+		_writable_cond.notify_one();
+	}
 
 private:
 	/// The underlying socket.
