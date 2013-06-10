@@ -1,8 +1,10 @@
 #pragma once
 
+#include "ProtobufProtocol.h"
+
 class ProtobufPacketImpl;
 
-class CClientProtocol
+class CClientProtocol : public ProtobufProtocol
 {
 public:
 	CClientProtocol(void);

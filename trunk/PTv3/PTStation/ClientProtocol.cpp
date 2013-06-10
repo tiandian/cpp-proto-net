@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "ClientProtocol.h"
+#include "ProtobufProtocol.h"
 #include "ProtocolIDs.h"
 #include "ProtobufPacket.h"
 #include "entity/message.pb.h"
