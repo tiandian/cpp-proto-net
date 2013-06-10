@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\entity">
+      <UniqueIdentifier>{95243f2f-c34c-438e-b8af-28c740f63827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\entity">
+      <UniqueIdentifier>{1f70be35-1213-4baa-aa05-ae519306ee38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\connection">
+      <UniqueIdentifier>{701b8f79-476d-4424-9912-58e26835a626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\connection">
+      <UniqueIdentifier>{f37bc6ca-ec8c-4a87-bfe7-6ed3cd678995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{7e136332-2cc0-494b-870a-24789056dddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{1950d40c-dbc3-4ad9-9f92-5c43c791cb14}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\enum.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\message.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\packet.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\quote.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\trade.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="AvatarClient.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="AvatarFactory.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtobufProtocol.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtocolIDs.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestedServices.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="TradingServer.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="Configuration.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="LogManager.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TradingServerProtocol.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtobufPacket.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientProtocol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TradeStation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\enum.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\message.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\packet.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\quote.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\trade.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="AvatarClient.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="AvatarFactory.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtobufProtocol.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestedServices.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="TradingServer.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="LogManager.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TradingServerProtocol.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtobufPacket.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientProtocol.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
