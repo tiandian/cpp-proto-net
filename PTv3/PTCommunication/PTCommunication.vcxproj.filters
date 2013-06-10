@@ -31,11 +31,20 @@
     <Filter Include="Source Files\entity">
       <UniqueIdentifier>{7840724a-0539-4f93-910f-7f9d60dc7b92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\PTEntity">
+      <UniqueIdentifier>{2545e014-9151-45c0-97d5-cfb4d431e9c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PTCommunication">
+      <UniqueIdentifier>{6b7b8258-53d8-4659-bf93-1e0f29160c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PTCommunication">
+      <UniqueIdentifier>{dc1e7d7f-8458-4aea-a7be-1f5df7006c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PTEntity">
+      <UniqueIdentifier>{b32d212d-020e-4bd1-8340-b9dfce211985}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="PTCommunication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,11 +102,32 @@
     <ClInclude Include="ResponseHandlers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountInfo.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiLegOrder.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="OperationResult.h">
+      <Filter>Header Files\PTCommunication</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientBase.h">
+      <Filter>Header Files\PTCommunication</Filter>
+    </ClInclude>
+    <ClInclude Include="Order.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolInfo.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PTCommunication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="AssemblyInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -142,6 +172,30 @@
     </ClCompile>
     <ClCompile Include="ResponseHandlers.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enums.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccountInfo.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiLegOrder.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="OperationResult.cpp">
+      <Filter>Source Files\PTCommunication</Filter>
+    </ClCompile>
+    <ClCompile Include="Order.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientBase.cpp">
+      <Filter>Source Files\PTCommunication</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolInfo.cpp">
+      <Filter>Source Files\PTEntity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

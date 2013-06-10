@@ -89,11 +89,18 @@
     <ClInclude Include="..\PTStation\ProtobufPacket.h" />
     <ClInclude Include="..\PTStation\ProtobufProtocol.h" />
     <ClInclude Include="..\PTStation\ProtocolIDs.h" />
+    <ClInclude Include="AccountInfo.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="MultiLegOrder.h" />
     <ClInclude Include="NatvieClient.h" />
-    <ClInclude Include="PTCommunication.h" />
+    <ClInclude Include="OperationResult.h" />
+    <ClInclude Include="Order.h" />
+    <ClInclude Include="PortfolioItem.h" />
+    <ClInclude Include="ClientBase.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResponseHandlers.h" />
     <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="SymbolInfo.h" />
     <ClInclude Include="tcpsocket\ResponseHandler.h" />
     <ClInclude Include="tcpsocket\ScopedLock.h" />
     <ClInclude Include="tcpsocket\TCPSocket.h" />
@@ -120,14 +127,21 @@
     </ClCompile>
     <ClCompile Include="..\PTStation\ProtobufPacket.cpp" />
     <ClCompile Include="..\PTStation\ProtobufProtocol.cpp" />
+    <ClCompile Include="AccountInfo.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Enums.cpp" />
+    <ClCompile Include="MultiLegOrder.cpp" />
     <ClCompile Include="NatvieClient.cpp" />
-    <ClCompile Include="PTCommunication.cpp" />
+    <ClCompile Include="OperationResult.cpp" />
+    <ClCompile Include="Order.cpp" />
+    <ClCompile Include="PortfolioItem.cpp" />
+    <ClCompile Include="ClientBase.cpp" />
     <ClCompile Include="ResponseHandlers.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SymbolInfo.cpp" />
     <ClCompile Include="tcpsocket\ResponseHandler.cpp" />
     <ClCompile Include="tcpsocket\TCPSocket.cpp" />
     <ClCompile Include="tcpsocket\TCPSocketImpl_Win.cpp" />

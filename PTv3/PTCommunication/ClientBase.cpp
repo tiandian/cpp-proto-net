@@ -2,5 +2,5 @@
 
 #include "stdafx.h"
 
-#include "PTCommunication.h"
+#include "ClientBase.h"
 
