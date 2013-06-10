@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CC74C292-75A2-49F9-85CB-AE721D8C1298}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PortfolioTrading</RootNamespace>
+    <AssemblyName>PortfolioTrading</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;HOST_STARTED</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Bin\Release\</OutputPath>
+    <DefineConstants>TRACE;HOST_STARTED</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataManager.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DataPresenter.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DockManager.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.DragDrop.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.Editors.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="InfragisticsWPF4.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net">
+      <HintPath>..\Lib\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\WPFToolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Controls\DropDownMenuContainer.cs" />
+    <Compile Include="Controls\PortfMonTemplateSelector.cs" />
+    <Compile Include="Controls\PortfSettingTemplateSelector.cs" />
+    <Compile Include="Controls\PriceDiffWatchPanel.cs" />
+    <Compile Include="Controls\RadioButtonExtended.cs" />
+    <Compile Include="Converters\CompareConditionDisplayConverter.cs" />
+    <Compile Include="Converters\DirectionTypeConverter.cs" />
+    <Compile Include="Converters\OrderPriceTypeConverter.cs" />
+    <Compile Include="entity\Entity.cs" />
+    <Compile Include="entity\Enums.cs" />
+    <Compile Include="entity\Quote.cs" />
+    <Compile Include="entity\Trade.cs" />
+    <Compile Include="Events\AccountChangedEvent.cs" />
+    <Compile Include="Events\AccountSelectedEvent.cs" />
+    <Compile Include="Events\AppShutDown.cs" />
+    <Compile Include="Events\CancelOrderEvent.cs" />
+    <Compile Include="Events\CloseMlOrderEvent.cs" />
+    <Compile Include="Events\IndividualOrderUpdatedEvent.cs" />
+    <Compile Include="Events\MultiLegOrderUpdatedEvent.cs" />
+    <Compile Include="Events\OutputEvent.cs" />
+    <Compile Include="Events\PortfolioSelectedEvent.cs" />
+    <Compile Include="Events\QueryPositionEvent.cs" />
+    <Compile Include="Events\TradeUpdatedEvent.cs" />
+    <Compile Include="LogManager.cs" />
+    <Compile Include="Modules\Account\AccountInfoVM.cs" />
+    <Compile Include="Modules\Account\AccountVM.cs" />
+    <Compile Include="Modules\Account\AccountInfoView.xaml.cs">
+      <DependentUpon>AccountInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Account\AccountMgrView.xaml.cs">
+      <DependentUpon>AccountMgrView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Account\AccountModule.cs" />
+    <Compile Include="Modules\Account\PositionDetailVM.cs" />
+    <Compile Include="Modules\Account\PositionView.xaml.cs">
+      <DependentUpon>PositionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Account\ServerAddrConfigDlg.xaml.cs">
+      <DependentUpon>ServerAddrConfigDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Account\ServerAddressRepoVM.cs" />
+    <Compile Include="Modules\Portfolio\ChangeSpecifiedQtyDlg.xaml.cs">
+      <DependentUpon>ChangeSpecifiedQtyDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Portfolio\ModifyMaxQtyDlg.xaml.cs">
+      <DependentUpon>ModifyMaxQtyDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Portfolio\PortfolioContentPane.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ArbitrageStrategySetting.cs" />
+    <Compile Include="Modules\Account\EditAccountDlg.xaml.cs">
+      <DependentUpon>EditAccountDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Account\EditPortfolioDlg.xaml.cs">
+      <DependentUpon>EditPortfolioDlg.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Account\LegVM.cs" />
+    <Compile Include="Modules\Account\PortfolioVM.cs" />
+    <Compile Include="Modules\Portfolio\MultiLegOrderVM.cs" />
+    <Compile Include="Modules\Portfolio\OrderVM.cs" />
+    <Compile Include="Modules\Portfolio\PortfolioModule.cs" />
+    <Compile Include="Modules\Portfolio\PortfolioOrdersView.xaml.cs">
+      <DependentUpon>PortfolioOrdersView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Portfolio\PortfolioSettingsView.xaml.cs">
+      <DependentUpon>PortfolioSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Portfolio\PortfoliosView.xaml.cs">
+      <DependentUpon>PortfoliosView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Portfolio\Strategy\ArbitrageSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ChangePositionSetting.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ChangePositionSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ScalperSetting.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ScalperSettingVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\StrategySetting.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\StrategySettingVM.cs" />
+    <Compile Include="Modules\Portfolio\TradeVM.cs" />
+    <Compile Include="Modules\Watching\OutputView.xaml.cs">
+      <DependentUpon>OutputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Watching\TimeNSalesView.xaml.cs">
+      <DependentUpon>TimeNSalesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Watching\WatchingModule.cs" />
+    <Compile Include="Controls\PositionOperPanel.cs" />
+    <Compile Include="Controls\PortfMonitorPanel.cs" />
+    <Compile Include="PtBootstrapper.cs" />
+    <Compile Include="RegionNames.cs" />
+    <Compile Include="Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ShellViewModel.cs" />
+    <Compile Include="Utils\ConfigurationHelper.cs" />
+    <Compile Include="Utils\DispatcherHelper.cs" />
+    <Compile Include="Utils\EventLogger.cs" />
+    <Compile Include="Utils\ILog.cs" />
+    <Compile Include="Utils\Log4netLogger.cs" />
+    <Compile Include="Utils\RegionHelper.cs" />
+    <Compile Include="Utils\SideBindingSource.cs" />
+    <Compile Include="Modules\Account\AccountMgrVM.cs" />
+    <Page Include="BureauBlue.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Infrastructure\Client.cs" />
+    <Compile Include="Infrastructure\NativeHost.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Modules\Account\AccountInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Account\AccountMgrView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Account\EditAccountDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Account\EditPortfolioDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Account\PositionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Account\ServerAddrConfigDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Portfolio\ChangeSpecifiedQtyDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Portfolio\ModifyMaxQtyDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Portfolio\PortfolioOrdersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Portfolio\PortfolioSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Portfolio\PortfoliosView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Watching\OutputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Watching\TimeNSalesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\APInvoke\APInvokeManaged\APInvokeManaged.csproj">
+      <Project>{2EB4F2DE-0ED7-4D3E-8A21-4860E7DC0BAD}</Project>
+      <Name>APInvokeManaged</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PTCommunication\PTCommunication.vcxproj">
+      <Project>{155496B9-C70D-4731-B52D-4D6175559FBD}</Project>
+      <Name>PTCommunication</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
