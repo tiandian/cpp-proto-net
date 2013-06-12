@@ -556,17 +556,17 @@ namespace PortfolioTrading.Modules.Account
         {
             entity.PortfolioItem portfolioItem = new entity.PortfolioItem();
             portfolioItem.ID = Id;
-            portfolioItem.AutoOpen = AutoOpen;
-            portfolioItem.AutoStopGain = AutoStopGain;
-            portfolioItem.AutoStopLoss = AutoStopLoss;
-            portfolioItem.AutoTrack = AutoTracking;
-            portfolioItem.EnablePrefer = EnablePrefer;
+            //portfolioItem.AutoOpen = AutoOpen;
+            //portfolioItem.AutoStopGain = AutoStopGain;
+            //portfolioItem.AutoStopLoss = AutoStopLoss;
+            //portfolioItem.AutoTrack = AutoTracking;
+            //portfolioItem.EnablePrefer = EnablePrefer;
             portfolioItem.Quantity = Quantity;
-            portfolioItem.MaxPosition = MaxPosition;
-            portfolioItem.OpenTimes = OpenTimes;
-            portfolioItem.CloseTimes = 0;
-            portfolioItem.CurrentPosition = Position;
-            portfolioItem.AvgCost = AvgCost;
+            //portfolioItem.MaxPosition = MaxPosition;
+            //portfolioItem.OpenTimes = OpenTimes;
+            //portfolioItem.CloseTimes = 0;
+            //portfolioItem.CurrentPosition = Position;
+            //portfolioItem.AvgCost = AvgCost;
 
             foreach (var legVm in _legs)
             {
@@ -578,7 +578,7 @@ namespace PortfolioTrading.Modules.Account
                 portfolioItem.Legs.Add(leg);
             }
             entity.StrategyItem strategyItem = new entity.StrategyItem();
-            strategyItem.Name = StrategySetting.Name;
+            //strategyItem.Name = StrategySetting.Name;
             strategyItem.Data = StrategySetting.Serialize();
             strategyItem.Running = false;
 
@@ -587,20 +587,20 @@ namespace PortfolioTrading.Modules.Account
 
         public void Update(entity.PortfolioItem item)
         {
-            Diff = ToDecimal(item.Diff);
-            LongDiff = ToDecimal(item.LongDiff);
-            ShortDiff = ToDecimal(item.ShortDiff);
-            LongSize = item.LongSize;
-            ShortSize = item.ShortSize;
-            OpenTimes = item.OpenTimes;
-            DoneTimes = item.CloseTimes;
-            Position = item.CurrentPosition;
-            Gain = item.Profit;
+            //Diff = ToDecimal(item.Diff);
+            //LongDiff = ToDecimal(item.LongDiff);
+            //ShortDiff = ToDecimal(item.ShortDiff);
+            //LongSize = item.LongSize;
+            //ShortSize = item.ShortSize;
+            //OpenTimes = item.OpenTimes;
+            //DoneTimes = item.CloseTimes;
+            //Position = item.CurrentPosition;
+            //Gain = item.Profit;
             Quantity = item.Quantity;
-            MaxPosition = item.MaxPosition;
-            AvgCost = item.AvgCost;
+            //MaxPosition = item.MaxPosition;
+            //AvgCost = item.AvgCost;
 
-            IsRunning = item.Strategies[0].Running;
+            //IsRunning = item.Strategies[0].Running;
 
             for (int i = 0; i < item.Legs.Count; ++i )
             {

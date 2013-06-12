@@ -16,14 +16,13 @@ ProtobufPacketImpl* CTradingServerProtocol::createIncomingPacketFromServiceId( i
 {
 	switch (serviceId)
 	{
+	case LoginRequestID:
+		return new ProtobufPacket<entity::LoginRequest>(serviceId);
 	case ServerLoginRequestID:
 		return new ProtobufPacket<entity::ServerLoginRequest>(serviceId);
-		break;
 	case ServerLogoutRequestID:
 		return new ProtobufPacket<entity::ServerLogoutRequest>(serviceId);
-		break;
 	default:
 		return NULL;
-		break;
 	}
 }

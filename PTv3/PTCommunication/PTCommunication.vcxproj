@@ -90,7 +90,9 @@
     <ClInclude Include="..\PTStation\ProtobufProtocol.h" />
     <ClInclude Include="..\PTStation\ProtocolIDs.h" />
     <ClInclude Include="AccountInfo.h" />
+    <ClInclude Include="EntityWrapper.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="IClientRequestHandler.h" />
     <ClInclude Include="MultiLegOrder.h" />
     <ClInclude Include="NatvieClient.h" />
     <ClInclude Include="OperationResult.h" />
@@ -99,6 +101,7 @@
     <ClInclude Include="ClientBase.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResponseHandlers.h" />
+    <ClInclude Include="ServerLoginReturn.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="SymbolInfo.h" />
     <ClInclude Include="tcpsocket\ResponseHandler.h" />
@@ -137,6 +140,7 @@
     <ClCompile Include="PortfolioItem.cpp" />
     <ClCompile Include="ClientBase.cpp" />
     <ClCompile Include="ResponseHandlers.cpp" />
+    <ClCompile Include="ServerLoginReturn.cpp" />
     <ClCompile Include="Stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

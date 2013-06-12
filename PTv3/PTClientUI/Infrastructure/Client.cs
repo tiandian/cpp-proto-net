@@ -2,15 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using APInvokeManaged;
 using entity;
 using System.Diagnostics;
 using trade;
+using PTCommunication;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Infrastructure
 {
     class Client : ClientBase
     {
+        public Client(IClientRequestHandler requestHandler)
+            : base(requestHandler)
+        {
+        }
+
         public OperationResult QuoteConnect(string quoteAddress, string streamDir)
         {
             return ServerConnect("QuoteConnect", quoteAddress, streamDir);
@@ -53,12 +59,14 @@ namespace PortfolioTrading.Infrastructure
 
         public void RegisterQuote(string[] symbols)
         {
+            /*
             RegQuoteParam regQuoteParam = new RegQuoteParam();
             regQuoteParam.Symbols.AddRange(symbols);
 
             byte[] param_data = DataTranslater.Serialize(regQuoteParam);
 
             byte[] ret_data = Request("RegQuote", param_data);
+             */
         }
 
         public void AddPortf(PortfolioItem portfItem)
@@ -66,9 +74,10 @@ namespace PortfolioTrading.Infrastructure
             Debug.Assert(!string.IsNullOrEmpty(portfItem.ID), "Portfolio item must have ID already");
             if(string.IsNullOrEmpty(portfItem.ID)) return;
 
+
             byte[] portf_data = DataTranslater.Serialize(portfItem);
 
-            byte[] ret_data = Request("AddPortf", portf_data);
+            //byte[] ret_data = Request("AddPortf", portf_data);
         }
 
         public void AddPortfCollection(IEnumerable<PortfolioItem> portfItems)
@@ -78,7 +87,7 @@ namespace PortfolioTrading.Infrastructure
 
             byte[] portf_data = DataTranslater.Serialize(addPortfParam);
 
-            byte[] ret_data = Request("AddPortfCollection", portf_data);
+            //byte[] ret_data = Request("AddPortfCollection", portf_data);
         }
 
         public void RemovePortf(string portfId)
@@ -86,7 +95,7 @@ namespace PortfolioTrading.Infrastructure
             StringParam strParam = new StringParam() { Data = portfId };
             byte[] param_data = DataTranslater.Serialize(strParam);
 
-            byte[] ret_data = Request("RemovePortf", param_data);
+            //byte[] ret_data = Request("RemovePortf", param_data);
         }
 
         public void PorfOpenPosition(string pid, int quantity, bool isVirtual)
@@ -97,7 +106,7 @@ namespace PortfolioTrading.Infrastructure
             opParam.IsVirtual = isVirtual;
 
             byte[] param_data = DataTranslater.Serialize(opParam);
-            byte[] ret_data = Request("PorfOpenPosition", param_data);
+            //byte[] ret_data = Request("PorfOpenPosition", param_data);
         }
 
         public void SwitchPosition(string pid, int quantity)
@@ -108,7 +117,7 @@ namespace PortfolioTrading.Infrastructure
             opParam.IsVirtual = false;
 
             byte[] param_data = DataTranslater.Serialize(opParam);
-            byte[] ret_data = Request("SwitchPosition", param_data);
+            //byte[] ret_data = Request("SwitchPosition", param_data);
         }
 
         public void ScalperOpenPosition(string pid, int quantity)
@@ -119,7 +128,7 @@ namespace PortfolioTrading.Infrastructure
             opParam.IsVirtual = false;
 
             byte[] param_data = DataTranslater.Serialize(opParam);
-            byte[] ret_data = Request("ScalperOpenPosition", param_data);
+            //byte[] ret_data = Request("ScalperOpenPosition", param_data);
         }
 
         public void PorfClosePosition(string pid, int quantity, bool isVirtual)
@@ -130,7 +139,7 @@ namespace PortfolioTrading.Infrastructure
             opParam.IsVirtual = isVirtual;
 
             byte[] param_data = DataTranslater.Serialize(opParam);
-            byte[] ret_data = Request("PorfClosePosition", param_data);
+            //byte[] ret_data = Request("PorfClosePosition", param_data);
         }
 
         public string PortfClosePosition(trade.MultiLegOrder mlOrder, string legRef)
@@ -140,7 +149,7 @@ namespace PortfolioTrading.Infrastructure
             cpParam.LegOrdRef = legRef;
 
             byte[] param_data = DataTranslater.Serialize(cpParam);
-            byte[] ret_data = Request("ClosePosition", param_data);
+            byte[] ret_data = null;// Request("ClosePosition", param_data);
 
             StringParam strReturn = DataTranslater.Deserialize<StringParam>(ret_data);
             return strReturn.Data;
@@ -156,7 +165,7 @@ namespace PortfolioTrading.Infrastructure
             cxlParam.Symbol = legOrder.InstrumentID;
 
             byte[] param_data = DataTranslater.Serialize(cxlParam);
-            byte[] ret_data = Request("CancelOrder", param_data);
+            //byte[] ret_data = Request("CancelOrder", param_data);
         }
 
         public void PortfModifyQuantity(string portfId, int onceQty, int maxQty)
@@ -167,7 +176,7 @@ namespace PortfolioTrading.Infrastructure
             qtyParam.MaxQty = maxQty;
 
             byte[] param_data = DataTranslater.Serialize(qtyParam);
-            byte[] ret_data = Request("PortfChgQuantity", param_data);
+            //byte[] ret_data = Request("PortfChgQuantity", param_data);
         }
 
         public void PortfSetPreferredLeg(string portfId, string legName)
@@ -177,7 +186,7 @@ namespace PortfolioTrading.Infrastructure
             modifyParam.LegSymbol = legName;
 
             byte[] param_data = DataTranslater.Serialize(modifyParam);
-            byte[] ret_data = Request("PortfSetPreferredLeg", param_data);
+            //byte[] ret_data = Request("PortfSetPreferredLeg", param_data);
         }
 
         public void PortfEnableStrategy(string portfId, bool isEnabled)
@@ -187,7 +196,7 @@ namespace PortfolioTrading.Infrastructure
             runningParam.Enabled = isEnabled;
 
             byte[] param_data = DataTranslater.Serialize(runningParam);
-            byte[] ret_data = Request("PortfEnableStrategy", param_data);
+            //byte[] ret_data = Request("PortfEnableStrategy", param_data);
         }
 
         public void PortfTurnSwitches(string portfId, bool autoOpen, bool autoStopGain, bool autoStopLoss,
@@ -202,7 +211,7 @@ namespace PortfolioTrading.Infrastructure
             modifyParam.EnablePrefer = enablePrefer;
 
             byte[] param_data = DataTranslater.Serialize(modifyParam);
-            byte[] ret_data = Request("PortfTurnSwitches", param_data);
+            //byte[] ret_data = Request("PortfTurnSwitches", param_data);
         }
 
         public void PortfApplyStrategySettings(string portfId, string strategyName, byte[] strategyData)
@@ -212,14 +221,14 @@ namespace PortfolioTrading.Infrastructure
             modifyParam.StrategyName = strategyName;
             modifyParam.StrategyData = strategyData;
             byte[] param_data = DataTranslater.Serialize(modifyParam);
-            byte[] ret_data = Request("ApplyStrategySettings", param_data);
+            //byte[] ret_data = Request("ApplyStrategySettings", param_data);
         }
 
         //public void PortfSetPreferLeg(string portfId, string legId, )
 
         public trade.AccountInfo QueryAccountInfo()
         {
-            byte[] ret_data = Request("QueryAccountInfo", new byte[]{});
+            byte[] ret_data = null; //Request("QueryAccountInfo", new byte[]{});
 
             return DataTranslater.Deserialize<trade.AccountInfo>(ret_data);
         }
@@ -229,7 +238,7 @@ namespace PortfolioTrading.Infrastructure
             entity.StringParam strParam = new entity.StringParam();
             strParam.Data = symbol;
             byte[] param_data = DataTranslater.Serialize(strParam);
-            byte[] ret_data = Request("QueryPositionDetails", param_data);
+            //byte[] ret_data = Request("QueryPositionDetails", param_data);
         }
 
         public OperationResult ManualCloseOrder(string symbol, trade.TradeDirectionType direction,
@@ -242,7 +251,7 @@ namespace PortfolioTrading.Infrastructure
             closeOrdParam.Quantity = quantity;
 
             byte[] param_data = DataTranslater.Serialize(closeOrdParam);
-            byte[] ret_data = Request("ManualCloseOrder", param_data);
+            byte[] ret_data = null; // Request("ManualCloseOrder", param_data);
 
             if (ret_data != null)
             {
@@ -267,7 +276,7 @@ namespace PortfolioTrading.Infrastructure
             symbParam.Symbols.Add(symbol);
 
             byte[] param_data = DataTranslater.Serialize(symbParam);
-            byte[] ret_data = Request("QuerySymbolInfo", param_data);
+            byte[] ret_data = null; // Request("QuerySymbolInfo", param_data);
 
             if (ret_data != null)
             {
@@ -287,7 +296,7 @@ namespace PortfolioTrading.Infrastructure
 
             byte[] param_data = DataTranslater.Serialize(connParam);
 
-            byte[] ret_data = Request(method, param_data);
+            byte[] ret_data = null; // Request(method, param_data);
             if (ret_data != null)
             {
                 OperationReturn rt = DataTranslater.Deserialize<OperationReturn>(ret_data);
@@ -307,7 +316,7 @@ namespace PortfolioTrading.Infrastructure
 
         private void ServerDisconnect(string method)
         {
-            byte[] void_ret = Request(method, ClientBase.VoidParam, 5000);
+            //byte[] void_ret = Request(method, ClientBase.VoidParam, 5000);
         }
 
         private OperationResult ServerLogin(string method, string brokerId, string userId, string password, AccountSettings acctSettings = null)
@@ -322,7 +331,7 @@ namespace PortfolioTrading.Infrastructure
 
             byte[] param_data = DataTranslater.Serialize(connParam);
 
-            byte[] ret_data = Request(method, param_data);
+            byte[] ret_data = null;// Request(method, param_data);
             if (ret_data != null)
             {
                 OperationReturn rt = DataTranslater.Deserialize<OperationReturn>(ret_data);
@@ -342,7 +351,7 @@ namespace PortfolioTrading.Infrastructure
 
         private void ServerLogout(string method)
         {
-            RequestAsync(method, ClientBase.VoidParam, null);
+            //RequestAsync(method, ClientBase.VoidParam, null);
         }
 
         public event Action<Quote> OnQuoteReceived;
@@ -352,7 +361,7 @@ namespace PortfolioTrading.Infrastructure
         public event Action<Trade> OnTradeUpdated;
         public event Action<PositionDetailInfo> OnPositionDetialReturn;
 
-        protected override void DispatchCallback(string method, byte[] paramData)
+        protected void DispatchCallback(string method, byte[] paramData)
         {
             if (method == "QuotePush")
             {
