@@ -91,7 +91,7 @@ int ProtobufProtocol::tryDeframeIncomingPacket( DataBuffer& buffer, IncomingPack
 
 	if(!pProtoBufPacket->Decode(pData, dataSize))
 	{
-		disposeIncomingPacket(pPacket);
+		disposeIncomingPacket(pProtoBufPacket);
 		return PushFramework::Protocol::eDecodingFailure;
 	}
 	pPacket = pProtoBufPacket;

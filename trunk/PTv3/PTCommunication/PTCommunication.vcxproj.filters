@@ -126,6 +126,15 @@
     <ClInclude Include="SymbolInfo.h">
       <Filter>Header Files\PTEntity</Filter>
     </ClInclude>
+    <ClInclude Include="ServerLoginReturn.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="IClientRequestHandler.h">
+      <Filter>Header Files\PTCommunication</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityWrapper.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -195,6 +204,9 @@
       <Filter>Source Files\PTCommunication</Filter>
     </ClCompile>
     <ClCompile Include="SymbolInfo.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerLoginReturn.cpp">
       <Filter>Source Files\PTEntity</Filter>
     </ClCompile>
   </ItemGroup>

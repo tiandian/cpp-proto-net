@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 using System.Xml.Linq;
-using APInvokeManaged;
+using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Portfolio.Strategy
 {

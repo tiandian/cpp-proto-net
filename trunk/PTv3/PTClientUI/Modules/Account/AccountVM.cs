@@ -46,7 +46,8 @@ namespace PortfolioTrading.Modules.Account
             EventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             AddressRepo = ServiceLocator.Current.GetInstance<ServerAddressRepoVM>();
             
-            _client = new Client();
+            _client = new Client(new ClientHandlerImpl());
+            /*
             _client.OnError += new Action<string>(_client_OnError);
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
             _client.OnPortfolioItemUpdated += new Action<entity.PortfolioItem>(_client_OnPortfolioItemUpdated);
@@ -54,6 +55,7 @@ namespace PortfolioTrading.Modules.Account
             _client.OnLegOrderUpdated += new Action<string, string, string, trade.Order>(_client_OnLegOrderUpdated);
             _client.OnTradeUpdated += new Action<trade.Trade>(_client_OnTradeUpdated);
             _client.OnPositionDetialReturn += new Action<trade.PositionDetailInfo>(_client_OnPositionDetialReturn);
+             * */
         }
 
         public string Id
@@ -403,7 +405,7 @@ namespace PortfolioTrading.Modules.Account
         public void Close()
         {
             TradeStaionCutDown();
-            _client.Disconnect();
+            //_client.Disconnect();
             _host.Exit();
         }
 
@@ -484,7 +486,7 @@ namespace PortfolioTrading.Modules.Account
                                                 {
                                                     uiContext.Send(o => ChangeStatus("连接失败", false), null);
                                                     EventLogger.Write(string.Format("{0}发生错误", acct.InvestorId));
-                                                    _client.Disconnect();
+                                                    //_client.Disconnect();
                                                     _host.Exit();
                                                 }
                                             }
@@ -512,7 +514,7 @@ namespace PortfolioTrading.Modules.Account
                                 uiContext.Send(o => ChangeStatus("连接失败", false), null);
                                 EventLogger.Write(string.Format("为{0}尝试{1}次连接均发生错误"
                                     , acct.InvestorId, _connectTimes));
-                                _client.Disconnect();
+                                //_client.Disconnect();
                             }
 
                         }
@@ -527,11 +529,12 @@ namespace PortfolioTrading.Modules.Account
                         string host = ConfigurationHelper.GetAppSettingValue("tradeHostIP", localHostIP);
                         EventLogger.Write("Connect to {0}:{1}", host, HostPort);
                         LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
-                        _client.AuthClientId = this.Id;
+                        //_client.AuthClientId = this.Id;
                         
                         try
                         {
-                            _client.ConnectAsync(host, HostPort, actionClntConnectDone);
+                            _client.Connect(host, HostPort);
+                            //_client.ConnectAsync(host, HostPort, actionClntConnectDone);
                         }
                         catch (System.Exception ex)
                         {
@@ -620,7 +623,7 @@ namespace PortfolioTrading.Modules.Account
         private void OnDetachHost(AccountVM acct)
         {
             EventLogger.Write(string.Format("正在将{0}从交易终端断开连接...", acct.InvestorId));
-            _client.Disconnect();
+            //_client.Disconnect();
             EventLogger.Write(string.Format("{0}已断开", acct.InvestorId));
             Status = "未连接";
         }
@@ -728,7 +731,7 @@ namespace PortfolioTrading.Modules.Account
 
         void _client_OnPortfolioItemUpdated(entity.PortfolioItem obj)
         {
-            string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, obj.Diff);
+            string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, null /*obj.Diff*/);
             Debug.WriteLine(info);
             var portf = Get(obj.ID);
             if(portf != null)

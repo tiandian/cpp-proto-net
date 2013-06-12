@@ -10,8 +10,10 @@
 #include "AccountInfo.h"
 #include "OperationResult.h"
 #include "SymbolInfo.h"
+#include "IClientRequestHandler.h"
 
 using namespace System;
+using namespace System::Runtime::InteropServices;
 using namespace PTEntity;
 
 namespace PTCommunication {
@@ -22,9 +24,9 @@ namespace PTCommunication {
 		CNatvieClient *_navtiveClient;
 	
 	public:
-		ClientBase()
+		ClientBase(IClientRequestHandler^ requestHandler)
 		{
-			_navtiveClient = new CNatvieClient();
+			_navtiveClient = new CNatvieClient(requestHandler);
 		}
 		~ClientBase()
 		{
@@ -39,10 +41,15 @@ namespace PTCommunication {
 			}
 		}
 
-		void ConnectAsync(String ^host, int port)
+		property bool IsConnected
 		{
-
+			bool get()
+			{
+				return _navtiveClient->logged();
+			}
 		}
+
+		bool Connect(String ^host, int port);
 
 		void ServerLogin(ServerType svrType, String ^address, String ^brokerId, String ^userId, String ^password)
 		{
@@ -130,6 +137,5 @@ namespace PTCommunication {
 		{
 			return nullptr;
 		}
-
 	};
 }

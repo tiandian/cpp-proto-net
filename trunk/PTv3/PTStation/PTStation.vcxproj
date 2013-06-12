@@ -58,6 +58,10 @@
       <AdditionalLibraryDirectories>D:\Dev\boost_1_53_0\stage\lib;D:\Dev\log4cpp\lib\debug;D:\Dev\protobuf-2.4.1\lib\Debug;D:\Dev\PushFramework2.2\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libprotobuf.lib;log4cppD.lib;PushFramework.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y log4cpp.property $(OutDir)
+copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -79,6 +83,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="log4cpp.property" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>

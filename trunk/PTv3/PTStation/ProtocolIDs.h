@@ -2,7 +2,8 @@
 
 enum
 {
-	ServerLoginRequestID = 1,
+	LoginRequestID = 1,
+	ServerLoginRequestID,
 	ServerLogoutRequestID,
 	AddPortfolioRequestID,
 	RemovePortfolioRequestID,

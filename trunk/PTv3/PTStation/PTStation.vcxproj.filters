@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
+    <None Include="log4cpp.property" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

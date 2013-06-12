@@ -31,12 +31,12 @@ namespace PortfolioTrading
             _host = new NativeHost();
             
 
-            _client = new Client();
-            _client.OnError += new Action<string>(_client_OnError);
-            _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
-            _client.OnPortfolioItemUpdated += new Action<entity.PortfolioItem>(_client_OnPortfolioItemUpdated);
-            _client.OnMultiLegOrderUpdated += new Action<trade.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
-            _client.OnTradeUpdated += new Action<trade.Trade>(_client_OnTradeUpdated);
+            _client = new Client(new ClientHandlerImpl());
+            //_client.OnError += new Action<string>(_client_OnError);
+            //_client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
+            //_client.OnPortfolioItemUpdated += new Action<entity.PortfolioItem>(_client_OnPortfolioItemUpdated);
+            //_client.OnMultiLegOrderUpdated += new Action<trade.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
+            //_client.OnTradeUpdated += new Action<trade.Trade>(_client_OnTradeUpdated);
 
             InitializeComponent();
         }
@@ -55,7 +55,7 @@ namespace PortfolioTrading
 
         void _client_OnPortfolioItemUpdated(entity.PortfolioItem obj)
         {
-            string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, obj.Diff);
+            string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, null/*obj.Diff*/);
             Debug.WriteLine(info);
             OutputMessage(info);
         }
@@ -164,7 +164,7 @@ namespace PortfolioTrading
         {
             portfolioItem = new entity.PortfolioItem();
             portfolioItem.ID = Guid.NewGuid().ToString();
-            portfolioItem.Diff = 2;
+            //portfolioItem.Diff = 2;
             portfolioItem.Quantity = 1;
 
             entity.LegItem leg1 = new entity.LegItem();
@@ -200,20 +200,20 @@ namespace PortfolioTrading
 
         private void btnStartup_Click(object sender, RoutedEventArgs e)
         {
-            _client.ConnectAsync("127.0.0.1", 16168, (b, t, a) =>
-            {
-                string txt = "Connect trade station ";
-                if (b)
-                {
-                    txt += "succeeded";
-                }
-                else
-                {
-                    txt += "failed due to " + t;
-                }
-                OutputMessage(txt);
-                new Action(ClientReady).BeginInvoke(null, null);
-            });
+            //_client.ConnectAsync("127.0.0.1", 16168, (b, t, a) =>
+            //{
+            //    string txt = "Connect trade station ";
+            //    if (b)
+            //    {
+            //        txt += "succeeded";
+            //    }
+            //    else
+            //    {
+            //        txt += "failed due to " + t;
+            //    }
+            //    OutputMessage(txt);
+            //    new Action(ClientReady).BeginInvoke(null, null);
+            //});
         }
 
         private void ClientReady()
