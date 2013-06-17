@@ -91,6 +91,9 @@
     <ClInclude Include="ClientProtocol.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="globalmembers.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

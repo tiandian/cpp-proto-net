@@ -35,7 +35,7 @@ namespace PTEntity {
 		void From(entity::LoginResponse* pEntity)
 		{
 			_success = pEntity->accepted();
-			_errorMsg = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->pseudo().c_str());
+			_errorMsg = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->error_msg().c_str());
 		}
 
 	private:

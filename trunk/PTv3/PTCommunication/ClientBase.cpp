@@ -21,4 +21,18 @@ bool ClientBase::Connect( String ^host, int port )
 	}
 }
 
+void ClientBase::SetPseudo( String ^pseudo )
+{
+	IntPtr pseudoPointer;
+	try
+	{
+		pseudoPointer = (IntPtr)Marshal::StringToHGlobalAnsi(pseudo);
+		_navtiveClient->setPseudo((char*)pseudoPointer.ToPointer());
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pseudoPointer);
+	}
+}
+
 }

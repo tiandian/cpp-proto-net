@@ -533,6 +533,7 @@ namespace PortfolioTrading.Modules.Account
                         
                         try
                         {
+                            _client.SetPseudo(acct.Id);
                             _client.Connect(host, HostPort);
                             //_client.ConnectAsync(host, HostPort, actionClntConnectDone);
                         }

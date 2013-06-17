@@ -96,6 +96,7 @@ copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(Out
     <ClInclude Include="entity\packet.pb.h" />
     <ClInclude Include="entity\quote.pb.h" />
     <ClInclude Include="entity\trade.pb.h" />
+    <ClInclude Include="globalmembers.h" />
     <ClInclude Include="LogManager.h" />
     <ClInclude Include="ProtobufPacket.h" />
     <ClInclude Include="ProtobufProtocol.h" />

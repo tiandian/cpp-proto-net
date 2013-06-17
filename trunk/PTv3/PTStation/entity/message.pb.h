@@ -34,14 +34,16 @@ void  protobuf_AddDesc_message_2eproto();
 void protobuf_AssignDesc_message_2eproto();
 void protobuf_ShutdownFile_message_2eproto();
 
-class StringParam;
-class IntParam;
 class LoginPuzzleResponse;
 class LoginRequest;
 class LoginResponse;
+class HeartbeatRequest;
+class HeartbeatResponse;
 class ServerLoginRequest;
 class ServerLoginResponse;
 class ServerLogoutRequest;
+class StringParam;
+class IntParam;
 class LegItem;
 class LegUpdateItem;
 class StrategyItem;
@@ -150,174 +152,6 @@ inline bool StopLossCloseMethods_Parse(
 }
 // ===================================================================
 
-class StringParam : public ::google::protobuf::Message {
- public:
-  StringParam();
-  virtual ~StringParam();
-  
-  StringParam(const StringParam& from);
-  
-  inline StringParam& operator=(const StringParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-  
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-  
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const StringParam& default_instance();
-  
-  void Swap(StringParam* other);
-  
-  // implements Message ----------------------------------------------
-  
-  StringParam* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const StringParam& from);
-  void MergeFrom(const StringParam& from);
-  void Clear();
-  bool IsInitialized() const;
-  
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  
-  ::google::protobuf::Metadata GetMetadata() const;
-  
-  // nested types ----------------------------------------------------
-  
-  // accessors -------------------------------------------------------
-  
-  // required string Data = 1;
-  inline bool has_data() const;
-  inline void clear_data();
-  static const int kDataFieldNumber = 1;
-  inline const ::std::string& data() const;
-  inline void set_data(const ::std::string& value);
-  inline void set_data(const char* value);
-  inline void set_data(const char* value, size_t size);
-  inline ::std::string* mutable_data();
-  inline ::std::string* release_data();
-  
-  // @@protoc_insertion_point(class_scope:entity.StringParam)
- private:
-  inline void set_has_data();
-  inline void clear_has_data();
-  
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-  
-  ::std::string* data_;
-  
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
-  
-  friend void  protobuf_AddDesc_message_2eproto();
-  friend void protobuf_AssignDesc_message_2eproto();
-  friend void protobuf_ShutdownFile_message_2eproto();
-  
-  void InitAsDefaultInstance();
-  static StringParam* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class IntParam : public ::google::protobuf::Message {
- public:
-  IntParam();
-  virtual ~IntParam();
-  
-  IntParam(const IntParam& from);
-  
-  inline IntParam& operator=(const IntParam& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-  
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-  
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const IntParam& default_instance();
-  
-  void Swap(IntParam* other);
-  
-  // implements Message ----------------------------------------------
-  
-  IntParam* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const IntParam& from);
-  void MergeFrom(const IntParam& from);
-  void Clear();
-  bool IsInitialized() const;
-  
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-  
-  ::google::protobuf::Metadata GetMetadata() const;
-  
-  // nested types ----------------------------------------------------
-  
-  // accessors -------------------------------------------------------
-  
-  // required int32 Data = 2;
-  inline bool has_data() const;
-  inline void clear_data();
-  static const int kDataFieldNumber = 2;
-  inline ::google::protobuf::int32 data() const;
-  inline void set_data(::google::protobuf::int32 value);
-  
-  // @@protoc_insertion_point(class_scope:entity.IntParam)
- private:
-  inline void set_has_data();
-  inline void clear_has_data();
-  
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-  
-  ::google::protobuf::int32 data_;
-  
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
-  
-  friend void  protobuf_AddDesc_message_2eproto();
-  friend void protobuf_AssignDesc_message_2eproto();
-  friend void protobuf_ShutdownFile_message_2eproto();
-  
-  void InitAsDefaultInstance();
-  static IntParam* default_instance_;
-};
-// -------------------------------------------------------------------
-
 class LoginPuzzleResponse : public ::google::protobuf::Message {
  public:
   LoginPuzzleResponse();
@@ -372,25 +206,25 @@ class LoginPuzzleResponse : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string ClientKey = 1;
-  inline bool has_clientkey() const;
-  inline void clear_clientkey();
-  static const int kClientKeyFieldNumber = 1;
-  inline const ::std::string& clientkey() const;
-  inline void set_clientkey(const ::std::string& value);
-  inline void set_clientkey(const char* value);
-  inline void set_clientkey(const char* value, size_t size);
-  inline ::std::string* mutable_clientkey();
-  inline ::std::string* release_clientkey();
+  // required string session_id = 1;
+  inline bool has_session_id() const;
+  inline void clear_session_id();
+  static const int kSessionIdFieldNumber = 1;
+  inline const ::std::string& session_id() const;
+  inline void set_session_id(const ::std::string& value);
+  inline void set_session_id(const char* value);
+  inline void set_session_id(const char* value, size_t size);
+  inline ::std::string* mutable_session_id();
+  inline ::std::string* release_session_id();
   
   // @@protoc_insertion_point(class_scope:entity.LoginPuzzleResponse)
  private:
-  inline void set_has_clientkey();
-  inline void clear_has_clientkey();
+  inline void set_has_session_id();
+  inline void clear_has_session_id();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::std::string* clientkey_;
+  ::std::string* session_id_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -458,21 +292,39 @@ class LoginRequest : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string ClientKey = 1;
-  inline bool has_clientkey() const;
-  inline void clear_clientkey();
-  static const int kClientKeyFieldNumber = 1;
-  inline const ::std::string& clientkey() const;
-  inline void set_clientkey(const ::std::string& value);
-  inline void set_clientkey(const char* value);
-  inline void set_clientkey(const char* value, size_t size);
-  inline ::std::string* mutable_clientkey();
-  inline ::std::string* release_clientkey();
+  // required bool is_new = 1;
+  inline bool has_is_new() const;
+  inline void clear_is_new();
+  static const int kIsNewFieldNumber = 1;
+  inline bool is_new() const;
+  inline void set_is_new(bool value);
   
-  // required string Pseudo = 2;
+  // required string session_id = 2;
+  inline bool has_session_id() const;
+  inline void clear_session_id();
+  static const int kSessionIdFieldNumber = 2;
+  inline const ::std::string& session_id() const;
+  inline void set_session_id(const ::std::string& value);
+  inline void set_session_id(const char* value);
+  inline void set_session_id(const char* value, size_t size);
+  inline ::std::string* mutable_session_id();
+  inline ::std::string* release_session_id();
+  
+  // required string previous_session_id = 3;
+  inline bool has_previous_session_id() const;
+  inline void clear_previous_session_id();
+  static const int kPreviousSessionIdFieldNumber = 3;
+  inline const ::std::string& previous_session_id() const;
+  inline void set_previous_session_id(const ::std::string& value);
+  inline void set_previous_session_id(const char* value);
+  inline void set_previous_session_id(const char* value, size_t size);
+  inline ::std::string* mutable_previous_session_id();
+  inline ::std::string* release_previous_session_id();
+  
+  // optional string pseudo = 4;
   inline bool has_pseudo() const;
   inline void clear_pseudo();
-  static const int kPseudoFieldNumber = 2;
+  static const int kPseudoFieldNumber = 4;
   inline const ::std::string& pseudo() const;
   inline void set_pseudo(const ::std::string& value);
   inline void set_pseudo(const char* value);
@@ -482,18 +334,24 @@ class LoginRequest : public ::google::protobuf::Message {
   
   // @@protoc_insertion_point(class_scope:entity.LoginRequest)
  private:
-  inline void set_has_clientkey();
-  inline void clear_has_clientkey();
+  inline void set_has_is_new();
+  inline void clear_has_is_new();
+  inline void set_has_session_id();
+  inline void clear_has_session_id();
+  inline void set_has_previous_session_id();
+  inline void clear_has_previous_session_id();
   inline void set_has_pseudo();
   inline void clear_has_pseudo();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::std::string* clientkey_;
+  ::std::string* session_id_;
+  ::std::string* previous_session_id_;
   ::std::string* pseudo_;
+  bool is_new_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -558,38 +416,62 @@ class LoginResponse : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required bool Accepted = 1;
+  // required bool accepted = 1;
   inline bool has_accepted() const;
   inline void clear_accepted();
   static const int kAcceptedFieldNumber = 1;
   inline bool accepted() const;
   inline void set_accepted(bool value);
   
-  // required string Pseudo = 2;
-  inline bool has_pseudo() const;
-  inline void clear_pseudo();
-  static const int kPseudoFieldNumber = 2;
-  inline const ::std::string& pseudo() const;
-  inline void set_pseudo(const ::std::string& value);
-  inline void set_pseudo(const char* value);
-  inline void set_pseudo(const char* value, size_t size);
-  inline ::std::string* mutable_pseudo();
-  inline ::std::string* release_pseudo();
+  // required string session_id = 2;
+  inline bool has_session_id() const;
+  inline void clear_session_id();
+  static const int kSessionIdFieldNumber = 2;
+  inline const ::std::string& session_id() const;
+  inline void set_session_id(const ::std::string& value);
+  inline void set_session_id(const char* value);
+  inline void set_session_id(const char* value, size_t size);
+  inline ::std::string* mutable_session_id();
+  inline ::std::string* release_session_id();
+  
+  // required bool is_new = 3;
+  inline bool has_is_new() const;
+  inline void clear_is_new();
+  static const int kIsNewFieldNumber = 3;
+  inline bool is_new() const;
+  inline void set_is_new(bool value);
+  
+  // required string error_msg = 4;
+  inline bool has_error_msg() const;
+  inline void clear_error_msg();
+  static const int kErrorMsgFieldNumber = 4;
+  inline const ::std::string& error_msg() const;
+  inline void set_error_msg(const ::std::string& value);
+  inline void set_error_msg(const char* value);
+  inline void set_error_msg(const char* value, size_t size);
+  inline ::std::string* mutable_error_msg();
+  inline ::std::string* release_error_msg();
   
   // @@protoc_insertion_point(class_scope:entity.LoginResponse)
  private:
   inline void set_has_accepted();
   inline void clear_has_accepted();
-  inline void set_has_pseudo();
-  inline void clear_has_pseudo();
+  inline void set_has_session_id();
+  inline void clear_has_session_id();
+  inline void set_has_is_new();
+  inline void clear_has_is_new();
+  inline void set_has_error_msg();
+  inline void clear_has_error_msg();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::std::string* pseudo_;
+  ::std::string* session_id_;
+  ::std::string* error_msg_;
   bool accepted_;
+  bool is_new_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -597,6 +479,178 @@ class LoginResponse : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static LoginResponse* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class HeartbeatRequest : public ::google::protobuf::Message {
+ public:
+  HeartbeatRequest();
+  virtual ~HeartbeatRequest();
+  
+  HeartbeatRequest(const HeartbeatRequest& from);
+  
+  inline HeartbeatRequest& operator=(const HeartbeatRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HeartbeatRequest& default_instance();
+  
+  void Swap(HeartbeatRequest* other);
+  
+  // implements Message ----------------------------------------------
+  
+  HeartbeatRequest* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const HeartbeatRequest& from);
+  void MergeFrom(const HeartbeatRequest& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string timestamp = 1;
+  inline bool has_timestamp() const;
+  inline void clear_timestamp();
+  static const int kTimestampFieldNumber = 1;
+  inline const ::std::string& timestamp() const;
+  inline void set_timestamp(const ::std::string& value);
+  inline void set_timestamp(const char* value);
+  inline void set_timestamp(const char* value, size_t size);
+  inline ::std::string* mutable_timestamp();
+  inline ::std::string* release_timestamp();
+  
+  // @@protoc_insertion_point(class_scope:entity.HeartbeatRequest)
+ private:
+  inline void set_has_timestamp();
+  inline void clear_has_timestamp();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* timestamp_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static HeartbeatRequest* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class HeartbeatResponse : public ::google::protobuf::Message {
+ public:
+  HeartbeatResponse();
+  virtual ~HeartbeatResponse();
+  
+  HeartbeatResponse(const HeartbeatResponse& from);
+  
+  inline HeartbeatResponse& operator=(const HeartbeatResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HeartbeatResponse& default_instance();
+  
+  void Swap(HeartbeatResponse* other);
+  
+  // implements Message ----------------------------------------------
+  
+  HeartbeatResponse* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const HeartbeatResponse& from);
+  void MergeFrom(const HeartbeatResponse& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string timestamp = 1;
+  inline bool has_timestamp() const;
+  inline void clear_timestamp();
+  static const int kTimestampFieldNumber = 1;
+  inline const ::std::string& timestamp() const;
+  inline void set_timestamp(const ::std::string& value);
+  inline void set_timestamp(const char* value);
+  inline void set_timestamp(const char* value, size_t size);
+  inline ::std::string* mutable_timestamp();
+  inline ::std::string* release_timestamp();
+  
+  // @@protoc_insertion_point(class_scope:entity.HeartbeatResponse)
+ private:
+  inline void set_has_timestamp();
+  inline void clear_has_timestamp();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* timestamp_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static HeartbeatResponse* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -913,6 +967,174 @@ class ServerLogoutRequest : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static ServerLogoutRequest* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StringParam : public ::google::protobuf::Message {
+ public:
+  StringParam();
+  virtual ~StringParam();
+  
+  StringParam(const StringParam& from);
+  
+  inline StringParam& operator=(const StringParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StringParam& default_instance();
+  
+  void Swap(StringParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  StringParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StringParam& from);
+  void MergeFrom(const StringParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string Data = 1;
+  inline bool has_data() const;
+  inline void clear_data();
+  static const int kDataFieldNumber = 1;
+  inline const ::std::string& data() const;
+  inline void set_data(const ::std::string& value);
+  inline void set_data(const char* value);
+  inline void set_data(const char* value, size_t size);
+  inline ::std::string* mutable_data();
+  inline ::std::string* release_data();
+  
+  // @@protoc_insertion_point(class_scope:entity.StringParam)
+ private:
+  inline void set_has_data();
+  inline void clear_has_data();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* data_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static StringParam* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class IntParam : public ::google::protobuf::Message {
+ public:
+  IntParam();
+  virtual ~IntParam();
+  
+  IntParam(const IntParam& from);
+  
+  inline IntParam& operator=(const IntParam& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const IntParam& default_instance();
+  
+  void Swap(IntParam* other);
+  
+  // implements Message ----------------------------------------------
+  
+  IntParam* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const IntParam& from);
+  void MergeFrom(const IntParam& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required int32 Data = 2;
+  inline bool has_data() const;
+  inline void clear_data();
+  static const int kDataFieldNumber = 2;
+  inline ::google::protobuf::int32 data() const;
+  inline void set_data(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:entity.IntParam)
+ private:
+  inline void set_has_data();
+  inline void clear_has_data();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::google::protobuf::int32 data_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static IntParam* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -3932,150 +4154,62 @@ class SymbolInfo : public ::google::protobuf::Message {
 
 // ===================================================================
 
-// StringParam
-
-// required string Data = 1;
-inline bool StringParam::has_data() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void StringParam::set_has_data() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void StringParam::clear_has_data() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void StringParam::clear_data() {
-  if (data_ != &::google::protobuf::internal::kEmptyString) {
-    data_->clear();
-  }
-  clear_has_data();
-}
-inline const ::std::string& StringParam::data() const {
-  return *data_;
-}
-inline void StringParam::set_data(const ::std::string& value) {
-  set_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    data_ = new ::std::string;
-  }
-  data_->assign(value);
-}
-inline void StringParam::set_data(const char* value) {
-  set_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    data_ = new ::std::string;
-  }
-  data_->assign(value);
-}
-inline void StringParam::set_data(const char* value, size_t size) {
-  set_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    data_ = new ::std::string;
-  }
-  data_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* StringParam::mutable_data() {
-  set_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    data_ = new ::std::string;
-  }
-  return data_;
-}
-inline ::std::string* StringParam::release_data() {
-  clear_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = data_;
-    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-
-// -------------------------------------------------------------------
-
-// IntParam
-
-// required int32 Data = 2;
-inline bool IntParam::has_data() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void IntParam::set_has_data() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void IntParam::clear_has_data() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void IntParam::clear_data() {
-  data_ = 0;
-  clear_has_data();
-}
-inline ::google::protobuf::int32 IntParam::data() const {
-  return data_;
-}
-inline void IntParam::set_data(::google::protobuf::int32 value) {
-  set_has_data();
-  data_ = value;
-}
-
-// -------------------------------------------------------------------
-
 // LoginPuzzleResponse
 
-// required string ClientKey = 1;
-inline bool LoginPuzzleResponse::has_clientkey() const {
+// required string session_id = 1;
+inline bool LoginPuzzleResponse::has_session_id() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void LoginPuzzleResponse::set_has_clientkey() {
+inline void LoginPuzzleResponse::set_has_session_id() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void LoginPuzzleResponse::clear_has_clientkey() {
+inline void LoginPuzzleResponse::clear_has_session_id() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void LoginPuzzleResponse::clear_clientkey() {
-  if (clientkey_ != &::google::protobuf::internal::kEmptyString) {
-    clientkey_->clear();
+inline void LoginPuzzleResponse::clear_session_id() {
+  if (session_id_ != &::google::protobuf::internal::kEmptyString) {
+    session_id_->clear();
   }
-  clear_has_clientkey();
+  clear_has_session_id();
 }
-inline const ::std::string& LoginPuzzleResponse::clientkey() const {
-  return *clientkey_;
+inline const ::std::string& LoginPuzzleResponse::session_id() const {
+  return *session_id_;
 }
-inline void LoginPuzzleResponse::set_clientkey(const ::std::string& value) {
-  set_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
-    clientkey_ = new ::std::string;
+inline void LoginPuzzleResponse::set_session_id(const ::std::string& value) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  clientkey_->assign(value);
+  session_id_->assign(value);
 }
-inline void LoginPuzzleResponse::set_clientkey(const char* value) {
-  set_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
-    clientkey_ = new ::std::string;
+inline void LoginPuzzleResponse::set_session_id(const char* value) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  clientkey_->assign(value);
+  session_id_->assign(value);
 }
-inline void LoginPuzzleResponse::set_clientkey(const char* value, size_t size) {
-  set_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
-    clientkey_ = new ::std::string;
+inline void LoginPuzzleResponse::set_session_id(const char* value, size_t size) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  clientkey_->assign(reinterpret_cast<const char*>(value), size);
+  session_id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* LoginPuzzleResponse::mutable_clientkey() {
-  set_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
-    clientkey_ = new ::std::string;
+inline ::std::string* LoginPuzzleResponse::mutable_session_id() {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  return clientkey_;
+  return session_id_;
 }
-inline ::std::string* LoginPuzzleResponse::release_clientkey() {
-  clear_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* LoginPuzzleResponse::release_session_id() {
+  clear_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = clientkey_;
-    clientkey_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = session_id_;
+    session_id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
@@ -4084,73 +4218,153 @@ inline ::std::string* LoginPuzzleResponse::release_clientkey() {
 
 // LoginRequest
 
-// required string ClientKey = 1;
-inline bool LoginRequest::has_clientkey() const {
+// required bool is_new = 1;
+inline bool LoginRequest::has_is_new() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void LoginRequest::set_has_clientkey() {
+inline void LoginRequest::set_has_is_new() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void LoginRequest::clear_has_clientkey() {
+inline void LoginRequest::clear_has_is_new() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void LoginRequest::clear_clientkey() {
-  if (clientkey_ != &::google::protobuf::internal::kEmptyString) {
-    clientkey_->clear();
+inline void LoginRequest::clear_is_new() {
+  is_new_ = false;
+  clear_has_is_new();
+}
+inline bool LoginRequest::is_new() const {
+  return is_new_;
+}
+inline void LoginRequest::set_is_new(bool value) {
+  set_has_is_new();
+  is_new_ = value;
+}
+
+// required string session_id = 2;
+inline bool LoginRequest::has_session_id() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void LoginRequest::set_has_session_id() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void LoginRequest::clear_has_session_id() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void LoginRequest::clear_session_id() {
+  if (session_id_ != &::google::protobuf::internal::kEmptyString) {
+    session_id_->clear();
   }
-  clear_has_clientkey();
+  clear_has_session_id();
 }
-inline const ::std::string& LoginRequest::clientkey() const {
-  return *clientkey_;
+inline const ::std::string& LoginRequest::session_id() const {
+  return *session_id_;
 }
-inline void LoginRequest::set_clientkey(const ::std::string& value) {
-  set_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
-    clientkey_ = new ::std::string;
+inline void LoginRequest::set_session_id(const ::std::string& value) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  clientkey_->assign(value);
+  session_id_->assign(value);
 }
-inline void LoginRequest::set_clientkey(const char* value) {
-  set_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
-    clientkey_ = new ::std::string;
+inline void LoginRequest::set_session_id(const char* value) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  clientkey_->assign(value);
+  session_id_->assign(value);
 }
-inline void LoginRequest::set_clientkey(const char* value, size_t size) {
-  set_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
-    clientkey_ = new ::std::string;
+inline void LoginRequest::set_session_id(const char* value, size_t size) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  clientkey_->assign(reinterpret_cast<const char*>(value), size);
+  session_id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* LoginRequest::mutable_clientkey() {
-  set_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
-    clientkey_ = new ::std::string;
+inline ::std::string* LoginRequest::mutable_session_id() {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  return clientkey_;
+  return session_id_;
 }
-inline ::std::string* LoginRequest::release_clientkey() {
-  clear_has_clientkey();
-  if (clientkey_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* LoginRequest::release_session_id() {
+  clear_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = clientkey_;
-    clientkey_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = session_id_;
+    session_id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
 
-// required string Pseudo = 2;
+// required string previous_session_id = 3;
+inline bool LoginRequest::has_previous_session_id() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void LoginRequest::set_has_previous_session_id() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void LoginRequest::clear_has_previous_session_id() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void LoginRequest::clear_previous_session_id() {
+  if (previous_session_id_ != &::google::protobuf::internal::kEmptyString) {
+    previous_session_id_->clear();
+  }
+  clear_has_previous_session_id();
+}
+inline const ::std::string& LoginRequest::previous_session_id() const {
+  return *previous_session_id_;
+}
+inline void LoginRequest::set_previous_session_id(const ::std::string& value) {
+  set_has_previous_session_id();
+  if (previous_session_id_ == &::google::protobuf::internal::kEmptyString) {
+    previous_session_id_ = new ::std::string;
+  }
+  previous_session_id_->assign(value);
+}
+inline void LoginRequest::set_previous_session_id(const char* value) {
+  set_has_previous_session_id();
+  if (previous_session_id_ == &::google::protobuf::internal::kEmptyString) {
+    previous_session_id_ = new ::std::string;
+  }
+  previous_session_id_->assign(value);
+}
+inline void LoginRequest::set_previous_session_id(const char* value, size_t size) {
+  set_has_previous_session_id();
+  if (previous_session_id_ == &::google::protobuf::internal::kEmptyString) {
+    previous_session_id_ = new ::std::string;
+  }
+  previous_session_id_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* LoginRequest::mutable_previous_session_id() {
+  set_has_previous_session_id();
+  if (previous_session_id_ == &::google::protobuf::internal::kEmptyString) {
+    previous_session_id_ = new ::std::string;
+  }
+  return previous_session_id_;
+}
+inline ::std::string* LoginRequest::release_previous_session_id() {
+  clear_has_previous_session_id();
+  if (previous_session_id_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = previous_session_id_;
+    previous_session_id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// optional string pseudo = 4;
 inline bool LoginRequest::has_pseudo() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void LoginRequest::set_has_pseudo() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void LoginRequest::clear_has_pseudo() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void LoginRequest::clear_pseudo() {
   if (pseudo_ != &::google::protobuf::internal::kEmptyString) {
@@ -4204,7 +4418,7 @@ inline ::std::string* LoginRequest::release_pseudo() {
 
 // LoginResponse
 
-// required bool Accepted = 1;
+// required bool accepted = 1;
 inline bool LoginResponse::has_accepted() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -4226,60 +4440,264 @@ inline void LoginResponse::set_accepted(bool value) {
   accepted_ = value;
 }
 
-// required string Pseudo = 2;
-inline bool LoginResponse::has_pseudo() const {
+// required string session_id = 2;
+inline bool LoginResponse::has_session_id() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void LoginResponse::set_has_pseudo() {
+inline void LoginResponse::set_has_session_id() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void LoginResponse::clear_has_pseudo() {
+inline void LoginResponse::clear_has_session_id() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void LoginResponse::clear_pseudo() {
-  if (pseudo_ != &::google::protobuf::internal::kEmptyString) {
-    pseudo_->clear();
+inline void LoginResponse::clear_session_id() {
+  if (session_id_ != &::google::protobuf::internal::kEmptyString) {
+    session_id_->clear();
   }
-  clear_has_pseudo();
+  clear_has_session_id();
 }
-inline const ::std::string& LoginResponse::pseudo() const {
-  return *pseudo_;
+inline const ::std::string& LoginResponse::session_id() const {
+  return *session_id_;
 }
-inline void LoginResponse::set_pseudo(const ::std::string& value) {
-  set_has_pseudo();
-  if (pseudo_ == &::google::protobuf::internal::kEmptyString) {
-    pseudo_ = new ::std::string;
+inline void LoginResponse::set_session_id(const ::std::string& value) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  pseudo_->assign(value);
+  session_id_->assign(value);
 }
-inline void LoginResponse::set_pseudo(const char* value) {
-  set_has_pseudo();
-  if (pseudo_ == &::google::protobuf::internal::kEmptyString) {
-    pseudo_ = new ::std::string;
+inline void LoginResponse::set_session_id(const char* value) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  pseudo_->assign(value);
+  session_id_->assign(value);
 }
-inline void LoginResponse::set_pseudo(const char* value, size_t size) {
-  set_has_pseudo();
-  if (pseudo_ == &::google::protobuf::internal::kEmptyString) {
-    pseudo_ = new ::std::string;
+inline void LoginResponse::set_session_id(const char* value, size_t size) {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  pseudo_->assign(reinterpret_cast<const char*>(value), size);
+  session_id_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* LoginResponse::mutable_pseudo() {
-  set_has_pseudo();
-  if (pseudo_ == &::google::protobuf::internal::kEmptyString) {
-    pseudo_ = new ::std::string;
+inline ::std::string* LoginResponse::mutable_session_id() {
+  set_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
+    session_id_ = new ::std::string;
   }
-  return pseudo_;
+  return session_id_;
 }
-inline ::std::string* LoginResponse::release_pseudo() {
-  clear_has_pseudo();
-  if (pseudo_ == &::google::protobuf::internal::kEmptyString) {
+inline ::std::string* LoginResponse::release_session_id() {
+  clear_has_session_id();
+  if (session_id_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
   } else {
-    ::std::string* temp = pseudo_;
-    pseudo_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    ::std::string* temp = session_id_;
+    session_id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required bool is_new = 3;
+inline bool LoginResponse::has_is_new() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void LoginResponse::set_has_is_new() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void LoginResponse::clear_has_is_new() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void LoginResponse::clear_is_new() {
+  is_new_ = false;
+  clear_has_is_new();
+}
+inline bool LoginResponse::is_new() const {
+  return is_new_;
+}
+inline void LoginResponse::set_is_new(bool value) {
+  set_has_is_new();
+  is_new_ = value;
+}
+
+// required string error_msg = 4;
+inline bool LoginResponse::has_error_msg() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void LoginResponse::set_has_error_msg() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void LoginResponse::clear_has_error_msg() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void LoginResponse::clear_error_msg() {
+  if (error_msg_ != &::google::protobuf::internal::kEmptyString) {
+    error_msg_->clear();
+  }
+  clear_has_error_msg();
+}
+inline const ::std::string& LoginResponse::error_msg() const {
+  return *error_msg_;
+}
+inline void LoginResponse::set_error_msg(const ::std::string& value) {
+  set_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    error_msg_ = new ::std::string;
+  }
+  error_msg_->assign(value);
+}
+inline void LoginResponse::set_error_msg(const char* value) {
+  set_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    error_msg_ = new ::std::string;
+  }
+  error_msg_->assign(value);
+}
+inline void LoginResponse::set_error_msg(const char* value, size_t size) {
+  set_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    error_msg_ = new ::std::string;
+  }
+  error_msg_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* LoginResponse::mutable_error_msg() {
+  set_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    error_msg_ = new ::std::string;
+  }
+  return error_msg_;
+}
+inline ::std::string* LoginResponse::release_error_msg() {
+  clear_has_error_msg();
+  if (error_msg_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = error_msg_;
+    error_msg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// HeartbeatRequest
+
+// required string timestamp = 1;
+inline bool HeartbeatRequest::has_timestamp() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void HeartbeatRequest::set_has_timestamp() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void HeartbeatRequest::clear_has_timestamp() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void HeartbeatRequest::clear_timestamp() {
+  if (timestamp_ != &::google::protobuf::internal::kEmptyString) {
+    timestamp_->clear();
+  }
+  clear_has_timestamp();
+}
+inline const ::std::string& HeartbeatRequest::timestamp() const {
+  return *timestamp_;
+}
+inline void HeartbeatRequest::set_timestamp(const ::std::string& value) {
+  set_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    timestamp_ = new ::std::string;
+  }
+  timestamp_->assign(value);
+}
+inline void HeartbeatRequest::set_timestamp(const char* value) {
+  set_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    timestamp_ = new ::std::string;
+  }
+  timestamp_->assign(value);
+}
+inline void HeartbeatRequest::set_timestamp(const char* value, size_t size) {
+  set_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    timestamp_ = new ::std::string;
+  }
+  timestamp_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* HeartbeatRequest::mutable_timestamp() {
+  set_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    timestamp_ = new ::std::string;
+  }
+  return timestamp_;
+}
+inline ::std::string* HeartbeatRequest::release_timestamp() {
+  clear_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = timestamp_;
+    timestamp_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// HeartbeatResponse
+
+// required string timestamp = 1;
+inline bool HeartbeatResponse::has_timestamp() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void HeartbeatResponse::set_has_timestamp() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void HeartbeatResponse::clear_has_timestamp() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void HeartbeatResponse::clear_timestamp() {
+  if (timestamp_ != &::google::protobuf::internal::kEmptyString) {
+    timestamp_->clear();
+  }
+  clear_has_timestamp();
+}
+inline const ::std::string& HeartbeatResponse::timestamp() const {
+  return *timestamp_;
+}
+inline void HeartbeatResponse::set_timestamp(const ::std::string& value) {
+  set_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    timestamp_ = new ::std::string;
+  }
+  timestamp_->assign(value);
+}
+inline void HeartbeatResponse::set_timestamp(const char* value) {
+  set_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    timestamp_ = new ::std::string;
+  }
+  timestamp_->assign(value);
+}
+inline void HeartbeatResponse::set_timestamp(const char* value, size_t size) {
+  set_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    timestamp_ = new ::std::string;
+  }
+  timestamp_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* HeartbeatResponse::mutable_timestamp() {
+  set_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    timestamp_ = new ::std::string;
+  }
+  return timestamp_;
+}
+inline ::std::string* HeartbeatResponse::release_timestamp() {
+  clear_has_timestamp();
+  if (timestamp_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = timestamp_;
+    timestamp_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }
@@ -4652,6 +5070,94 @@ inline void ServerLogoutRequest::set_type(entity::ServerType value) {
   GOOGLE_DCHECK(entity::ServerType_IsValid(value));
   set_has_type();
   type_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// StringParam
+
+// required string Data = 1;
+inline bool StringParam::has_data() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void StringParam::set_has_data() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void StringParam::clear_has_data() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void StringParam::clear_data() {
+  if (data_ != &::google::protobuf::internal::kEmptyString) {
+    data_->clear();
+  }
+  clear_has_data();
+}
+inline const ::std::string& StringParam::data() const {
+  return *data_;
+}
+inline void StringParam::set_data(const ::std::string& value) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(value);
+}
+inline void StringParam::set_data(const char* value) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(value);
+}
+inline void StringParam::set_data(const char* value, size_t size) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* StringParam::mutable_data() {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  return data_;
+}
+inline ::std::string* StringParam::release_data() {
+  clear_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = data_;
+    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// -------------------------------------------------------------------
+
+// IntParam
+
+// required int32 Data = 2;
+inline bool IntParam::has_data() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void IntParam::set_has_data() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void IntParam::clear_has_data() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void IntParam::clear_data() {
+  data_ = 0;
+  clear_has_data();
+}
+inline ::google::protobuf::int32 IntParam::data() const {
+  return data_;
+}
+inline void IntParam::set_data(::google::protobuf::int32 value) {
+  set_has_data();
+  data_ = value;
 }
 
 // -------------------------------------------------------------------
