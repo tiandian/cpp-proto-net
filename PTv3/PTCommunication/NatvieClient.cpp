@@ -39,7 +39,7 @@ void CNatvieClient::OnLoginResponse( entity::LoginResponse& resp )
 {
 	if(resp.accepted())
 	{
-		m_sessionId = resp.pseudo();
+		m_sessionId = resp.session_id();
 	}
 
 	msclr::auto_gcroot<LoginReturn^> loginRet = gcnew LoginReturn(&resp);
@@ -48,7 +48,7 @@ void CNatvieClient::OnLoginResponse( entity::LoginResponse& resp )
 
 void CNatvieClient::OnLoginPuzzleResponse( entity::LoginPuzzleResponse& resp )
 {
-	tryLogin(resp.clientkey());
+	tryLogin(resp.session_id());
 }
 
 void CNatvieClient::OnServerLoginResponse( entity::ServerLoginResponse& resp )
@@ -58,7 +58,7 @@ void CNatvieClient::OnServerLoginResponse( entity::ServerLoginResponse& resp )
 	 m_clr->OnServerLoginReturned(loginRet.get());
 }
 
-bool CNatvieClient::tryLogin(string clientKey)
+bool CNatvieClient::tryLogin(const string& sessionId)
 {
 	if (getStatus() == Disconnected)
 	{
@@ -72,8 +72,10 @@ bool CNatvieClient::tryLogin(string clientKey)
 
 	ProtobufPacket<entity::LoginRequest> request(LoginRequestID);
 	
-	request.getData().set_clientkey(clientKey);
-	request.getData().set_pseudo(clientKey);
+	request.getData().set_is_new(true);
+	request.getData().set_session_id(sessionId);
+	request.getData().set_previous_session_id("");
+	request.getData().set_pseudo(m_pseudo);
 
 	return sendRequest(&request) > 0;
 }

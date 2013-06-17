@@ -3,16 +3,6 @@ import "trade.proto";
 
 package entity;
 
-message StringParam
-{
-	required string Data = 1;
-}
-
-message IntParam
-{
-	required int32 Data = 2;
-}
-
 enum ServerType
 {
 	SERV_QUOTE = 0;
@@ -21,19 +11,33 @@ enum ServerType
 
 message LoginPuzzleResponse
 {
-	required string ClientKey = 1;
+	required string session_id = 1;
 }
 
 message LoginRequest
 {
-	required string ClientKey = 1;
-	required string Pseudo = 2;
+	required bool is_new = 1;
+	required string session_id = 2;
+	required string previous_session_id = 3;
+	optional string pseudo = 4;
 }
 
 message LoginResponse
 {
-	required bool Accepted = 1;
-    required string Pseudo = 2;
+	required bool accepted = 1;
+	required string session_id = 2;
+	required bool is_new = 3;
+	required string error_msg = 4;
+}
+
+message HeartbeatRequest
+{
+	required string timestamp = 1;
+}
+
+message HeartbeatResponse
+{
+	required string timestamp = 1;
 }
 
 message ServerLoginRequest
@@ -54,6 +58,16 @@ message ServerLoginResponse
 message ServerLogoutRequest
 {	
 	required ServerType Type = 1;
+}
+
+message StringParam
+{
+	required string Data = 1;
+}
+
+message IntParam
+{
+	required int32 Data = 2;
 }
 
 message LegItem

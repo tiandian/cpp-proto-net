@@ -19,16 +19,19 @@ public:
 
 	bool logged();
 
+	void setPseudo(const char* pseudo){ m_pseudo = pseudo; }
+
 protected:
 	virtual void onConnected();
 	virtual void onConnectionClosed();
 
 private:
-	bool tryLogin(string clientKey);
+	bool tryLogin(const string& clientKey);
 
 
 	msclr::auto_gcroot<PTCommunication::IClientRequestHandler^> m_clr;
 
 	string m_sessionId;
+	string m_pseudo;
 };
 

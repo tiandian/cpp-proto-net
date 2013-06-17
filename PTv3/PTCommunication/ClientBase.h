@@ -24,7 +24,7 @@ namespace PTCommunication {
 		CNatvieClient *_navtiveClient;
 	
 	public:
-		ClientBase(IClientRequestHandler^ requestHandler)
+		ClientBase(IClientRequestHandler ^requestHandler)
 		{
 			_navtiveClient = new CNatvieClient(requestHandler);
 		}
@@ -48,6 +48,8 @@ namespace PTCommunication {
 				return _navtiveClient->logged();
 			}
 		}
+
+		void SetPseudo(String ^pseudo);
 
 		bool Connect(String ^host, int port);
 

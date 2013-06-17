@@ -23,8 +23,10 @@ public:
 
 protected:
 	virtual OutgoingPacket* onNewConnection(ConnectionContext*& lpContext);
-	virtual void onClientDisconnected(LogicalConnection* pClient, CloseReason closeReason);
-	virtual void onClientConnected(LogicalConnection* pClient);
 	virtual int onFirstRequest(IncomingPacket& request, ConnectionContext* lpContext, LogicalConnection*& lpClient, OutgoingPacket*& lpPacket);
+	virtual void onClientConnected(LogicalConnection* pClient);
+	virtual void onClientReconnected(LogicalConnection* pClient);
+	virtual void onClientDisconnected(LogicalConnection* pClient, CloseReason closeReason);
+
 };
 
