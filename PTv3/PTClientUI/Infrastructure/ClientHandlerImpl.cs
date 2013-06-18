@@ -8,14 +8,21 @@ namespace PortfolioTrading.Infrastructure
 {
     class ClientHandlerImpl : IClientRequestHandler
     {
+        public event Action<bool, string> OnLogin;
+        public event Action<bool, string> OnServerLogin;
+
         public void OnLoginReturned(PTEntity.LoginReturn loginReturn)
         {
-            System.Console.WriteLine(string.Format("Login result: {0}, {1}", loginReturn.Success, loginReturn.ErrorMessage));
+            LogManager.Logger.DebugFormat("Login result: {0}, {1}", loginReturn.Success, loginReturn.ErrorMessage);
+            if (OnLogin != null)
+                OnLogin(loginReturn.Success, loginReturn.ErrorMessage);
         }
 
         public void OnServerLoginReturned(PTEntity.ServerLoginReturn loginReturn)
         {
-            System.Console.WriteLine(string.Format("Server login result: {0}, {1}", loginReturn.Success, loginReturn.ErrorMessage));
+            LogManager.Logger.DebugFormat("Server login result: {0}, {1}", loginReturn.Success, loginReturn.ErrorMessage);
+            if (OnServerLogin != null)
+                OnServerLogin(loginReturn.Success, loginReturn.ErrorMessage);
         }
     }
 }

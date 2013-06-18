@@ -208,6 +208,7 @@
     <Compile Include="Utils\RegionHelper.cs" />
     <Compile Include="Utils\SideBindingSource.cs" />
     <Compile Include="Modules\Account\AccountMgrVM.cs" />
+    <Compile Include="Utils\TradeStationConnector.cs" />
     <Page Include="BureauBlue.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
