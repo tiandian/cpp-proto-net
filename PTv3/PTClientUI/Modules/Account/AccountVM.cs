@@ -25,6 +25,7 @@ namespace PortfolioTrading.Modules.Account
         private ObservableCollection<PortfolioVM> _acctPortfolios = new ObservableCollection<PortfolioVM>();
 
         private Client _client;
+        private ClientHandlerImpl _clientHandler;
         private NativeHost _host;
 
         private static int HostPortSeed = 16181;
@@ -45,8 +46,9 @@ namespace PortfolioTrading.Modules.Account
 
             EventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             AddressRepo = ServiceLocator.Current.GetInstance<ServerAddressRepoVM>();
-            
-            _client = new Client(new ClientHandlerImpl());
+
+            _clientHandler = new ClientHandlerImpl();
+            _client = new Client(_clientHandler);
             /*
             _client.OnError += new Action<string>(_client_OnError);
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
@@ -405,7 +407,7 @@ namespace PortfolioTrading.Modules.Account
         public void Close()
         {
             TradeStaionCutDown();
-            //_client.Disconnect();
+            _client.Disconnect();
             _host.Exit();
         }
 
@@ -423,10 +425,39 @@ namespace PortfolioTrading.Modules.Account
 
             SynchronizationContext uiContext = SynchronizationContext.Current;
 
-            HostPort = ConfigurationHelper.GetAppSettingValue("tradeHostPort", 16181); ;
-            
-            EventLogger.Write(string.Format("正在为{0}建立交易终端...", acct.InvestorId));
+            TradeStationConnector connector = new TradeStationConnector(_client, _clientHandler, uiContext,
+                () => new ServerLoginParam
+                    {
+                        TradeAddress = AddressRepo.EffectiveTrading.Address,
+                        QuoteAddress = AddressRepo.EffectiveMarket.Address,
+                        BrokerId = acct.BrokerId,
+                        InvestorId = acct.InvestorId,
+                        Password = acct.Password
+                    }
+                );
 
+            string localHostIP = NativeHost.GetLocalIP();
+            string host = ConfigurationHelper.GetAppSettingValue("tradeHostIP", localHostIP);
+            HostPort = ConfigurationHelper.GetAppSettingValue("tradeHostPort", 16181);
+            _client.SetPseudo(acct.Id);
+            EventLogger.Write(string.Format("正在为{0}建立交易终端...", acct.InvestorId));
+            connector.Login(host, HostPort, 
+                (succ, error) => 
+                {
+                    if (succ)
+                    {
+                        ChangeStatus("已连接", false);
+                        EventLogger.Write("连接交易终端成功");
+                    }
+                    else
+                    {
+                        ChangeStatus("未连接", false);
+                        EventLogger.Write("连接交易终端失败 : {0}", error);
+                    }
+                }, 
+                status => EventLogger.Write(status));
+            
+            /*
             Func<int, bool, bool> funcLaunch = new Func<int, bool, bool>(_host.Startup);
             funcLaunch.BeginInvoke(HostPort, true, 
                 delegate(IAsyncResult arLaunch)
@@ -547,12 +578,13 @@ namespace PortfolioTrading.Modules.Account
 
                     actionLoopConnect.Invoke(_connectTimes);
                 }, null);
-
+            */
             //_host.Startup(HostPort);
         }
 
         private bool HaveTradeStationReady(AccountVM acct)
         {
+            /*
             EventLogger.Write("正在连接交易服务器: " + AddressRepo.EffectiveTrading.Name);
             OperationResult tradeConnResult = _client.TradeConnect(AddressRepo.EffectiveTrading.Address,
                                                           acct.InvestorId);
@@ -609,7 +641,7 @@ namespace PortfolioTrading.Modules.Account
                 EventLogger.Write("行情登录失败 (" + quoteLoginResult.ErrorMessage + ")");
                 return false;
             }
-
+            */
             return true;
         }
 

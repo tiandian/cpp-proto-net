@@ -9,7 +9,7 @@ namespace PortfolioTrading.Infrastructure
     class ClientHandlerImpl : IClientRequestHandler
     {
         public event Action<bool, string> OnLogin;
-        public event Action<bool, string> OnServerLogin;
+        public event Action<PTEntity.ServerType, bool, string> OnServerLogin;
 
         public void OnLoginReturned(PTEntity.LoginReturn loginReturn)
         {
@@ -22,7 +22,7 @@ namespace PortfolioTrading.Infrastructure
         {
             LogManager.Logger.DebugFormat("Server login result: {0}, {1}", loginReturn.Success, loginReturn.ErrorMessage);
             if (OnServerLogin != null)
-                OnServerLogin(loginReturn.Success, loginReturn.ErrorMessage);
+                OnServerLogin(loginReturn.SeverType, loginReturn.Success, loginReturn.ErrorMessage);
         }
     }
 }

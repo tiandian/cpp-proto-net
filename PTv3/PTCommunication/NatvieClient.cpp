@@ -84,3 +84,30 @@ bool CNatvieClient::logged()
 {
 	return getStatus() == Connected && m_sessionId.length() > 0;
 }
+
+void CNatvieClient::Logout()
+{
+	m_sessionId.clear();
+	disconnect(true);
+}
+
+bool CNatvieClient::ServerLogin( entity::ServerType svrType, const char* address, const char* brokerId, const char* investorId, const char* password )
+{
+	ProtobufPacket<entity::ServerLoginRequest> request(ServerLoginRequestID);
+	request.getData().set_type(svrType);
+	request.getData().set_address(address);
+	request.getData().set_brokerid(brokerId);
+	request.getData().set_userid(investorId);
+	request.getData().set_password(password);
+
+	return sendRequest(&request);
+}
+
+void CNatvieClient::ServerLogout( entity::ServerType svrType )
+{
+	ProtobufPacket<entity::ServerLogoutRequest> request(ServerLogoutRequestID);
+	request.getData().set_type(svrType);
+
+	sendRequest(&request);
+}
+

@@ -237,9 +237,13 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ServerLoginRequest));
   ServerLoginResponse_descriptor_ = file->message_type(6);
-  static const int ServerLoginResponse_offsets_[2] = {
+  static const int ServerLoginResponse_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerLoginResponse, success_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerLoginResponse, errormessage_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerLoginResponse, type_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerLoginResponse, address_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerLoginResponse, brokerid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ServerLoginResponse, userid_),
   };
   ServerLoginResponse_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -936,95 +940,97 @@ void protobuf_AddDesc_message_2eproto() {
     "\022ServerLoginRequest\022 \n\004Type\030\001 \002(\0162\022.enti"
     "ty.ServerType\022\017\n\007Address\030\002 \002(\t\022\020\n\010Broker"
     "Id\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\020\n\010Password\030\005 \002"
-    "(\t\"<\n\023ServerLoginResponse\022\017\n\007Success\030\001 \002"
-    "(\010\022\024\n\014ErrorMessage\030\002 \002(\t\"7\n\023ServerLogout"
-    "Request\022 \n\004Type\030\001 \002(\0162\022.entity.ServerTyp"
-    "e\"\033\n\013StringParam\022\014\n\004Data\030\001 \002(\t\"\030\n\010IntPar"
-    "am\022\014\n\004Data\030\002 \002(\005\"\323\001\n\007LegItem\022\016\n\006Symbol\030\001"
-    " \002(\t\022\r\n\005Ratio\030\002 \002(\005\022\'\n\004Side\030\003 \002(\0162\031.enti"
-    "ty.PosiDirectionType\022!\n\006Status\030\004 \002(\0162\021.e"
-    "ntity.LegStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003Ask\030\006 \002"
-    "(\001\022\017\n\007AskSize\030\007 \002(\005\022\013\n\003Bid\030\010 \002(\001\022\017\n\007BidS"
-    "ize\030\t \002(\005\022\023\n\013IsPreferred\030\n \002(\010\"\214\001\n\rLegUp"
-    "dateItem\022\016\n\006Symbol\030\001 \002(\t\022!\n\006Status\030\002 \002(\016"
-    "2\021.entity.LegStatus\022\014\n\004Last\030\003 \002(\001\022\013\n\003Ask"
-    "\030\004 \002(\001\022\017\n\007AskSize\030\005 \002(\005\022\013\n\003Bid\030\006 \002(\001\022\017\n\007"
-    "BidSize\030\007 \002(\005\"Q\n\014StrategyItem\022\"\n\004Type\030\001 "
-    "\002(\0162\024.entity.StrategyType\022\014\n\004Data\030\002 \002(\014\022"
-    "\017\n\007Running\030\003 \002(\010\"x\n\rPortfolioItem\022\n\n\002ID\030"
-    "\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\035\n\004Legs\030\003 \003(\0132\017."
-    "entity.LegItem\022\021\n\tMaxCancel\030\004 \002(\005\022\027\n\017Max"
-    "TriggerTimes\030\005 \002(\005\"\264\001\n\023PortfolioUpdateIt"
-    "em\022\n\n\002ID\030\001 \002(\t\022#\n\004Legs\030\002 \003(\0132\025.entity.Le"
-    "gUpdateItem\022\024\n\014TriggerTimes\030\003 \002(\005\022\014\n\004Dif"
-    "f\030\004 \001(\001\022\020\n\010LongDiff\030\005 \001(\001\022\021\n\tShortDiff\030\006"
-    " \001(\001\022\020\n\010LongSize\030\007 \001(\005\022\021\n\tShortSize\030\010 \001("
-    "\005\":\n\014ConnectParam\022\024\n\014QuoteAddress\030\001 \002(\t\022"
-    "\024\n\014StreamFolder\030\002 \002(\t\"8\n\017OperationReturn"
-    "\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t\""
-    "7\n\017AccountSettings\022\021\n\tMaxSubmit\030\001 \002(\005\022\021\n"
-    "\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020\n\010Broker"
-    "Id\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Password\030\003 \002"
-    "(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entity.Accoun"
-    "tSettings\" \n\rRegQuoteParam\022\017\n\007Symbols\030\001 "
-    "\003(\t\"B\n\021AddPortfolioParam\022-\n\016PortfolioIte"
-    "ms\030\001 \003(\0132\025.entity.PortfolioItem\"I\n\021PorfO"
-    "penPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Quantit"
-    "y\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022ClosePosit"
-    "ionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024.trade."
-    "MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t\n\023LegO"
-    "rderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017Mult"
-    "iLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036"
-    "\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002\n\031Arbit"
-    "rageStrategySettings\022\'\n\004Side\030\001 \002(\0162\031.ent"
-    "ity.PosiDirectionType\022/\n\rOpenCondition\030\002"
-    " \002(\0162\030.entity.CompareCondition\022\031\n\021OpenPo"
-    "siThreshold\030\003 \002(\001\0223\n\021StopGainCondition\030\004"
-    " \002(\0162\030.entity.CompareCondition\022\031\n\021StopGa"
-    "inThreshold\030\005 \002(\001\0223\n\021StopLossCondition\030\006"
-    " \002(\0162\030.entity.CompareCondition\022\031\n\021StopLo"
-    "ssThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiStrategy"
-    "Settings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014CloseLegSi"
-    "de\030\002 \002(\0162\031.entity.PosiDirectionType\0222\n\020T"
-    "riggerCondition\030\003 \002(\0162\030.entity.CompareCo"
-    "ndition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017ScalperSe"
-    "ttings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPriceTick\030\002"
-    " \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.entity.Direc"
-    "tionDepends\022-\n\013CaseLE3Tick\030\004 \002(\0162\030.entit"
-    "y.DirectionDepends\022-\n\013CaseGE4Tick\030\005 \002(\0162"
-    "\030.entity.DirectionDepends\022.\n\014CaseNoChang"
-    "e\030\006 \002(\0162\030.entity.DirectionDepends\0226\n\020Sto"
-    "pLossStrategy\030\007 \002(\0162\034.entity.StopLossClo"
-    "seMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n\013OpenTim"
-    "eout\030\t \001(\005\"R\n\023ModifyStrategyParam\022\017\n\007Por"
-    "tfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n\014Stra"
-    "tegyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolioSwitch"
-    "Param\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen\030\002 \002(\010"
-    "\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStopLoss\030\004"
-    " \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014EnablePref"
-    "er\030\006 \002(\010\"K\n\027ModifyPortfolioQtyParam\022\017\n\007P"
-    "ortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006MaxQty\030"
-    "\003 \002(\005\"<\n\030ModifyRunningStatusParam\022\017\n\007Por"
-    "tfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n ModifyPor"
-    "tfolioPreferredLegParam\022\017\n\007PortfId\030\001 \002(\t"
-    "\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrderParam\022"
-    "\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n"
-    "\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbo"
-    "l\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016\n\006Symb"
-    "ol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trade.Trad"
-    "eDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020\n\010Quan"
-    "tity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstrument\030"
-    "\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016ExchangeIns"
-    "tID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016VolumeMu"
-    "ltiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n\nServe"
-    "rType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRADE\020\001*\?\n"
-    "\014StrategyType\022\r\n\tARBITRAGE\020\000\022\023\n\017CHANGE_P"
-    "OSITION\020\001\022\013\n\007SCALPER\020\002*o\n\020DirectionDepen"
-    "ds\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017"
-    "\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\r"
-    "ON_BIG_CHANGE\020\004*I\n\024StopLossCloseMethods\022"
-    "\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_ON_INP"
-    "UT_LIMIT\020\001", 4010);
+    "(\t\"\221\001\n\023ServerLoginResponse\022\017\n\007Success\030\001 "
+    "\002(\010\022\024\n\014ErrorMessage\030\002 \002(\t\022 \n\004Type\030\003 \002(\0162"
+    "\022.entity.ServerType\022\017\n\007Address\030\004 \002(\t\022\020\n\010"
+    "BrokerId\030\005 \002(\t\022\016\n\006UserId\030\006 \002(\t\"7\n\023Server"
+    "LogoutRequest\022 \n\004Type\030\001 \002(\0162\022.entity.Ser"
+    "verType\"\033\n\013StringParam\022\014\n\004Data\030\001 \002(\t\"\030\n\010"
+    "IntParam\022\014\n\004Data\030\002 \002(\005\"\323\001\n\007LegItem\022\016\n\006Sy"
+    "mbol\030\001 \002(\t\022\r\n\005Ratio\030\002 \002(\005\022\'\n\004Side\030\003 \002(\0162"
+    "\031.entity.PosiDirectionType\022!\n\006Status\030\004 \002"
+    "(\0162\021.entity.LegStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003A"
+    "sk\030\006 \002(\001\022\017\n\007AskSize\030\007 \002(\005\022\013\n\003Bid\030\010 \002(\001\022\017"
+    "\n\007BidSize\030\t \002(\005\022\023\n\013IsPreferred\030\n \002(\010\"\214\001\n"
+    "\rLegUpdateItem\022\016\n\006Symbol\030\001 \002(\t\022!\n\006Status"
+    "\030\002 \002(\0162\021.entity.LegStatus\022\014\n\004Last\030\003 \002(\001\022"
+    "\013\n\003Ask\030\004 \002(\001\022\017\n\007AskSize\030\005 \002(\005\022\013\n\003Bid\030\006 \002"
+    "(\001\022\017\n\007BidSize\030\007 \002(\005\"Q\n\014StrategyItem\022\"\n\004T"
+    "ype\030\001 \002(\0162\024.entity.StrategyType\022\014\n\004Data\030"
+    "\002 \002(\014\022\017\n\007Running\030\003 \002(\010\"x\n\rPortfolioItem\022"
+    "\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\035\n\004Legs\030\003 "
+    "\003(\0132\017.entity.LegItem\022\021\n\tMaxCancel\030\004 \002(\005\022"
+    "\027\n\017MaxTriggerTimes\030\005 \002(\005\"\264\001\n\023PortfolioUp"
+    "dateItem\022\n\n\002ID\030\001 \002(\t\022#\n\004Legs\030\002 \003(\0132\025.ent"
+    "ity.LegUpdateItem\022\024\n\014TriggerTimes\030\003 \002(\005\022"
+    "\014\n\004Diff\030\004 \001(\001\022\020\n\010LongDiff\030\005 \001(\001\022\021\n\tShort"
+    "Diff\030\006 \001(\001\022\020\n\010LongSize\030\007 \001(\005\022\021\n\tShortSiz"
+    "e\030\010 \001(\005\":\n\014ConnectParam\022\024\n\014QuoteAddress\030"
+    "\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017Operation"
+    "Return\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030"
+    "\002 \002(\t\"7\n\017AccountSettings\022\021\n\tMaxSubmit\030\001 "
+    "\002(\005\022\021\n\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020\n\010"
+    "BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Passwo"
+    "rd\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entity."
+    "AccountSettings\" \n\rRegQuoteParam\022\017\n\007Symb"
+    "ols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Portfo"
+    "lioItems\030\001 \003(\0132\025.entity.PortfolioItem\"I\n"
+    "\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Q"
+    "uantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Clos"
+    "ePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024."
+    "trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t"
+    "\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027"
+    "\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003"
+    " \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002\n"
+    "\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002(\016"
+    "2\031.entity.PosiDirectionType\022/\n\rOpenCondi"
+    "tion\030\002 \002(\0162\030.entity.CompareCondition\022\031\n\021"
+    "OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCondi"
+    "tion\030\004 \002(\0162\030.entity.CompareCondition\022\031\n\021"
+    "StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCondi"
+    "tion\030\006 \002(\0162\030.entity.CompareCondition\022\031\n\021"
+    "StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiSt"
+    "rategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Clos"
+    "eLegSide\030\002 \002(\0162\031.entity.PosiDirectionTyp"
+    "e\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.Com"
+    "pareCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017Sca"
+    "lperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPrice"
+    "Tick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.entity"
+    ".DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\0162\030"
+    ".entity.DirectionDepends\022-\n\013CaseGE4Tick\030"
+    "\005 \002(\0162\030.entity.DirectionDepends\022.\n\014CaseN"
+    "oChange\030\006 \002(\0162\030.entity.DirectionDepends\022"
+    "6\n\020StopLossStrategy\030\007 \002(\0162\034.entity.StopL"
+    "ossCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n\013O"
+    "penTimeout\030\t \001(\005\"R\n\023ModifyStrategyParam\022"
+    "\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024"
+    "\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolio"
+    "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
+    "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
+    "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
+    "lePrefer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyPara"
+    "m\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006M"
+    "axQty\030\003 \002(\005\"<\n\030ModifyRunningStatusParam\022"
+    "\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Mod"
+    "ifyPortfolioPreferredLegParam\022\017\n\007PortfId"
+    "\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrder"
+    "Param\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 "
+    "\002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n"
+    "\006Symbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016"
+    "\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trad"
+    "e.TradeDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020"
+    "\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstr"
+    "ument\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Excha"
+    "ngeInstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016Vo"
+    "lumeMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n"
+    "\nServerType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRAD"
+    "E\020\001*\?\n\014StrategyType\022\r\n\tARBITRAGE\020\000\022\023\n\017CH"
+    "ANGE_POSITION\020\001\022\013\n\007SCALPER\020\002*o\n\020Directio"
+    "nDepends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SI"
+    "ZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE"
+    "\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseMe"
+    "thods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_"
+    "ON_INPUT_LIMIT\020\001", 4096);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -3025,6 +3031,10 @@ void ServerLoginRequest::Swap(ServerLoginRequest* other) {
 #ifndef _MSC_VER
 const int ServerLoginResponse::kSuccessFieldNumber;
 const int ServerLoginResponse::kErrorMessageFieldNumber;
+const int ServerLoginResponse::kTypeFieldNumber;
+const int ServerLoginResponse::kAddressFieldNumber;
+const int ServerLoginResponse::kBrokerIdFieldNumber;
+const int ServerLoginResponse::kUserIdFieldNumber;
 #endif  // !_MSC_VER
 
 ServerLoginResponse::ServerLoginResponse()
@@ -3045,6 +3055,10 @@ void ServerLoginResponse::SharedCtor() {
   _cached_size_ = 0;
   success_ = false;
   errormessage_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  type_ = 0;
+  address_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -3055,6 +3069,15 @@ ServerLoginResponse::~ServerLoginResponse() {
 void ServerLoginResponse::SharedDtor() {
   if (errormessage_ != &::google::protobuf::internal::kEmptyString) {
     delete errormessage_;
+  }
+  if (address_ != &::google::protobuf::internal::kEmptyString) {
+    delete address_;
+  }
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    delete brokerid_;
+  }
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    delete userid_;
   }
   if (this != default_instance_) {
   }
@@ -3086,6 +3109,22 @@ void ServerLoginResponse::Clear() {
     if (has_errormessage()) {
       if (errormessage_ != &::google::protobuf::internal::kEmptyString) {
         errormessage_->clear();
+      }
+    }
+    type_ = 0;
+    if (has_address()) {
+      if (address_ != &::google::protobuf::internal::kEmptyString) {
+        address_->clear();
+      }
+    }
+    if (has_brokerid()) {
+      if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+        brokerid_->clear();
+      }
+    }
+    if (has_userid()) {
+      if (userid_ != &::google::protobuf::internal::kEmptyString) {
+        userid_->clear();
       }
     }
   }
@@ -3127,6 +3166,78 @@ bool ServerLoginResponse::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(24)) goto parse_Type;
+        break;
+      }
+      
+      // required .entity.ServerType Type = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Type:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::ServerType_IsValid(value)) {
+            set_type(static_cast< entity::ServerType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(3, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_Address;
+        break;
+      }
+      
+      // required string Address = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Address:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_address()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->address().data(), this->address().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(42)) goto parse_BrokerId;
+        break;
+      }
+      
+      // required string BrokerId = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_BrokerId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_brokerid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->brokerid().data(), this->brokerid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_UserId;
+        break;
+      }
+      
+      // required string UserId = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_UserId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_userid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->userid().data(), this->userid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -3163,6 +3274,39 @@ void ServerLoginResponse::SerializeWithCachedSizes(
       2, this->errormessage(), output);
   }
   
+  // required .entity.ServerType Type = 3;
+  if (has_type()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      3, this->type(), output);
+  }
+  
+  // required string Address = 4;
+  if (has_address()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->address().data(), this->address().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      4, this->address(), output);
+  }
+  
+  // required string BrokerId = 5;
+  if (has_brokerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      5, this->brokerid(), output);
+  }
+  
+  // required string UserId = 6;
+  if (has_userid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->userid().data(), this->userid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      6, this->userid(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -3186,6 +3330,42 @@ void ServerLoginResponse::SerializeWithCachedSizes(
         2, this->errormessage(), target);
   }
   
+  // required .entity.ServerType Type = 3;
+  if (has_type()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      3, this->type(), target);
+  }
+  
+  // required string Address = 4;
+  if (has_address()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->address().data(), this->address().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->address(), target);
+  }
+  
+  // required string BrokerId = 5;
+  if (has_brokerid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->brokerid().data(), this->brokerid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->brokerid(), target);
+  }
+  
+  // required string UserId = 6;
+  if (has_userid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->userid().data(), this->userid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->userid(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -3207,6 +3387,33 @@ int ServerLoginResponse::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
           this->errormessage());
+    }
+    
+    // required .entity.ServerType Type = 3;
+    if (has_type()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
+    }
+    
+    // required string Address = 4;
+    if (has_address()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->address());
+    }
+    
+    // required string BrokerId = 5;
+    if (has_brokerid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->brokerid());
+    }
+    
+    // required string UserId = 6;
+    if (has_userid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->userid());
     }
     
   }
@@ -3242,6 +3449,18 @@ void ServerLoginResponse::MergeFrom(const ServerLoginResponse& from) {
     if (from.has_errormessage()) {
       set_errormessage(from.errormessage());
     }
+    if (from.has_type()) {
+      set_type(from.type());
+    }
+    if (from.has_address()) {
+      set_address(from.address());
+    }
+    if (from.has_brokerid()) {
+      set_brokerid(from.brokerid());
+    }
+    if (from.has_userid()) {
+      set_userid(from.userid());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -3259,7 +3478,7 @@ void ServerLoginResponse::CopyFrom(const ServerLoginResponse& from) {
 }
 
 bool ServerLoginResponse::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  if ((_has_bits_[0] & 0x0000003f) != 0x0000003f) return false;
   
   return true;
 }
@@ -3268,6 +3487,10 @@ void ServerLoginResponse::Swap(ServerLoginResponse* other) {
   if (other != this) {
     std::swap(success_, other->success_);
     std::swap(errormessage_, other->errormessage_);
+    std::swap(type_, other->type_);
+    std::swap(address_, other->address_);
+    std::swap(brokerid_, other->brokerid_);
+    std::swap(userid_, other->userid_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

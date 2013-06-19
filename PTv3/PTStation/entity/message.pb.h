@@ -864,20 +864,72 @@ class ServerLoginResponse : public ::google::protobuf::Message {
   inline ::std::string* mutable_errormessage();
   inline ::std::string* release_errormessage();
   
+  // required .entity.ServerType Type = 3;
+  inline bool has_type() const;
+  inline void clear_type();
+  static const int kTypeFieldNumber = 3;
+  inline entity::ServerType type() const;
+  inline void set_type(entity::ServerType value);
+  
+  // required string Address = 4;
+  inline bool has_address() const;
+  inline void clear_address();
+  static const int kAddressFieldNumber = 4;
+  inline const ::std::string& address() const;
+  inline void set_address(const ::std::string& value);
+  inline void set_address(const char* value);
+  inline void set_address(const char* value, size_t size);
+  inline ::std::string* mutable_address();
+  inline ::std::string* release_address();
+  
+  // required string BrokerId = 5;
+  inline bool has_brokerid() const;
+  inline void clear_brokerid();
+  static const int kBrokerIdFieldNumber = 5;
+  inline const ::std::string& brokerid() const;
+  inline void set_brokerid(const ::std::string& value);
+  inline void set_brokerid(const char* value);
+  inline void set_brokerid(const char* value, size_t size);
+  inline ::std::string* mutable_brokerid();
+  inline ::std::string* release_brokerid();
+  
+  // required string UserId = 6;
+  inline bool has_userid() const;
+  inline void clear_userid();
+  static const int kUserIdFieldNumber = 6;
+  inline const ::std::string& userid() const;
+  inline void set_userid(const ::std::string& value);
+  inline void set_userid(const char* value);
+  inline void set_userid(const char* value, size_t size);
+  inline ::std::string* mutable_userid();
+  inline ::std::string* release_userid();
+  
   // @@protoc_insertion_point(class_scope:entity.ServerLoginResponse)
  private:
   inline void set_has_success();
   inline void clear_has_success();
   inline void set_has_errormessage();
   inline void clear_has_errormessage();
+  inline void set_has_type();
+  inline void clear_has_type();
+  inline void set_has_address();
+  inline void clear_has_address();
+  inline void set_has_brokerid();
+  inline void clear_has_brokerid();
+  inline void set_has_userid();
+  inline void clear_has_userid();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* errormessage_;
   bool success_;
+  int type_;
+  ::std::string* address_;
+  ::std::string* brokerid_;
+  ::std::string* userid_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -5041,6 +5093,203 @@ inline ::std::string* ServerLoginResponse::release_errormessage() {
   } else {
     ::std::string* temp = errormessage_;
     errormessage_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .entity.ServerType Type = 3;
+inline bool ServerLoginResponse::has_type() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ServerLoginResponse::set_has_type() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ServerLoginResponse::clear_has_type() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void ServerLoginResponse::clear_type() {
+  type_ = 0;
+  clear_has_type();
+}
+inline entity::ServerType ServerLoginResponse::type() const {
+  return static_cast< entity::ServerType >(type_);
+}
+inline void ServerLoginResponse::set_type(entity::ServerType value) {
+  GOOGLE_DCHECK(entity::ServerType_IsValid(value));
+  set_has_type();
+  type_ = value;
+}
+
+// required string Address = 4;
+inline bool ServerLoginResponse::has_address() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ServerLoginResponse::set_has_address() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ServerLoginResponse::clear_has_address() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ServerLoginResponse::clear_address() {
+  if (address_ != &::google::protobuf::internal::kEmptyString) {
+    address_->clear();
+  }
+  clear_has_address();
+}
+inline const ::std::string& ServerLoginResponse::address() const {
+  return *address_;
+}
+inline void ServerLoginResponse::set_address(const ::std::string& value) {
+  set_has_address();
+  if (address_ == &::google::protobuf::internal::kEmptyString) {
+    address_ = new ::std::string;
+  }
+  address_->assign(value);
+}
+inline void ServerLoginResponse::set_address(const char* value) {
+  set_has_address();
+  if (address_ == &::google::protobuf::internal::kEmptyString) {
+    address_ = new ::std::string;
+  }
+  address_->assign(value);
+}
+inline void ServerLoginResponse::set_address(const char* value, size_t size) {
+  set_has_address();
+  if (address_ == &::google::protobuf::internal::kEmptyString) {
+    address_ = new ::std::string;
+  }
+  address_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ServerLoginResponse::mutable_address() {
+  set_has_address();
+  if (address_ == &::google::protobuf::internal::kEmptyString) {
+    address_ = new ::std::string;
+  }
+  return address_;
+}
+inline ::std::string* ServerLoginResponse::release_address() {
+  clear_has_address();
+  if (address_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = address_;
+    address_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string BrokerId = 5;
+inline bool ServerLoginResponse::has_brokerid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void ServerLoginResponse::set_has_brokerid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void ServerLoginResponse::clear_has_brokerid() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void ServerLoginResponse::clear_brokerid() {
+  if (brokerid_ != &::google::protobuf::internal::kEmptyString) {
+    brokerid_->clear();
+  }
+  clear_has_brokerid();
+}
+inline const ::std::string& ServerLoginResponse::brokerid() const {
+  return *brokerid_;
+}
+inline void ServerLoginResponse::set_brokerid(const ::std::string& value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void ServerLoginResponse::set_brokerid(const char* value) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(value);
+}
+inline void ServerLoginResponse::set_brokerid(const char* value, size_t size) {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  brokerid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ServerLoginResponse::mutable_brokerid() {
+  set_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    brokerid_ = new ::std::string;
+  }
+  return brokerid_;
+}
+inline ::std::string* ServerLoginResponse::release_brokerid() {
+  clear_has_brokerid();
+  if (brokerid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = brokerid_;
+    brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required string UserId = 6;
+inline bool ServerLoginResponse::has_userid() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void ServerLoginResponse::set_has_userid() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void ServerLoginResponse::clear_has_userid() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void ServerLoginResponse::clear_userid() {
+  if (userid_ != &::google::protobuf::internal::kEmptyString) {
+    userid_->clear();
+  }
+  clear_has_userid();
+}
+inline const ::std::string& ServerLoginResponse::userid() const {
+  return *userid_;
+}
+inline void ServerLoginResponse::set_userid(const ::std::string& value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void ServerLoginResponse::set_userid(const char* value) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(value);
+}
+inline void ServerLoginResponse::set_userid(const char* value, size_t size) {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  userid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ServerLoginResponse::mutable_userid() {
+  set_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    userid_ = new ::std::string;
+  }
+  return userid_;
+}
+inline ::std::string* ServerLoginResponse::release_userid() {
+  clear_has_userid();
+  if (userid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = userid_;
+    userid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
     return temp;
   }
 }

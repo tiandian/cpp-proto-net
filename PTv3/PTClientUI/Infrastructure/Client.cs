@@ -37,24 +37,24 @@ namespace PortfolioTrading.Infrastructure
             ServerDisconnect("TradeDisconnect");
         }
 
-        public OperationResult QuoteLogin(string brokerId, string userId, string password)
+        public void QuoteLogin(string address, string brokerId, string userId, string password)
         {
-            return ServerLogin("QuoteLogin", brokerId, userId, password);
+            ServerLogin(PTEntity.ServerType.SERV_QUOTE, address, brokerId, userId, password);
         }
 
         public void QuoteLogout()
         {
-            ServerLogout("QuoteLogout");
+            ServerLogout(PTEntity.ServerType.SERV_QUOTE);
         }
 
-        public OperationResult TradeLogin(string brokerId, string userId, string password, AccountSettings acctSettings)
+        public void TradeLogin(string address, string brokerId, string userId, string password)
         {
-            return ServerLogin("TradeLogin", brokerId, userId, password, acctSettings);
+            ServerLogin(PTEntity.ServerType.SERV_TRADE, address, brokerId, userId, password);
         }
 
         public void TradeLogout()
         {
-            ServerLogout("TradeLogout");
+            ServerLogout(PTEntity.ServerType.SERV_TRADE);
         }
 
         public void RegisterQuote(string[] symbols)
@@ -317,41 +317,6 @@ namespace PortfolioTrading.Infrastructure
         private void ServerDisconnect(string method)
         {
             //byte[] void_ret = Request(method, ClientBase.VoidParam, 5000);
-        }
-
-        private OperationResult ServerLogin(string method, string brokerId, string userId, string password, AccountSettings acctSettings = null)
-        {
-            LoginParam connParam = new LoginParam()
-            {
-                BrokerId = brokerId,
-                UserId = userId,
-                Password = password,
-                AcctSettings = acctSettings
-            };
-
-            byte[] param_data = DataTranslater.Serialize(connParam);
-
-            byte[] ret_data = null;// Request(method, param_data);
-            if (ret_data != null)
-            {
-                OperationReturn rt = DataTranslater.Deserialize<OperationReturn>(ret_data);
-                return new OperationResult
-                {
-                    Success = rt.Success,
-                    ErrorMessage = rt.ErrorMessage
-                };
-            }
-            else
-                return new OperationResult
-                {
-                    Success = false,
-                    ErrorMessage = "Returned data (Login) is invalid"
-                };
-        }
-
-        private void ServerLogout(string method)
-        {
-            //RequestAsync(method, ClientBase.VoidParam, null);
         }
 
         public event Action<Quote> OnQuoteReceived;

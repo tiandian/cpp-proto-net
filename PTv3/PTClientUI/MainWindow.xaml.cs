@@ -113,7 +113,7 @@ namespace PortfolioTrading
 
         private void btnQuoteLogin_Click(object sender, RoutedEventArgs e)
         {
-            OperationResult result = _client.QuoteLogin("1004", "00000014", "123456");
+            //OperationResult result = _client.QuoteLogin("1004", "00000014", "123456");
         }
 
         private void btnQuoteLogout_Click(object sender, RoutedEventArgs e)
@@ -134,7 +134,7 @@ namespace PortfolioTrading
 
         private void btnTradeLogin_Click(object sender, RoutedEventArgs e)
         {
-            OperationResult result = _client.TradeLogin("1004", AccountId, "123456", null);
+            //OperationResult result = _client.TradeLogin("1004", AccountId, "123456", null);
         }
 
         private void btnTradeLogout_Click(object sender, RoutedEventArgs e)
@@ -230,7 +230,7 @@ namespace PortfolioTrading
                 return;
             }
 
-            OperationResult quoteLoginResult = _client.QuoteLogin("1004", "00000014", "123456");
+            OperationResult quoteLoginResult = new OperationResult(); // = _client.QuoteLogin("1004", "00000014", "123456");
 
             if (quoteLoginResult.Success)
             {
@@ -255,7 +255,7 @@ namespace PortfolioTrading
                 return;
             }
 
-            OperationResult tradeLoginResult = _client.TradeLogin("1004", AccountId, "123456", null);
+            OperationResult tradeLoginResult = new OperationResult();// = _client.TradeLogin("1004", AccountId, "123456", null);
 
             if (tradeLoginResult.Success)
             {

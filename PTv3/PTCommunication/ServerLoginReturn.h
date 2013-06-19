@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Enums.h"
 #include "entity/message.pb.h"
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
 
 namespace PTEntity {
-
+	
 	public ref class LoginReturn
 	{
 	public:
@@ -68,14 +69,54 @@ namespace PTEntity {
 			}
 		}
 
+		property String^ Address
+		{
+			String^ get()
+			{
+				return _address;
+			}
+		}
+
+		property String^ BrokerId
+		{
+			String^ get()
+			{
+				return _brokerId;
+			}
+		}
+
+		property String^ InvestorId
+		{
+			String^ get()
+			{
+				return _investorId;
+			}
+		}
+
+		property ServerType SeverType
+		{
+			ServerType get()
+			{
+				return _serverType;
+			}
+		}
+
 		void From(entity::ServerLoginResponse* pEntity)
 		{
 			_success = pEntity->success();
 			_errorMsg = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->errormessage().c_str());
+			_serverType = static_cast<ServerType>(pEntity->type());
+			_address = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->address().c_str());
+			_brokerId = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->brokerid().c_str());
+			_investorId = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->userid().c_str());
 		}
 
 	private:
 		bool _success;
 		String ^_errorMsg;
+		ServerType _serverType;
+		String ^_address;
+		String ^_brokerId;
+		String ^_investorId;
 	};
 }
