@@ -35,4 +35,43 @@ void ClientBase::SetPseudo( String ^pseudo )
 	}
 }
 
+void ClientBase::ServerLogin( ServerType svrType, String ^address, String ^brokerId, String ^investorId, String ^password )
+{
+	IntPtr pAddress, pBrokerId, pInvestorId, pPassword;
+	try
+	{
+		pAddress = (IntPtr)Marshal::StringToHGlobalAnsi(address);
+		pBrokerId = (IntPtr)Marshal::StringToHGlobalAnsi(brokerId);
+		pInvestorId = (IntPtr)Marshal::StringToHGlobalAnsi(investorId);
+		pPassword = (IntPtr)Marshal::StringToHGlobalAnsi(password);
+
+		entity::ServerType eSvrType = static_cast<entity::ServerType>(svrType);
+
+		_navtiveClient->ServerLogin(eSvrType,
+									(char*)pAddress.ToPointer(),
+									(char*)pBrokerId.ToPointer(),
+									(char*)pInvestorId.ToPointer(),
+									(char*)pPassword.ToPointer());
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pAddress);
+		Marshal::FreeHGlobal(pBrokerId);
+		Marshal::FreeHGlobal(pInvestorId);
+		Marshal::FreeHGlobal(pPassword);
+	}
+}
+
+void ClientBase::ServerLogout( ServerType svrType )
+{
+	entity::ServerType eSvrType = static_cast<entity::ServerType>(svrType);
+	_navtiveClient->ServerLogout(eSvrType);
+}
+
+void ClientBase::Disconnect()
+{
+	if(this->IsConnected)
+		_navtiveClient->Logout();
+}
+
 }

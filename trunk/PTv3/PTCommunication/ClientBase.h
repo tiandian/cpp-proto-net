@@ -49,14 +49,15 @@ namespace PTCommunication {
 			}
 		}
 
+		void Disconnect();
+
 		void SetPseudo(String ^pseudo);
 
 		bool Connect(String ^host, int port);
 
-		void ServerLogin(ServerType svrType, String ^address, String ^brokerId, String ^userId, String ^password)
-		{
+		void ServerLogin(ServerType svrType, String ^address, String ^brokerId, String ^investorId, String ^password);
 
-		}
+		void ServerLogout(ServerType svrType);
 
 		void AddPortfolio(PortfolioItem ^portfItem)
 		{

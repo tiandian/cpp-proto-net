@@ -9,6 +9,8 @@ namespace PortfolioTrading.Utils
 {
     class ServerLoginParam
     {
+        public string TradeAddress { get; set; }
+        public string QuoteAddress { get; set; }
         public string BrokerId { get; set; }
         public string InvestorId { get; set; }
         public string Password { get; set; }
@@ -48,7 +50,7 @@ namespace PortfolioTrading.Utils
             _client = client;
             _handler = handler;
             _handler.OnLogin += new Action<bool, string>(_handler_OnLogin);
-            _handler.OnServerLogin += new Action<bool, string>(_handler_OnServerLogin);
+            _handler.OnServerLogin += new Action<PTEntity.ServerType, bool, string>(_handler_OnServerLogin);
             _uiContext = uiContext;
             _getServerLoginParamFunc = getServerLoginParam;
         }
@@ -60,18 +62,18 @@ namespace PortfolioTrading.Utils
             _eventLogin.Set();
         }
 
-        void _handler_OnServerLogin(bool arg1, string arg2)
+        void _handler_OnServerLogin(PTEntity.ServerType svrType, bool succ, string errorMsg)
         {
-            if (true)    // Trade
+            if (svrType == PTEntity.ServerType.SERV_TRADE)    // Trade
             {
-                _tradeLogged = arg1;
-                _tradeLoggedError = arg2;
+                _tradeLogged = succ;
+                _tradeLoggedError = errorMsg;
                 _eventTradeLogin.Set();
             }
             else    // Quote
             {
-                _quoteLogged = arg1;
-                _quoteLoggedError = arg2;
+                _quoteLogged = succ;
+                _quoteLoggedError = errorMsg;
                 _eventQuoteLogin.Set();
             }
         }
@@ -105,18 +107,20 @@ namespace PortfolioTrading.Utils
                         {
                             if (_connectionEstablished)
                             {
-                                RaiseStatusUpdate("已经与服务器建立连接, 正在登录CTP交易 ...");
+                                RaiseStatusUpdate("已经与服务器建立连接.");
 
                                 ServerLoginParam tradeLoginInfo = _getServerLoginParamFunc();
+                                RaiseStatusUpdate(string.Format("正在登录CTP交易 {0} ...", tradeLoginInfo.TradeAddress));
                                 // begin login trade
-                                _client.TradeLogin(tradeLoginInfo.BrokerId, tradeLoginInfo.InvestorId, tradeLoginInfo.Password, null);
+                                _client.TradeLogin(tradeLoginInfo.TradeAddress, tradeLoginInfo.BrokerId, tradeLoginInfo.InvestorId, tradeLoginInfo.Password);
 
                                 if (_eventTradeLogin.WaitOne(LoginTimeout))
                                 {
                                     if (_tradeLogged)
                                     {
-                                        RaiseStatusUpdate("登录CTP交易成功, 正在登录CTP行情 ...");
-                                        _client.QuoteLogin(tradeLoginInfo.BrokerId, tradeLoginInfo.InvestorId, tradeLoginInfo.Password);
+                                        RaiseStatusUpdate("登录CTP交易成功.");
+                                        RaiseStatusUpdate(string.Format("正在登录CTP行情 {0}...", tradeLoginInfo.QuoteAddress));
+                                        _client.QuoteLogin(tradeLoginInfo.QuoteAddress, tradeLoginInfo.BrokerId, tradeLoginInfo.InvestorId, tradeLoginInfo.Password);
 
                                         if(_eventQuoteLogin.WaitOne(LoginTimeout))
                                         {
