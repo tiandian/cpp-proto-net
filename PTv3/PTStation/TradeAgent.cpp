@@ -2,6 +2,7 @@
 #include "TradeAgent.h"
 #include "FileOperations.h"
 #include "globalmembers.h"
+#include "charsetconvert.h"
 
 #include <sstream>
 
@@ -67,7 +68,7 @@ void CTradeAgent::RunTradingFunc(string address)
 boost::tuple<bool, string> CTradeAgent::Login( const string& frontAddr, const string& brokerId, const string& userId, const string& password )
 {
 	try{
-		string streamFolder = brokerId + "/Td/";
+		string streamFolder = userId + "/Td/";
 		if(!CreateFolderIfNotExists(streamFolder))
 		{
 			m_loginErr = boost::str(boost::format("Cannot create stream folder (%s) for trading") % streamFolder);
@@ -218,11 +219,11 @@ void CTradeAgent::OnFrontDisconnected( int nReason )
 {
 	if(nReason == 0)
 	{
-		logger.Info(boost::str(boost::format("%s Trade normally disconnected.") % m_brokerId));
+		logger.Info(boost::str(boost::format("%s Trade normally disconnected.") % m_investorId));
 	}
 	else
 	{
-		string reasonTxt = boost::str(boost::format("%s disconnected from trade server due to ") % m_brokerId);
+		string reasonTxt = boost::str(boost::format("%s disconnected from trade server due to ") % m_investorId);
 		switch (nReason)
 		{
 		case 0x1001:
@@ -289,8 +290,8 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 	}
 	else
 	{
-		m_loginErr = pRspInfo->ErrorMsg;
 		logger.Error(boost::str(boost::format("Error Message:%s") % pRspInfo->ErrorMsg));
+		GB2312ToUTF_8(m_loginErr, pRspInfo->ErrorMsg);
 	}
 
 	m_condLogin.notify_one();

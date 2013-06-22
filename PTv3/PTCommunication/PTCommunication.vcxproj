@@ -90,6 +90,7 @@
     <ClInclude Include="..\PTStation\ProtobufProtocol.h" />
     <ClInclude Include="..\PTStation\ProtocolIDs.h" />
     <ClInclude Include="AccountInfo.h" />
+    <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="EntityWrapper.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="IClientRequestHandler.h" />
@@ -132,6 +133,7 @@
     <ClCompile Include="..\PTStation\ProtobufProtocol.cpp" />
     <ClCompile Include="AccountInfo.cpp" />
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="Enums.cpp" />
     <ClCompile Include="MultiLegOrder.cpp" />
     <ClCompile Include="NatvieClient.cpp" />

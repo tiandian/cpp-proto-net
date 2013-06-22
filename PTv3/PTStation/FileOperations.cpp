@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #include "FileOperations.h"
+#ifdef USE_NET_LIBS
 #include "globalmembers.h"
+#endif
 
 #include <boost/filesystem.hpp>
 
@@ -22,7 +24,9 @@ bool CreateFolderIfNotExists(const string& folderName)
 			}
 			catch (const filesystem_error& ex)
 			{
+#ifdef USE_NET_LIBS
 				logger.Error(ex.what());
+#endif
 				return false;
 			}
 		}

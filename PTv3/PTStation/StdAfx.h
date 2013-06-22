@@ -20,6 +20,7 @@ using namespace std;
 #include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
 
+#ifdef USE_NET_LIBS 
 
 #include <PushFrameworkInc.h>
 using namespace PushFramework;
@@ -30,5 +31,7 @@ using namespace PushFramework;
 #include <google/protobuf/extension_set.h>
 #include <google/protobuf/generated_message_reflection.h>
 using namespace google;
+
+#endif
 
 

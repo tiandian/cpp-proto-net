@@ -27,6 +27,6 @@ protected:
 	virtual void onClientConnected(LogicalConnection* pClient);
 	virtual void onClientReconnected(LogicalConnection* pClient);
 	virtual void onClientDisconnected(LogicalConnection* pClient, CloseReason closeReason);
-
+	virtual void disposeClient(LogicalConnection* pClient);
 };
 
