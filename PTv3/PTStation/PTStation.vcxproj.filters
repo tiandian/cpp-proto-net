@@ -88,10 +88,16 @@
     <ClInclude Include="ProtobufPacket.h">
       <Filter>Header Files\connection</Filter>
     </ClInclude>
+    <ClInclude Include="globalmembers.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
     <ClInclude Include="ClientProtocol.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="TradeAgent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="globalmembers.h">
+    <ClInclude Include="FileOperations.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
@@ -145,7 +151,13 @@
       <Filter>Source Files\connection</Filter>
     </ClCompile>
     <ClCompile Include="ClientProtocol.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="TradeAgent.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileOperations.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
