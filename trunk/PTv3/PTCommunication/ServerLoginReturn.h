@@ -2,8 +2,10 @@
 
 #include "Enums.h"
 #include "entity/message.pb.h"
+#include "charsetconvert.h"
 
 using namespace System;
+using namespace System::Text;
 using namespace System::Runtime::InteropServices;
 
 namespace PTEntity {
@@ -104,7 +106,12 @@ namespace PTEntity {
 		void From(entity::ServerLoginResponse* pEntity)
 		{
 			_success = pEntity->success();
-			_errorMsg = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->errormessage().c_str());
+			
+			wchar_t* uniStr = UTF8ToUnicode(pEntity->errormessage().c_str());
+			//String ^utfStr = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->errormessage().c_str());
+			_errorMsg = Marshal::PtrToStringAuto((IntPtr)uniStr);
+			delete[] uniStr;
+
 			_serverType = static_cast<ServerType>(pEntity->type());
 			_address = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->address().c_str());
 			_brokerId = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->brokerid().c_str());

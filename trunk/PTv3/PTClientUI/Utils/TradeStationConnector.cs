@@ -169,6 +169,9 @@ namespace PortfolioTrading.Utils
 
         private void RaiseLoginDone(bool succ, string errorMsg = "")
         {
+            if (!succ)
+                _client.Disconnect();
+
             if (_onLoginDone != null)
             {
                 _uiContext.Send(o => _onLoginDone(succ, errorMsg), null);

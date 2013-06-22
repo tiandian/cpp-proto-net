@@ -49,7 +49,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -60,7 +60,8 @@
     </Link>
     <PostBuildEvent>
       <Command>copy /y log4cpp.property $(OutDir)
-copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)</Command>
+copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)
+copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -70,7 +71,7 @@ copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(Out
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;USE_NET_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -81,6 +82,11 @@ copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(Out
       <AdditionalLibraryDirectories>D:\Dev\boost_1_53_0\stage\lib;D:\Dev\log4cpp\lib\release;D:\Dev\protobuf-2.4.1\lib\Release;D:\Dev\PushFramework2.2\lib\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libprotobuf.lib;log4cppLIB.lib;PushFramework.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /y log4cpp.property $(OutDir)
+copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)
+copy /y ThostTraderApi\*.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="log4cpp.property" />
@@ -89,6 +95,7 @@ copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(Out
   <ItemGroup>
     <ClInclude Include="AvatarClient.h" />
     <ClInclude Include="AvatarFactory.h" />
+    <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientProtocol.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="entity\enum.pb.h" />
@@ -102,7 +109,12 @@ copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(Out
     <ClInclude Include="ProtobufPacket.h" />
     <ClInclude Include="ProtobufProtocol.h" />
     <ClInclude Include="ProtocolIDs.h" />
+    <ClInclude Include="QuoteAgent.h" />
+    <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="RequestedServices.h" />
+    <ClInclude Include="ShmQuoteFeed.h" />
+    <ClInclude Include="ShmQuoteSubscribe.h" />
+    <ClInclude Include="shm_remover.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
@@ -112,6 +124,7 @@ copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(Out
   <ItemGroup>
     <ClCompile Include="AvatarClient.cpp" />
     <ClCompile Include="AvatarFactory.cpp" />
+    <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientProtocol.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="entity\enum.pb.cc">
@@ -140,7 +153,10 @@ copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(Out
     </ClCompile>
     <ClCompile Include="ProtobufPacket.cpp" />
     <ClCompile Include="ProtobufProtocol.cpp" />
+    <ClCompile Include="QuoteAgent.cpp" />
     <ClCompile Include="RequestedServices.cpp" />
+    <ClCompile Include="ShmQuoteFeed.cpp" />
+    <ClCompile Include="ShmQuoteSubscribe.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeStation.cpp" />
     <ClCompile Include="stdafx.cpp">

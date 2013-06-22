@@ -10,10 +10,30 @@ void ServerLoginService::handle( LogicalConnection* pClient, IncomingPacket* pRe
 	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
 	
 	ProtobufPacket<entity::ServerLoginRequest>* pSvrLoginRequest = (ProtobufPacket<entity::ServerLoginRequest>*) pRequest;
-
+	
 	ProtobufPacket<entity::ServerLoginResponse> response(ServerLoginResponseID);
-	response.getData().set_success(true);
-	response.getData().set_errormessage("");
+
+	entity::ServerType svrType = pSvrLoginRequest->getData().type();
+	if(svrType == entity::SERV_TRADE)
+	{
+		boost::tuple<bool, string> result = avatarClient->TradeLogin(pSvrLoginRequest->getData().address(), 
+			pSvrLoginRequest->getData().brokerid(), pSvrLoginRequest->getData().userid(), pSvrLoginRequest->getData().password());
+		response.getData().set_success(boost::get<0>(result));
+		response.getData().set_errormessage(boost::get<1>(result));
+	}
+	else if(svrType == entity::SERV_QUOTE)
+	{
+		boost::tuple<bool, string> result = avatarClient->QuoteLogin(pSvrLoginRequest->getData().address(), 
+			pSvrLoginRequest->getData().brokerid(), pSvrLoginRequest->getData().userid(), pSvrLoginRequest->getData().password());
+		response.getData().set_success(boost::get<0>(result));
+		response.getData().set_errormessage(boost::get<1>(result));
+	}
+	else
+	{
+		response.getData().set_success(false);
+		response.getData().set_errormessage("Unexpected server type");
+	}
+	
 	response.getData().set_type(pSvrLoginRequest->getData().type());
 	response.getData().set_address(pSvrLoginRequest->getData().address());
 	response.getData().set_brokerid(pSvrLoginRequest->getData().brokerid());
