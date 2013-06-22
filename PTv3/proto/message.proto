@@ -53,6 +53,10 @@ message ServerLoginResponse
 {
 	required bool Success = 1;
 	required string ErrorMessage = 2;
+	required ServerType Type = 3;
+	required string Address = 4;
+	required string BrokerId = 5;
+	required string UserId = 6;
 }
 
 message ServerLogoutRequest
