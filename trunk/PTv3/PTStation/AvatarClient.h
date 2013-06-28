@@ -2,6 +2,7 @@
 
 #include "TradeAgent.h"
 #include "QuoteAgent.h"
+#include "PortfolioManager.h"
 
 class CAvatarClient : public LogicalConnection
 {
@@ -19,11 +20,14 @@ public:
 	boost::tuple<bool, string> QuoteLogin(const string& address, const string& brokerId, const string& investorId, const string& password);
 	void QuoteLogout();
 
+	CPortfolioManager& PortfolioManager(){ return m_portfolioMgr; }
+
 private:
 	string m_sessionId;
 	string m_pseudo;
 	CTradeAgent m_tradeAgent;
 	CQuoteAgent m_quoteAgent;
+	CPortfolioManager m_portfolioMgr;
 	
 	bool m_tradeLogged;
 	bool m_quoteLogged;

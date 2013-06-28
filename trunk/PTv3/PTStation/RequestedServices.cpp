@@ -44,12 +44,32 @@ void ServerLoginService::handle( LogicalConnection* pClient, IncomingPacket* pRe
 
 void ServerLogoutService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 {
+	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
 
+	ProtobufPacket<entity::ServerLogoutRequest>* pSvrLogoutRequest = (ProtobufPacket<entity::ServerLogoutRequest>*) pRequest;
+	entity::ServerType svrType = pSvrLogoutRequest->getData().type();
+	switch(svrType)
+	{
+	case entity::SERV_QUOTE:
+		avatarClient->QuoteLogout();
+		break;
+	case entity::SERV_TRADE:
+		avatarClient->TradeLogout();
+		break;
+	}
 }
 
 void AddPortfolioService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 {
+	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
+	ProtobufPacket<entity::AddPortfolioRequest>* pAddPortfReqPacket = (ProtobufPacket<entity::AddPortfolioRequest>*)pRequest;
+	entity::AddPortfolioRequest& addPortfReq = pAddPortfReqPacket->getData();
+	int portfCount = addPortfReq.portfolios_size();
 
+	for(int i = 0; i < portfCount; ++i)
+	{
+		avatarClient->PortfolioManager().AddPortfolio(addPortfReq.portfolios(i));
+	}
 }
 
 void RemovePortfolioService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )

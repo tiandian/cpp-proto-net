@@ -18,6 +18,7 @@ namespace entity {
 namespace {
 
 const ::google::protobuf::EnumDescriptor* PosiDirectionType_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* PosiOffsetFlag_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* LegStatus_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* LimitPriceType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* CompareCondition_descriptor_ = NULL;
@@ -32,9 +33,10 @@ void protobuf_AssignDesc_enum_2eproto() {
       "enum.proto");
   GOOGLE_CHECK(file != NULL);
   PosiDirectionType_descriptor_ = file->enum_type(0);
-  LegStatus_descriptor_ = file->enum_type(1);
-  LimitPriceType_descriptor_ = file->enum_type(2);
-  CompareCondition_descriptor_ = file->enum_type(3);
+  PosiOffsetFlag_descriptor_ = file->enum_type(1);
+  LegStatus_descriptor_ = file->enum_type(2);
+  LimitPriceType_descriptor_ = file->enum_type(3);
+  CompareCondition_descriptor_ = file->enum_type(4);
 }
 
 namespace {
@@ -62,13 +64,14 @@ void protobuf_AddDesc_enum_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\nenum.proto\022\006entity*1\n\021PosiDirectionTyp"
-    "e\022\007\n\003NET\0201\022\010\n\004LONG\0202\022\t\n\005SHORT\0203*Q\n\tLegSt"
-    "atus\022\014\n\010UNOPENED\020\000\022\016\n\nIS_OPENING\020\001\022\n\n\006OP"
-    "ENED\020\002\022\016\n\nIS_CLOSING\020\003\022\n\n\006CLOSED\020\004*(\n\016Li"
-    "mitPriceType\022\010\n\004Last\020\000\022\014\n\010Opposite\020\001*`\n\020"
-    "CompareCondition\022\020\n\014GREATER_THAN\020\000\022\026\n\022GR"
-    "EATER_EQUAL_THAN\020\001\022\r\n\tLESS_THAN\020\002\022\023\n\017LES"
-    "S_EQUAL_THAN\020\003", 294);
+    "e\022\007\n\003NET\0201\022\010\n\004LONG\0202\022\t\n\005SHORT\0203*%\n\016PosiO"
+    "ffsetFlag\022\010\n\004OPEN\020\000\022\t\n\005CLOSE\020\001*Q\n\tLegSta"
+    "tus\022\014\n\010UNOPENED\020\000\022\016\n\nIS_OPENING\020\001\022\n\n\006OPE"
+    "NED\020\002\022\016\n\nIS_CLOSING\020\003\022\n\n\006CLOSED\020\004*(\n\016Lim"
+    "itPriceType\022\010\n\004Last\020\000\022\014\n\010Opposite\020\001*`\n\020C"
+    "ompareCondition\022\020\n\014GREATER_THAN\020\000\022\026\n\022GRE"
+    "ATER_EQUAL_THAN\020\001\022\r\n\tLESS_THAN\020\002\022\023\n\017LESS"
+    "_EQUAL_THAN\020\003", 333);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "enum.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_enum_2eproto);
@@ -90,6 +93,20 @@ bool PosiDirectionType_IsValid(int value) {
     case 49:
     case 50:
     case 51:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* PosiOffsetFlag_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PosiOffsetFlag_descriptor_;
+}
+bool PosiOffsetFlag_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
       return true;
     default:
       return false;
