@@ -37,6 +37,12 @@
     <Filter Include="Source Files\quote">
       <UniqueIdentifier>{a712f574-4a1f-403b-9cdc-e7c48fb17365}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\strategy">
+      <UniqueIdentifier>{8f367e1a-da4d-4091-b9f0-2a3fb4b8f9ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\strategy">
+      <UniqueIdentifier>{4c420c91-4fa2-4289-b4c9-35d1b0b18e07}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -124,6 +130,39 @@
     <ClInclude Include="ShmQuoteFeed.h">
       <Filter>Header Files\quote</Filter>
     </ClInclude>
+    <ClInclude Include="Portfolio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Leg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScalperStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ArbitrageStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangePositionStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ArbitrageTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangePositionTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ScalperTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -194,6 +233,39 @@
     </ClCompile>
     <ClCompile Include="ShmQuoteFeed.cpp">
       <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="Portfolio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Strategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Leg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScalperStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ArbitrageStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangePositionStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ArbitrageTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangePositionTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ScalperTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

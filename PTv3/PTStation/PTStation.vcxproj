@@ -93,8 +93,12 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ArbitrageStrategy.h" />
+    <ClInclude Include="ArbitrageTrigger.h" />
     <ClInclude Include="AvatarClient.h" />
     <ClInclude Include="AvatarFactory.h" />
+    <ClInclude Include="ChangePositionStrategy.h" />
+    <ClInclude Include="ChangePositionTrigger.h" />
     <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientProtocol.h" />
     <ClInclude Include="Configuration.h" />
@@ -105,25 +109,36 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\trade.pb.h" />
     <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
+    <ClInclude Include="Leg.h" />
     <ClInclude Include="LogManager.h" />
+    <ClInclude Include="Portfolio.h" />
+    <ClInclude Include="PortfolioManager.h" />
     <ClInclude Include="ProtobufPacket.h" />
     <ClInclude Include="ProtobufProtocol.h" />
     <ClInclude Include="ProtocolIDs.h" />
     <ClInclude Include="QuoteAgent.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
     <ClInclude Include="RequestedServices.h" />
+    <ClInclude Include="ScalperStrategy.h" />
+    <ClInclude Include="ScalperTrigger.h" />
     <ClInclude Include="ShmQuoteFeed.h" />
     <ClInclude Include="ShmQuoteSubscribe.h" />
     <ClInclude Include="shm_remover.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Strategy.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
     <ClInclude Include="TradingServer.h" />
     <ClInclude Include="TradingServerProtocol.h" />
+    <ClInclude Include="Trigger.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArbitrageStrategy.cpp" />
+    <ClCompile Include="ArbitrageTrigger.cpp" />
     <ClCompile Include="AvatarClient.cpp" />
     <ClCompile Include="AvatarFactory.cpp" />
+    <ClCompile Include="ChangePositionStrategy.cpp" />
+    <ClCompile Include="ChangePositionTrigger.cpp" />
     <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientProtocol.cpp" />
     <ClCompile Include="Configuration.cpp" />
@@ -148,15 +163,21 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="FileOperations.cpp" />
+    <ClCompile Include="Leg.cpp" />
     <ClCompile Include="LogManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Portfolio.cpp" />
+    <ClCompile Include="PortfolioManager.cpp" />
     <ClCompile Include="ProtobufPacket.cpp" />
     <ClCompile Include="ProtobufProtocol.cpp" />
     <ClCompile Include="QuoteAgent.cpp" />
     <ClCompile Include="RequestedServices.cpp" />
+    <ClCompile Include="ScalperStrategy.cpp" />
+    <ClCompile Include="ScalperTrigger.cpp" />
     <ClCompile Include="ShmQuoteFeed.cpp" />
     <ClCompile Include="ShmQuoteSubscribe.cpp" />
+    <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeStation.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -165,6 +186,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="TradingServer.cpp" />
     <ClCompile Include="TradingServerProtocol.cpp" />
+    <ClCompile Include="Trigger.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

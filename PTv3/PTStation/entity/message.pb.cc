@@ -41,6 +41,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ServerLogoutRequest_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ServerLogoutRequest_reflection_ = NULL;
+const ::google::protobuf::Descriptor* AddPortfolioRequest_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  AddPortfolioRequest_reflection_ = NULL;
 const ::google::protobuf::Descriptor* StringParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StringParam_reflection_ = NULL;
@@ -56,6 +59,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* StrategyItem_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StrategyItem_reflection_ = NULL;
+const ::google::protobuf::Descriptor* TriggerItem_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  TriggerItem_reflection_ = NULL;
 const ::google::protobuf::Descriptor* PortfolioItem_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   PortfolioItem_reflection_ = NULL;
@@ -271,7 +277,22 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ServerLogoutRequest));
-  StringParam_descriptor_ = file->message_type(8);
+  AddPortfolioRequest_descriptor_ = file->message_type(8);
+  static const int AddPortfolioRequest_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddPortfolioRequest, portfolios_),
+  };
+  AddPortfolioRequest_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      AddPortfolioRequest_descriptor_,
+      AddPortfolioRequest::default_instance_,
+      AddPortfolioRequest_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddPortfolioRequest, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddPortfolioRequest, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(AddPortfolioRequest));
+  StringParam_descriptor_ = file->message_type(9);
   static const int StringParam_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StringParam, data_),
   };
@@ -286,7 +307,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StringParam));
-  IntParam_descriptor_ = file->message_type(9);
+  IntParam_descriptor_ = file->message_type(10);
   static const int IntParam_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(IntParam, data_),
   };
@@ -301,7 +322,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(IntParam));
-  LegItem_descriptor_ = file->message_type(10);
+  LegItem_descriptor_ = file->message_type(11);
   static const int LegItem_offsets_[10] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, ratio_),
@@ -325,7 +346,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegItem));
-  LegUpdateItem_descriptor_ = file->message_type(11);
+  LegUpdateItem_descriptor_ = file->message_type(12);
   static const int LegUpdateItem_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegUpdateItem, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegUpdateItem, status_),
@@ -346,11 +367,22 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegUpdateItem));
-  StrategyItem_descriptor_ = file->message_type(12);
-  static const int StrategyItem_offsets_[3] = {
+  StrategyItem_descriptor_ = file->message_type(13);
+  static const int StrategyItem_offsets_[14] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, type_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, data_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, running_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, retrytimes_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, triggers_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, ar_side_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, cp_closeleg_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, cp_closelegside_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_pricetick_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_casele2tick_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_casele3tick_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_casege4tick_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_casenochange_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_opentimeout_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_stoplossstrategy_),
   };
   StrategyItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -363,13 +395,37 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StrategyItem));
-  PortfolioItem_descriptor_ = file->message_type(13);
-  static const int PortfolioItem_offsets_[5] = {
+  TriggerItem_descriptor_ = file->message_type(14);
+  static const int TriggerItem_offsets_[9] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, strategy_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, enabled_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, ar_condition_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, ar_threshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, ar_offset_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, cp_condition_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, cp_threshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, sc_threshold_),
+  };
+  TriggerItem_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      TriggerItem_descriptor_,
+      TriggerItem::default_instance_,
+      TriggerItem_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(TriggerItem));
+  PortfolioItem_descriptor_ = file->message_type(15);
+  static const int PortfolioItem_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, quantity_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, legs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, maxcancel_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, maxtriggertimes_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategy_),
   };
   PortfolioItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -382,7 +438,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PortfolioItem));
-  PortfolioUpdateItem_descriptor_ = file->message_type(14);
+  PortfolioUpdateItem_descriptor_ = file->message_type(16);
   static const int PortfolioUpdateItem_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, legs_),
@@ -404,7 +460,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PortfolioUpdateItem));
-  ConnectParam_descriptor_ = file->message_type(15);
+  ConnectParam_descriptor_ = file->message_type(17);
   static const int ConnectParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectParam, quoteaddress_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectParam, streamfolder_),
@@ -420,7 +476,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ConnectParam));
-  OperationReturn_descriptor_ = file->message_type(16);
+  OperationReturn_descriptor_ = file->message_type(18);
   static const int OperationReturn_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OperationReturn, success_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OperationReturn, errormessage_),
@@ -436,7 +492,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(OperationReturn));
-  AccountSettings_descriptor_ = file->message_type(17);
+  AccountSettings_descriptor_ = file->message_type(19);
   static const int AccountSettings_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountSettings, maxsubmit_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountSettings, maxcancel_),
@@ -452,7 +508,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AccountSettings));
-  LoginParam_descriptor_ = file->message_type(18);
+  LoginParam_descriptor_ = file->message_type(20);
   static const int LoginParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, brokerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, userid_),
@@ -470,7 +526,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LoginParam));
-  RegQuoteParam_descriptor_ = file->message_type(19);
+  RegQuoteParam_descriptor_ = file->message_type(21);
   static const int RegQuoteParam_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegQuoteParam, symbols_),
   };
@@ -485,7 +541,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RegQuoteParam));
-  AddPortfolioParam_descriptor_ = file->message_type(20);
+  AddPortfolioParam_descriptor_ = file->message_type(22);
   static const int AddPortfolioParam_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddPortfolioParam, portfolioitems_),
   };
@@ -500,7 +556,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AddPortfolioParam));
-  PorfOpenPosiParam_descriptor_ = file->message_type(21);
+  PorfOpenPosiParam_descriptor_ = file->message_type(23);
   static const int PorfOpenPosiParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, quantity_),
@@ -517,7 +573,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PorfOpenPosiParam));
-  ClosePositionParam_descriptor_ = file->message_type(22);
+  ClosePositionParam_descriptor_ = file->message_type(24);
   static const int ClosePositionParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, multilegorder_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, legordref_),
@@ -533,7 +589,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ClosePositionParam));
-  LegOrderUpdateParam_descriptor_ = file->message_type(23);
+  LegOrderUpdateParam_descriptor_ = file->message_type(25);
   static const int LegOrderUpdateParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, multilegorderid_),
@@ -551,7 +607,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegOrderUpdateParam));
-  ArbitrageStrategySettings_descriptor_ = file->message_type(24);
+  ArbitrageStrategySettings_descriptor_ = file->message_type(26);
   static const int ArbitrageStrategySettings_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, side_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, opencondition_),
@@ -572,7 +628,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ArbitrageStrategySettings));
-  ChangePosiStrategySettings_descriptor_ = file->message_type(25);
+  ChangePosiStrategySettings_descriptor_ = file->message_type(27);
   static const int ChangePosiStrategySettings_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, closeleg_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, closelegside_),
@@ -590,7 +646,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ChangePosiStrategySettings));
-  ScalperSettings_descriptor_ = file->message_type(26);
+  ScalperSettings_descriptor_ = file->message_type(28);
   static const int ScalperSettings_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, threshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, pricetick_),
@@ -613,7 +669,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ScalperSettings));
-  ModifyStrategyParam_descriptor_ = file->message_type(27);
+  ModifyStrategyParam_descriptor_ = file->message_type(29);
   static const int ModifyStrategyParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, strategyname_),
@@ -630,7 +686,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyStrategyParam));
-  ModifyPortfolioSwitchParam_descriptor_ = file->message_type(28);
+  ModifyPortfolioSwitchParam_descriptor_ = file->message_type(30);
   static const int ModifyPortfolioSwitchParam_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autoopen_),
@@ -650,7 +706,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioSwitchParam));
-  ModifyPortfolioQtyParam_descriptor_ = file->message_type(29);
+  ModifyPortfolioQtyParam_descriptor_ = file->message_type(31);
   static const int ModifyPortfolioQtyParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, onceqty_),
@@ -667,7 +723,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioQtyParam));
-  ModifyRunningStatusParam_descriptor_ = file->message_type(30);
+  ModifyRunningStatusParam_descriptor_ = file->message_type(32);
   static const int ModifyRunningStatusParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, enabled_),
@@ -683,7 +739,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyRunningStatusParam));
-  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(31);
+  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(33);
   static const int ModifyPortfolioPreferredLegParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, legsymbol_),
@@ -699,7 +755,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioPreferredLegParam));
-  CancelOrderParam_descriptor_ = file->message_type(32);
+  CancelOrderParam_descriptor_ = file->message_type(34);
   static const int CancelOrderParam_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, orderref_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, exchangeid_),
@@ -718,7 +774,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CancelOrderParam));
-  ManualCloseOrderParam_descriptor_ = file->message_type(33);
+  ManualCloseOrderParam_descriptor_ = file->message_type(35);
   static const int ManualCloseOrderParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, direction_),
@@ -736,7 +792,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ManualCloseOrderParam));
-  SymbolInfo_descriptor_ = file->message_type(34);
+  SymbolInfo_descriptor_ = file->message_type(36);
   static const int SymbolInfo_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, instrument_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, exchangeid_),
@@ -789,6 +845,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ServerLogoutRequest_descriptor_, &ServerLogoutRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    AddPortfolioRequest_descriptor_, &AddPortfolioRequest::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StringParam_descriptor_, &StringParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     IntParam_descriptor_, &IntParam::default_instance());
@@ -798,6 +856,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     LegUpdateItem_descriptor_, &LegUpdateItem::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StrategyItem_descriptor_, &StrategyItem::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    TriggerItem_descriptor_, &TriggerItem::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     PortfolioItem_descriptor_, &PortfolioItem::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -863,6 +923,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ServerLoginResponse_reflection_;
   delete ServerLogoutRequest::default_instance_;
   delete ServerLogoutRequest_reflection_;
+  delete AddPortfolioRequest::default_instance_;
+  delete AddPortfolioRequest_reflection_;
   delete StringParam::default_instance_;
   delete StringParam_reflection_;
   delete IntParam::default_instance_;
@@ -873,6 +935,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete LegUpdateItem_reflection_;
   delete StrategyItem::default_instance_;
   delete StrategyItem_reflection_;
+  delete TriggerItem::default_instance_;
+  delete TriggerItem_reflection_;
   delete PortfolioItem::default_instance_;
   delete PortfolioItem_reflection_;
   delete PortfolioUpdateItem::default_instance_;
@@ -945,22 +1009,44 @@ void protobuf_AddDesc_message_2eproto() {
     "\022.entity.ServerType\022\017\n\007Address\030\004 \002(\t\022\020\n\010"
     "BrokerId\030\005 \002(\t\022\016\n\006UserId\030\006 \002(\t\"7\n\023Server"
     "LogoutRequest\022 \n\004Type\030\001 \002(\0162\022.entity.Ser"
-    "verType\"\033\n\013StringParam\022\014\n\004Data\030\001 \002(\t\"\030\n\010"
-    "IntParam\022\014\n\004Data\030\002 \002(\005\"\323\001\n\007LegItem\022\016\n\006Sy"
-    "mbol\030\001 \002(\t\022\r\n\005Ratio\030\002 \002(\005\022\'\n\004Side\030\003 \002(\0162"
-    "\031.entity.PosiDirectionType\022!\n\006Status\030\004 \002"
-    "(\0162\021.entity.LegStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003A"
-    "sk\030\006 \002(\001\022\017\n\007AskSize\030\007 \002(\005\022\013\n\003Bid\030\010 \002(\001\022\017"
-    "\n\007BidSize\030\t \002(\005\022\023\n\013IsPreferred\030\n \002(\010\"\214\001\n"
-    "\rLegUpdateItem\022\016\n\006Symbol\030\001 \002(\t\022!\n\006Status"
-    "\030\002 \002(\0162\021.entity.LegStatus\022\014\n\004Last\030\003 \002(\001\022"
-    "\013\n\003Ask\030\004 \002(\001\022\017\n\007AskSize\030\005 \002(\005\022\013\n\003Bid\030\006 \002"
-    "(\001\022\017\n\007BidSize\030\007 \002(\005\"Q\n\014StrategyItem\022\"\n\004T"
-    "ype\030\001 \002(\0162\024.entity.StrategyType\022\014\n\004Data\030"
-    "\002 \002(\014\022\017\n\007Running\030\003 \002(\010\"x\n\rPortfolioItem\022"
+    "verType\"@\n\023AddPortfolioRequest\022)\n\nPortfo"
+    "lios\030\001 \003(\0132\025.entity.PortfolioItem\"\033\n\013Str"
+    "ingParam\022\014\n\004Data\030\001 \002(\t\"\030\n\010IntParam\022\014\n\004Da"
+    "ta\030\002 \002(\005\"\323\001\n\007LegItem\022\016\n\006Symbol\030\001 \002(\t\022\r\n\005"
+    "Ratio\030\002 \002(\005\022\'\n\004Side\030\003 \002(\0162\031.entity.PosiD"
+    "irectionType\022!\n\006Status\030\004 \002(\0162\021.entity.Le"
+    "gStatus\022\014\n\004Last\030\005 \002(\001\022\013\n\003Ask\030\006 \002(\001\022\017\n\007As"
+    "kSize\030\007 \002(\005\022\013\n\003Bid\030\010 \002(\001\022\017\n\007BidSize\030\t \002("
+    "\005\022\023\n\013IsPreferred\030\n \002(\010\"\214\001\n\rLegUpdateItem"
+    "\022\016\n\006Symbol\030\001 \002(\t\022!\n\006Status\030\002 \002(\0162\021.entit"
+    "y.LegStatus\022\014\n\004Last\030\003 \002(\001\022\013\n\003Ask\030\004 \002(\001\022\017"
+    "\n\007AskSize\030\005 \002(\005\022\013\n\003Bid\030\006 \002(\001\022\017\n\007BidSize\030"
+    "\007 \002(\005\"\256\004\n\014StrategyItem\022\"\n\004Type\030\001 \002(\0162\024.e"
+    "ntity.StrategyType\022\017\n\007Running\030\002 \002(\010\022\022\n\nR"
+    "etryTimes\030\003 \002(\005\022%\n\010Triggers\030\004 \003(\0132\023.enti"
+    "ty.TriggerItem\022*\n\007AR_Side\030e \001(\0162\031.entity"
+    ".PosiDirectionType\022\024\n\013CP_CloseLeg\030\311\001 \001(\t"
+    "\0223\n\017CP_CloseLegSide\030\312\001 \001(\0162\031.entity.Posi"
+    "DirectionType\022\025\n\014SC_PriceTick\030\255\002 \001(\001\0221\n\016"
+    "SC_CaseLE2Tick\030\256\002 \001(\0162\030.entity.Direction"
+    "Depends\0221\n\016SC_CaseLE3Tick\030\257\002 \001(\0162\030.entit"
+    "y.DirectionDepends\0221\n\016SC_CaseGE4Tick\030\260\002 "
+    "\001(\0162\030.entity.DirectionDepends\0222\n\017SC_Case"
+    "NoChange\030\261\002 \001(\0162\030.entity.DirectionDepend"
+    "s\022\027\n\016SC_OpenTimeout\030\262\002 \001(\005\022:\n\023SC_StopLos"
+    "sStrategy\030\263\002 \001(\0162\034.entity.StopLossCloseM"
+    "ethods\"\244\002\n\013TriggerItem\022&\n\010Strategy\030\001 \002(\016"
+    "2\024.entity.StrategyType\022\014\n\004Name\030\002 \002(\t\022\017\n\007"
+    "Enabled\030\003 \002(\010\022.\n\014AR_Condition\030e \001(\0162\030.en"
+    "tity.CompareCondition\022\024\n\014AR_Threshold\030f "
+    "\001(\001\022)\n\tAR_Offset\030g \001(\0162\026.entity.PosiOffs"
+    "etFlag\022/\n\014CP_Condition\030\311\001 \001(\0162\030.entity.C"
+    "ompareCondition\022\025\n\014CP_Threshold\030\312\001 \001(\001\022\025"
+    "\n\014SC_Threshold\030\255\002 \001(\001\"\240\001\n\rPortfolioItem\022"
     "\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\035\n\004Legs\030\003 "
     "\003(\0132\017.entity.LegItem\022\021\n\tMaxCancel\030\004 \002(\005\022"
-    "\027\n\017MaxTriggerTimes\030\005 \002(\005\"\264\001\n\023PortfolioUp"
+    "\027\n\017MaxTriggerTimes\030\005 \002(\005\022&\n\010Strategy\030\006 \002"
+    "(\0132\024.entity.StrategyItem\"\264\001\n\023PortfolioUp"
     "dateItem\022\n\n\002ID\030\001 \002(\t\022#\n\004Legs\030\002 \003(\0132\025.ent"
     "ity.LegUpdateItem\022\024\n\014TriggerTimes\030\003 \002(\005\022"
     "\014\n\004Diff\030\004 \001(\001\022\020\n\010LongDiff\030\005 \001(\001\022\021\n\tShort"
@@ -1030,7 +1116,7 @@ void protobuf_AddDesc_message_2eproto() {
     "ZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE"
     "\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseMe"
     "thods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_"
-    "ON_INPUT_LIMIT\020\001", 4096);
+    "ON_INPUT_LIMIT\020\001", 4976);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -1041,11 +1127,13 @@ void protobuf_AddDesc_message_2eproto() {
   ServerLoginRequest::default_instance_ = new ServerLoginRequest();
   ServerLoginResponse::default_instance_ = new ServerLoginResponse();
   ServerLogoutRequest::default_instance_ = new ServerLogoutRequest();
+  AddPortfolioRequest::default_instance_ = new AddPortfolioRequest();
   StringParam::default_instance_ = new StringParam();
   IntParam::default_instance_ = new IntParam();
   LegItem::default_instance_ = new LegItem();
   LegUpdateItem::default_instance_ = new LegUpdateItem();
   StrategyItem::default_instance_ = new StrategyItem();
+  TriggerItem::default_instance_ = new TriggerItem();
   PortfolioItem::default_instance_ = new PortfolioItem();
   PortfolioUpdateItem::default_instance_ = new PortfolioUpdateItem();
   ConnectParam::default_instance_ = new ConnectParam();
@@ -1076,11 +1164,13 @@ void protobuf_AddDesc_message_2eproto() {
   ServerLoginRequest::default_instance_->InitAsDefaultInstance();
   ServerLoginResponse::default_instance_->InitAsDefaultInstance();
   ServerLogoutRequest::default_instance_->InitAsDefaultInstance();
+  AddPortfolioRequest::default_instance_->InitAsDefaultInstance();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
   LegItem::default_instance_->InitAsDefaultInstance();
   LegUpdateItem::default_instance_->InitAsDefaultInstance();
   StrategyItem::default_instance_->InitAsDefaultInstance();
+  TriggerItem::default_instance_->InitAsDefaultInstance();
   PortfolioItem::default_instance_->InitAsDefaultInstance();
   PortfolioUpdateItem::default_instance_->InitAsDefaultInstance();
   ConnectParam::default_instance_->InitAsDefaultInstance();
@@ -3723,6 +3813,211 @@ void ServerLogoutRequest::Swap(ServerLogoutRequest* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int AddPortfolioRequest::kPortfoliosFieldNumber;
+#endif  // !_MSC_VER
+
+AddPortfolioRequest::AddPortfolioRequest()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void AddPortfolioRequest::InitAsDefaultInstance() {
+}
+
+AddPortfolioRequest::AddPortfolioRequest(const AddPortfolioRequest& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void AddPortfolioRequest::SharedCtor() {
+  _cached_size_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+AddPortfolioRequest::~AddPortfolioRequest() {
+  SharedDtor();
+}
+
+void AddPortfolioRequest::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void AddPortfolioRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* AddPortfolioRequest::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return AddPortfolioRequest_descriptor_;
+}
+
+const AddPortfolioRequest& AddPortfolioRequest::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+AddPortfolioRequest* AddPortfolioRequest::default_instance_ = NULL;
+
+AddPortfolioRequest* AddPortfolioRequest::New() const {
+  return new AddPortfolioRequest;
+}
+
+void AddPortfolioRequest::Clear() {
+  portfolios_.Clear();
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool AddPortfolioRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .entity.PortfolioItem Portfolios = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Portfolios:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_portfolios()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(10)) goto parse_Portfolios;
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void AddPortfolioRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // repeated .entity.PortfolioItem Portfolios = 1;
+  for (int i = 0; i < this->portfolios_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->portfolios(i), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* AddPortfolioRequest::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // repeated .entity.PortfolioItem Portfolios = 1;
+  for (int i = 0; i < this->portfolios_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        1, this->portfolios(i), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int AddPortfolioRequest::ByteSize() const {
+  int total_size = 0;
+  
+  // repeated .entity.PortfolioItem Portfolios = 1;
+  total_size += 1 * this->portfolios_size();
+  for (int i = 0; i < this->portfolios_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->portfolios(i));
+  }
+  
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void AddPortfolioRequest::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const AddPortfolioRequest* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const AddPortfolioRequest*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void AddPortfolioRequest::MergeFrom(const AddPortfolioRequest& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  portfolios_.MergeFrom(from.portfolios_);
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void AddPortfolioRequest::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void AddPortfolioRequest::CopyFrom(const AddPortfolioRequest& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool AddPortfolioRequest::IsInitialized() const {
+  
+  for (int i = 0; i < portfolios_size(); i++) {
+    if (!this->portfolios(i).IsInitialized()) return false;
+  }
+  return true;
+}
+
+void AddPortfolioRequest::Swap(AddPortfolioRequest* other) {
+  if (other != this) {
+    portfolios_.Swap(&other->portfolios_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata AddPortfolioRequest::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = AddPortfolioRequest_descriptor_;
+  metadata.reflection = AddPortfolioRequest_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int StringParam::kDataFieldNumber;
 #endif  // !_MSC_VER
 
@@ -5217,8 +5512,19 @@ void LegUpdateItem::Swap(LegUpdateItem* other) {
 
 #ifndef _MSC_VER
 const int StrategyItem::kTypeFieldNumber;
-const int StrategyItem::kDataFieldNumber;
 const int StrategyItem::kRunningFieldNumber;
+const int StrategyItem::kRetryTimesFieldNumber;
+const int StrategyItem::kTriggersFieldNumber;
+const int StrategyItem::kARSideFieldNumber;
+const int StrategyItem::kCPCloseLegFieldNumber;
+const int StrategyItem::kCPCloseLegSideFieldNumber;
+const int StrategyItem::kSCPriceTickFieldNumber;
+const int StrategyItem::kSCCaseLE2TickFieldNumber;
+const int StrategyItem::kSCCaseLE3TickFieldNumber;
+const int StrategyItem::kSCCaseGE4TickFieldNumber;
+const int StrategyItem::kSCCaseNoChangeFieldNumber;
+const int StrategyItem::kSCOpenTimeoutFieldNumber;
+const int StrategyItem::kSCStopLossStrategyFieldNumber;
 #endif  // !_MSC_VER
 
 StrategyItem::StrategyItem()
@@ -5238,8 +5544,18 @@ StrategyItem::StrategyItem(const StrategyItem& from)
 void StrategyItem::SharedCtor() {
   _cached_size_ = 0;
   type_ = 0;
-  data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   running_ = false;
+  retrytimes_ = 0;
+  ar_side_ = 49;
+  cp_closeleg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  cp_closelegside_ = 49;
+  sc_pricetick_ = 0;
+  sc_casele2tick_ = 0;
+  sc_casele3tick_ = 0;
+  sc_casege4tick_ = 0;
+  sc_casenochange_ = 0;
+  sc_opentimeout_ = 0;
+  sc_stoplossstrategy_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5248,8 +5564,8 @@ StrategyItem::~StrategyItem() {
 }
 
 void StrategyItem::SharedDtor() {
-  if (data_ != &::google::protobuf::internal::kEmptyString) {
-    delete data_;
+  if (cp_closeleg_ != &::google::protobuf::internal::kEmptyString) {
+    delete cp_closeleg_;
   }
   if (this != default_instance_) {
   }
@@ -5278,13 +5594,26 @@ StrategyItem* StrategyItem::New() const {
 void StrategyItem::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     type_ = 0;
-    if (has_data()) {
-      if (data_ != &::google::protobuf::internal::kEmptyString) {
-        data_->clear();
+    running_ = false;
+    retrytimes_ = 0;
+    ar_side_ = 49;
+    if (has_cp_closeleg()) {
+      if (cp_closeleg_ != &::google::protobuf::internal::kEmptyString) {
+        cp_closeleg_->clear();
       }
     }
-    running_ = false;
+    cp_closelegside_ = 49;
+    sc_pricetick_ = 0;
   }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    sc_casele2tick_ = 0;
+    sc_casele3tick_ = 0;
+    sc_casege4tick_ = 0;
+    sc_casenochange_ = 0;
+    sc_opentimeout_ = 0;
+    sc_stoplossstrategy_ = 0;
+  }
+  triggers_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -5311,26 +5640,12 @@ bool StrategyItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_Data;
+        if (input->ExpectTag(16)) goto parse_Running;
         break;
       }
       
-      // required bytes Data = 2;
+      // required bool Running = 2;
       case 2: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-         parse_Data:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadBytes(
-                input, this->mutable_data()));
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(24)) goto parse_Running;
-        break;
-      }
-      
-      // required bool Running = 3;
-      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_Running:
@@ -5338,6 +5653,233 @@ bool StrategyItem::MergePartialFromCodedStream(
                    bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
                  input, &running_)));
           set_has_running();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_RetryTimes;
+        break;
+      }
+      
+      // required int32 RetryTimes = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_RetryTimes:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &retrytimes_)));
+          set_has_retrytimes();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_Triggers;
+        break;
+      }
+      
+      // repeated .entity.TriggerItem Triggers = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Triggers:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+                input, add_triggers()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(34)) goto parse_Triggers;
+        if (input->ExpectTag(808)) goto parse_AR_Side;
+        break;
+      }
+      
+      // optional .entity.PosiDirectionType AR_Side = 101;
+      case 101: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_AR_Side:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::PosiDirectionType_IsValid(value)) {
+            set_ar_side(static_cast< entity::PosiDirectionType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(101, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(1610)) goto parse_CP_CloseLeg;
+        break;
+      }
+      
+      // optional string CP_CloseLeg = 201;
+      case 201: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_CP_CloseLeg:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_cp_closeleg()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->cp_closeleg().data(), this->cp_closeleg().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(1616)) goto parse_CP_CloseLegSide;
+        break;
+      }
+      
+      // optional .entity.PosiDirectionType CP_CloseLegSide = 202;
+      case 202: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_CP_CloseLegSide:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::PosiDirectionType_IsValid(value)) {
+            set_cp_closelegside(static_cast< entity::PosiDirectionType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(202, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2409)) goto parse_SC_PriceTick;
+        break;
+      }
+      
+      // optional double SC_PriceTick = 301;
+      case 301: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_SC_PriceTick:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &sc_pricetick_)));
+          set_has_sc_pricetick();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2416)) goto parse_SC_CaseLE2Tick;
+        break;
+      }
+      
+      // optional .entity.DirectionDepends SC_CaseLE2Tick = 302;
+      case 302: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SC_CaseLE2Tick:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::DirectionDepends_IsValid(value)) {
+            set_sc_casele2tick(static_cast< entity::DirectionDepends >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(302, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2424)) goto parse_SC_CaseLE3Tick;
+        break;
+      }
+      
+      // optional .entity.DirectionDepends SC_CaseLE3Tick = 303;
+      case 303: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SC_CaseLE3Tick:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::DirectionDepends_IsValid(value)) {
+            set_sc_casele3tick(static_cast< entity::DirectionDepends >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(303, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2432)) goto parse_SC_CaseGE4Tick;
+        break;
+      }
+      
+      // optional .entity.DirectionDepends SC_CaseGE4Tick = 304;
+      case 304: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SC_CaseGE4Tick:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::DirectionDepends_IsValid(value)) {
+            set_sc_casege4tick(static_cast< entity::DirectionDepends >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(304, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2440)) goto parse_SC_CaseNoChange;
+        break;
+      }
+      
+      // optional .entity.DirectionDepends SC_CaseNoChange = 305;
+      case 305: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SC_CaseNoChange:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::DirectionDepends_IsValid(value)) {
+            set_sc_casenochange(static_cast< entity::DirectionDepends >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(305, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2448)) goto parse_SC_OpenTimeout;
+        break;
+      }
+      
+      // optional int32 SC_OpenTimeout = 306;
+      case 306: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SC_OpenTimeout:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &sc_opentimeout_)));
+          set_has_sc_opentimeout();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2456)) goto parse_SC_StopLossStrategy;
+        break;
+      }
+      
+      // optional .entity.StopLossCloseMethods SC_StopLossStrategy = 307;
+      case 307: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SC_StopLossStrategy:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::StopLossCloseMethods_IsValid(value)) {
+            set_sc_stoplossstrategy(static_cast< entity::StopLossCloseMethods >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(307, value);
+          }
         } else {
           goto handle_uninterpreted;
         }
@@ -5369,15 +5911,81 @@ void StrategyItem::SerializeWithCachedSizes(
       1, this->type(), output);
   }
   
-  // required bytes Data = 2;
-  if (has_data()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBytes(
-      2, this->data(), output);
+  // required bool Running = 2;
+  if (has_running()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(2, this->running(), output);
   }
   
-  // required bool Running = 3;
-  if (has_running()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->running(), output);
+  // required int32 RetryTimes = 3;
+  if (has_retrytimes()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->retrytimes(), output);
+  }
+  
+  // repeated .entity.TriggerItem Triggers = 4;
+  for (int i = 0; i < this->triggers_size(); i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      4, this->triggers(i), output);
+  }
+  
+  // optional .entity.PosiDirectionType AR_Side = 101;
+  if (has_ar_side()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      101, this->ar_side(), output);
+  }
+  
+  // optional string CP_CloseLeg = 201;
+  if (has_cp_closeleg()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->cp_closeleg().data(), this->cp_closeleg().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      201, this->cp_closeleg(), output);
+  }
+  
+  // optional .entity.PosiDirectionType CP_CloseLegSide = 202;
+  if (has_cp_closelegside()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      202, this->cp_closelegside(), output);
+  }
+  
+  // optional double SC_PriceTick = 301;
+  if (has_sc_pricetick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(301, this->sc_pricetick(), output);
+  }
+  
+  // optional .entity.DirectionDepends SC_CaseLE2Tick = 302;
+  if (has_sc_casele2tick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      302, this->sc_casele2tick(), output);
+  }
+  
+  // optional .entity.DirectionDepends SC_CaseLE3Tick = 303;
+  if (has_sc_casele3tick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      303, this->sc_casele3tick(), output);
+  }
+  
+  // optional .entity.DirectionDepends SC_CaseGE4Tick = 304;
+  if (has_sc_casege4tick()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      304, this->sc_casege4tick(), output);
+  }
+  
+  // optional .entity.DirectionDepends SC_CaseNoChange = 305;
+  if (has_sc_casenochange()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      305, this->sc_casenochange(), output);
+  }
+  
+  // optional int32 SC_OpenTimeout = 306;
+  if (has_sc_opentimeout()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(306, this->sc_opentimeout(), output);
+  }
+  
+  // optional .entity.StopLossCloseMethods SC_StopLossStrategy = 307;
+  if (has_sc_stoplossstrategy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      307, this->sc_stoplossstrategy(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -5394,16 +6002,83 @@ void StrategyItem::SerializeWithCachedSizes(
       1, this->type(), target);
   }
   
-  // required bytes Data = 2;
-  if (has_data()) {
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteBytesToArray(
-        2, this->data(), target);
+  // required bool Running = 2;
+  if (has_running()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(2, this->running(), target);
   }
   
-  // required bool Running = 3;
-  if (has_running()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->running(), target);
+  // required int32 RetryTimes = 3;
+  if (has_retrytimes()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->retrytimes(), target);
+  }
+  
+  // repeated .entity.TriggerItem Triggers = 4;
+  for (int i = 0; i < this->triggers_size(); i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        4, this->triggers(i), target);
+  }
+  
+  // optional .entity.PosiDirectionType AR_Side = 101;
+  if (has_ar_side()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      101, this->ar_side(), target);
+  }
+  
+  // optional string CP_CloseLeg = 201;
+  if (has_cp_closeleg()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->cp_closeleg().data(), this->cp_closeleg().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        201, this->cp_closeleg(), target);
+  }
+  
+  // optional .entity.PosiDirectionType CP_CloseLegSide = 202;
+  if (has_cp_closelegside()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      202, this->cp_closelegside(), target);
+  }
+  
+  // optional double SC_PriceTick = 301;
+  if (has_sc_pricetick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(301, this->sc_pricetick(), target);
+  }
+  
+  // optional .entity.DirectionDepends SC_CaseLE2Tick = 302;
+  if (has_sc_casele2tick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      302, this->sc_casele2tick(), target);
+  }
+  
+  // optional .entity.DirectionDepends SC_CaseLE3Tick = 303;
+  if (has_sc_casele3tick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      303, this->sc_casele3tick(), target);
+  }
+  
+  // optional .entity.DirectionDepends SC_CaseGE4Tick = 304;
+  if (has_sc_casege4tick()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      304, this->sc_casege4tick(), target);
+  }
+  
+  // optional .entity.DirectionDepends SC_CaseNoChange = 305;
+  if (has_sc_casenochange()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      305, this->sc_casenochange(), target);
+  }
+  
+  // optional int32 SC_OpenTimeout = 306;
+  if (has_sc_opentimeout()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(306, this->sc_opentimeout(), target);
+  }
+  
+  // optional .entity.StopLossCloseMethods SC_StopLossStrategy = 307;
+  if (has_sc_stoplossstrategy()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      307, this->sc_stoplossstrategy(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -5423,19 +6098,90 @@ int StrategyItem::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->type());
     }
     
-    // required bytes Data = 2;
-    if (has_data()) {
-      total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::BytesSize(
-          this->data());
-    }
-    
-    // required bool Running = 3;
+    // required bool Running = 2;
     if (has_running()) {
       total_size += 1 + 1;
     }
     
+    // required int32 RetryTimes = 3;
+    if (has_retrytimes()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->retrytimes());
+    }
+    
+    // optional .entity.PosiDirectionType AR_Side = 101;
+    if (has_ar_side()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->ar_side());
+    }
+    
+    // optional string CP_CloseLeg = 201;
+    if (has_cp_closeleg()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->cp_closeleg());
+    }
+    
+    // optional .entity.PosiDirectionType CP_CloseLegSide = 202;
+    if (has_cp_closelegside()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->cp_closelegside());
+    }
+    
+    // optional double SC_PriceTick = 301;
+    if (has_sc_pricetick()) {
+      total_size += 2 + 8;
+    }
+    
   }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional .entity.DirectionDepends SC_CaseLE2Tick = 302;
+    if (has_sc_casele2tick()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->sc_casele2tick());
+    }
+    
+    // optional .entity.DirectionDepends SC_CaseLE3Tick = 303;
+    if (has_sc_casele3tick()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->sc_casele3tick());
+    }
+    
+    // optional .entity.DirectionDepends SC_CaseGE4Tick = 304;
+    if (has_sc_casege4tick()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->sc_casege4tick());
+    }
+    
+    // optional .entity.DirectionDepends SC_CaseNoChange = 305;
+    if (has_sc_casenochange()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->sc_casenochange());
+    }
+    
+    // optional int32 SC_OpenTimeout = 306;
+    if (has_sc_opentimeout()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->sc_opentimeout());
+    }
+    
+    // optional .entity.StopLossCloseMethods SC_StopLossStrategy = 307;
+    if (has_sc_stoplossstrategy()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->sc_stoplossstrategy());
+    }
+    
+  }
+  // repeated .entity.TriggerItem Triggers = 4;
+  total_size += 1 * this->triggers_size();
+  for (int i = 0; i < this->triggers_size(); i++) {
+    total_size +=
+      ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+        this->triggers(i));
+  }
+  
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -5461,15 +6207,48 @@ void StrategyItem::MergeFrom(const ::google::protobuf::Message& from) {
 
 void StrategyItem::MergeFrom(const StrategyItem& from) {
   GOOGLE_CHECK_NE(&from, this);
+  triggers_.MergeFrom(from.triggers_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_type()) {
       set_type(from.type());
     }
-    if (from.has_data()) {
-      set_data(from.data());
-    }
     if (from.has_running()) {
       set_running(from.running());
+    }
+    if (from.has_retrytimes()) {
+      set_retrytimes(from.retrytimes());
+    }
+    if (from.has_ar_side()) {
+      set_ar_side(from.ar_side());
+    }
+    if (from.has_cp_closeleg()) {
+      set_cp_closeleg(from.cp_closeleg());
+    }
+    if (from.has_cp_closelegside()) {
+      set_cp_closelegside(from.cp_closelegside());
+    }
+    if (from.has_sc_pricetick()) {
+      set_sc_pricetick(from.sc_pricetick());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_sc_casele2tick()) {
+      set_sc_casele2tick(from.sc_casele2tick());
+    }
+    if (from.has_sc_casele3tick()) {
+      set_sc_casele3tick(from.sc_casele3tick());
+    }
+    if (from.has_sc_casege4tick()) {
+      set_sc_casege4tick(from.sc_casege4tick());
+    }
+    if (from.has_sc_casenochange()) {
+      set_sc_casenochange(from.sc_casenochange());
+    }
+    if (from.has_sc_opentimeout()) {
+      set_sc_opentimeout(from.sc_opentimeout());
+    }
+    if (from.has_sc_stoplossstrategy()) {
+      set_sc_stoplossstrategy(from.sc_stoplossstrategy());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -5490,14 +6269,28 @@ void StrategyItem::CopyFrom(const StrategyItem& from) {
 bool StrategyItem::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
   
+  for (int i = 0; i < triggers_size(); i++) {
+    if (!this->triggers(i).IsInitialized()) return false;
+  }
   return true;
 }
 
 void StrategyItem::Swap(StrategyItem* other) {
   if (other != this) {
     std::swap(type_, other->type_);
-    std::swap(data_, other->data_);
     std::swap(running_, other->running_);
+    std::swap(retrytimes_, other->retrytimes_);
+    triggers_.Swap(&other->triggers_);
+    std::swap(ar_side_, other->ar_side_);
+    std::swap(cp_closeleg_, other->cp_closeleg_);
+    std::swap(cp_closelegside_, other->cp_closelegside_);
+    std::swap(sc_pricetick_, other->sc_pricetick_);
+    std::swap(sc_casele2tick_, other->sc_casele2tick_);
+    std::swap(sc_casele3tick_, other->sc_casele3tick_);
+    std::swap(sc_casege4tick_, other->sc_casege4tick_);
+    std::swap(sc_casenochange_, other->sc_casenochange_);
+    std::swap(sc_opentimeout_, other->sc_opentimeout_);
+    std::swap(sc_stoplossstrategy_, other->sc_stoplossstrategy_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -5516,11 +6309,579 @@ void StrategyItem::Swap(StrategyItem* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
+const int TriggerItem::kStrategyFieldNumber;
+const int TriggerItem::kNameFieldNumber;
+const int TriggerItem::kEnabledFieldNumber;
+const int TriggerItem::kARConditionFieldNumber;
+const int TriggerItem::kARThresholdFieldNumber;
+const int TriggerItem::kAROffsetFieldNumber;
+const int TriggerItem::kCPConditionFieldNumber;
+const int TriggerItem::kCPThresholdFieldNumber;
+const int TriggerItem::kSCThresholdFieldNumber;
+#endif  // !_MSC_VER
+
+TriggerItem::TriggerItem()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void TriggerItem::InitAsDefaultInstance() {
+}
+
+TriggerItem::TriggerItem(const TriggerItem& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void TriggerItem::SharedCtor() {
+  _cached_size_ = 0;
+  strategy_ = 0;
+  name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  enabled_ = false;
+  ar_condition_ = 0;
+  ar_threshold_ = 0;
+  ar_offset_ = 0;
+  cp_condition_ = 0;
+  cp_threshold_ = 0;
+  sc_threshold_ = 0;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+TriggerItem::~TriggerItem() {
+  SharedDtor();
+}
+
+void TriggerItem::SharedDtor() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    delete name_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void TriggerItem::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* TriggerItem::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return TriggerItem_descriptor_;
+}
+
+const TriggerItem& TriggerItem::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+TriggerItem* TriggerItem::default_instance_ = NULL;
+
+TriggerItem* TriggerItem::New() const {
+  return new TriggerItem;
+}
+
+void TriggerItem::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    strategy_ = 0;
+    if (has_name()) {
+      if (name_ != &::google::protobuf::internal::kEmptyString) {
+        name_->clear();
+      }
+    }
+    enabled_ = false;
+    ar_condition_ = 0;
+    ar_threshold_ = 0;
+    ar_offset_ = 0;
+    cp_condition_ = 0;
+    cp_threshold_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    sc_threshold_ = 0;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool TriggerItem::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required .entity.StrategyType Strategy = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::StrategyType_IsValid(value)) {
+            set_strategy(static_cast< entity::StrategyType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(1, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_Name;
+        break;
+      }
+      
+      // required string Name = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Name:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_name()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->name().data(), this->name().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_Enabled;
+        break;
+      }
+      
+      // required bool Enabled = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Enabled:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &enabled_)));
+          set_has_enabled();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(808)) goto parse_AR_Condition;
+        break;
+      }
+      
+      // optional .entity.CompareCondition AR_Condition = 101;
+      case 101: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_AR_Condition:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::CompareCondition_IsValid(value)) {
+            set_ar_condition(static_cast< entity::CompareCondition >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(101, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(817)) goto parse_AR_Threshold;
+        break;
+      }
+      
+      // optional double AR_Threshold = 102;
+      case 102: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_AR_Threshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &ar_threshold_)));
+          set_has_ar_threshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(824)) goto parse_AR_Offset;
+        break;
+      }
+      
+      // optional .entity.PosiOffsetFlag AR_Offset = 103;
+      case 103: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_AR_Offset:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::PosiOffsetFlag_IsValid(value)) {
+            set_ar_offset(static_cast< entity::PosiOffsetFlag >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(103, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(1608)) goto parse_CP_Condition;
+        break;
+      }
+      
+      // optional .entity.CompareCondition CP_Condition = 201;
+      case 201: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_CP_Condition:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::CompareCondition_IsValid(value)) {
+            set_cp_condition(static_cast< entity::CompareCondition >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(201, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(1617)) goto parse_CP_Threshold;
+        break;
+      }
+      
+      // optional double CP_Threshold = 202;
+      case 202: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_CP_Threshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &cp_threshold_)));
+          set_has_cp_threshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2409)) goto parse_SC_Threshold;
+        break;
+      }
+      
+      // optional double SC_Threshold = 301;
+      case 301: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_SC_Threshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &sc_threshold_)));
+          set_has_sc_threshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void TriggerItem::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required .entity.StrategyType Strategy = 1;
+  if (has_strategy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      1, this->strategy(), output);
+  }
+  
+  // required string Name = 2;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->name(), output);
+  }
+  
+  // required bool Enabled = 3;
+  if (has_enabled()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->enabled(), output);
+  }
+  
+  // optional .entity.CompareCondition AR_Condition = 101;
+  if (has_ar_condition()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      101, this->ar_condition(), output);
+  }
+  
+  // optional double AR_Threshold = 102;
+  if (has_ar_threshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(102, this->ar_threshold(), output);
+  }
+  
+  // optional .entity.PosiOffsetFlag AR_Offset = 103;
+  if (has_ar_offset()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      103, this->ar_offset(), output);
+  }
+  
+  // optional .entity.CompareCondition CP_Condition = 201;
+  if (has_cp_condition()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      201, this->cp_condition(), output);
+  }
+  
+  // optional double CP_Threshold = 202;
+  if (has_cp_threshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(202, this->cp_threshold(), output);
+  }
+  
+  // optional double SC_Threshold = 301;
+  if (has_sc_threshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(301, this->sc_threshold(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* TriggerItem::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required .entity.StrategyType Strategy = 1;
+  if (has_strategy()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      1, this->strategy(), target);
+  }
+  
+  // required string Name = 2;
+  if (has_name()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->name().data(), this->name().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->name(), target);
+  }
+  
+  // required bool Enabled = 3;
+  if (has_enabled()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->enabled(), target);
+  }
+  
+  // optional .entity.CompareCondition AR_Condition = 101;
+  if (has_ar_condition()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      101, this->ar_condition(), target);
+  }
+  
+  // optional double AR_Threshold = 102;
+  if (has_ar_threshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(102, this->ar_threshold(), target);
+  }
+  
+  // optional .entity.PosiOffsetFlag AR_Offset = 103;
+  if (has_ar_offset()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      103, this->ar_offset(), target);
+  }
+  
+  // optional .entity.CompareCondition CP_Condition = 201;
+  if (has_cp_condition()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      201, this->cp_condition(), target);
+  }
+  
+  // optional double CP_Threshold = 202;
+  if (has_cp_threshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(202, this->cp_threshold(), target);
+  }
+  
+  // optional double SC_Threshold = 301;
+  if (has_sc_threshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(301, this->sc_threshold(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int TriggerItem::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required .entity.StrategyType Strategy = 1;
+    if (has_strategy()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->strategy());
+    }
+    
+    // required string Name = 2;
+    if (has_name()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->name());
+    }
+    
+    // required bool Enabled = 3;
+    if (has_enabled()) {
+      total_size += 1 + 1;
+    }
+    
+    // optional .entity.CompareCondition AR_Condition = 101;
+    if (has_ar_condition()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->ar_condition());
+    }
+    
+    // optional double AR_Threshold = 102;
+    if (has_ar_threshold()) {
+      total_size += 2 + 8;
+    }
+    
+    // optional .entity.PosiOffsetFlag AR_Offset = 103;
+    if (has_ar_offset()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->ar_offset());
+    }
+    
+    // optional .entity.CompareCondition CP_Condition = 201;
+    if (has_cp_condition()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->cp_condition());
+    }
+    
+    // optional double CP_Threshold = 202;
+    if (has_cp_threshold()) {
+      total_size += 2 + 8;
+    }
+    
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional double SC_Threshold = 301;
+    if (has_sc_threshold()) {
+      total_size += 2 + 8;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void TriggerItem::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const TriggerItem* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const TriggerItem*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void TriggerItem::MergeFrom(const TriggerItem& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_strategy()) {
+      set_strategy(from.strategy());
+    }
+    if (from.has_name()) {
+      set_name(from.name());
+    }
+    if (from.has_enabled()) {
+      set_enabled(from.enabled());
+    }
+    if (from.has_ar_condition()) {
+      set_ar_condition(from.ar_condition());
+    }
+    if (from.has_ar_threshold()) {
+      set_ar_threshold(from.ar_threshold());
+    }
+    if (from.has_ar_offset()) {
+      set_ar_offset(from.ar_offset());
+    }
+    if (from.has_cp_condition()) {
+      set_cp_condition(from.cp_condition());
+    }
+    if (from.has_cp_threshold()) {
+      set_cp_threshold(from.cp_threshold());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    if (from.has_sc_threshold()) {
+      set_sc_threshold(from.sc_threshold());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void TriggerItem::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void TriggerItem::CopyFrom(const TriggerItem& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool TriggerItem::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  
+  return true;
+}
+
+void TriggerItem::Swap(TriggerItem* other) {
+  if (other != this) {
+    std::swap(strategy_, other->strategy_);
+    std::swap(name_, other->name_);
+    std::swap(enabled_, other->enabled_);
+    std::swap(ar_condition_, other->ar_condition_);
+    std::swap(ar_threshold_, other->ar_threshold_);
+    std::swap(ar_offset_, other->ar_offset_);
+    std::swap(cp_condition_, other->cp_condition_);
+    std::swap(cp_threshold_, other->cp_threshold_);
+    std::swap(sc_threshold_, other->sc_threshold_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata TriggerItem::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = TriggerItem_descriptor_;
+  metadata.reflection = TriggerItem_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
 const int PortfolioItem::kIDFieldNumber;
 const int PortfolioItem::kQuantityFieldNumber;
 const int PortfolioItem::kLegsFieldNumber;
 const int PortfolioItem::kMaxCancelFieldNumber;
 const int PortfolioItem::kMaxTriggerTimesFieldNumber;
+const int PortfolioItem::kStrategyFieldNumber;
 #endif  // !_MSC_VER
 
 PortfolioItem::PortfolioItem()
@@ -5529,6 +6890,7 @@ PortfolioItem::PortfolioItem()
 }
 
 void PortfolioItem::InitAsDefaultInstance() {
+  strategy_ = const_cast< ::entity::StrategyItem*>(&::entity::StrategyItem::default_instance());
 }
 
 PortfolioItem::PortfolioItem(const PortfolioItem& from)
@@ -5543,6 +6905,7 @@ void PortfolioItem::SharedCtor() {
   quantity_ = 0;
   maxcancel_ = 0;
   maxtriggertimes_ = 0;
+  strategy_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -5555,6 +6918,7 @@ void PortfolioItem::SharedDtor() {
     delete id_;
   }
   if (this != default_instance_) {
+    delete strategy_;
   }
 }
 
@@ -5588,6 +6952,9 @@ void PortfolioItem::Clear() {
     quantity_ = 0;
     maxcancel_ = 0;
     maxtriggertimes_ = 0;
+    if (has_strategy()) {
+      if (strategy_ != NULL) strategy_->::entity::StrategyItem::Clear();
+    }
   }
   legs_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -5675,6 +7042,20 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(50)) goto parse_Strategy;
+        break;
+      }
+      
+      // required .entity.StrategyItem Strategy = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Strategy:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_strategy()));
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -5727,6 +7108,12 @@ void PortfolioItem::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->maxtriggertimes(), output);
   }
   
+  // required .entity.StrategyItem Strategy = 6;
+  if (has_strategy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      6, this->strategy(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -5767,6 +7154,13 @@ void PortfolioItem::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->maxtriggertimes(), target);
   }
   
+  // required .entity.StrategyItem Strategy = 6;
+  if (has_strategy()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        6, this->strategy(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -5804,6 +7198,13 @@ int PortfolioItem::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->maxtriggertimes());
+    }
+    
+    // required .entity.StrategyItem Strategy = 6;
+    if (has_strategy()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->strategy());
     }
     
   }
@@ -5854,6 +7255,9 @@ void PortfolioItem::MergeFrom(const PortfolioItem& from) {
     if (from.has_maxtriggertimes()) {
       set_maxtriggertimes(from.maxtriggertimes());
     }
+    if (from.has_strategy()) {
+      mutable_strategy()->::entity::StrategyItem::MergeFrom(from.strategy());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -5871,10 +7275,13 @@ void PortfolioItem::CopyFrom(const PortfolioItem& from) {
 }
 
 bool PortfolioItem::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001b) != 0x0000001b) return false;
+  if ((_has_bits_[0] & 0x0000003b) != 0x0000003b) return false;
   
   for (int i = 0; i < legs_size(); i++) {
     if (!this->legs(i).IsInitialized()) return false;
+  }
+  if (has_strategy()) {
+    if (!this->strategy().IsInitialized()) return false;
   }
   return true;
 }
@@ -5886,6 +7293,7 @@ void PortfolioItem::Swap(PortfolioItem* other) {
     legs_.Swap(&other->legs_);
     std::swap(maxcancel_, other->maxcancel_);
     std::swap(maxtriggertimes_, other->maxtriggertimes_);
+    std::swap(strategy_, other->strategy_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

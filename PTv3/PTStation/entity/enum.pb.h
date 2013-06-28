@@ -53,6 +53,25 @@ inline bool PosiDirectionType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<PosiDirectionType>(
     PosiDirectionType_descriptor(), name, value);
 }
+enum PosiOffsetFlag {
+  OPEN = 0,
+  CLOSE = 1
+};
+bool PosiOffsetFlag_IsValid(int value);
+const PosiOffsetFlag PosiOffsetFlag_MIN = OPEN;
+const PosiOffsetFlag PosiOffsetFlag_MAX = CLOSE;
+const int PosiOffsetFlag_ARRAYSIZE = PosiOffsetFlag_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PosiOffsetFlag_descriptor();
+inline const ::std::string& PosiOffsetFlag_Name(PosiOffsetFlag value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PosiOffsetFlag_descriptor(), value);
+}
+inline bool PosiOffsetFlag_Parse(
+    const ::std::string& name, PosiOffsetFlag* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PosiOffsetFlag>(
+    PosiOffsetFlag_descriptor(), name, value);
+}
 enum LegStatus {
   UNOPENED = 0,
   IS_OPENING = 1,
@@ -135,6 +154,10 @@ namespace protobuf {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::PosiDirectionType>() {
   return entity::PosiDirectionType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< entity::PosiOffsetFlag>() {
+  return entity::PosiOffsetFlag_descriptor();
 }
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::LegStatus>() {
