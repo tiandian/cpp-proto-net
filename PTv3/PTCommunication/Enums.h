@@ -14,4 +14,20 @@ namespace PTEntity {
 		SERV_QUOTE = 0,
 		SERV_TRADE = 1
 	};
+
+	public enum class PosiDirectionType : int
+	{
+		NET = 49,
+		LONG = 50,
+		SHORT = 51
+	};
+
+	public enum class LegStatus : int
+	{
+		UNOPENED = 0,
+		IS_OPENING = 1,
+		OPENED = 2,
+		IS_CLOSING = 3,
+		CLOSED = 4
+	};
 }

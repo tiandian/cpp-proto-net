@@ -21,12 +21,12 @@ namespace PTCommunication {
 	public ref class ClientBase
 	{
 	private:
-		CNatvieClient *_navtiveClient;
+		CNatvieClient *_nativeClient;
 	
 	public:
 		ClientBase(IClientRequestHandler ^requestHandler)
 		{
-			_navtiveClient = new CNatvieClient(requestHandler);
+			_nativeClient = new CNatvieClient(requestHandler);
 		}
 		~ClientBase()
 		{
@@ -34,10 +34,10 @@ namespace PTCommunication {
 		}
 		!ClientBase()
 		{
-			if(_navtiveClient != 0)
+			if(_nativeClient != 0)
 			{
-				delete _navtiveClient;
-				_navtiveClient = 0;
+				delete _nativeClient;
+				_nativeClient = 0;
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace PTCommunication {
 		{
 			bool get()
 			{
-				return _navtiveClient->logged();
+				return _nativeClient->logged();
 			}
 		}
 
@@ -59,15 +59,9 @@ namespace PTCommunication {
 
 		void ServerLogout(ServerType svrType);
 
-		void AddPortfolio(PortfolioItem ^portfItem)
-		{
+		void AddPortfolio(PortfolioItem ^portfItem);
 
-		}
-
-		void AddPortfCollection(array<PortfolioItem ^> ^portfItems)
-		{
-
-		}
+		void AddPortfCollection(array<PortfolioItem ^> ^portfItems);
 
 		void RemovePortf(String ^portfId)
 		{

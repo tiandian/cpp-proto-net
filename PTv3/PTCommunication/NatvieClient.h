@@ -3,6 +3,7 @@
 #include "IClientRequestHandler.h"
 #include "tcpsocket/TCPSocket.h"
 #include "entity/message.pb.h"
+#include "PortfolioItem.h"
 
 #include <gcroot.h>
 #include <msclr/auto_gcroot.h>
@@ -19,6 +20,9 @@ public:
 	void OnLoginResponse(entity::LoginResponse& resp);
 	void OnLoginPuzzleResponse(entity::LoginPuzzleResponse& resp);
 	void OnServerLoginResponse(entity::ServerLoginResponse& resp);
+
+	void AddPortfolio(PTEntity::PortfolioItem ^portfolioItem);
+	void AddPortfolios(array<PTEntity::PortfolioItem^> ^portfolioItems);
 
 	bool logged();
 	void Logout();

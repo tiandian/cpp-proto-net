@@ -1331,10 +1331,17 @@ class LegItem : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required string Symbol = 1;
+  // required int32 LegId = 1;
+  inline bool has_legid() const;
+  inline void clear_legid();
+  static const int kLegIdFieldNumber = 1;
+  inline ::google::protobuf::int32 legid() const;
+  inline void set_legid(::google::protobuf::int32 value);
+  
+  // required string Symbol = 2;
   inline bool has_symbol() const;
   inline void clear_symbol();
-  static const int kSymbolFieldNumber = 1;
+  static const int kSymbolFieldNumber = 2;
   inline const ::std::string& symbol() const;
   inline void set_symbol(const ::std::string& value);
   inline void set_symbol(const char* value);
@@ -1342,107 +1349,50 @@ class LegItem : public ::google::protobuf::Message {
   inline ::std::string* mutable_symbol();
   inline ::std::string* release_symbol();
   
-  // required int32 Ratio = 2;
+  // required int32 Ratio = 3;
   inline bool has_ratio() const;
   inline void clear_ratio();
-  static const int kRatioFieldNumber = 2;
+  static const int kRatioFieldNumber = 3;
   inline ::google::protobuf::int32 ratio() const;
   inline void set_ratio(::google::protobuf::int32 value);
   
-  // required .entity.PosiDirectionType Side = 3;
+  // required .entity.PosiDirectionType Side = 4;
   inline bool has_side() const;
   inline void clear_side();
-  static const int kSideFieldNumber = 3;
+  static const int kSideFieldNumber = 4;
   inline entity::PosiDirectionType side() const;
   inline void set_side(entity::PosiDirectionType value);
   
-  // required .entity.LegStatus Status = 4;
-  inline bool has_status() const;
-  inline void clear_status();
-  static const int kStatusFieldNumber = 4;
-  inline entity::LegStatus status() const;
-  inline void set_status(entity::LegStatus value);
-  
-  // required double Last = 5;
-  inline bool has_last() const;
-  inline void clear_last();
-  static const int kLastFieldNumber = 5;
-  inline double last() const;
-  inline void set_last(double value);
-  
-  // required double Ask = 6;
-  inline bool has_ask() const;
-  inline void clear_ask();
-  static const int kAskFieldNumber = 6;
-  inline double ask() const;
-  inline void set_ask(double value);
-  
-  // required int32 AskSize = 7;
-  inline bool has_asksize() const;
-  inline void clear_asksize();
-  static const int kAskSizeFieldNumber = 7;
-  inline ::google::protobuf::int32 asksize() const;
-  inline void set_asksize(::google::protobuf::int32 value);
-  
-  // required double Bid = 8;
-  inline bool has_bid() const;
-  inline void clear_bid();
-  static const int kBidFieldNumber = 8;
-  inline double bid() const;
-  inline void set_bid(double value);
-  
-  // required int32 BidSize = 9;
-  inline bool has_bidsize() const;
-  inline void clear_bidsize();
-  static const int kBidSizeFieldNumber = 9;
-  inline ::google::protobuf::int32 bidsize() const;
-  inline void set_bidsize(::google::protobuf::int32 value);
-  
-  // required bool IsPreferred = 10;
+  // required bool IsPreferred = 5;
   inline bool has_ispreferred() const;
   inline void clear_ispreferred();
-  static const int kIsPreferredFieldNumber = 10;
+  static const int kIsPreferredFieldNumber = 5;
   inline bool ispreferred() const;
   inline void set_ispreferred(bool value);
   
   // @@protoc_insertion_point(class_scope:entity.LegItem)
  private:
+  inline void set_has_legid();
+  inline void clear_has_legid();
   inline void set_has_symbol();
   inline void clear_has_symbol();
   inline void set_has_ratio();
   inline void clear_has_ratio();
   inline void set_has_side();
   inline void clear_has_side();
-  inline void set_has_status();
-  inline void clear_has_status();
-  inline void set_has_last();
-  inline void clear_has_last();
-  inline void set_has_ask();
-  inline void clear_has_ask();
-  inline void set_has_asksize();
-  inline void clear_has_asksize();
-  inline void set_has_bid();
-  inline void clear_has_bid();
-  inline void set_has_bidsize();
-  inline void clear_has_bidsize();
   inline void set_has_ispreferred();
   inline void clear_has_ispreferred();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* symbol_;
+  ::google::protobuf::int32 legid_;
   ::google::protobuf::int32 ratio_;
   int side_;
-  double last_;
-  int status_;
-  ::google::protobuf::int32 asksize_;
-  double ask_;
-  double bid_;
-  ::google::protobuf::int32 bidsize_;
   bool ispreferred_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -5819,15 +5769,37 @@ inline void IntParam::set_data(::google::protobuf::int32 value) {
 
 // LegItem
 
-// required string Symbol = 1;
-inline bool LegItem::has_symbol() const {
+// required int32 LegId = 1;
+inline bool LegItem::has_legid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void LegItem::set_has_symbol() {
+inline void LegItem::set_has_legid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void LegItem::clear_has_symbol() {
+inline void LegItem::clear_has_legid() {
   _has_bits_[0] &= ~0x00000001u;
+}
+inline void LegItem::clear_legid() {
+  legid_ = 0;
+  clear_has_legid();
+}
+inline ::google::protobuf::int32 LegItem::legid() const {
+  return legid_;
+}
+inline void LegItem::set_legid(::google::protobuf::int32 value) {
+  set_has_legid();
+  legid_ = value;
+}
+
+// required string Symbol = 2;
+inline bool LegItem::has_symbol() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void LegItem::set_has_symbol() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void LegItem::clear_has_symbol() {
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void LegItem::clear_symbol() {
   if (symbol_ != &::google::protobuf::internal::kEmptyString) {
@@ -5877,15 +5849,15 @@ inline ::std::string* LegItem::release_symbol() {
   }
 }
 
-// required int32 Ratio = 2;
+// required int32 Ratio = 3;
 inline bool LegItem::has_ratio() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void LegItem::set_has_ratio() {
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void LegItem::clear_has_ratio() {
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void LegItem::clear_ratio() {
   ratio_ = 0;
@@ -5899,15 +5871,15 @@ inline void LegItem::set_ratio(::google::protobuf::int32 value) {
   ratio_ = value;
 }
 
-// required .entity.PosiDirectionType Side = 3;
+// required .entity.PosiDirectionType Side = 4;
 inline bool LegItem::has_side() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
+  return (_has_bits_[0] & 0x00000008u) != 0;
 }
 inline void LegItem::set_has_side() {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
 }
 inline void LegItem::clear_has_side() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline void LegItem::clear_side() {
   side_ = 49;
@@ -5922,148 +5894,15 @@ inline void LegItem::set_side(entity::PosiDirectionType value) {
   side_ = value;
 }
 
-// required .entity.LegStatus Status = 4;
-inline bool LegItem::has_status() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void LegItem::set_has_status() {
-  _has_bits_[0] |= 0x00000008u;
-}
-inline void LegItem::clear_has_status() {
-  _has_bits_[0] &= ~0x00000008u;
-}
-inline void LegItem::clear_status() {
-  status_ = 0;
-  clear_has_status();
-}
-inline entity::LegStatus LegItem::status() const {
-  return static_cast< entity::LegStatus >(status_);
-}
-inline void LegItem::set_status(entity::LegStatus value) {
-  GOOGLE_DCHECK(entity::LegStatus_IsValid(value));
-  set_has_status();
-  status_ = value;
-}
-
-// required double Last = 5;
-inline bool LegItem::has_last() const {
+// required bool IsPreferred = 5;
+inline bool LegItem::has_ispreferred() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void LegItem::set_has_last() {
+inline void LegItem::set_has_ispreferred() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void LegItem::clear_has_last() {
-  _has_bits_[0] &= ~0x00000010u;
-}
-inline void LegItem::clear_last() {
-  last_ = 0;
-  clear_has_last();
-}
-inline double LegItem::last() const {
-  return last_;
-}
-inline void LegItem::set_last(double value) {
-  set_has_last();
-  last_ = value;
-}
-
-// required double Ask = 6;
-inline bool LegItem::has_ask() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
-}
-inline void LegItem::set_has_ask() {
-  _has_bits_[0] |= 0x00000020u;
-}
-inline void LegItem::clear_has_ask() {
-  _has_bits_[0] &= ~0x00000020u;
-}
-inline void LegItem::clear_ask() {
-  ask_ = 0;
-  clear_has_ask();
-}
-inline double LegItem::ask() const {
-  return ask_;
-}
-inline void LegItem::set_ask(double value) {
-  set_has_ask();
-  ask_ = value;
-}
-
-// required int32 AskSize = 7;
-inline bool LegItem::has_asksize() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
-}
-inline void LegItem::set_has_asksize() {
-  _has_bits_[0] |= 0x00000040u;
-}
-inline void LegItem::clear_has_asksize() {
-  _has_bits_[0] &= ~0x00000040u;
-}
-inline void LegItem::clear_asksize() {
-  asksize_ = 0;
-  clear_has_asksize();
-}
-inline ::google::protobuf::int32 LegItem::asksize() const {
-  return asksize_;
-}
-inline void LegItem::set_asksize(::google::protobuf::int32 value) {
-  set_has_asksize();
-  asksize_ = value;
-}
-
-// required double Bid = 8;
-inline bool LegItem::has_bid() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
-}
-inline void LegItem::set_has_bid() {
-  _has_bits_[0] |= 0x00000080u;
-}
-inline void LegItem::clear_has_bid() {
-  _has_bits_[0] &= ~0x00000080u;
-}
-inline void LegItem::clear_bid() {
-  bid_ = 0;
-  clear_has_bid();
-}
-inline double LegItem::bid() const {
-  return bid_;
-}
-inline void LegItem::set_bid(double value) {
-  set_has_bid();
-  bid_ = value;
-}
-
-// required int32 BidSize = 9;
-inline bool LegItem::has_bidsize() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
-}
-inline void LegItem::set_has_bidsize() {
-  _has_bits_[0] |= 0x00000100u;
-}
-inline void LegItem::clear_has_bidsize() {
-  _has_bits_[0] &= ~0x00000100u;
-}
-inline void LegItem::clear_bidsize() {
-  bidsize_ = 0;
-  clear_has_bidsize();
-}
-inline ::google::protobuf::int32 LegItem::bidsize() const {
-  return bidsize_;
-}
-inline void LegItem::set_bidsize(::google::protobuf::int32 value) {
-  set_has_bidsize();
-  bidsize_ = value;
-}
-
-// required bool IsPreferred = 10;
-inline bool LegItem::has_ispreferred() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
-}
-inline void LegItem::set_has_ispreferred() {
-  _has_bits_[0] |= 0x00000200u;
-}
 inline void LegItem::clear_has_ispreferred() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void LegItem::clear_ispreferred() {
   ispreferred_ = false;

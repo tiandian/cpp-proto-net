@@ -552,9 +552,9 @@ namespace PortfolioTrading.Modules.Account
             return elem;
         }
 
-        public entity.PortfolioItem GetEntity()
+        public PTEntity.PortfolioItem GetEntity()
         {
-            entity.PortfolioItem portfolioItem = new entity.PortfolioItem();
+            PTEntity.PortfolioItem portfolioItem = new PTEntity.PortfolioItem();
             portfolioItem.ID = Id;
             //portfolioItem.AutoOpen = AutoOpen;
             //portfolioItem.AutoStopGain = AutoStopGain;
@@ -570,9 +570,9 @@ namespace PortfolioTrading.Modules.Account
 
             foreach (var legVm in _legs)
             {
-                entity.LegItem leg = new entity.LegItem();
+                PTEntity.LegItem leg = new PTEntity.LegItem();
                 leg.Symbol = legVm.Symbol;
-                leg.Side = legVm.Side;
+                leg.Side = (PTEntity.PosiDirectionType)legVm.Side;
                 leg.Ratio = legVm.Ratio;
                 leg.IsPreferred = legVm.IsPreferred;
                 portfolioItem.Legs.Add(leg);

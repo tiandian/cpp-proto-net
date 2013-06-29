@@ -69,27 +69,6 @@ namespace PortfolioTrading.Infrastructure
              */
         }
 
-        public void AddPortf(PortfolioItem portfItem)
-        {
-            Debug.Assert(!string.IsNullOrEmpty(portfItem.ID), "Portfolio item must have ID already");
-            if(string.IsNullOrEmpty(portfItem.ID)) return;
-
-
-            byte[] portf_data = DataTranslater.Serialize(portfItem);
-
-            //byte[] ret_data = Request("AddPortf", portf_data);
-        }
-
-        public void AddPortfCollection(IEnumerable<PortfolioItem> portfItems)
-        {
-            AddPortfolioParam addPortfParam = new AddPortfolioParam();
-            addPortfParam.PortfolioItems.AddRange(portfItems);
-
-            byte[] portf_data = DataTranslater.Serialize(addPortfParam);
-
-            //byte[] ret_data = Request("AddPortfCollection", portf_data);
-        }
-
         public void RemovePortf(string portfId)
         {
             StringParam strParam = new StringParam() { Data = portfId };

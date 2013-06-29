@@ -111,3 +111,24 @@ void CNatvieClient::ServerLogout( entity::ServerType svrType )
 	sendRequest(&request);
 }
 
+void CNatvieClient::AddPortfolio( PTEntity::PortfolioItem ^portfolioItem )
+{
+	ProtobufPacket<entity::AddPortfolioRequest> request(AddPortfolioRequestID);
+	entity::PortfolioItem* pAddedPortfItem = request.getData().add_portfolios();
+	portfolioItem->To(pAddedPortfItem);
+	
+	sendRequest(&request);
+}
+
+void CNatvieClient::AddPortfolios( array<PTEntity::PortfolioItem^> ^portfolioItems )
+{
+	ProtobufPacket<entity::AddPortfolioRequest> request(AddPortfolioRequestID);
+	for each(PTEntity::PortfolioItem ^portf in portfolioItems)
+	{
+		entity::PortfolioItem* pAddedPortfItem = request.getData().add_portfolios();
+		portf->To(pAddedPortfItem);
+	}
+
+	sendRequest(&request);
+}
+

@@ -138,6 +138,9 @@
     <ClInclude Include="charsetconvert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StrategyItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -214,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="charsetconvert.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
