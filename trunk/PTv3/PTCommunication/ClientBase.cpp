@@ -12,7 +12,7 @@ bool ClientBase::Connect( String ^host, int port )
 	try
 	{
 		stringPointer = (IntPtr)Marshal::StringToHGlobalAnsi(host);
-		bool succ = _navtiveClient->connect((char*)stringPointer.ToPointer(), port);
+		bool succ = _nativeClient->connect((char*)stringPointer.ToPointer(), port);
 		return succ;
 	}
 	finally
@@ -27,7 +27,7 @@ void ClientBase::SetPseudo( String ^pseudo )
 	try
 	{
 		pseudoPointer = (IntPtr)Marshal::StringToHGlobalAnsi(pseudo);
-		_navtiveClient->setPseudo((char*)pseudoPointer.ToPointer());
+		_nativeClient->setPseudo((char*)pseudoPointer.ToPointer());
 	}
 	finally
 	{
@@ -47,7 +47,7 @@ void ClientBase::ServerLogin( ServerType svrType, String ^address, String ^broke
 
 		entity::ServerType eSvrType = static_cast<entity::ServerType>(svrType);
 
-		_navtiveClient->ServerLogin(eSvrType,
+		_nativeClient->ServerLogin(eSvrType,
 									(char*)pAddress.ToPointer(),
 									(char*)pBrokerId.ToPointer(),
 									(char*)pInvestorId.ToPointer(),
@@ -65,13 +65,23 @@ void ClientBase::ServerLogin( ServerType svrType, String ^address, String ^broke
 void ClientBase::ServerLogout( ServerType svrType )
 {
 	entity::ServerType eSvrType = static_cast<entity::ServerType>(svrType);
-	_navtiveClient->ServerLogout(eSvrType);
+	_nativeClient->ServerLogout(eSvrType);
 }
 
 void ClientBase::Disconnect()
 {
 	if(this->IsConnected)
-		_navtiveClient->Logout();
+		_nativeClient->Logout();
+}
+
+void ClientBase::AddPortfolio( PortfolioItem ^portfItem )
+{
+	_nativeClient->AddPortfolio(portfItem);
+}
+
+void ClientBase::AddPortfCollection( array<PortfolioItem ^> ^portfItems )
+{
+	_nativeClient->AddPortfolios(portfItems);
 }
 
 }

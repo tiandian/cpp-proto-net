@@ -158,28 +158,28 @@ namespace PortfolioTrading
             }
         }
 
-        private entity.PortfolioItem portfolioItem;
+        private PTEntity.PortfolioItem portfolioItem;
 
         private void btnAddPortf_Click(object sender, RoutedEventArgs e)
         {
-            portfolioItem = new entity.PortfolioItem();
+            portfolioItem = new PTEntity.PortfolioItem();
             portfolioItem.ID = Guid.NewGuid().ToString();
             //portfolioItem.Diff = 2;
             portfolioItem.Quantity = 1;
 
-            entity.LegItem leg1 = new entity.LegItem();
+            PTEntity.LegItem leg1 = new PTEntity.LegItem();
             leg1.Symbol = "cu1212";
-            leg1.Side = entity.PosiDirectionType.LONG;
+            leg1.Side = PTEntity.PosiDirectionType.LONG;
             leg1.Ratio = 1;
             portfolioItem.Legs.Add(leg1);
 
-            entity.LegItem leg2 = new entity.LegItem();
+            PTEntity.LegItem leg2 = new PTEntity.LegItem();
             leg2.Symbol = "cu1301";
-            leg2.Side = entity.PosiDirectionType.SHORT;
+            leg2.Side = PTEntity.PosiDirectionType.SHORT;
             leg2.Ratio = 1;
             portfolioItem.Legs.Add(leg2);
 
-            _client.AddPortf(portfolioItem);
+            _client.AddPortfolio(portfolioItem);
 
         }
 

@@ -306,10 +306,10 @@ namespace PortfolioTrading.Modules.Account
             bool? res = dlg.ShowDialog();
             if (res ?? false)
             {
-                entity.PortfolioItem portfolioItem = dlg.Portfolio.GetEntity();
+                PTEntity.PortfolioItem portfolioItem = dlg.Portfolio.GetEntity();
                 AddPorfolio(portf);
                 if(_client.IsConnected)
-                    _client.AddPortf(portfolioItem);
+                    _client.AddPortfolio(portfolioItem);
 
                 PublishChanged();
             }
@@ -355,13 +355,13 @@ namespace PortfolioTrading.Modules.Account
 
         private void SyncToHost()
         {
-            List<entity.PortfolioItem> portfItems = new List<entity.PortfolioItem>();
+            List<PTEntity.PortfolioItem> portfItems = new List<PTEntity.PortfolioItem>();
             foreach (var portf in _acctPortfolios)
             {
-                entity.PortfolioItem portfolioItem = portf.GetEntity();
+                PTEntity.PortfolioItem portfolioItem = portf.GetEntity();
                 portfItems.Add(portfolioItem);
             }
-            _client.AddPortfCollection(portfItems);
+            _client.AddPortfCollection(portfItems.ToArray());
         }
 
         public bool IsConnected

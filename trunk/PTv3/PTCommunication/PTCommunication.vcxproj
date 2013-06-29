@@ -104,6 +104,7 @@
     <ClInclude Include="ResponseHandlers.h" />
     <ClInclude Include="ServerLoginReturn.h" />
     <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="StrategyItem.h" />
     <ClInclude Include="SymbolInfo.h" />
     <ClInclude Include="tcpsocket\ResponseHandler.h" />
     <ClInclude Include="tcpsocket\ScopedLock.h" />
@@ -147,6 +148,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StrategyItem.cpp" />
     <ClCompile Include="SymbolInfo.cpp" />
     <ClCompile Include="tcpsocket\ResponseHandler.cpp" />
     <ClCompile Include="tcpsocket\TCPSocket.cpp" />
