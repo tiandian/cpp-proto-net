@@ -112,6 +112,7 @@
     <ClInclude Include="tcpsocket\TCPSocketEvents.h" />
     <ClInclude Include="tcpsocket\TCPSocketImpl.h" />
     <ClInclude Include="tcpsocket\TCPSocketInclude.h" />
+    <ClInclude Include="TriggerItem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\PTStation\ClientProtocol.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="tcpsocket\ResponseHandler.cpp" />
     <ClCompile Include="tcpsocket\TCPSocket.cpp" />
     <ClCompile Include="tcpsocket\TCPSocketImpl_Win.cpp" />
+    <ClCompile Include="TriggerItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.ico" />

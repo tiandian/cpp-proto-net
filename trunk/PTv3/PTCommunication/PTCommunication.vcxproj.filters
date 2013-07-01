@@ -141,6 +141,9 @@
     <ClInclude Include="StrategyItem.h">
       <Filter>Header Files\PTEntity</Filter>
     </ClInclude>
+    <ClInclude Include="TriggerItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -219,6 +222,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StrategyItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggerItem.cpp">
       <Filter>Source Files\PTEntity</Filter>
     </ClCompile>
   </ItemGroup>

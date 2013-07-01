@@ -30,4 +30,40 @@ namespace PTEntity {
 		IS_CLOSING = 3,
 		CLOSED = 4
 	};
+
+	public enum class StrategyType : int
+	{
+		ARBITRAGE = 0,
+		CHANGE_POSITION = 1,
+		SCALPER = 2
+	};
+
+	public enum class DirectionDepends : int
+	{
+		IGNORE_THIS = 0,
+		ON_SMALL_SIZE = 1,
+		ON_BIG_SIZE = 2,
+		ON_SMALL_CHANGE = 3,
+		ON_BIG_CHANGE = 4
+	};
+
+	public enum class StopLossCloseMethods : int
+	{
+		BASED_ON_NEXT_QUOTE = 0,
+		BASED_ON_INPUT_LIMIT = 1
+	};
+
+	public enum CompareCondition : int
+	{
+		GREATER_THAN = 0,
+		GREATER_EQUAL_THAN = 1,
+		LESS_THAN = 2,
+		LESS_EQUAL_THAN = 3
+	};
+
+	public enum PosiOffsetFlag : int
+	{
+		OPEN = 0,
+		CLOSE = 1
+	};
 }
