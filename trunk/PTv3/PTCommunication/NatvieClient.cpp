@@ -100,7 +100,7 @@ bool CNatvieClient::ServerLogin( entity::ServerType svrType, const char* address
 	request.getData().set_userid(investorId);
 	request.getData().set_password(password);
 
-	return sendRequest(&request);
+	return sendRequest(&request) > 0;
 }
 
 void CNatvieClient::ServerLogout( entity::ServerType svrType )

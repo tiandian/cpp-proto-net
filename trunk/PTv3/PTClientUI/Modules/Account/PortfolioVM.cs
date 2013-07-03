@@ -577,10 +577,12 @@ namespace PortfolioTrading.Modules.Account
                 leg.IsPreferred = legVm.IsPreferred;
                 portfolioItem.Legs.Add(leg);
             }
-            entity.StrategyItem strategyItem = new entity.StrategyItem();
+
+            portfolioItem.Strategy = StrategySetting.GetEntity();
+            //entity.StrategyItem strategyItem = new entity.StrategyItem();
             //strategyItem.Name = StrategySetting.Name;
-            strategyItem.Data = StrategySetting.Serialize();
-            strategyItem.Running = false;
+            //strategyItem.Data = StrategySetting.Serialize();
+            //strategyItem.Running = false;
 
             return portfolioItem;
         }

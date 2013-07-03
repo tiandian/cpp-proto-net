@@ -15,6 +15,38 @@ public ref class StrategyItem
 public:
 	StrategyItem(void);
 
+	property int RetryTimes
+	{
+		int get()
+		{
+			return _retryTimes; 
+		}
+		void set(int val)
+		{
+			_retryTimes = val;
+		}
+	}
+
+	property bool Running
+	{
+		bool get()
+		{
+			return _running; 
+		}
+		void set(bool val)
+		{
+			_running = val;
+		}
+	}
+
+	property List<TriggerItem^>^ Triggers
+	{
+		List<TriggerItem^>^ get()
+		{
+			return _triggers;
+		}	
+	}
+
 	virtual void To(entity::StrategyItem* pNativeStrategyItem);
 
 protected:
@@ -50,9 +82,96 @@ private:
 public ref class ScalperStrategyItem : StrategyItem
 {
 public:
-	ScalperStrategyItem(){}
+	ScalperStrategyItem()
+	{
+		_type = StrategyType::SCALPER;
+	}
 
 	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
+
+	property double PriceTick
+	{
+		double get()
+		{
+			return _priceTick;
+		}
+		void set(double val)
+		{
+			_priceTick = val;
+		}
+	}
+
+	property DirectionDepends CaseLE2Tick
+	{
+		DirectionDepends get()
+		{
+			return _caseLE2Tick;
+		}
+		void set(DirectionDepends val)
+		{
+			_caseLE2Tick = val;
+		}
+	}
+
+	property DirectionDepends CaseLE3Tick
+	{
+		DirectionDepends get()
+		{
+			return _caseLE3Tick; 
+		}
+		void set(DirectionDepends val)
+		{
+			_caseLE3Tick = val;
+		}
+	}
+
+	property DirectionDepends CaseGE4Tick
+	{
+		DirectionDepends get()
+		{
+			return _caseGE4Tick; 
+		}
+		void set(DirectionDepends val)
+		{
+			_caseGE4Tick = val;
+		}
+	}
+
+	property DirectionDepends CaseNoChange
+	{
+		DirectionDepends get()
+		{
+			return _caseNoChange; 
+		}
+		void set(DirectionDepends val)
+		{
+			_caseNoChange = val;
+		}
+	}
+
+	property int OpenTimeout
+	{
+		int get()
+		{
+			return _openTimeout; 
+		}
+		void set(int val)
+		{
+			_openTimeout = val;
+		}
+	}
+
+	property StopLossCloseMethods StopLossStrategy
+	{
+		StopLossCloseMethods get()
+		{
+			return _stopLossStrategy; 
+		}
+		void set(StopLossCloseMethods val)
+		{
+			_stopLossStrategy = val;
+		}
+	}
 
 private:
 	double _priceTick;

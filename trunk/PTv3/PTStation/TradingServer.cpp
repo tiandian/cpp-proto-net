@@ -17,4 +17,5 @@ void CTradingServer::CreateServices()
 {
 	registerService(ServerLoginRequestID, new ServerLoginService(), "serverLogin", true);
 	registerService(ServerLogoutRequestID, new ServerLogoutService(), "serverLogout", true);
+	registerService(AddPortfolioRequestID, new AddPortfolioService(), "addPortfolio", true);
 }

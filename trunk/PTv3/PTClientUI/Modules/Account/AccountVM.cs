@@ -448,6 +448,7 @@ namespace PortfolioTrading.Modules.Account
                     {
                         ChangeStatus("已连接", false);
                         EventLogger.Write("连接交易终端成功");
+                        SyncToHost();
                     }
                     else
                     {
@@ -667,8 +668,6 @@ namespace PortfolioTrading.Modules.Account
             {
                 _client.QuoteLogout();
                 _client.TradeLogout();
-                _client.QuoteDisconnect();
-                _client.TradeDisconnect();
             }
             catch (System.Exception ex)
             {

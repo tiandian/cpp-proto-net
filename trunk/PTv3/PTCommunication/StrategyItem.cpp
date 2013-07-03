@@ -5,6 +5,7 @@ namespace PTEntity {
 
 StrategyItem::StrategyItem(void)
 {
+	_triggers = gcnew List<TriggerItem^>();
 }
 
 void StrategyItem::To( entity::StrategyItem* pNativeStrategyItem )

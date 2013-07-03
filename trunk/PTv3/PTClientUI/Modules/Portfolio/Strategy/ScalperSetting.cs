@@ -200,6 +200,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             return DataTranslater.Serialize(setting);
         }
 
+        public override PTEntity.StrategyItem GetEntity()
+        {
+            PTEntity.ScalperStrategyItem scalperStrategy = new PTEntity.ScalperStrategyItem();
+            scalperStrategy.PriceTick = PriceTick;
+            scalperStrategy.CaseLE2Tick = (PTEntity.DirectionDepends)CaseLE2Tick;
+            scalperStrategy.CaseLE3Tick = (PTEntity.DirectionDepends)CaseLE3Tick;
+            scalperStrategy.CaseGE4Tick = (PTEntity.DirectionDepends)CaseGE4Tick;
+            scalperStrategy.CaseNoChange = (PTEntity.DirectionDepends)CaseNoChange;
+            scalperStrategy.OpenTimeout = OpenTimeout;
+            scalperStrategy.RetryTimes = RetryTimes;
+            scalperStrategy.StopLossStrategy = (PTEntity.StopLossCloseMethods)StopLossCloseMethod;
+
+            scalperStrategy.Triggers.Add(new PTEntity.ScalperTriggerItem(Threshold));
+
+            return scalperStrategy;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void RaisePropertyChanged(string propName)

@@ -15,7 +15,7 @@ public:
 
 	virtual void To(entity::TriggerItem* pNativeTriggerItem);
 
-private:
+protected:
 	StrategyType _strategy;
 	String ^_name;
 	bool _enabled;
@@ -50,8 +50,25 @@ public ref class ScalperTriggerItem : TriggerItem
 {
 public:
 	ScalperTriggerItem(){}
+	ScalperTriggerItem(double threshold)
+	{
+		_threshold = threshold;
+		_name = gcnew String("ScalperTrigger");
+	}
 
 	virtual void To(entity::TriggerItem* pNativeTriggerItem) override;
+
+	property double Threshold
+	{
+		double get()
+		{
+			return _threshold; 
+		}
+		void set(double val)
+		{
+			_threshold = val;
+		}
+	}
 
 private:
 	double _threshold;
