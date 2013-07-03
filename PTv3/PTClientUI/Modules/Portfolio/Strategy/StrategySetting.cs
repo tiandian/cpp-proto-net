@@ -19,6 +19,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         public abstract byte[] Serialize();
 
+        public virtual PTEntity.StrategyItem GetEntity() { return new PTEntity.StrategyItem();  }
+
         public static string GetDisplayStrategyName(string strategyName)
         {
             switch (strategyName)
