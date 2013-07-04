@@ -7,6 +7,11 @@ CAvatarClient::CAvatarClient(const string& sessionId)
 	, m_tradeLogged(false)
 	, m_quoteLogged(false)
 {
+	// Connect quoteAgent and Quote repository
+	m_quoteRepositry.Init(&m_quoteAgent);
+	m_quoteAgent.SetCallbackHanlder(&m_quoteRepositry);
+
+	m_portfolioMgr.SetQuoteRepository(&m_quoteRepositry);
 }
 
 
