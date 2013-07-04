@@ -118,6 +118,9 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="ProtocolIDs.h" />
     <ClInclude Include="QuoteAgent.h" />
     <ClInclude Include="QuoteAgentCallback.h" />
+    <ClInclude Include="QuoteFetcher.h" />
+    <ClInclude Include="QuoteRepositry.h" />
+    <ClInclude Include="QuoteStore.h" />
     <ClInclude Include="RequestedServices.h" />
     <ClInclude Include="ScalperStrategy.h" />
     <ClInclude Include="ScalperTrigger.h" />
@@ -172,6 +175,9 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="ProtobufPacket.cpp" />
     <ClCompile Include="ProtobufProtocol.cpp" />
     <ClCompile Include="QuoteAgent.cpp" />
+    <ClCompile Include="QuoteFetcher.cpp" />
+    <ClCompile Include="QuoteRepositry.cpp" />
+    <ClCompile Include="QuoteStore.cpp" />
     <ClCompile Include="RequestedServices.cpp" />
     <ClCompile Include="ScalperStrategy.cpp" />
     <ClCompile Include="ScalperTrigger.cpp" />

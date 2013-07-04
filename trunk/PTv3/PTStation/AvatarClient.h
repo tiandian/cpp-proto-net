@@ -3,6 +3,7 @@
 #include "TradeAgent.h"
 #include "QuoteAgent.h"
 #include "PortfolioManager.h"
+#include "QuoteRepositry.h"
 
 class CAvatarClient : public LogicalConnection
 {
@@ -23,11 +24,12 @@ public:
 	CPortfolioManager& PortfolioManager(){ return m_portfolioMgr; }
 
 private:
-	string m_sessionId;
-	string m_pseudo;
-	CTradeAgent m_tradeAgent;
-	CQuoteAgent m_quoteAgent;
-	CPortfolioManager m_portfolioMgr;
+	string				m_sessionId;
+	string				m_pseudo;
+	CTradeAgent			m_tradeAgent;
+	CQuoteAgent			m_quoteAgent;
+	CQuoteRepositry		m_quoteRepositry;
+	CPortfolioManager	m_portfolioMgr;
 	
 	bool m_tradeLogged;
 	bool m_quoteLogged;

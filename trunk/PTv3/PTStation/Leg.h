@@ -9,6 +9,7 @@ public:
 	~CLeg(void);
 
 	int Id(){ return m_legId; }
+	const string& Symbol(){ return m_symbol; }
 	const entity::LegUpdateItem& GetUpdated();
 
 private:

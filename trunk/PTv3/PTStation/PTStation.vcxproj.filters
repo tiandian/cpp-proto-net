@@ -163,6 +163,15 @@
     <ClInclude Include="ScalperTrigger.h">
       <Filter>Header Files\strategy</Filter>
     </ClInclude>
+    <ClInclude Include="QuoteFetcher.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteStore.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteRepositry.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -266,6 +275,15 @@
     </ClCompile>
     <ClCompile Include="ScalperTrigger.cpp">
       <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteFetcher.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteStore.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteRepositry.cpp">
+      <Filter>Source Files\quote</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
