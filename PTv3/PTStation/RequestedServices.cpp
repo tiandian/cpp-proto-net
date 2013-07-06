@@ -68,7 +68,7 @@ void AddPortfolioService::handle( LogicalConnection* pClient, IncomingPacket* pR
 
 	for(int i = 0; i < portfCount; ++i)
 	{
-		avatarClient->PortfolioManager().AddPortfolio(addPortfReq.portfolios(i));
+		avatarClient->PortfolioManager().AddPortfolio(avatarClient, addPortfReq.portfolios(i));
 	}
 }
 

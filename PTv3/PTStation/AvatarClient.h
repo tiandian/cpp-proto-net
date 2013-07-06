@@ -4,6 +4,7 @@
 #include "QuoteAgent.h"
 #include "PortfolioManager.h"
 #include "QuoteRepositry.h"
+#include "entity/message.pb.h"
 
 class CAvatarClient : public LogicalConnection
 {
@@ -22,6 +23,7 @@ public:
 	void QuoteLogout();
 
 	CPortfolioManager& PortfolioManager(){ return m_portfolioMgr; }
+	void PublishPortfolioUpdate(const entity::PortfolioUpdateItem& portfolioUpdate);
 
 private:
 	string				m_sessionId;

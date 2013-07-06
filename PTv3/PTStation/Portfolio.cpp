@@ -6,11 +6,15 @@
 #include "globalmembers.h"
 #include "QuoteFetcher.h"
 #include "QuoteRepositry.h"
+#include "AvatarClient.h"
 
 #include <assert.h>
 #include <boost/foreach.hpp>
+#include <iostream>
 
-CPortfolio::CPortfolio(const entity::PortfolioItem& srcPortfolioItem)
+CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPortfolioItem)
+	: m_avatar(client)
+	, m_pQuoteRepo(NULL)
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
@@ -71,6 +75,17 @@ void CPortfolio::SubscribeQuotes( CQuoteRepositry* pQuoteRepo )
 }
 
 void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote )
+{
+	cout << "Quote incoming: " << pQuote->symbol() << ", " << pQuote->last() << ", " << pQuote->update_time() << endl; 
+
+	m_strategy->Test(pQuote, this, timestamp);
+
+	GetLegUpdate(pQuote);
+	m_strategy->GetStrategyUpdate(&m_portfolioUpdate);
+	m_avatar->PublishPortfolioUpdate(m_portfolioUpdate);
+}
+
+void CPortfolio::GetLegUpdate( entity::Quote* pQuote )
 {
 
 }

@@ -3,6 +3,7 @@
 #include "entity/message.pb.h"
 
 class CQuoteRepositry;
+class CAvatarClient;
 
 class CPortfolioManager
 {
@@ -11,7 +12,7 @@ public:
 	~CPortfolioManager(void);
 
 	void SetQuoteRepository(CQuoteRepositry* pQuoteRepository){ m_pQuoteRepositry = pQuoteRepository; }
-	void AddPortfolio(const entity::PortfolioItem& portfItem);
+	void AddPortfolio(CAvatarClient* client, const entity::PortfolioItem& portfItem);
 
 private:
 	std::vector<PortfolioPtr> m_portfolios;

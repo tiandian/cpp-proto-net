@@ -10,6 +10,21 @@ public:
 
 	int Id(){ return m_legId; }
 	const string& Symbol(){ return m_symbol; }
+
+	entity::PosiDirectionType Side(){ return m_side; }
+	double Last(){ return m_last; }
+	double Ask(){ return m_ask; }
+	int AskSize() { return m_askSize; }
+	double Bid(){ return m_bid; }
+	int BidSize() { return m_bidSize; }
+
+	void UpdateLast(double last){ m_last = last; }
+	void UpdateAsk(double ask){ m_ask = ask; }
+	void UpdateAskSize(int askSize){ m_askSize = askSize; }
+	void UpdateBid(double bid){ m_bid = m_bid; }
+	void UpdateBidSize(int bidSize){ m_bidSize = m_bidSize; }
+	void UpdateTimestamp(){}
+
 	const entity::LegUpdateItem& GetUpdated();
 
 private:
