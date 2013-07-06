@@ -434,10 +434,11 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PortfolioItem));
   PortfolioUpdateItem_descriptor_ = file->message_type(16);
-  static const int PortfolioUpdateItem_offsets_[8] = {
+  static const int PortfolioUpdateItem_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, legs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, triggertimes_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, strategy_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, diff_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, longdiff_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, shortdiff_),
@@ -1039,11 +1040,12 @@ void protobuf_AddDesc_message_2eproto() {
     "Quantity\030\002 \002(\005\022\035\n\004Legs\030\003 \003(\0132\017.entity.Le"
     "gItem\022\021\n\tMaxCancel\030\004 \002(\005\022\027\n\017MaxTriggerTi"
     "mes\030\005 \002(\005\022&\n\010Strategy\030\006 \002(\0132\024.entity.Str"
-    "ategyItem\"\264\001\n\023PortfolioUpdateItem\022\n\n\002ID\030"
+    "ategyItem\"\334\001\n\023PortfolioUpdateItem\022\n\n\002ID\030"
     "\001 \002(\t\022#\n\004Legs\030\002 \003(\0132\025.entity.LegUpdateIt"
-    "em\022\024\n\014TriggerTimes\030\003 \002(\005\022\014\n\004Diff\030\004 \001(\001\022\020"
-    "\n\010LongDiff\030\005 \001(\001\022\021\n\tShortDiff\030\006 \001(\001\022\020\n\010L"
-    "ongSize\030\007 \001(\005\022\021\n\tShortSize\030\010 \001(\005\":\n\014Conn"
+    "em\022\024\n\014TriggerTimes\030\003 \002(\005\022&\n\010Strategy\030\004 \002"
+    "(\0162\024.entity.StrategyType\022\014\n\004Diff\030e \001(\001\022\020"
+    "\n\010LongDiff\030f \001(\001\022\021\n\tShortDiff\030g \001(\001\022\020\n\010L"
+    "ongSize\030h \001(\005\022\021\n\tShortSize\030i \001(\005\":\n\014Conn"
     "ectParam\022\024\n\014QuoteAddress\030\001 \002(\t\022\024\n\014Stream"
     "Folder\030\002 \002(\t\"8\n\017OperationReturn\022\017\n\007Succe"
     "ss\030\001 \002(\010\022\024\n\014ErrorMessage\030\002 \002(\t\"7\n\017Accoun"
@@ -1109,7 +1111,7 @@ void protobuf_AddDesc_message_2eproto() {
     "SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CH"
     "ANGE\020\004*I\n\024StopLossCloseMethods\022\027\n\023BASED_"
     "ON_NEXT_QUOTE\020\000\022\030\n\024BASED_ON_INPUT_LIMIT\020"
-    "\001", 4881);
+    "\001", 4921);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -7102,6 +7104,7 @@ void PortfolioItem::Swap(PortfolioItem* other) {
 const int PortfolioUpdateItem::kIDFieldNumber;
 const int PortfolioUpdateItem::kLegsFieldNumber;
 const int PortfolioUpdateItem::kTriggerTimesFieldNumber;
+const int PortfolioUpdateItem::kStrategyFieldNumber;
 const int PortfolioUpdateItem::kDiffFieldNumber;
 const int PortfolioUpdateItem::kLongDiffFieldNumber;
 const int PortfolioUpdateItem::kShortDiffFieldNumber;
@@ -7127,6 +7130,7 @@ void PortfolioUpdateItem::SharedCtor() {
   _cached_size_ = 0;
   id_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   triggertimes_ = 0;
+  strategy_ = 0;
   diff_ = 0;
   longdiff_ = 0;
   shortdiff_ = 0;
@@ -7175,10 +7179,13 @@ void PortfolioUpdateItem::Clear() {
       }
     }
     triggertimes_ = 0;
+    strategy_ = 0;
     diff_ = 0;
     longdiff_ = 0;
     shortdiff_ = 0;
     longsize_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     shortsize_ = 0;
   }
   legs_.Clear();
@@ -7235,12 +7242,33 @@ bool PortfolioUpdateItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(33)) goto parse_Diff;
+        if (input->ExpectTag(32)) goto parse_Strategy;
         break;
       }
       
-      // optional double Diff = 4;
+      // required .entity.StrategyType Strategy = 4;
       case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_Strategy:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::StrategyType_IsValid(value)) {
+            set_strategy(static_cast< entity::StrategyType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(4, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(809)) goto parse_Diff;
+        break;
+      }
+      
+      // optional double Diff = 101;
+      case 101: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
          parse_Diff:
@@ -7251,12 +7279,12 @@ bool PortfolioUpdateItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(41)) goto parse_LongDiff;
+        if (input->ExpectTag(817)) goto parse_LongDiff;
         break;
       }
       
-      // optional double LongDiff = 5;
-      case 5: {
+      // optional double LongDiff = 102;
+      case 102: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
          parse_LongDiff:
@@ -7267,12 +7295,12 @@ bool PortfolioUpdateItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(49)) goto parse_ShortDiff;
+        if (input->ExpectTag(825)) goto parse_ShortDiff;
         break;
       }
       
-      // optional double ShortDiff = 6;
-      case 6: {
+      // optional double ShortDiff = 103;
+      case 103: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
          parse_ShortDiff:
@@ -7283,12 +7311,12 @@ bool PortfolioUpdateItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(56)) goto parse_LongSize;
+        if (input->ExpectTag(832)) goto parse_LongSize;
         break;
       }
       
-      // optional int32 LongSize = 7;
-      case 7: {
+      // optional int32 LongSize = 104;
+      case 104: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_LongSize:
@@ -7299,12 +7327,12 @@ bool PortfolioUpdateItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(64)) goto parse_ShortSize;
+        if (input->ExpectTag(840)) goto parse_ShortSize;
         break;
       }
       
-      // optional int32 ShortSize = 8;
-      case 8: {
+      // optional int32 ShortSize = 105;
+      case 105: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_ShortSize:
@@ -7357,29 +7385,35 @@ void PortfolioUpdateItem::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->triggertimes(), output);
   }
   
-  // optional double Diff = 4;
+  // required .entity.StrategyType Strategy = 4;
+  if (has_strategy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      4, this->strategy(), output);
+  }
+  
+  // optional double Diff = 101;
   if (has_diff()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->diff(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(101, this->diff(), output);
   }
   
-  // optional double LongDiff = 5;
+  // optional double LongDiff = 102;
   if (has_longdiff()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->longdiff(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(102, this->longdiff(), output);
   }
   
-  // optional double ShortDiff = 6;
+  // optional double ShortDiff = 103;
   if (has_shortdiff()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->shortdiff(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(103, this->shortdiff(), output);
   }
   
-  // optional int32 LongSize = 7;
+  // optional int32 LongSize = 104;
   if (has_longsize()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->longsize(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(104, this->longsize(), output);
   }
   
-  // optional int32 ShortSize = 8;
+  // optional int32 ShortSize = 105;
   if (has_shortsize()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(8, this->shortsize(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(105, this->shortsize(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -7412,29 +7446,35 @@ void PortfolioUpdateItem::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->triggertimes(), target);
   }
   
-  // optional double Diff = 4;
+  // required .entity.StrategyType Strategy = 4;
+  if (has_strategy()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      4, this->strategy(), target);
+  }
+  
+  // optional double Diff = 101;
   if (has_diff()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->diff(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(101, this->diff(), target);
   }
   
-  // optional double LongDiff = 5;
+  // optional double LongDiff = 102;
   if (has_longdiff()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->longdiff(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(102, this->longdiff(), target);
   }
   
-  // optional double ShortDiff = 6;
+  // optional double ShortDiff = 103;
   if (has_shortdiff()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->shortdiff(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(103, this->shortdiff(), target);
   }
   
-  // optional int32 LongSize = 7;
+  // optional int32 LongSize = 104;
   if (has_longsize()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->longsize(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(104, this->longsize(), target);
   }
   
-  // optional int32 ShortSize = 8;
+  // optional int32 ShortSize = 105;
   if (has_shortsize()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(8, this->shortsize(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(105, this->shortsize(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -7462,31 +7502,39 @@ int PortfolioUpdateItem::ByteSize() const {
           this->triggertimes());
     }
     
-    // optional double Diff = 4;
-    if (has_diff()) {
-      total_size += 1 + 8;
-    }
-    
-    // optional double LongDiff = 5;
-    if (has_longdiff()) {
-      total_size += 1 + 8;
-    }
-    
-    // optional double ShortDiff = 6;
-    if (has_shortdiff()) {
-      total_size += 1 + 8;
-    }
-    
-    // optional int32 LongSize = 7;
-    if (has_longsize()) {
+    // required .entity.StrategyType Strategy = 4;
+    if (has_strategy()) {
       total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->strategy());
+    }
+    
+    // optional double Diff = 101;
+    if (has_diff()) {
+      total_size += 2 + 8;
+    }
+    
+    // optional double LongDiff = 102;
+    if (has_longdiff()) {
+      total_size += 2 + 8;
+    }
+    
+    // optional double ShortDiff = 103;
+    if (has_shortdiff()) {
+      total_size += 2 + 8;
+    }
+    
+    // optional int32 LongSize = 104;
+    if (has_longsize()) {
+      total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->longsize());
     }
     
-    // optional int32 ShortSize = 8;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
+    // optional int32 ShortSize = 105;
     if (has_shortsize()) {
-      total_size += 1 +
+      total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->shortsize());
     }
@@ -7533,6 +7581,9 @@ void PortfolioUpdateItem::MergeFrom(const PortfolioUpdateItem& from) {
     if (from.has_triggertimes()) {
       set_triggertimes(from.triggertimes());
     }
+    if (from.has_strategy()) {
+      set_strategy(from.strategy());
+    }
     if (from.has_diff()) {
       set_diff(from.diff());
     }
@@ -7545,6 +7596,8 @@ void PortfolioUpdateItem::MergeFrom(const PortfolioUpdateItem& from) {
     if (from.has_longsize()) {
       set_longsize(from.longsize());
     }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_shortsize()) {
       set_shortsize(from.shortsize());
     }
@@ -7565,7 +7618,7 @@ void PortfolioUpdateItem::CopyFrom(const PortfolioUpdateItem& from) {
 }
 
 bool PortfolioUpdateItem::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000005) != 0x00000005) return false;
+  if ((_has_bits_[0] & 0x0000000d) != 0x0000000d) return false;
   
   for (int i = 0; i < legs_size(); i++) {
     if (!this->legs(i).IsInitialized()) return false;
@@ -7578,6 +7631,7 @@ void PortfolioUpdateItem::Swap(PortfolioUpdateItem* other) {
     std::swap(id_, other->id_);
     legs_.Swap(&other->legs_);
     std::swap(triggertimes_, other->triggertimes_);
+    std::swap(strategy_, other->strategy_);
     std::swap(diff_, other->diff_);
     std::swap(longdiff_, other->longdiff_);
     std::swap(shortdiff_, other->shortdiff_);

@@ -2158,38 +2158,45 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 triggertimes() const;
   inline void set_triggertimes(::google::protobuf::int32 value);
   
-  // optional double Diff = 4;
+  // required .entity.StrategyType Strategy = 4;
+  inline bool has_strategy() const;
+  inline void clear_strategy();
+  static const int kStrategyFieldNumber = 4;
+  inline entity::StrategyType strategy() const;
+  inline void set_strategy(entity::StrategyType value);
+  
+  // optional double Diff = 101;
   inline bool has_diff() const;
   inline void clear_diff();
-  static const int kDiffFieldNumber = 4;
+  static const int kDiffFieldNumber = 101;
   inline double diff() const;
   inline void set_diff(double value);
   
-  // optional double LongDiff = 5;
+  // optional double LongDiff = 102;
   inline bool has_longdiff() const;
   inline void clear_longdiff();
-  static const int kLongDiffFieldNumber = 5;
+  static const int kLongDiffFieldNumber = 102;
   inline double longdiff() const;
   inline void set_longdiff(double value);
   
-  // optional double ShortDiff = 6;
+  // optional double ShortDiff = 103;
   inline bool has_shortdiff() const;
   inline void clear_shortdiff();
-  static const int kShortDiffFieldNumber = 6;
+  static const int kShortDiffFieldNumber = 103;
   inline double shortdiff() const;
   inline void set_shortdiff(double value);
   
-  // optional int32 LongSize = 7;
+  // optional int32 LongSize = 104;
   inline bool has_longsize() const;
   inline void clear_longsize();
-  static const int kLongSizeFieldNumber = 7;
+  static const int kLongSizeFieldNumber = 104;
   inline ::google::protobuf::int32 longsize() const;
   inline void set_longsize(::google::protobuf::int32 value);
   
-  // optional int32 ShortSize = 8;
+  // optional int32 ShortSize = 105;
   inline bool has_shortsize() const;
   inline void clear_shortsize();
-  static const int kShortSizeFieldNumber = 8;
+  static const int kShortSizeFieldNumber = 105;
   inline ::google::protobuf::int32 shortsize() const;
   inline void set_shortsize(::google::protobuf::int32 value);
   
@@ -2199,6 +2206,8 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_id();
   inline void set_has_triggertimes();
   inline void clear_has_triggertimes();
+  inline void set_has_strategy();
+  inline void clear_has_strategy();
   inline void set_has_diff();
   inline void clear_has_diff();
   inline void set_has_longdiff();
@@ -2214,15 +2223,16 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   
   ::std::string* id_;
   ::google::protobuf::RepeatedPtrField< ::entity::LegUpdateItem > legs_;
+  ::google::protobuf::int32 triggertimes_;
+  int strategy_;
   double diff_;
   double longdiff_;
-  ::google::protobuf::int32 triggertimes_;
-  ::google::protobuf::int32 longsize_;
   double shortdiff_;
+  ::google::protobuf::int32 longsize_;
   ::google::protobuf::int32 shortsize_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -7003,15 +7013,38 @@ inline void PortfolioUpdateItem::set_triggertimes(::google::protobuf::int32 valu
   triggertimes_ = value;
 }
 
-// optional double Diff = 4;
-inline bool PortfolioUpdateItem::has_diff() const {
+// required .entity.StrategyType Strategy = 4;
+inline bool PortfolioUpdateItem::has_strategy() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_diff() {
+inline void PortfolioUpdateItem::set_has_strategy() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void PortfolioUpdateItem::clear_has_diff() {
+inline void PortfolioUpdateItem::clear_has_strategy() {
   _has_bits_[0] &= ~0x00000008u;
+}
+inline void PortfolioUpdateItem::clear_strategy() {
+  strategy_ = 0;
+  clear_has_strategy();
+}
+inline entity::StrategyType PortfolioUpdateItem::strategy() const {
+  return static_cast< entity::StrategyType >(strategy_);
+}
+inline void PortfolioUpdateItem::set_strategy(entity::StrategyType value) {
+  GOOGLE_DCHECK(entity::StrategyType_IsValid(value));
+  set_has_strategy();
+  strategy_ = value;
+}
+
+// optional double Diff = 101;
+inline bool PortfolioUpdateItem::has_diff() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_diff() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void PortfolioUpdateItem::clear_has_diff() {
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void PortfolioUpdateItem::clear_diff() {
   diff_ = 0;
@@ -7025,15 +7058,15 @@ inline void PortfolioUpdateItem::set_diff(double value) {
   diff_ = value;
 }
 
-// optional double LongDiff = 5;
+// optional double LongDiff = 102;
 inline bool PortfolioUpdateItem::has_longdiff() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_longdiff() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void PortfolioUpdateItem::clear_has_longdiff() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void PortfolioUpdateItem::clear_longdiff() {
   longdiff_ = 0;
@@ -7047,15 +7080,15 @@ inline void PortfolioUpdateItem::set_longdiff(double value) {
   longdiff_ = value;
 }
 
-// optional double ShortDiff = 6;
+// optional double ShortDiff = 103;
 inline bool PortfolioUpdateItem::has_shortdiff() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_shortdiff() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void PortfolioUpdateItem::clear_has_shortdiff() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void PortfolioUpdateItem::clear_shortdiff() {
   shortdiff_ = 0;
@@ -7069,15 +7102,15 @@ inline void PortfolioUpdateItem::set_shortdiff(double value) {
   shortdiff_ = value;
 }
 
-// optional int32 LongSize = 7;
+// optional int32 LongSize = 104;
 inline bool PortfolioUpdateItem::has_longsize() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_longsize() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void PortfolioUpdateItem::clear_has_longsize() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void PortfolioUpdateItem::clear_longsize() {
   longsize_ = 0;
@@ -7091,15 +7124,15 @@ inline void PortfolioUpdateItem::set_longsize(::google::protobuf::int32 value) {
   longsize_ = value;
 }
 
-// optional int32 ShortSize = 8;
+// optional int32 ShortSize = 105;
 inline bool PortfolioUpdateItem::has_shortsize() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_shortsize() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void PortfolioUpdateItem::clear_has_shortsize() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void PortfolioUpdateItem::clear_shortsize() {
   shortsize_ = 0;

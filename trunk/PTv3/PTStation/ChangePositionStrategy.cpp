@@ -24,3 +24,13 @@ void CChangePositionStrategy::CreateTriggers( const entity::StrategyItem& strate
 		m_triggers.push_back(trigger);
 	}
 }
+
+void CChangePositionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
+{
+
+}
+
+void CChangePositionStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
+{
+
+}

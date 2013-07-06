@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "AvatarClient.h"
-
+#include "ProtobufPacket.h"
+#include "ProtocolIDs.h"
 
 CAvatarClient::CAvatarClient(const string& sessionId)
 	: m_sessionId(sessionId)
@@ -43,5 +44,13 @@ boost::tuple<bool, string> CAvatarClient::QuoteLogin( const string& address, con
 void CAvatarClient::QuoteLogout()
 {
 	m_quoteAgent.Logout();
+}
+
+void CAvatarClient::PublishPortfolioUpdate( const entity::PortfolioUpdateItem& portfolioUpdate )
+{
+	ProtobufPacket<entity::PortfolioUpdateItem> portfUpdateResp(PortfolioUpdateResponseID);
+	portfUpdateResp.getData().CopyFrom(portfolioUpdate);
+	
+	PushPacket(&portfUpdateResp);
 }
 

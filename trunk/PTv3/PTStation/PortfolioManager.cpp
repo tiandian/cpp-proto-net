@@ -12,9 +12,9 @@ CPortfolioManager::~CPortfolioManager(void)
 {
 }
 
-void CPortfolioManager::AddPortfolio( const entity::PortfolioItem& portfItem )
+void CPortfolioManager::AddPortfolio( CAvatarClient* client, const entity::PortfolioItem& portfItem )
 {
-	PortfolioPtr portf(new CPortfolio(portfItem));
+	PortfolioPtr portf(new CPortfolio(client, portfItem));
 	m_portfolios.push_back(portf);
 	portf->SubscribeQuotes(m_pQuoteRepositry);
 }

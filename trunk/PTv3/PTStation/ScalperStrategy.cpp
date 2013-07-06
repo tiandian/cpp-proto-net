@@ -28,3 +28,13 @@ void CScalperStrategy::CreateTriggers( const entity::StrategyItem& strategyItem 
 		m_triggers.push_back(TriggerPtr(new CScalperTrigger(strategyItem.triggers(0))));
 	}
 }
+
+void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
+{
+
+}
+
+void CScalperStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
+{
+
+}

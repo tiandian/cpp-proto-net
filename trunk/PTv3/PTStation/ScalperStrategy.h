@@ -8,6 +8,9 @@ public:
 	CScalperStrategy(const entity::StrategyItem& strategyItem);
 	~CScalperStrategy(void);
 
+	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
+	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
+
 private:
 	void CreateTriggers(const entity::StrategyItem& strategyItem);
 
