@@ -3,6 +3,8 @@
 #include "ArbitrageTrigger.h"
 #include "Portfolio.h"
 
+#include <assert.h>
+
 enum DIFF_TYPE 
 {
 	LAST_DIFF, LONG_DIFF, SHORT_DIFF
@@ -10,57 +12,23 @@ enum DIFF_TYPE
 
 double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType)
 {
-	boost::chrono::steady_clock::time_point tp = boost::chrono::steady_clock::now();
-
 	// calculate the diff
 	double diff = 0;
-	for(vector<LegPtr>::iterator iter = legs.begin(); iter != legs.end(); ++iter)
-	{
-		entity::PosiDirectionType legSide = (*iter)->Side();
-		double legPrice = 0;
-		if(legSide == entity::LONG)
-		{
-			switch(diffType)
-			{
-			case LONG_DIFF:
-				legPrice = (*iter)->Ask();
-				break;
-			case SHORT_DIFF:
-				legPrice = (*iter)->Bid();
-				break;
-			case LAST_DIFF:
-			default:
-				legPrice = (*iter)->Last();
-			}
-		}
-		else if(legSide == entity::SHORT)
-		{
-			switch(diffType)
-			{
-			case LONG_DIFF:
-				legPrice = (*iter)->Bid();
-				break;
-			case SHORT_DIFF:
-				legPrice = (*iter)->Ask();
-				break;
-			case LAST_DIFF:
-			default:
-				legPrice = (*iter)->Last();
-			}
-		}
+	assert(legs.size() > 1);
 
-		if(legPrice > 0)
-		{
-			if((*iter)->Side() == entity::LONG)
-			{
-				diff +=	legPrice;
-			}
-			else
-				diff -= legPrice;
-		}
-		else	// if one of legs has no price, set diff 0 anyway
-			diff = 0;
+	if(diffType == LONG_DIFF)
+	{
+		double long_cost = legs[0]->Ask();
+		double short_cost = legs[1]->Bid();
+		diff = long_cost - short_cost;
 	}
+	else if(diffType == SHORT_DIFF)
+	{
+		double short_cost = legs[0]->Bid();
+		double long_cost = legs[1]->Ask();
+		diff = short_cost - long_cost;
+	}
+
 	return diff;
 }
 
@@ -68,42 +36,21 @@ int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType)
 {
 	// calculate the diff
 	int diffSize = 0;
-	for(vector<LegPtr>::iterator iter = legs.begin(); iter != legs.end(); ++iter)
-	{
-		int legSize = 0;
-		entity::PosiDirectionType legSide = (*iter)->Side();
-		if(legSide == entity::LONG)
-		{
-			switch(diffType)
-			{
-			case LONG_DIFF:
-				legSize = (*iter)->AskSize();
-				break;
-			case SHORT_DIFF:
-				legSize = (*iter)->BidSize();
-				break;
-			}
-		}
-		else if(legSide == entity::SHORT)
-		{
-			switch(diffType)
-			{
-			case LONG_DIFF:
-				legSize = (*iter)->BidSize();
-				break;
-			case SHORT_DIFF:
-				legSize = (*iter)->AskSize();
-				break;
-			}
-		}
+	assert(legs.size() > 1);
 
-		if(legSize > 0)
-		{
-			if(diffSize == 0) diffSize = legSize;
-			else
-				diffSize = legSize < diffSize ? legSize : diffSize;
-		}
+	if(diffType == LONG_DIFF)
+	{
+		int long_size = legs[0]->AskSize();
+		int short_size = legs[1]->BidSize();
+		diffSize = long_size < short_size ? long_size : short_size;
 	}
+	else if(diffType == SHORT_DIFF)
+	{
+		double short_size = legs[0]->BidSize();
+		double long_size = legs[1]->AskSize();
+		diffSize = short_size < long_size ? short_size : long_size;
+	}
+	
 	return diffSize;
 }
 
@@ -148,11 +95,11 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 void CArbitrageStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
 {
-	pPortfUpdateItem->set_diff(m_lastDiff);
-	pPortfUpdateItem->set_longdiff(m_longDiff);
-	pPortfUpdateItem->set_longsize(m_longDiffSize);
-	pPortfUpdateItem->set_shortdiff(m_shortDiff);
-	pPortfUpdateItem->set_shortsize(m_shortDiffSize);
+	pPortfUpdateItem->set_ar_diff(m_lastDiff);
+	pPortfUpdateItem->set_ar_longdiff(m_longDiff);
+	pPortfUpdateItem->set_ar_longsize(m_longDiffSize);
+	pPortfUpdateItem->set_ar_shortdiff(m_shortDiff);
+	pPortfUpdateItem->set_ar_shortsize(m_shortDiffSize);
 }
 
 

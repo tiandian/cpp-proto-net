@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "ScalperStrategy.h"
 #include "ScalperTrigger.h"
+#include "Portfolio.h"
 
 CScalperStrategy::CScalperStrategy(const entity::StrategyItem& strategyItem)
 	: CStrategy(strategyItem)
@@ -31,7 +32,14 @@ void CScalperStrategy::CreateTriggers( const entity::StrategyItem& strategyItem 
 
 void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
-
+	// there is only ONE leg for scalper strategy 
+	const LegPtr& leg = pPortfolio->Legs().at(0);
+	leg->UpdateLast(pQuote->last());
+	leg->UpdateAsk(pQuote->ask());
+	leg->UpdateAskSize(pQuote->ask_size());
+	leg->UpdateBid(pQuote->bid());
+	leg->UpdateBidSize(pQuote->bid_size());
+	leg->UpdateTimestamp();
 }
 
 void CScalperStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )

@@ -19,6 +19,7 @@ public:
 
 	const string& PortfolioId(){ return m_portfolioItem.id(); }
 	vector<LegPtr>& Legs(){ return m_legs;}
+	entity::StrategyType StrategyType(){ return m_strategyType; }
 	const entity::PortfolioUpdateItem& GetUpdated(){ return m_portfolioUpdate; }
 
 	void SubscribeQuotes(CQuoteRepositry* pQuoteRepo);
@@ -26,14 +27,15 @@ public:
 private:
 	void AddLeg(const entity::LegItem& legItem);
 	StrategyPtr CreateStrategy(const entity::StrategyItem& strategyItem);
-
+	
 	void OnQuoteRecevied(boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote);
-	void GetLegUpdate(entity::Quote* pQuote);
+	void GetLegUpdate();
 
 	// backup PortfolioItem which this is created from
 	entity::PortfolioItem m_portfolioItem;
 	entity::PortfolioUpdateItem m_portfolioUpdate;
 	StrategyPtr m_strategy;
+	entity::StrategyType m_strategyType;
 	vector<LegPtr> m_legs;
 
 	// for quote subscription

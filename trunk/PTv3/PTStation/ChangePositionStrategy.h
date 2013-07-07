@@ -1,18 +1,18 @@
 #pragma once
-#include "Strategy.h"
+#include "ArbitrageStrategy.h"
 
-class CChangePositionStrategy : public CStrategy
+class CChangePositionStrategy : public CArbitrageStrategy
 {
 public:
 	CChangePositionStrategy(const entity::StrategyItem& strategyItem);
 	~CChangePositionStrategy(void);
 
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
-	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
-
-private:
+	
+protected:
 	void CreateTriggers(const entity::StrategyItem& strategyItem);
 
+private:
 	string m_closeLeg;
 	entity::PosiDirectionType m_closeLegSide;
 };

@@ -15,6 +15,7 @@
 CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPortfolioItem)
 	: m_avatar(client)
 	, m_pQuoteRepo(NULL)
+	, m_strategyType(entity::ARBITRAGE)
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
@@ -36,16 +37,20 @@ CPortfolio::~CPortfolio(void)
 
 void CPortfolio::AddLeg( const entity::LegItem& legItem )
 {
+	// prepare legs in portfolio update item
+	entity::LegUpdateItem* legUpdate = m_portfolioUpdate.add_legs();
+	legUpdate->set_symbol(legItem.symbol());
+
 	int legCount = (int)m_legs.size();
-	LegPtr leg(new CLeg(legCount + 1, legItem));
+	LegPtr leg(new CLeg(legCount + 1, legItem, legUpdate));
 	m_legs.push_back(leg);
 }
 
 StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem )
 {
-	entity::StrategyType straType = strategyItem.type();
+	m_strategyType = strategyItem.type();
 	StrategyPtr created;
-	switch(straType)
+	switch(m_strategyType)
 	{
 	case entity::ARBITRAGE:
 		created = StrategyPtr(new CArbitrageStrategy(strategyItem));
@@ -77,15 +82,20 @@ void CPortfolio::SubscribeQuotes( CQuoteRepositry* pQuoteRepo )
 void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote )
 {
 	cout << "Quote incoming: " << pQuote->symbol() << ", " << pQuote->last() << ", " << pQuote->update_time() << endl; 
-
+	// Update leg's last with income quote in CStrategy::Test
 	m_strategy->Test(pQuote, this, timestamp);
 
-	GetLegUpdate(pQuote);
+	GetLegUpdate();
 	m_strategy->GetStrategyUpdate(&m_portfolioUpdate);
 	m_avatar->PublishPortfolioUpdate(m_portfolioUpdate);
 }
 
-void CPortfolio::GetLegUpdate( entity::Quote* pQuote )
+void CPortfolio::GetLegUpdate()
 {
-
+	// update last
+	for(vector<LegPtr>::iterator iter = m_legs.begin(); iter != m_legs.end(); ++iter)
+	{
+		(*iter)->GetUpdated();
+	}
 }
+
