@@ -20,6 +20,7 @@ public:
 	void OnLoginResponse(entity::LoginResponse& resp);
 	void OnLoginPuzzleResponse(entity::LoginPuzzleResponse& resp);
 	void OnServerLoginResponse(entity::ServerLoginResponse& resp);
+	void OnPortfolioUpdateResponse(entity::PortfolioUpdateItem& resp);
 
 	void AddPortfolio(PTEntity::PortfolioItem ^portfolioItem);
 	void AddPortfolios(array<PTEntity::PortfolioItem^> ^portfolioItems);
