@@ -100,6 +100,7 @@
     <ClInclude Include="Order.h" />
     <ClInclude Include="PortfolioItem.h" />
     <ClInclude Include="ClientBase.h" />
+    <ClInclude Include="PortfolioUpdateItem.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="ResponseHandlers.h" />
     <ClInclude Include="ServerLoginReturn.h" />
@@ -143,6 +144,7 @@
     <ClCompile Include="Order.cpp" />
     <ClCompile Include="PortfolioItem.cpp" />
     <ClCompile Include="ClientBase.cpp" />
+    <ClCompile Include="PortfolioUpdateItem.cpp" />
     <ClCompile Include="ResponseHandlers.cpp" />
     <ClCompile Include="ServerLoginReturn.cpp" />
     <ClCompile Include="Stdafx.cpp">

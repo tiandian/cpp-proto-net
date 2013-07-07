@@ -16,6 +16,7 @@ CNatvieClient::CNatvieClient(PTCommunication::IClientRequestHandler ^reqHandler)
 	registerHandler(LoginResponseID, new LoginResponseHandler(this));
 	registerHandler(LoginPuzzleResponseID, new LoginPuzzleResponseHandler(this));
 	registerHandler(ServerLoginResponseID, new ServerLoginResponseHandler(this));
+	registerHandler(PortfolioUpdateResponseID, new PortfolioUpdateResponseHandler(this));
 
 	m_clr = reqHandler;
 }
@@ -130,5 +131,11 @@ void CNatvieClient::AddPortfolios( array<PTEntity::PortfolioItem^> ^portfolioIte
 	}
 
 	sendRequest(&request);
+}
+
+void CNatvieClient::OnPortfolioUpdateResponse( entity::PortfolioUpdateItem& resp )
+{
+	msclr::auto_gcroot<PortfolioUpdateItem^> updateItem = gcnew PortfolioUpdateItem(&resp);
+	m_clr->OnPortfolioUpdate(updateItem.get());
 }
 

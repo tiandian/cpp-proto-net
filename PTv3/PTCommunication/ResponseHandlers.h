@@ -45,3 +45,13 @@ public:
 	virtual void handleResponse(PushFramework::IncomingPacket& packet);
 
 };
+
+class PortfolioUpdateResponseHandler : public SessionResponseHandler
+{
+public:
+	PortfolioUpdateResponseHandler(CNatvieClient* pSession) : SessionResponseHandler(pSession)
+	{}
+	~PortfolioUpdateResponseHandler(){}
+
+	virtual void handleResponse(PushFramework::IncomingPacket& packet);
+};

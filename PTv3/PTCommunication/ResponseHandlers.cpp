@@ -22,3 +22,9 @@ void ServerLoginResponseHandler::handleResponse( PushFramework::IncomingPacket& 
 	ProtobufPacket<entity::ServerLoginResponse>& response = (ProtobufPacket<entity::ServerLoginResponse>&) packet;
 	m_pSession->OnServerLoginResponse(response.getData());
 }
+
+void PortfolioUpdateResponseHandler::handleResponse( PushFramework::IncomingPacket& packet )
+{
+	ProtobufPacket<entity::PortfolioUpdateItem>& resp = (ProtobufPacket<entity::PortfolioUpdateItem>&) packet;
+	m_pSession->OnPortfolioUpdateResponse(resp.getData());
+}

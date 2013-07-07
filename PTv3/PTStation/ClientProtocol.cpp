@@ -24,6 +24,9 @@ ProtobufPacketImpl* CClientProtocol::createIncomingPacketFromServiceId( int serv
 		return new ProtobufPacket<entity::LoginResponse>(serviceId);
 	case ServerLoginResponseID:
 		return new ProtobufPacket<entity::ServerLoginResponse>(serviceId);
+	case PortfolioUpdateResponseID:
+		return new ProtobufPacket<entity::PortfolioUpdateItem>(serviceId);
+
 	default:
 		return NULL;
 	}

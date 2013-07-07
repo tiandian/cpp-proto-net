@@ -144,6 +144,9 @@
     <ClInclude Include="TriggerItem.h">
       <Filter>Header Files\PTEntity</Filter>
     </ClInclude>
+    <ClInclude Include="PortfolioUpdateItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -225,6 +228,9 @@
       <Filter>Source Files\PTEntity</Filter>
     </ClCompile>
     <ClCompile Include="TriggerItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioUpdateItem.cpp">
       <Filter>Source Files\PTEntity</Filter>
     </ClCompile>
   </ItemGroup>
