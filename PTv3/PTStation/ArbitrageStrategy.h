@@ -10,8 +10,8 @@ public:
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
 
-private:
-	void CreateTriggers(const entity::StrategyItem& strategyItem);
+protected:
+	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
 
 	entity::PosiDirectionType m_side;
 	double m_lastDiff;

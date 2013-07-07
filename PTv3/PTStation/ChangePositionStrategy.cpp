@@ -3,7 +3,7 @@
 #include "ChangePositionTrigger.h"
 
 CChangePositionStrategy::CChangePositionStrategy(const entity::StrategyItem& strategyItem)
-	: CStrategy(strategyItem)
+	: CArbitrageStrategy(strategyItem)
 {
 	m_closeLeg = strategyItem.cp_closeleg();
 	m_closeLegSide = strategyItem.cp_closelegside();
@@ -27,10 +27,5 @@ void CChangePositionStrategy::CreateTriggers( const entity::StrategyItem& strate
 
 void CChangePositionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
-
-}
-
-void CChangePositionStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
-{
-
+	CArbitrageStrategy::Test(pQuote, pPortfolio, timestamp);
 }

@@ -5,7 +5,7 @@
 class CLeg
 {
 public:
-	CLeg(int legId, const entity::LegItem& srcLegItem);
+	CLeg(int legId, const entity::LegItem& srcLegItem, entity::LegUpdateItem* pUpdateItem);
 	~CLeg(void);
 
 	int Id(){ return m_legId; }
@@ -25,10 +25,10 @@ public:
 	void UpdateBidSize(int bidSize){ m_bidSize = m_bidSize; }
 	void UpdateTimestamp(){}
 
-	const entity::LegUpdateItem& GetUpdated();
+	void GetUpdated();
 
 private:
-	entity::LegUpdateItem m_legUpdate;
+	entity::LegUpdateItem* m_legUpdate;
 
 	int m_legId;
 	string m_symbol;
