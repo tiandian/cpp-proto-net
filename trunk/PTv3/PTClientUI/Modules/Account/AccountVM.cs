@@ -49,6 +49,7 @@ namespace PortfolioTrading.Modules.Account
 
             _clientHandler = new ClientHandlerImpl();
             _client = new Client(_clientHandler);
+            _clientHandler.OnPortfolioUpdated += new Action<PTEntity.PortfolioUpdateItem>(_clientHandler_OnPortfolioUpdated);
             /*
             _client.OnError += new Action<string>(_client_OnError);
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
@@ -761,12 +762,13 @@ namespace PortfolioTrading.Modules.Account
             EventAggregator.GetEvent<IndividualOrderUpdatedEvent>().Publish(args);
         }
 
-        void _client_OnPortfolioItemUpdated(entity.PortfolioItem obj)
+
+        void _clientHandler_OnPortfolioUpdated(PTEntity.PortfolioUpdateItem obj)
         {
-            string info = string.Format("Porf: {0}\t{1}\t{2}", obj.ID, obj.Quantity, null /*obj.Diff*/);
+            string info = string.Format("Portfolio Updated: {0}\t{1}", obj.Id, obj.Kind);
             Debug.WriteLine(info);
-            var portf = Get(obj.ID);
-            if(portf != null)
+            var portf = Get(obj.Id);
+            if (portf != null)
                 DispatcherHelper.Current.BeginInvoke(new Action(() => portf.Update(obj)));
         }
 
