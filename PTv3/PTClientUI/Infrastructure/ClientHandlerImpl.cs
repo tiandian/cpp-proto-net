@@ -10,6 +10,7 @@ namespace PortfolioTrading.Infrastructure
     {
         public event Action<bool, string> OnLogin;
         public event Action<PTEntity.ServerType, bool, string> OnServerLogin;
+        public event Action<PTEntity.PortfolioUpdateItem> OnPortfolioUpdated;
 
         public void OnLoginReturned(PTEntity.LoginReturn loginReturn)
         {
@@ -23,6 +24,12 @@ namespace PortfolioTrading.Infrastructure
             LogManager.Logger.DebugFormat("Server login result: {0}, {1}", loginReturn.Success, loginReturn.ErrorMessage);
             if (OnServerLogin != null)
                 OnServerLogin(loginReturn.SeverType, loginReturn.Success, loginReturn.ErrorMessage);
+        }
+
+        public void OnPortfolioUpdate(PTEntity.PortfolioUpdateItem portfolioUpdateItem)
+        {
+            if (OnPortfolioUpdated != null)
+                OnPortfolioUpdated(portfolioUpdateItem);
         }
     }
 }

@@ -118,6 +118,23 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region AskSize
+        private int askSize;
+
+        public int AskSize
+        {
+            get { return askSize; }
+            set
+            {
+                if (askSize != value)
+                {
+                    askSize = value;
+                    RaisePropertyChanged("AskSize");
+                }
+            }
+        }
+        #endregion
+
         #region Bid
         private double _bid;
 
@@ -134,6 +151,24 @@ namespace PortfolioTrading.Modules.Account
             }
         }
         #endregion
+
+        #region BidSize
+        private int _bidSize;
+
+        public int BidSize
+        {
+            get { return _bidSize; }
+            set
+            {
+                if (_bidSize != value)
+                {
+                    _bidSize = value;
+                    RaisePropertyChanged("BidSize");
+                }
+            }
+        }
+        #endregion
+
 
         internal void SetIsPreferred(bool val)
         {
@@ -209,12 +244,14 @@ namespace PortfolioTrading.Modules.Account
             return elem;
         }
 
-        public void Update(entity.LegItem item)
+        public void Update(PTEntity.LegUpdateItem item)
         {
-            Status = item.Status;
+            //Status = item.Status;
             Last = item.Last;
             Ask = item.Ask == double.MaxValue ? 0 : item.Ask;
             Bid = item.Bid == double.MaxValue ? 0 : item.Bid;
+            AskSize = item.AskSize == int.MaxValue ? 0 : item.AskSize;
+            BidSize = item.BidSize == int.MaxValue ? 0 : item.BidSize;
         }
     }
 

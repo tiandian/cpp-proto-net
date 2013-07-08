@@ -587,8 +587,9 @@ namespace PortfolioTrading.Modules.Account
             return portfolioItem;
         }
 
-        public void Update(entity.PortfolioItem item)
+        public void Update(PTEntity.PortfolioUpdateItem item)
         {
+            int triggeredTimes = item.TriggerTimes;
             //Diff = ToDecimal(item.Diff);
             //LongDiff = ToDecimal(item.LongDiff);
             //ShortDiff = ToDecimal(item.ShortDiff);
@@ -598,7 +599,7 @@ namespace PortfolioTrading.Modules.Account
             //DoneTimes = item.CloseTimes;
             //Position = item.CurrentPosition;
             //Gain = item.Profit;
-            Quantity = item.Quantity;
+            //Quantity = item.Quantity;
             //MaxPosition = item.MaxPosition;
             //AvgCost = item.AvgCost;
 

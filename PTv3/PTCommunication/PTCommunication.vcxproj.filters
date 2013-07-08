@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\tcpsocket">
       <UniqueIdentifier>{a27d6f7e-b761-4111-bb10-16d0d0315b17}</UniqueIdentifier>
     </Filter>
@@ -42,6 +38,10 @@
     </Filter>
     <Filter Include="Source Files\PTEntity">
       <UniqueIdentifier>{b32d212d-020e-4bd1-8340-b9dfce211985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +147,12 @@
     <ClInclude Include="PortfolioUpdateItem.h">
       <Filter>Header Files\PTEntity</Filter>
     </ClInclude>
+    <ClInclude Include="LegUpdateItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyUpdateItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -231,6 +237,12 @@
       <Filter>Source Files\PTEntity</Filter>
     </ClCompile>
     <ClCompile Include="PortfolioUpdateItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="LegUpdateItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyUpdateItem.cpp">
       <Filter>Source Files\PTEntity</Filter>
     </ClCompile>
   </ItemGroup>

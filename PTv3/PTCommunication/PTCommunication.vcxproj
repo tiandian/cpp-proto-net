@@ -94,6 +94,7 @@
     <ClInclude Include="EntityWrapper.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="IClientRequestHandler.h" />
+    <ClInclude Include="LegUpdateItem.h" />
     <ClInclude Include="MultiLegOrder.h" />
     <ClInclude Include="NatvieClient.h" />
     <ClInclude Include="OperationResult.h" />
@@ -106,6 +107,7 @@
     <ClInclude Include="ServerLoginReturn.h" />
     <ClInclude Include="Stdafx.h" />
     <ClInclude Include="StrategyItem.h" />
+    <ClInclude Include="StrategyUpdateItem.h" />
     <ClInclude Include="SymbolInfo.h" />
     <ClInclude Include="tcpsocket\ResponseHandler.h" />
     <ClInclude Include="tcpsocket\ScopedLock.h" />
@@ -138,6 +140,7 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="Enums.cpp" />
+    <ClCompile Include="LegUpdateItem.cpp" />
     <ClCompile Include="MultiLegOrder.cpp" />
     <ClCompile Include="NatvieClient.cpp" />
     <ClCompile Include="OperationResult.cpp" />
@@ -152,6 +155,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="StrategyItem.cpp" />
+    <ClCompile Include="StrategyUpdateItem.cpp" />
     <ClCompile Include="SymbolInfo.cpp" />
     <ClCompile Include="tcpsocket\ResponseHandler.cpp" />
     <ClCompile Include="tcpsocket\TCPSocket.cpp" />
