@@ -7,6 +7,12 @@ enum PosiDirectionType {
     SHORT = 51;
 }
 
+enum PosiOffsetFlag 
+{
+	OPEN = 0;
+	CLOSE = 1;
+}
+
 enum LegStatus
 {
 	UNOPENED = 0;
