@@ -64,6 +64,11 @@ message ServerLogoutRequest
 	required ServerType Type = 1;
 }
 
+message AddPortfolioRequest
+{
+	repeated PortfolioItem Portfolios = 1;
+}
+
 message StringParam
 {
 	required string Data = 1;
@@ -76,16 +81,11 @@ message IntParam
 
 message LegItem
 {
-	required string Symbol = 1;
-	required int32 Ratio = 2;
-	required PosiDirectionType Side = 3;
-	required LegStatus Status = 4;
-	required double Last = 5;
-	required double Ask = 6;
-	required int32 AskSize = 7;
-	required double Bid = 8;
-	required int32 BidSize = 9;
-	required bool IsPreferred = 10;
+	required int32 LegId = 1;
+	required string Symbol = 2;
+	required int32 Ratio = 3;
+	required PosiDirectionType Side = 4;
+	required bool IsPreferred = 5;
 }
 
 message LegUpdateItem
@@ -109,8 +109,46 @@ enum StrategyType
 message StrategyItem
 {
 	required StrategyType Type = 1;
-	required bytes Data = 2;
-	required bool Running = 3;
+	required bool Running = 2;
+	required int32 RetryTimes = 3;
+	repeated TriggerItem Triggers = 4;
+
+	// Arbitrage
+	optional PosiDirectionType AR_Side = 101;
+
+	// Change Position
+	optional string CP_CloseLeg = 201;
+	optional PosiDirectionType CP_CloseLegSide = 202;
+
+	// Scalper
+	optional double SC_PriceTick = 301;
+	optional DirectionDepends SC_CaseLE2Tick = 302;
+	optional DirectionDepends SC_CaseLE3Tick = 303;
+	optional DirectionDepends SC_CaseGE4Tick = 304;
+	optional DirectionDepends SC_CaseNoChange = 305;
+	optional int32 SC_OpenTimeout = 306;
+	optional StopLossCloseMethods SC_StopLossStrategy = 307;
+
+}
+
+message TriggerItem
+{
+	required StrategyType Strategy = 1;
+	required string Name = 2;
+	required bool Enabled = 3;
+
+	// Arbitrage
+	optional CompareCondition AR_Condition = 101;
+	optional double AR_Threshold = 102;
+	optional PosiOffsetFlag AR_Offset = 103;
+
+	// Change Position
+	optional CompareCondition CP_Condition = 201;
+	optional double CP_Threshold = 202;
+
+	// Scalper
+	optional double SC_Threshold = 301;
+	
 }
 
 message PortfolioItem
@@ -119,19 +157,31 @@ message PortfolioItem
 	required int32 Quantity = 2;
 	repeated LegItem Legs = 3;
 	required int32 MaxCancel = 4;
-	required int32 MaxTriggerTimes = 5;
+	required int32 MaxOpenPerStart = 5;
+	required int32 TotalOpenLimit = 6;
+	required StrategyItem Strategy = 7;
 }
 
 message PortfolioUpdateItem
 {
 	required string ID = 1;
 	repeated LegUpdateItem Legs = 2;
-	required int32 TriggerTimes = 3;
-	optional double Diff = 4;
-	optional double LongDiff = 5;
-	optional double ShortDiff = 6;
-	optional int32 LongSize = 7;
-	optional int32 ShortSize = 8;
+	required StrategyType Strategy = 3;
+	
+	required int32 TotalOpenTimes = 4;
+	required int32 TotalCloseTimes = 5;
+	required int32 CurrentPosition = 6;
+	required int32 CancelTimes = 7;
+
+	// Followings are strategy update items
+	// Arbitrage
+	optional double AR_Diff = 101;
+	optional double AR_LongDiff = 102;
+	optional double AR_ShortDiff = 103;
+	optional int32 AR_LongSize = 104;
+	optional int32 AR_ShortSize = 105;
+	// Scalper
+	optional double SC_Diff = 201;
 }
 
 message ConnectParam
