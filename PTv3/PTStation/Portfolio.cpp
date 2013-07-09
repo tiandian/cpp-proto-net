@@ -19,6 +19,12 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
+	// Initialize portfolio update item
+	m_portfolioUpdate.set_id(m_portfolioItem.id());
+	m_portfolioUpdate.set_totalopentimes(0);
+	m_portfolioUpdate.set_totalclosetimes(0);
+	m_portfolioUpdate.set_currentposition(0);
+	m_portfolioUpdate.set_canceltimes(0);
 
 	// Create legs
 	for(int i = 0; i < srcPortfolioItem.legs_size(); ++i)
@@ -28,6 +34,7 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 
 	// Initialize strategy
 	m_strategy = CreateStrategy(srcPortfolioItem.strategy());
+	m_portfolioUpdate.set_strategy(m_strategyType);
 }
 
 

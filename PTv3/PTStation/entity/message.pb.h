@@ -2025,17 +2025,24 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 maxcancel() const;
   inline void set_maxcancel(::google::protobuf::int32 value);
   
-  // required int32 MaxTriggerTimes = 5;
-  inline bool has_maxtriggertimes() const;
-  inline void clear_maxtriggertimes();
-  static const int kMaxTriggerTimesFieldNumber = 5;
-  inline ::google::protobuf::int32 maxtriggertimes() const;
-  inline void set_maxtriggertimes(::google::protobuf::int32 value);
+  // required int32 MaxOpenPerStart = 5;
+  inline bool has_maxopenperstart() const;
+  inline void clear_maxopenperstart();
+  static const int kMaxOpenPerStartFieldNumber = 5;
+  inline ::google::protobuf::int32 maxopenperstart() const;
+  inline void set_maxopenperstart(::google::protobuf::int32 value);
   
-  // required .entity.StrategyItem Strategy = 6;
+  // required int32 TotalOpenLimit = 6;
+  inline bool has_totalopenlimit() const;
+  inline void clear_totalopenlimit();
+  static const int kTotalOpenLimitFieldNumber = 6;
+  inline ::google::protobuf::int32 totalopenlimit() const;
+  inline void set_totalopenlimit(::google::protobuf::int32 value);
+  
+  // required .entity.StrategyItem Strategy = 7;
   inline bool has_strategy() const;
   inline void clear_strategy();
-  static const int kStrategyFieldNumber = 6;
+  static const int kStrategyFieldNumber = 7;
   inline const ::entity::StrategyItem& strategy() const;
   inline ::entity::StrategyItem* mutable_strategy();
   inline ::entity::StrategyItem* release_strategy();
@@ -2048,8 +2055,10 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline void clear_has_quantity();
   inline void set_has_maxcancel();
   inline void clear_has_maxcancel();
-  inline void set_has_maxtriggertimes();
-  inline void clear_has_maxtriggertimes();
+  inline void set_has_maxopenperstart();
+  inline void clear_has_maxopenperstart();
+  inline void set_has_totalopenlimit();
+  inline void clear_has_totalopenlimit();
   inline void set_has_strategy();
   inline void clear_has_strategy();
   
@@ -2059,11 +2068,12 @@ class PortfolioItem : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::entity::LegItem > legs_;
   ::google::protobuf::int32 quantity_;
   ::google::protobuf::int32 maxcancel_;
+  ::google::protobuf::int32 maxopenperstart_;
+  ::google::protobuf::int32 totalopenlimit_;
   ::entity::StrategyItem* strategy_;
-  ::google::protobuf::int32 maxtriggertimes_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2151,19 +2161,40 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::entity::LegUpdateItem >*
       mutable_legs();
   
-  // required int32 TriggerTimes = 3;
-  inline bool has_triggertimes() const;
-  inline void clear_triggertimes();
-  static const int kTriggerTimesFieldNumber = 3;
-  inline ::google::protobuf::int32 triggertimes() const;
-  inline void set_triggertimes(::google::protobuf::int32 value);
-  
-  // required .entity.StrategyType Strategy = 4;
+  // required .entity.StrategyType Strategy = 3;
   inline bool has_strategy() const;
   inline void clear_strategy();
-  static const int kStrategyFieldNumber = 4;
+  static const int kStrategyFieldNumber = 3;
   inline entity::StrategyType strategy() const;
   inline void set_strategy(entity::StrategyType value);
+  
+  // required int32 TotalOpenTimes = 4;
+  inline bool has_totalopentimes() const;
+  inline void clear_totalopentimes();
+  static const int kTotalOpenTimesFieldNumber = 4;
+  inline ::google::protobuf::int32 totalopentimes() const;
+  inline void set_totalopentimes(::google::protobuf::int32 value);
+  
+  // required int32 TotalCloseTimes = 5;
+  inline bool has_totalclosetimes() const;
+  inline void clear_totalclosetimes();
+  static const int kTotalCloseTimesFieldNumber = 5;
+  inline ::google::protobuf::int32 totalclosetimes() const;
+  inline void set_totalclosetimes(::google::protobuf::int32 value);
+  
+  // required int32 CurrentPosition = 6;
+  inline bool has_currentposition() const;
+  inline void clear_currentposition();
+  static const int kCurrentPositionFieldNumber = 6;
+  inline ::google::protobuf::int32 currentposition() const;
+  inline void set_currentposition(::google::protobuf::int32 value);
+  
+  // required int32 CancelTimes = 7;
+  inline bool has_canceltimes() const;
+  inline void clear_canceltimes();
+  static const int kCancelTimesFieldNumber = 7;
+  inline ::google::protobuf::int32 canceltimes() const;
+  inline void set_canceltimes(::google::protobuf::int32 value);
   
   // optional double AR_Diff = 101;
   inline bool has_ar_diff() const;
@@ -2211,10 +2242,16 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
  private:
   inline void set_has_id();
   inline void clear_has_id();
-  inline void set_has_triggertimes();
-  inline void clear_has_triggertimes();
   inline void set_has_strategy();
   inline void clear_has_strategy();
+  inline void set_has_totalopentimes();
+  inline void clear_has_totalopentimes();
+  inline void set_has_totalclosetimes();
+  inline void clear_has_totalclosetimes();
+  inline void set_has_currentposition();
+  inline void clear_has_currentposition();
+  inline void set_has_canceltimes();
+  inline void clear_has_canceltimes();
   inline void set_has_ar_diff();
   inline void clear_has_ar_diff();
   inline void set_has_ar_longdiff();
@@ -2232,17 +2269,20 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   
   ::std::string* id_;
   ::google::protobuf::RepeatedPtrField< ::entity::LegUpdateItem > legs_;
-  ::google::protobuf::int32 triggertimes_;
   int strategy_;
+  ::google::protobuf::int32 totalopentimes_;
+  ::google::protobuf::int32 totalclosetimes_;
+  ::google::protobuf::int32 currentposition_;
   double ar_diff_;
   double ar_longdiff_;
-  double ar_shortdiff_;
+  ::google::protobuf::int32 canceltimes_;
   ::google::protobuf::int32 ar_longsize_;
-  ::google::protobuf::int32 ar_shortsize_;
+  double ar_shortdiff_;
   double sc_diff_;
+  ::google::protobuf::int32 ar_shortsize_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(10 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -6863,37 +6903,59 @@ inline void PortfolioItem::set_maxcancel(::google::protobuf::int32 value) {
   maxcancel_ = value;
 }
 
-// required int32 MaxTriggerTimes = 5;
-inline bool PortfolioItem::has_maxtriggertimes() const {
+// required int32 MaxOpenPerStart = 5;
+inline bool PortfolioItem::has_maxopenperstart() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void PortfolioItem::set_has_maxtriggertimes() {
+inline void PortfolioItem::set_has_maxopenperstart() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void PortfolioItem::clear_has_maxtriggertimes() {
+inline void PortfolioItem::clear_has_maxopenperstart() {
   _has_bits_[0] &= ~0x00000010u;
 }
-inline void PortfolioItem::clear_maxtriggertimes() {
-  maxtriggertimes_ = 0;
-  clear_has_maxtriggertimes();
+inline void PortfolioItem::clear_maxopenperstart() {
+  maxopenperstart_ = 0;
+  clear_has_maxopenperstart();
 }
-inline ::google::protobuf::int32 PortfolioItem::maxtriggertimes() const {
-  return maxtriggertimes_;
+inline ::google::protobuf::int32 PortfolioItem::maxopenperstart() const {
+  return maxopenperstart_;
 }
-inline void PortfolioItem::set_maxtriggertimes(::google::protobuf::int32 value) {
-  set_has_maxtriggertimes();
-  maxtriggertimes_ = value;
+inline void PortfolioItem::set_maxopenperstart(::google::protobuf::int32 value) {
+  set_has_maxopenperstart();
+  maxopenperstart_ = value;
 }
 
-// required .entity.StrategyItem Strategy = 6;
-inline bool PortfolioItem::has_strategy() const {
+// required int32 TotalOpenLimit = 6;
+inline bool PortfolioItem::has_totalopenlimit() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void PortfolioItem::set_has_strategy() {
+inline void PortfolioItem::set_has_totalopenlimit() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void PortfolioItem::clear_has_strategy() {
+inline void PortfolioItem::clear_has_totalopenlimit() {
   _has_bits_[0] &= ~0x00000020u;
+}
+inline void PortfolioItem::clear_totalopenlimit() {
+  totalopenlimit_ = 0;
+  clear_has_totalopenlimit();
+}
+inline ::google::protobuf::int32 PortfolioItem::totalopenlimit() const {
+  return totalopenlimit_;
+}
+inline void PortfolioItem::set_totalopenlimit(::google::protobuf::int32 value) {
+  set_has_totalopenlimit();
+  totalopenlimit_ = value;
+}
+
+// required .entity.StrategyItem Strategy = 7;
+inline bool PortfolioItem::has_strategy() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void PortfolioItem::set_has_strategy() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void PortfolioItem::clear_has_strategy() {
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void PortfolioItem::clear_strategy() {
   if (strategy_ != NULL) strategy_->::entity::StrategyItem::Clear();
@@ -7001,37 +7063,15 @@ PortfolioUpdateItem::mutable_legs() {
   return &legs_;
 }
 
-// required int32 TriggerTimes = 3;
-inline bool PortfolioUpdateItem::has_triggertimes() const {
+// required .entity.StrategyType Strategy = 3;
+inline bool PortfolioUpdateItem::has_strategy() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_triggertimes() {
+inline void PortfolioUpdateItem::set_has_strategy() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void PortfolioUpdateItem::clear_has_triggertimes() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void PortfolioUpdateItem::clear_triggertimes() {
-  triggertimes_ = 0;
-  clear_has_triggertimes();
-}
-inline ::google::protobuf::int32 PortfolioUpdateItem::triggertimes() const {
-  return triggertimes_;
-}
-inline void PortfolioUpdateItem::set_triggertimes(::google::protobuf::int32 value) {
-  set_has_triggertimes();
-  triggertimes_ = value;
-}
-
-// required .entity.StrategyType Strategy = 4;
-inline bool PortfolioUpdateItem::has_strategy() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
-}
-inline void PortfolioUpdateItem::set_has_strategy() {
-  _has_bits_[0] |= 0x00000008u;
-}
 inline void PortfolioUpdateItem::clear_has_strategy() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void PortfolioUpdateItem::clear_strategy() {
   strategy_ = 0;
@@ -7046,15 +7086,103 @@ inline void PortfolioUpdateItem::set_strategy(entity::StrategyType value) {
   strategy_ = value;
 }
 
-// optional double AR_Diff = 101;
-inline bool PortfolioUpdateItem::has_ar_diff() const {
+// required int32 TotalOpenTimes = 4;
+inline bool PortfolioUpdateItem::has_totalopentimes() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_totalopentimes() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void PortfolioUpdateItem::clear_has_totalopentimes() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void PortfolioUpdateItem::clear_totalopentimes() {
+  totalopentimes_ = 0;
+  clear_has_totalopentimes();
+}
+inline ::google::protobuf::int32 PortfolioUpdateItem::totalopentimes() const {
+  return totalopentimes_;
+}
+inline void PortfolioUpdateItem::set_totalopentimes(::google::protobuf::int32 value) {
+  set_has_totalopentimes();
+  totalopentimes_ = value;
+}
+
+// required int32 TotalCloseTimes = 5;
+inline bool PortfolioUpdateItem::has_totalclosetimes() const {
   return (_has_bits_[0] & 0x00000010u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_ar_diff() {
+inline void PortfolioUpdateItem::set_has_totalclosetimes() {
   _has_bits_[0] |= 0x00000010u;
 }
-inline void PortfolioUpdateItem::clear_has_ar_diff() {
+inline void PortfolioUpdateItem::clear_has_totalclosetimes() {
   _has_bits_[0] &= ~0x00000010u;
+}
+inline void PortfolioUpdateItem::clear_totalclosetimes() {
+  totalclosetimes_ = 0;
+  clear_has_totalclosetimes();
+}
+inline ::google::protobuf::int32 PortfolioUpdateItem::totalclosetimes() const {
+  return totalclosetimes_;
+}
+inline void PortfolioUpdateItem::set_totalclosetimes(::google::protobuf::int32 value) {
+  set_has_totalclosetimes();
+  totalclosetimes_ = value;
+}
+
+// required int32 CurrentPosition = 6;
+inline bool PortfolioUpdateItem::has_currentposition() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_currentposition() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void PortfolioUpdateItem::clear_has_currentposition() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void PortfolioUpdateItem::clear_currentposition() {
+  currentposition_ = 0;
+  clear_has_currentposition();
+}
+inline ::google::protobuf::int32 PortfolioUpdateItem::currentposition() const {
+  return currentposition_;
+}
+inline void PortfolioUpdateItem::set_currentposition(::google::protobuf::int32 value) {
+  set_has_currentposition();
+  currentposition_ = value;
+}
+
+// required int32 CancelTimes = 7;
+inline bool PortfolioUpdateItem::has_canceltimes() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_canceltimes() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void PortfolioUpdateItem::clear_has_canceltimes() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void PortfolioUpdateItem::clear_canceltimes() {
+  canceltimes_ = 0;
+  clear_has_canceltimes();
+}
+inline ::google::protobuf::int32 PortfolioUpdateItem::canceltimes() const {
+  return canceltimes_;
+}
+inline void PortfolioUpdateItem::set_canceltimes(::google::protobuf::int32 value) {
+  set_has_canceltimes();
+  canceltimes_ = value;
+}
+
+// optional double AR_Diff = 101;
+inline bool PortfolioUpdateItem::has_ar_diff() const {
+  return (_has_bits_[0] & 0x00000080u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_ar_diff() {
+  _has_bits_[0] |= 0x00000080u;
+}
+inline void PortfolioUpdateItem::clear_has_ar_diff() {
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void PortfolioUpdateItem::clear_ar_diff() {
   ar_diff_ = 0;
@@ -7070,13 +7198,13 @@ inline void PortfolioUpdateItem::set_ar_diff(double value) {
 
 // optional double AR_LongDiff = 102;
 inline bool PortfolioUpdateItem::has_ar_longdiff() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_longdiff() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_longdiff() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void PortfolioUpdateItem::clear_ar_longdiff() {
   ar_longdiff_ = 0;
@@ -7092,13 +7220,13 @@ inline void PortfolioUpdateItem::set_ar_longdiff(double value) {
 
 // optional double AR_ShortDiff = 103;
 inline bool PortfolioUpdateItem::has_ar_shortdiff() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_shortdiff() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_shortdiff() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void PortfolioUpdateItem::clear_ar_shortdiff() {
   ar_shortdiff_ = 0;
@@ -7114,13 +7242,13 @@ inline void PortfolioUpdateItem::set_ar_shortdiff(double value) {
 
 // optional int32 AR_LongSize = 104;
 inline bool PortfolioUpdateItem::has_ar_longsize() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_longsize() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_longsize() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void PortfolioUpdateItem::clear_ar_longsize() {
   ar_longsize_ = 0;
@@ -7136,13 +7264,13 @@ inline void PortfolioUpdateItem::set_ar_longsize(::google::protobuf::int32 value
 
 // optional int32 AR_ShortSize = 105;
 inline bool PortfolioUpdateItem::has_ar_shortsize() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_shortsize() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_shortsize() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void PortfolioUpdateItem::clear_ar_shortsize() {
   ar_shortsize_ = 0;
@@ -7158,13 +7286,13 @@ inline void PortfolioUpdateItem::set_ar_shortsize(::google::protobuf::int32 valu
 
 // optional double SC_Diff = 201;
 inline bool PortfolioUpdateItem::has_sc_diff() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_sc_diff() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void PortfolioUpdateItem::clear_has_sc_diff() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void PortfolioUpdateItem::clear_sc_diff() {
   sc_diff_ = 0;
