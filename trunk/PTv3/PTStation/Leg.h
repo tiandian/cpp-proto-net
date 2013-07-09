@@ -1,6 +1,13 @@
 #pragma once
 
 #include "entity/message.pb.h"
+#include <limits>
+
+template<class T>
+T SafeSetValue(T val)
+{
+	return (val == numeric_limits<T>::max() || val == numeric_limits<T>::min()) ? ((T)0) : val;
+}
 
 class CLeg
 {
@@ -18,11 +25,11 @@ public:
 	double Bid(){ return m_bid; }
 	int BidSize() { return m_bidSize; }
 
-	void UpdateLast(double last){ m_last = last; }
-	void UpdateAsk(double ask){ m_ask = ask; }
-	void UpdateAskSize(int askSize){ m_askSize = askSize; }
-	void UpdateBid(double bid){ m_bid = m_bid; }
-	void UpdateBidSize(int bidSize){ m_bidSize = m_bidSize; }
+	void UpdateLast(double last){ m_last = SafeSetValue(last); }
+	void UpdateAsk(double ask){ m_ask = SafeSetValue(ask); }
+	void UpdateAskSize(int askSize){ m_askSize = SafeSetValue(askSize); }
+	void UpdateBid(double bid){ m_bid = SafeSetValue(bid); }
+	void UpdateBidSize(int bidSize){ m_bidSize = SafeSetValue(bidSize); }
 	void UpdateTimestamp(){}
 
 	void GetUpdated();

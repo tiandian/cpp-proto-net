@@ -5,6 +5,12 @@
 CLeg::CLeg(int legId, const entity::LegItem& srcLegItem, entity::LegUpdateItem* pUpdateItem)
 	: m_legId(legId)
 	, m_legUpdate(pUpdateItem)
+	, m_last(0)
+	, m_ask(0)
+	, m_askSize(0)
+	, m_bid(0)
+	, m_bidSize(0)
+	, m_status(entity::UNOPENED)
 {
 	m_symbol = srcLegItem.symbol();
 	m_ratio = srcLegItem.ratio();

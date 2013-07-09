@@ -589,15 +589,14 @@ namespace PortfolioTrading.Modules.Account
 
         public void Update(PTEntity.PortfolioUpdateItem item)
         {
-            int triggeredTimes = item.TriggerTimes;
             //Diff = ToDecimal(item.Diff);
             //LongDiff = ToDecimal(item.LongDiff);
             //ShortDiff = ToDecimal(item.ShortDiff);
             //LongSize = item.LongSize;
             //ShortSize = item.ShortSize;
-            //OpenTimes = item.OpenTimes;
-            //DoneTimes = item.CloseTimes;
-            //Position = item.CurrentPosition;
+            OpenTimes = item.TotalOpenTimes;
+            DoneTimes = item.TotalCloseTimes;
+            Position = item.CurrentPosition;
             //Gain = item.Profit;
             //Quantity = item.Quantity;
             //MaxPosition = item.MaxPosition;

@@ -11,7 +11,8 @@ void PTEntity::PortfolioItem::To( entity::PortfolioItem* pNativePortfolio )
 		pNativePortfolio->set_id((char*)idPointer.ToPointer());
 		pNativePortfolio->set_quantity(_quantity);
 		pNativePortfolio->set_maxcancel(_maxCancel);
-		pNativePortfolio->set_maxtriggertimes(_maxTriggerTimes);
+		pNativePortfolio->set_maxopenperstart(_maxOpenPerStart);
+		pNativePortfolio->set_totalopenlimit(_totalOpenLimit);
 
 		for each(LegItem ^l in _legs)
 		{

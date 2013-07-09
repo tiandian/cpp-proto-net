@@ -130,15 +130,27 @@ public:
 		}
 	}
 
-	property int MaxTriggerTimes
+	property int MaxOpenPerStart
 	{
 		int get()
 		{
-			return _maxTriggerTimes;
+			return _maxOpenPerStart;
 		}
 		void set(int val)
 		{
-			_maxTriggerTimes = val;
+			_maxOpenPerStart = val;
+		}
+	}
+
+	property int TotalOpenLimit
+	{
+		int get()
+		{
+			return _totalOpenLimit; 
+		}
+		void set(int val)
+		{
+			_totalOpenLimit = val;
 		}
 	}
 
@@ -169,7 +181,8 @@ private:
 	int _quantity;
 	List<LegItem^>^ _legs;
 	int _maxCancel;
-	int _maxTriggerTimes;
+	int _maxOpenPerStart;
+	int _totalOpenLimit;
 	StrategyItem ^_strategy;
 };
 

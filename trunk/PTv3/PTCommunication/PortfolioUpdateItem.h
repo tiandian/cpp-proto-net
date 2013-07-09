@@ -32,11 +32,35 @@ public:
 		}
 	}
 
-	property int TriggerTimes
+	property int TotalOpenTimes
 	{
 		int get()
 		{
-			return _triggerTimes; 
+			return _totalOpenTimes; 
+		}
+	}
+
+	property int TotalCloseTimes
+	{
+		int get()
+		{
+			return _totalCloseTimes; 
+		}
+	}
+
+	property int CurrentPosition
+	{
+		int get()
+		{
+			return _currentPosition; 
+		}
+	}
+
+	property int CancelTimes
+	{
+		int get()
+		{
+			return _cancelTimes; 
 		}
 	}
 
@@ -59,7 +83,10 @@ public:
 private:
 	String ^_id;
 	List<LegUpdateItem^> ^_legs;
-	int _triggerTimes;
+	int _totalOpenTimes;
+	int _totalCloseTimes;
+	int _currentPosition;
+	int _cancelTimes;
 	StrategyType _strategyType;
 	StrategyUpdateItem ^_strategyUpdate;
 };

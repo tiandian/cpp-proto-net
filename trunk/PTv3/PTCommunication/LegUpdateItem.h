@@ -58,11 +58,7 @@ public:
 	{
 		double get()
 		{
-			return _bidSize; 
-		}
-		void set(double val)
-		{
-			_bidSize = val;
+			return _bid; 
 		}
 	}
 

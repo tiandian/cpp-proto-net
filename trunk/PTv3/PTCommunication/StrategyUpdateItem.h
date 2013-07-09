@@ -6,7 +6,7 @@ using namespace System;
 
 namespace PTEntity {
 
-public ref class StrategyUpdateItem
+public ref class StrategyUpdateItem abstract
 {
 public:
 	StrategyUpdateItem(void){}
