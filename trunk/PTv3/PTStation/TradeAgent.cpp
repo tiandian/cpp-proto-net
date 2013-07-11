@@ -43,6 +43,7 @@ CTradeAgent::CTradeAgent(void)
 	, SESSION_ID(0)
 	, m_maxOrderRef(0)
 	, m_iRequestID(0)
+	, m_orderProcessor(NULL)
 {
 }
 
@@ -344,6 +345,11 @@ void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmFie
 void CTradeAgent::OnRspUserLogout( CThostFtdcUserLogoutField *pUserLogout, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 
+}
+
+void CTradeAgent::SetCallbackHanlder( CTradeAgentCallback* pCallback )
+{
+	m_orderProcessor = pCallback;
 }
 
 

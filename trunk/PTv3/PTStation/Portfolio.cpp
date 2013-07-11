@@ -16,6 +16,12 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	: m_avatar(client)
 	, m_pQuoteRepo(NULL)
 	, m_strategyType(entity::ARBITRAGE)
+	, m_serialOrderId(0)
+	, m_totalOpenTimes(0)
+	, m_totalCloseTimes(0)
+	, m_currentPosition(0)
+	, m_cancelTimes(0)
+
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
@@ -49,8 +55,31 @@ void CPortfolio::AddLeg( const entity::LegItem& legItem )
 	legUpdate->set_symbol(legItem.symbol());
 
 	int legCount = (int)m_legs.size();
+	// leg id is 1 based
 	LegPtr leg(new CLeg(legCount + 1, legItem, legUpdate));
 	m_legs.push_back(leg);
+}
+
+CLeg* CPortfolio::GetLeg( int legId )
+{
+	if(legId <= (int)m_legs.size())
+		return m_legs[legId - 1].get();
+
+	return NULL;
+}
+
+CLeg* CPortfolio::GetLeg(const string& symbol)
+{
+	// update last
+	for(vector<LegPtr>::iterator iter = m_legs.begin(); iter != m_legs.end(); ++iter)
+	{
+		if((*iter)->Symbol() == symbol)
+		{
+			return iter->get();
+		}
+	}
+
+	return NULL;
 }
 
 StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem )
@@ -92,9 +121,15 @@ void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point& times
 	// Update leg's last with income quote in CStrategy::Test
 	m_strategy->Test(pQuote, this, timestamp);
 
+	// Update PortfolioUpdateItem
+	// 1. for LegUpdateItem
 	GetLegUpdate();
+	// 2. for different Strategy Update
 	m_strategy->GetStrategyUpdate(&m_portfolioUpdate);
-	m_avatar->PublishPortfolioUpdate(m_portfolioUpdate);
+	// 3. for statistics
+	GetStatisticsUpdate();
+	// 4. finally publish PortfolioUpdateItem to client
+	PushUpdate();
 }
 
 void CPortfolio::GetLegUpdate()
@@ -104,5 +139,35 @@ void CPortfolio::GetLegUpdate()
 	{
 		(*iter)->GetUpdated();
 	}
+}
+
+int CPortfolio::NewOrderId( string& newId )
+{
+	boost::mutex::scoped_lock lock(m_mutStat);
+	newId = boost::str(boost::format("%s-%d") % ID() % ++m_serialOrderId);
+	return m_serialOrderId;
+}
+
+void CPortfolio::GetStatisticsUpdate()
+{
+	m_portfolioUpdate.set_totalopentimes(m_totalOpenTimes);
+	m_portfolioUpdate.set_totalclosetimes(m_totalOpenTimes);
+	m_portfolioUpdate.set_currentposition(m_currentPosition);
+	m_portfolioUpdate.set_canceltimes(m_cancelTimes);
+}
+
+void CPortfolio::AddPosition( trade::MultiLegOrder& openOrder )
+{
+	// to do
+}
+
+void CPortfolio::RemovePosition( trade::MultiLegOrder& closeOrder )
+{
+	// to do
+}
+
+void CPortfolio::PushUpdate()
+{
+	m_avatar->PublishPortfolioUpdate(m_portfolioUpdate);
 }
 

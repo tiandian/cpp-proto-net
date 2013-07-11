@@ -34,14 +34,20 @@
     <Filter Include="Header Files\quote">
       <UniqueIdentifier>{fc939347-6f49-4a3c-8b59-e36c9da52bb9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\quote">
-      <UniqueIdentifier>{a712f574-4a1f-403b-9cdc-e7c48fb17365}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\strategy">
       <UniqueIdentifier>{8f367e1a-da4d-4091-b9f0-2a3fb4b8f9ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\strategy">
       <UniqueIdentifier>{4c420c91-4fa2-4289-b4c9-35d1b0b18e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\trade">
+      <UniqueIdentifier>{9a02d0dd-6555-4c5d-b525-a05f95e8f161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\trade">
+      <UniqueIdentifier>{6d4c63e2-5a6e-4108-8811-cf8ec8c6b914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\quote">
+      <UniqueIdentifier>{a712f574-4a1f-403b-9cdc-e7c48fb17365}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -106,9 +112,6 @@
     <ClInclude Include="ClientProtocol.h">
       <Filter>Header Files\connection</Filter>
     </ClInclude>
-    <ClInclude Include="TradeAgent.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FileOperations.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
@@ -172,6 +175,51 @@
     <ClInclude Include="QuoteRepositry.h">
       <Filter>Header Files\quote</Filter>
     </ClInclude>
+    <ClInclude Include="PortfolioOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioScalperOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderProcessor.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="TradeAgent.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="TradeAgentCallback.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="InputOrder.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioOrderHelper.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="orderhelper.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolInfo.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolInfoRepositry.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildOrderException.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderEvent.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="LegOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="AsyncOrderPendingTimer.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleCompare.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -224,9 +272,6 @@
     </ClCompile>
     <ClCompile Include="ClientProtocol.cpp">
       <Filter>Source Files\connection</Filter>
-    </ClCompile>
-    <ClCompile Include="TradeAgent.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FileOperations.cpp">
       <Filter>Source Files\utils</Filter>
@@ -284,6 +329,42 @@
     </ClCompile>
     <ClCompile Include="QuoteRepositry.cpp">
       <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioScalperOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderProcessor.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="TradeAgent.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="InputOrder.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioOrderHelper.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="orderhelper.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolInfo.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolInfoRepositry.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="LegOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="AsyncOrderPendingTimer.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="DoubleCompare.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

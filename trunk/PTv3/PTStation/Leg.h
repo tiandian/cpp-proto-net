@@ -24,6 +24,8 @@ public:
 	int AskSize() { return m_askSize; }
 	double Bid(){ return m_bid; }
 	int BidSize() { return m_bidSize; }
+	int Ratio() { return m_ratio; }
+	bool IsPreferred() { return m_isPreferred; }
 
 	void UpdateLast(double last){ m_last = SafeSetValue(last); }
 	void UpdateAsk(double ask){ m_ask = SafeSetValue(ask); }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ThostTraderApi/ThostFtdcTraderApi.h"
+#include "TradeAgentCallback.h"
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/thread.hpp>
@@ -15,6 +16,8 @@ public:
 
 	boost::tuple<bool, string> Login(const string& frontAddr, const string& brokerId, const string& userId, const string& password);
 	void Logout();
+
+	void SetCallbackHanlder(CTradeAgentCallback* pCallback);
 
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
@@ -101,5 +104,7 @@ private:
 	boost::condition_variable m_condLogin;
 	boost::mutex m_mutConfirm;
 	boost::condition_variable m_condConfirm;
+
+	CTradeAgentCallback* m_orderProcessor;
 };
 

@@ -14,6 +14,9 @@ public:
 	CStrategy(const entity::StrategyItem& strategyItem);
 	virtual ~CStrategy(void);
 
+	int RetryTimes(){ return m_retryTimes; }
+	int OpenTimeout(){ return m_openTimeout; }
+
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
 	
@@ -22,6 +25,7 @@ protected:
 	entity::StrategyType m_type;
 	bool m_running;
 	int m_retryTimes;
+	int m_openTimeout;
 };
 
 typedef boost::shared_ptr<CStrategy> StrategyPtr;

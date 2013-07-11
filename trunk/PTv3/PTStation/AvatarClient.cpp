@@ -54,3 +54,23 @@ void CAvatarClient::PublishPortfolioUpdate( const entity::PortfolioUpdateItem& p
 	PushPacket(&portfUpdateResp);
 }
 
+void CAvatarClient::PublishMultiLegOrderUpdate( trade::MultiLegOrder* pOrder )
+{
+
+}
+
+void CAvatarClient::PublishLegOrderUpdate( const string& portfId, const string& mlOrderId, trade::Order* legOrd )
+{
+
+}
+
+void CAvatarClient::PublishTradeUpdate( trade::Trade* pTrade )
+{
+
+}
+
+void CAvatarClient::PublishPositionDetail( trade::PositionDetailInfo* pPosiDetailInfo )
+{
+
+}
+
