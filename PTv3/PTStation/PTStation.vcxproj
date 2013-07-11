@@ -49,7 +49,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;LOG_FOR_TRADE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -95,13 +95,16 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
   <ItemGroup>
     <ClInclude Include="ArbitrageStrategy.h" />
     <ClInclude Include="ArbitrageTrigger.h" />
+    <ClInclude Include="AsyncOrderPendingTimer.h" />
     <ClInclude Include="AvatarClient.h" />
     <ClInclude Include="AvatarFactory.h" />
+    <ClInclude Include="BuildOrderException.h" />
     <ClInclude Include="ChangePositionStrategy.h" />
     <ClInclude Include="ChangePositionTrigger.h" />
     <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientProtocol.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="DoubleCompare.h" />
     <ClInclude Include="entity\enum.pb.h" />
     <ClInclude Include="entity\message.pb.h" />
     <ClInclude Include="entity\packet.pb.h" />
@@ -109,10 +112,18 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\trade.pb.h" />
     <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
+    <ClInclude Include="InputOrder.h" />
     <ClInclude Include="Leg.h" />
+    <ClInclude Include="LegOrderPlacer.h" />
     <ClInclude Include="LogManager.h" />
+    <ClInclude Include="OrderEvent.h" />
+    <ClInclude Include="orderhelper.h" />
+    <ClInclude Include="OrderProcessor.h" />
     <ClInclude Include="Portfolio.h" />
     <ClInclude Include="PortfolioManager.h" />
+    <ClInclude Include="PortfolioOrderHelper.h" />
+    <ClInclude Include="PortfolioOrderPlacer.h" />
+    <ClInclude Include="PortfolioScalperOrderPlacer.h" />
     <ClInclude Include="ProtobufPacket.h" />
     <ClInclude Include="ProtobufProtocol.h" />
     <ClInclude Include="ProtocolIDs.h" />
@@ -129,8 +140,11 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="shm_remover.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Strategy.h" />
+    <ClInclude Include="SymbolInfo.h" />
+    <ClInclude Include="SymbolInfoRepositry.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
+    <ClInclude Include="TradeAgentCallback.h" />
     <ClInclude Include="TradingServer.h" />
     <ClInclude Include="TradingServerProtocol.h" />
     <ClInclude Include="Trigger.h" />
@@ -138,6 +152,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
   <ItemGroup>
     <ClCompile Include="ArbitrageStrategy.cpp" />
     <ClCompile Include="ArbitrageTrigger.cpp" />
+    <ClCompile Include="AsyncOrderPendingTimer.cpp" />
     <ClCompile Include="AvatarClient.cpp" />
     <ClCompile Include="AvatarFactory.cpp" />
     <ClCompile Include="ChangePositionStrategy.cpp" />
@@ -145,6 +160,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientProtocol.cpp" />
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="DoubleCompare.cpp" />
     <ClCompile Include="entity\enum.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -166,12 +182,19 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="FileOperations.cpp" />
+    <ClCompile Include="InputOrder.cpp" />
     <ClCompile Include="Leg.cpp" />
+    <ClCompile Include="LegOrderPlacer.cpp" />
     <ClCompile Include="LogManager.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="orderhelper.cpp" />
+    <ClCompile Include="OrderProcessor.cpp" />
     <ClCompile Include="Portfolio.cpp" />
     <ClCompile Include="PortfolioManager.cpp" />
+    <ClCompile Include="PortfolioOrderHelper.cpp" />
+    <ClCompile Include="PortfolioOrderPlacer.cpp" />
+    <ClCompile Include="PortfolioScalperOrderPlacer.cpp" />
     <ClCompile Include="ProtobufPacket.cpp" />
     <ClCompile Include="ProtobufProtocol.cpp" />
     <ClCompile Include="QuoteAgent.cpp" />
@@ -184,6 +207,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="ShmQuoteFeed.cpp" />
     <ClCompile Include="ShmQuoteSubscribe.cpp" />
     <ClCompile Include="Strategy.cpp" />
+    <ClCompile Include="SymbolInfo.cpp" />
+    <ClCompile Include="SymbolInfoRepositry.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeStation.cpp" />
     <ClCompile Include="stdafx.cpp">

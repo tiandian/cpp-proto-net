@@ -7,6 +7,8 @@ public:
 	CTrigger(const entity::TriggerItem& triggerItem);
 	virtual ~CTrigger(void);
 
+	virtual bool Test(double val){ return false; }
+
 protected:
 	entity::StrategyType m_strategy;
 	string m_name;

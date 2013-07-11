@@ -24,6 +24,10 @@ public:
 
 	CPortfolioManager& PortfolioManager(){ return m_portfolioMgr; }
 	void PublishPortfolioUpdate(const entity::PortfolioUpdateItem& portfolioUpdate);
+	void PublishMultiLegOrderUpdate(trade::MultiLegOrder* pOrder);
+	void PublishLegOrderUpdate(const string& portfId, const string& mlOrderId, trade::Order* legOrd);
+	void PublishTradeUpdate(trade::Trade* pTrade);
+	void PublishPositionDetail(trade::PositionDetailInfo* pPosiDetailInfo);
 
 private:
 	string				m_sessionId;

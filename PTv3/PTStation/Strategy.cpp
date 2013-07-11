@@ -8,6 +8,7 @@ CStrategy::CStrategy(const entity::StrategyItem& strategyItem)
 	m_type = strategyItem.type();
 	m_running = strategyItem.running();
 	m_retryTimes = strategyItem.retrytimes();
+	m_openTimeout = strategyItem.opentimeout();
 }
 
 

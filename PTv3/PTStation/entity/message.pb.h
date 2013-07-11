@@ -1624,10 +1624,17 @@ class StrategyItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 retrytimes() const;
   inline void set_retrytimes(::google::protobuf::int32 value);
   
-  // repeated .entity.TriggerItem Triggers = 4;
+  // required int32 OpenTimeout = 4;
+  inline bool has_opentimeout() const;
+  inline void clear_opentimeout();
+  static const int kOpenTimeoutFieldNumber = 4;
+  inline ::google::protobuf::int32 opentimeout() const;
+  inline void set_opentimeout(::google::protobuf::int32 value);
+  
+  // repeated .entity.TriggerItem Triggers = 5;
   inline int triggers_size() const;
   inline void clear_triggers();
-  static const int kTriggersFieldNumber = 4;
+  static const int kTriggersFieldNumber = 5;
   inline const ::entity::TriggerItem& triggers(int index) const;
   inline ::entity::TriggerItem* mutable_triggers(int index);
   inline ::entity::TriggerItem* add_triggers();
@@ -1696,17 +1703,10 @@ class StrategyItem : public ::google::protobuf::Message {
   inline entity::DirectionDepends sc_casenochange() const;
   inline void set_sc_casenochange(entity::DirectionDepends value);
   
-  // optional int32 SC_OpenTimeout = 306;
-  inline bool has_sc_opentimeout() const;
-  inline void clear_sc_opentimeout();
-  static const int kSCOpenTimeoutFieldNumber = 306;
-  inline ::google::protobuf::int32 sc_opentimeout() const;
-  inline void set_sc_opentimeout(::google::protobuf::int32 value);
-  
-  // optional .entity.StopLossCloseMethods SC_StopLossStrategy = 307;
+  // optional .entity.StopLossCloseMethods SC_StopLossStrategy = 306;
   inline bool has_sc_stoplossstrategy() const;
   inline void clear_sc_stoplossstrategy();
-  static const int kSCStopLossStrategyFieldNumber = 307;
+  static const int kSCStopLossStrategyFieldNumber = 306;
   inline entity::StopLossCloseMethods sc_stoplossstrategy() const;
   inline void set_sc_stoplossstrategy(entity::StopLossCloseMethods value);
   
@@ -1718,6 +1718,8 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_running();
   inline void set_has_retrytimes();
   inline void clear_has_retrytimes();
+  inline void set_has_opentimeout();
+  inline void clear_has_opentimeout();
   inline void set_has_ar_side();
   inline void clear_has_ar_side();
   inline void set_has_cp_closeleg();
@@ -1734,8 +1736,6 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_sc_casege4tick();
   inline void set_has_sc_casenochange();
   inline void clear_has_sc_casenochange();
-  inline void set_has_sc_opentimeout();
-  inline void clear_has_sc_opentimeout();
   inline void set_has_sc_stoplossstrategy();
   inline void clear_has_sc_stoplossstrategy();
   
@@ -1743,17 +1743,17 @@ class StrategyItem : public ::google::protobuf::Message {
   
   int type_;
   bool running_;
-  ::google::protobuf::RepeatedPtrField< ::entity::TriggerItem > triggers_;
   ::google::protobuf::int32 retrytimes_;
-  int ar_side_;
+  ::google::protobuf::int32 opentimeout_;
+  ::google::protobuf::RepeatedPtrField< ::entity::TriggerItem > triggers_;
   ::std::string* cp_closeleg_;
-  double sc_pricetick_;
+  int ar_side_;
   int cp_closelegside_;
+  double sc_pricetick_;
   int sc_casele2tick_;
   int sc_casele3tick_;
   int sc_casege4tick_;
   int sc_casenochange_;
-  ::google::protobuf::int32 sc_opentimeout_;
   int sc_stoplossstrategy_;
   
   mutable int _cached_size_;
@@ -6242,7 +6242,29 @@ inline void StrategyItem::set_retrytimes(::google::protobuf::int32 value) {
   retrytimes_ = value;
 }
 
-// repeated .entity.TriggerItem Triggers = 4;
+// required int32 OpenTimeout = 4;
+inline bool StrategyItem::has_opentimeout() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void StrategyItem::set_has_opentimeout() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void StrategyItem::clear_has_opentimeout() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void StrategyItem::clear_opentimeout() {
+  opentimeout_ = 0;
+  clear_has_opentimeout();
+}
+inline ::google::protobuf::int32 StrategyItem::opentimeout() const {
+  return opentimeout_;
+}
+inline void StrategyItem::set_opentimeout(::google::protobuf::int32 value) {
+  set_has_opentimeout();
+  opentimeout_ = value;
+}
+
+// repeated .entity.TriggerItem Triggers = 5;
 inline int StrategyItem::triggers_size() const {
   return triggers_.size();
 }
@@ -6269,13 +6291,13 @@ StrategyItem::mutable_triggers() {
 
 // optional .entity.PosiDirectionType AR_Side = 101;
 inline bool StrategyItem::has_ar_side() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void StrategyItem::set_has_ar_side() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void StrategyItem::clear_has_ar_side() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void StrategyItem::clear_ar_side() {
   ar_side_ = 49;
@@ -6292,13 +6314,13 @@ inline void StrategyItem::set_ar_side(entity::PosiDirectionType value) {
 
 // optional string CP_CloseLeg = 201;
 inline bool StrategyItem::has_cp_closeleg() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void StrategyItem::set_has_cp_closeleg() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void StrategyItem::clear_has_cp_closeleg() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void StrategyItem::clear_cp_closeleg() {
   if (cp_closeleg_ != &::google::protobuf::internal::kEmptyString) {
@@ -6350,13 +6372,13 @@ inline ::std::string* StrategyItem::release_cp_closeleg() {
 
 // optional .entity.PosiDirectionType CP_CloseLegSide = 202;
 inline bool StrategyItem::has_cp_closelegside() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void StrategyItem::set_has_cp_closelegside() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void StrategyItem::clear_has_cp_closelegside() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void StrategyItem::clear_cp_closelegside() {
   cp_closelegside_ = 49;
@@ -6373,13 +6395,13 @@ inline void StrategyItem::set_cp_closelegside(entity::PosiDirectionType value) {
 
 // optional double SC_PriceTick = 301;
 inline bool StrategyItem::has_sc_pricetick() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void StrategyItem::set_has_sc_pricetick() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void StrategyItem::clear_has_sc_pricetick() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void StrategyItem::clear_sc_pricetick() {
   sc_pricetick_ = 0;
@@ -6395,13 +6417,13 @@ inline void StrategyItem::set_sc_pricetick(double value) {
 
 // optional .entity.DirectionDepends SC_CaseLE2Tick = 302;
 inline bool StrategyItem::has_sc_casele2tick() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void StrategyItem::set_has_sc_casele2tick() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void StrategyItem::clear_has_sc_casele2tick() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void StrategyItem::clear_sc_casele2tick() {
   sc_casele2tick_ = 0;
@@ -6418,13 +6440,13 @@ inline void StrategyItem::set_sc_casele2tick(entity::DirectionDepends value) {
 
 // optional .entity.DirectionDepends SC_CaseLE3Tick = 303;
 inline bool StrategyItem::has_sc_casele3tick() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void StrategyItem::set_has_sc_casele3tick() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void StrategyItem::clear_has_sc_casele3tick() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void StrategyItem::clear_sc_casele3tick() {
   sc_casele3tick_ = 0;
@@ -6441,13 +6463,13 @@ inline void StrategyItem::set_sc_casele3tick(entity::DirectionDepends value) {
 
 // optional .entity.DirectionDepends SC_CaseGE4Tick = 304;
 inline bool StrategyItem::has_sc_casege4tick() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void StrategyItem::set_has_sc_casege4tick() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void StrategyItem::clear_has_sc_casege4tick() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void StrategyItem::clear_sc_casege4tick() {
   sc_casege4tick_ = 0;
@@ -6464,13 +6486,13 @@ inline void StrategyItem::set_sc_casege4tick(entity::DirectionDepends value) {
 
 // optional .entity.DirectionDepends SC_CaseNoChange = 305;
 inline bool StrategyItem::has_sc_casenochange() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void StrategyItem::set_has_sc_casenochange() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void StrategyItem::clear_has_sc_casenochange() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void StrategyItem::clear_sc_casenochange() {
   sc_casenochange_ = 0;
@@ -6485,29 +6507,7 @@ inline void StrategyItem::set_sc_casenochange(entity::DirectionDepends value) {
   sc_casenochange_ = value;
 }
 
-// optional int32 SC_OpenTimeout = 306;
-inline bool StrategyItem::has_sc_opentimeout() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
-}
-inline void StrategyItem::set_has_sc_opentimeout() {
-  _has_bits_[0] |= 0x00001000u;
-}
-inline void StrategyItem::clear_has_sc_opentimeout() {
-  _has_bits_[0] &= ~0x00001000u;
-}
-inline void StrategyItem::clear_sc_opentimeout() {
-  sc_opentimeout_ = 0;
-  clear_has_sc_opentimeout();
-}
-inline ::google::protobuf::int32 StrategyItem::sc_opentimeout() const {
-  return sc_opentimeout_;
-}
-inline void StrategyItem::set_sc_opentimeout(::google::protobuf::int32 value) {
-  set_has_sc_opentimeout();
-  sc_opentimeout_ = value;
-}
-
-// optional .entity.StopLossCloseMethods SC_StopLossStrategy = 307;
+// optional .entity.StopLossCloseMethods SC_StopLossStrategy = 306;
 inline bool StrategyItem::has_sc_stoplossstrategy() const {
   return (_has_bits_[0] & 0x00002000u) != 0;
 }
