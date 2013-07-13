@@ -220,6 +220,15 @@
     <ClInclude Include="DoubleCompare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FakeDealer.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncRequest.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferRunner.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -365,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="DoubleCompare.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FakeDealer.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

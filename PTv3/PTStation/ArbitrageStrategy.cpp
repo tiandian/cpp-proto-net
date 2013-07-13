@@ -102,4 +102,59 @@ void CArbitrageStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 	pPortfUpdateItem->set_ar_shortsize(m_shortDiffSize);
 }
 
+int CArbitrageStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+{
+	int qty = openOrder.quantity();
+
+	double cost = CalcMlOrderCost(openOrder);
+	int origQty = PositionQuantity(pPortfolio);
+
+	double newAvgCost = (AvgCost(pPortfolio) * origQty + cost * qty) / (origQty + qty);
+	SetAvgCost(pPortfolio, newAvgCost);
+	return IncrementOpenTimes(pPortfolio, qty);
+}
+
+int CArbitrageStrategy::OnPortfolioRemovePosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder )
+{
+	int qty = closeOrder.quantity();
+	double cost = CalcMlOrderCost(closeOrder);
+
+	double orderProfit = (cost - AvgCost(pPortfolio)) * qty;
+	AddProfit(pPortfolio, orderProfit);
+
+	int origQty = PositionQuantity(pPortfolio);
+	int remaing = origQty - qty;
+	if(remaing > 0)
+	{
+		double newAvgCost = (AvgCost(pPortfolio) * origQty - cost * qty) / remaing;
+		SetAvgCost(pPortfolio, newAvgCost);
+	}
+	else
+	{
+		SetAvgCost(pPortfolio, 0);
+	}
+
+	return IncrementCloseTimes(pPortfolio, qty);
+}
+
+
+double CArbitrageStrategy::CalcMlOrderCost( const trade::MultiLegOrder& openOrder )
+{
+	double cost = 0;
+	int legCount = openOrder.legs_size();
+	if(legCount > 1)
+	{
+		const trade::Order& firstLeg = openOrder.legs(0);
+		double firstLegPx = firstLeg.limitprice();
+
+		const trade::Order& secondLeg = openOrder.legs(1);
+		double secondLegPx = secondLeg.limitprice();
+
+		cost = firstLegPx - secondLegPx;
+	}
+
+	return cost;
+}
+
+
 

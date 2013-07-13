@@ -388,7 +388,7 @@ namespace PortfolioTrading.Modules.Account
 
                     var l = _legs[i];
                     txt.AppendFormat("{0}({1})", l.Name, 
-                        l.Side == entity.PosiDirectionType.LONG ? "多" : "空");
+                        l.Side == PTEntity.PosiDirectionType.LONG ? "多" : "空");
                 }
 
                 return txt.ToString();

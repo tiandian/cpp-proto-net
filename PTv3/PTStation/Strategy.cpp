@@ -39,3 +39,43 @@ void CStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem
 {
 
 }
+
+int CStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+{
+	return pPortfolio->TotalOpenTimes();
+}
+
+int CStrategy::OnPortfolioRemovePosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder )
+{
+	return pPortfolio->TotalCloseTimes();
+}
+
+void CStrategy::AddProfit( CPortfolio* pPortfolio, double profit )
+{
+	pPortfolio->AddProfit(profit);
+}
+
+void CStrategy::SetAvgCost( CPortfolio* pPortfolio, double avgCost )
+{
+	pPortfolio->SetAvgCost(avgCost);
+}
+
+int CStrategy::IncrementOpenTimes(  CPortfolio* pPortfolio, int qty )
+{
+	return pPortfolio->IncrementalOpenTimes(qty);
+}
+
+int CStrategy::IncrementCloseTimes(  CPortfolio* pPortfolio, int qty )
+{
+	return pPortfolio->IncrementalCloseTimes(qty);
+}
+
+int CStrategy::PositionQuantity( CPortfolio* pPortfolio )
+{
+	return pPortfolio->m_currentPosition;
+}
+
+double CStrategy::AvgCost( CPortfolio* pPortfolio )
+{
+	return pPortfolio->AvgCost();
+}

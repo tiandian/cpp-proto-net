@@ -55,7 +55,6 @@ void ScalperStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 	pNativeStrategyItem->set_sc_casele3tick(static_cast<entity::DirectionDepends>(_caseLE3Tick));
 	pNativeStrategyItem->set_sc_casege4tick(static_cast<entity::DirectionDepends>(_caseGE4Tick));
 	pNativeStrategyItem->set_sc_casenochange(static_cast<entity::DirectionDepends>(_caseNoChange));
-	pNativeStrategyItem->set_sc_opentimeout(_openTimeout);
 	pNativeStrategyItem->set_sc_stoplossstrategy(static_cast<entity::StopLossCloseMethods>(_stopLossStrategy));
 
 	StrategyItem::To(pNativeStrategyItem);

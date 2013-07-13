@@ -28,9 +28,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region CloseLegSide
-        private entity.PosiDirectionType _closeLegSide;
+        private PTEntity.PosiDirectionType _closeLegSide;
 
-        public entity.PosiDirectionType CloseLegSide
+        public PTEntity.PosiDirectionType CloseLegSide
         {
             get { return _closeLegSide; }
             set
@@ -109,7 +109,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             entity.ChangePosiStrategySettings settings = new entity.ChangePosiStrategySettings();
             settings.CloseLeg = CloseLeg;
-            settings.CloseLegSide = CloseLegSide;
+            settings.CloseLegSide = (entity.PosiDirectionType)CloseLegSide;
             settings.TriggerCondition = (entity.CompareCondition)TriggerCondition;
             settings.Threshold = Threshold;
 

@@ -13,6 +13,10 @@ public:
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
 
+	virtual int OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder);
+
+	static double CalcOrderProfit(const trade::MultiLegOrder& openOrder);
+
 private:
 	void CreateTriggers(const entity::StrategyItem& strategyItem);
 

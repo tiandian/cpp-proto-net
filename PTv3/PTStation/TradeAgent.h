@@ -2,6 +2,13 @@
 
 #include "ThostTraderApi/ThostFtdcTraderApi.h"
 #include "TradeAgentCallback.h"
+#include "SyncRequest.h"
+#include "SymbolInfo.h"
+#include "entity/quote.pb.h"
+
+#ifdef FAKE_DEAL
+#include "FakeDealer.h"
+#endif
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/thread.hpp>
@@ -18,6 +25,24 @@ public:
 	void Logout();
 
 	void SetCallbackHanlder(CTradeAgentCallback* pCallback);
+
+	bool SubmitOrder(trade::InputOrder* pInputOrder);
+	bool SubmitOrder(CThostFtdcInputOrderField& inputOrderField);
+	bool SubmitOrderAction(trade::InputOrderAction* pInputOrderAction);
+
+	void QueryAccount();
+	void QueryOrders(const string& symbol);
+	void QueryPositions();
+	void QueryPositionDetails(const string& symbol);
+
+	bool QuerySymbol(const string& symbol, entity::Quote** ppQuote);
+	bool QuerySymbolAsync(const string& symbol, int nReqestId);
+	bool QuerySymbolInfo(const string& symbol, CSymbolInfo** ppSymbolInfo);
+	bool QuerySymbolInfoAsync( CSymbolInfo* pSymbolInfo, int nReqestId );
+
+	const string& BrokerId(){ return m_brokerId; }
+	const string& InvestorId(){ return m_investorId; }
+	const boost::gregorian::date& TradingDay(){ return m_tradingDay; }
 
 	//////////////////////////////////////////////////////////////////////////
 	// Response trading related api
@@ -38,19 +63,19 @@ public:
 	virtual void OnRspSettlementInfoConfirm(CThostFtdcSettlementInfoConfirmField *pSettlementInfoConfirm, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///请求查询合约响应
-	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){}
+	virtual void OnRspQryInstrument(CThostFtdcInstrumentField *pInstrument, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///请求查询资金账户响应
-	virtual void OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){}
+	virtual void OnRspQryTradingAccount(CThostFtdcTradingAccountField *pTradingAccount, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///请求查询投资者持仓明细响应
-	virtual void OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){}
+	virtual void OnRspQryInvestorPositionDetail(CThostFtdcInvestorPositionDetailField *pInvestorPositionDetail, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///报单录入请求响应
-	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){}
+	virtual void OnRspOrderInsert(CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///报单操作请求响应
-	virtual void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){}
+	virtual void OnRspOrderAction(CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	///错误应答
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){}
@@ -59,13 +84,13 @@ public:
 	virtual void OnHeartBeatWarning(int nTimeLapse){}
 
 	///报单通知
-	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder){}
+	virtual void OnRtnOrder(CThostFtdcOrderField *pOrder);
 
 	///成交通知
-	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade){}
+	virtual void OnRtnTrade(CThostFtdcTradeField *pTrade);
 
 	///请求查询行情响应
-	virtual void OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast){}
+	virtual void OnRspQryDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast);
 
 	//////////////////////////////////////////////////////////////////////////
 
@@ -75,6 +100,10 @@ private:
 	void Login();
 	void ReqSettlementInfoConfirm();
 	int RequestIDIncrement() { return ++m_iRequestID; }
+	bool IsMyOrder(CThostFtdcOrderField *pOrder)
+	{ 
+		return pOrder->FrontID == FRONT_ID && pOrder->SessionID == SESSION_ID;
+	}
 
 	string m_brokerId;
 	string m_investorId;
@@ -105,6 +134,13 @@ private:
 	boost::mutex m_mutConfirm;
 	boost::condition_variable m_condConfirm;
 
+	CSyncRequestFactory<entity::Quote> m_requestFactory;
+	CSyncRequestFactory<CSymbolInfo> m_symbInfoReqFactory;
+
 	CTradeAgentCallback* m_orderProcessor;
+#ifdef FAKE_DEAL
+	CFakeDealer m_fakeDealer;
+#endif
+
 };
 

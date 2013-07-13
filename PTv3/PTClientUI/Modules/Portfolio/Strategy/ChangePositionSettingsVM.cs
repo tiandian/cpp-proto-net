@@ -27,9 +27,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region CloseLegSide
-        private entity.PosiDirectionType _side;
+        private PTEntity.PosiDirectionType _side;
 
-        public entity.PosiDirectionType CloseLegSide
+        public PTEntity.PosiDirectionType CloseLegSide
         {
             get { return _side; }
             set

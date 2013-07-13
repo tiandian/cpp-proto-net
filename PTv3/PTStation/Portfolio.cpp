@@ -21,6 +21,8 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	, m_totalCloseTimes(0)
 	, m_currentPosition(0)
 	, m_cancelTimes(0)
+	, m_profit(0)
+	, m_avgCost(0)
 
 {
 	// Backup created portfolio item
@@ -156,14 +158,14 @@ void CPortfolio::GetStatisticsUpdate()
 	m_portfolioUpdate.set_canceltimes(m_cancelTimes);
 }
 
-void CPortfolio::AddPosition( trade::MultiLegOrder& openOrder )
+void CPortfolio::AddPosition( const trade::MultiLegOrder& openOrder )
 {
-	// to do
+	int openTimes = m_strategy->OnPortfolioAddPosition(this, openOrder);
 }
 
-void CPortfolio::RemovePosition( trade::MultiLegOrder& closeOrder )
+void CPortfolio::RemovePosition( const trade::MultiLegOrder& closeOrder )
 {
-	// to do
+	int closeTimes = m_strategy->OnPortfolioRemovePosition(this, closeOrder);
 }
 
 void CPortfolio::PushUpdate()

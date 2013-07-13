@@ -99,7 +99,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
                 attr = elem.Attribute("side");
                 if (attr != null)
-                    setting.CloseLegSide = (entity.PosiDirectionType)Enum.Parse(typeof(entity.PosiDirectionType), attr.Value);
+                    setting.CloseLegSide = (PTEntity.PosiDirectionType)Enum.Parse(typeof(PTEntity.PosiDirectionType), attr.Value);
 
                 attr = elem.Attribute("triggerCondition");
                 if (attr != null)
