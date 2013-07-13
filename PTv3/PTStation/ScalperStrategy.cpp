@@ -2,10 +2,15 @@
 #include "ScalperStrategy.h"
 #include "ScalperTrigger.h"
 #include "Portfolio.h"
+#include "globalmembers.h"
+#include "DoubleCompare.h"
+
+#include <math.h>
 
 CScalperStrategy::CScalperStrategy(const entity::StrategyItem& strategyItem)
 	: CStrategy(strategyItem)
 	, m_diff(0)
+	, m_prevAsk(0), m_prevBid(0)
 	, m_ask(0), m_askSize(0)
 	, m_bid(0), m_bidSize(0)
 {
@@ -42,12 +47,43 @@ void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boos
 
 	if(m_askSize > 0 && m_bidSize > 0)
 	{
-		if(m_triggers[0]->Test(m_diff))
+		CPortfolioOrderPlacer* pOrderPlacer = pPortfolio->OrderPlacer();
+		if(!(pOrderPlacer->IsWorking()))
 		{
-			// open position
-			// pPortfolio->OrderPlacer()->Run();
+			if(m_triggers[0]->Test(m_diff))
+			{
+				// open position
+				trade::PosiDirectionType direction = GetTradeDirection();
+#ifdef LOG_FOR_TRADE
+				logger.Info(boost::str(boost::format("[%s] Ask: %.2f => %.2f, Bid: %.2f => %.2f, Ask size VS Bid size: %d vs %d")
+					% (direction > trade::NET ? (direction == trade::LONG ? "LONG" : "SHORT") : "IGNORE") 
+					% m_prevAsk % m_ask % m_prevBid % m_bid % m_askSize % m_bidSize));
+#endif
+				if(direction > trade::NET)
+				{
+					double lmtPrice[2];
+					if(direction == trade::LONG)
+					{
+						lmtPrice[0] = m_bid + m_priceTick;
+						lmtPrice[1] = m_ask - m_priceTick;
+					}
+					else // Sell
+					{
+						lmtPrice[0] = m_ask - m_priceTick;
+						lmtPrice[1] = m_bid + m_priceTick;
+					}
+					pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
+				}
+			}
+		}
+		else
+		{
+			pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
 		}
 	}
+
+	m_prevAsk = m_ask;
+	m_prevBid = m_bid;
 
 	// there is only ONE leg for scalper strategy 
 	const LegPtr& leg = pPortfolio->Legs().at(0);
@@ -97,4 +133,58 @@ double CScalperStrategy::CalcOrderProfit( const trade::MultiLegOrder& openOrder 
 		}
 	}
 	return profit;
+}
+
+trade::PosiDirectionType CScalperStrategy::GetTradeDirection()
+{
+	double askDiff = fabs(m_ask - m_prevAsk);
+	double bidDiff = fabs(m_bid - m_prevBid);
+
+	double absDiffDiff = fabs(askDiff - bidDiff);
+
+	if(m_ask > m_prevAsk && m_bid > m_prevBid)
+	{
+		return trade::LONG;
+	}
+	else if(m_ask < m_prevAsk && m_bid < m_prevBid)
+	{
+		return trade::SHORT;
+	}
+	else if(DoubleEqual(m_bid, m_prevBid) && DoubleEqual(m_ask, m_prevAsk))
+	{
+		return CalcTradeDirection(m_askSize, m_bidSize, askDiff, bidDiff, m_caseNoChange);
+	}
+	else if(DoubleLessEqual(absDiffDiff, m_priceTick * 2))
+	{
+		return CalcTradeDirection(m_askSize, m_bidSize, askDiff, bidDiff, m_caseLE2Tick);
+	}
+	else if(DoubleLessEqual(absDiffDiff, m_priceTick * 3))
+	{
+		return CalcTradeDirection(m_askSize, m_bidSize, askDiff, bidDiff, m_caseLE3Tick);
+	}
+	else if(DoubleGreaterEqual(absDiffDiff, m_priceTick * 4))
+	{
+		return CalcTradeDirection(m_askSize, m_bidSize, askDiff, bidDiff, m_caseGE4Tick);
+	}
+	else
+	{
+		return m_askSize < m_bidSize ? trade::SHORT : trade::LONG;
+	}
+}
+
+trade::PosiDirectionType CScalperStrategy::CalcTradeDirection(int askSize, int bidSize, double askDiff, double bidDiff, entity::DirectionDepends dependsOn)
+{
+	switch (dependsOn)
+	{
+	case entity::ON_SMALL_SIZE:
+		return askSize < bidSize ? trade::SHORT : trade::LONG;
+	case entity::ON_BIG_SIZE:
+		return askSize > bidSize ? trade::SHORT : trade::LONG;
+	case entity::ON_SMALL_CHANGE:
+		return askDiff < bidDiff ? trade::SHORT : trade::LONG;
+	case entity::ON_BIG_CHANGE:
+		return askDiff > bidDiff ? trade::SHORT : trade::LONG;
+	}
+
+	return trade::NET;
 }

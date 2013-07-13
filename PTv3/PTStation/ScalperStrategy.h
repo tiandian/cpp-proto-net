@@ -20,6 +20,9 @@ public:
 private:
 	void CreateTriggers(const entity::StrategyItem& strategyItem);
 
+	trade::PosiDirectionType GetTradeDirection();
+	trade::PosiDirectionType CalcTradeDirection(int askSize, int bidSize, double askDiff, double bidDiff, entity::DirectionDepends dependsOn);
+
 	double m_priceTick;
 	entity::DirectionDepends m_caseLE2Tick;
 	entity::DirectionDepends m_caseLE3Tick;
@@ -28,8 +31,10 @@ private:
 	entity::StopLossCloseMethods m_stopLossStrategy;
 
 	double m_diff;
+	double m_prevAsk;
 	double m_ask;
 	int m_askSize;
+	double m_prevBid;
 	double m_bid;
 	int m_bidSize;
 };

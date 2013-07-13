@@ -18,7 +18,7 @@ class CPortfolioOrderPlacer
 {
 public:
 	CPortfolioOrderPlacer(void);
-	~CPortfolioOrderPlacer(void);
+	virtual ~CPortfolioOrderPlacer(void);
 	
 	void Initialize(CPortfolio* pPortf, COrderProcessor* pOrderProc)
 	{
@@ -123,3 +123,4 @@ protected:
 	boost::mutex m_mutOuterAccessFsm;
 };
 
+typedef boost::shared_ptr<CPortfolioOrderPlacer> OrderPlacerPtr;

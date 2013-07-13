@@ -217,9 +217,6 @@
     <ClInclude Include="AsyncOrderPendingTimer.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="DoubleCompare.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="FakeDealer.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
@@ -227,6 +224,9 @@
       <Filter>Header Files\utils</Filter>
     </ClInclude>
     <ClInclude Include="BufferRunner.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleCompare.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
@@ -372,10 +372,10 @@
     <ClCompile Include="AsyncOrderPendingTimer.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="DoubleCompare.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FakeDealer.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="DoubleCompare.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
