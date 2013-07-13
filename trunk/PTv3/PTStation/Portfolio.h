@@ -19,9 +19,15 @@ public:
 	CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPortfolioItem);
 	~CPortfolio(void);
 
+	friend class CStrategy;
+
 	const string& ID(){ return m_portfolioItem.id(); }
 	int Quantity(){ return m_portfolioItem.quantity(); }
 	int Count(){ return m_legs.size(); }
+	int TotalOpenTimes() { return m_totalOpenTimes; }
+	int TotalCloseTimes() { return m_totalCloseTimes; }
+	double Profit() { return m_profit; }
+	double AvgCost() { return m_avgCost; }
 
 	vector<LegPtr>& Legs(){ return m_legs;}
 	CLeg* GetLeg(int legId);
@@ -34,8 +40,8 @@ public:
 	void SubscribeQuotes(CQuoteRepositry* pQuoteRepo);
 
 	int NewOrderId(string& newId);
-	void AddPosition(trade::MultiLegOrder& openOrder);
-	void RemovePosition(trade::MultiLegOrder& closeOrder);
+	void AddPosition(const trade::MultiLegOrder& openOrder);
+	void RemovePosition(const trade::MultiLegOrder& closeOrder);
 
 private:
 	void AddLeg(const entity::LegItem& legItem);
@@ -46,6 +52,19 @@ private:
 	void GetLegUpdate();
 	void GetStatisticsUpdate();
 	void PushUpdate();
+
+	void AddProfit(double val){ m_profit += val; }
+	void SetProfit(double val){ m_profit = val; }
+	void SetAvgCost(double avgCost){ m_avgCost = avgCost; }
+	int IncrementalOpenTimes(int opened){ m_totalOpenTimes += opened; return m_totalOpenTimes; }
+	int IncrementalCloseTimes(int closed){ m_totalCloseTimes += closed; return m_totalCloseTimes; }
+	void UpdatePosition()
+	{
+		int posiQty = m_totalOpenTimes - m_totalCloseTimes;
+		if(posiQty < 0)
+			posiQty = 0;
+		m_currentPosition = posiQty;
+	}
 
 	// backup PortfolioItem which this is created from
 	entity::PortfolioItem m_portfolioItem;
@@ -64,6 +83,8 @@ private:
 	int m_currentPosition;
 	int m_cancelTimes;
 	int m_serialOrderId;
+	double m_profit;
+	double m_avgCost;
 	boost::mutex m_mutStat;
 
 	CAvatarClient* m_avatar;

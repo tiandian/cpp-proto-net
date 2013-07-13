@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
-using entity;
 using System.Xml.Linq;
+using PTEntity;
 
 namespace PortfolioTrading.Modules.Account
 {

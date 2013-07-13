@@ -98,6 +98,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="AsyncOrderPendingTimer.h" />
     <ClInclude Include="AvatarClient.h" />
     <ClInclude Include="AvatarFactory.h" />
+    <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="BuildOrderException.h" />
     <ClInclude Include="ChangePositionStrategy.h" />
     <ClInclude Include="ChangePositionTrigger.h" />
@@ -110,6 +111,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\packet.pb.h" />
     <ClInclude Include="entity\quote.pb.h" />
     <ClInclude Include="entity\trade.pb.h" />
+    <ClInclude Include="FakeDealer.h" />
     <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
     <ClInclude Include="InputOrder.h" />
@@ -142,6 +144,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="Strategy.h" />
     <ClInclude Include="SymbolInfo.h" />
     <ClInclude Include="SymbolInfoRepositry.h" />
+    <ClInclude Include="SyncRequest.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TradeAgent.h" />
     <ClInclude Include="TradeAgentCallback.h" />
@@ -181,6 +184,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="FakeDealer.cpp" />
     <ClCompile Include="FileOperations.cpp" />
     <ClCompile Include="InputOrder.cpp" />
     <ClCompile Include="Leg.cpp" />
