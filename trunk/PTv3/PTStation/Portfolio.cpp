@@ -7,6 +7,7 @@
 #include "QuoteFetcher.h"
 #include "QuoteRepositry.h"
 #include "AvatarClient.h"
+#include "PortfolioScalperOrderPlacer.h"
 
 #include <assert.h>
 #include <boost/foreach.hpp>
@@ -42,6 +43,9 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 
 	// Initialize strategy
 	m_strategy = CreateStrategy(srcPortfolioItem.strategy());
+	assert(m_orderPlacer.get() != NULL);
+	m_orderPlacer->Initialize(this, &(client->OrderProcessor()));
+
 	m_portfolioUpdate.set_strategy(m_strategyType);
 }
 
@@ -98,8 +102,10 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 		break;
 	case entity::SCALPER:
 		created = StrategyPtr(new CScalperStrategy(strategyItem));
+		m_orderPlacer = OrderPlacerPtr(new CPortfolioScalperOrderPlacer);
 		break;
 	}
+	
 	return created;
 }
 

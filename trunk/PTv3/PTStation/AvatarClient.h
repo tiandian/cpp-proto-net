@@ -4,6 +4,7 @@
 #include "QuoteAgent.h"
 #include "PortfolioManager.h"
 #include "QuoteRepositry.h"
+#include "OrderProcessor.h"
 #include "entity/message.pb.h"
 
 class CAvatarClient : public LogicalConnection
@@ -23,6 +24,8 @@ public:
 	void QuoteLogout();
 
 	CPortfolioManager& PortfolioManager(){ return m_portfolioMgr; }
+	COrderProcessor& OrderProcessor(){ return m_orderProcessor; }
+
 	void PublishPortfolioUpdate(const entity::PortfolioUpdateItem& portfolioUpdate);
 	void PublishMultiLegOrderUpdate(trade::MultiLegOrder* pOrder);
 	void PublishLegOrderUpdate(const string& portfId, const string& mlOrderId, trade::Order* legOrd);
@@ -32,10 +35,12 @@ public:
 private:
 	string				m_sessionId;
 	string				m_pseudo;
+
 	CTradeAgent			m_tradeAgent;
 	CQuoteAgent			m_quoteAgent;
 	CQuoteRepositry		m_quoteRepositry;
 	CPortfolioManager	m_portfolioMgr;
+	COrderProcessor		m_orderProcessor;
 	
 	bool m_tradeLogged;
 	bool m_quoteLogged;

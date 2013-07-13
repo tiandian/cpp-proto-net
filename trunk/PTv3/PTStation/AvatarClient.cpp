@@ -13,6 +13,7 @@ CAvatarClient::CAvatarClient(const string& sessionId)
 	m_quoteAgent.SetCallbackHanlder(&m_quoteRepositry);
 
 	m_portfolioMgr.SetQuoteRepository(&m_quoteRepositry);
+	m_orderProcessor.Initialize(this, &m_tradeAgent);
 }
 
 

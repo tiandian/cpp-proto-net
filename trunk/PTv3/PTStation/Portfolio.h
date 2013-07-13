@@ -2,6 +2,7 @@
 
 #include "Strategy.h"
 #include "Leg.h"
+#include "PortfolioOrderPlacer.h"
 #include "entity/message.pb.h"
 #include "entity/quote.pb.h"
 #include "entity/trade.pb.h"
@@ -28,6 +29,7 @@ public:
 	int TotalCloseTimes() { return m_totalCloseTimes; }
 	double Profit() { return m_profit; }
 	double AvgCost() { return m_avgCost; }
+	CPortfolioOrderPlacer* OrderPlacer() { return m_orderPlacer.get(); }
 
 	vector<LegPtr>& Legs(){ return m_legs;}
 	CLeg* GetLeg(int legId);
@@ -88,6 +90,8 @@ private:
 	boost::mutex m_mutStat;
 
 	CAvatarClient* m_avatar;
+
+	OrderPlacerPtr m_orderPlacer;
 };
 
 typedef boost::shared_ptr<CPortfolio> PortfolioPtr;
