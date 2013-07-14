@@ -28,6 +28,7 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
+
 	// Initialize portfolio update item
 	m_portfolioUpdate.set_id(m_portfolioItem.id());
 	m_portfolioUpdate.set_totalopentimes(0);
@@ -35,7 +36,7 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	m_portfolioUpdate.set_currentposition(0);
 	m_portfolioUpdate.set_canceltimes(0);
 
-	// Create legs
+	// Create legs, as well as leg update item in portfolio update item
 	for(int i = 0; i < srcPortfolioItem.legs_size(); ++i)
 	{
 		AddLeg(srcPortfolioItem.legs(i));
@@ -46,7 +47,10 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	assert(m_orderPlacer.get() != NULL);
 	m_orderPlacer->Initialize(this, &(client->OrderProcessor()));
 
+	// Initialize strategy type in update item
 	m_portfolioUpdate.set_strategy(m_strategyType);
+	// Initialize trigger status in update item
+	PrepareTriggerUpdate();
 }
 
 
@@ -96,9 +100,11 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 	{
 	case entity::ARBITRAGE:
 		created = StrategyPtr(new CArbitrageStrategy(strategyItem));
+		m_orderPlacer = OrderPlacerPtr(new CPortfolioOrderPlacer);
 		break;
 	case entity::CHANGE_POSITION:
 		created = StrategyPtr(new CChangePositionStrategy(strategyItem));
+		m_orderPlacer = OrderPlacerPtr(new CPortfolioOrderPlacer);
 		break;
 	case entity::SCALPER:
 		created = StrategyPtr(new CScalperStrategy(strategyItem));
@@ -107,6 +113,18 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 	}
 	
 	return created;
+}
+
+void CPortfolio::PrepareTriggerUpdate()
+{
+	const vector<TriggerPtr>& triggers = m_strategy->Triggers();
+	for (vector<TriggerPtr>::const_iterator iter = triggers.begin(); iter != triggers.end(); ++iter)
+	{
+		entity::TriggerStatus* triggerStatus = m_portfolioUpdate.add_triggers();
+		triggerStatus->set_strategy((*iter)->Strategy());
+		triggerStatus->set_name((*iter)->Name());
+		triggerStatus->set_enabled((*iter)->IsEnabled());
+	}
 }
 
 void CPortfolio::SubscribeQuotes( CQuoteRepositry* pQuoteRepo )
@@ -178,4 +196,3 @@ void CPortfolio::PushUpdate()
 {
 	m_avatar->PublishPortfolioUpdate(m_portfolioUpdate);
 }
-

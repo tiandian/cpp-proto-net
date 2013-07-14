@@ -6,6 +6,36 @@ using namespace System;
 
 namespace PTEntity {
 
+public ref class TriggerStatusItem
+{
+public:
+	TriggerStatusItem(String^ name, bool enabled)
+	{
+		_name = name;
+		_enabled = enabled;
+	}
+
+	property String^ Name
+	{
+		String^ get()
+		{
+			return _name; 
+		}
+	}
+
+	property bool Enabled
+	{
+		bool get()
+		{
+			return _enabled; 
+		}
+	}
+
+private:
+	String^ _name;
+	bool _enabled;
+};
+
 public ref class StrategyUpdateItem abstract
 {
 public:
@@ -15,6 +45,38 @@ public:
 	{
 		virtual StrategyType get() abstract;
 	}
+
+	property bool Running
+	{
+		bool get()
+		{
+			return _running; 
+		}
+	}
+
+	property array<TriggerStatusItem^>^ Triggers
+	{
+		array<TriggerStatusItem^>^ get()
+		{
+			return _triggers; 
+		}
+	}
+
+public private:
+
+	void SetTriggers(array<TriggerStatusItem^>^ triggers)
+	{
+		_triggers = triggers;
+	}
+	
+	void SetRunning(bool val)
+	{
+		_running = val; 
+	}
+
+protected:
+	bool _running;
+	array<TriggerStatusItem^>^ _triggers;
 };
 
 public ref class ArbitrageStrategyUpdateItem : StrategyUpdateItem

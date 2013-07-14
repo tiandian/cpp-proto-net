@@ -4,9 +4,9 @@
 
 
 CStrategy::CStrategy(const entity::StrategyItem& strategyItem)
+	: m_running(false)
 {
 	m_type = strategyItem.type();
-	m_running = strategyItem.running();
 	m_retryTimes = strategyItem.retrytimes();
 	m_openTimeout = strategyItem.opentimeout();
 }
@@ -37,7 +37,12 @@ void CStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chro
 
 void CStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
 {
-
+	pPortfUpdateItem->set_running(m_running);
+	for(int i = 0; i < pPortfUpdateItem->triggers_size(); ++i)
+	{
+		entity::TriggerStatus* triggerStatus = pPortfUpdateItem->mutable_triggers(i);
+		triggerStatus->set_enabled(m_triggers[i]->IsEnabled());
+	}
 }
 
 int CStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )

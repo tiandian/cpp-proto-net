@@ -49,6 +49,7 @@ class LegItem;
 class LegUpdateItem;
 class StrategyItem;
 class TriggerItem;
+class TriggerStatus;
 class PortfolioItem;
 class PortfolioUpdateItem;
 class ConnectParam;
@@ -1610,31 +1611,24 @@ class StrategyItem : public ::google::protobuf::Message {
   inline entity::StrategyType type() const;
   inline void set_type(entity::StrategyType value);
   
-  // required bool Running = 2;
-  inline bool has_running() const;
-  inline void clear_running();
-  static const int kRunningFieldNumber = 2;
-  inline bool running() const;
-  inline void set_running(bool value);
-  
-  // required int32 RetryTimes = 3;
+  // required int32 RetryTimes = 2;
   inline bool has_retrytimes() const;
   inline void clear_retrytimes();
-  static const int kRetryTimesFieldNumber = 3;
+  static const int kRetryTimesFieldNumber = 2;
   inline ::google::protobuf::int32 retrytimes() const;
   inline void set_retrytimes(::google::protobuf::int32 value);
   
-  // required int32 OpenTimeout = 4;
+  // required int32 OpenTimeout = 3;
   inline bool has_opentimeout() const;
   inline void clear_opentimeout();
-  static const int kOpenTimeoutFieldNumber = 4;
+  static const int kOpenTimeoutFieldNumber = 3;
   inline ::google::protobuf::int32 opentimeout() const;
   inline void set_opentimeout(::google::protobuf::int32 value);
   
-  // repeated .entity.TriggerItem Triggers = 5;
+  // repeated .entity.TriggerItem Triggers = 4;
   inline int triggers_size() const;
   inline void clear_triggers();
-  static const int kTriggersFieldNumber = 5;
+  static const int kTriggersFieldNumber = 4;
   inline const ::entity::TriggerItem& triggers(int index) const;
   inline ::entity::TriggerItem* mutable_triggers(int index);
   inline ::entity::TriggerItem* add_triggers();
@@ -1714,8 +1708,6 @@ class StrategyItem : public ::google::protobuf::Message {
  private:
   inline void set_has_type();
   inline void clear_has_type();
-  inline void set_has_running();
-  inline void clear_has_running();
   inline void set_has_retrytimes();
   inline void clear_has_retrytimes();
   inline void set_has_opentimeout();
@@ -1742,14 +1734,13 @@ class StrategyItem : public ::google::protobuf::Message {
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   int type_;
-  bool running_;
   ::google::protobuf::int32 retrytimes_;
-  ::google::protobuf::int32 opentimeout_;
   ::google::protobuf::RepeatedPtrField< ::entity::TriggerItem > triggers_;
-  ::std::string* cp_closeleg_;
+  ::google::protobuf::int32 opentimeout_;
   int ar_side_;
-  int cp_closelegside_;
+  ::std::string* cp_closeleg_;
   double sc_pricetick_;
+  int cp_closelegside_;
   int sc_casele2tick_;
   int sc_casele3tick_;
   int sc_casege4tick_;
@@ -1757,7 +1748,7 @@ class StrategyItem : public ::google::protobuf::Message {
   int sc_stoplossstrategy_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(14 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -1931,6 +1922,112 @@ class TriggerItem : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static TriggerItem* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class TriggerStatus : public ::google::protobuf::Message {
+ public:
+  TriggerStatus();
+  virtual ~TriggerStatus();
+  
+  TriggerStatus(const TriggerStatus& from);
+  
+  inline TriggerStatus& operator=(const TriggerStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const TriggerStatus& default_instance();
+  
+  void Swap(TriggerStatus* other);
+  
+  // implements Message ----------------------------------------------
+  
+  TriggerStatus* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const TriggerStatus& from);
+  void MergeFrom(const TriggerStatus& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required .entity.StrategyType Strategy = 1;
+  inline bool has_strategy() const;
+  inline void clear_strategy();
+  static const int kStrategyFieldNumber = 1;
+  inline entity::StrategyType strategy() const;
+  inline void set_strategy(entity::StrategyType value);
+  
+  // required string Name = 2;
+  inline bool has_name() const;
+  inline void clear_name();
+  static const int kNameFieldNumber = 2;
+  inline const ::std::string& name() const;
+  inline void set_name(const ::std::string& value);
+  inline void set_name(const char* value);
+  inline void set_name(const char* value, size_t size);
+  inline ::std::string* mutable_name();
+  inline ::std::string* release_name();
+  
+  // required bool Enabled = 3;
+  inline bool has_enabled() const;
+  inline void clear_enabled();
+  static const int kEnabledFieldNumber = 3;
+  inline bool enabled() const;
+  inline void set_enabled(bool value);
+  
+  // @@protoc_insertion_point(class_scope:entity.TriggerStatus)
+ private:
+  inline void set_has_strategy();
+  inline void clear_has_strategy();
+  inline void set_has_name();
+  inline void clear_has_name();
+  inline void set_has_enabled();
+  inline void clear_has_enabled();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* name_;
+  int strategy_;
+  bool enabled_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static TriggerStatus* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -2168,31 +2265,50 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline entity::StrategyType strategy() const;
   inline void set_strategy(entity::StrategyType value);
   
-  // required int32 TotalOpenTimes = 4;
+  // required bool Running = 4;
+  inline bool has_running() const;
+  inline void clear_running();
+  static const int kRunningFieldNumber = 4;
+  inline bool running() const;
+  inline void set_running(bool value);
+  
+  // repeated .entity.TriggerStatus Triggers = 5;
+  inline int triggers_size() const;
+  inline void clear_triggers();
+  static const int kTriggersFieldNumber = 5;
+  inline const ::entity::TriggerStatus& triggers(int index) const;
+  inline ::entity::TriggerStatus* mutable_triggers(int index);
+  inline ::entity::TriggerStatus* add_triggers();
+  inline const ::google::protobuf::RepeatedPtrField< ::entity::TriggerStatus >&
+      triggers() const;
+  inline ::google::protobuf::RepeatedPtrField< ::entity::TriggerStatus >*
+      mutable_triggers();
+  
+  // required int32 TotalOpenTimes = 6;
   inline bool has_totalopentimes() const;
   inline void clear_totalopentimes();
-  static const int kTotalOpenTimesFieldNumber = 4;
+  static const int kTotalOpenTimesFieldNumber = 6;
   inline ::google::protobuf::int32 totalopentimes() const;
   inline void set_totalopentimes(::google::protobuf::int32 value);
   
-  // required int32 TotalCloseTimes = 5;
+  // required int32 TotalCloseTimes = 7;
   inline bool has_totalclosetimes() const;
   inline void clear_totalclosetimes();
-  static const int kTotalCloseTimesFieldNumber = 5;
+  static const int kTotalCloseTimesFieldNumber = 7;
   inline ::google::protobuf::int32 totalclosetimes() const;
   inline void set_totalclosetimes(::google::protobuf::int32 value);
   
-  // required int32 CurrentPosition = 6;
+  // required int32 CurrentPosition = 8;
   inline bool has_currentposition() const;
   inline void clear_currentposition();
-  static const int kCurrentPositionFieldNumber = 6;
+  static const int kCurrentPositionFieldNumber = 8;
   inline ::google::protobuf::int32 currentposition() const;
   inline void set_currentposition(::google::protobuf::int32 value);
   
-  // required int32 CancelTimes = 7;
+  // required int32 CancelTimes = 9;
   inline bool has_canceltimes() const;
   inline void clear_canceltimes();
-  static const int kCancelTimesFieldNumber = 7;
+  static const int kCancelTimesFieldNumber = 9;
   inline ::google::protobuf::int32 canceltimes() const;
   inline void set_canceltimes(::google::protobuf::int32 value);
   
@@ -2244,6 +2360,8 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_id();
   inline void set_has_strategy();
   inline void clear_has_strategy();
+  inline void set_has_running();
+  inline void clear_has_running();
   inline void set_has_totalopentimes();
   inline void clear_has_totalopentimes();
   inline void set_has_totalclosetimes();
@@ -2270,19 +2388,21 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   ::std::string* id_;
   ::google::protobuf::RepeatedPtrField< ::entity::LegUpdateItem > legs_;
   int strategy_;
+  bool running_;
+  ::google::protobuf::RepeatedPtrField< ::entity::TriggerStatus > triggers_;
   ::google::protobuf::int32 totalopentimes_;
   ::google::protobuf::int32 totalclosetimes_;
   ::google::protobuf::int32 currentposition_;
+  ::google::protobuf::int32 canceltimes_;
   double ar_diff_;
   double ar_longdiff_;
-  ::google::protobuf::int32 canceltimes_;
-  ::google::protobuf::int32 ar_longsize_;
   double ar_shortdiff_;
-  double sc_diff_;
+  ::google::protobuf::int32 ar_longsize_;
   ::google::protobuf::int32 ar_shortsize_;
+  double sc_diff_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(15 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -6198,37 +6318,15 @@ inline void StrategyItem::set_type(entity::StrategyType value) {
   type_ = value;
 }
 
-// required bool Running = 2;
-inline bool StrategyItem::has_running() const {
+// required int32 RetryTimes = 2;
+inline bool StrategyItem::has_retrytimes() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void StrategyItem::set_has_running() {
+inline void StrategyItem::set_has_retrytimes() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void StrategyItem::clear_has_running() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void StrategyItem::clear_running() {
-  running_ = false;
-  clear_has_running();
-}
-inline bool StrategyItem::running() const {
-  return running_;
-}
-inline void StrategyItem::set_running(bool value) {
-  set_has_running();
-  running_ = value;
-}
-
-// required int32 RetryTimes = 3;
-inline bool StrategyItem::has_retrytimes() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void StrategyItem::set_has_retrytimes() {
-  _has_bits_[0] |= 0x00000004u;
-}
 inline void StrategyItem::clear_has_retrytimes() {
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000002u;
 }
 inline void StrategyItem::clear_retrytimes() {
   retrytimes_ = 0;
@@ -6242,15 +6340,15 @@ inline void StrategyItem::set_retrytimes(::google::protobuf::int32 value) {
   retrytimes_ = value;
 }
 
-// required int32 OpenTimeout = 4;
+// required int32 OpenTimeout = 3;
 inline bool StrategyItem::has_opentimeout() const {
-  return (_has_bits_[0] & 0x00000008u) != 0;
+  return (_has_bits_[0] & 0x00000004u) != 0;
 }
 inline void StrategyItem::set_has_opentimeout() {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000004u;
 }
 inline void StrategyItem::clear_has_opentimeout() {
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void StrategyItem::clear_opentimeout() {
   opentimeout_ = 0;
@@ -6264,7 +6362,7 @@ inline void StrategyItem::set_opentimeout(::google::protobuf::int32 value) {
   opentimeout_ = value;
 }
 
-// repeated .entity.TriggerItem Triggers = 5;
+// repeated .entity.TriggerItem Triggers = 4;
 inline int StrategyItem::triggers_size() const {
   return triggers_.size();
 }
@@ -6291,13 +6389,13 @@ StrategyItem::mutable_triggers() {
 
 // optional .entity.PosiDirectionType AR_Side = 101;
 inline bool StrategyItem::has_ar_side() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000010u) != 0;
 }
 inline void StrategyItem::set_has_ar_side() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000010u;
 }
 inline void StrategyItem::clear_has_ar_side() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void StrategyItem::clear_ar_side() {
   ar_side_ = 49;
@@ -6314,13 +6412,13 @@ inline void StrategyItem::set_ar_side(entity::PosiDirectionType value) {
 
 // optional string CP_CloseLeg = 201;
 inline bool StrategyItem::has_cp_closeleg() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void StrategyItem::set_has_cp_closeleg() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void StrategyItem::clear_has_cp_closeleg() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void StrategyItem::clear_cp_closeleg() {
   if (cp_closeleg_ != &::google::protobuf::internal::kEmptyString) {
@@ -6372,13 +6470,13 @@ inline ::std::string* StrategyItem::release_cp_closeleg() {
 
 // optional .entity.PosiDirectionType CP_CloseLegSide = 202;
 inline bool StrategyItem::has_cp_closelegside() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void StrategyItem::set_has_cp_closelegside() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void StrategyItem::clear_has_cp_closelegside() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void StrategyItem::clear_cp_closelegside() {
   cp_closelegside_ = 49;
@@ -6395,13 +6493,13 @@ inline void StrategyItem::set_cp_closelegside(entity::PosiDirectionType value) {
 
 // optional double SC_PriceTick = 301;
 inline bool StrategyItem::has_sc_pricetick() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void StrategyItem::set_has_sc_pricetick() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void StrategyItem::clear_has_sc_pricetick() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void StrategyItem::clear_sc_pricetick() {
   sc_pricetick_ = 0;
@@ -6417,13 +6515,13 @@ inline void StrategyItem::set_sc_pricetick(double value) {
 
 // optional .entity.DirectionDepends SC_CaseLE2Tick = 302;
 inline bool StrategyItem::has_sc_casele2tick() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void StrategyItem::set_has_sc_casele2tick() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void StrategyItem::clear_has_sc_casele2tick() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void StrategyItem::clear_sc_casele2tick() {
   sc_casele2tick_ = 0;
@@ -6440,13 +6538,13 @@ inline void StrategyItem::set_sc_casele2tick(entity::DirectionDepends value) {
 
 // optional .entity.DirectionDepends SC_CaseLE3Tick = 303;
 inline bool StrategyItem::has_sc_casele3tick() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void StrategyItem::set_has_sc_casele3tick() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void StrategyItem::clear_has_sc_casele3tick() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void StrategyItem::clear_sc_casele3tick() {
   sc_casele3tick_ = 0;
@@ -6463,13 +6561,13 @@ inline void StrategyItem::set_sc_casele3tick(entity::DirectionDepends value) {
 
 // optional .entity.DirectionDepends SC_CaseGE4Tick = 304;
 inline bool StrategyItem::has_sc_casege4tick() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void StrategyItem::set_has_sc_casege4tick() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void StrategyItem::clear_has_sc_casege4tick() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void StrategyItem::clear_sc_casege4tick() {
   sc_casege4tick_ = 0;
@@ -6486,13 +6584,13 @@ inline void StrategyItem::set_sc_casege4tick(entity::DirectionDepends value) {
 
 // optional .entity.DirectionDepends SC_CaseNoChange = 305;
 inline bool StrategyItem::has_sc_casenochange() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void StrategyItem::set_has_sc_casenochange() {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void StrategyItem::clear_has_sc_casenochange() {
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void StrategyItem::clear_sc_casenochange() {
   sc_casenochange_ = 0;
@@ -6509,13 +6607,13 @@ inline void StrategyItem::set_sc_casenochange(entity::DirectionDepends value) {
 
 // optional .entity.StopLossCloseMethods SC_StopLossStrategy = 306;
 inline bool StrategyItem::has_sc_stoplossstrategy() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void StrategyItem::set_has_sc_stoplossstrategy() {
-  _has_bits_[0] |= 0x00002000u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void StrategyItem::clear_has_sc_stoplossstrategy() {
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void StrategyItem::clear_sc_stoplossstrategy() {
   sc_stoplossstrategy_ = 0;
@@ -6770,6 +6868,113 @@ inline double TriggerItem::sc_threshold() const {
 inline void TriggerItem::set_sc_threshold(double value) {
   set_has_sc_threshold();
   sc_threshold_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// TriggerStatus
+
+// required .entity.StrategyType Strategy = 1;
+inline bool TriggerStatus::has_strategy() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void TriggerStatus::set_has_strategy() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void TriggerStatus::clear_has_strategy() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void TriggerStatus::clear_strategy() {
+  strategy_ = 0;
+  clear_has_strategy();
+}
+inline entity::StrategyType TriggerStatus::strategy() const {
+  return static_cast< entity::StrategyType >(strategy_);
+}
+inline void TriggerStatus::set_strategy(entity::StrategyType value) {
+  GOOGLE_DCHECK(entity::StrategyType_IsValid(value));
+  set_has_strategy();
+  strategy_ = value;
+}
+
+// required string Name = 2;
+inline bool TriggerStatus::has_name() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void TriggerStatus::set_has_name() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void TriggerStatus::clear_has_name() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void TriggerStatus::clear_name() {
+  if (name_ != &::google::protobuf::internal::kEmptyString) {
+    name_->clear();
+  }
+  clear_has_name();
+}
+inline const ::std::string& TriggerStatus::name() const {
+  return *name_;
+}
+inline void TriggerStatus::set_name(const ::std::string& value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void TriggerStatus::set_name(const char* value) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(value);
+}
+inline void TriggerStatus::set_name(const char* value, size_t size) {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  name_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* TriggerStatus::mutable_name() {
+  set_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    name_ = new ::std::string;
+  }
+  return name_;
+}
+inline ::std::string* TriggerStatus::release_name() {
+  clear_has_name();
+  if (name_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = name_;
+    name_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required bool Enabled = 3;
+inline bool TriggerStatus::has_enabled() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void TriggerStatus::set_has_enabled() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void TriggerStatus::clear_has_enabled() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void TriggerStatus::clear_enabled() {
+  enabled_ = false;
+  clear_has_enabled();
+}
+inline bool TriggerStatus::enabled() const {
+  return enabled_;
+}
+inline void TriggerStatus::set_enabled(bool value) {
+  set_has_enabled();
+  enabled_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7086,15 +7291,62 @@ inline void PortfolioUpdateItem::set_strategy(entity::StrategyType value) {
   strategy_ = value;
 }
 
-// required int32 TotalOpenTimes = 4;
-inline bool PortfolioUpdateItem::has_totalopentimes() const {
+// required bool Running = 4;
+inline bool PortfolioUpdateItem::has_running() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_totalopentimes() {
+inline void PortfolioUpdateItem::set_has_running() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void PortfolioUpdateItem::clear_has_totalopentimes() {
+inline void PortfolioUpdateItem::clear_has_running() {
   _has_bits_[0] &= ~0x00000008u;
+}
+inline void PortfolioUpdateItem::clear_running() {
+  running_ = false;
+  clear_has_running();
+}
+inline bool PortfolioUpdateItem::running() const {
+  return running_;
+}
+inline void PortfolioUpdateItem::set_running(bool value) {
+  set_has_running();
+  running_ = value;
+}
+
+// repeated .entity.TriggerStatus Triggers = 5;
+inline int PortfolioUpdateItem::triggers_size() const {
+  return triggers_.size();
+}
+inline void PortfolioUpdateItem::clear_triggers() {
+  triggers_.Clear();
+}
+inline const ::entity::TriggerStatus& PortfolioUpdateItem::triggers(int index) const {
+  return triggers_.Get(index);
+}
+inline ::entity::TriggerStatus* PortfolioUpdateItem::mutable_triggers(int index) {
+  return triggers_.Mutable(index);
+}
+inline ::entity::TriggerStatus* PortfolioUpdateItem::add_triggers() {
+  return triggers_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::entity::TriggerStatus >&
+PortfolioUpdateItem::triggers() const {
+  return triggers_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::entity::TriggerStatus >*
+PortfolioUpdateItem::mutable_triggers() {
+  return &triggers_;
+}
+
+// required int32 TotalOpenTimes = 6;
+inline bool PortfolioUpdateItem::has_totalopentimes() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_totalopentimes() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void PortfolioUpdateItem::clear_has_totalopentimes() {
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void PortfolioUpdateItem::clear_totalopentimes() {
   totalopentimes_ = 0;
@@ -7108,15 +7360,15 @@ inline void PortfolioUpdateItem::set_totalopentimes(::google::protobuf::int32 va
   totalopentimes_ = value;
 }
 
-// required int32 TotalCloseTimes = 5;
+// required int32 TotalCloseTimes = 7;
 inline bool PortfolioUpdateItem::has_totalclosetimes() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000040u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_totalclosetimes() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000040u;
 }
 inline void PortfolioUpdateItem::clear_has_totalclosetimes() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void PortfolioUpdateItem::clear_totalclosetimes() {
   totalclosetimes_ = 0;
@@ -7130,15 +7382,15 @@ inline void PortfolioUpdateItem::set_totalclosetimes(::google::protobuf::int32 v
   totalclosetimes_ = value;
 }
 
-// required int32 CurrentPosition = 6;
+// required int32 CurrentPosition = 8;
 inline bool PortfolioUpdateItem::has_currentposition() const {
-  return (_has_bits_[0] & 0x00000020u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_currentposition() {
-  _has_bits_[0] |= 0x00000020u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void PortfolioUpdateItem::clear_has_currentposition() {
-  _has_bits_[0] &= ~0x00000020u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void PortfolioUpdateItem::clear_currentposition() {
   currentposition_ = 0;
@@ -7152,15 +7404,15 @@ inline void PortfolioUpdateItem::set_currentposition(::google::protobuf::int32 v
   currentposition_ = value;
 }
 
-// required int32 CancelTimes = 7;
+// required int32 CancelTimes = 9;
 inline bool PortfolioUpdateItem::has_canceltimes() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000100u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_canceltimes() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000100u;
 }
 inline void PortfolioUpdateItem::clear_has_canceltimes() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000100u;
 }
 inline void PortfolioUpdateItem::clear_canceltimes() {
   canceltimes_ = 0;
@@ -7176,13 +7428,13 @@ inline void PortfolioUpdateItem::set_canceltimes(::google::protobuf::int32 value
 
 // optional double AR_Diff = 101;
 inline bool PortfolioUpdateItem::has_ar_diff() const {
-  return (_has_bits_[0] & 0x00000080u) != 0;
+  return (_has_bits_[0] & 0x00000200u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_diff() {
-  _has_bits_[0] |= 0x00000080u;
+  _has_bits_[0] |= 0x00000200u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_diff() {
-  _has_bits_[0] &= ~0x00000080u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void PortfolioUpdateItem::clear_ar_diff() {
   ar_diff_ = 0;
@@ -7198,13 +7450,13 @@ inline void PortfolioUpdateItem::set_ar_diff(double value) {
 
 // optional double AR_LongDiff = 102;
 inline bool PortfolioUpdateItem::has_ar_longdiff() const {
-  return (_has_bits_[0] & 0x00000100u) != 0;
+  return (_has_bits_[0] & 0x00000400u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_longdiff() {
-  _has_bits_[0] |= 0x00000100u;
+  _has_bits_[0] |= 0x00000400u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_longdiff() {
-  _has_bits_[0] &= ~0x00000100u;
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void PortfolioUpdateItem::clear_ar_longdiff() {
   ar_longdiff_ = 0;
@@ -7220,13 +7472,13 @@ inline void PortfolioUpdateItem::set_ar_longdiff(double value) {
 
 // optional double AR_ShortDiff = 103;
 inline bool PortfolioUpdateItem::has_ar_shortdiff() const {
-  return (_has_bits_[0] & 0x00000200u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_shortdiff() {
-  _has_bits_[0] |= 0x00000200u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_shortdiff() {
-  _has_bits_[0] &= ~0x00000200u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void PortfolioUpdateItem::clear_ar_shortdiff() {
   ar_shortdiff_ = 0;
@@ -7242,13 +7494,13 @@ inline void PortfolioUpdateItem::set_ar_shortdiff(double value) {
 
 // optional int32 AR_LongSize = 104;
 inline bool PortfolioUpdateItem::has_ar_longsize() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_longsize() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_longsize() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void PortfolioUpdateItem::clear_ar_longsize() {
   ar_longsize_ = 0;
@@ -7264,13 +7516,13 @@ inline void PortfolioUpdateItem::set_ar_longsize(::google::protobuf::int32 value
 
 // optional int32 AR_ShortSize = 105;
 inline bool PortfolioUpdateItem::has_ar_shortsize() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00002000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_shortsize() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00002000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_shortsize() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00002000u;
 }
 inline void PortfolioUpdateItem::clear_ar_shortsize() {
   ar_shortsize_ = 0;
@@ -7286,13 +7538,13 @@ inline void PortfolioUpdateItem::set_ar_shortsize(::google::protobuf::int32 valu
 
 // optional double SC_Diff = 201;
 inline bool PortfolioUpdateItem::has_sc_diff() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
+  return (_has_bits_[0] & 0x00004000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_sc_diff() {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00004000u;
 }
 inline void PortfolioUpdateItem::clear_has_sc_diff() {
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline void PortfolioUpdateItem::clear_sc_diff() {
   sc_diff_ = 0;

@@ -47,6 +47,7 @@ public:
 
 private:
 	void AddLeg(const entity::LegItem& legItem);
+	void PrepareTriggerUpdate();
 	StrategyPtr CreateStrategy(const entity::StrategyItem& strategyItem);
 	
 	void OnQuoteRecevied(boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote);

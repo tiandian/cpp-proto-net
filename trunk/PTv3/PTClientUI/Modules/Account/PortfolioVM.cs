@@ -603,6 +603,7 @@ namespace PortfolioTrading.Modules.Account
             //AvgCost = item.AvgCost;
 
             //IsRunning = item.Strategies[0].Running;
+            IsRunning = item.StrategyUpdate.Running;
 
             for (int i = 0; i < item.Legs.Count; ++i )
             {

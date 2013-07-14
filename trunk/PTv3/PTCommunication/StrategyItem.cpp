@@ -11,7 +11,6 @@ StrategyItem::StrategyItem(void)
 void StrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 {
 	pNativeStrategyItem->set_type(static_cast<entity::StrategyType>(_type));
-	pNativeStrategyItem->set_running(_running);
 	pNativeStrategyItem->set_retrytimes(_retryTimes);
 
 	for each(TriggerItem ^tr in _triggers)
