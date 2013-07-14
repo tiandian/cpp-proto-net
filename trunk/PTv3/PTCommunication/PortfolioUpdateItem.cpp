@@ -17,6 +17,7 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				pEntity->ar_longsize(),
 				pEntity->ar_shortsize()
 			);
+		break;
 	case StrategyType::CHANGE_POSITION:
 		retStrategyUpdate = gcnew ChangePosiStrategyUpdateItem
 			(
@@ -26,11 +27,13 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				pEntity->ar_longsize(),
 				pEntity->ar_shortsize()
 			);
+		break;
 	case StrategyType::SCALPER:
 		retStrategyUpdate = gcnew ScalperStrategyUpdateItem
 			(
 				pEntity->sc_diff()
 			);
+		break;
 	default:
 		return nullptr;
 	}
