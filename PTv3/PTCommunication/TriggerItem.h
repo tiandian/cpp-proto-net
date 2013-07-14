@@ -143,12 +143,11 @@ public ref class ScalperTriggerItem : TriggerItem
 public:
 	ScalperTriggerItem()
 	{
-		_strategy = StrategyType::SCALPER;
-		_name = gcnew String("ScalperTrigger");
+		init();
 	}
 	ScalperTriggerItem(double threshold)
 	{
-		ScalperTriggerItem();
+		init();
 		_threshold = threshold;
 	}
 
@@ -167,6 +166,12 @@ public:
 	}
 
 private:
+	void init()
+	{
+		_strategy = StrategyType::SCALPER;
+		_name = gcnew String("ScalperTrigger");
+	}
+
 	double _threshold;
 };
 
