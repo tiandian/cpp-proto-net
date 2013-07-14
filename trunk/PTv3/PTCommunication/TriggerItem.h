@@ -13,6 +13,30 @@ public ref class TriggerItem
 public:
 	TriggerItem(void);
 
+	property String^ Name
+	{
+		String^ get()
+		{
+			return _name; 
+		}
+		void set(String^ val)
+		{
+			_name = val;
+		}
+	}
+
+	property bool Enabled
+	{
+		bool get()
+		{
+			return _enabled; 
+		}
+		void set(bool val)
+		{
+			_enabled = val;
+		}
+	}
+
 	virtual void To(entity::TriggerItem* pNativeTriggerItem);
 
 protected:
@@ -24,7 +48,47 @@ protected:
 public ref class ArbitrageTriggerItem : TriggerItem
 {
 public:
-	ArbitrageTriggerItem(){}
+	ArbitrageTriggerItem()
+	{
+		_strategy = StrategyType::ARBITRAGE;
+		_name = gcnew String("ArbitrageTrigger");
+	}
+
+	property CompareCondition Condition
+	{
+		CompareCondition get()
+		{
+			return _condition; 
+		}
+		void set(CompareCondition val)
+		{
+			_condition = val;
+		}
+	}
+
+	property double Threshold
+	{
+		double get()
+		{
+			return _threshold; 
+		}
+		void set(double val)
+		{
+			_threshold = val;
+		}
+	}
+
+	property PosiOffsetFlag Offset
+	{
+		PosiOffsetFlag get()
+		{
+			return _offset; 
+		}
+		void set(PosiOffsetFlag val)
+		{
+			_offset = val;
+		}
+	}
 
 	virtual void To(entity::TriggerItem* pNativeTriggerItem) override;
 
@@ -37,7 +101,35 @@ private:
 public ref class ChangePositionTriggerItem : TriggerItem
 {
 public:
-	ChangePositionTriggerItem(){}
+	ChangePositionTriggerItem()
+	{
+		_strategy = StrategyType::CHANGE_POSITION;
+		_name = gcnew String("ChangePosiTrigger");
+	}
+
+	property CompareCondition Condition
+	{
+		CompareCondition get()
+		{
+			return _condition; 
+		}
+		void set(CompareCondition val)
+		{
+			_condition = val;
+		}
+	}
+
+	property double Threshold
+	{
+		double get()
+		{
+			return _threshold; 
+		}
+		void set(double val)
+		{
+			_threshold = val;
+		}
+	}
 
 	virtual void To(entity::TriggerItem* pNativeTriggerItem) override;
 
@@ -49,11 +141,15 @@ private:
 public ref class ScalperTriggerItem : TriggerItem
 {
 public:
-	ScalperTriggerItem(){}
+	ScalperTriggerItem()
+	{
+		_strategy = StrategyType::SCALPER;
+		_name = gcnew String("ScalperTrigger");
+	}
 	ScalperTriggerItem(double threshold)
 	{
+		ScalperTriggerItem();
 		_threshold = threshold;
-		_name = gcnew String("ScalperTrigger");
 	}
 
 	virtual void To(entity::TriggerItem* pNativeTriggerItem) override;

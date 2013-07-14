@@ -12,6 +12,7 @@ void StrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 {
 	pNativeStrategyItem->set_type(static_cast<entity::StrategyType>(_type));
 	pNativeStrategyItem->set_retrytimes(_retryTimes);
+	pNativeStrategyItem->set_opentimeout(_openTimeout);
 
 	for each(TriggerItem ^tr in _triggers)
 	{

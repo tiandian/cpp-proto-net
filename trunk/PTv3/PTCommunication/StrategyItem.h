@@ -27,18 +27,6 @@ public:
 		}
 	}
 
-	property bool Running
-	{
-		bool get()
-		{
-			return _running; 
-		}
-		void set(bool val)
-		{
-			_running = val;
-		}
-	}
-
 	property List<TriggerItem^>^ Triggers
 	{
 		List<TriggerItem^>^ get()
@@ -47,12 +35,25 @@ public:
 		}	
 	}
 
+	property int OpenTimeout
+	{
+		int get()
+		{
+			return _openTimeout; 
+		}
+		void set(int val)
+		{
+			_openTimeout = val;
+		}
+	}
+
 	virtual void To(entity::StrategyItem* pNativeStrategyItem);
 
 protected:
 	StrategyType _type;
-	bool _running;
 	int _retryTimes;
+	int _openTimeout;
+
 	List<TriggerItem^> ^_triggers;
 };
 
@@ -149,18 +150,6 @@ public:
 		}
 	}
 
-	property int OpenTimeout
-	{
-		int get()
-		{
-			return _openTimeout; 
-		}
-		void set(int val)
-		{
-			_openTimeout = val;
-		}
-	}
-
 	property StopLossCloseMethods StopLossStrategy
 	{
 		StopLossCloseMethods get()
@@ -179,7 +168,6 @@ private:
 	DirectionDepends _caseLE3Tick;
 	DirectionDepends _caseGE4Tick;
 	DirectionDepends _caseNoChange;
-	int _openTimeout;
 	StopLossCloseMethods _stopLossStrategy;
 };
 
