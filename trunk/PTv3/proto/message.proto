@@ -109,8 +109,8 @@ enum StrategyType
 message StrategyItem
 {
 	required StrategyType Type = 1;
-	required bool Running = 2;
-	required int32 RetryTimes = 3;
+	required int32 RetryTimes = 2;
+	required int32 OpenTimeout = 3;
 	repeated TriggerItem Triggers = 4;
 
 	// Arbitrage
@@ -126,8 +126,7 @@ message StrategyItem
 	optional DirectionDepends SC_CaseLE3Tick = 303;
 	optional DirectionDepends SC_CaseGE4Tick = 304;
 	optional DirectionDepends SC_CaseNoChange = 305;
-	optional int32 SC_OpenTimeout = 306;
-	optional StopLossCloseMethods SC_StopLossStrategy = 307;
+	optional StopLossCloseMethods SC_StopLossStrategy = 306;
 
 }
 
@@ -136,7 +135,7 @@ message TriggerItem
 	required StrategyType Strategy = 1;
 	required string Name = 2;
 	required bool Enabled = 3;
-
+	
 	// Arbitrage
 	optional CompareCondition AR_Condition = 101;
 	optional double AR_Threshold = 102;
@@ -149,6 +148,13 @@ message TriggerItem
 	// Scalper
 	optional double SC_Threshold = 301;
 	
+}
+
+message TriggerStatus
+{
+	required StrategyType Strategy = 1;
+	required string Name = 2;
+	required bool Enabled = 3;
 }
 
 message PortfolioItem
@@ -167,11 +173,13 @@ message PortfolioUpdateItem
 	required string ID = 1;
 	repeated LegUpdateItem Legs = 2;
 	required StrategyType Strategy = 3;
+	required bool Running = 4;
+	repeated TriggerStatus Triggers = 5;
 	
-	required int32 TotalOpenTimes = 4;
-	required int32 TotalCloseTimes = 5;
-	required int32 CurrentPosition = 6;
-	required int32 CancelTimes = 7;
+	required int32 TotalOpenTimes = 6;
+	required int32 TotalCloseTimes = 7;
+	required int32 CurrentPosition = 8;
+	required int32 CancelTimes = 9;
 
 	// Followings are strategy update items
 	// Arbitrage
