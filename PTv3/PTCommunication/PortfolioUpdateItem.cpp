@@ -5,10 +5,11 @@ namespace PTEntity {
 
 StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::PortfolioUpdateItem* pEntity)
 {
+	StrategyUpdateItem^ retStrategyUpdate = nullptr;
 	switch(straType)
 	{
 	case StrategyType::ARBITRAGE:
-		return gcnew ArbitrageStrategyUpdateItem
+		retStrategyUpdate = gcnew ArbitrageStrategyUpdateItem
 			(
 				pEntity->ar_diff(),
 				pEntity->ar_longdiff(),
@@ -17,7 +18,7 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				pEntity->ar_shortsize()
 			);
 	case StrategyType::CHANGE_POSITION:
-		return gcnew ChangePosiStrategyUpdateItem
+		retStrategyUpdate = gcnew ChangePosiStrategyUpdateItem
 			(
 				pEntity->ar_diff(),
 				pEntity->ar_longdiff(),
@@ -26,13 +27,28 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				pEntity->ar_shortsize()
 			);
 	case StrategyType::SCALPER:
-		return gcnew ScalperStrategyUpdateItem
+		retStrategyUpdate = gcnew ScalperStrategyUpdateItem
 			(
 				pEntity->sc_diff()
 			);
 	default:
 		return nullptr;
 	}
+
+	retStrategyUpdate->SetRunning(pEntity->running());
+
+	List<TriggerStatusItem^> ^triggerList = gcnew List<TriggerStatusItem^>();
+	for(int i = 0; i < pEntity->triggers_size(); ++i)
+	{
+		const entity::TriggerStatus& triggerEntity = pEntity->triggers(i);
+		String ^triggerName = Marshal::PtrToStringAnsi((IntPtr) (char *) triggerEntity.name().c_str());
+		TriggerStatusItem ^ triggerStatus = gcnew TriggerStatusItem(triggerName, triggerEntity.enabled());
+		triggerList->Add(triggerStatus);
+	}
+
+	retStrategyUpdate->SetTriggers(triggerList->ToArray());
+
+	return retStrategyUpdate;
 }
 
 PortfolioUpdateItem::PortfolioUpdateItem(entity::PortfolioUpdateItem* pEntity)

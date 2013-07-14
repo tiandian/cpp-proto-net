@@ -6,6 +6,7 @@
 #include "entity/trade.pb.h"
 
 #include <boost/chrono.hpp>
+#include <boost/atomic.hpp>
 
 class CPortfolio;
 
@@ -17,12 +18,17 @@ public:
 
 	int RetryTimes(){ return m_retryTimes; }
 	int OpenTimeout(){ return m_openTimeout; }
+	const vector<TriggerPtr>& Triggers() { return m_triggers; }
 
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
 	
 	virtual int OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder);
 	virtual int OnPortfolioRemovePosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder);
+
+	bool IsRunning(){ return m_running.load(boost::memory_order_acquire); }
+	void Start(){ m_running.store(true, boost::memory_order_release); }
+	void Stop(){ m_running.store(false, boost::memory_order_release); }
 
 protected:
 
@@ -35,10 +41,11 @@ protected:
 
 	vector<TriggerPtr> m_triggers;
 	entity::StrategyType m_type;
-	bool m_running;
+	boost::atomic<bool> m_running;
 	int m_retryTimes;
 	int m_openTimeout;
 };
 
 typedef boost::shared_ptr<CStrategy> StrategyPtr;
+typedef vector<TriggerPtr>::iterator TriggerIter;
 

@@ -45,7 +45,7 @@ void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boos
 	m_bid = pQuote->bid();
 	m_bidSize = pQuote->bid_size();
 
-	if(m_askSize > 0 && m_bidSize > 0)
+	if(m_askSize > 0 && m_bidSize > 0 && IsRunning())
 	{
 		CPortfolioOrderPlacer* pOrderPlacer = pPortfolio->OrderPlacer();
 		if(!(pOrderPlacer->IsWorking()))
@@ -97,6 +97,7 @@ void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boos
 
 void CScalperStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
 {
+	CStrategy::GetStrategyUpdate(pPortfUpdateItem);
 	pPortfUpdateItem->set_sc_diff(m_diff);
 }
 

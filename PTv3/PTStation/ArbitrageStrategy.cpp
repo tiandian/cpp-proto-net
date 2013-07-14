@@ -91,10 +91,33 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	m_longDiffSize = CalcSize(vecLegs, LONG_DIFF);
 	m_shortDiff = CalcDiff(vecLegs, SHORT_DIFF);
 	m_shortDiffSize = CalcSize(vecLegs, SHORT_DIFF);
+
+	if(IsRunning())
+	{
+
+		for( TriggerIter iter = m_triggers.begin(); iter != m_triggers.end(); ++iter)
+		{
+			if((*iter)->IsEnabled())
+			{
+				double diffToTest = m_side == entity::LONG ? m_longDiff : m_shortDiff;
+				if((*iter)->Test(diffToTest))
+				{
+					CPortfolioOrderPlacer* orderPlacer = pPortfolio->OrderPlacer();
+					// To do
+					// orderPlacer->Run();
+					// if one is triggered, don't test other triggers any more
+					break;
+				}
+			}
+		}
+	}
+	
 }
 
 void CArbitrageStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
 {
+	CStrategy::GetStrategyUpdate(pPortfUpdateItem);
+
 	pPortfUpdateItem->set_ar_diff(m_lastDiff);
 	pPortfUpdateItem->set_ar_longdiff(m_longDiff);
 	pPortfUpdateItem->set_ar_longsize(m_longDiffSize);
