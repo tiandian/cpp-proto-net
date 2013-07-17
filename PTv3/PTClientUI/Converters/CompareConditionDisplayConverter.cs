@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 using PortfolioTrading.Modules.Portfolio.Strategy;
+using PTEntity;
 
 namespace PortfolioTrading.Converters
 {

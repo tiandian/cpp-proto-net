@@ -38,152 +38,72 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             set;
         }
 
-        protected override void OnApplySetting()
-        {
-            ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)CurrentPortfolio.StrategySetting;
-
-            strategySettings.Direction = this.PositionDirection;
-            strategySettings.OpenCondition = this.OpenCondition;
-            strategySettings.OpenThreshold = this.OpenThreshold;
-            strategySettings.StopGainCondition = this.StopGainCondition;
-            strategySettings.StopGainThreshold = this.StopGainThreshold;
-            strategySettings.StopLossCondition = this.StopLossCondition;
-            strategySettings.StopLossThreshold = this.StopLossThreshold;
-
-            base.OnApplySetting();
-        }
-
         private bool _isInitializing = false;
 
-        protected override void OnSetPortfolio(PortfolioVM portfVm)
+        protected override StrategySetting CreateSettings()
         {
-           
-            ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)portfVm.StrategySetting;
+            _innerSettings = new ArbitrageStrategySetting();
+            _innerSettings.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(settings_PropertyChanged);
+            return _innerSettings;
+        }
+
+        private ArbitrageStrategySetting _innerSettings;
+
+        void settings_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "PositionDirection")
+            {
+                if (_innerSettings.Direction == PTEntity.PosiDirectionType.LONG)
+                {
+                    OpenCondItemsSource = LessItemsSource;
+                    RaisePropertyChanged("OpenCondItemsSource");
+
+                    if (!_isInitializing)
+                    {
+                        _innerSettings.OpenCondition = PTEntity.CompareCondition.LESS_EQUAL_THAN;
+                        CalcPossibleGain();
+                        CalcPossibleLoss();
+                    }
+                }
+                else if (_innerSettings.Direction == PTEntity.PosiDirectionType.SHORT)
+                {
+                    OpenCondItemsSource = GreaterItemsSource;
+                    RaisePropertyChanged("OpenCondItemsSource");
+
+                    if (!_isInitializing)
+                    {
+                        _innerSettings.OpenCondition = PTEntity.CompareCondition.GREATER_EQUAL_THAN;
+                        CalcPossibleGain();
+                        CalcPossibleLoss();
+                    }
+                }
+            }
+            else if (e.PropertyName == "OpenThreshold")
+            {
+                CalcPossibleGain();
+                CalcPossibleLoss();
+            }
+            else if (e.PropertyName == "StopGainThreshold")
+            {
+                CalcPossibleGain();
+            }
+            else if (e.PropertyName == "StopLossThreshold")
+            {
+                CalcPossibleLoss();
+            }
+        }
+
+        protected override void BeforeCopySettings()
+        {
             _isInitializing = true;
-            this.PositionDirection = strategySettings.Direction;
-            this.OpenCondition = strategySettings.OpenCondition;
-            this.OpenThreshold = strategySettings.OpenThreshold;
-            this.StopGainCondition = strategySettings.StopGainCondition;
-            this.StopGainThreshold = strategySettings.StopGainThreshold;
-            this.StopLossCondition = strategySettings.StopLossCondition;
-            this.StopLossThreshold = strategySettings.StopLossThreshold;
+            base.BeforeCopySettings();
+        }
+
+        protected override void AfterCopySettings()
+        {
             _isInitializing = false;
+            base.AfterCopySettings();
         }
-        
-        
-
-        #region PositionDirection
-        private entity.PosiDirectionType _direction;
-
-        public entity.PosiDirectionType PositionDirection
-        {
-            get { return _direction; }
-            set
-            {
-                if (_direction != value)
-                {
-                    _direction = value;
-                    RaisePropertyChanged("PositionDirection");
-
-                    if (_direction == entity.PosiDirectionType.LONG)
-                    {
-                        OpenCondItemsSource = LessItemsSource;
-                        RaisePropertyChanged("OpenCondItemsSource");
-
-                        if (!_isInitializing)
-                        {
-                            OpenCondition = Strategy.CompareCondition.LESS_EQUAL_THAN;
-                            CalcPossibleGain();
-                            CalcPossibleLoss();
-                        }
-                    }
-                    else if (_direction == entity.PosiDirectionType.SHORT)
-                    {
-                        OpenCondItemsSource = GreaterItemsSource;
-                        RaisePropertyChanged("OpenCondItemsSource");
-
-                        if (!_isInitializing)
-                        {
-                            OpenCondition = Strategy.CompareCondition.GREATER_EQUAL_THAN;
-                            CalcPossibleGain();
-                            CalcPossibleLoss();
-                        }
-                    }
-                }
-            }
-        }
-        #endregion
-
-        #region OpenCondition
-        private CompareCondition _openCond;
-
-        public CompareCondition OpenCondition
-        {
-            get { return _openCond; }
-            set
-            {
-                if (_openCond != value)
-                {
-                    _openCond = value;
-                    RaisePropertyChanged("OpenCondition");
-                }
-            }
-        }
-        #endregion
-
-        #region OpenThreshold
-        private double _openThreshold;
-
-        public double OpenThreshold
-        {
-            get { return _openThreshold; }
-            set
-            {
-                if (_openThreshold != value)
-                {
-                    _openThreshold = value;
-                    RaisePropertyChanged("OpenThreshold");
-                    CalcPossibleGain();
-                    CalcPossibleLoss();
-                }
-            }
-        }
-        #endregion
-
-        #region StopGainCondition
-        private CompareCondition _stopGainCond;
-
-        public CompareCondition StopGainCondition
-        {
-            get { return _stopGainCond; }
-            set
-            {
-                if (_stopGainCond != value)
-                {
-                    _stopGainCond = value;
-                    RaisePropertyChanged("StopGainCondition");
-                }
-            }
-        }
-        #endregion
-
-        #region StopGainThreshold
-        private double _stopGainThreshold;
-
-        public double StopGainThreshold
-        {
-            get { return _stopGainThreshold; }
-            set
-            {
-                if (_stopGainThreshold != value)
-                {
-                    _stopGainThreshold = value;
-                    RaisePropertyChanged("StopGainThreshold");
-                    CalcPossibleGain();
-                }
-            }
-        }
-        #endregion
 
         #region PossibleGain
         private decimal _possibleGain;
@@ -202,41 +122,6 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
         
-        #region StopLossCondition
-        private CompareCondition _stopLossCond;
-
-        public CompareCondition StopLossCondition
-        {
-            get { return _stopLossCond; }
-            set
-            {
-                if (_stopLossCond != value)
-                {
-                    _stopLossCond = value;
-                    RaisePropertyChanged("StopLossCondition");
-                }
-            }
-        }
-        #endregion
-
-        #region StopLossThreshold
-        private double _stopLossThreshold;
-
-        public double StopLossThreshold
-        {
-            get { return _stopLossThreshold; }
-            set
-            {
-                if (_stopLossThreshold != value)
-                {
-                    _stopLossThreshold = value;
-                    RaisePropertyChanged("StopLossThreshold");
-                    CalcPossibleLoss();
-                }
-            }
-        }
-        #endregion
-
         #region PossibleLoss
         private decimal _possibleLoss;
 
@@ -257,33 +142,33 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         private void CalcPossibleGain()
         {
             decimal stopGainVal;
-            if (PositionDirection == entity.PosiDirectionType.LONG)
-                stopGainVal = (decimal)OpenThreshold + (decimal)StopGainThreshold;
+            if (_innerSettings.Direction == PTEntity.PosiDirectionType.LONG)
+                stopGainVal = (decimal)_innerSettings.OpenThreshold + (decimal)_innerSettings.StopGainThreshold;
             else
-                stopGainVal = (decimal)OpenThreshold - (decimal)StopGainThreshold;
+                stopGainVal = (decimal)_innerSettings.OpenThreshold - (decimal)_innerSettings.StopGainThreshold;
             EstimatedStopGainValue = stopGainVal;
         }
 
         private void CalcPossibleLoss()
         {
             decimal stopLossVal;
-            if (PositionDirection == entity.PosiDirectionType.LONG)
-                stopLossVal = (decimal)OpenThreshold - (decimal)StopLossThreshold;
+            if (_innerSettings.Direction == PTEntity.PosiDirectionType.LONG)
+                stopLossVal = (decimal)_innerSettings.OpenThreshold - (decimal)_innerSettings.StopLossThreshold;
             else
-                stopLossVal = (decimal)OpenThreshold + (decimal)StopLossThreshold;
+                stopLossVal = (decimal)_innerSettings.OpenThreshold + (decimal)_innerSettings.StopLossThreshold;
             EstimatedStopLossValue = stopLossVal;
         }
     }
 
     public class DirectionItem
     {
-        public entity.PosiDirectionType Direction { get; set; }
+        public PTEntity.PosiDirectionType Direction { get; set; }
         public string DisplayText { get; set; }
     }
 
     public class CompareCondItem
     {
-        public CompareCondition Condition { get; set; }
+        public PTEntity.CompareCondition Condition { get; set; }
         public string DisplayText { get; set; }
     }
 }

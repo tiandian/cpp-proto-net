@@ -27,7 +27,7 @@
                                 <Button DockPanel.Dock="Right"
                                         CommandParameter="{Binding Data}">
                                     <Button.Style>
-                                        <Style TargetType="Button">
+                                        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
                                             <Setter Property="Command" Value="{Binding Data.ConnectCommand}"/>
                                             <Setter Property="Content" Value="连接"/>
                                             <Setter Property="Visibility" Value="Hidden"/>

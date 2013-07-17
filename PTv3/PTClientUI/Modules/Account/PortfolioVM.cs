@@ -742,10 +742,10 @@ namespace PortfolioTrading.Modules.Account
                 _accountVm.PublishChanged();
         }
 
-        public void ApplyStrategySettings()
+        public void ApplyStrategySettings(StrategySetting settings)
         {
-            _accountVm.Host.PortfApplyStrategySettings(this.Id,
-                StrategySetting.Name, StrategySetting.Serialize());
+            this.StrategySetting.CopyFrom(settings);
+            _accountVm.Host.PortfApplyStrategySettings(this.Id, StrategySetting.GetEntity());
 
             _accountVm.PublishChanged();
         }
