@@ -8,7 +8,7 @@ using PortfolioTrading.Modules.Account;
 
 namespace PortfolioTrading.Modules.Portfolio.Strategy
 {
-    public class StrategySettingVM : NotificationObject
+    public abstract class StrategySettingVM : NotificationObject
     {
         private List<DirectionItem> _directionItems = new List<DirectionItem>();
         private List<CompareCondItem> _greaterCondItems = new List<CompareCondItem>();
@@ -21,49 +21,50 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             _directionItems.Add(new DirectionItem
             {
-                Direction = entity.PosiDirectionType.LONG,
+                Direction = PTEntity.PosiDirectionType.LONG,
                 DisplayText = "多头"
             });
 
             _directionItems.Add(new DirectionItem
             {
-                Direction = entity.PosiDirectionType.SHORT,
+                Direction = PTEntity.PosiDirectionType.SHORT,
                 DisplayText = "空头"
             });
 
             _greaterCondItems.Add(new CompareCondItem
             {
-                Condition = CompareCondition.GREATER_EQUAL_THAN,
+                Condition = PTEntity.CompareCondition.GREATER_EQUAL_THAN,
                 DisplayText = "大于等于"
             });
 
             _greaterCondItems.Add(new CompareCondItem
             {
-                Condition = CompareCondition.GREATER_THAN,
+                Condition = PTEntity.CompareCondition.GREATER_THAN,
                 DisplayText = "大于"
             });
 
             _lessCondItems.Add(new CompareCondItem
             {
-                Condition = CompareCondition.LESS_EQUAL_THAN,
+                Condition = PTEntity.CompareCondition.LESS_EQUAL_THAN,
                 DisplayText = "小于等于"
             });
 
             _lessCondItems.Add(new CompareCondItem
             {
-                Condition = CompareCondition.LESS_THAN,
+                Condition = PTEntity.CompareCondition.LESS_THAN,
                 DisplayText = "小于"
             });
 
             ApplyCommand = new DelegateCommand(OnApplySetting);
             ResetCommand = new DelegateCommand(OnResetSetting);
 
-            this.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(StrategySettingVM_PropertyChanged);
+            this._settings = CreateSettings();
+            this._settings.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(StrategySettingVM_PropertyChanged);
         }
 
         void StrategySettingVM_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (!isSettingPortfolio && e.PropertyName != "IsDirty")
+            if (!isSettingPortfolio)
             {
                 IsDirty = true;
             }
@@ -152,6 +153,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region Settings
+        private StrategySetting _settings;
+
+        public StrategySetting Settings
+        {
+            get { return _settings; }
+            set
+            {
+                if (_settings != value)
+                {
+                    _settings = value;
+                    RaisePropertyChanged("Settings");
+                }
+            }
+        }
+        #endregion
+
         #region IsDirty
         private bool _isDirty;
 
@@ -169,10 +187,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        protected abstract StrategySetting CreateSettings();
 
         protected virtual void OnApplySetting()
         {
-            CurrentPortfolio.ApplyStrategySettings();
+            CurrentPortfolio.ApplyStrategySettings(Settings);
             IsDirty = false;
         }
 
@@ -186,32 +205,28 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         public void SetPortfolio(PortfolioVM portfVm)
         {
-            isSettingPortfolio = true;
-
             this.AccountId = portfVm.AccountId;
             this.PortfolioID = portfVm.Id;
-            this.StrategyType = GetStrategyDisplayName(portfVm.StrategySetting.Name);
-
-            OnSetPortfolio(portfVm);
-            
+            this.StrategyType = StrategySetting.GetDisplayStrategyName(portfVm.StrategySetting.Name);
             this.CurrentPortfolio = portfVm;
-
-            isSettingPortfolio = false;
+            BeforeCopySettings();
+            this.Settings.CopyFrom(portfVm.StrategySetting);
+            AfterCopySettings();
+            OnSetPortfolio(portfVm);
         }
 
-        protected virtual void OnSetPortfolio(PortfolioVM portfVm)
-        { }
-
-        private static string GetStrategyDisplayName(string name)
+        protected virtual void OnSetPortfolio(Account.PortfolioVM portfVm)
         {
-            if (name == StrategySetting.ArbitrageStrategyName)
-                return "套利";
-            else if (name == StrategySetting.ChangePositionStrategyName)
-                return "移仓";
-            else if (name == StrategySetting.ScalperStrategyName)
-                return "高频[抢帽]";
-            else
-                return "未知";
+        }
+
+        protected virtual void BeforeCopySettings()
+        {
+            isSettingPortfolio = true;
+        }
+
+        protected virtual void AfterCopySettings()
+        {
+            isSettingPortfolio = false;
         }
     }
 }

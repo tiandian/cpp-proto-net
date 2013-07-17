@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
 using System.Xml.Linq;
 using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Portfolio.Strategy
 {
-    public class ChangePositionSetting : StrategySetting, INotifyPropertyChanged
+    public class ChangePositionSetting : StrategySetting
     {
         #region CloseLeg
         private string _closeLeg;
@@ -45,9 +44,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region TriggerCondition
-        private CompareCondition _triggerCond;
+        private PTEntity.CompareCondition _triggerCond;
 
-        public CompareCondition TriggerCondition
+        public PTEntity.CompareCondition TriggerCondition
         {
             get { return _triggerCond; }
             set
@@ -78,15 +77,10 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propName)
+        public ChangePositionSetting()
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
+            TriggerCondition = PTEntity.CompareCondition.GREATER_EQUAL_THAN;
+            Threshold = 100;
         }
 
         public override string Name
@@ -105,15 +99,57 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             return elem.ToString();
         }
 
-        public override byte[] Serialize()
+        public override void Load(string xmlText)
         {
-            entity.ChangePosiStrategySettings settings = new entity.ChangePosiStrategySettings();
+            XElement elem = XElement.Parse(xmlText);
+
+            XAttribute attr = elem.Attribute("closeLeg");
+            if (attr != null)
+                CloseLeg = attr.Value;
+
+            attr = elem.Attribute("side");
+            if (attr != null)
+                CloseLegSide = (PTEntity.PosiDirectionType)Enum.Parse(typeof(PTEntity.PosiDirectionType), attr.Value);
+
+            attr = elem.Attribute("triggerCondition");
+            if (attr != null)
+            {
+                TriggerCondition = (PTEntity.CompareCondition)Enum.Parse(typeof(PTEntity.CompareCondition), attr.Value);
+            }
+
+            attr = elem.Attribute("threshold");
+            if (attr != null)
+            {
+                Threshold = double.Parse(attr.Value);
+            }            
+        }
+
+        public override PTEntity.StrategyItem GetEntity()
+        {
+            PTEntity.ChangePositionStrategyItem strategyItem = new PTEntity.ChangePositionStrategyItem();
+            strategyItem.OpenTimeout = 200;
+            strategyItem.RetryTimes = 0;
+            /* TODO
             settings.CloseLeg = CloseLeg;
             settings.CloseLegSide = (entity.PosiDirectionType)CloseLegSide;
-            settings.TriggerCondition = (entity.CompareCondition)TriggerCondition;
-            settings.Threshold = Threshold;
+            */
+            PTEntity.ChangePositionTriggerItem openTrigger = new PTEntity.ChangePositionTriggerItem()
+            {
+                Condition = TriggerCondition,
+                Threshold = Threshold,
+                Enabled = true
+            };
+            strategyItem.Triggers.Add(openTrigger);
+            return strategyItem;
+        }
 
-            return DataTranslater.Serialize<entity.ChangePosiStrategySettings>(settings);
+        public override void CopyFrom(StrategySetting settings)
+        {
+            ChangePositionSetting strategySettings = (ChangePositionSetting)settings;
+            this.CloseLeg = strategySettings.CloseLeg;
+            this.CloseLegSide = strategySettings.CloseLegSide;
+            this.TriggerCondition = strategySettings.TriggerCondition;
+            this.Threshold = strategySettings.Threshold;
         }
     }
 }

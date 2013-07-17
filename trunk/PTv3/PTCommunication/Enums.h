@@ -53,7 +53,7 @@ namespace PTEntity {
 		BASED_ON_INPUT_LIMIT = 1
 	};
 
-	public enum CompareCondition : int
+	public enum class CompareCondition : int
 	{
 		GREATER_THAN = 0,
 		GREATER_EQUAL_THAN = 1,
@@ -61,7 +61,7 @@ namespace PTEntity {
 		LESS_EQUAL_THAN = 3
 	};
 
-	public enum PosiOffsetFlag : int
+	public enum class PosiOffsetFlag : int
 	{
 		OPEN = 0,
 		CLOSE = 1

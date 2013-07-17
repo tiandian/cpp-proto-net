@@ -203,6 +203,11 @@ namespace PortfolioTrading.Infrastructure
             //byte[] ret_data = Request("ApplyStrategySettings", param_data);
         }
 
+        public void PortfApplyStrategySettings(string portfId, PTEntity.StrategyItem strategyItem)
+        {
+
+        }
+
         //public void PortfSetPreferLeg(string portfId, string legId, )
 
         public trade.AccountInfo QueryAccountInfo()

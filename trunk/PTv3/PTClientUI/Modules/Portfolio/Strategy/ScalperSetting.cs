@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.ComponentModel;
 using System.Xml.Linq;
 using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Portfolio.Strategy
 {
-    public class ScalperSetting : StrategySetting, INotifyPropertyChanged
+    public class ScalperSetting : StrategySetting
     {
         #region Threshold
         private double _diff;
@@ -45,9 +44,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region CaseLE2Tick
-        private entity.DirectionDepends _caseLE2Tick;
+        private PTEntity.DirectionDepends _caseLE2Tick;
 
-        public entity.DirectionDepends CaseLE2Tick
+        public PTEntity.DirectionDepends CaseLE2Tick
         {
             get { return _caseLE2Tick; }
             set
@@ -62,9 +61,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region CaseLE3Tick
-        private entity.DirectionDepends _caseLE3Tick;
+        private PTEntity.DirectionDepends _caseLE3Tick;
 
-        public entity.DirectionDepends CaseLE3Tick
+        public PTEntity.DirectionDepends CaseLE3Tick
         {
             get { return _caseLE3Tick; }
             set
@@ -79,9 +78,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region CaseGE4Tick
-        private entity.DirectionDepends _caseGE4Tick;
+        private PTEntity.DirectionDepends _caseGE4Tick;
 
-        public entity.DirectionDepends CaseGE4Tick
+        public PTEntity.DirectionDepends CaseGE4Tick
         {
             get { return _caseGE4Tick; }
             set
@@ -96,9 +95,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region CaseNoChange
-        private entity.DirectionDepends _caseNoChange;
+        private PTEntity.DirectionDepends _caseNoChange;
 
-        public entity.DirectionDepends CaseNoChange
+        public PTEntity.DirectionDepends CaseNoChange
         {
             get { return _caseNoChange; }
             set
@@ -113,9 +112,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region StopLossCloseMethod
-        private entity.StopLossCloseMethods _closeMethod;
+        private PTEntity.StopLossCloseMethods _closeMethod;
 
-        public entity.StopLossCloseMethods StopLossCloseMethod
+        public PTEntity.StopLossCloseMethods StopLossCloseMethod
         {
             get { return _closeMethod; }
             set
@@ -163,6 +162,19 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        public ScalperSetting()
+        {
+            Threshold = 0;
+            PriceTick = 0.2;
+            CaseLE2Tick = PTEntity.DirectionDepends.ON_SMALL_SIZE;
+            CaseLE3Tick = PTEntity.DirectionDepends.ON_BIG_SIZE;
+            CaseGE4Tick = PTEntity.DirectionDepends.ON_SMALL_CHANGE;
+            CaseNoChange = PTEntity.DirectionDepends.ON_BIG_SIZE;
+            StopLossCloseMethod = PTEntity.StopLossCloseMethods.BASED_ON_NEXT_QUOTE;
+            RetryTimes = 8;
+            OpenTimeout = 100;
+        }
+
 
         public override string Name
         {
@@ -185,46 +197,85 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             return elem.ToString();
         }
 
-        public override byte[] Serialize()
+        public override void Load(string xmlText)
         {
-            entity.ScalperSettings setting = new entity.ScalperSettings();
-            setting.Threshold = Threshold;
-            setting.PriceTick = PriceTick;
-            setting.CaseGE4Tick = CaseGE4Tick;
-            setting.CaseLE2Tick = CaseLE2Tick;
-            setting.CaseLE3Tick = CaseLE3Tick;
-            setting.CaseNoChange = CaseNoChange;
-            setting.StopLossStrategy = StopLossCloseMethod;
-            setting.RetryTimes = RetryTimes;
-            setting.OpenTimeout = OpenTimeout;
-            return DataTranslater.Serialize(setting);
+            XElement elem = XElement.Parse(xmlText);
+            XAttribute attr = elem.Attribute("threshold");
+            if (attr != null)
+            {
+                Threshold = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("prickTick");
+            if (attr != null)
+            {
+                PriceTick = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("caseLE2Tick");
+            if (attr != null)
+            {
+                CaseLE2Tick = (PTEntity.DirectionDepends)Enum.Parse(typeof(PTEntity.DirectionDepends), attr.Value);
+            }
+            attr = elem.Attribute("caseLE3Tick");
+            if (attr != null)
+            {
+                CaseLE3Tick = (PTEntity.DirectionDepends)Enum.Parse(typeof(PTEntity.DirectionDepends), attr.Value);
+            }
+            attr = elem.Attribute("caseGE4Tick");
+            if (attr != null)
+            {
+                CaseGE4Tick = (PTEntity.DirectionDepends)Enum.Parse(typeof(PTEntity.DirectionDepends), attr.Value);
+            }
+            attr = elem.Attribute("caseNoChange");
+            if (attr != null)
+            {
+                CaseNoChange = (PTEntity.DirectionDepends)Enum.Parse(typeof(PTEntity.DirectionDepends), attr.Value);
+            }
+            attr = elem.Attribute("stopLossCloseStrategy");
+            if (attr != null)
+            {
+                StopLossCloseMethod = (PTEntity.StopLossCloseMethods)Enum.Parse(typeof(PTEntity.StopLossCloseMethods), attr.Value);
+            }
+            attr = elem.Attribute("retryTimes");
+            if (attr != null)
+            {
+                RetryTimes = int.Parse(attr.Value);
+            }
+            attr = elem.Attribute("openTimeout");
+            if (attr != null)
+            {
+                OpenTimeout = int.Parse(attr.Value);
+            }
         }
 
         public override PTEntity.StrategyItem GetEntity()
         {
             PTEntity.ScalperStrategyItem scalperStrategy = new PTEntity.ScalperStrategyItem();
             scalperStrategy.PriceTick = PriceTick;
-            scalperStrategy.CaseLE2Tick = (PTEntity.DirectionDepends)CaseLE2Tick;
-            scalperStrategy.CaseLE3Tick = (PTEntity.DirectionDepends)CaseLE3Tick;
-            scalperStrategy.CaseGE4Tick = (PTEntity.DirectionDepends)CaseGE4Tick;
-            scalperStrategy.CaseNoChange = (PTEntity.DirectionDepends)CaseNoChange;
+            scalperStrategy.CaseLE2Tick = CaseLE2Tick;
+            scalperStrategy.CaseLE3Tick = CaseLE3Tick;
+            scalperStrategy.CaseGE4Tick = CaseGE4Tick;
+            scalperStrategy.CaseNoChange = CaseNoChange;
             scalperStrategy.OpenTimeout = OpenTimeout;
             scalperStrategy.RetryTimes = RetryTimes;
-            scalperStrategy.StopLossStrategy = (PTEntity.StopLossCloseMethods)StopLossCloseMethod;
+            scalperStrategy.StopLossStrategy = StopLossCloseMethod;
 
             scalperStrategy.Triggers.Add(new PTEntity.ScalperTriggerItem(Threshold));
 
             return scalperStrategy;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propName)
+        public override void CopyFrom(StrategySetting settings)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
+            ScalperSetting strategySettings = (ScalperSetting)settings;
+            Threshold = strategySettings.Threshold;
+            PriceTick = strategySettings.PriceTick;
+            CaseLE2Tick = strategySettings.CaseLE2Tick;
+            CaseLE3Tick = strategySettings.CaseLE3Tick;
+            CaseGE4Tick = strategySettings.CaseGE4Tick;
+            CaseNoChange = strategySettings.CaseNoChange;
+            StopLossCloseMethod = strategySettings.StopLossCloseMethod;
+            RetryTimes = strategySettings.RetryTimes;
+            OpenTimeout = strategySettings.OpenTimeout;
         }
     }
 }

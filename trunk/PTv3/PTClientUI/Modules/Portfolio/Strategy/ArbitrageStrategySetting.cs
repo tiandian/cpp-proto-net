@@ -4,25 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 using Microsoft.Practices.Prism.ViewModel;
-using System.ComponentModel;
 using PortfolioTrading.Utils;
 
 namespace PortfolioTrading.Modules.Portfolio.Strategy
 {
-    public enum CompareCondition
-    {
-        GREATER_THAN,
-        GREATER_EQUAL_THAN,
-        LESS_THAN,
-        LESS_EQUAL_THAN
-    }
-
-    public class ArbitrageStrategySetting : StrategySetting, INotifyPropertyChanged
+    public class ArbitrageStrategySetting : StrategySetting
     {
         #region Direction
-        private entity.PosiDirectionType _direction;
+        private PTEntity.PosiDirectionType _direction;
 
-        public entity.PosiDirectionType Direction
+        public PTEntity.PosiDirectionType Direction
         {
             get { return _direction; }
             set
@@ -37,9 +28,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region OpenCondition
-        private CompareCondition _openCond;
+        private PTEntity.CompareCondition _openCond;
 
-        public CompareCondition OpenCondition
+        public PTEntity.CompareCondition OpenCondition
         {
             get { return _openCond; }
             set
@@ -71,9 +62,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region StopGainCondition
-        private CompareCondition _stopGainCond;
+        private PTEntity.CompareCondition _stopGainCond;
 
-        public CompareCondition StopGainCondition
+        public PTEntity.CompareCondition StopGainCondition
         {
             get { return _stopGainCond; }
             set
@@ -105,9 +96,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region StopLossCondition
-        private CompareCondition _stopLossCond;
+        private PTEntity.CompareCondition _stopLossCond;
 
-        public CompareCondition StopLossCondition
+        public PTEntity.CompareCondition StopLossCondition
         {
             get { return _stopLossCond; }
             set
@@ -138,6 +129,17 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        public ArbitrageStrategySetting()
+        {
+            Direction = PTEntity.PosiDirectionType.LONG;
+            OpenCondition = PTEntity.CompareCondition.LESS_EQUAL_THAN;
+            OpenThreshold = 0;
+            StopGainCondition = PTEntity.CompareCondition.GREATER_THAN;
+            StopGainThreshold = 0;
+            StopLossCondition = PTEntity.CompareCondition.GREATER_THAN;
+            StopLossThreshold = 0;
+        }
+
         public override string Persist()
         {
             XElement elem = new XElement("arbitrageStrategySetting");
@@ -157,32 +159,83 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             return elem.ToString();
         }
 
+        public override void Load(string xmlText)
+        {
+            XElement elem = XElement.Parse(xmlText);
+
+            XAttribute attr = elem.Attribute("direction");
+            if (attr != null)
+                Direction = (PTEntity.PosiDirectionType)Enum.Parse(typeof(PTEntity.PosiDirectionType), attr.Value);
+
+            XElement elemOpen = elem.Element("open");
+            attr = elemOpen.Attribute("condition");
+            if (attr != null)
+            {
+                OpenCondition = (PTEntity.CompareCondition)Enum.Parse(typeof(PTEntity.CompareCondition), attr.Value);
+            }
+            attr = elemOpen.Attribute("threshold");
+            if (attr != null)
+            {
+                OpenThreshold = double.Parse(attr.Value);
+            }
+
+            XElement elemStopGain = elem.Element("stopGain");
+            attr = elemStopGain.Attribute("condition");
+            if (attr != null)
+            {
+                StopGainCondition = (PTEntity.CompareCondition)Enum.Parse(typeof(PTEntity.CompareCondition), attr.Value);
+            }
+            attr = elemStopGain.Attribute("threshold");
+            if (attr != null)
+            {
+                StopGainThreshold = double.Parse(attr.Value);
+            }
+
+            XElement elemStopLoss = elem.Element("stopLoss");
+            attr = elemStopLoss.Attribute("condition");
+            if (attr != null)
+            {
+                StopLossCondition = (PTEntity.CompareCondition)Enum.Parse(typeof(PTEntity.CompareCondition), attr.Value);
+            }
+            attr = elemStopLoss.Attribute("threshold");
+            if (attr != null)
+            {
+                StopLossThreshold = double.Parse(attr.Value);
+            }
+        }
+
         public override string Name
         {
             get { return ArbitrageStrategyName; }
         }
 
-        public override byte[] Serialize()
+        public override PTEntity.StrategyItem GetEntity()
         {
-            entity.ArbitrageStrategySettings entitySettings = new entity.ArbitrageStrategySettings();
-            entitySettings.Side = Direction;
-            entitySettings.OpenCondition = (entity.CompareCondition)OpenCondition;
-            entitySettings.OpenPosiThreshold = OpenThreshold;
-            entitySettings.StopGainCondition = (entity.CompareCondition)StopGainCondition;
-            entitySettings.StopGainThreshold = StopGainThreshold;
-            entitySettings.StopLossCondition = (entity.CompareCondition)StopLossCondition;
-            entitySettings.StopLossThreshold = StopLossThreshold;
-            return DataTranslater.Serialize(entitySettings);
+            PTEntity.ArbitrageStrategyItem strategyItem = new PTEntity.ArbitrageStrategyItem();
+            strategyItem.OpenTimeout = 200;
+            strategyItem.RetryTimes = 0;
+
+            PTEntity.ArbitrageTriggerItem openTrigger = new PTEntity.ArbitrageTriggerItem()
+            {
+                Condition = OpenCondition,
+                Offset = PTEntity.PosiOffsetFlag.OPEN,
+                Threshold = OpenThreshold,
+                Enabled = true
+            };
+            strategyItem.Triggers.Add(openTrigger);
+            return strategyItem;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(string propName)
+        public override void CopyFrom(StrategySetting settings)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propName));
-            }
+            ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)settings;
+            this.Direction = strategySettings.Direction;
+            this.OpenCondition = strategySettings.OpenCondition;
+            this.OpenThreshold = strategySettings.OpenThreshold;
+            this.StopGainCondition = strategySettings.StopGainCondition;
+            this.StopGainThreshold = strategySettings.StopGainThreshold;
+            this.StopLossCondition = strategySettings.StopLossCondition;
+            this.StopLossThreshold = strategySettings.StopLossThreshold;
         }
     }
 }
