@@ -43,6 +43,8 @@ class ServerLoginRequest;
 class ServerLoginResponse;
 class ServerLogoutRequest;
 class AddPortfolioRequest;
+class SwitchPortfolioRequest;
+class ApplyStrategySettingsRequest;
 class StringParam;
 class IntParam;
 class LegItem;
@@ -91,6 +93,25 @@ inline bool ServerType_Parse(
     const ::std::string& name, ServerType* value) {
   return ::google::protobuf::internal::ParseNamedEnum<ServerType>(
     ServerType_descriptor(), name, value);
+}
+enum PortfolioSwitchType {
+  STRATEGY_SWITCH = 0,
+  TRIGGER_SWITCH = 1
+};
+bool PortfolioSwitchType_IsValid(int value);
+const PortfolioSwitchType PortfolioSwitchType_MIN = STRATEGY_SWITCH;
+const PortfolioSwitchType PortfolioSwitchType_MAX = TRIGGER_SWITCH;
+const int PortfolioSwitchType_ARRAYSIZE = PortfolioSwitchType_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* PortfolioSwitchType_descriptor();
+inline const ::std::string& PortfolioSwitchType_Name(PortfolioSwitchType value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    PortfolioSwitchType_descriptor(), value);
+}
+inline bool PortfolioSwitchType_Parse(
+    const ::std::string& name, PortfolioSwitchType* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<PortfolioSwitchType>(
+    PortfolioSwitchType_descriptor(), name, value);
 }
 enum StrategyType {
   ARBITRAGE = 0,
@@ -1107,6 +1128,229 @@ class AddPortfolioRequest : public ::google::protobuf::Message {
   
   void InitAsDefaultInstance();
   static AddPortfolioRequest* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class SwitchPortfolioRequest : public ::google::protobuf::Message {
+ public:
+  SwitchPortfolioRequest();
+  virtual ~SwitchPortfolioRequest();
+  
+  SwitchPortfolioRequest(const SwitchPortfolioRequest& from);
+  
+  inline SwitchPortfolioRequest& operator=(const SwitchPortfolioRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const SwitchPortfolioRequest& default_instance();
+  
+  void Swap(SwitchPortfolioRequest* other);
+  
+  // implements Message ----------------------------------------------
+  
+  SwitchPortfolioRequest* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const SwitchPortfolioRequest& from);
+  void MergeFrom(const SwitchPortfolioRequest& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string PID = 1;
+  inline bool has_pid() const;
+  inline void clear_pid();
+  static const int kPIDFieldNumber = 1;
+  inline const ::std::string& pid() const;
+  inline void set_pid(const ::std::string& value);
+  inline void set_pid(const char* value);
+  inline void set_pid(const char* value, size_t size);
+  inline ::std::string* mutable_pid();
+  inline ::std::string* release_pid();
+  
+  // required .entity.PortfolioSwitchType SwitchType = 2;
+  inline bool has_switchtype() const;
+  inline void clear_switchtype();
+  static const int kSwitchTypeFieldNumber = 2;
+  inline entity::PortfolioSwitchType switchtype() const;
+  inline void set_switchtype(entity::PortfolioSwitchType value);
+  
+  // optional bool StartStrategy = 3;
+  inline bool has_startstrategy() const;
+  inline void clear_startstrategy();
+  static const int kStartStrategyFieldNumber = 3;
+  inline bool startstrategy() const;
+  inline void set_startstrategy(bool value);
+  
+  // optional int32 TriggerIndex = 4;
+  inline bool has_triggerindex() const;
+  inline void clear_triggerindex();
+  static const int kTriggerIndexFieldNumber = 4;
+  inline ::google::protobuf::int32 triggerindex() const;
+  inline void set_triggerindex(::google::protobuf::int32 value);
+  
+  // optional bool EnableTrigger = 5;
+  inline bool has_enabletrigger() const;
+  inline void clear_enabletrigger();
+  static const int kEnableTriggerFieldNumber = 5;
+  inline bool enabletrigger() const;
+  inline void set_enabletrigger(bool value);
+  
+  // @@protoc_insertion_point(class_scope:entity.SwitchPortfolioRequest)
+ private:
+  inline void set_has_pid();
+  inline void clear_has_pid();
+  inline void set_has_switchtype();
+  inline void clear_has_switchtype();
+  inline void set_has_startstrategy();
+  inline void clear_has_startstrategy();
+  inline void set_has_triggerindex();
+  inline void clear_has_triggerindex();
+  inline void set_has_enabletrigger();
+  inline void clear_has_enabletrigger();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* pid_;
+  int switchtype_;
+  ::google::protobuf::int32 triggerindex_;
+  bool startstrategy_;
+  bool enabletrigger_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static SwitchPortfolioRequest* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class ApplyStrategySettingsRequest : public ::google::protobuf::Message {
+ public:
+  ApplyStrategySettingsRequest();
+  virtual ~ApplyStrategySettingsRequest();
+  
+  ApplyStrategySettingsRequest(const ApplyStrategySettingsRequest& from);
+  
+  inline ApplyStrategySettingsRequest& operator=(const ApplyStrategySettingsRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ApplyStrategySettingsRequest& default_instance();
+  
+  void Swap(ApplyStrategySettingsRequest* other);
+  
+  // implements Message ----------------------------------------------
+  
+  ApplyStrategySettingsRequest* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ApplyStrategySettingsRequest& from);
+  void MergeFrom(const ApplyStrategySettingsRequest& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string PID = 1;
+  inline bool has_pid() const;
+  inline void clear_pid();
+  static const int kPIDFieldNumber = 1;
+  inline const ::std::string& pid() const;
+  inline void set_pid(const ::std::string& value);
+  inline void set_pid(const char* value);
+  inline void set_pid(const char* value, size_t size);
+  inline ::std::string* mutable_pid();
+  inline ::std::string* release_pid();
+  
+  // required .entity.StrategyItem Strategy = 2;
+  inline bool has_strategy() const;
+  inline void clear_strategy();
+  static const int kStrategyFieldNumber = 2;
+  inline const ::entity::StrategyItem& strategy() const;
+  inline ::entity::StrategyItem* mutable_strategy();
+  inline ::entity::StrategyItem* release_strategy();
+  
+  // @@protoc_insertion_point(class_scope:entity.ApplyStrategySettingsRequest)
+ private:
+  inline void set_has_pid();
+  inline void clear_has_pid();
+  inline void set_has_strategy();
+  inline void clear_has_strategy();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* pid_;
+  ::entity::StrategyItem* strategy_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static ApplyStrategySettingsRequest* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -5859,6 +6103,248 @@ AddPortfolioRequest::mutable_portfolios() {
 
 // -------------------------------------------------------------------
 
+// SwitchPortfolioRequest
+
+// required string PID = 1;
+inline bool SwitchPortfolioRequest::has_pid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void SwitchPortfolioRequest::set_has_pid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void SwitchPortfolioRequest::clear_has_pid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void SwitchPortfolioRequest::clear_pid() {
+  if (pid_ != &::google::protobuf::internal::kEmptyString) {
+    pid_->clear();
+  }
+  clear_has_pid();
+}
+inline const ::std::string& SwitchPortfolioRequest::pid() const {
+  return *pid_;
+}
+inline void SwitchPortfolioRequest::set_pid(const ::std::string& value) {
+  set_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    pid_ = new ::std::string;
+  }
+  pid_->assign(value);
+}
+inline void SwitchPortfolioRequest::set_pid(const char* value) {
+  set_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    pid_ = new ::std::string;
+  }
+  pid_->assign(value);
+}
+inline void SwitchPortfolioRequest::set_pid(const char* value, size_t size) {
+  set_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    pid_ = new ::std::string;
+  }
+  pid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* SwitchPortfolioRequest::mutable_pid() {
+  set_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    pid_ = new ::std::string;
+  }
+  return pid_;
+}
+inline ::std::string* SwitchPortfolioRequest::release_pid() {
+  clear_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = pid_;
+    pid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .entity.PortfolioSwitchType SwitchType = 2;
+inline bool SwitchPortfolioRequest::has_switchtype() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void SwitchPortfolioRequest::set_has_switchtype() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void SwitchPortfolioRequest::clear_has_switchtype() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void SwitchPortfolioRequest::clear_switchtype() {
+  switchtype_ = 0;
+  clear_has_switchtype();
+}
+inline entity::PortfolioSwitchType SwitchPortfolioRequest::switchtype() const {
+  return static_cast< entity::PortfolioSwitchType >(switchtype_);
+}
+inline void SwitchPortfolioRequest::set_switchtype(entity::PortfolioSwitchType value) {
+  GOOGLE_DCHECK(entity::PortfolioSwitchType_IsValid(value));
+  set_has_switchtype();
+  switchtype_ = value;
+}
+
+// optional bool StartStrategy = 3;
+inline bool SwitchPortfolioRequest::has_startstrategy() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void SwitchPortfolioRequest::set_has_startstrategy() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void SwitchPortfolioRequest::clear_has_startstrategy() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void SwitchPortfolioRequest::clear_startstrategy() {
+  startstrategy_ = false;
+  clear_has_startstrategy();
+}
+inline bool SwitchPortfolioRequest::startstrategy() const {
+  return startstrategy_;
+}
+inline void SwitchPortfolioRequest::set_startstrategy(bool value) {
+  set_has_startstrategy();
+  startstrategy_ = value;
+}
+
+// optional int32 TriggerIndex = 4;
+inline bool SwitchPortfolioRequest::has_triggerindex() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void SwitchPortfolioRequest::set_has_triggerindex() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void SwitchPortfolioRequest::clear_has_triggerindex() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void SwitchPortfolioRequest::clear_triggerindex() {
+  triggerindex_ = 0;
+  clear_has_triggerindex();
+}
+inline ::google::protobuf::int32 SwitchPortfolioRequest::triggerindex() const {
+  return triggerindex_;
+}
+inline void SwitchPortfolioRequest::set_triggerindex(::google::protobuf::int32 value) {
+  set_has_triggerindex();
+  triggerindex_ = value;
+}
+
+// optional bool EnableTrigger = 5;
+inline bool SwitchPortfolioRequest::has_enabletrigger() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SwitchPortfolioRequest::set_has_enabletrigger() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SwitchPortfolioRequest::clear_has_enabletrigger() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void SwitchPortfolioRequest::clear_enabletrigger() {
+  enabletrigger_ = false;
+  clear_has_enabletrigger();
+}
+inline bool SwitchPortfolioRequest::enabletrigger() const {
+  return enabletrigger_;
+}
+inline void SwitchPortfolioRequest::set_enabletrigger(bool value) {
+  set_has_enabletrigger();
+  enabletrigger_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// ApplyStrategySettingsRequest
+
+// required string PID = 1;
+inline bool ApplyStrategySettingsRequest::has_pid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void ApplyStrategySettingsRequest::set_has_pid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void ApplyStrategySettingsRequest::clear_has_pid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void ApplyStrategySettingsRequest::clear_pid() {
+  if (pid_ != &::google::protobuf::internal::kEmptyString) {
+    pid_->clear();
+  }
+  clear_has_pid();
+}
+inline const ::std::string& ApplyStrategySettingsRequest::pid() const {
+  return *pid_;
+}
+inline void ApplyStrategySettingsRequest::set_pid(const ::std::string& value) {
+  set_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    pid_ = new ::std::string;
+  }
+  pid_->assign(value);
+}
+inline void ApplyStrategySettingsRequest::set_pid(const char* value) {
+  set_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    pid_ = new ::std::string;
+  }
+  pid_->assign(value);
+}
+inline void ApplyStrategySettingsRequest::set_pid(const char* value, size_t size) {
+  set_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    pid_ = new ::std::string;
+  }
+  pid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ApplyStrategySettingsRequest::mutable_pid() {
+  set_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    pid_ = new ::std::string;
+  }
+  return pid_;
+}
+inline ::std::string* ApplyStrategySettingsRequest::release_pid() {
+  clear_has_pid();
+  if (pid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = pid_;
+    pid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required .entity.StrategyItem Strategy = 2;
+inline bool ApplyStrategySettingsRequest::has_strategy() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void ApplyStrategySettingsRequest::set_has_strategy() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void ApplyStrategySettingsRequest::clear_has_strategy() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void ApplyStrategySettingsRequest::clear_strategy() {
+  if (strategy_ != NULL) strategy_->::entity::StrategyItem::Clear();
+  clear_has_strategy();
+}
+inline const ::entity::StrategyItem& ApplyStrategySettingsRequest::strategy() const {
+  return strategy_ != NULL ? *strategy_ : *default_instance_->strategy_;
+}
+inline ::entity::StrategyItem* ApplyStrategySettingsRequest::mutable_strategy() {
+  set_has_strategy();
+  if (strategy_ == NULL) strategy_ = new ::entity::StrategyItem;
+  return strategy_;
+}
+inline ::entity::StrategyItem* ApplyStrategySettingsRequest::release_strategy() {
+  clear_has_strategy();
+  ::entity::StrategyItem* temp = strategy_;
+  strategy_ = NULL;
+  return temp;
+}
+
+// -------------------------------------------------------------------
+
 // StringParam
 
 // required string Data = 1;
@@ -10408,6 +10894,10 @@ namespace protobuf {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::ServerType>() {
   return entity::ServerType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< entity::PortfolioSwitchType>() {
+  return entity::PortfolioSwitchType_descriptor();
 }
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::StrategyType>() {

@@ -22,6 +22,7 @@ public:
 
 	friend class CStrategy;
 
+	// properties
 	const string& ID(){ return m_portfolioItem.id(); }
 	int Quantity(){ return m_portfolioItem.quantity(); }
 	int Count(){ return m_legs.size(); }
@@ -31,16 +32,24 @@ public:
 	double AvgCost() { return m_avgCost; }
 	CPortfolioOrderPlacer* OrderPlacer() { return m_orderPlacer.get(); }
 
-	vector<LegPtr>& Legs(){ return m_legs;}
-	CLeg* GetLeg(int legId);
-	CLeg* GetLeg(const string& symbol);
-	
 	entity::StrategyType StrategyType(){ return m_strategyType; }
 	CStrategy* Strategy(){ return m_strategy.get(); }
 	const entity::PortfolioUpdateItem& GetUpdated(){ return m_portfolioUpdate; }
 
+	// operation
+	void StartStrategy();
+	void StopStrategy();
+	void EnableTrigger(int triggerIdx, bool enabled);
+
+	// legs
+	vector<LegPtr>& Legs(){ return m_legs;}
+	CLeg* GetLeg(int legId);
+	CLeg* GetLeg(const string& symbol);
+
+	// for quote
 	void SubscribeQuotes(CQuoteRepositry* pQuoteRepo);
 
+	// for order placer
 	int NewOrderId(string& newId);
 	void AddPosition(const trade::MultiLegOrder& openOrder);
 	void RemovePosition(const trade::MultiLegOrder& closeOrder);

@@ -62,7 +62,7 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem)
 	, m_shortDiff(0)
 	, m_shortDiffSize(0)
 {
-	m_side = strategyItem.ar_side();
+	Apply(strategyItem, false);
 
 	CreateTriggers(strategyItem);
 }
@@ -79,6 +79,13 @@ void CArbitrageStrategy::CreateTriggers( const entity::StrategyItem& strategyIte
 		TriggerPtr trigger(new CArbitrageTrigger(strategyItem.triggers(i)));
 		m_triggers.push_back(trigger);
 	}
+}
+
+void CArbitrageStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
+{
+	CStrategy::Apply(strategyItem, withTriggers);
+
+	m_side = strategyItem.ar_side();
 }
 
 void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )

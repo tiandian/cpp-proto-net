@@ -7,13 +7,18 @@ CStrategy::CStrategy(const entity::StrategyItem& strategyItem)
 	: m_running(false)
 {
 	m_type = strategyItem.type();
-	m_retryTimes = strategyItem.retrytimes();
-	m_openTimeout = strategyItem.opentimeout();
 }
-
 
 CStrategy::~CStrategy(void)
 {
+}
+
+void CStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
+{
+	m_retryTimes = strategyItem.retrytimes();
+	m_openTimeout = strategyItem.opentimeout();
+	if(withTriggers)
+		ApplyTrigger(strategyItem);
 }
 
 void CStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
@@ -83,4 +88,12 @@ int CStrategy::PositionQuantity( CPortfolio* pPortfolio )
 double CStrategy::AvgCost( CPortfolio* pPortfolio )
 {
 	return pPortfolio->AvgCost();
+}
+
+void CStrategy::ApplyTrigger( const entity::StrategyItem& strategyItem )
+{
+	for (int i = 0; i < strategyItem.triggers_size(); ++i)
+	{
+		m_triggers[i]->Apply(strategyItem.triggers(i));
+	}
 }

@@ -7,6 +7,7 @@ public:
 	CChangePositionStrategy(const entity::StrategyItem& strategyItem);
 	~CChangePositionStrategy(void);
 
+	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	
 protected:

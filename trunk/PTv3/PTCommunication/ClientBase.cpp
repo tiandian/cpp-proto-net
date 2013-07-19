@@ -84,4 +84,46 @@ void ClientBase::AddPortfCollection( array<PortfolioItem ^> ^portfItems )
 	_nativeClient->AddPortfolios(portfItems);
 }
 
+void ClientBase::PortfEnableStrategy( String ^portfId, bool isEnabled )
+{
+	IntPtr pPortfIdAddress;
+	try
+	{
+		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(portfId);
+		_nativeClient->PortfEnableStrategy((char*)pPortfIdAddress.ToPointer(), isEnabled);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pPortfIdAddress);
+	}
+}
+
+void ClientBase::PortfTurnSwitches( String ^portfId, int triggerIndex, bool enabled )
+{
+	IntPtr pPortfIdAddress;
+	try
+	{
+		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(portfId);
+		_nativeClient->PortfTurnSwitches((char*)pPortfIdAddress.ToPointer(), triggerIndex, enabled);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pPortfIdAddress);
+	}
+}
+
+void ClientBase::PortfApplyStrategySettings( String ^portfId, StrategyItem ^strategyItem )
+{
+	IntPtr pPortfIdAddress;
+	try
+	{
+		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(portfId);
+		_nativeClient->ApplyStrategySettings((char*)pPortfIdAddress.ToPointer(), strategyItem);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pPortfIdAddress);
+	}
+}
+
 }

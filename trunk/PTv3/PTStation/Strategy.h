@@ -20,6 +20,9 @@ public:
 	int OpenTimeout(){ return m_openTimeout; }
 	const vector<TriggerPtr>& Triggers() { return m_triggers; }
 
+	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);
+	void ApplyTrigger(const entity::StrategyItem& strategyItem);
+
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
 	

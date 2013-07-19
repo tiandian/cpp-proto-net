@@ -98,21 +98,11 @@ namespace PTCommunication {
 
 		}
 
-		void PortfEnableStrategy(String ^portfId, bool isEnabled)
-		{
+		void PortfEnableStrategy(String ^portfId, bool isEnabled);
 
-		}
+		void PortfTurnSwitches(String ^portfId, int triggerIndex, bool enabled);
 
-		void PortfTurnSwitches(String ^portfId, bool autoOpen, bool autoStopGain, bool autoStopLoss,
-			bool autoTracking, bool enablePrefer)
-		{
-
-		}
-
-		void PortfApplyStrategySettings(String ^portfId, String ^strategyName, array<Byte> ^strategyData)
-		{
-
-		}
+		void PortfApplyStrategySettings(String ^portfId, StrategyItem ^strategyItem);
 
 		AccountInfo^ QueryAccountInfo()
 		{

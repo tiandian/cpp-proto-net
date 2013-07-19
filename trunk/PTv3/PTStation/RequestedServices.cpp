@@ -74,15 +74,46 @@ void AddPortfolioService::handle( LogicalConnection* pClient, IncomingPacket* pR
 
 void RemovePortfolioService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 {
-
+	
 }
 
 void PortfolioSwitchService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 {
-
+	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
+	ProtobufPacket<entity::SwitchPortfolioRequest>* pReqPacket = (ProtobufPacket<entity::SwitchPortfolioRequest>*)pRequest;
+	entity::SwitchPortfolioRequest& switchPortfReq = pReqPacket->getData();
+	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(switchPortfReq.pid());
+	if(pPortf != NULL)
+	{
+		if(switchPortfReq.switchtype() == entity::STRATEGY_SWITCH && switchPortfReq.has_startstrategy())
+		{
+			if(switchPortfReq.startstrategy())
+			{
+				pPortf->StartStrategy();
+			}
+			else
+			{
+				pPortf->StopStrategy();
+			}
+		}
+		else if(switchPortfReq.switchtype() == entity::TRIGGER_SWITCH 
+			&& switchPortfReq.has_triggerindex() && switchPortfReq.has_enabletrigger())
+		{
+			pPortf->EnableTrigger(switchPortfReq.triggerindex(), switchPortfReq.enabletrigger());
+		}
+	}
 }
 
 void PortfolioSyncService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 {
 
+}
+
+void ApplyStrategySettingsService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
+{
+	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
+	ProtobufPacket<entity::ApplyStrategySettingsRequest>* pReqPacket = (ProtobufPacket<entity::ApplyStrategySettingsRequest>*)pRequest;
+	entity::ApplyStrategySettingsRequest& applyStrategyReq = pReqPacket->getData();
+	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(applyStrategyReq.pid());
+	pPortf->Strategy()->Apply(applyStrategyReq.strategy(), true);
 }

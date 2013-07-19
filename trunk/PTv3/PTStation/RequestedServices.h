@@ -40,3 +40,9 @@ protected:
 	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
 };
 
+class ApplyStrategySettingsService : public Service
+{
+protected:
+	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
+};
+

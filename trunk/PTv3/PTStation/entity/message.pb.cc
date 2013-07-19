@@ -44,6 +44,12 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* AddPortfolioRequest_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   AddPortfolioRequest_reflection_ = NULL;
+const ::google::protobuf::Descriptor* SwitchPortfolioRequest_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  SwitchPortfolioRequest_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ApplyStrategySettingsRequest_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ApplyStrategySettingsRequest_reflection_ = NULL;
 const ::google::protobuf::Descriptor* StringParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   StringParam_reflection_ = NULL;
@@ -132,6 +138,7 @@ const ::google::protobuf::Descriptor* SymbolInfo_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   SymbolInfo_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* ServerType_descriptor_ = NULL;
+const ::google::protobuf::EnumDescriptor* PortfolioSwitchType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* StrategyType_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* DirectionDepends_descriptor_ = NULL;
 const ::google::protobuf::EnumDescriptor* StopLossCloseMethods_descriptor_ = NULL;
@@ -295,7 +302,42 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AddPortfolioRequest));
-  StringParam_descriptor_ = file->message_type(9);
+  SwitchPortfolioRequest_descriptor_ = file->message_type(9);
+  static const int SwitchPortfolioRequest_offsets_[5] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, pid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, switchtype_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, startstrategy_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, triggerindex_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, enabletrigger_),
+  };
+  SwitchPortfolioRequest_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      SwitchPortfolioRequest_descriptor_,
+      SwitchPortfolioRequest::default_instance_,
+      SwitchPortfolioRequest_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(SwitchPortfolioRequest));
+  ApplyStrategySettingsRequest_descriptor_ = file->message_type(10);
+  static const int ApplyStrategySettingsRequest_offsets_[2] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ApplyStrategySettingsRequest, pid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ApplyStrategySettingsRequest, strategy_),
+  };
+  ApplyStrategySettingsRequest_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      ApplyStrategySettingsRequest_descriptor_,
+      ApplyStrategySettingsRequest::default_instance_,
+      ApplyStrategySettingsRequest_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ApplyStrategySettingsRequest, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ApplyStrategySettingsRequest, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(ApplyStrategySettingsRequest));
+  StringParam_descriptor_ = file->message_type(11);
   static const int StringParam_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StringParam, data_),
   };
@@ -310,7 +352,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StringParam));
-  IntParam_descriptor_ = file->message_type(10);
+  IntParam_descriptor_ = file->message_type(12);
   static const int IntParam_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(IntParam, data_),
   };
@@ -325,7 +367,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(IntParam));
-  LegItem_descriptor_ = file->message_type(11);
+  LegItem_descriptor_ = file->message_type(13);
   static const int LegItem_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, legid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegItem, symbol_),
@@ -344,7 +386,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegItem));
-  LegUpdateItem_descriptor_ = file->message_type(12);
+  LegUpdateItem_descriptor_ = file->message_type(14);
   static const int LegUpdateItem_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegUpdateItem, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegUpdateItem, status_),
@@ -365,7 +407,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegUpdateItem));
-  StrategyItem_descriptor_ = file->message_type(13);
+  StrategyItem_descriptor_ = file->message_type(15);
   static const int StrategyItem_offsets_[13] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, retrytimes_),
@@ -392,7 +434,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StrategyItem));
-  TriggerItem_descriptor_ = file->message_type(14);
+  TriggerItem_descriptor_ = file->message_type(16);
   static const int TriggerItem_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, strategy_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, name_),
@@ -415,7 +457,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TriggerItem));
-  TriggerStatus_descriptor_ = file->message_type(15);
+  TriggerStatus_descriptor_ = file->message_type(17);
   static const int TriggerStatus_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerStatus, strategy_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerStatus, name_),
@@ -432,7 +474,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TriggerStatus));
-  PortfolioItem_descriptor_ = file->message_type(16);
+  PortfolioItem_descriptor_ = file->message_type(18);
   static const int PortfolioItem_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, quantity_),
@@ -453,7 +495,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PortfolioItem));
-  PortfolioUpdateItem_descriptor_ = file->message_type(17);
+  PortfolioUpdateItem_descriptor_ = file->message_type(19);
   static const int PortfolioUpdateItem_offsets_[15] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, legs_),
@@ -482,7 +524,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PortfolioUpdateItem));
-  ConnectParam_descriptor_ = file->message_type(18);
+  ConnectParam_descriptor_ = file->message_type(20);
   static const int ConnectParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectParam, quoteaddress_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ConnectParam, streamfolder_),
@@ -498,7 +540,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ConnectParam));
-  OperationReturn_descriptor_ = file->message_type(19);
+  OperationReturn_descriptor_ = file->message_type(21);
   static const int OperationReturn_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OperationReturn, success_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(OperationReturn, errormessage_),
@@ -514,7 +556,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(OperationReturn));
-  AccountSettings_descriptor_ = file->message_type(20);
+  AccountSettings_descriptor_ = file->message_type(22);
   static const int AccountSettings_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountSettings, maxsubmit_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AccountSettings, maxcancel_),
@@ -530,7 +572,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AccountSettings));
-  LoginParam_descriptor_ = file->message_type(21);
+  LoginParam_descriptor_ = file->message_type(23);
   static const int LoginParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, brokerid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LoginParam, userid_),
@@ -548,7 +590,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LoginParam));
-  RegQuoteParam_descriptor_ = file->message_type(22);
+  RegQuoteParam_descriptor_ = file->message_type(24);
   static const int RegQuoteParam_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(RegQuoteParam, symbols_),
   };
@@ -563,7 +605,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(RegQuoteParam));
-  AddPortfolioParam_descriptor_ = file->message_type(23);
+  AddPortfolioParam_descriptor_ = file->message_type(25);
   static const int AddPortfolioParam_offsets_[1] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(AddPortfolioParam, portfolioitems_),
   };
@@ -578,7 +620,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AddPortfolioParam));
-  PorfOpenPosiParam_descriptor_ = file->message_type(24);
+  PorfOpenPosiParam_descriptor_ = file->message_type(26);
   static const int PorfOpenPosiParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, quantity_),
@@ -595,7 +637,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PorfOpenPosiParam));
-  ClosePositionParam_descriptor_ = file->message_type(25);
+  ClosePositionParam_descriptor_ = file->message_type(27);
   static const int ClosePositionParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, multilegorder_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, legordref_),
@@ -611,7 +653,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ClosePositionParam));
-  LegOrderUpdateParam_descriptor_ = file->message_type(26);
+  LegOrderUpdateParam_descriptor_ = file->message_type(28);
   static const int LegOrderUpdateParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(LegOrderUpdateParam, multilegorderid_),
@@ -629,7 +671,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegOrderUpdateParam));
-  ArbitrageStrategySettings_descriptor_ = file->message_type(27);
+  ArbitrageStrategySettings_descriptor_ = file->message_type(29);
   static const int ArbitrageStrategySettings_offsets_[7] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, side_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ArbitrageStrategySettings, opencondition_),
@@ -650,7 +692,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ArbitrageStrategySettings));
-  ChangePosiStrategySettings_descriptor_ = file->message_type(28);
+  ChangePosiStrategySettings_descriptor_ = file->message_type(30);
   static const int ChangePosiStrategySettings_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, closeleg_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ChangePosiStrategySettings, closelegside_),
@@ -668,7 +710,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ChangePosiStrategySettings));
-  ScalperSettings_descriptor_ = file->message_type(29);
+  ScalperSettings_descriptor_ = file->message_type(31);
   static const int ScalperSettings_offsets_[9] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, threshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ScalperSettings, pricetick_),
@@ -691,7 +733,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ScalperSettings));
-  ModifyStrategyParam_descriptor_ = file->message_type(30);
+  ModifyStrategyParam_descriptor_ = file->message_type(32);
   static const int ModifyStrategyParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyStrategyParam, strategyname_),
@@ -708,7 +750,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyStrategyParam));
-  ModifyPortfolioSwitchParam_descriptor_ = file->message_type(31);
+  ModifyPortfolioSwitchParam_descriptor_ = file->message_type(33);
   static const int ModifyPortfolioSwitchParam_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioSwitchParam, autoopen_),
@@ -728,7 +770,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioSwitchParam));
-  ModifyPortfolioQtyParam_descriptor_ = file->message_type(32);
+  ModifyPortfolioQtyParam_descriptor_ = file->message_type(34);
   static const int ModifyPortfolioQtyParam_offsets_[3] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, onceqty_),
@@ -745,7 +787,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioQtyParam));
-  ModifyRunningStatusParam_descriptor_ = file->message_type(33);
+  ModifyRunningStatusParam_descriptor_ = file->message_type(35);
   static const int ModifyRunningStatusParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyRunningStatusParam, enabled_),
@@ -761,7 +803,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyRunningStatusParam));
-  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(34);
+  ModifyPortfolioPreferredLegParam_descriptor_ = file->message_type(36);
   static const int ModifyPortfolioPreferredLegParam_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioPreferredLegParam, legsymbol_),
@@ -777,7 +819,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioPreferredLegParam));
-  CancelOrderParam_descriptor_ = file->message_type(35);
+  CancelOrderParam_descriptor_ = file->message_type(37);
   static const int CancelOrderParam_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, orderref_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(CancelOrderParam, exchangeid_),
@@ -796,7 +838,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(CancelOrderParam));
-  ManualCloseOrderParam_descriptor_ = file->message_type(36);
+  ManualCloseOrderParam_descriptor_ = file->message_type(38);
   static const int ManualCloseOrderParam_offsets_[4] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, symbol_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ManualCloseOrderParam, direction_),
@@ -814,7 +856,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ManualCloseOrderParam));
-  SymbolInfo_descriptor_ = file->message_type(37);
+  SymbolInfo_descriptor_ = file->message_type(39);
   static const int SymbolInfo_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, instrument_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SymbolInfo, exchangeid_),
@@ -835,9 +877,10 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(SymbolInfo));
   ServerType_descriptor_ = file->enum_type(0);
-  StrategyType_descriptor_ = file->enum_type(1);
-  DirectionDepends_descriptor_ = file->enum_type(2);
-  StopLossCloseMethods_descriptor_ = file->enum_type(3);
+  PortfolioSwitchType_descriptor_ = file->enum_type(1);
+  StrategyType_descriptor_ = file->enum_type(2);
+  DirectionDepends_descriptor_ = file->enum_type(3);
+  StopLossCloseMethods_descriptor_ = file->enum_type(4);
 }
 
 namespace {
@@ -868,6 +911,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
     ServerLogoutRequest_descriptor_, &ServerLogoutRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     AddPortfolioRequest_descriptor_, &AddPortfolioRequest::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    SwitchPortfolioRequest_descriptor_, &SwitchPortfolioRequest::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    ApplyStrategySettingsRequest_descriptor_, &ApplyStrategySettingsRequest::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     StringParam_descriptor_, &StringParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -949,6 +996,10 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete ServerLogoutRequest_reflection_;
   delete AddPortfolioRequest::default_instance_;
   delete AddPortfolioRequest_reflection_;
+  delete SwitchPortfolioRequest::default_instance_;
+  delete SwitchPortfolioRequest_reflection_;
+  delete ApplyStrategySettingsRequest::default_instance_;
+  delete ApplyStrategySettingsRequest_reflection_;
   delete StringParam::default_instance_;
   delete StringParam_reflection_;
   delete IntParam::default_instance_;
@@ -1036,118 +1087,126 @@ void protobuf_AddDesc_message_2eproto() {
     "BrokerId\030\005 \002(\t\022\016\n\006UserId\030\006 \002(\t\"7\n\023Server"
     "LogoutRequest\022 \n\004Type\030\001 \002(\0162\022.entity.Ser"
     "verType\"@\n\023AddPortfolioRequest\022)\n\nPortfo"
-    "lios\030\001 \003(\0132\025.entity.PortfolioItem\"\033\n\013Str"
-    "ingParam\022\014\n\004Data\030\001 \002(\t\"\030\n\010IntParam\022\014\n\004Da"
-    "ta\030\002 \002(\005\"u\n\007LegItem\022\r\n\005LegId\030\001 \002(\005\022\016\n\006Sy"
-    "mbol\030\002 \002(\t\022\r\n\005Ratio\030\003 \002(\005\022\'\n\004Side\030\004 \002(\0162"
-    "\031.entity.PosiDirectionType\022\023\n\013IsPreferre"
-    "d\030\005 \002(\010\"\214\001\n\rLegUpdateItem\022\016\n\006Symbol\030\001 \002("
-    "\t\022!\n\006Status\030\002 \002(\0162\021.entity.LegStatus\022\014\n\004"
-    "Last\030\003 \002(\001\022\013\n\003Ask\030\004 \002(\001\022\017\n\007AskSize\030\005 \002(\005"
-    "\022\013\n\003Bid\030\006 \002(\001\022\017\n\007BidSize\030\007 \002(\005\"\231\004\n\014Strat"
-    "egyItem\022\"\n\004Type\030\001 \002(\0162\024.entity.StrategyT"
-    "ype\022\022\n\nRetryTimes\030\002 \002(\005\022\023\n\013OpenTimeout\030\003"
-    " \002(\005\022%\n\010Triggers\030\004 \003(\0132\023.entity.TriggerI"
-    "tem\022*\n\007AR_Side\030e \001(\0162\031.entity.PosiDirect"
-    "ionType\022\024\n\013CP_CloseLeg\030\311\001 \001(\t\0223\n\017CP_Clos"
-    "eLegSide\030\312\001 \001(\0162\031.entity.PosiDirectionTy"
-    "pe\022\025\n\014SC_PriceTick\030\255\002 \001(\001\0221\n\016SC_CaseLE2T"
-    "ick\030\256\002 \001(\0162\030.entity.DirectionDepends\0221\n\016"
-    "SC_CaseLE3Tick\030\257\002 \001(\0162\030.entity.Direction"
-    "Depends\0221\n\016SC_CaseGE4Tick\030\260\002 \001(\0162\030.entit"
-    "y.DirectionDepends\0222\n\017SC_CaseNoChange\030\261\002"
-    " \001(\0162\030.entity.DirectionDepends\022:\n\023SC_Sto"
-    "pLossStrategy\030\262\002 \001(\0162\034.entity.StopLossCl"
-    "oseMethods\"\244\002\n\013TriggerItem\022&\n\010Strategy\030\001"
-    " \002(\0162\024.entity.StrategyType\022\014\n\004Name\030\002 \002(\t"
-    "\022\017\n\007Enabled\030\003 \002(\010\022.\n\014AR_Condition\030e \001(\0162"
-    "\030.entity.CompareCondition\022\024\n\014AR_Threshol"
-    "d\030f \001(\001\022)\n\tAR_Offset\030g \001(\0162\026.entity.Posi"
-    "OffsetFlag\022/\n\014CP_Condition\030\311\001 \001(\0162\030.enti"
-    "ty.CompareCondition\022\025\n\014CP_Threshold\030\312\001 \001"
-    "(\001\022\025\n\014SC_Threshold\030\255\002 \001(\001\"V\n\rTriggerStat"
-    "us\022&\n\010Strategy\030\001 \002(\0162\024.entity.StrategyTy"
-    "pe\022\014\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010\"\270\001\n\rPo"
-    "rtfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002("
-    "\005\022\035\n\004Legs\030\003 \003(\0132\017.entity.LegItem\022\021\n\tMaxC"
-    "ancel\030\004 \002(\005\022\027\n\017MaxOpenPerStart\030\005 \002(\005\022\026\n\016"
-    "TotalOpenLimit\030\006 \002(\005\022&\n\010Strategy\030\007 \002(\0132\024"
-    ".entity.StrategyItem\"\200\003\n\023PortfolioUpdate"
-    "Item\022\n\n\002ID\030\001 \002(\t\022#\n\004Legs\030\002 \003(\0132\025.entity."
-    "LegUpdateItem\022&\n\010Strategy\030\003 \002(\0162\024.entity"
-    ".StrategyType\022\017\n\007Running\030\004 \002(\010\022\'\n\010Trigge"
-    "rs\030\005 \003(\0132\025.entity.TriggerStatus\022\026\n\016Total"
-    "OpenTimes\030\006 \002(\005\022\027\n\017TotalCloseTimes\030\007 \002(\005"
-    "\022\027\n\017CurrentPosition\030\010 \002(\005\022\023\n\013CancelTimes"
-    "\030\t \002(\005\022\017\n\007AR_Diff\030e \001(\001\022\023\n\013AR_LongDiff\030f"
-    " \001(\001\022\024\n\014AR_ShortDiff\030g \001(\001\022\023\n\013AR_LongSiz"
-    "e\030h \001(\005\022\024\n\014AR_ShortSize\030i \001(\005\022\020\n\007SC_Diff"
-    "\030\311\001 \001(\001\":\n\014ConnectParam\022\024\n\014QuoteAddress\030"
-    "\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017Operation"
-    "Return\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030"
-    "\002 \002(\t\"7\n\017AccountSettings\022\021\n\tMaxSubmit\030\001 "
-    "\002(\005\022\021\n\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020\n\010"
-    "BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Passwo"
-    "rd\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entity."
-    "AccountSettings\" \n\rRegQuoteParam\022\017\n\007Symb"
-    "ols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Portfo"
-    "lioItems\030\001 \003(\0132\025.entity.PortfolioItem\"I\n"
-    "\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Q"
-    "uantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Clos"
-    "ePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024."
-    "trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t"
-    "\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027"
-    "\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003"
-    " \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002\n"
-    "\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002(\016"
-    "2\031.entity.PosiDirectionType\022/\n\rOpenCondi"
-    "tion\030\002 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCondi"
-    "tion\030\004 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCondi"
-    "tion\030\006 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiSt"
-    "rategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Clos"
-    "eLegSide\030\002 \002(\0162\031.entity.PosiDirectionTyp"
-    "e\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.Com"
-    "pareCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017Sca"
-    "lperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPrice"
-    "Tick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.entity"
-    ".DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\0162\030"
-    ".entity.DirectionDepends\022-\n\013CaseGE4Tick\030"
-    "\005 \002(\0162\030.entity.DirectionDepends\022.\n\014CaseN"
-    "oChange\030\006 \002(\0162\030.entity.DirectionDepends\022"
-    "6\n\020StopLossStrategy\030\007 \002(\0162\034.entity.StopL"
-    "ossCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n\013O"
-    "penTimeout\030\t \001(\005\"R\n\023ModifyStrategyParam\022"
-    "\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024"
-    "\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolio"
-    "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
-    "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
-    "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
-    "lePrefer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyPara"
-    "m\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006M"
-    "axQty\030\003 \002(\005\"<\n\030ModifyRunningStatusParam\022"
-    "\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Mod"
-    "ifyPortfolioPreferredLegParam\022\017\n\007PortfId"
-    "\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrder"
-    "Param\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 "
-    "\002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n"
-    "\006Symbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016"
-    "\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trad"
-    "e.TradeDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020"
-    "\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstr"
-    "ument\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Excha"
-    "ngeInstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016Vo"
-    "lumeMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n"
-    "\nServerType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRAD"
-    "E\020\001*\?\n\014StrategyType\022\r\n\tARBITRAGE\020\000\022\023\n\017CH"
-    "ANGE_POSITION\020\001\022\013\n\007SCALPER\020\002*o\n\020Directio"
-    "nDepends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SI"
-    "ZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE"
-    "\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseMe"
-    "thods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_"
-    "ON_INPUT_LIMIT\020\001", 5176);
+    "lios\030\001 \003(\0132\025.entity.PortfolioItem\"\232\001\n\026Sw"
+    "itchPortfolioRequest\022\013\n\003PID\030\001 \002(\t\022/\n\nSwi"
+    "tchType\030\002 \002(\0162\033.entity.PortfolioSwitchTy"
+    "pe\022\025\n\rStartStrategy\030\003 \001(\010\022\024\n\014TriggerInde"
+    "x\030\004 \001(\005\022\025\n\rEnableTrigger\030\005 \001(\010\"S\n\034ApplyS"
+    "trategySettingsRequest\022\013\n\003PID\030\001 \002(\t\022&\n\010S"
+    "trategy\030\002 \002(\0132\024.entity.StrategyItem\"\033\n\013S"
+    "tringParam\022\014\n\004Data\030\001 \002(\t\"\030\n\010IntParam\022\014\n\004"
+    "Data\030\002 \002(\005\"u\n\007LegItem\022\r\n\005LegId\030\001 \002(\005\022\016\n\006"
+    "Symbol\030\002 \002(\t\022\r\n\005Ratio\030\003 \002(\005\022\'\n\004Side\030\004 \002("
+    "\0162\031.entity.PosiDirectionType\022\023\n\013IsPrefer"
+    "red\030\005 \002(\010\"\214\001\n\rLegUpdateItem\022\016\n\006Symbol\030\001 "
+    "\002(\t\022!\n\006Status\030\002 \002(\0162\021.entity.LegStatus\022\014"
+    "\n\004Last\030\003 \002(\001\022\013\n\003Ask\030\004 \002(\001\022\017\n\007AskSize\030\005 \002"
+    "(\005\022\013\n\003Bid\030\006 \002(\001\022\017\n\007BidSize\030\007 \002(\005\"\231\004\n\014Str"
+    "ategyItem\022\"\n\004Type\030\001 \002(\0162\024.entity.Strateg"
+    "yType\022\022\n\nRetryTimes\030\002 \002(\005\022\023\n\013OpenTimeout"
+    "\030\003 \002(\005\022%\n\010Triggers\030\004 \003(\0132\023.entity.Trigge"
+    "rItem\022*\n\007AR_Side\030e \001(\0162\031.entity.PosiDire"
+    "ctionType\022\024\n\013CP_CloseLeg\030\311\001 \001(\t\0223\n\017CP_Cl"
+    "oseLegSide\030\312\001 \001(\0162\031.entity.PosiDirection"
+    "Type\022\025\n\014SC_PriceTick\030\255\002 \001(\001\0221\n\016SC_CaseLE"
+    "2Tick\030\256\002 \001(\0162\030.entity.DirectionDepends\0221"
+    "\n\016SC_CaseLE3Tick\030\257\002 \001(\0162\030.entity.Directi"
+    "onDepends\0221\n\016SC_CaseGE4Tick\030\260\002 \001(\0162\030.ent"
+    "ity.DirectionDepends\0222\n\017SC_CaseNoChange\030"
+    "\261\002 \001(\0162\030.entity.DirectionDepends\022:\n\023SC_S"
+    "topLossStrategy\030\262\002 \001(\0162\034.entity.StopLoss"
+    "CloseMethods\"\244\002\n\013TriggerItem\022&\n\010Strategy"
+    "\030\001 \002(\0162\024.entity.StrategyType\022\014\n\004Name\030\002 \002"
+    "(\t\022\017\n\007Enabled\030\003 \002(\010\022.\n\014AR_Condition\030e \001("
+    "\0162\030.entity.CompareCondition\022\024\n\014AR_Thresh"
+    "old\030f \001(\001\022)\n\tAR_Offset\030g \001(\0162\026.entity.Po"
+    "siOffsetFlag\022/\n\014CP_Condition\030\311\001 \001(\0162\030.en"
+    "tity.CompareCondition\022\025\n\014CP_Threshold\030\312\001"
+    " \001(\001\022\025\n\014SC_Threshold\030\255\002 \001(\001\"V\n\rTriggerSt"
+    "atus\022&\n\010Strategy\030\001 \002(\0162\024.entity.Strategy"
+    "Type\022\014\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010\"\270\001\n\r"
+    "PortfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 "
+    "\002(\005\022\035\n\004Legs\030\003 \003(\0132\017.entity.LegItem\022\021\n\tMa"
+    "xCancel\030\004 \002(\005\022\027\n\017MaxOpenPerStart\030\005 \002(\005\022\026"
+    "\n\016TotalOpenLimit\030\006 \002(\005\022&\n\010Strategy\030\007 \002(\013"
+    "2\024.entity.StrategyItem\"\200\003\n\023PortfolioUpda"
+    "teItem\022\n\n\002ID\030\001 \002(\t\022#\n\004Legs\030\002 \003(\0132\025.entit"
+    "y.LegUpdateItem\022&\n\010Strategy\030\003 \002(\0162\024.enti"
+    "ty.StrategyType\022\017\n\007Running\030\004 \002(\010\022\'\n\010Trig"
+    "gers\030\005 \003(\0132\025.entity.TriggerStatus\022\026\n\016Tot"
+    "alOpenTimes\030\006 \002(\005\022\027\n\017TotalCloseTimes\030\007 \002"
+    "(\005\022\027\n\017CurrentPosition\030\010 \002(\005\022\023\n\013CancelTim"
+    "es\030\t \002(\005\022\017\n\007AR_Diff\030e \001(\001\022\023\n\013AR_LongDiff"
+    "\030f \001(\001\022\024\n\014AR_ShortDiff\030g \001(\001\022\023\n\013AR_LongS"
+    "ize\030h \001(\005\022\024\n\014AR_ShortSize\030i \001(\005\022\020\n\007SC_Di"
+    "ff\030\311\001 \001(\001\":\n\014ConnectParam\022\024\n\014QuoteAddres"
+    "s\030\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017Operati"
+    "onReturn\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessag"
+    "e\030\002 \002(\t\"7\n\017AccountSettings\022\021\n\tMaxSubmit\030"
+    "\001 \002(\005\022\021\n\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020"
+    "\n\010BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Pass"
+    "word\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entit"
+    "y.AccountSettings\" \n\rRegQuoteParam\022\017\n\007Sy"
+    "mbols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Port"
+    "folioItems\030\001 \003(\0132\025.entity.PortfolioItem\""
+    "I\n\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n"
+    "\010Quantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Cl"
+    "osePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132"
+    "\024.trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t"
+    "\"t\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t"
+    "\022\027\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef"
+    "\030\003 \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260"
+    "\002\n\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002"
+    "(\0162\031.entity.PosiDirectionType\022/\n\rOpenCon"
+    "dition\030\002 \002(\0162\030.entity.CompareCondition\022\031"
+    "\n\021OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCon"
+    "dition\030\004 \002(\0162\030.entity.CompareCondition\022\031"
+    "\n\021StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCon"
+    "dition\030\006 \002(\0162\030.entity.CompareCondition\022\031"
+    "\n\021StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosi"
+    "StrategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Cl"
+    "oseLegSide\030\002 \002(\0162\031.entity.PosiDirectionT"
+    "ype\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.C"
+    "ompareCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017S"
+    "calperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPri"
+    "ceTick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.enti"
+    "ty.DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\016"
+    "2\030.entity.DirectionDepends\022-\n\013CaseGE4Tic"
+    "k\030\005 \002(\0162\030.entity.DirectionDepends\022.\n\014Cas"
+    "eNoChange\030\006 \002(\0162\030.entity.DirectionDepend"
+    "s\0226\n\020StopLossStrategy\030\007 \002(\0162\034.entity.Sto"
+    "pLossCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n"
+    "\013OpenTimeout\030\t \001(\005\"R\n\023ModifyStrategyPara"
+    "m\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t"
+    "\022\024\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfol"
+    "ioSwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOp"
+    "en\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoSt"
+    "opLoss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014En"
+    "ablePrefer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyPa"
+    "ram\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n"
+    "\006MaxQty\030\003 \002(\005\"<\n\030ModifyRunningStatusPara"
+    "m\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n M"
+    "odifyPortfolioPreferredLegParam\022\017\n\007Portf"
+    "Id\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrd"
+    "erParam\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030"
+    "\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022"
+    "\016\n\006Symbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam"
+    "\022\016\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.tr"
+    "ade.TradeDirectionType\022\020\n\010OpenDate\030\003 \002(\t"
+    "\022\020\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nIns"
+    "trument\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Exc"
+    "hangeInstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016"
+    "VolumeMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*"
+    ",\n\nServerType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TR"
+    "ADE\020\001*>\n\023PortfolioSwitchType\022\023\n\017STRATEGY"
+    "_SWITCH\020\000\022\022\n\016TRIGGER_SWITCH\020\001*\?\n\014Strateg"
+    "yType\022\r\n\tARBITRAGE\020\000\022\023\n\017CHANGE_POSITION\020"
+    "\001\022\013\n\007SCALPER\020\002*o\n\020DirectionDepends\022\017\n\013IG"
+    "NORE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG"
+    "_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_C"
+    "HANGE\020\004*I\n\024StopLossCloseMethods\022\027\n\023BASED"
+    "_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_ON_INPUT_LIMIT"
+    "\020\001", 5482);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -1159,6 +1218,8 @@ void protobuf_AddDesc_message_2eproto() {
   ServerLoginResponse::default_instance_ = new ServerLoginResponse();
   ServerLogoutRequest::default_instance_ = new ServerLogoutRequest();
   AddPortfolioRequest::default_instance_ = new AddPortfolioRequest();
+  SwitchPortfolioRequest::default_instance_ = new SwitchPortfolioRequest();
+  ApplyStrategySettingsRequest::default_instance_ = new ApplyStrategySettingsRequest();
   StringParam::default_instance_ = new StringParam();
   IntParam::default_instance_ = new IntParam();
   LegItem::default_instance_ = new LegItem();
@@ -1197,6 +1258,8 @@ void protobuf_AddDesc_message_2eproto() {
   ServerLoginResponse::default_instance_->InitAsDefaultInstance();
   ServerLogoutRequest::default_instance_->InitAsDefaultInstance();
   AddPortfolioRequest::default_instance_->InitAsDefaultInstance();
+  SwitchPortfolioRequest::default_instance_->InitAsDefaultInstance();
+  ApplyStrategySettingsRequest::default_instance_->InitAsDefaultInstance();
   StringParam::default_instance_->InitAsDefaultInstance();
   IntParam::default_instance_->InitAsDefaultInstance();
   LegItem::default_instance_->InitAsDefaultInstance();
@@ -1241,6 +1304,20 @@ const ::google::protobuf::EnumDescriptor* ServerType_descriptor() {
   return ServerType_descriptor_;
 }
 bool ServerType_IsValid(int value) {
+  switch(value) {
+    case 0:
+    case 1:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::google::protobuf::EnumDescriptor* PortfolioSwitchType_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return PortfolioSwitchType_descriptor_;
+}
+bool PortfolioSwitchType_IsValid(int value) {
   switch(value) {
     case 0:
     case 1:
@@ -4044,6 +4121,666 @@ void AddPortfolioRequest::Swap(AddPortfolioRequest* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = AddPortfolioRequest_descriptor_;
   metadata.reflection = AddPortfolioRequest_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int SwitchPortfolioRequest::kPIDFieldNumber;
+const int SwitchPortfolioRequest::kSwitchTypeFieldNumber;
+const int SwitchPortfolioRequest::kStartStrategyFieldNumber;
+const int SwitchPortfolioRequest::kTriggerIndexFieldNumber;
+const int SwitchPortfolioRequest::kEnableTriggerFieldNumber;
+#endif  // !_MSC_VER
+
+SwitchPortfolioRequest::SwitchPortfolioRequest()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void SwitchPortfolioRequest::InitAsDefaultInstance() {
+}
+
+SwitchPortfolioRequest::SwitchPortfolioRequest(const SwitchPortfolioRequest& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void SwitchPortfolioRequest::SharedCtor() {
+  _cached_size_ = 0;
+  pid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  switchtype_ = 0;
+  startstrategy_ = false;
+  triggerindex_ = 0;
+  enabletrigger_ = false;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+SwitchPortfolioRequest::~SwitchPortfolioRequest() {
+  SharedDtor();
+}
+
+void SwitchPortfolioRequest::SharedDtor() {
+  if (pid_ != &::google::protobuf::internal::kEmptyString) {
+    delete pid_;
+  }
+  if (this != default_instance_) {
+  }
+}
+
+void SwitchPortfolioRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* SwitchPortfolioRequest::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return SwitchPortfolioRequest_descriptor_;
+}
+
+const SwitchPortfolioRequest& SwitchPortfolioRequest::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+SwitchPortfolioRequest* SwitchPortfolioRequest::default_instance_ = NULL;
+
+SwitchPortfolioRequest* SwitchPortfolioRequest::New() const {
+  return new SwitchPortfolioRequest;
+}
+
+void SwitchPortfolioRequest::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_pid()) {
+      if (pid_ != &::google::protobuf::internal::kEmptyString) {
+        pid_->clear();
+      }
+    }
+    switchtype_ = 0;
+    startstrategy_ = false;
+    triggerindex_ = 0;
+    enabletrigger_ = false;
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool SwitchPortfolioRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string PID = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_pid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->pid().data(), this->pid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_SwitchType;
+        break;
+      }
+      
+      // required .entity.PortfolioSwitchType SwitchType = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_SwitchType:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::PortfolioSwitchType_IsValid(value)) {
+            set_switchtype(static_cast< entity::PortfolioSwitchType >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(2, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_StartStrategy;
+        break;
+      }
+      
+      // optional bool StartStrategy = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_StartStrategy:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &startstrategy_)));
+          set_has_startstrategy();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_TriggerIndex;
+        break;
+      }
+      
+      // optional int32 TriggerIndex = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_TriggerIndex:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &triggerindex_)));
+          set_has_triggerindex();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_EnableTrigger;
+        break;
+      }
+      
+      // optional bool EnableTrigger = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_EnableTrigger:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &enabletrigger_)));
+          set_has_enabletrigger();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void SwitchPortfolioRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string PID = 1;
+  if (has_pid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->pid().data(), this->pid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->pid(), output);
+  }
+  
+  // required .entity.PortfolioSwitchType SwitchType = 2;
+  if (has_switchtype()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      2, this->switchtype(), output);
+  }
+  
+  // optional bool StartStrategy = 3;
+  if (has_startstrategy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->startstrategy(), output);
+  }
+  
+  // optional int32 TriggerIndex = 4;
+  if (has_triggerindex()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->triggerindex(), output);
+  }
+  
+  // optional bool EnableTrigger = 5;
+  if (has_enabletrigger()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->enabletrigger(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* SwitchPortfolioRequest::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string PID = 1;
+  if (has_pid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->pid().data(), this->pid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->pid(), target);
+  }
+  
+  // required .entity.PortfolioSwitchType SwitchType = 2;
+  if (has_switchtype()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      2, this->switchtype(), target);
+  }
+  
+  // optional bool StartStrategy = 3;
+  if (has_startstrategy()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->startstrategy(), target);
+  }
+  
+  // optional int32 TriggerIndex = 4;
+  if (has_triggerindex()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->triggerindex(), target);
+  }
+  
+  // optional bool EnableTrigger = 5;
+  if (has_enabletrigger()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->enabletrigger(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int SwitchPortfolioRequest::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string PID = 1;
+    if (has_pid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->pid());
+    }
+    
+    // required .entity.PortfolioSwitchType SwitchType = 2;
+    if (has_switchtype()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->switchtype());
+    }
+    
+    // optional bool StartStrategy = 3;
+    if (has_startstrategy()) {
+      total_size += 1 + 1;
+    }
+    
+    // optional int32 TriggerIndex = 4;
+    if (has_triggerindex()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->triggerindex());
+    }
+    
+    // optional bool EnableTrigger = 5;
+    if (has_enabletrigger()) {
+      total_size += 1 + 1;
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void SwitchPortfolioRequest::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const SwitchPortfolioRequest* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const SwitchPortfolioRequest*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void SwitchPortfolioRequest::MergeFrom(const SwitchPortfolioRequest& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_pid()) {
+      set_pid(from.pid());
+    }
+    if (from.has_switchtype()) {
+      set_switchtype(from.switchtype());
+    }
+    if (from.has_startstrategy()) {
+      set_startstrategy(from.startstrategy());
+    }
+    if (from.has_triggerindex()) {
+      set_triggerindex(from.triggerindex());
+    }
+    if (from.has_enabletrigger()) {
+      set_enabletrigger(from.enabletrigger());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void SwitchPortfolioRequest::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void SwitchPortfolioRequest::CopyFrom(const SwitchPortfolioRequest& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool SwitchPortfolioRequest::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  
+  return true;
+}
+
+void SwitchPortfolioRequest::Swap(SwitchPortfolioRequest* other) {
+  if (other != this) {
+    std::swap(pid_, other->pid_);
+    std::swap(switchtype_, other->switchtype_);
+    std::swap(startstrategy_, other->startstrategy_);
+    std::swap(triggerindex_, other->triggerindex_);
+    std::swap(enabletrigger_, other->enabletrigger_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata SwitchPortfolioRequest::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = SwitchPortfolioRequest_descriptor_;
+  metadata.reflection = SwitchPortfolioRequest_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int ApplyStrategySettingsRequest::kPIDFieldNumber;
+const int ApplyStrategySettingsRequest::kStrategyFieldNumber;
+#endif  // !_MSC_VER
+
+ApplyStrategySettingsRequest::ApplyStrategySettingsRequest()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void ApplyStrategySettingsRequest::InitAsDefaultInstance() {
+  strategy_ = const_cast< ::entity::StrategyItem*>(&::entity::StrategyItem::default_instance());
+}
+
+ApplyStrategySettingsRequest::ApplyStrategySettingsRequest(const ApplyStrategySettingsRequest& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void ApplyStrategySettingsRequest::SharedCtor() {
+  _cached_size_ = 0;
+  pid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  strategy_ = NULL;
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+ApplyStrategySettingsRequest::~ApplyStrategySettingsRequest() {
+  SharedDtor();
+}
+
+void ApplyStrategySettingsRequest::SharedDtor() {
+  if (pid_ != &::google::protobuf::internal::kEmptyString) {
+    delete pid_;
+  }
+  if (this != default_instance_) {
+    delete strategy_;
+  }
+}
+
+void ApplyStrategySettingsRequest::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ApplyStrategySettingsRequest::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ApplyStrategySettingsRequest_descriptor_;
+}
+
+const ApplyStrategySettingsRequest& ApplyStrategySettingsRequest::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
+}
+
+ApplyStrategySettingsRequest* ApplyStrategySettingsRequest::default_instance_ = NULL;
+
+ApplyStrategySettingsRequest* ApplyStrategySettingsRequest::New() const {
+  return new ApplyStrategySettingsRequest;
+}
+
+void ApplyStrategySettingsRequest::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (has_pid()) {
+      if (pid_ != &::google::protobuf::internal::kEmptyString) {
+        pid_->clear();
+      }
+    }
+    if (has_strategy()) {
+      if (strategy_ != NULL) strategy_->::entity::StrategyItem::Clear();
+    }
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool ApplyStrategySettingsRequest::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // required string PID = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_pid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->pid().data(), this->pid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_Strategy;
+        break;
+      }
+      
+      // required .entity.StrategyItem Strategy = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_Strategy:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_strategy()));
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+      
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void ApplyStrategySettingsRequest::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // required string PID = 1;
+  if (has_pid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->pid().data(), this->pid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->pid(), output);
+  }
+  
+  // required .entity.StrategyItem Strategy = 2;
+  if (has_strategy()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->strategy(), output);
+  }
+  
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* ApplyStrategySettingsRequest::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // required string PID = 1;
+  if (has_pid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->pid().data(), this->pid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->pid(), target);
+  }
+  
+  // required .entity.StrategyItem Strategy = 2;
+  if (has_strategy()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, this->strategy(), target);
+  }
+  
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int ApplyStrategySettingsRequest::ByteSize() const {
+  int total_size = 0;
+  
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // required string PID = 1;
+    if (has_pid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->pid());
+    }
+    
+    // required .entity.StrategyItem Strategy = 2;
+    if (has_strategy()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->strategy());
+    }
+    
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ApplyStrategySettingsRequest::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const ApplyStrategySettingsRequest* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const ApplyStrategySettingsRequest*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void ApplyStrategySettingsRequest::MergeFrom(const ApplyStrategySettingsRequest& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_pid()) {
+      set_pid(from.pid());
+    }
+    if (from.has_strategy()) {
+      mutable_strategy()->::entity::StrategyItem::MergeFrom(from.strategy());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void ApplyStrategySettingsRequest::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ApplyStrategySettingsRequest::CopyFrom(const ApplyStrategySettingsRequest& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool ApplyStrategySettingsRequest::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000003) != 0x00000003) return false;
+  
+  if (has_strategy()) {
+    if (!this->strategy().IsInitialized()) return false;
+  }
+  return true;
+}
+
+void ApplyStrategySettingsRequest::Swap(ApplyStrategySettingsRequest* other) {
+  if (other != this) {
+    std::swap(pid_, other->pid_);
+    std::swap(strategy_, other->strategy_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata ApplyStrategySettingsRequest::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ApplyStrategySettingsRequest_descriptor_;
+  metadata.reflection = ApplyStrategySettingsRequest_reflection_;
   return metadata;
 }
 

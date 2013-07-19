@@ -196,3 +196,18 @@ void CPortfolio::PushUpdate()
 {
 	m_avatar->PublishPortfolioUpdate(m_portfolioUpdate);
 }
+
+void CPortfolio::StartStrategy()
+{
+
+}
+
+void CPortfolio::StopStrategy()
+{
+
+}
+
+void CPortfolio::EnableTrigger( int triggerIdx, bool enabled )
+{
+
+}

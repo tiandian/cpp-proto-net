@@ -556,18 +556,8 @@ namespace PortfolioTrading.Modules.Account
         {
             PTEntity.PortfolioItem portfolioItem = new PTEntity.PortfolioItem();
             portfolioItem.ID = Id;
-            //portfolioItem.AutoOpen = AutoOpen;
-            //portfolioItem.AutoStopGain = AutoStopGain;
-            //portfolioItem.AutoStopLoss = AutoStopLoss;
-            //portfolioItem.AutoTrack = AutoTracking;
-            //portfolioItem.EnablePrefer = EnablePrefer;
             portfolioItem.Quantity = Quantity;
-            //portfolioItem.MaxPosition = MaxPosition;
-            //portfolioItem.OpenTimes = OpenTimes;
-            //portfolioItem.CloseTimes = 0;
-            //portfolioItem.CurrentPosition = Position;
-            //portfolioItem.AvgCost = AvgCost;
-
+            
             foreach (var legVm in _legs)
             {
                 PTEntity.LegItem leg = new PTEntity.LegItem();
@@ -579,30 +569,39 @@ namespace PortfolioTrading.Modules.Account
             }
 
             portfolioItem.Strategy = StrategySetting.GetEntity();
-            //entity.StrategyItem strategyItem = new entity.StrategyItem();
-            //strategyItem.Name = StrategySetting.Name;
-            //strategyItem.Data = StrategySetting.Serialize();
-            //strategyItem.Running = false;
-
+            
             return portfolioItem;
         }
 
         public void Update(PTEntity.PortfolioUpdateItem item)
         {
-            //Diff = ToDecimal(item.Diff);
-            //LongDiff = ToDecimal(item.LongDiff);
-            //ShortDiff = ToDecimal(item.ShortDiff);
-            //LongSize = item.LongSize;
-            //ShortSize = item.ShortSize;
+            if (item.StrategyUpdate.Kind == PTEntity.StrategyType.SCALPER)
+            {
+                PTEntity.ScalperStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.ScalperStrategyUpdateItem;
+                if (strategyUpdate != null)
+                {
+                    Diff = ToDecimal(strategyUpdate.Diff);
+                }
+            }
+            else if(item.StrategyUpdate.Kind == PTEntity.StrategyType.ARBITRAGE ||
+                item.StrategyUpdate.Kind == PTEntity.StrategyType.CHANGE_POSITION)
+            {
+                PTEntity.ArbitrageStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.ArbitrageStrategyUpdateItem;
+                LongDiff = ToDecimal(strategyUpdate.LongDiff);
+                ShortDiff = ToDecimal(strategyUpdate.ShortDiff);
+                LongSize = strategyUpdate.LongSize;
+                ShortSize = strategyUpdate.ShortSize;
+            }
+
             OpenTimes = item.TotalOpenTimes;
             DoneTimes = item.TotalCloseTimes;
             Position = item.CurrentPosition;
+
             //Gain = item.Profit;
             //Quantity = item.Quantity;
             //MaxPosition = item.MaxPosition;
             //AvgCost = item.AvgCost;
 
-            //IsRunning = item.Strategies[0].Running;
             IsRunning = item.StrategyUpdate.Running;
 
             for (int i = 0; i < item.Legs.Count; ++i )
