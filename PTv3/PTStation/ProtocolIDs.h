@@ -19,7 +19,6 @@ enum
 	ServerLoginResponseID,
 	ServerLogoutResponseID,
 	PortfolioUpdateResponseID,
-	LegUpdateResponseID,
 	MultilegOrderResponseID,
 	LegOrderResponseID,
 	TradeResponseID,

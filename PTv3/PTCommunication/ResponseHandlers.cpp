@@ -28,3 +28,21 @@ void PortfolioUpdateResponseHandler::handleResponse( PushFramework::IncomingPack
 	ProtobufPacket<entity::PortfolioUpdateItem>& resp = (ProtobufPacket<entity::PortfolioUpdateItem>&) packet;
 	m_pSession->OnPortfolioUpdateResponse(resp.getData());
 }
+
+void MultilegOrderUpdateResponseHandler::handleResponse( PushFramework::IncomingPacket& packet )
+{
+	ProtobufPacket<trade::MultiLegOrder>& resp = (ProtobufPacket<trade::MultiLegOrder>&) packet;
+	m_pSession->OnMultilegOrderUpdateResponse(resp.getData());
+}
+
+void LegOrderUpdateResponseHandler::handleResponse( PushFramework::IncomingPacket& packet )
+{
+	ProtobufPacket<entity::LegOrderUpdateParam>& resp = (ProtobufPacket<entity::LegOrderUpdateParam>&) packet;
+	m_pSession->OnLegOrderUpdateResponse(resp.getData());
+}
+
+void TradeUpdateResponseHandler::handleResponse( PushFramework::IncomingPacket& packet )
+{
+	ProtobufPacket<trade::Trade>& resp = (ProtobufPacket<trade::Trade>&) packet;
+	m_pSession->OnTradeUpdateResponse(resp.getData());
+}

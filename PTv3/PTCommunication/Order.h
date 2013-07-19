@@ -1,5 +1,7 @@
 #pragma once
 
+#include "entity/trade.pb.h"
+
 using namespace System;
 
 namespace PTEntity {
@@ -7,7 +9,7 @@ namespace PTEntity {
 public ref class Order
 {
 public:
-	Order(void){}
+	Order(const trade::Order* pEntityOrd){}
 };
 
 }

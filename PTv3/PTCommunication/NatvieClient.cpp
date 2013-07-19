@@ -5,7 +5,12 @@
 #include "ClientProtocol.h"
 #include "ServerLoginReturn.h"
 #include "ProtobufPacket.h"
+#include "MultiLegOrder.h"
+#include "TradeUpdate.h"
+#include "Order.h"
 
+using namespace System;
+using namespace System::Runtime::InteropServices;
 
 CNatvieClient::CNatvieClient(PTCommunication::IClientRequestHandler ^reqHandler)
 {
@@ -17,6 +22,9 @@ CNatvieClient::CNatvieClient(PTCommunication::IClientRequestHandler ^reqHandler)
 	registerHandler(LoginPuzzleResponseID, new LoginPuzzleResponseHandler(this));
 	registerHandler(ServerLoginResponseID, new ServerLoginResponseHandler(this));
 	registerHandler(PortfolioUpdateResponseID, new PortfolioUpdateResponseHandler(this));
+	registerHandler(MultilegOrderResponseID, new MultilegOrderUpdateResponseHandler(this));
+	registerHandler(LegOrderResponseID, new LegOrderUpdateResponseHandler(this));
+	registerHandler(TradeResponseID, new TradeUpdateResponseHandler(this));
 
 	m_clr = reqHandler;
 }
@@ -169,6 +177,28 @@ void CNatvieClient::OnPortfolioUpdateResponse( entity::PortfolioUpdateItem& resp
 {
 	msclr::auto_gcroot<PortfolioUpdateItem^> updateItem = gcnew PortfolioUpdateItem(&resp);
 	m_clr->OnPortfolioUpdate(updateItem.get());
+}
+
+void CNatvieClient::OnMultilegOrderUpdateResponse( trade::MultiLegOrder& resp )
+{
+	msclr::auto_gcroot<MultiLegOrder^> mlOrderItem = gcnew MultiLegOrder(&resp);
+	m_clr->OnMultiLegOrderUpdate(mlOrderItem.get());
+}
+
+void CNatvieClient::OnLegOrderUpdateResponse( entity::LegOrderUpdateParam& legOrderUpdateParam )
+{
+	msclr::auto_gcroot<String^> portfId = Marshal::PtrToStringAnsi((IntPtr)(char*)legOrderUpdateParam.portfid().c_str());
+	msclr::auto_gcroot<String^> mlOrderId = Marshal::PtrToStringAnsi((IntPtr)(char*)legOrderUpdateParam.multilegorderid().c_str());
+	msclr::auto_gcroot<String^> legOrderRef = Marshal::PtrToStringAnsi((IntPtr)(char*)legOrderUpdateParam.legorderref().c_str());
+	msclr::auto_gcroot<Order^> legOrder = gcnew Order(&(legOrderUpdateParam.legorder()));
+	
+	m_clr->OnLegOrderUpdate(portfId.get(), mlOrderId.get(), legOrderRef.get(), legOrder.get());
+}
+
+void CNatvieClient::OnTradeUpdateResponse( trade::Trade& resp )
+{
+	msclr::auto_gcroot<TradeUpdate^> tradeItem = gcnew TradeUpdate(&resp);
+	m_clr->OnTradeUpdate(tradeItem.get());
 }
 
 

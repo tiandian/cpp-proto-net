@@ -26,7 +26,12 @@ ProtobufPacketImpl* CClientProtocol::createIncomingPacketFromServiceId( int serv
 		return new ProtobufPacket<entity::ServerLoginResponse>(serviceId);
 	case PortfolioUpdateResponseID:
 		return new ProtobufPacket<entity::PortfolioUpdateItem>(serviceId);
-
+	case MultilegOrderResponseID:
+		return new ProtobufPacket<trade::MultiLegOrder>(serviceId);
+	case LegOrderResponseID:
+		return new ProtobufPacket<entity::LegOrderUpdateParam>(serviceId);
+	case TradeResponseID:
+		return new ProtobufPacket<trade::Trade>(serviceId);
 	default:
 		return NULL;
 	}

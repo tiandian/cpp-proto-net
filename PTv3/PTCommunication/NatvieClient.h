@@ -22,6 +22,9 @@ public:
 	void OnLoginPuzzleResponse(entity::LoginPuzzleResponse& resp);
 	void OnServerLoginResponse(entity::ServerLoginResponse& resp);
 	void OnPortfolioUpdateResponse(entity::PortfolioUpdateItem& resp);
+	void OnMultilegOrderUpdateResponse(trade::MultiLegOrder& resp);
+	void OnLegOrderUpdateResponse(entity::LegOrderUpdateParam& legOrderUpdateParam);
+	void OnTradeUpdateResponse(trade::Trade& resp);
 
 	void AddPortfolio(PTEntity::PortfolioItem ^portfolioItem);
 	void AddPortfolios(array<PTEntity::PortfolioItem^> ^portfolioItems);
