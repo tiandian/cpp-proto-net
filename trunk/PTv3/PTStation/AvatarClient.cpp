@@ -57,17 +57,31 @@ void CAvatarClient::PublishPortfolioUpdate( const entity::PortfolioUpdateItem& p
 
 void CAvatarClient::PublishMultiLegOrderUpdate( trade::MultiLegOrder* pOrder )
 {
+	ProtobufPacket<trade::MultiLegOrder> mlOrderUpdateResp(MultilegOrderResponseID);
+	mlOrderUpdateResp.getData().CopyFrom(*pOrder);
 
+	PushPacket(&mlOrderUpdateResp);
 }
 
 void CAvatarClient::PublishLegOrderUpdate( const string& portfId, const string& mlOrderId, trade::Order* legOrd )
 {
+	ProtobufPacket<entity::LegOrderUpdateParam> legOrdUpdateResp(LegOrderResponseID);
+	legOrdUpdateResp.getData().set_portfid(portfId);
+	legOrdUpdateResp.getData().set_multilegorderid(mlOrderId);
+	legOrdUpdateResp.getData().set_legorderref(legOrd->orderref());
 
+	trade::Order* pOrd = legOrdUpdateResp.getData().mutable_legorder();
+	pOrd->CopyFrom(*legOrd);
+
+	PushPacket(&legOrdUpdateResp);
 }
 
 void CAvatarClient::PublishTradeUpdate( trade::Trade* pTrade )
 {
+	ProtobufPacket<trade::Trade> tradeUpdateResp(TradeResponseID);
+	tradeUpdateResp.getData().CopyFrom(*pTrade);
 
+	PushPacket(&tradeUpdateResp);
 }
 
 void CAvatarClient::PublishPositionDetail( trade::PositionDetailInfo* pPosiDetailInfo )

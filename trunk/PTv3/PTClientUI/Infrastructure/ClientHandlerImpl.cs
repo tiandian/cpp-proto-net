@@ -31,5 +31,20 @@ namespace PortfolioTrading.Infrastructure
             if (OnPortfolioUpdated != null)
                 OnPortfolioUpdated(portfolioUpdateItem);
         }
+
+        public void OnLegOrderUpdate(string portfId, string mlOrderId, string legOrdRef, PTEntity.Order legOrder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnMultiLegOrderUpdate(PTEntity.MultiLegOrder multiLegOrder)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnTradeUpdate(TradeUpdate trade)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

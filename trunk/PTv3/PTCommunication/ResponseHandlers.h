@@ -55,3 +55,33 @@ public:
 
 	virtual void handleResponse(PushFramework::IncomingPacket& packet);
 };
+
+class MultilegOrderUpdateResponseHandler : public SessionResponseHandler
+{
+public:
+	MultilegOrderUpdateResponseHandler(CNatvieClient* pSession) : SessionResponseHandler(pSession)
+	{}
+	~MultilegOrderUpdateResponseHandler(){}
+
+	virtual void handleResponse(PushFramework::IncomingPacket& packet);
+};
+
+class LegOrderUpdateResponseHandler : public SessionResponseHandler
+{
+public:
+	LegOrderUpdateResponseHandler(CNatvieClient* pSession) : SessionResponseHandler(pSession)
+	{}
+	~LegOrderUpdateResponseHandler(){}
+
+	virtual void handleResponse(PushFramework::IncomingPacket& packet);
+};
+
+class TradeUpdateResponseHandler : public SessionResponseHandler
+{
+public:
+	TradeUpdateResponseHandler(CNatvieClient* pSession) : SessionResponseHandler(pSession)
+	{}
+	~TradeUpdateResponseHandler(){}
+
+	virtual void handleResponse(PushFramework::IncomingPacket& packet);
+};
