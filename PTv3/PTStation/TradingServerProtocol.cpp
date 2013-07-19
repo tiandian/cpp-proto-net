@@ -24,6 +24,10 @@ ProtobufPacketImpl* CTradingServerProtocol::createIncomingPacketFromServiceId( i
 		return new ProtobufPacket<entity::ServerLogoutRequest>(serviceId);
 	case AddPortfolioRequestID:
 		return new ProtobufPacket<entity::AddPortfolioRequest>(serviceId);
+	case PortfolioSwitchRequestID:
+		return new ProtobufPacket<entity::SwitchPortfolioRequest>(serviceId);
+	case ApplyStrategySetttingRequestID:
+		return new ProtobufPacket<entity::ApplyStrategySettingsRequest>(serviceId);
 	default:
 		return NULL;
 	}

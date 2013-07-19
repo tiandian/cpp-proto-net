@@ -9,6 +9,7 @@ enum
 	RemovePortfolioRequestID,
 	PortfolioSwitchRequestID,
 	PortfolioSyncRequestID,
+	ApplyStrategySetttingRequestID,
 };
 
 enum

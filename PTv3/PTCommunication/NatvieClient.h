@@ -4,6 +4,7 @@
 #include "tcpsocket/TCPSocket.h"
 #include "entity/message.pb.h"
 #include "PortfolioItem.h"
+#include "StrategyItem.h"
 
 #include <gcroot.h>
 #include <msclr/auto_gcroot.h>
@@ -24,6 +25,9 @@ public:
 
 	void AddPortfolio(PTEntity::PortfolioItem ^portfolioItem);
 	void AddPortfolios(array<PTEntity::PortfolioItem^> ^portfolioItems);
+	void PortfEnableStrategy(const char* portfId, bool isEnabled);
+	void PortfTurnSwitches(const char* portfId, int triggerIndex, bool enabled);
+	void ApplyStrategySettings(const char* portfId, PTEntity::StrategyItem ^strategyItem);
 
 	bool logged();
 	void Logout();

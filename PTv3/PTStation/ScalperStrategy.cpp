@@ -14,13 +14,7 @@ CScalperStrategy::CScalperStrategy(const entity::StrategyItem& strategyItem)
 	, m_ask(0), m_askSize(0)
 	, m_bid(0), m_bidSize(0)
 {
-	m_priceTick = strategyItem.sc_pricetick();
-	m_caseLE2Tick = strategyItem.sc_casele2tick();
-	m_caseLE3Tick = strategyItem.sc_casele3tick();
-	m_caseGE4Tick = strategyItem.sc_casege4tick();
-	m_caseNoChange = strategyItem.sc_casenochange();
-	m_stopLossStrategy = strategyItem.sc_stoplossstrategy();
-
+	Apply(strategyItem, false);
 	CreateTriggers(strategyItem);
 }
 
@@ -35,6 +29,18 @@ void CScalperStrategy::CreateTriggers( const entity::StrategyItem& strategyItem 
 	{
 		m_triggers.push_back(TriggerPtr(new CScalperTrigger(strategyItem.triggers(0))));
 	}
+}
+
+void CScalperStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
+{
+	CStrategy::Apply(strategyItem, withTriggers);
+
+	m_priceTick = strategyItem.sc_pricetick();
+	m_caseLE2Tick = strategyItem.sc_casele2tick();
+	m_caseLE3Tick = strategyItem.sc_casele3tick();
+	m_caseGE4Tick = strategyItem.sc_casege4tick();
+	m_caseNoChange = strategyItem.sc_casenochange();
+	m_stopLossStrategy = strategyItem.sc_stoplossstrategy();
 }
 
 void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )

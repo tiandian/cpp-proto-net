@@ -7,6 +7,7 @@ public:
 	CTrigger(const entity::TriggerItem& triggerItem);
 	virtual ~CTrigger(void);
 
+	virtual void Apply(const entity::TriggerItem& triggerItem) = 0;
 	entity::StrategyType Strategy(){ return m_strategy; }
 	const string& Name(){ return m_name; }
 

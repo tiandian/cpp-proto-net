@@ -5,8 +5,7 @@
 CChangePositionStrategy::CChangePositionStrategy(const entity::StrategyItem& strategyItem)
 	: CArbitrageStrategy(strategyItem)
 {
-	m_closeLeg = strategyItem.cp_closeleg();
-	m_closeLegSide = strategyItem.cp_closelegside();
+	Apply(strategyItem, false);
 
 	CreateTriggers(strategyItem);
 }
@@ -28,4 +27,12 @@ void CChangePositionStrategy::CreateTriggers( const entity::StrategyItem& strate
 void CChangePositionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
 	CArbitrageStrategy::Test(pQuote, pPortfolio, timestamp);
+}
+
+void CChangePositionStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
+{
+	CStrategy::Apply(strategyItem, withTriggers);
+
+	m_closeLeg = strategyItem.cp_closeleg();
+	m_closeLegSide = strategyItem.cp_closelegside();
 }

@@ -133,9 +133,43 @@ void CNatvieClient::AddPortfolios( array<PTEntity::PortfolioItem^> ^portfolioIte
 	sendRequest(&request);
 }
 
+void CNatvieClient::PortfEnableStrategy( const char* portfId, bool isEnabled )
+{
+	ProtobufPacket<entity::SwitchPortfolioRequest> request(PortfolioSwitchRequestID);
+	request.getData().set_pid(portfId);
+	request.getData().set_switchtype(entity::STRATEGY_SWITCH);
+	request.getData().set_startstrategy(isEnabled);
+
+	sendRequest(&request);
+}
+
+void CNatvieClient::PortfTurnSwitches( const char* portfId, int triggerIndex, bool enabled )
+{
+	ProtobufPacket<entity::SwitchPortfolioRequest> request(PortfolioSwitchRequestID);
+	request.getData().set_pid(portfId);
+	request.getData().set_switchtype(entity::TRIGGER_SWITCH);
+
+	request.getData().set_triggerindex(triggerIndex);
+	request.getData().set_enabletrigger(enabled);
+
+	sendRequest(&request);
+}
+
+void CNatvieClient::ApplyStrategySettings( const char* portfId, PTEntity::StrategyItem ^strategyItem )
+{
+	ProtobufPacket<entity::ApplyStrategySettingsRequest> request(ApplyStrategySetttingRequestID);
+	request.getData().set_pid(portfId);
+	entity::StrategyItem* pNativeItem = request.getData().mutable_strategy();
+	strategyItem->To(pNativeItem);
+
+	sendRequest(&request);
+}
+
 void CNatvieClient::OnPortfolioUpdateResponse( entity::PortfolioUpdateItem& resp )
 {
 	msclr::auto_gcroot<PortfolioUpdateItem^> updateItem = gcnew PortfolioUpdateItem(&resp);
 	m_clr->OnPortfolioUpdate(updateItem.get());
 }
+
+
 

@@ -8,6 +8,8 @@ public:
 	CScalperTrigger(const entity::TriggerItem& triggerItem);
 	~CScalperTrigger(void);
 
+	void Apply(const entity::TriggerItem& triggerItem);
+
 	bool Test(double val)
 	{ 
 		return DoubleGreaterEqual(val, m_threshold); 
