@@ -7,9 +7,6 @@
 #include "entity/quote.pb.h"
 #include "entity/trade.pb.h"
 
-#include <boost/chrono.hpp>
-#include <boost/thread.hpp>
-
 class CQuoteRepositry;
 class CQuoteFetcher;
 class CAvatarClient;
@@ -30,6 +27,7 @@ public:
 	int TotalCloseTimes() { return m_totalCloseTimes; }
 	double Profit() { return m_profit; }
 	double AvgCost() { return m_avgCost; }
+	const string& InvestorId();
 	CPortfolioOrderPlacer* OrderPlacer() { return m_orderPlacer.get(); }
 
 	entity::StrategyType StrategyType(){ return m_strategyType; }

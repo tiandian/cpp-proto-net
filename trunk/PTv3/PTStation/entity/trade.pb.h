@@ -432,12 +432,12 @@ inline bool ActionFlagType_Parse(
     ActionFlagType_descriptor(), name, value);
 }
 enum SubmitReason {
-  SR_Manual = 1,
-  SR_AutoOpen = 2,
-  SR_StopGain = 3,
-  SR_StopLoss = 4,
-  SR_AutoSwitch = 5,
-  SR_Scalpe = 6
+  SR_Manual = 0,
+  SR_AutoOpen = 1,
+  SR_StopGain = 2,
+  SR_StopLoss = 3,
+  SR_AutoSwitch = 4,
+  SR_Scalpe = 5
 };
 bool SubmitReason_IsValid(int value);
 const SubmitReason SubmitReason_MIN = SR_Manual;
@@ -455,9 +455,9 @@ inline bool SubmitReason_Parse(
     SubmitReason_descriptor(), name, value);
 }
 enum MlOrderOffset {
-  ML_OF_OPEN = 1,
-  ML_OF_CLOSE = 2,
-  ML_OF_OTHER = 3
+  ML_OF_OPEN = 0,
+  ML_OF_CLOSE = 1,
+  ML_OF_OTHER = 2
 };
 bool MlOrderOffset_IsValid(int value);
 const MlOrderOffset MlOrderOffset_MIN = ML_OF_OPEN;
@@ -11630,7 +11630,7 @@ inline void MultiLegOrder::clear_has_reason() {
   _has_bits_[0] &= ~0x00000040u;
 }
 inline void MultiLegOrder::clear_reason() {
-  reason_ = 1;
+  reason_ = 0;
   clear_has_reason();
 }
 inline trade::SubmitReason MultiLegOrder::reason() const {
@@ -11733,7 +11733,7 @@ inline void MultiLegOrder::clear_has_offset() {
   _has_bits_[0] &= ~0x00000200u;
 }
 inline void MultiLegOrder::clear_offset() {
-  offset_ = 1;
+  offset_ = 0;
   clear_has_offset();
 }
 inline trade::MlOrderOffset MultiLegOrder::offset() const {

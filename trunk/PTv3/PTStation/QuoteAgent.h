@@ -6,7 +6,6 @@
 #include "ShmQuoteFeed.h"
 #include "QuoteAgentCallback.h"
 
-#include <boost/thread.hpp>
 #include <boost/atomic.hpp>
 
 class CQuoteAgent

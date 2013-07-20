@@ -8,8 +8,6 @@
 #include "OrderEvent.h"
 #include "charsetconvert.h"
 
-#include <boost/foreach.hpp>
-#include <boost/format.hpp>
 // back-end
 #include <boost/msm/back/state_machine.hpp>
 //front-end

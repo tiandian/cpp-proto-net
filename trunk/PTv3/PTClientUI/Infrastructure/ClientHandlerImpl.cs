@@ -11,6 +11,9 @@ namespace PortfolioTrading.Infrastructure
         public event Action<bool, string> OnLogin;
         public event Action<PTEntity.ServerType, bool, string> OnServerLogin;
         public event Action<PTEntity.PortfolioUpdateItem> OnPortfolioUpdated;
+        public event Action<PTEntity.MultiLegOrder> OnMultiLegOrderUpdated;
+        public event Action<PTEntity.TradeUpdate> OnTradeUpdated;
+        public event Action<string, string, string, PTEntity.Order> OnLegOrderUpdated;
 
         public void OnLoginReturned(PTEntity.LoginReturn loginReturn)
         {
@@ -34,17 +37,20 @@ namespace PortfolioTrading.Infrastructure
 
         public void OnLegOrderUpdate(string portfId, string mlOrderId, string legOrdRef, PTEntity.Order legOrder)
         {
-            throw new NotImplementedException();
+            if (OnLegOrderUpdated != null)
+                OnLegOrderUpdated(portfId, mlOrderId, legOrdRef, legOrder);
         }
 
         public void OnMultiLegOrderUpdate(PTEntity.MultiLegOrder multiLegOrder)
         {
-            throw new NotImplementedException();
+            if (OnMultiLegOrderUpdated != null)
+                OnMultiLegOrderUpdated(multiLegOrder);
         }
 
-        public void OnTradeUpdate(TradeUpdate trade)
+        public void OnTradeUpdate(PTEntity.TradeUpdate trade)
         {
-            throw new NotImplementedException();
+            if (OnTradeUpdated != null)
+                OnTradeUpdated(trade);
         }
     }
 }

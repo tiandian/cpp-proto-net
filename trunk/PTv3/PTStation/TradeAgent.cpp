@@ -6,7 +6,6 @@
 #include "SymbolInfoRepositry.h"
 
 #include <sstream>
-#include <assert.h>
 
 #if defined(WIN32)
 #pragma comment(lib, "./ThostTraderApi/thosttraderapi.lib")

@@ -18,7 +18,7 @@ public:
 
 	int RetryTimes(){ return m_retryTimes; }
 	int OpenTimeout(){ return m_openTimeout; }
-	const vector<TriggerPtr>& Triggers() { return m_triggers; }
+	vector<TriggerPtr>& Triggers() { return m_triggers; }
 
 	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);
 	void ApplyTrigger(const entity::StrategyItem& strategyItem);

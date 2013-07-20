@@ -3,8 +3,6 @@
 #include "ArbitrageTrigger.h"
 #include "Portfolio.h"
 
-#include <assert.h>
-
 enum DIFF_TYPE 
 {
 	LAST_DIFF, LONG_DIFF, SHORT_DIFF

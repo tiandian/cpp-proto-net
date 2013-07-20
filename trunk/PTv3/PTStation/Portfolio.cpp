@@ -9,9 +9,6 @@
 #include "AvatarClient.h"
 #include "PortfolioScalperOrderPlacer.h"
 
-#include <assert.h>
-#include <boost/foreach.hpp>
-#include <iostream>
 
 CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPortfolioItem)
 	: m_avatar(client)
@@ -199,15 +196,27 @@ void CPortfolio::PushUpdate()
 
 void CPortfolio::StartStrategy()
 {
-
+	logger.Info(boost::str(boost::format("[%s] Portfolio (%s) START strategy >>>") % InvestorId() % ID()));
+	m_orderPlacer->Prepare();
+	m_strategy->Start();
 }
 
 void CPortfolio::StopStrategy()
 {
-
+	logger.Info(boost::str(boost::format("[%s] Portfolio (%s) STOP strategy <<<") % InvestorId() % ID()));
+	m_strategy->Stop();
+	m_orderPlacer->Cleanup();
 }
 
 void CPortfolio::EnableTrigger( int triggerIdx, bool enabled )
 {
+	assert(triggerIdx < m_strategy->Triggers().size());
+	logger.Info(boost::str(boost::format("[%s] %s trigger of Portfolio (%s)") 
+		% InvestorId() % (enabled ? "ENABLE" : "DISABLE") % ID()));
+	m_strategy->Triggers().at(triggerIdx)->Enable(enabled);
+}
 
+const string& CPortfolio::InvestorId()
+{
+	return m_avatar->Pseudo();
 }

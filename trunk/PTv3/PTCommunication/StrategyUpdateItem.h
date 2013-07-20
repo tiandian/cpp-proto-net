@@ -62,7 +62,7 @@ public:
 		}
 	}
 
-public private:
+internal:
 
 	void SetTriggers(array<TriggerStatusItem^>^ triggers)
 	{

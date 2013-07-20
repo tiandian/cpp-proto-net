@@ -11,7 +11,8 @@ public:
 	entity::StrategyType Strategy(){ return m_strategy; }
 	const string& Name(){ return m_name; }
 
-	virtual bool Test(double val){ return false; }
+	bool Test(double val);
+	virtual bool OnTest(double val){ return false; }
 	bool IsEnabled(){ return m_enabled; }
 	void Enable(bool enabled){ m_enabled = enabled; }
 

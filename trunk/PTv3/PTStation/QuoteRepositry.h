@@ -4,8 +4,6 @@
 #include "QuoteFetcher.h"
 #include "QuoteStore.h"
 
-#include <boost/thread.hpp>
-
 class CQuoteAgent;
 
 class CQuoteRepositry : public CQuoteAgentCallback

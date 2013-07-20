@@ -15,10 +15,14 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <assert.h>
 using namespace std;
 
 #include <boost/shared_ptr.hpp>
 #include <boost/format.hpp>
+#include <boost/chrono.hpp>
+#include <boost/foreach.hpp>
+#include <boost/thread.hpp>
 
 #ifdef USE_NET_LIBS 
 
