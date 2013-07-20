@@ -20,6 +20,6 @@ namespace PortfolioTrading.Events
 
         public string LegOrderRef { get; set; }
 
-        public trade.Order LegOrder { get; set; }
+        public PTEntity.Order LegOrder { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace PortfolioTrading.Events
     public class CloseMlOrderArgs
     {
         public string AccountId { get; set; }
-        public trade.MultiLegOrder MlOrder { get; set; }
+        public PTEntity.MultiLegOrder MlOrder { get; set; }
         public string LegOrderRef { get; set; }
     }
 }

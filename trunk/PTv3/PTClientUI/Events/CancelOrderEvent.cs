@@ -13,6 +13,6 @@ namespace PortfolioTrading.Events
     public class CancelOrderEventArgs
     {
         public string AccountId { get; set; }
-        public trade.Order OrderToCancel { get; set; }
+        public PTEntity.Order OrderToCancel { get; set; }
     }
 }
