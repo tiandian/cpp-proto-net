@@ -765,19 +765,19 @@ message InputOrderAction
 
 enum SubmitReason
 {
-	SR_Manual = 1;
-	SR_AutoOpen = 2;
-	SR_StopGain = 3;
-	SR_StopLoss = 4;
-	SR_AutoSwitch = 5;
-	SR_Scalpe = 6;
+	SR_Manual = 0;
+	SR_AutoOpen = 1;
+	SR_StopGain = 2;
+	SR_StopLoss = 3;
+	SR_AutoSwitch = 4;
+	SR_Scalpe = 5;
 }
 
 enum MlOrderOffset
 {
-	ML_OF_OPEN = 1;
-	ML_OF_CLOSE = 2;
-	ML_OF_OTHER = 3;
+	ML_OF_OPEN = 0;
+	ML_OF_CLOSE = 1;
+	ML_OF_OTHER = 2;
 }
 
 message MultiLegOrder

@@ -69,6 +69,30 @@ message AddPortfolioRequest
 	repeated PortfolioItem Portfolios = 1;
 }
 
+enum PortfolioSwitchType
+{
+	STRATEGY_SWITCH = 0;
+	TRIGGER_SWITCH = 1;
+}
+
+message SwitchPortfolioRequest
+{
+	required string PID = 1;
+	required PortfolioSwitchType SwitchType = 2;
+
+	// Strategy
+	optional bool StartStrategy = 3;
+	// Trigger
+	optional int32 TriggerIndex = 4;
+	optional bool EnableTrigger = 5;
+}
+
+message ApplyStrategySettingsRequest
+{
+	required string PID = 1;
+	required StrategyItem Strategy = 2;
+}
+
 message StringParam
 {
 	required string Data = 1;
