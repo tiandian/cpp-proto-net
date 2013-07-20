@@ -4,7 +4,6 @@
 #include "PortfolioOrderHelper.h"
 #include "entity/quote.pb.h"
 
-#include <boost/thread.hpp>
 #include <boost/tuple/tuple.hpp>
 #include <boost/unordered_map.hpp>
 

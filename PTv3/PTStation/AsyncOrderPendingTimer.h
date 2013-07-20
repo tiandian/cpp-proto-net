@@ -1,7 +1,6 @@
 #pragma once
 
 #include <boost/atomic.hpp>
-#include <boost/thread.hpp>
 #include <boost/asio/steady_timer.hpp>
 
 class CPortfolioOrderPlacer;

@@ -693,10 +693,10 @@ void protobuf_AddDesc_trade_2eproto() {
     "_LAST_PRICE\0200\022\014\n\010PSRC_BUY\0201\022\r\n\tPSRC_SELL"
     "\0202*.\n\016ActionFlagType\022\r\n\tAF_Delete\0200\022\r\n\tA"
     "F_Modify\0203*r\n\014SubmitReason\022\r\n\tSR_Manual\020"
-    "\001\022\017\n\013SR_AutoOpen\020\002\022\017\n\013SR_StopGain\020\003\022\017\n\013S"
-    "R_StopLoss\020\004\022\021\n\rSR_AutoSwitch\020\005\022\r\n\tSR_Sc"
-    "alpe\020\006*A\n\rMlOrderOffset\022\016\n\nML_OF_OPEN\020\001\022"
-    "\017\n\013ML_OF_CLOSE\020\002\022\017\n\013ML_OF_OTHER\020\003", 8433);
+    "\000\022\017\n\013SR_AutoOpen\020\001\022\017\n\013SR_StopGain\020\002\022\017\n\013S"
+    "R_StopLoss\020\003\022\021\n\rSR_AutoSwitch\020\004\022\r\n\tSR_Sc"
+    "alpe\020\005*A\n\rMlOrderOffset\022\016\n\nML_OF_OPEN\020\000\022"
+    "\017\n\013ML_OF_CLOSE\020\001\022\017\n\013ML_OF_OTHER\020\002", 8433);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "trade.proto", &protobuf_RegisterTypes);
   AccountInfo::default_instance_ = new AccountInfo();
@@ -1036,12 +1036,12 @@ const ::google::protobuf::EnumDescriptor* SubmitReason_descriptor() {
 }
 bool SubmitReason_IsValid(int value) {
   switch(value) {
+    case 0:
     case 1:
     case 2:
     case 3:
     case 4:
     case 5:
-    case 6:
       return true;
     default:
       return false;
@@ -1054,9 +1054,9 @@ const ::google::protobuf::EnumDescriptor* MlOrderOffset_descriptor() {
 }
 bool MlOrderOffset_IsValid(int value) {
   switch(value) {
+    case 0:
     case 1:
     case 2:
-    case 3:
       return true;
     default:
       return false;
@@ -12461,10 +12461,10 @@ void MultiLegOrder::SharedCtor() {
   quantity_ = 0;
   openorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   opendate_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  reason_ = 1;
+  reason_ = 0;
   haswarn_ = false;
   statusmsg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  offset_ = 1;
+  offset_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -12535,7 +12535,7 @@ void MultiLegOrder::Clear() {
         opendate_->clear();
       }
     }
-    reason_ = 1;
+    reason_ = 0;
     haswarn_ = false;
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
@@ -12544,7 +12544,7 @@ void MultiLegOrder::Clear() {
         statusmsg_->clear();
       }
     }
-    offset_ = 1;
+    offset_ = 0;
   }
   legs_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));

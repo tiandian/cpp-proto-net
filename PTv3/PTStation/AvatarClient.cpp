@@ -25,7 +25,7 @@ boost::tuple<bool, string> CAvatarClient::TradeLogin( const string& address, con
 {
 	if(m_tradeLogged)
 		return boost::make_tuple(false, "Trade already Logged in");
-
+	m_investorId = investorId;
 	return m_tradeAgent.Login(address, brokerId, investorId, password);
 }
 

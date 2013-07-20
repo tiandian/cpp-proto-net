@@ -5,13 +5,6 @@
 #include "entity/trade.pb.h"
 #include "entity/quote.pb.h"
 
-#include <assert.h>
-#include <string>
-#include <boost/shared_ptr.hpp>
-#include <boost/chrono.hpp>
-
-using namespace std;
-
 class CPortfolioOrderPlacer;
 
 class CLegOrderPlacer

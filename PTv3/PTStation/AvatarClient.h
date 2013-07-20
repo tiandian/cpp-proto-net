@@ -15,8 +15,8 @@ public:
 
 	virtual const char* getKey(){ return m_sessionId.c_str(); }
 
-	const string& Pseudo() const { return m_pseudo; }
-	void Pseudo(const string& val) { m_pseudo = val; }
+	const string& Pseudo() const { return m_investorId; }
+	void Pseudo(const string& val) { m_investorId = val; }
 
 	boost::tuple<bool, string> TradeLogin(const string& address, const string& brokerId, const string& investorId, const string& password);
 	void TradeLogout();
@@ -34,7 +34,8 @@ public:
 
 private:
 	string				m_sessionId;
-	string				m_pseudo;
+	string				m_investorId;
+
 
 	CTradeAgent			m_tradeAgent;
 	CQuoteAgent			m_quoteAgent;

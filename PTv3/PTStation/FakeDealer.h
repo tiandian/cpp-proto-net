@@ -5,7 +5,6 @@
 
 #include <sstream>
 #include <boost/date_time.hpp>
-#include <boost/thread.hpp>
 #include <boost/atomic.hpp>
 
 using namespace std;

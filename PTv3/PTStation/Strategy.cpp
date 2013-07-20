@@ -42,7 +42,7 @@ void CStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chro
 
 void CStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
 {
-	pPortfUpdateItem->set_running(m_running);
+	pPortfUpdateItem->set_running(IsRunning());
 	for(int i = 0; i < pPortfUpdateItem->triggers_size(); ++i)
 	{
 		entity::TriggerStatus* triggerStatus = pPortfUpdateItem->mutable_triggers(i);

@@ -4,9 +4,7 @@
 #include "entity/trade.pb.h"
 #include "entity/quote.pb.h"
 
-#include <assert.h>
 #include <boost/atomic.hpp>
-#include <boost/chrono.hpp>
 
 class CPortfolio;
 class COrderProcessor;

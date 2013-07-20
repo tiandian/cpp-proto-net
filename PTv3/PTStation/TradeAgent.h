@@ -11,7 +11,6 @@
 #endif
 
 #include <boost/tuple/tuple.hpp>
-#include <boost/thread.hpp>
 #include <boost/date_time.hpp>
 #include <boost/atomic.hpp>
 

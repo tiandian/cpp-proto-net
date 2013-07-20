@@ -13,3 +13,11 @@ CTrigger::CTrigger(const entity::TriggerItem& triggerItem)
 CTrigger::~CTrigger(void)
 {
 }
+
+bool CTrigger::Test( double val )
+{
+	if(IsEnabled())
+		return OnTest(val);
+
+	return false;
+}

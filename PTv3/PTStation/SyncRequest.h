@@ -1,7 +1,6 @@
 #pragma once
 
 #include <boost/bind.hpp>
-#include <boost/thread.hpp>
 
 using namespace std;
 
