@@ -13,6 +13,6 @@ namespace PortfolioTrading.Events
     public class MultiLegOrderUpdateArgs
     {
         public string AccountId { get; set; }
-        public trade.MultiLegOrder MultiLegOrder { get; set; }
+        public PTEntity.MultiLegOrder MultiLegOrder { get; set; }
     }
 }

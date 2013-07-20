@@ -75,9 +75,9 @@ namespace PortfolioTrading.Modules.Portfolio
             foreach (var ord in mlOrderVm.LastOrder.Legs)
             {
                 if(
-                    ord.OrderSubmitStatus != trade.OrderSubmitStatusType.NOT_SUBMITTED &&
-                    ord.OrderStatus != trade.OrderStatusType.ALL_TRADED &&
-                    ord.OrderStatus != trade.OrderStatusType.ORDER_CANCELED)
+                    ord.OrderSubmitStatus != PTEntity.OrderSubmitStatusType.NOT_SUBMITTED &&
+                    ord.OrderStatus != PTEntity.OrderStatusType.ALL_TRADED &&
+                    ord.OrderStatus != PTEntity.OrderStatusType.ORDER_CANCELED)
                 {
                     evtAgg.GetEvent<CancelOrderEvent>().Publish(
                         new CancelOrderEventArgs
@@ -98,7 +98,7 @@ namespace PortfolioTrading.Modules.Portfolio
                     vm => vm.AccountId == acctId && vm.OrderId == mlOrdId);
         }
 
-        public MultiLegOrderVM Update(string accountId, trade.MultiLegOrder mlOrder)
+        public MultiLegOrderVM Update(string accountId, PTEntity.MultiLegOrder mlOrder)
         {
             lock (this)
             {

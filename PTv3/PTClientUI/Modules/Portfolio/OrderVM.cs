@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
 using PortfolioTrading.Utils;
+using PTEntity;
 
 namespace PortfolioTrading.Modules.Portfolio
 {
@@ -182,7 +183,7 @@ namespace PortfolioTrading.Modules.Portfolio
         #endregion
 
 
-        public void From(trade.Order order, bool fromParent = false)
+        public void From(PTEntity.Order order, bool fromParent = false)
         {
             OrderUid = GetOrderUid(order);
 
@@ -200,7 +201,7 @@ namespace PortfolioTrading.Modules.Portfolio
 
             if (!fromParent)
             {
-                if (order.OrderSubmitStatus > trade.OrderSubmitStatusType.ACCEPTED)
+                if (order.OrderSubmitStatus > OrderSubmitStatusType.ACCEPTED)
                 {
                     EventLogger.Write("{0} {1} 被拒绝 -({2})", Direction, Symbol, order.StatusMsg);
                 }
@@ -232,18 +233,18 @@ namespace PortfolioTrading.Modules.Portfolio
             }
         }
 
-        private static bool CheckForFinish(trade.OrderSubmitStatusType submitStatus,
-                                       trade.OrderStatusType statusType)
+        private static bool CheckForFinish(OrderSubmitStatusType submitStatus,
+                                       OrderStatusType statusType)
         {
             switch (submitStatus)
             {
-                case trade.OrderSubmitStatusType.INSERT_SUBMITTED:
-                case trade.OrderSubmitStatusType.ACCEPTED:
+                case OrderSubmitStatusType.INSERT_SUBMITTED:
+                case OrderSubmitStatusType.ACCEPTED:
                     {
                         switch (statusType)
                         {
-                            case trade.OrderStatusType.ALL_TRADED:
-                            case trade.OrderStatusType.ORDER_CANCELED:
+                            case OrderStatusType.ALL_TRADED:
+                            case OrderStatusType.ORDER_CANCELED:
                                 return true;
                         }
                     }
@@ -254,65 +255,65 @@ namespace PortfolioTrading.Modules.Portfolio
             return false;
         }
 
-        public static string GetStatus(trade.OrderSubmitStatusType submitStatus,
-                                       trade.OrderStatusType statusType)
+        public static string GetStatus(OrderSubmitStatusType submitStatus,
+                                       OrderStatusType statusType)
         {
             string status = "未知";
 
             switch (submitStatus)
             {
-                case trade.OrderSubmitStatusType.NOT_SUBMITTED:
+                case OrderSubmitStatusType.NOT_SUBMITTED:
                     status = "未提交";
                     break;
-                case trade.OrderSubmitStatusType.INSERT_SUBMITTED:
-                case trade.OrderSubmitStatusType.ACCEPTED:
+                case OrderSubmitStatusType.INSERT_SUBMITTED:
+                case OrderSubmitStatusType.ACCEPTED:
                     {
-                        if (submitStatus == trade.OrderSubmitStatusType.INSERT_SUBMITTED)
+                        if (submitStatus == OrderSubmitStatusType.INSERT_SUBMITTED)
                             status = "委托已提交";
-                        else if (submitStatus == trade.OrderSubmitStatusType.ACCEPTED)
+                        else if (submitStatus == OrderSubmitStatusType.ACCEPTED)
                             status = "委托被接受";
 
                         switch (statusType)
                         {
-                            case trade.OrderStatusType.ALL_TRADED:
+                            case OrderStatusType.ALL_TRADED:
                                 status = "全部成交";
                                 break;
-                            case trade.OrderStatusType.PART_TRADED_QUEUEING:
-                            case trade.OrderStatusType.PART_TRADED_NOT_QUEUEING:
+                            case OrderStatusType.PART_TRADED_QUEUEING:
+                            case OrderStatusType.PART_TRADED_NOT_QUEUEING:
                                 status = "部分成交";
                                 break;
-                            case trade.OrderStatusType.NO_TRADE_QUEUEING:
-                            case trade.OrderStatusType.NO_TRADE_NOT_QUEUEING:
+                            case OrderStatusType.NO_TRADE_QUEUEING:
+                            case OrderStatusType.NO_TRADE_NOT_QUEUEING:
                                 status = "未成交";
                                 break;
-                            case trade.OrderStatusType.ORDER_CANCELED:
+                            case OrderStatusType.ORDER_CANCELED:
                                 status = "委托已取消";
                                 break;
-                            case trade.OrderStatusType.ORDER_NOT_TOUCHED:
+                            case OrderStatusType.ORDER_NOT_TOUCHED:
                                 status = "委托未触发";
                                 break;
-                            case trade.OrderStatusType.ORDER_TOUCHED:
+                            case OrderStatusType.ORDER_TOUCHED:
                                 status = "委托已触发";
                                 break;
-                            case trade.OrderStatusType.STATUS_UNKNOWN:
+                            case OrderStatusType.STATUS_UNKNOWN:
                             default:
                                 break;
                         }
                     }
                     break;
-                case trade.OrderSubmitStatusType.CANCEL_SUBMITTED:
+                case OrderSubmitStatusType.CANCEL_SUBMITTED:
                     status = "取消已提交";
                     break;
-                case trade.OrderSubmitStatusType.MODIFY_SUBMITTED:
+                case OrderSubmitStatusType.MODIFY_SUBMITTED:
                     status = "修改已提交";
                     break;
-                case trade.OrderSubmitStatusType.INSERT_REJECTED:
+                case OrderSubmitStatusType.INSERT_REJECTED:
                     status = "委托被拒绝";
                     break;
-                case trade.OrderSubmitStatusType.CANCEL_REJECTED:
+                case OrderSubmitStatusType.CANCEL_REJECTED:
                     status = "取消被拒绝";
                     break;
-                case trade.OrderSubmitStatusType.MODIFY_REJECTED:
+                case OrderSubmitStatusType.MODIFY_REJECTED:
                     status = "修改被拒绝";
                     break;
                 default:
@@ -322,61 +323,61 @@ namespace PortfolioTrading.Modules.Portfolio
             return status;
         }
 
-        public static string GetDirection(trade.TradeDirectionType direction)
+        public static string GetDirection(TradeDirectionType direction)
         {
             switch (direction)
             {
-                case trade.TradeDirectionType.BUY:
+                case TradeDirectionType.BUY:
                     return "买入";
-                case trade.TradeDirectionType.SELL:
+                case TradeDirectionType.SELL:
                     return "卖出";
                 default:
                     return "未知";
             }    
         }
 
-        public static string GetPriceType(trade.OrderPriceTypeType priceType)
+        public static string GetPriceType(OrderPriceTypeType priceType)
         {
             switch (priceType)
             {
-                case trade.OrderPriceTypeType.ANY_PRICE:
+                case OrderPriceTypeType.ANY_PRICE:
                     return "市价";
-                case trade.OrderPriceTypeType.LIMIT_PRICE:
+                case OrderPriceTypeType.LIMIT_PRICE:
                     return "限价";
-                case trade.OrderPriceTypeType.BEST_PRICE:
+                case OrderPriceTypeType.BEST_PRICE:
                     return "最好";
-                case trade.OrderPriceTypeType.LAST_PRICE:
+                case OrderPriceTypeType.LAST_PRICE:
                     return "最新";
-                case trade.OrderPriceTypeType.LAST_PRICE_PLUS_ONE_TICKS:
+                case OrderPriceTypeType.LAST_PRICE_PLUS_ONE_TICKS:
                     return "最新+1";
-                case trade.OrderPriceTypeType.LAST_PRICE_PLUS_TWO_TICKS:
+                case OrderPriceTypeType.LAST_PRICE_PLUS_TWO_TICKS:
                     return "最新+2";
-                case trade.OrderPriceTypeType.LAST_PRICE_PLUS_THREE_TICKS:
+                case OrderPriceTypeType.LAST_PRICE_PLUS_THREE_TICKS:
                     return "最新+3";
-                case trade.OrderPriceTypeType.ASK_PRICE1:
+                case OrderPriceTypeType.ASK_PRICE1:
                     return "卖一";
-                case trade.OrderPriceTypeType.ASK_PRICE1_PLUS_ONE_TICKS:
+                case OrderPriceTypeType.ASK_PRICE1_PLUS_ONE_TICKS:
                     return "卖一+1";
-                case trade.OrderPriceTypeType.ASK_PRICE1_PLUS_TWO_TICKS:
+                case OrderPriceTypeType.ASK_PRICE1_PLUS_TWO_TICKS:
                     return "卖一+2";
-                case trade.OrderPriceTypeType.ASK_PRICE1_PLUS_THREE_TICKS:
+                case OrderPriceTypeType.ASK_PRICE1_PLUS_THREE_TICKS:
                     return "卖一+3";
-                case trade.OrderPriceTypeType.BID_PRICE1:
+                case OrderPriceTypeType.BID_PRICE1:
                     return "买一";
-                case trade.OrderPriceTypeType.BID_PRICE1_PLUS_ONE_TICKS:
+                case OrderPriceTypeType.BID_PRICE1_PLUS_ONE_TICKS:
                     return "买一+1";
-                case trade.OrderPriceTypeType.BID_PRICE1_PLUS_TWO_TICKS:
+                case OrderPriceTypeType.BID_PRICE1_PLUS_TWO_TICKS:
                     return "买一+2";
-                case trade.OrderPriceTypeType.BID_PRICE1_PLUS_THREE_TICKS:
+                case OrderPriceTypeType.BID_PRICE1_PLUS_THREE_TICKS:
                     return "买一+3";
                 default:
                     return "未知";
             }
         }
 
-        public static string GetOrderUid(trade.Order order)
+        public static string GetOrderUid(Order order)
         {
-            string directionIndicator = order.Direction == trade.TradeDirectionType.BUY ?
+            string directionIndicator = order.Direction == TradeDirectionType.BUY ?
                 "B" : "S";
             return string.Format("{0}-{1}", directionIndicator, order.InstrumentID);
         }

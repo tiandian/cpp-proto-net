@@ -6,7 +6,7 @@ using Microsoft.Practices.Prism.Events;
 
 namespace PortfolioTrading.Events
 {
-    public class TradeUpdatedEvent : CompositePresentationEvent<trade.Trade>
+    public class TradeUpdatedEvent : CompositePresentationEvent<PTEntity.TradeUpdate>
     {
     }
 }

@@ -12,7 +12,7 @@ namespace PortfolioTrading.Modules.Portfolio
     {
         private ObservableCollection<OrderVM> _orders = new ObservableCollection<OrderVM>();
 
-        public trade.MultiLegOrder LastOrder { get; private set; }
+        public PTEntity.MultiLegOrder LastOrder { get; private set; }
 
         public MultiLegOrderVM(string acctId)
         {
@@ -163,7 +163,7 @@ namespace PortfolioTrading.Modules.Portfolio
             get { return _orders; }
         }
 
-        public void From(trade.MultiLegOrder mlOrder)
+        public void From(PTEntity.MultiLegOrder mlOrder)
         {
             LastOrder = mlOrder;
 
@@ -175,7 +175,7 @@ namespace PortfolioTrading.Modules.Portfolio
             IsOpenOrder = mlOrder.OrderId == mlOrder.OpenOrderId;
 
             bool allFinished = false;
-            for (int i = 0; i < mlOrder.Legs.Count; ++i )
+            for (int i = 0; i < mlOrder.Legs.Length; ++i )
             {
                 if (_orders.Count == i)
                     _orders.Add(new OrderVM());
@@ -193,11 +193,12 @@ namespace PortfolioTrading.Modules.Portfolio
             }
         }
 
-        public void From(string ordRef, trade.Order order)
+        public void From(string ordRef, PTEntity.Order order)
         {
-            int idx = LastOrder.Legs.FindIndex(
-                l => l.InstrumentID == order.InstrumentID 
+            int idx = Array.FindIndex(LastOrder.Legs, 
+                l => l.InstrumentID == order.InstrumentID
                     && l.Direction == order.Direction);
+            
             if (idx > -1)
             {
                 LastOrder.Legs[idx] = order;
@@ -224,7 +225,7 @@ namespace PortfolioTrading.Modules.Portfolio
                 var openOrd = openOrderVm.LastOrder.Legs.FirstOrDefault(l => closeOrd.InstrumentID == l.InstrumentID);
                 if (openOrd != null)
                 {
-                    if (closeOrd.Direction == trade.TradeDirectionType.SELL)
+                    if (closeOrd.Direction == PTEntity.TradeDirectionType.SELL)
                     {
                         profit += (closeOrd.LimitPrice - openOrd.LimitPrice);
                     }
@@ -238,19 +239,19 @@ namespace PortfolioTrading.Modules.Portfolio
             Profit = profit;
         }
 
-        private static string GetReasonDisplayText(trade.SubmitReason submitReason)
+        private static string GetReasonDisplayText(PTEntity.SubmitReason submitReason)
         {
             switch (submitReason)
             {
-                case trade.SubmitReason.SR_AutoOpen:
+                case PTEntity.SubmitReason.SR_AutoOpen:
                     return "开仓";
-                case trade.SubmitReason.SR_Manual:
+                case PTEntity.SubmitReason.SR_Manual:
                     return "手动";
-                case trade.SubmitReason.SR_StopGain:
+                case PTEntity.SubmitReason.SR_StopGain:
                     return "止盈";
-                case trade.SubmitReason.SR_StopLoss:
+                case PTEntity.SubmitReason.SR_StopLoss:
                     return "止损";
-                case trade.SubmitReason.SR_AutoSwitch:
+                case PTEntity.SubmitReason.SR_AutoSwitch:
                     return "移仓";
                 default:
                     return "未知";

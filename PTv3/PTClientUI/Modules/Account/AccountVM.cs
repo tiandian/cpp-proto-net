@@ -50,15 +50,14 @@ namespace PortfolioTrading.Modules.Account
             _clientHandler = new ClientHandlerImpl();
             _client = new Client(_clientHandler);
             _clientHandler.OnPortfolioUpdated += new Action<PTEntity.PortfolioUpdateItem>(_clientHandler_OnPortfolioUpdated);
+            _clientHandler.OnMultiLegOrderUpdated += new Action<PTEntity.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
+            _clientHandler.OnLegOrderUpdated += new Action<string, string, string, PTEntity.Order>(_client_OnLegOrderUpdated);
+            _clientHandler.OnTradeUpdated += new Action<PTEntity.TradeUpdate>(_client_OnTradeUpdated);
             /*
             _client.OnError += new Action<string>(_client_OnError);
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
-            _client.OnPortfolioItemUpdated += new Action<entity.PortfolioItem>(_client_OnPortfolioItemUpdated);
-            _client.OnMultiLegOrderUpdated += new Action<trade.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
-            _client.OnLegOrderUpdated += new Action<string, string, string, trade.Order>(_client_OnLegOrderUpdated);
-            _client.OnTradeUpdated += new Action<trade.Trade>(_client_OnTradeUpdated);
             _client.OnPositionDetialReturn += new Action<trade.PositionDetailInfo>(_client_OnPositionDetialReturn);
-             * */
+            */
         }
 
         public string Id
@@ -458,193 +457,6 @@ namespace PortfolioTrading.Modules.Account
                     }
                 }, 
                 status => EventLogger.Write(status));
-            
-            /*
-            Func<int, bool, bool> funcLaunch = new Func<int, bool, bool>(_host.Startup);
-            funcLaunch.BeginInvoke(HostPort, true, 
-                delegate(IAsyncResult arLaunch)
-                {
-                    bool succ = funcLaunch.EndInvoke(arLaunch);
-
-                    if(!succ)
-                    {
-                        LogManager.Logger.Warn("Launch trade station failed");
-                        return;
-                    }
-
-                    LogManager.Logger.InfoFormat("TradeStaion started up.");
-
-                    Action<int> actionLoopConnect = null;
-                    _connectTimes = 1;
-
-                    Action<bool, string, bool> actionClntConnectDone = null;
-                    actionClntConnectDone = (b, t, attach) =>
-                    {
-                        string txt = string.Format("连接交易终端(第{0}次)", _connectTimes);
-                        if (b)
-                        {
-                            txt += "成功";
-                        }
-                        else
-                        {
-                            txt += "失败 (" + t + ")";
-                        }
-                        EventLogger.Write(txt);
-
-                        if (b)
-                        {
-                            if (attach)
-                            {
-                                uiContext.Send(o => ChangeStatus("已连接", false), null);
-                                EventLogger.Write("恢复连接到交易终端");
-                            }
-                            else
-                            {
-                                Func<AccountVM, bool> actionReady = new Func<AccountVM, bool>(HaveTradeStationReady);
-                                actionReady.BeginInvoke(
-                                    acct,
-                                    new AsyncCallback(
-                                        delegate(IAsyncResult ar)
-                                        {
-                                            try
-                                            {
-                                                bool ok = actionReady.EndInvoke(ar);
-                                                if (ok)
-                                                {
-                                                    uiContext.Send(o => ChangeStatus("已连接", false), null);
-                                                    EventLogger.Write(string.Format("{0}准备就绪", acct.InvestorId));
-                                                    SyncToHost();
-                                                }
-                                                else
-                                                {
-                                                    uiContext.Send(o => ChangeStatus("连接失败", false), null);
-                                                    EventLogger.Write(string.Format("{0}发生错误", acct.InvestorId));
-                                                    //_client.Disconnect();
-                                                    _host.Exit();
-                                                }
-                                            }
-                                            catch (System.Exception ex)
-                                            {
-                                                EventLogger.Write("初始化交易终端发生错误");
-                                                LogManager.Logger.Error(ex.Message);
-                                                _host.Exit();
-                                            }
-
-                                        }),
-                                    null);
-                                LogManager.Logger.Info(txt);
-                            }
-                        }
-                        else
-                        {
-                            LogManager.Logger.Warn(txt);
-                            if ("交易终端拒绝连接" != t &&
-                                _connectTimes < MaxRetryConnectTimes && 
-                                actionLoopConnect != null)
-                                actionLoopConnect.Invoke(++_connectTimes);
-                            else
-                            {
-                                uiContext.Send(o => ChangeStatus("连接失败", false), null);
-                                EventLogger.Write(string.Format("为{0}尝试{1}次连接均发生错误"
-                                    , acct.InvestorId, _connectTimes));
-                                //_client.Disconnect();
-                            }
-
-                        }
-                    };
-
-                    actionLoopConnect = new Action<int>(delegate(int times)
-                    {
-                        if(times > 1)
-                            Thread.Sleep(1000);
-
-                        string localHostIP = NativeHost.GetLocalIP();
-                        string host = ConfigurationHelper.GetAppSettingValue("tradeHostIP", localHostIP);
-                        EventLogger.Write("Connect to {0}:{1}", host, HostPort);
-                        LogManager.Logger.InfoFormat("Connect to {0}:{1}", host, HostPort);
-                        //_client.AuthClientId = this.Id;
-                        
-                        try
-                        {
-                            _client.SetPseudo(acct.Id);
-                            _client.Connect(host, HostPort);
-                            //_client.ConnectAsync(host, HostPort, actionClntConnectDone);
-                        }
-                        catch (System.Exception ex)
-                        {
-                            LogManager.Logger.ErrorFormat("Error connecting host due to : {0}", ex.Message);
-                            if (actionClntConnectDone != null)
-                                actionClntConnectDone(false, "交易终端拒绝连接", false);
-                        }
-                    });
-
-                    actionLoopConnect.Invoke(_connectTimes);
-                }, null);
-            */
-            //_host.Startup(HostPort);
-        }
-
-        private bool HaveTradeStationReady(AccountVM acct)
-        {
-            /*
-            EventLogger.Write("正在连接交易服务器: " + AddressRepo.EffectiveTrading.Name);
-            OperationResult tradeConnResult = _client.TradeConnect(AddressRepo.EffectiveTrading.Address,
-                                                          acct.InvestorId);
-
-            if (tradeConnResult.Success)
-            {
-                EventLogger.Write("交易连接成功");
-            }
-            else
-            {
-                EventLogger.Write("交易连接失败 (" + tradeConnResult.ErrorMessage + ")");
-                return false;
-            }
-
-            OperationResult tradeLoginResult = _client.TradeLogin(acct.BrokerId,
-                acct.InvestorId, acct.Password, new entity.AccountSettings
-                {
-                    MaxSubmit = acct.MaxSubmit,
-                    MaxCancel = acct.MaxCancel
-                });
-
-            if (tradeLoginResult.Success)
-            {
-                EventLogger.Write("交易登录成功");
-            }
-            else
-            {
-                EventLogger.Write("交易登录失败 (" + tradeLoginResult.ErrorMessage + ")");
-                return false;
-            }
-
-            EventLogger.Write("正在连接行情服务器: " + AddressRepo.EffectiveMarket.Name);
-            OperationResult quoteConnResult = _client.QuoteConnect(AddressRepo.EffectiveMarket.Address,
-                                                          acct.InvestorId);
-            if (quoteConnResult.Success)
-            {
-                EventLogger.Write("行情连接成功");
-            }
-            else
-            {
-                EventLogger.Write("行情连接失败 (" + quoteConnResult.ErrorMessage + ")");
-                return false;
-            }
-
-            OperationResult quoteLoginResult = _client.QuoteLogin(acct.BrokerId,
-                acct.InvestorId, acct.Password);
-
-            if (quoteLoginResult.Success)
-            {
-                EventLogger.Write("行情登录成功");
-            }
-            else
-            {
-                EventLogger.Write("行情登录失败 (" + quoteLoginResult.ErrorMessage + ")");
-                return false;
-            }
-            */
-            return true;
         }
 
         private void OnDisconnectHost(AccountVM acct)
@@ -735,13 +547,13 @@ namespace PortfolioTrading.Modules.Account
 
         #region Client event handlers
 
-        void _client_OnTradeUpdated(trade.Trade obj)
+        void _client_OnTradeUpdated(PTEntity.TradeUpdate obj)
         {
             string info = string.Format("trade: {0}\t{1}\t{2}", obj.InstrumentID, obj.Price, obj.TradeTime);
             EventAggregator.GetEvent<TradeUpdatedEvent>().Publish(obj);
         }
 
-        void _client_OnMultiLegOrderUpdated(trade.MultiLegOrder obj)
+        void _client_OnMultiLegOrderUpdated(PTEntity.MultiLegOrder obj)
         {
             string info = string.Format("mlOrder: {0}\t{1}\t{2}", obj.OrderId, obj.PortfolioId, obj.Quantity);
             EventAggregator.GetEvent<MultiLegOrderUpdatedEvent>().Publish(
@@ -749,7 +561,7 @@ namespace PortfolioTrading.Modules.Account
         }
 
 
-        void _client_OnLegOrderUpdated(string portfId, string mlOrderId, string legOrdRef, trade.Order legOrder)
+        void _client_OnLegOrderUpdated(string portfId, string mlOrderId, string legOrdRef, PTEntity.Order legOrder)
         {
             OrderUpdateArgs args = new OrderUpdateArgs
                                     {
