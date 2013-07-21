@@ -7,6 +7,7 @@
 #include "QuoteAgentCallback.h"
 
 #include <boost/atomic.hpp>
+#include <boost/tuple/tuple.hpp>
 
 class CQuoteAgent
 {

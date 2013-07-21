@@ -36,7 +36,7 @@ namespace PortfolioTrading.Modules.Portfolio
             RegionManager.RegisterViewWithRegion(RegionNames.PortfolioSettingsRegion,
                 () => ServiceLocator.Current.GetInstance<PortfolioSettingsView>());
 
-            EventAgg.GetEvent<AccountSelectedEvent>().Subscribe(OnAccountSelected, ThreadOption.UIThread);
+            EventAgg.GetEvent<AccountSelectedEvent>().Subscribe(OnAccountSelected);
         }
 
         public void OnAccountSelected(AccountVM accountVm)

@@ -43,6 +43,7 @@ namespace PortfolioTrading.Modules.Account
             DetachCommand = new DelegateCommand<AccountVM>(OnDetachHost);
 
             _host = new NativeHost();
+            AccountInfo = new AccountInfoVM(this);
 
             EventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             AddressRepo = ServiceLocator.Current.GetInstance<ServerAddressRepoVM>();
@@ -58,6 +59,14 @@ namespace PortfolioTrading.Modules.Account
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
             _client.OnPositionDetialReturn += new Action<trade.PositionDetailInfo>(_client_OnPositionDetialReturn);
             */
+        }
+
+        #region Properties
+
+        public AccountInfoVM AccountInfo
+        {
+            get;
+            private set;
         }
 
         public string Id
@@ -183,6 +192,8 @@ namespace PortfolioTrading.Modules.Account
                 }
             }
         }
+        #endregion
+
         #endregion
 
 
@@ -436,9 +447,15 @@ namespace PortfolioTrading.Modules.Account
                     }
                 );
 
-            string localHostIP = NativeHost.GetLocalIP();
-            string host = ConfigurationHelper.GetAppSettingValue("tradeHostIP", localHostIP);
-            HostPort = ConfigurationHelper.GetAppSettingValue("tradeHostPort", 16181);
+            //string localHostIP = NativeHost.GetLocalIP();
+            //string host = ConfigurationHelper.GetAppSettingValue("tradeHostIP", localHostIP);
+            //HostPort = ConfigurationHelper.GetAppSettingValue("tradeHostPort", 16181);
+            
+            string effectiveTradeStation = AddressRepo.EffectiveTradeStation.Address;
+            string[] addr_port = effectiveTradeStation.Split(':');
+            string host = addr_port[0];
+            HostPort = int.Parse(addr_port[1]);
+
             _client.SetPseudo(acct.Id);
             EventLogger.Write(string.Format("正在为{0}建立交易终端...", acct.InvestorId));
             connector.Login(host, HostPort, 
