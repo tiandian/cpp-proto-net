@@ -3,34 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Practices.Prism.ViewModel;
-using System.ComponentModel.Composition;
 using Microsoft.Practices.Prism.Commands;
 using PortfolioTrading.Events;
 using Microsoft.Practices.Prism.Events;
 using System.Threading;
+using Microsoft.Practices.ServiceLocation;
 
 namespace PortfolioTrading.Modules.Account
 {
-    [Export]
     public class AccountInfoVM : NotificationObject
     {
-        #region AccountId
-        private string _acctId;
-
-        public string AccountId
-        {
-            get { return _acctId; }
-            set
-            {
-                if (_acctId != value)
-                {
-                    _acctId = value;
-                    RaisePropertyChanged("AccountId");
-                }
-            }
-        }
-        #endregion
-
         #region Available 可用资金
         private double _available;
 
@@ -188,23 +170,15 @@ namespace PortfolioTrading.Modules.Account
         public DelegateCommand QueryAccountCommand { get; private set; }
         public DelegateCommand QueryPositionCommand { get; private set; }
 
-        private AccountVM CurrentAccount { get; set; }
+        public AccountVM CurrentAccount { get; private set; }
         private IEventAggregator EventAggregator { get; set; }
 
-        [ImportingConstructor]
-        public AccountInfoVM(IEventAggregator evtAgg)
+        public AccountInfoVM(AccountVM parentAcct)
         {
             QueryAccountCommand = new DelegateCommand(OnQueryAccount);
             QueryPositionCommand = new DelegateCommand(OnQueryPosition);
-            evtAgg.GetEvent<AccountSelectedEvent>().Subscribe(OnAccountSelected, ThreadOption.UIThread);
-            EventAggregator = evtAgg;
-        }
-
-        public void OnAccountSelected(AccountVM accountVm)
-        {
-            AccountId = accountVm.InvestorId;
-            CurrentAccount = accountVm;
-            OnQueryAccount();
+            CurrentAccount = parentAcct;
+            EventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
         }
 
         private void OnQueryPosition()

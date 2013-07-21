@@ -37,6 +37,7 @@ namespace PortfolioTrading.Modules.Account
                 () => ServiceLocator.Current.GetInstance<AccountInfoView>());
 
             EventAgg.GetEvent<QueryPositionEvent>().Subscribe(OnQueryPosition);
+            
         }
 
         private void OnQueryPosition(AccountVM acctVm)

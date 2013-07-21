@@ -23,7 +23,7 @@
             </StackPanel.Resources>
             <DockPanel>
                 <TextBlock Width="80" FontWeight="Bold">帐户</TextBlock>
-                <TextBlock Text="{Binding AccountId}" FontWeight="Bold"></TextBlock>
+                <TextBlock Text="{Binding CurrentAccount.InvestorId}" FontWeight="Bold"></TextBlock>
             </DockPanel>
             <DockPanel>
                 <TextBlock Width="80">可用资金</TextBlock>
