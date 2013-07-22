@@ -53,6 +53,19 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 
 CPortfolio::~CPortfolio(void)
 {
+	Cleanup();
+}
+
+void CPortfolio::Cleanup()
+{
+	if(m_pQuoteRepo != NULL)
+	{
+		BOOST_FOREACH(CQuoteFetcher* pFetcher, m_quoteFetcherVec)
+		{
+			m_pQuoteRepo->DestoryFetcher(pFetcher);
+		}
+		m_quoteFetcherVec.clear();
+	}
 }
 
 void CPortfolio::AddLeg( const entity::LegItem& legItem )

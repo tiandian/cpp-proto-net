@@ -16,9 +16,12 @@ CQuoteAgent::CQuoteAgent(void)
 
 CQuoteAgent::~CQuoteAgent(void)
 {
+	// if connected, notify Quotestation for termination and wait for end, otherwise do nothing
 	if(m_bIsConnected.load(boost::memory_order_acquire))
+	{
 		Logout();
-	m_thLaunch.join();
+		m_thLaunch.join();
+	}
 }
 
 void CQuoteAgent::LaunchChildProc(string cmd)
@@ -64,7 +67,8 @@ boost::tuple<bool, string> CQuoteAgent::Login( const string& frontAddr, const st
 	logger.Info(boost::str(boost::format("Launch Child with %s") % cmd));
 	m_thLaunch = boost::thread(boost::bind(&CQuoteAgent::LaunchChildProc, this, cmd));
 
-	bool isSubscriberReady = m_quoteSubscriber->GetReady(6);
+	// wait 15 seconds for QuoteStation initialization
+	bool isSubscriberReady = m_quoteSubscriber->GetReady(15);
 	m_bIsConnected.store(isSubscriberReady, boost::memory_order_relaxed);
 
 	return boost::make_tuple(isSubscriberReady, isSubscriberReady ? "" : "QuoteStation is not ready yet");

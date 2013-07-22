@@ -46,6 +46,8 @@ public:
 
 	// for quote
 	void SubscribeQuotes(CQuoteRepositry* pQuoteRepo);
+	// Need to be done before remove from manager
+	void Cleanup();
 
 	// for order placer
 	int NewOrderId(string& newId);

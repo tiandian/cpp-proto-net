@@ -29,6 +29,7 @@ ProtobufPacketImpl* CTradingServerProtocol::createIncomingPacketFromServiceId( i
 	case ApplyStrategySetttingRequestID:
 		return new ProtobufPacket<entity::ApplyStrategySettingsRequest>(serviceId);
 	default:
+		assert(false);
 		return NULL;
 	}
 }
