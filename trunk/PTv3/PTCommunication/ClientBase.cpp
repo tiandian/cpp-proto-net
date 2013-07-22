@@ -64,8 +64,11 @@ void ClientBase::ServerLogin( ServerType svrType, String ^address, String ^broke
 
 void ClientBase::ServerLogout( ServerType svrType )
 {
-	entity::ServerType eSvrType = static_cast<entity::ServerType>(svrType);
-	_nativeClient->ServerLogout(eSvrType);
+	if(this->IsConnected)
+	{
+		entity::ServerType eSvrType = static_cast<entity::ServerType>(svrType);
+		_nativeClient->ServerLogout(eSvrType);
+	}
 }
 
 void ClientBase::Disconnect()
@@ -76,16 +79,21 @@ void ClientBase::Disconnect()
 
 void ClientBase::AddPortfolio( PortfolioItem ^portfItem )
 {
-	_nativeClient->AddPortfolio(portfItem);
+	if(this->IsConnected)
+		_nativeClient->AddPortfolio(portfItem);
 }
 
 void ClientBase::AddPortfCollection( array<PortfolioItem ^> ^portfItems )
 {
-	_nativeClient->AddPortfolios(portfItems);
+	if(this->IsConnected)
+		_nativeClient->AddPortfolios(portfItems);
 }
 
 void ClientBase::PortfEnableStrategy( String ^portfId, bool isEnabled )
 {
+	if(!this->IsConnected)
+		return;
+
 	IntPtr pPortfIdAddress;
 	try
 	{
@@ -100,6 +108,9 @@ void ClientBase::PortfEnableStrategy( String ^portfId, bool isEnabled )
 
 void ClientBase::PortfTurnSwitches( String ^portfId, int triggerIndex, bool enabled )
 {
+	if(!this->IsConnected)
+		return;
+
 	IntPtr pPortfIdAddress;
 	try
 	{
@@ -114,6 +125,9 @@ void ClientBase::PortfTurnSwitches( String ^portfId, int triggerIndex, bool enab
 
 void ClientBase::PortfApplyStrategySettings( String ^portfId, StrategyItem ^strategyItem )
 {
+	if(!this->IsConnected)
+		return;
+
 	IntPtr pPortfIdAddress;
 	try
 	{
