@@ -46,6 +46,7 @@ private:
 
 	CThostFtdcDepthMarketDataField m_cachedQuoteData;
 	boost::chrono::steady_clock::time_point m_quoteTimestamp;
+	bool m_isEnd;
 };
 
 typedef boost::shared_ptr<CQuoteStore> QuoteStorePtr;
