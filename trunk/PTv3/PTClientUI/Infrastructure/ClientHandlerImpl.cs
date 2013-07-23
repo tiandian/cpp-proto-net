@@ -14,6 +14,7 @@ namespace PortfolioTrading.Infrastructure
         public event Action<PTEntity.MultiLegOrder> OnMultiLegOrderUpdated;
         public event Action<PTEntity.TradeUpdate> OnTradeUpdated;
         public event Action<string, string, string, PTEntity.Order> OnLegOrderUpdated;
+        public event Action OnConnectionClosed;
 
         public void OnLoginReturned(PTEntity.LoginReturn loginReturn)
         {
@@ -51,6 +52,12 @@ namespace PortfolioTrading.Infrastructure
         {
             if (OnTradeUpdated != null)
                 OnTradeUpdated(trade);
+        }
+
+        public void OnDisconnected()
+        {
+            if (OnConnectionClosed != null)
+                OnConnectionClosed();
         }
     }
 }

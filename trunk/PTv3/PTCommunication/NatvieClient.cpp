@@ -43,6 +43,7 @@ void CNatvieClient::onConnectionClosed()
 {
 	// for now, don't consider reconnect, just clear session id in case connection closed
 	m_sessionId.clear();
+	m_clr->OnDisconnected();
 }
 
 void CNatvieClient::OnLoginResponse( entity::LoginResponse& resp )

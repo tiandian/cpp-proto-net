@@ -3,15 +3,16 @@
 #include "QuoteFetcher.h"
 #include "globalmembers.h"
 
-CQuoteStore::CQuoteStore(const string& symbol):
-m_symbol(symbol)
+CQuoteStore::CQuoteStore(const string& symbol)
+	: m_symbol(symbol)
+	, m_isEnd(false)
 {
 	memset(&m_cachedQuoteData, 0, sizeof(m_cachedQuoteData));
 }
 
 CQuoteStore::~CQuoteStore(void)
 {
-	LOG_DEBUG(logger, boost::str(boost::format("Destrcuting Quote Store(%s) with %d fetcher ... ") 
+	LOG_DEBUG(logger, boost::str(boost::format("Destructing Quote Store(%s) with %d fetcher ... ") 
 		% m_symbol % m_reclaimedFetcher.size()));
 
 	for(vector<CQuoteFetcher*>::iterator iter = m_reclaimedFetcher.begin();
@@ -21,7 +22,7 @@ CQuoteStore::~CQuoteStore(void)
 			delete *iter;
 	}
 
-	LOG_DEBUG(logger, boost::str(boost::format("Destrcuted Quote Store(%s)") 
+	LOG_DEBUG(logger, boost::str(boost::format("Destructed Quote Store(%s)") 
 		% m_symbol));
 }
 
@@ -48,10 +49,13 @@ boost::chrono::steady_clock::time_point CQuoteStore::Get(
 	else
 	{
 		boost::unique_lock<boost::mutex> lock(m_quoteMutex);
-		m_cond.wait(lock);
-		
-		if(m_quoteTimestamp > timestamp)
-			GetQuote(outQuote);
+		if(!m_isEnd)
+		{
+			m_cond.wait(lock);
+
+			if(m_quoteTimestamp > timestamp)
+				GetQuote(outQuote);
+		}
 	}
 	
 	return m_quoteTimestamp;
@@ -132,6 +136,8 @@ void CQuoteStore::EndIfOnlyOneLeft()
 	if(m_fetcherSet.size() == 1)
 	{
 		m_quoteTimestamp = boost::chrono::steady_clock::time_point();
+		m_isEnd = true;
 		m_cond.notify_all();
+		LOG_DEBUG(logger, boost::str(boost::format("QuoteStore(%s) Notify all QuoteFetcher to stop with zero timestamp") % m_symbol));
 	}
 }

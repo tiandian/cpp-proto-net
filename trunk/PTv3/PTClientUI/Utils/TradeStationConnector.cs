@@ -27,7 +27,7 @@ namespace PortfolioTrading.Utils
         private readonly SynchronizationContext _uiContext;
         private readonly GetServerLoginInfoDel _getServerLoginParamFunc;
 
-        private const int LoginTimeout = 15000; // milliseconds
+        private const int LoginTimeout = 30000; // milliseconds
         
         private readonly AutoResetEvent _eventLogin = new  AutoResetEvent(false);
         private bool _connectionEstablished = false;

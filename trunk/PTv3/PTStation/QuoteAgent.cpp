@@ -113,7 +113,7 @@ bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 	try	
 	{
 		string symbolsToUnSub = boost::join(unSubscribeArr, ", ");
-		LOG_INFO(logger, boost::str(boost::format("Subscribe quote for symbols as following %s") % symbolsToUnSub));
+		LOG_INFO(logger, boost::str(boost::format("UnSubscribe quote for symbols as following %s") % symbolsToUnSub));
 
 		m_quoteSubscriber->Put(unSubscribeArr, false);
 
