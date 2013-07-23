@@ -34,6 +34,8 @@ namespace PortfolioTrading.Modules.Account
         private IEventAggregator EventAggregator { get; set; }
         private ServerAddressRepoVM AddressRepo { get; set; }
 
+        private SynchronizationContext UIContext { get; set; }
+
         public AccountVM()
         {
             AddPortfolioCommand = new DelegateCommand<AccountVM>(OnAddPortfolio);
@@ -54,11 +56,19 @@ namespace PortfolioTrading.Modules.Account
             _clientHandler.OnMultiLegOrderUpdated += new Action<PTEntity.MultiLegOrder>(_client_OnMultiLegOrderUpdated);
             _clientHandler.OnLegOrderUpdated += new Action<string, string, string, PTEntity.Order>(_client_OnLegOrderUpdated);
             _clientHandler.OnTradeUpdated += new Action<PTEntity.TradeUpdate>(_client_OnTradeUpdated);
+            _clientHandler.OnConnectionClosed += new Action(_clientHandler_OnConnectionClosed);
             /*
             _client.OnError += new Action<string>(_client_OnError);
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
             _client.OnPositionDetialReturn += new Action<trade.PositionDetailInfo>(_client_OnPositionDetialReturn);
             */
+        }
+
+        void _clientHandler_OnConnectionClosed()
+        {
+            UIContext.Post(
+                o => ChangeStatus("未连接", false), 
+                null);
         }
 
         #region Properties
@@ -434,9 +444,9 @@ namespace PortfolioTrading.Modules.Account
         {
             ChangeStatus("连接中...", true);
 
-            SynchronizationContext uiContext = SynchronizationContext.Current;
+            UIContext = SynchronizationContext.Current;
 
-            TradeStationConnector connector = new TradeStationConnector(_client, _clientHandler, uiContext,
+            TradeStationConnector connector = new TradeStationConnector(_client, _clientHandler, UIContext,
                 () => new ServerLoginParam
                     {
                         TradeAddress = AddressRepo.EffectiveTrading.Address,
