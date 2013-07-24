@@ -85,3 +85,13 @@ public:
 
 	virtual void handleResponse(PushFramework::IncomingPacket& packet);
 };
+
+class HeartbeatResponseHandler : public SessionResponseHandler
+{
+public:
+	HeartbeatResponseHandler(CNatvieClient* pSession) : SessionResponseHandler(pSession)
+	{}
+	~HeartbeatResponseHandler(){}
+
+	virtual void handleResponse(PushFramework::IncomingPacket& packet);
+};

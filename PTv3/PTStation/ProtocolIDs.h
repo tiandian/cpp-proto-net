@@ -10,6 +10,7 @@ enum
 	PortfolioSwitchRequestID,
 	PortfolioSyncRequestID,
 	ApplyStrategySetttingRequestID,
+	HeartbeatRequestID,
 };
 
 enum
@@ -22,4 +23,5 @@ enum
 	MultilegOrderResponseID,
 	LegOrderResponseID,
 	TradeResponseID,
+	HeartbeatResponseID,
 };

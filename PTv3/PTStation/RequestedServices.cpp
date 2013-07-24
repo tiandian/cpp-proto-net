@@ -5,6 +5,8 @@
 #include "ProtocolIDs.h"
 #include "entity/message.pb.h"
 
+#include <boost/date_time/posix_time/posix_time.hpp>
+
 void ServerLoginService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 {
 	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
@@ -116,4 +118,14 @@ void ApplyStrategySettingsService::handle( LogicalConnection* pClient, IncomingP
 	entity::ApplyStrategySettingsRequest& applyStrategyReq = pReqPacket->getData();
 	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(applyStrategyReq.pid());
 	pPortf->Strategy()->Apply(applyStrategyReq.strategy(), true);
+}
+
+void HeartbeatService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
+{
+	ProtobufPacket<entity::HeartbeatRequest>* heartbeatReq = (ProtobufPacket<entity::HeartbeatRequest>*)pRequest;
+	
+	ProtobufPacket<entity::HeartbeatResponse> resp(HeartbeatResponseID);
+	string tsSvr = boost::posix_time::to_iso_string(boost::posix_time::second_clock::local_time());
+	resp.getData().set_timestamp(tsSvr);
+	pClient->PushPacket(&resp);
 }

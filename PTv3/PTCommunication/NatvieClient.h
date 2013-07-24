@@ -25,12 +25,14 @@ public:
 	void OnMultilegOrderUpdateResponse(trade::MultiLegOrder& resp);
 	void OnLegOrderUpdateResponse(entity::LegOrderUpdateParam& legOrderUpdateParam);
 	void OnTradeUpdateResponse(trade::Trade& resp);
+	void OnHeartbeatResponse(const char* timestamp);
 
 	void AddPortfolio(PTEntity::PortfolioItem ^portfolioItem);
 	void AddPortfolios(array<PTEntity::PortfolioItem^> ^portfolioItems);
 	void PortfEnableStrategy(const char* portfId, bool isEnabled);
 	void PortfTurnSwitches(const char* portfId, int triggerIndex, bool enabled);
 	void ApplyStrategySettings(const char* portfId, PTEntity::StrategyItem ^strategyItem);
+	void SendHeartbeat(const char* timestamp);
 
 	bool logged();
 	void Logout();

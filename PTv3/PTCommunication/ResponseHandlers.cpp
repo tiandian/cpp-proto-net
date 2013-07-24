@@ -46,3 +46,9 @@ void TradeUpdateResponseHandler::handleResponse( PushFramework::IncomingPacket& 
 	ProtobufPacket<trade::Trade>& resp = (ProtobufPacket<trade::Trade>&) packet;
 	m_pSession->OnTradeUpdateResponse(resp.getData());
 }
+
+void HeartbeatResponseHandler::handleResponse( PushFramework::IncomingPacket& packet )
+{
+	ProtobufPacket<entity::HeartbeatResponse>& resp = (ProtobufPacket<entity::HeartbeatResponse>&)packet;
+	m_pSession->OnHeartbeatResponse(resp.getData().timestamp().c_str());
+}

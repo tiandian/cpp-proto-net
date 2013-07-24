@@ -66,8 +66,13 @@ namespace PortfolioTrading.Modules.Account
 
         void _clientHandler_OnConnectionClosed()
         {
+            _client.EndHeartbeat();
+
             UIContext.Post(
-                o => ChangeStatus("未连接", false), 
+                o => { 
+                    ChangeStatus("未连接", false);
+                    EventLogger.Write("与交易终端的连接丢失");
+                }, 
                 null);
         }
 

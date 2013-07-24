@@ -20,4 +20,5 @@ void CTradingServer::CreateServices()
 	registerService(AddPortfolioRequestID, new AddPortfolioService(), "addPortfolio", true);
 	registerService(PortfolioSwitchRequestID, new PortfolioSwitchService(), "switchPortfolio", true);
 	registerService(ApplyStrategySetttingRequestID, new ApplyStrategySettingsService(), "applyStrategySettings", true);
+	registerService(HeartbeatRequestID, new HeartbeatService(), "heartbeat", true);
 }
