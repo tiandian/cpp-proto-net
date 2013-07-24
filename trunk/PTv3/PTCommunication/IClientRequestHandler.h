@@ -20,6 +20,7 @@ public interface class IClientRequestHandler
 	void OnLegOrderUpdate(String ^portfId, String ^mlOrderId, String ^legOrdRef, Order ^legOrder);
 	void OnTradeUpdate(TradeUpdate ^trade);
 	void OnDisconnected();
+	void OnHeartbeat(String ^timestamp);
 };
 
 }

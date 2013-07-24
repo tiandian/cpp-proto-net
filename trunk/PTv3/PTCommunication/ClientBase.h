@@ -14,6 +14,7 @@
 
 using namespace System;
 using namespace System::Runtime::InteropServices;
+using namespace System::Threading;
 using namespace PTEntity;
 
 namespace PTCommunication {
@@ -22,7 +23,8 @@ namespace PTCommunication {
 	{
 	private:
 		CNatvieClient *_nativeClient;
-	
+		Timer ^_heartTimer;
+
 	public:
 		ClientBase(IClientRequestHandler ^requestHandler)
 		{
@@ -124,5 +126,11 @@ namespace PTCommunication {
 		{
 			return nullptr;
 		}
+
+		void BeginHeartbeat();
+		void EndHeartbeat();
+
+	private:
+		void SendHeartbeat(Object ^obj);
 	};
 }

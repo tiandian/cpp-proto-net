@@ -46,3 +46,9 @@ protected:
 	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
 };
 
+class HeartbeatService : public Service
+{
+protected:
+	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
+};
+

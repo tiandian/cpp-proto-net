@@ -193,7 +193,7 @@
                                 <Setter Property="CornerRadius" Value="2"/>
                             </Style>
                         </StackPanel.Resources>
-                        <Border>
+                        <Border DataContext="{Binding Settings}">
                             <DockPanel>
                                 <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">开仓条件</TextBlock>
                                 <StackPanel>

@@ -75,6 +75,8 @@ void ClientBase::Disconnect()
 {
 	if(this->IsConnected)
 		_nativeClient->Logout();
+
+	EndHeartbeat();
 }
 
 void ClientBase::AddPortfolio( PortfolioItem ^portfItem )
@@ -138,6 +140,33 @@ void ClientBase::PortfApplyStrategySettings( String ^portfId, StrategyItem ^stra
 	{
 		Marshal::FreeHGlobal(pPortfIdAddress);
 	}
+}
+
+void ClientBase::SendHeartbeat(Object ^obj)
+{
+	IntPtr tsPtr;
+	try
+	{
+		String ^tsClient = System::DateTime::Now.ToString();
+		tsPtr = (IntPtr)Marshal::StringToHGlobalAnsi(tsClient);
+		_nativeClient->SendHeartbeat((char*)tsPtr.ToPointer());
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(tsPtr);
+	}
+}
+
+void ClientBase::BeginHeartbeat()
+{
+	TimerCallback^ tcb = gcnew TimerCallback(this, &ClientBase::SendHeartbeat);
+	_heartTimer = gcnew Timer(tcb, nullptr, 10000, 60000);
+}
+
+void ClientBase::EndHeartbeat()
+{
+	if(_heartTimer != nullptr)
+		_heartTimer->Change(Timeout::Infinite, Timeout::Infinite);
 }
 
 }

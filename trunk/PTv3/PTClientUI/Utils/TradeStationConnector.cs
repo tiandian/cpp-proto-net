@@ -60,6 +60,8 @@ namespace PortfolioTrading.Utils
             _connectionEstablished = arg1;
             _connectionEstablishError = arg2;
             _eventLogin.Set();
+
+            _client.BeginHeartbeat();
         }
 
         void _handler_OnServerLogin(PTEntity.ServerType svrType, bool succ, string errorMsg)

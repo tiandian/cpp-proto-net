@@ -37,45 +37,13 @@ OutgoingPacket* CAvatarFactory::onNewConnection( ConnectionContext*& lpContext )
 
 int CAvatarFactory::onFirstRequest( IncomingPacket& request, ConnectionContext* lpContext, LogicalConnection*& lpClient, OutgoingPacket*& lpPacket )
 {
-	ProtobufPacket<entity::LoginRequest>& loginRequest= (ProtobufPacket<entity::LoginRequest>&) request;
-
-	string question = ((CAvatarConnectionCxt*) lpContext)->puzzle;
-
-	if (loginRequest.getData().session_id() != question )
+	try
 	{
-		ProtobufPacket<entity::LoginResponse>* pLoginResponse = 
-			new ProtobufPacket<entity::LoginResponse>(LoginResponseID);
+		ProtobufPacket<entity::LoginRequest>& loginRequest= dynamic_cast<ProtobufPacket<entity::LoginRequest>&>(request);
 
-		pLoginResponse->getData().set_accepted(false);
-		pLoginResponse->getData().set_session_id("");
-		pLoginResponse->getData().set_is_new(loginRequest.getData().is_new());
-		pLoginResponse->getData().set_error_msg("Failed to meet login challenge");
+		string question = ((CAvatarConnectionCxt*) lpContext)->puzzle;
 
-		lpPacket = pLoginResponse;
-
-		return ClientFactory::RefuseRequest;
-	}
-
-	if(loginRequest.getData().is_new())
-	{
-		CAvatarClient* pClient = new CAvatarClient(loginRequest.getData().session_id());
-		if(loginRequest.getData().has_pseudo())
-		{
-			pClient->Pseudo(loginRequest.getData().pseudo());
-		}
-		
-		lpClient = pClient;
-	}
-	else
-	{
-		const string& previousSessionId = loginRequest.getData().previous_session_id();
-		LogicalConnection* existingConn = FindClient(previousSessionId.c_str());
-		CAvatarClient* pClient = dynamic_cast<CAvatarClient*>(existingConn);
-		if(pClient != NULL)
-		{
-			lpClient = pClient;
-		}
-		else
+		if (loginRequest.getData().session_id() != question )
 		{
 			ProtobufPacket<entity::LoginResponse>* pLoginResponse = 
 				new ProtobufPacket<entity::LoginResponse>(LoginResponseID);
@@ -83,18 +51,57 @@ int CAvatarFactory::onFirstRequest( IncomingPacket& request, ConnectionContext* 
 			pLoginResponse->getData().set_accepted(false);
 			pLoginResponse->getData().set_session_id("");
 			pLoginResponse->getData().set_is_new(loginRequest.getData().is_new());
-			pLoginResponse->getData().set_error_msg("Cannot attached existing client");
+			pLoginResponse->getData().set_error_msg("Failed to meet login challenge");
 
 			lpPacket = pLoginResponse;
 
 			return ClientFactory::RefuseRequest;
 		}
-		
-		if(existingConn != NULL)
-			ReturnClient(existingConn);
-	}
 
-	return ClientFactory::CreateClient;
+		if(loginRequest.getData().is_new())
+		{
+			CAvatarClient* pClient = new CAvatarClient(loginRequest.getData().session_id());
+			if(loginRequest.getData().has_pseudo())
+			{
+				pClient->Pseudo(loginRequest.getData().pseudo());
+			}
+
+			lpClient = pClient;
+		}
+		else
+		{
+			const string& previousSessionId = loginRequest.getData().previous_session_id();
+			LogicalConnection* existingConn = FindClient(previousSessionId.c_str());
+			CAvatarClient* pClient = dynamic_cast<CAvatarClient*>(existingConn);
+			if(pClient != NULL)
+			{
+				lpClient = pClient;
+			}
+			else
+			{
+				ProtobufPacket<entity::LoginResponse>* pLoginResponse = 
+					new ProtobufPacket<entity::LoginResponse>(LoginResponseID);
+
+				pLoginResponse->getData().set_accepted(false);
+				pLoginResponse->getData().set_session_id("");
+				pLoginResponse->getData().set_is_new(loginRequest.getData().is_new());
+				pLoginResponse->getData().set_error_msg("Cannot attached existing client");
+
+				lpPacket = pLoginResponse;
+
+				return ClientFactory::RefuseRequest;
+			}
+
+			if(existingConn != NULL)
+				ReturnClient(existingConn);
+		}
+
+		return ClientFactory::CreateClient;
+	}
+	catch (std::bad_cast ex)	// in case the first request is not Login request
+	{
+		return ClientFactory::RefuseAndClose;
+	}
 }
 
 void CAvatarFactory::onClientConnected( LogicalConnection* pClient )

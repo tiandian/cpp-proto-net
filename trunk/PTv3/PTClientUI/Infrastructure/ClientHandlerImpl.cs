@@ -59,5 +59,10 @@ namespace PortfolioTrading.Infrastructure
             if (OnConnectionClosed != null)
                 OnConnectionClosed();
         }
+
+        public void OnHeartbeat(string timestamp)
+        {
+            System.Diagnostics.Debug.WriteLine(string.Format("Server heartbeat received: {0}", timestamp));
+        }
     }
 }

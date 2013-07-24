@@ -32,6 +32,8 @@ ProtobufPacketImpl* CClientProtocol::createIncomingPacketFromServiceId( int serv
 		return new ProtobufPacket<entity::LegOrderUpdateParam>(serviceId);
 	case TradeResponseID:
 		return new ProtobufPacket<trade::Trade>(serviceId);
+	case HeartbeatResponseID:
+		return new ProtobufPacket<entity::HeartbeatResponse>(serviceId);
 	default:
 		return NULL;
 	}

@@ -25,6 +25,7 @@ CNatvieClient::CNatvieClient(PTCommunication::IClientRequestHandler ^reqHandler)
 	registerHandler(MultilegOrderResponseID, new MultilegOrderUpdateResponseHandler(this));
 	registerHandler(LegOrderResponseID, new LegOrderUpdateResponseHandler(this));
 	registerHandler(TradeResponseID, new TradeUpdateResponseHandler(this));
+	registerHandler(HeartbeatResponseID, new HeartbeatResponseHandler(this));
 
 	m_clr = reqHandler;
 }
@@ -201,6 +202,19 @@ void CNatvieClient::OnTradeUpdateResponse( trade::Trade& resp )
 {
 	msclr::auto_gcroot<TradeUpdate^> tradeItem = gcnew TradeUpdate(&resp);
 	m_clr->OnTradeUpdate(tradeItem.get());
+}
+
+void CNatvieClient::OnHeartbeatResponse( const char* timestamp )
+{
+	msclr::auto_gcroot<String^> timestampStr = Marshal::PtrToStringAnsi((IntPtr)(char*)timestamp);
+	m_clr->OnHeartbeat(timestampStr.get());
+}
+
+void CNatvieClient::SendHeartbeat(const char* timestamp)
+{
+	ProtobufPacket<entity::HeartbeatRequest> request(HeartbeatRequestID);
+	request.getData().set_timestamp(timestamp);
+	sendRequest(&request);
 }
 
 
