@@ -1,10 +1,12 @@
 #include "StdAfx.h"
 #include "Strategy.h"
 #include "Portfolio.h"
-
+#include "SettingChangeTrace.h"
 
 CStrategy::CStrategy(const entity::StrategyItem& strategyItem)
 	: m_running(false)
+	, m_retryTimes(0)
+	, m_openTimeout(0)
 {
 	m_type = strategyItem.type();
 }
@@ -15,6 +17,14 @@ CStrategy::~CStrategy(void)
 
 void CStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
 {
+#ifdef LOG_FOR_TRADE
+	if(withTriggers)
+	{
+		PrintIntegerChange("Retry Times", m_retryTimes, strategyItem.retrytimes());
+		PrintIntegerChange("Open timeout", m_openTimeout, strategyItem.opentimeout());
+	}
+#endif
+
 	m_retryTimes = strategyItem.retrytimes();
 	m_openTimeout = strategyItem.opentimeout();
 	if(withTriggers)

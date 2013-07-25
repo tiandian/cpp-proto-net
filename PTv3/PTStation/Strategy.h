@@ -52,3 +52,4 @@ protected:
 typedef boost::shared_ptr<CStrategy> StrategyPtr;
 typedef vector<TriggerPtr>::iterator TriggerIter;
 
+

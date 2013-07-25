@@ -4,6 +4,7 @@
 #include "Portfolio.h"
 #include "globalmembers.h"
 #include "DoubleCompare.h"
+#include "SettingChangeTrace.h"
 
 #include <math.h>
 
@@ -33,6 +34,14 @@ void CScalperStrategy::CreateTriggers( const entity::StrategyItem& strategyItem 
 
 void CScalperStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
 {
+	if(withTriggers)
+	{
+		logger.Debug("Applying ScalperStrategy...");
+#ifdef LOG_FOR_TRADE
+		PrintDoubleChange("Price Tick", m_priceTick, strategyItem.sc_pricetick());
+#endif
+	}
+
 	CStrategy::Apply(strategyItem, withTriggers);
 
 	m_priceTick = strategyItem.sc_pricetick();

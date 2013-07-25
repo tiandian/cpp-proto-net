@@ -224,8 +224,8 @@ void CPortfolio::StopStrategy()
 void CPortfolio::EnableTrigger( int triggerIdx, bool enabled )
 {
 	assert(triggerIdx < m_strategy->Triggers().size());
-	logger.Info(boost::str(boost::format("[%s] %s trigger of Portfolio (%s)") 
-		% InvestorId() % (enabled ? "ENABLE" : "DISABLE") % ID()));
+	logger.Info(boost::str(boost::format("[%s] %s trigger %d of Portfolio (%s)") 
+		% InvestorId() % (enabled ? "ENABLE" : "DISABLE") % (triggerIdx + 1) % ID()));
 	m_strategy->Triggers().at(triggerIdx)->Enable(enabled);
 }
 

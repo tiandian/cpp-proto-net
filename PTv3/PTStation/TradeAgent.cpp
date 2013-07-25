@@ -365,7 +365,7 @@ void CTradeAgent::OnRspSettlementInfoConfirm( CThostFtdcSettlementInfoConfirmFie
 		m_loginErr = errorMsg;
 		m_condConfirm.notify_one();
 
-		//m_orderProcessor->OnRspUserLogin(loginSuccess, errorMsg, initOrderRef);
+		m_orderProcessor->OnRspUserLogin(loginSuccess, errorMsg, initOrderRef);
 	}
 }
 

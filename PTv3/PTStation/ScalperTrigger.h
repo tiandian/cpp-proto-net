@@ -10,10 +10,7 @@ public:
 
 	void Apply(const entity::TriggerItem& triggerItem);
 
-	bool OnTest(double val)
-	{ 
-		return DoubleGreaterEqual(val, m_threshold); 
-	}
+	bool OnTest(double val);
 
 private:
 	double m_threshold;

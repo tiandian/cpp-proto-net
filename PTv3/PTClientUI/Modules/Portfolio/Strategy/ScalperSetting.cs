@@ -259,7 +259,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             scalperStrategy.RetryTimes = RetryTimes;
             scalperStrategy.StopLossStrategy = StopLossCloseMethod;
 
-            scalperStrategy.Triggers.Add(new PTEntity.ScalperTriggerItem(Threshold));
+            scalperStrategy.Triggers.Add(new PTEntity.ScalperTriggerItem(Threshold) {  Enabled = true });
 
             return scalperStrategy;
         }
