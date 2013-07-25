@@ -3,6 +3,7 @@
 #include "AvatarClient.h"
 #include "ProtobufPacket.h"
 #include "ProtocolIDs.h"
+#include "globalmembers.h"
 #include "entity/message.pb.h"
 
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -117,6 +118,8 @@ void ApplyStrategySettingsService::handle( LogicalConnection* pClient, IncomingP
 	ProtobufPacket<entity::ApplyStrategySettingsRequest>* pReqPacket = (ProtobufPacket<entity::ApplyStrategySettingsRequest>*)pRequest;
 	entity::ApplyStrategySettingsRequest& applyStrategyReq = pReqPacket->getData();
 	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(applyStrategyReq.pid());
+	logger.Debug(boost::str(boost::format("[%s] Applying Strategy setting change for portfolio %s")
+		% avatarClient->Pseudo() % pPortf->ID()));
 	pPortf->Strategy()->Apply(applyStrategyReq.strategy(), true);
 }
 

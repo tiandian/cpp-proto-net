@@ -137,6 +137,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="RequestedServices.h" />
     <ClInclude Include="ScalperStrategy.h" />
     <ClInclude Include="ScalperTrigger.h" />
+    <ClInclude Include="SettingChangeTrace.h" />
     <ClInclude Include="ShmQuoteFeed.h" />
     <ClInclude Include="ShmQuoteSubscribe.h" />
     <ClInclude Include="shm_remover.h" />
@@ -208,6 +209,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="RequestedServices.cpp" />
     <ClCompile Include="ScalperStrategy.cpp" />
     <ClCompile Include="ScalperTrigger.cpp" />
+    <ClCompile Include="SettingChangeTrace.cpp" />
     <ClCompile Include="ShmQuoteFeed.cpp" />
     <ClCompile Include="ShmQuoteSubscribe.cpp" />
     <ClCompile Include="Strategy.cpp" />

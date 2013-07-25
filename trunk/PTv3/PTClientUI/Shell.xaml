@@ -7,7 +7,7 @@
         xmlns:cal="http://www.codeplex.com/CompositeWPF"
         xmlns:ig="http://schemas.infragistics.com/xaml"
         xmlns:src="clr-namespace:PortfolioTrading"
-        Height="700" Width="1024" Title="Shell" WindowStartupLocation="CenterScreen"
+        Height="700" Width="1024" Title="程序化交易" WindowStartupLocation="CenterScreen"
         Closed="Window_Closed" Loaded="Window_Loaded">
     <DockPanel>
         <igDock:XamDockManager Theme="Office2k7Blue">
