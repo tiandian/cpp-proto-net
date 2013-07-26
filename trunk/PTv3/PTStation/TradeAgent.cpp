@@ -72,6 +72,11 @@ CTradeAgent::CTradeAgent(void)
 	, m_iRequestID(0)
 	, m_orderProcessor(NULL)
 {
+#ifdef FAKE_DEAL
+	m_fakeDealer.Init(boost::bind(&CTradeAgent::OnRtnOrder, this, _1)
+		, boost::bind(&CTradeAgent::OnRspOrderInsert, this, _1, _2, _3, _4)
+		, boost::bind(&CTradeAgent::OnRspOrderAction, this, _1, _2, _3, _4));
+#endif
 }
 
 
@@ -294,7 +299,9 @@ void CTradeAgent::OnRspUserLogin( CThostFtdcRspUserLoginField *pRspUserLogin, CT
 		// 保存会话参数
 		FRONT_ID = pRspUserLogin->FrontID;
 		SESSION_ID = pRspUserLogin->SessionID;
-
+#ifdef FAKE_DEAL
+		m_fakeDealer.SetSessionParams(FRONT_ID, SESSION_ID);
+#endif
 		m_maxOrderRef = atoi(pRspUserLogin->MaxOrderRef);
 
 		string ds(pRspUserLogin->TradingDay);
