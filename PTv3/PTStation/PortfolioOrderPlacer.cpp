@@ -249,12 +249,14 @@ namespace // Concrete FSM implementation
 				_row < Accepted  , evtPending	      , Pending		    >,
 				_row < Accepted  , evtPartiallyFilled , PartiallyFilled >,
 				_row < Accepted  , evtSubmit	      , Accepted		>,
+			   _irow < Accepted  , evtNextQuoteIn						>,
 				_row < Pending	 , evtPendingTimeUp   , Canceling		>,
 				_row < Pending	 , evtNextQuoteIn	  , Canceling		>,
 			  a_irow < Pending   , evtPending		  ,					   &s::duplicate_pending	>,
 				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >,
 			  a_irow < Canceling , evtPending	      ,					   &s::duplicate_pending	>,
 			  a_irow < Canceling , evtPartiallyFilled ,					   &s::duplicate_partially  >,
+			   _irow < Canceling , evtNextQuoteIn						>,
 			    _row < PartiallyFilled , evtPendingTimeUp   , Canceling	>,
 				_row < PartiallyFilled , evtNextQuoteIn	    , Canceling	>,
 			   _irow < PartiallyFilled , evtPartiallyFilled				>
@@ -669,7 +671,8 @@ void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_p
 {
 	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
 
-	if(m_activeOrdPlacer->CanRetry())
+	// if order placer is closing order and retry times available
+	if(!(m_activeOrdPlacer->IsOpen()) && m_activeOrdPlacer->CanRetry())
 	{
 		bool needCancel = m_activeOrdPlacer->ModifyPrice(pQuote);
 		if(needCancel)
