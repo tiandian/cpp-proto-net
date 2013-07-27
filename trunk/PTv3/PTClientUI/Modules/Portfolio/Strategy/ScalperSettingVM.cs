@@ -66,36 +66,40 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         public ScalperSettingVM()
         {
+        }
+
+        protected override void InitializeComboDataSource()
+        {
             _directionDependsItems.Add(new DirectionDependsItem
             {
-                Value = entity.DirectionDepends.ON_SMALL_SIZE,
+                Value = PTEntity.DirectionDepends.ON_SMALL_SIZE,
                 DisplayName = "挂单少的方向开仓"
             });
             _directionDependsItems.Add(new DirectionDependsItem
             {
-                Value = entity.DirectionDepends.ON_BIG_SIZE,
+                Value = PTEntity.DirectionDepends.ON_BIG_SIZE,
                 DisplayName = "挂单多的方向开仓"
             });
             _directionDependsItems.Add(new DirectionDependsItem
             {
-                Value = entity.DirectionDepends.ON_SMALL_CHANGE,
+                Value = PTEntity.DirectionDepends.ON_SMALL_CHANGE,
                 DisplayName = "变动小的方向开仓"
             });
             _directionDependsItems.Add(new DirectionDependsItem
             {
-                Value = entity.DirectionDepends.IGNORE_THIS,
+                Value = PTEntity.DirectionDepends.IGNORE_THIS,
                 DisplayName = "忽略"
             });
 
             _closeStrategyItems.Add(new StopLossStrategyItem
             {
-                Value = entity.StopLossCloseMethods.BASED_ON_NEXT_QUOTE,
+                Value = PTEntity.StopLossCloseMethods.BASED_ON_NEXT_QUOTE,
                 DisplayName = "下一个报价"
             });
 
             _closeStrategyItems.Add(new StopLossStrategyItem
             {
-                Value = entity.StopLossCloseMethods.BASED_ON_INPUT_LIMIT,
+                Value = PTEntity.StopLossCloseMethods.BASED_ON_INPUT_LIMIT,
                 DisplayName = "本次限价"
             });
         }
@@ -103,13 +107,13 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
     public class DirectionDependsItem
     {
-        public entity.DirectionDepends Value { get; set; }
+        public PTEntity.DirectionDepends Value { get; set; }
         public string DisplayName { get; set; }
     }
 
     public class StopLossStrategyItem
     {
-        public entity.StopLossCloseMethods Value { get; set; }
+        public PTEntity.StopLossCloseMethods Value { get; set; }
         public string DisplayName { get; set; }
     }
 }

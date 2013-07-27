@@ -19,45 +19,10 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         public StrategySettingVM()
         {
-            _directionItems.Add(new DirectionItem
-            {
-                Direction = PTEntity.PosiDirectionType.LONG,
-                DisplayText = "多头"
-            });
-
-            _directionItems.Add(new DirectionItem
-            {
-                Direction = PTEntity.PosiDirectionType.SHORT,
-                DisplayText = "空头"
-            });
-
-            _greaterCondItems.Add(new CompareCondItem
-            {
-                Condition = PTEntity.CompareCondition.GREATER_EQUAL_THAN,
-                DisplayText = "大于等于"
-            });
-
-            _greaterCondItems.Add(new CompareCondItem
-            {
-                Condition = PTEntity.CompareCondition.GREATER_THAN,
-                DisplayText = "大于"
-            });
-
-            _lessCondItems.Add(new CompareCondItem
-            {
-                Condition = PTEntity.CompareCondition.LESS_EQUAL_THAN,
-                DisplayText = "小于等于"
-            });
-
-            _lessCondItems.Add(new CompareCondItem
-            {
-                Condition = PTEntity.CompareCondition.LESS_THAN,
-                DisplayText = "小于"
-            });
-
             ApplyCommand = new DelegateCommand(OnApplySetting);
             ResetCommand = new DelegateCommand(OnResetSetting);
 
+            InitializeComboDataSource();
             this._settings = CreateSettings();
             this._settings.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(StrategySettingVM_PropertyChanged);
         }
@@ -186,6 +151,45 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             }
         }
         #endregion
+
+        protected virtual void InitializeComboDataSource()
+        {
+            _directionItems.Add(new DirectionItem
+            {
+                Direction = PTEntity.PosiDirectionType.LONG,
+                DisplayText = "多头"
+            });
+
+            _directionItems.Add(new DirectionItem
+            {
+                Direction = PTEntity.PosiDirectionType.SHORT,
+                DisplayText = "空头"
+            });
+
+            _greaterCondItems.Add(new CompareCondItem
+            {
+                Condition = PTEntity.CompareCondition.GREATER_EQUAL_THAN,
+                DisplayText = "大于等于"
+            });
+
+            _greaterCondItems.Add(new CompareCondItem
+            {
+                Condition = PTEntity.CompareCondition.GREATER_THAN,
+                DisplayText = "大于"
+            });
+
+            _lessCondItems.Add(new CompareCondItem
+            {
+                Condition = PTEntity.CompareCondition.LESS_EQUAL_THAN,
+                DisplayText = "小于等于"
+            });
+
+            _lessCondItems.Add(new CompareCondItem
+            {
+                Condition = PTEntity.CompareCondition.LESS_THAN,
+                DisplayText = "小于"
+            });
+        }
 
         protected abstract StrategySetting CreateSettings();
 

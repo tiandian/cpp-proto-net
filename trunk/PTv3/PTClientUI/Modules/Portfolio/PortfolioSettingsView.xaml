@@ -241,7 +241,7 @@
                                             <TextBlock Margin="2" VerticalAlignment="Center">(<Run Text="{Binding TwoTick, Mode=OneWay}"/>)</TextBlock>
                                         </StackPanel>
                                         <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
-                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseLE2Tick, Mode=TwoWay}"
+                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding Settings.CaseLE2Tick, Mode=TwoWay}"
                                                   DisplayMemberPath="DisplayName" SelectedValuePath="Value" />
                                     </DockPanel>
                                     <DockPanel>
@@ -251,7 +251,7 @@
                                         </StackPanel>
                                         <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
                                                   DisplayMemberPath="DisplayName" SelectedValuePath="Value" 
-                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseLE3Tick, Mode=TwoWay}"/>
+                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding Settings.CaseLE3Tick, Mode=TwoWay}"/>
                                     </DockPanel>
                                     <DockPanel>
                                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Left" Width="96">
@@ -260,7 +260,7 @@
                                         </StackPanel>
                                         <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
                                                   DisplayMemberPath="DisplayName" SelectedValuePath="Value"
-                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseGE4Tick, Mode=TwoWay}"/>
+                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding Settings.CaseGE4Tick, Mode=TwoWay}"/>
                                     </DockPanel>
                                     <DockPanel>
                                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
@@ -268,7 +268,7 @@
                                         </StackPanel>
                                         <ComboBox Margin="6, 2" DockPanel.Dock="Right" ItemsSource="{Binding DependsItems}" 
                                                   DisplayMemberPath="DisplayName" SelectedValuePath="Value"
-                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding CaseNoChange, Mode=TwoWay}"/>
+                                                  ItemTemplate="{StaticResource dependsItemTemplate}" SelectedValue="{Binding Settings.CaseNoChange, Mode=TwoWay}"/>
                                     </DockPanel>
                                 </StackPanel>
                             </DockPanel>
@@ -286,12 +286,12 @@
                                         <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="110">平仓失败后改价基于</TextBlock>
 
                                         <ComboBox Margin="4, 2" ItemsSource="{Binding CloseStrategyItems}" 
-                                                ItemTemplate="{StaticResource closeItemTemplate}" SelectedValue="{Binding StopLossCloseMethod, Mode=TwoWay}"
+                                                ItemTemplate="{StaticResource closeItemTemplate}" SelectedValue="{Binding Settings.StopLossCloseMethod, Mode=TwoWay}"
                                                 DisplayMemberPath="DisplayName" SelectedValuePath="Value" />
                                     </DockPanel>
                                     <DockPanel Margin="12, 0, 6, 2">
                                         <TextBlock Margin="4, 2" VerticalAlignment="Center" Width="110">平仓追价次数</TextBlock>
-                                        <igEditor:XamTextEditor Margin="4, 2" Value="{Binding RetryTimes, FallbackValue=7, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                        <igEditor:XamTextEditor Margin="4, 2" Value="{Binding Settings.RetryTimes, FallbackValue=7, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
                                     </DockPanel>
                                 </StackPanel>
                             </DockPanel>
