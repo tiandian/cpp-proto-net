@@ -275,7 +275,7 @@ void CFakeDealer::CancelOrder( boost::shared_ptr<CThostFtdcInputOrderActionField
 {
 	int orderSysId = atoi(pInputOrderAction->OrderSysID);
 
-	int filledAmount = m_testPartiallyFill ? m_partiallyFilledAmount : m_pendingInputOrder.VolumeTotalOriginal;
+	int filledAmount = m_testPartiallyFill ? m_partiallyFilledAmount : 0;
 
 	FakeMsgPtr msgPending(GetPendingOrder(&m_pendingInputOrder, nRequestID, orderSysId, filledAmount));
 	m_msgPump.Enqueue(msgPending);

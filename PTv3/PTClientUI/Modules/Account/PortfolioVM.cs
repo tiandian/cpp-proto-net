@@ -370,6 +370,58 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region MaxOpenPerStart
+        private int _maxOpenPerStart = 100;
+
+        public int MaxOpenPerStart
+        {
+            get { return _maxOpenPerStart; }
+            set
+            {
+                if (_maxOpenPerStart != value)
+                {
+                    _maxOpenPerStart = value;
+                    RaisePropertyChanged("MaxOpenPerStart");
+                }
+            }
+        }
+        #endregion
+
+        #region MaxCancel
+        private int _maxCancel = 250;
+
+        public int MaxCancel
+        {
+            get { return _maxCancel; }
+            set
+            {
+                if (_maxCancel != value)
+                {
+                    _maxCancel = value;
+                    RaisePropertyChanged("MaxCancel");
+                }
+            }
+        }
+        #endregion
+
+        #region TotalOpenLimit
+        private int _totalOpenLimit = 200;
+
+        public int TotalOpenLimit
+        {
+            get { return _totalOpenLimit; }
+            set
+            {
+                if (_totalOpenLimit != value)
+                {
+                    _totalOpenLimit = value;
+                    RaisePropertyChanged("TotalOpenLimit");
+                }
+            }
+        }
+        #endregion
+
+
 
         public StrategySetting StrategySetting { get; set; }
 
@@ -507,6 +559,24 @@ namespace PortfolioTrading.Modules.Account
                 portf.EnablePrefer = attr.Value == bool.TrueString;
             }
 
+            attr = xmlElement.Attribute("maxOpenPerStart");
+            if (attr != null)
+            {
+                portf.MaxOpenPerStart = int.Parse(attr.Value);
+            }
+
+            attr = xmlElement.Attribute("maxCancel");
+            if (attr != null)
+            {
+                portf.MaxCancel = int.Parse(attr.Value);
+            }
+
+            attr = xmlElement.Attribute("totalOpenLimit");
+            if (attr != null)
+            {
+                portf.TotalOpenLimit = int.Parse(attr.Value);
+            }
+
             foreach (var legElem in xmlElement.Element("legs").Elements("leg"))
             {
                 LegVM legVm = LegVM.Load(legElem);
@@ -535,6 +605,9 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("autoStopLoss", _autoStopLoss.ToString()));
             elem.Add(new XAttribute("autoTracking", _autoTracking.ToString()));
             elem.Add(new XAttribute("enablePrefer", _enablePrefer.ToString()));
+            elem.Add(new XAttribute("maxOpenPerStart", _maxOpenPerStart));
+            elem.Add(new XAttribute("maxCancel", _maxCancel));
+            elem.Add(new XAttribute("totalOpenLimit", _totalOpenLimit));
             
 
             XElement elemLegs = new XElement("legs");
@@ -557,6 +630,9 @@ namespace PortfolioTrading.Modules.Account
             PTEntity.PortfolioItem portfolioItem = new PTEntity.PortfolioItem();
             portfolioItem.ID = Id;
             portfolioItem.Quantity = Quantity;
+            portfolioItem.MaxOpenPerStart = 4; //MaxOpenPerStart;
+            portfolioItem.MaxCancel = 10; // MaxCancel;
+            portfolioItem.TotalOpenLimit = 8; // TotalOpenLimit;
             
             foreach (var legVm in _legs)
             {
@@ -595,7 +671,8 @@ namespace PortfolioTrading.Modules.Account
 
             OpenTimes = item.TotalOpenTimes;
             DoneTimes = item.TotalCloseTimes;
-            Position = item.CurrentPosition;
+            Position = item.CancelTimes;
+            //Position = item.CurrentPosition;
 
             //Gain = item.Profit;
             //Quantity = item.Quantity;

@@ -8,6 +8,7 @@
 #include "QuoteRepositry.h"
 #include "AvatarClient.h"
 #include "PortfolioScalperOrderPlacer.h"
+#include "charsetconvert.h"
 
 
 CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPortfolioItem)
@@ -22,9 +23,9 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	, m_cancelTimes(0)
 	, m_profit(0)
 	, m_avgCost(0)
-	, m_maxOpenPerStart(2)
+	, m_maxOpenPerStart(30)
 	, m_maxCancel(100)
-	, m_totalOpenLimit(6)
+	, m_totalOpenLimit(80)
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
@@ -230,7 +231,7 @@ void CPortfolio::StopStrategy()
 
 void CPortfolio::EnableTrigger( int triggerIdx, bool enabled )
 {
-	assert(triggerIdx < m_strategy->Triggers().size());
+	assert(triggerIdx < (int)m_strategy->Triggers().size());
 	logger.Info(boost::str(boost::format("[%s] %s trigger %d of Portfolio (%s)") 
 		% InvestorId() % (enabled ? "ENABLE" : "DISABLE") % (triggerIdx + 1) % ID()));
 	m_strategy->Triggers().at(triggerIdx)->Enable(enabled);
@@ -270,7 +271,9 @@ void CPortfolio::CheckOpenCancelLimit()
 	if(msg.length() > 0)
 	{
 		m_portfolioUpdate.set_running(false);
-		m_portfolioUpdate.set_message(msg);
+		string utf8Msg;
+		GB2312ToUTF_8(utf8Msg, msg.c_str());
+		m_portfolioUpdate.set_message(utf8Msg);
 		PushUpdate();
 		m_portfolioUpdate.clear_message();
 	}
