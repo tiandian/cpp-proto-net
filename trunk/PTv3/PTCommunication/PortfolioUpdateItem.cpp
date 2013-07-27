@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "PortfolioUpdateItem.h"
+#include "charsetconvert.h"
 
 namespace PTEntity {
 
@@ -75,6 +76,15 @@ PortfolioUpdateItem::PortfolioUpdateItem(entity::PortfolioUpdateItem* pEntity)
 	}
 
 	_strategyUpdate = CreateStrategyUpdate(_strategyType, pEntity);
+
+	_hasMsg = pEntity->has_message();
+	if(_hasMsg)
+	{
+		wchar_t* uniStr = UTF8ToUnicode(pEntity->message().c_str());
+		_msg = Marshal::PtrToStringAuto((IntPtr)uniStr);
+		delete[] uniStr;
+	}
+
 }
 
 }

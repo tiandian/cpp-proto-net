@@ -53,11 +53,16 @@ public:
 	int NewOrderId(string& newId);
 	void AddPosition(const trade::MultiLegOrder& openOrder);
 	void RemovePosition(const trade::MultiLegOrder& closeOrder);
+	
+	int IncrementalCancelTimes(int amount){ m_cancelTimes += amount; return m_cancelTimes; }
+	void UpdatePosition();
+	void CheckOpenCancelLimit();
 
 private:
 	void AddLeg(const entity::LegItem& legItem);
 	void PrepareTriggerUpdate();
 	StrategyPtr CreateStrategy(const entity::StrategyItem& strategyItem);
+	void InitOpenCancelLimit( const entity::PortfolioItem &srcPortfolioItem );
 	
 	void OnQuoteRecevied(boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote);
 	
@@ -68,16 +73,9 @@ private:
 	void AddProfit(double val){ m_profit += val; }
 	void SetProfit(double val){ m_profit = val; }
 	void SetAvgCost(double avgCost){ m_avgCost = avgCost; }
-	int IncrementalOpenTimes(int opened){ m_totalOpenTimes += opened; return m_totalOpenTimes; }
+	int IncrementalOpenTimes(int opened){ m_openTimes += opened; m_totalOpenTimes += opened; return m_totalOpenTimes; }
 	int IncrementalCloseTimes(int closed){ m_totalCloseTimes += closed; return m_totalCloseTimes; }
-	void UpdatePosition()
-	{
-		int posiQty = m_totalOpenTimes - m_totalCloseTimes;
-		if(posiQty < 0)
-			posiQty = 0;
-		m_currentPosition = posiQty;
-	}
-
+	
 	// backup PortfolioItem which this is created from
 	entity::PortfolioItem m_portfolioItem;
 	entity::PortfolioUpdateItem m_portfolioUpdate;
@@ -89,7 +87,13 @@ private:
 	CQuoteRepositry* m_pQuoteRepo;
 	vector<CQuoteFetcher*> m_quoteFetcherVec;
 
+	// limits
+	int m_maxOpenPerStart;
+	int m_maxCancel;
+	int m_totalOpenLimit;
+
 	// statistics
+	int m_openTimes;
 	int m_totalOpenTimes;
 	int m_totalCloseTimes;
 	int m_currentPosition;
