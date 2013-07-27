@@ -15,16 +15,22 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	, m_pQuoteRepo(NULL)
 	, m_strategyType(entity::ARBITRAGE)
 	, m_serialOrderId(0)
+	, m_openTimes(0)
 	, m_totalOpenTimes(0)
 	, m_totalCloseTimes(0)
 	, m_currentPosition(0)
 	, m_cancelTimes(0)
 	, m_profit(0)
 	, m_avgCost(0)
-
+	, m_maxOpenPerStart(2)
+	, m_maxCancel(100)
+	, m_totalOpenLimit(6)
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
+
+	InitOpenCancelLimit(srcPortfolioItem);
+
 
 	// Initialize portfolio update item
 	m_portfolioUpdate.set_id(m_portfolioItem.id());
@@ -210,6 +216,7 @@ void CPortfolio::PushUpdate()
 void CPortfolio::StartStrategy()
 {
 	logger.Info(boost::str(boost::format("[%s] Portfolio (%s) START strategy >>>") % InvestorId() % ID()));
+	m_openTimes = 0;
 	m_orderPlacer->Prepare();
 	m_strategy->Start();
 }
@@ -232,4 +239,47 @@ void CPortfolio::EnableTrigger( int triggerIdx, bool enabled )
 const string& CPortfolio::InvestorId()
 {
 	return m_avatar->Pseudo();
+}
+
+void CPortfolio::InitOpenCancelLimit( const entity::PortfolioItem &srcPortfolioItem )
+{
+	m_maxOpenPerStart = srcPortfolioItem.maxopenperstart();
+	m_maxCancel = srcPortfolioItem.maxcancel();
+	m_totalOpenLimit = srcPortfolioItem.totalopenlimit();
+}
+
+void CPortfolio::CheckOpenCancelLimit()
+{
+	string msg;
+	if(m_openTimes >= m_maxOpenPerStart)
+	{
+		msg = boost::str(boost::format("本次策略开仓%d手已达到上限%d") % m_openTimes % m_maxOpenPerStart);
+		StopStrategy();
+	}
+	else if(m_cancelTimes >= m_maxCancel)
+	{
+		msg = boost::str(boost::format("撤单%d手已达到上限%d") % m_cancelTimes % m_maxCancel);
+		StopStrategy();
+	}
+	else if(m_totalOpenTimes >= m_totalOpenLimit)
+	{
+		msg = boost::str(boost::format("总开仓%d手已达到上限%d") % m_totalOpenTimes % m_totalOpenLimit);
+		StopStrategy();
+	}
+
+	if(msg.length() > 0)
+	{
+		m_portfolioUpdate.set_running(false);
+		m_portfolioUpdate.set_message(msg);
+		PushUpdate();
+		m_portfolioUpdate.clear_message();
+	}
+}
+
+void CPortfolio::UpdatePosition()
+{
+	int posiQty = m_totalOpenTimes - m_totalCloseTimes;
+	if(posiQty < 0)
+		posiQty = 0;
+	m_currentPosition = posiQty;
 }

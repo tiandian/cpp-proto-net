@@ -606,6 +606,8 @@ void CPortfolioOrderPlacer::OnCompleted()
 	else if(offset == trade::ML_OF_CLOSE)
 		m_pPortf->RemovePosition(*m_multiLegOrderTemplate);
 	
+	m_pPortf->UpdatePosition();
+
 	AfterPortfolioDone();
 }
 
@@ -616,7 +618,8 @@ void CPortfolioOrderPlacer::OnCanceling()
 #ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("Canceling order (ref:%s, sysId:%s)")
 		% m_activeOrdPlacer->OrderRef() % m_activeOrdPlacer->OrderSysId()));
-#endif	
+#endif
+	
 	m_pOrderProcessor->CancelOrder(m_activeOrdPlacer->OrderRef(), 
 		m_activeOrdPlacer->ExchId(), m_activeOrdPlacer->OrderSysId(), 
 		m_activeOrdPlacer->UserId(), m_activeOrdPlacer->Symbol());
@@ -627,6 +630,7 @@ void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 	assert(m_activeOrdPlacer != NULL);
 
 	int remained = pRtnOrder->volumetotal();
+	m_pPortf->IncrementalCancelTimes(remained);
 	int finished = pRtnOrder->volumetraded();
 	if(finished > 0)	// partially fill order has been canceled
 	{
@@ -831,6 +835,8 @@ void CPortfolioOrderPlacer::AfterPortfolioDone()
 	m_isWorking.store(false, boost::memory_order_release);
 	// set first leg for next start
 	SetFirstLeg();
+	// Give portfolio a chance to check whether open times, positon or cancel times reach limit
+	m_pPortf->CheckOpenCancelLimit();
 }
 
 void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )

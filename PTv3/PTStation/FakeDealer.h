@@ -119,5 +119,6 @@ private:
 	//boost::mutex m_mutTimeFormat;
 
 	int m_partiallyFilledAmount;
+	bool m_testPartiallyFill;
 };
 

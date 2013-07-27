@@ -80,6 +80,16 @@ public:
 		}
 	}
 
+	property bool HasMsg
+	{
+		bool get(){ return _hasMsg; }
+	}
+
+	property String^ Message
+	{
+		String^ get(){ return _msg; }
+	}
+
 private:
 	String ^_id;
 	List<LegUpdateItem^> ^_legs;
@@ -89,6 +99,9 @@ private:
 	int _cancelTimes;
 	StrategyType _strategyType;
 	StrategyUpdateItem ^_strategyUpdate;
+
+	bool _hasMsg;
+	String ^_msg;
 };
 
 }

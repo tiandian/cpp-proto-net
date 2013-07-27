@@ -608,6 +608,11 @@ namespace PortfolioTrading.Modules.Account
             {
                 _legs[i].Update(item.Legs[i]);
             }
+
+            if (item.HasMsg)
+            {
+                EventLogger.Write(item.Message);
+            }
         }
 
         private static decimal ToDecimal(double val)

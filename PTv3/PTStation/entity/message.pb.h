@@ -2556,6 +2556,17 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 canceltimes() const;
   inline void set_canceltimes(::google::protobuf::int32 value);
   
+  // optional string Message = 10;
+  inline bool has_message() const;
+  inline void clear_message();
+  static const int kMessageFieldNumber = 10;
+  inline const ::std::string& message() const;
+  inline void set_message(const ::std::string& value);
+  inline void set_message(const char* value);
+  inline void set_message(const char* value, size_t size);
+  inline ::std::string* mutable_message();
+  inline ::std::string* release_message();
+  
   // optional double AR_Diff = 101;
   inline bool has_ar_diff() const;
   inline void clear_ar_diff();
@@ -2614,6 +2625,8 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_currentposition();
   inline void set_has_canceltimes();
   inline void clear_has_canceltimes();
+  inline void set_has_message();
+  inline void clear_has_message();
   inline void set_has_ar_diff();
   inline void clear_has_ar_diff();
   inline void set_has_ar_longdiff();
@@ -2638,6 +2651,7 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 totalclosetimes_;
   ::google::protobuf::int32 currentposition_;
   ::google::protobuf::int32 canceltimes_;
+  ::std::string* message_;
   double ar_diff_;
   double ar_longdiff_;
   double ar_shortdiff_;
@@ -2646,7 +2660,7 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   double sc_diff_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(15 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(16 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -7912,15 +7926,73 @@ inline void PortfolioUpdateItem::set_canceltimes(::google::protobuf::int32 value
   canceltimes_ = value;
 }
 
-// optional double AR_Diff = 101;
-inline bool PortfolioUpdateItem::has_ar_diff() const {
+// optional string Message = 10;
+inline bool PortfolioUpdateItem::has_message() const {
   return (_has_bits_[0] & 0x00000200u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_ar_diff() {
+inline void PortfolioUpdateItem::set_has_message() {
   _has_bits_[0] |= 0x00000200u;
 }
-inline void PortfolioUpdateItem::clear_has_ar_diff() {
+inline void PortfolioUpdateItem::clear_has_message() {
   _has_bits_[0] &= ~0x00000200u;
+}
+inline void PortfolioUpdateItem::clear_message() {
+  if (message_ != &::google::protobuf::internal::kEmptyString) {
+    message_->clear();
+  }
+  clear_has_message();
+}
+inline const ::std::string& PortfolioUpdateItem::message() const {
+  return *message_;
+}
+inline void PortfolioUpdateItem::set_message(const ::std::string& value) {
+  set_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    message_ = new ::std::string;
+  }
+  message_->assign(value);
+}
+inline void PortfolioUpdateItem::set_message(const char* value) {
+  set_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    message_ = new ::std::string;
+  }
+  message_->assign(value);
+}
+inline void PortfolioUpdateItem::set_message(const char* value, size_t size) {
+  set_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    message_ = new ::std::string;
+  }
+  message_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PortfolioUpdateItem::mutable_message() {
+  set_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    message_ = new ::std::string;
+  }
+  return message_;
+}
+inline ::std::string* PortfolioUpdateItem::release_message() {
+  clear_has_message();
+  if (message_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = message_;
+    message_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// optional double AR_Diff = 101;
+inline bool PortfolioUpdateItem::has_ar_diff() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_ar_diff() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void PortfolioUpdateItem::clear_has_ar_diff() {
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void PortfolioUpdateItem::clear_ar_diff() {
   ar_diff_ = 0;
@@ -7936,13 +8008,13 @@ inline void PortfolioUpdateItem::set_ar_diff(double value) {
 
 // optional double AR_LongDiff = 102;
 inline bool PortfolioUpdateItem::has_ar_longdiff() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_longdiff() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_longdiff() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void PortfolioUpdateItem::clear_ar_longdiff() {
   ar_longdiff_ = 0;
@@ -7958,13 +8030,13 @@ inline void PortfolioUpdateItem::set_ar_longdiff(double value) {
 
 // optional double AR_ShortDiff = 103;
 inline bool PortfolioUpdateItem::has_ar_shortdiff() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_shortdiff() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_shortdiff() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void PortfolioUpdateItem::clear_ar_shortdiff() {
   ar_shortdiff_ = 0;
@@ -7980,13 +8052,13 @@ inline void PortfolioUpdateItem::set_ar_shortdiff(double value) {
 
 // optional int32 AR_LongSize = 104;
 inline bool PortfolioUpdateItem::has_ar_longsize() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
+  return (_has_bits_[0] & 0x00002000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_longsize() {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00002000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_longsize() {
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00002000u;
 }
 inline void PortfolioUpdateItem::clear_ar_longsize() {
   ar_longsize_ = 0;
@@ -8002,13 +8074,13 @@ inline void PortfolioUpdateItem::set_ar_longsize(::google::protobuf::int32 value
 
 // optional int32 AR_ShortSize = 105;
 inline bool PortfolioUpdateItem::has_ar_shortsize() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
+  return (_has_bits_[0] & 0x00004000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_shortsize() {
-  _has_bits_[0] |= 0x00002000u;
+  _has_bits_[0] |= 0x00004000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_shortsize() {
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline void PortfolioUpdateItem::clear_ar_shortsize() {
   ar_shortsize_ = 0;
@@ -8024,13 +8096,13 @@ inline void PortfolioUpdateItem::set_ar_shortsize(::google::protobuf::int32 valu
 
 // optional double SC_Diff = 201;
 inline bool PortfolioUpdateItem::has_sc_diff() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
+  return (_has_bits_[0] & 0x00008000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_sc_diff() {
-  _has_bits_[0] |= 0x00004000u;
+  _has_bits_[0] |= 0x00008000u;
 }
 inline void PortfolioUpdateItem::clear_has_sc_diff() {
-  _has_bits_[0] &= ~0x00004000u;
+  _has_bits_[0] &= ~0x00008000u;
 }
 inline void PortfolioUpdateItem::clear_sc_diff() {
   sc_diff_ = 0;

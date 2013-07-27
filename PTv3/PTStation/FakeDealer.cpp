@@ -14,6 +14,7 @@ CFakeDealer::CFakeDealer(void)
 	, SESSION_ID(0)
 	, m_pendingOrdSysId(0)
 	, m_partiallyFilledAmount(1)
+	, m_testPartiallyFill(false)
 {
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
 	m_tradingDay = boost::gregorian::to_iso_string(d);
@@ -40,52 +41,56 @@ int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRe
 	boost::shared_ptr<CThostFtdcInputOrderField> tmpInputOrder( new CThostFtdcInputOrderField);
 	memcpy(tmpInputOrder.get(), pInputOrder, sizeof(CThostFtdcInputOrderField));
 
-	/* Partially fill test
-	if(times % 4 == 1)
+	if(m_testPartiallyFill)
 	{
-		boost::thread thIns(boost::bind(
-			//&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
-			&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
-			);
-	}
-	else if(times % 4 == 2)
-	{
-		boost::thread thIns(boost::bind(
-			//&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
-			&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
-			);
-	}
-	else if(times % 4 == 3)
-	{
-		boost::thread thIns(boost::bind(
-			//&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
-			&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
-			);
-	}
-	else{
-		boost::thread thIns(boost::bind(
-			//&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
-			&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
-			);
-	}
-	*/
-	
-	// Fill and pending
-	if(times % 2 == 1)
-	{
-		boost::thread thIns(boost::bind(
-			&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
-			//&CFakeDealer::PendingOrder, this, pInputOrder, nRequestID)
-			);
+		// Partially fill test
+		if(times % 4 == 1)
+		{
+			boost::thread thIns(boost::bind(
+				//&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
+				&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+				);
+		}
+		else if(times % 4 == 2)
+		{
+			boost::thread thIns(boost::bind(
+				//&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+				&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
+				);
+		}
+		else if(times % 4 == 3)
+		{
+			boost::thread thIns(boost::bind(
+				//&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+				&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
+				);
+		}
+		else{
+			boost::thread thIns(boost::bind(
+				//&CFakeDealer::PartiallyFillOrder, this, tmpInputOrder, nRequestID)
+				&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+				);
+		}
 	}
 	else
 	{
-		boost::thread thIns(boost::bind(
-			//&CFakeDealer::FullFillOrder, this, pInputOrder, nRequestID)
-			&CFakeDealer::PendingOrder, this, tmpInputOrder, nRequestID)
-			);
+		// Fill and pending
+		if(times % 2 == 1)
+		{
+			boost::thread thIns(boost::bind(
+				&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+				//&CFakeDealer::PendingOrder, this, pInputOrder, nRequestID)
+				);
+		}
+		else
+		{
+			boost::thread thIns(boost::bind(
+				//&CFakeDealer::FullFillOrder, this, pInputOrder, nRequestID)
+				&CFakeDealer::PendingOrder, this, tmpInputOrder, nRequestID)
+				);
+		}
 	}
-
+	
 	return 0;
 }
 
@@ -270,10 +275,12 @@ void CFakeDealer::CancelOrder( boost::shared_ptr<CThostFtdcInputOrderActionField
 {
 	int orderSysId = atoi(pInputOrderAction->OrderSysID);
 
-	FakeMsgPtr msgPending(GetPendingOrder(&m_pendingInputOrder, nRequestID, orderSysId, m_partiallyFilledAmount));
+	int filledAmount = m_testPartiallyFill ? m_partiallyFilledAmount : m_pendingInputOrder.VolumeTotalOriginal;
+
+	FakeMsgPtr msgPending(GetPendingOrder(&m_pendingInputOrder, nRequestID, orderSysId, filledAmount));
 	m_msgPump.Enqueue(msgPending);
 
-	FakeMsgPtr msgCanceled(GetCanceledOrder(&m_pendingInputOrder, nRequestID, orderSysId, m_partiallyFilledAmount));
+	FakeMsgPtr msgCanceled(GetCanceledOrder(&m_pendingInputOrder, nRequestID, orderSysId, filledAmount));
 	m_msgPump.Enqueue(msgCanceled);
 }
 

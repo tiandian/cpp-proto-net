@@ -103,7 +103,12 @@ bool CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 	if(direction == trade::BUY)
 	{
 		double buy = basePx + m_priceTick;
+		
+#ifdef FAKE_DEAL
+		bool needChange = true;
+#else
 		bool needChange = buy - m_inputOrder.LimitPrice() > 0.001;
+#endif
 		if(needChange)
 		{
 #ifdef LOG_FOR_TRADE
@@ -118,7 +123,11 @@ bool CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 	else if(direction == trade::SELL)
 	{
 		double sell = basePx - m_priceTick;
+#ifdef FAKE_DEAL
+		bool needChange = true;
+#else
 		bool needChange = m_inputOrder.LimitPrice() - sell  > 0.001;
+#endif
 		if(needChange)
 		{
 #ifdef LOG_FOR_TRADE
