@@ -81,10 +81,11 @@ message SwitchPortfolioRequest
 	required PortfolioSwitchType SwitchType = 2;
 
 	// Strategy
-	optional bool StartStrategy = 3;
+	optional bool StartStrategy = 11;
+	optional int32 LastOrderId = 12;
 	// Trigger
-	optional int32 TriggerIndex = 4;
-	optional bool EnableTrigger = 5;
+	optional int32 TriggerIndex = 21;
+	optional bool EnableTrigger = 22;
 }
 
 message ApplyStrategySettingsRequest
@@ -204,6 +205,8 @@ message PortfolioUpdateItem
 	required int32 TotalCloseTimes = 7;
 	required int32 CurrentPosition = 8;
 	required int32 CancelTimes = 9;
+
+	optional string Message = 10;
 
 	// Followings are strategy update items
 	// Arbitrage
