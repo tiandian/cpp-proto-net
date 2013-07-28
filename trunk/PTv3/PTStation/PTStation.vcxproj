@@ -90,6 +90,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="log4cpp.property" />
+    <None Include="Makefile" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
