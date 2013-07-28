@@ -92,7 +92,8 @@ void PortfolioSwitchService::handle( LogicalConnection* pClient, IncomingPacket*
 		{
 			if(switchPortfReq.startstrategy())
 			{
-				pPortf->StartStrategy();
+				int lastOrderId = switchPortfReq.has_lastorderid() ? switchPortfReq.lastorderid() : 0;
+				pPortf->StartStrategy(lastOrderId);
 			}
 			else
 			{

@@ -100,7 +100,7 @@ namespace PTCommunication {
 
 		}
 
-		void PortfEnableStrategy(String ^portfId, bool isEnabled);
+		void PortfEnableStrategy(String ^portfId, bool isEnabled, int lastOrderId);
 
 		void PortfTurnSwitches(String ^portfId, int triggerIndex, bool enabled);
 

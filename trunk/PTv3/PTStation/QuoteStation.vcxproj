@@ -82,7 +82,9 @@
     <ClCompile Include="MarketLoginWaiter.cpp" />
     <ClCompile Include="MdSpi.cpp" />
     <ClCompile Include="QS_Configuration.cpp" />
+    <ClCompile Include="QuoteAggregator.cpp" />
     <ClCompile Include="QuoteMain.cpp" />
+    <ClCompile Include="QuoteProxy.cpp" />
     <ClCompile Include="ShmQuoteFeed.cpp" />
     <ClCompile Include="ShmQuoteSubscribe.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +96,8 @@
     <ClInclude Include="MarketLoginWaiter.h" />
     <ClInclude Include="MdSpi.h" />
     <ClInclude Include="QS_Configuration.h" />
+    <ClInclude Include="QuoteAggregator.h" />
+    <ClInclude Include="QuoteProxy.h" />
     <ClInclude Include="ShmQuoteFeed.h" />
     <ClInclude Include="ShmQuoteSubscribe.h" />
     <ClInclude Include="shm_remover.h" />

@@ -4,6 +4,8 @@
 #include "ShmQuoteFeed.h"
 #include "MdSpi.h"
 #include "FileOperations.h"
+#include "QuoteProxy.h"
+#include "QuoteAggregator.h"
 
 #include <iostream>
 #include <sstream>
@@ -15,7 +17,6 @@
 #include <boost/shared_array.hpp>
 #include <boost/algorithm/string.hpp>
 
-
 #ifdef WIN32
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
 #endif
@@ -23,20 +24,31 @@
 using namespace std;
 using namespace boost::interprocess;
 
+enum {
+	INVALID_STARTUP_ARGUMENTS = 1,
+	BEGIN_QUOTE_PROXY_ERROR = 2,
+	QUOTE_AGGREGATOR_INITIALIZATION_ERROR = 3,
+	QUOTE_PROXY_UNEXPECTED_EXIT = 4
+};
+
 CQSConfiguration qsConfig;
-CThostFtdcMdApi* pUserApi = NULL;
+vector<QuoteProxyPtr> quoteProxyVec;
 
 int launchChildTest(int argc, char* argv[]);
 void signalHandler( int signum );
 void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer);
 void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField);
 
+void OnSubscribeMarketData(char** symbolArr, int symCount);
+void OnUnsubscribeMarketData(char** symbolArr, int symCount);
+void OnTerminateNotified();
+
 int main(int argc, char* argv[])
 {
 	if(!qsConfig.Load(argc, argv))
 	{
 		cout << "Invalid or missing arguments" << endl;
-		return 1;
+		return INVALID_STARTUP_ARGUMENTS;
 	}
 
 	if(qsConfig.TestHost())
@@ -44,7 +56,7 @@ int main(int argc, char* argv[])
 		return launchChildTest(argc, argv);
 	}
 
-	cout << "Hell QuoteStation" << endl;
+	cout << "Startup QuoteStation v1.0" << endl;
 	cout << "Connection string: " << qsConfig.ConnectionString() << endl;
 	cout << "BrokerId: " << qsConfig.BrokerId() << endl;
 	cout << "Username: " << qsConfig.Username() << endl;
@@ -53,45 +65,58 @@ int main(int argc, char* argv[])
 	signal(SIGINT, signalHandler);
 	signal(SIGTERM, signalHandler);
 
-	string flowFolder = qsConfig.Username() + "/Md";
-	if(!CreateFolderIfNotExists(flowFolder))
-	{
-		cerr << "Cannot create stream folder (" << flowFolder << ")" << endl;
-		return 1;
-	}
-	flowFolder += "/";
+	CQuoteAggregator quoteAggregator(
+		boost::bind(&OnSubscribeMarketData,  _1, _2), 
+		boost::bind(&OnUnsubscribeMarketData, _1, _2), 
+		boost::bind(&OnTerminateNotified));
 
-	bool isUdp = boost::istarts_with(qsConfig.ConnectionString(), "udp");
-	// 创建UserApi
-	pUserApi = CThostFtdcMdApi::CreateFtdcMdApi(flowFolder.c_str(), isUdp);
-	assert(pUserApi != NULL);
+	QuoteProxyPtr quoteProxyMain(QuoteProxyPtr(new CQuoteProxy(&quoteAggregator,
+		qsConfig.ConnectionString(), qsConfig.BrokerId(), qsConfig.Username(), qsConfig.Password())));
+	if(!quoteProxyMain->Begin())
+		return BEGIN_QUOTE_PROXY_ERROR;
+	quoteProxyVec.push_back(quoteProxyMain);
 
-	CMdSpi mdSpiImpl(pUserApi);
-	// 注册事件类
-	pUserApi->RegisterSpi(&mdSpiImpl);
+	if(!quoteAggregator.Initialize(qsConfig.BrokerId(), qsConfig.Username()))
+		return QUOTE_AGGREGATOR_INITIALIZATION_ERROR;
 
-	string connAddress;
-	if(isUdp)
+	int proxyExitCode = 0;
+	// Wait until all quote proxy end successfully
+	for(vector<QuoteProxyPtr>::iterator iter = quoteProxyVec.begin();
+		iter != quoteProxyVec.end(); ++iter)
 	{
-		// Populate udp address with prefix tcp://
-		connAddress = boost::ireplace_first_copy(qsConfig.ConnectionString(), "udp", "tcp");
-	}
-	else
-	{
-		connAddress = qsConfig.ConnectionString();
+		int errCd = (*iter)->WaitUntilEnd();
+		if(errCd != 0)
+			proxyExitCode = errCd;
 	}
 
-	// connect
-	int conStrLen = connAddress.length();
-	boost::shared_array<char> FRONT_ADDR(new char[conStrLen + 1]);
-	strncpy(FRONT_ADDR.get(), connAddress.c_str(), conStrLen);
-	pUserApi->RegisterFront(FRONT_ADDR.get());	
-	pUserApi->Init();
+	return proxyExitCode;
+}
 
-	pUserApi->Join();
-	int ret = mdSpiImpl.ExitCode();
-	cout << "Exit code: " << ret << endl;
-	return ret;
+void OnSubscribeMarketData(char** symbolArr, int symCount)
+{
+	for(vector<QuoteProxyPtr>::iterator iter = quoteProxyVec.begin();
+		iter != quoteProxyVec.end(); ++iter)
+	{
+		(*iter)->SubscribeMarketData(symbolArr, symCount);
+	}
+}
+
+void OnUnsubscribeMarketData(char** symbolArr, int symCount)
+{
+	for(vector<QuoteProxyPtr>::iterator iter = quoteProxyVec.begin();
+		iter != quoteProxyVec.end(); ++iter)
+	{
+		(*iter)->UnsubscribeMarketData(symbolArr, symCount);
+	}
+}
+
+void OnTerminateNotified()
+{
+	for(vector<QuoteProxyPtr>::iterator iter = quoteProxyVec.begin();
+		iter != quoteProxyVec.end(); ++iter)
+	{
+		(*iter)->End();
+	}
 }
 
 int launchChildTest(int argc, char* argv[])
@@ -164,13 +189,11 @@ void signalHandler( int signum )
 	{
 	case SIGINT:
 		cout << "Interrupt received" << endl;
-		if(pUserApi != NULL)
-			pUserApi->Release();
+		OnTerminateNotified();
 		break;
 	case SIGTERM:
 		cout << "Terminate received" << endl;
-		if(pUserApi != NULL)
-			pUserApi->Release();
+		OnTerminateNotified();
 		break;
 	}
 	// cleanup and close up stuff here  

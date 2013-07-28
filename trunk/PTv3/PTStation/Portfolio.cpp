@@ -214,10 +214,11 @@ void CPortfolio::PushUpdate()
 	m_avatar->PublishPortfolioUpdate(m_portfolioUpdate);
 }
 
-void CPortfolio::StartStrategy()
+void CPortfolio::StartStrategy(int lastOrderId)
 {
 	logger.Info(boost::str(boost::format("[%s] Portfolio (%s) START strategy >>>") % InvestorId() % ID()));
 	m_openTimes = 0;
+	m_serialOrderId = lastOrderId;
 	m_orderPlacer->Prepare();
 	m_strategy->Start();
 }

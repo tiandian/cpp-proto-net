@@ -525,7 +525,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	///强平原因
 	pOrd->set_forceclosereason(static_cast<trade::ForceCloseReasonType>(pOrder->ForceCloseReason));
 	///自动挂起标志
-	pOrd->set_isautosuspend(pOrder->IsAutoSuspend);
+	pOrd->set_isautosuspend((bool)pOrder->IsAutoSuspend);
 	///业务单元
 	pOrd->set_businessunit(pOrder->BusinessUnit);
 	///请求编号
@@ -602,7 +602,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	///状态信息
 	pOrd->set_statusmsg(pOrder->StatusMsg);
 	///用户强评标志
-	pOrd->set_userforceclose(pOrder->UserForceClose);
+	pOrd->set_userforceclose((bool)pOrder->UserForceClose);
 	///操作用户代码
 	pOrd->set_activeuserid(pOrder->ActiveUserID);
 	///经纪公司报单编号

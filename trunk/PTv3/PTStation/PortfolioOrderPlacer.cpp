@@ -49,6 +49,8 @@ namespace // Concrete FSM implementation
 		// States definition
 		struct Sending : public msm::front::state<> 
 		{
+			typedef mpl::vector<evtPending> deferred_events;
+
 			// every (optional) entry/exit methods get the event passed.
 #ifdef LOG_FOR_TRADE			
 			template <class Event,class FSM>
@@ -302,6 +304,7 @@ namespace // Concrete FSM implementation
 			//  +-------------------+-------------------+-------------------+---------------------------+--------------------------+
 			_row < Sending			, evtSubmit			, Sent				>,
 			_row < Sending			, evtSubmitFailure	, Error			    >,
+			 Row < Sending			, evtPending		, none				 , Defer					, none						>,
 			_row < Sent				, evtFilled			, LegOrderFilled	>,
 			 row < Sent				, evtCancelSuccess	, LegOrderCanceled	 , &p::on_cancel_success	, &p::if_leg_canceled		>,
 			 row < Sent				, evtCancelSuccess	, Canceled			 , &p::on_cancel_success	, &p::if_portfolio_canceled >,
@@ -462,11 +465,11 @@ void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* 
 
 	m_trigQuoteTimestamp = trigQuoteTimestamp;
 
-	// Sending the first leg
-	Send();
-
-	// And then start fsm, fsm goes into Sending status
+	// Start fsm, fsm goes into Sending status
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->start();
+
+	// And Sending the first leg
+	Send();
 }
 
 void CPortfolioOrderPlacer::Run( trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize )

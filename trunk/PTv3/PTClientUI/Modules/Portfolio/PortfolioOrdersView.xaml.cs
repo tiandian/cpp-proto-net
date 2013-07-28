@@ -32,6 +32,8 @@ namespace PortfolioTrading.Modules.Portfolio
         public static readonly ICommand ClosePorfOrderCommand = new DelegateCommand<MultiLegOrderVM>(OnClosePorfOrder);
         public static readonly ICommand CancelPortfOrderCommand = new DelegateCommand<MultiLegOrderVM>(OnCancelPortfOrder);
 
+        public MultiLegOrderRepositry OrderRepositry { get { return _ordersRepo; } }
+
         [ImportingConstructor]
         public PortfolioOrdersView(IEventAggregator evtAgg)
         {
@@ -92,6 +94,8 @@ namespace PortfolioTrading.Modules.Portfolio
 
     public class MultiLegOrderRepositry : ObservableCollection<MultiLegOrderVM>
     {
+        private Dictionary<string, int> _accountOrderCount = new Dictionary<string, int>();
+
         public MultiLegOrderVM GetMlOrderVm(string acctId, string mlOrdId)
         {
             return this.SingleOrDefault(
@@ -121,6 +125,15 @@ namespace PortfolioTrading.Modules.Portfolio
                 }
                 else
                 {
+                    if (_accountOrderCount.ContainsKey(accountId))
+                    {
+                        _accountOrderCount[accountId] += 1;
+                    }
+                    else
+                    {
+                        _accountOrderCount.Add(accountId, 1);
+                    }
+
                     mlOrderVm = new MultiLegOrderVM(accountId);
                     mlOrderVm.From(mlOrder);
                     this.Add(mlOrderVm);
@@ -141,6 +154,11 @@ namespace PortfolioTrading.Modules.Portfolio
             {
                 mlOrderVm.From(orderUpdateArgs.LegOrderRef, orderUpdateArgs.LegOrder);
             }
+        }
+
+        public int GetAccountOrderCount(string accountId)
+        {
+            return _accountOrderCount.ContainsKey(accountId) ? _accountOrderCount[accountId] : 0;
         }
     }
 }

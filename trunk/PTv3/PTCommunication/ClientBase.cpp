@@ -91,7 +91,7 @@ void ClientBase::AddPortfCollection( array<PortfolioItem ^> ^portfItems )
 		_nativeClient->AddPortfolios(portfItems);
 }
 
-void ClientBase::PortfEnableStrategy( String ^portfId, bool isEnabled )
+void ClientBase::PortfEnableStrategy( String ^portfId, bool isEnabled, int lastOrderId )
 {
 	if(!this->IsConnected)
 		return;
@@ -100,7 +100,7 @@ void ClientBase::PortfEnableStrategy( String ^portfId, bool isEnabled )
 	try
 	{
 		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(portfId);
-		_nativeClient->PortfEnableStrategy((char*)pPortfIdAddress.ToPointer(), isEnabled);
+		_nativeClient->PortfEnableStrategy((char*)pPortfIdAddress.ToPointer(), isEnabled, lastOrderId);
 	}
 	finally
 	{

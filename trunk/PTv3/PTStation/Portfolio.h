@@ -35,7 +35,7 @@ public:
 	const entity::PortfolioUpdateItem& GetUpdated(){ return m_portfolioUpdate; }
 
 	// operation
-	void StartStrategy();
+	void StartStrategy(int lastOrderId);
 	void StopStrategy();
 	void EnableTrigger(int triggerIdx, bool enabled);
 
