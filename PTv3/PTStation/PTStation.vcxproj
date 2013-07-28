@@ -135,6 +135,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="QuoteRepositry.h" />
     <ClInclude Include="QuoteStore.h" />
     <ClInclude Include="RequestedServices.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="ScalperStrategy.h" />
     <ClInclude Include="ScalperTrigger.h" />
     <ClInclude Include="SettingChangeTrace.h" />
@@ -224,6 +225,9 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="TradingServer.cpp" />
     <ClCompile Include="TradingServerProtocol.cpp" />
     <ClCompile Include="Trigger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="appres.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

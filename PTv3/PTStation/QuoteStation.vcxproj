@@ -98,10 +98,14 @@
     <ClInclude Include="QS_Configuration.h" />
     <ClInclude Include="QuoteAggregator.h" />
     <ClInclude Include="QuoteProxy.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="ShmQuoteFeed.h" />
     <ClInclude Include="ShmQuoteSubscribe.h" />
     <ClInclude Include="shm_remover.h" />
     <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="QuoteStation.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
