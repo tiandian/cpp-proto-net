@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "MdSpi.h"
 #include "QS_Configuration.h"
+#include "QuoteProxy.h"
 
 #include <boost/interprocess/shared_memory_object.hpp>  
 #include <boost/interprocess/mapped_region.hpp>  
@@ -15,11 +16,10 @@ using namespace boost::interprocess;
 
 extern CQSConfiguration qsConfig;
 
-CMdSpi::CMdSpi(CThostFtdcMdApi* pUserApi)
-	: m_pUserApi(pUserApi)
-	, m_loginWaiter(pUserApi)
+CMdSpi::CMdSpi(CQuoteProxy* pQuoteProxy)
+	: m_pQuoteProxy(pQuoteProxy)
+	, m_loginWaiter(pQuoteProxy->MdApi())
 	, m_iRequestId(0)
-	, m_exitCode(-1)
 {
 	// Wait Login success for 10 seconds 
 	m_loginWaiter.BeginWait(10);
@@ -28,7 +28,7 @@ CMdSpi::CMdSpi(CThostFtdcMdApi* pUserApi)
 CMdSpi::~CMdSpi(void)
 {
 	cout << "CMdSpi destructing..." << endl;
-	m_pUserApi = NULL;
+	m_pQuoteProxy = NULL;
 }
 
 void CMdSpi::OnRspError(CThostFtdcRspInfoField *pRspInfo,
@@ -64,7 +64,7 @@ void CMdSpi::ReqUserLogin()
 	strcpy_s(req.BrokerID, qsConfig.BrokerId().c_str());
 	strcpy_s(req.UserID, qsConfig.Username().c_str());
 	strcpy_s(req.Password, qsConfig.Password().c_str());
-	int iResult = m_pUserApi->ReqUserLogin(&req, ++m_iRequestId);
+	int iResult = m_pQuoteProxy->MdApi()->ReqUserLogin(&req, ++m_iRequestId);
 	cout << "--->>> 发送用户登录请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
 }
 
@@ -77,53 +77,8 @@ void CMdSpi::OnRspUserLogin(CThostFtdcRspUserLoginField *pRspUserLogin,
 		m_loginWaiter.Cancel();
 
 		///获取当前交易日
-		cout << "--->>> 获取当前交易日 = " << m_pUserApi->GetTradingDay() << endl;
-
-		string shmName = SHM_SUBSCRIBE_NAME + qsConfig.BrokerId() + "-" + qsConfig.Username();
-		cout << "Opening shm " << shmName << " for quote subscribe" << endl;
-		m_quoteSubscriber = boost::shared_ptr<CShmQuoteSubscribeConsumer>
-			( new CShmQuoteSubscribeConsumer(shmName,
-				boost::bind(&CMdSpi::SubscribeMarketData, this, _1, _2),
-				boost::bind(&CMdSpi::UnsubscribeMarketData, this, _1, _2),
-				boost::bind(&CMdSpi::OnTerminateNotified, this)));
-		bool initSucc = m_quoteSubscriber->Init();
-		if(!initSucc)
-		{
-			cout << "[QuoteStation] Quote subscriber initializtion failed" << endl;
-			return;
-		}
-
-		string quoteFeedName = SHM_QUOTE_FEED_NAME + qsConfig.BrokerId() + "-" + qsConfig.Username();
-		cout << "Open shm " << quoteFeedName << " for quote feeding" << endl;
-		m_quoteFeeder = boost::shared_ptr<CShmQuoteFeedProducer>( new CShmQuoteFeedProducer(quoteFeedName));
-		initSucc = m_quoteFeeder->Init();
-		if(!initSucc)
-		{
-			cout << "[QuoteStation] Quote feeder initializtion failed" << endl;
-			return;
-		}
-		
-		m_quoteSubscriber->Start();
-	}
-}
-
-void CMdSpi::SubscribeMarketData( char** symbolArr, int symCount )
-{
-	if(symbolArr != NULL && symCount > 0)
-	{
-		cout << "Subscribing " << symCount << " symbol(s). The first is " << symbolArr[0] << endl;
-		int iResult = m_pUserApi->SubscribeMarketData(symbolArr, symCount);
-		cout << "--->>> 发送行情订阅请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
-	}
-}
-
-void CMdSpi::UnsubscribeMarketData( char** symbolArr, int symCount )
-{
-	if(symbolArr != NULL && symCount > 0)
-	{
-		cout << "Unsubscribing " << symCount << " symbol(s). The first is " << symbolArr[0] << endl;
-		int iResult = m_pUserApi->UnSubscribeMarketData(symbolArr, symCount);
-		cout << "--->>> 发送行情退订请求: " << ((iResult == 0) ? "成功" : "失败") << endl;
+		cout << "--->>> 获取当前交易日 = " << m_pQuoteProxy->MdApi()->GetTradingDay() << endl;
+		m_pQuoteProxy->GetReady();
 	}
 }
 
@@ -145,8 +100,7 @@ void CMdSpi::OnRtnDepthMarketData(CThostFtdcDepthMarketDataField *pDepthMarketDa
 	//	<< pDepthMarketData->LastPrice << ", "
 	//	<< pDepthMarketData->UpdateTime << ", "
 	//	<< pDepthMarketData->UpdateMillisec << endl;
-
-	m_quoteFeeder->Put(pDepthMarketData);
+	m_pQuoteProxy->OnQuoteReceived(pDepthMarketData);
 }
 
 bool CMdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
@@ -156,13 +110,4 @@ bool CMdSpi::IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo)
 	if (bResult)
 		cerr << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
 	return bResult;
-}
-
-void CMdSpi::OnTerminateNotified()
-{
-	if(m_pUserApi != NULL)
-	{
-		m_exitCode = 0; 
-		m_pUserApi->Release();
-	}
 }

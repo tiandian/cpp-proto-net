@@ -303,10 +303,11 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AddPortfolioRequest));
   SwitchPortfolioRequest_descriptor_ = file->message_type(9);
-  static const int SwitchPortfolioRequest_offsets_[5] = {
+  static const int SwitchPortfolioRequest_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, pid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, switchtype_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, startstrategy_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, lastorderid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, triggerindex_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SwitchPortfolioRequest, enabletrigger_),
   };
@@ -1088,126 +1089,126 @@ void protobuf_AddDesc_message_2eproto() {
     "BrokerId\030\005 \002(\t\022\016\n\006UserId\030\006 \002(\t\"7\n\023Server"
     "LogoutRequest\022 \n\004Type\030\001 \002(\0162\022.entity.Ser"
     "verType\"@\n\023AddPortfolioRequest\022)\n\nPortfo"
-    "lios\030\001 \003(\0132\025.entity.PortfolioItem\"\232\001\n\026Sw"
+    "lios\030\001 \003(\0132\025.entity.PortfolioItem\"\257\001\n\026Sw"
     "itchPortfolioRequest\022\013\n\003PID\030\001 \002(\t\022/\n\nSwi"
     "tchType\030\002 \002(\0162\033.entity.PortfolioSwitchTy"
-    "pe\022\025\n\rStartStrategy\030\003 \001(\010\022\024\n\014TriggerInde"
-    "x\030\004 \001(\005\022\025\n\rEnableTrigger\030\005 \001(\010\"S\n\034ApplyS"
-    "trategySettingsRequest\022\013\n\003PID\030\001 \002(\t\022&\n\010S"
-    "trategy\030\002 \002(\0132\024.entity.StrategyItem\"\033\n\013S"
-    "tringParam\022\014\n\004Data\030\001 \002(\t\"\030\n\010IntParam\022\014\n\004"
-    "Data\030\002 \002(\005\"u\n\007LegItem\022\r\n\005LegId\030\001 \002(\005\022\016\n\006"
-    "Symbol\030\002 \002(\t\022\r\n\005Ratio\030\003 \002(\005\022\'\n\004Side\030\004 \002("
-    "\0162\031.entity.PosiDirectionType\022\023\n\013IsPrefer"
-    "red\030\005 \002(\010\"\214\001\n\rLegUpdateItem\022\016\n\006Symbol\030\001 "
-    "\002(\t\022!\n\006Status\030\002 \002(\0162\021.entity.LegStatus\022\014"
-    "\n\004Last\030\003 \002(\001\022\013\n\003Ask\030\004 \002(\001\022\017\n\007AskSize\030\005 \002"
-    "(\005\022\013\n\003Bid\030\006 \002(\001\022\017\n\007BidSize\030\007 \002(\005\"\231\004\n\014Str"
-    "ategyItem\022\"\n\004Type\030\001 \002(\0162\024.entity.Strateg"
-    "yType\022\022\n\nRetryTimes\030\002 \002(\005\022\023\n\013OpenTimeout"
-    "\030\003 \002(\005\022%\n\010Triggers\030\004 \003(\0132\023.entity.Trigge"
-    "rItem\022*\n\007AR_Side\030e \001(\0162\031.entity.PosiDire"
-    "ctionType\022\024\n\013CP_CloseLeg\030\311\001 \001(\t\0223\n\017CP_Cl"
-    "oseLegSide\030\312\001 \001(\0162\031.entity.PosiDirection"
-    "Type\022\025\n\014SC_PriceTick\030\255\002 \001(\001\0221\n\016SC_CaseLE"
-    "2Tick\030\256\002 \001(\0162\030.entity.DirectionDepends\0221"
-    "\n\016SC_CaseLE3Tick\030\257\002 \001(\0162\030.entity.Directi"
-    "onDepends\0221\n\016SC_CaseGE4Tick\030\260\002 \001(\0162\030.ent"
-    "ity.DirectionDepends\0222\n\017SC_CaseNoChange\030"
-    "\261\002 \001(\0162\030.entity.DirectionDepends\022:\n\023SC_S"
-    "topLossStrategy\030\262\002 \001(\0162\034.entity.StopLoss"
-    "CloseMethods\"\244\002\n\013TriggerItem\022&\n\010Strategy"
-    "\030\001 \002(\0162\024.entity.StrategyType\022\014\n\004Name\030\002 \002"
-    "(\t\022\017\n\007Enabled\030\003 \002(\010\022.\n\014AR_Condition\030e \001("
-    "\0162\030.entity.CompareCondition\022\024\n\014AR_Thresh"
-    "old\030f \001(\001\022)\n\tAR_Offset\030g \001(\0162\026.entity.Po"
-    "siOffsetFlag\022/\n\014CP_Condition\030\311\001 \001(\0162\030.en"
-    "tity.CompareCondition\022\025\n\014CP_Threshold\030\312\001"
-    " \001(\001\022\025\n\014SC_Threshold\030\255\002 \001(\001\"V\n\rTriggerSt"
-    "atus\022&\n\010Strategy\030\001 \002(\0162\024.entity.Strategy"
-    "Type\022\014\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010\"\270\001\n\r"
-    "PortfolioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 "
-    "\002(\005\022\035\n\004Legs\030\003 \003(\0132\017.entity.LegItem\022\021\n\tMa"
-    "xCancel\030\004 \002(\005\022\027\n\017MaxOpenPerStart\030\005 \002(\005\022\026"
-    "\n\016TotalOpenLimit\030\006 \002(\005\022&\n\010Strategy\030\007 \002(\013"
-    "2\024.entity.StrategyItem\"\221\003\n\023PortfolioUpda"
-    "teItem\022\n\n\002ID\030\001 \002(\t\022#\n\004Legs\030\002 \003(\0132\025.entit"
-    "y.LegUpdateItem\022&\n\010Strategy\030\003 \002(\0162\024.enti"
-    "ty.StrategyType\022\017\n\007Running\030\004 \002(\010\022\'\n\010Trig"
-    "gers\030\005 \003(\0132\025.entity.TriggerStatus\022\026\n\016Tot"
-    "alOpenTimes\030\006 \002(\005\022\027\n\017TotalCloseTimes\030\007 \002"
-    "(\005\022\027\n\017CurrentPosition\030\010 \002(\005\022\023\n\013CancelTim"
-    "es\030\t \002(\005\022\017\n\007Message\030\n \001(\t\022\017\n\007AR_Diff\030e \001"
-    "(\001\022\023\n\013AR_LongDiff\030f \001(\001\022\024\n\014AR_ShortDiff\030"
-    "g \001(\001\022\023\n\013AR_LongSize\030h \001(\005\022\024\n\014AR_ShortSi"
-    "ze\030i \001(\005\022\020\n\007SC_Diff\030\311\001 \001(\001\":\n\014ConnectPar"
-    "am\022\024\n\014QuoteAddress\030\001 \002(\t\022\024\n\014StreamFolder"
-    "\030\002 \002(\t\"8\n\017OperationReturn\022\017\n\007Success\030\001 \002"
-    "(\010\022\024\n\014ErrorMessage\030\002 \002(\t\"7\n\017AccountSetti"
-    "ngs\022\021\n\tMaxSubmit\030\001 \002(\005\022\021\n\tMaxCancel\030\002 \002("
-    "\005\"o\n\nLoginParam\022\020\n\010BrokerId\030\001 \002(\t\022\016\n\006Use"
-    "rId\030\002 \002(\t\022\020\n\010Password\030\003 \002(\t\022-\n\014AcctSetti"
-    "ngs\030\004 \001(\0132\027.entity.AccountSettings\" \n\rRe"
-    "gQuoteParam\022\017\n\007Symbols\030\001 \003(\t\"B\n\021AddPortf"
-    "olioParam\022-\n\016PortfolioItems\030\001 \003(\0132\025.enti"
-    "ty.PortfolioItem\"I\n\021PorfOpenPosiParam\022\017\n"
-    "\007PortfId\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\021\n\tIsVi"
-    "rtual\030\003 \002(\010\"T\n\022ClosePositionParam\022+\n\rMul"
-    "tiLegOrder\030\001 \002(\0132\024.trade.MultiLegOrder\022\021"
-    "\n\tLegOrdRef\030\002 \001(\t\"t\n\023LegOrderUpdateParam"
-    "\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017MultiLegOrderId\030\002 \002"
-    "(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036\n\010LegOrder\030\004 \002("
-    "\0132\014.trade.Order\"\260\002\n\031ArbitrageStrategySet"
-    "tings\022\'\n\004Side\030\001 \002(\0162\031.entity.PosiDirecti"
-    "onType\022/\n\rOpenCondition\030\002 \002(\0162\030.entity.C"
-    "ompareCondition\022\031\n\021OpenPosiThreshold\030\003 \002"
-    "(\001\0223\n\021StopGainCondition\030\004 \002(\0162\030.entity.C"
-    "ompareCondition\022\031\n\021StopGainThreshold\030\005 \002"
-    "(\001\0223\n\021StopLossCondition\030\006 \002(\0162\030.entity.C"
-    "ompareCondition\022\031\n\021StopLossThreshold\030\007 \002"
-    "(\001\"\246\001\n\032ChangePosiStrategySettings\022\020\n\010Clo"
-    "seLeg\030\001 \002(\t\022/\n\014CloseLegSide\030\002 \002(\0162\031.enti"
-    "ty.PosiDirectionType\0222\n\020TriggerCondition"
-    "\030\003 \002(\0162\030.entity.CompareCondition\022\021\n\tThre"
-    "shold\030\004 \002(\001\"\325\002\n\017ScalperSettings\022\021\n\tThres"
-    "hold\030\001 \002(\001\022\021\n\tPriceTick\030\002 \002(\001\022-\n\013CaseLE2"
-    "Tick\030\003 \002(\0162\030.entity.DirectionDepends\022-\n\013"
-    "CaseLE3Tick\030\004 \002(\0162\030.entity.DirectionDepe"
-    "nds\022-\n\013CaseGE4Tick\030\005 \002(\0162\030.entity.Direct"
-    "ionDepends\022.\n\014CaseNoChange\030\006 \002(\0162\030.entit"
-    "y.DirectionDepends\0226\n\020StopLossStrategy\030\007"
-    " \002(\0162\034.entity.StopLossCloseMethods\022\022\n\nRe"
-    "tryTimes\030\010 \002(\005\022\023\n\013OpenTimeout\030\t \001(\005\"R\n\023M"
-    "odifyStrategyParam\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014S"
-    "trategyName\030\002 \002(\t\022\024\n\014StrategyData\030\003 \002(\014\""
-    "\227\001\n\032ModifyPortfolioSwitchParam\022\017\n\007PortfI"
-    "d\030\001 \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024\n\014AutoStopGai"
-    "n\030\003 \002(\010\022\024\n\014AutoStopLoss\030\004 \002(\010\022\024\n\014AutoTra"
-    "cking\030\005 \002(\010\022\024\n\014EnablePrefer\030\006 \002(\010\"K\n\027Mod"
-    "ifyPortfolioQtyParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n"
-    "\007OnceQty\030\002 \002(\005\022\016\n\006MaxQty\030\003 \002(\005\"<\n\030Modify"
-    "RunningStatusParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007E"
-    "nabled\030\002 \002(\010\"F\n ModifyPortfolioPreferred"
-    "LegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002"
-    " \002(\t\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030\001 \002"
-    "(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t"
-    "\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"y\n\025Manu"
-    "alCloseOrderParam\022\016\n\006Symbol\030\001 \002(\t\022,\n\tDir"
-    "ection\030\002 \002(\0162\031.trade.TradeDirectionType\022"
-    "\020\n\010OpenDate\030\003 \002(\t\022\020\n\010Quantity\030\004 \002(\005\"\212\001\n\n"
-    "SymbolInfo\022\022\n\nInstrument\030\001 \002(\t\022\022\n\nExchan"
-    "geID\030\002 \002(\t\022\026\n\016ExchangeInstID\030\003 \002(\t\022\021\n\tPr"
-    "oductID\030\004 \002(\t\022\026\n\016VolumeMultiple\030\005 \002(\005\022\021\n"
-    "\tPriceTick\030\006 \002(\001*,\n\nServerType\022\016\n\nSERV_Q"
-    "UOTE\020\000\022\016\n\nSERV_TRADE\020\001*>\n\023PortfolioSwitc"
-    "hType\022\023\n\017STRATEGY_SWITCH\020\000\022\022\n\016TRIGGER_SW"
-    "ITCH\020\001*\?\n\014StrategyType\022\r\n\tARBITRAGE\020\000\022\023\n"
-    "\017CHANGE_POSITION\020\001\022\013\n\007SCALPER\020\002*o\n\020Direc"
-    "tionDepends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL"
-    "_SIZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHA"
-    "NGE\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossClos"
-    "eMethods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BAS"
-    "ED_ON_INPUT_LIMIT\020\001", 5499);
+    "pe\022\025\n\rStartStrategy\030\013 \001(\010\022\023\n\013LastOrderId"
+    "\030\014 \001(\005\022\024\n\014TriggerIndex\030\025 \001(\005\022\025\n\rEnableTr"
+    "igger\030\026 \001(\010\"S\n\034ApplyStrategySettingsRequ"
+    "est\022\013\n\003PID\030\001 \002(\t\022&\n\010Strategy\030\002 \002(\0132\024.ent"
+    "ity.StrategyItem\"\033\n\013StringParam\022\014\n\004Data\030"
+    "\001 \002(\t\"\030\n\010IntParam\022\014\n\004Data\030\002 \002(\005\"u\n\007LegIt"
+    "em\022\r\n\005LegId\030\001 \002(\005\022\016\n\006Symbol\030\002 \002(\t\022\r\n\005Rat"
+    "io\030\003 \002(\005\022\'\n\004Side\030\004 \002(\0162\031.entity.PosiDire"
+    "ctionType\022\023\n\013IsPreferred\030\005 \002(\010\"\214\001\n\rLegUp"
+    "dateItem\022\016\n\006Symbol\030\001 \002(\t\022!\n\006Status\030\002 \002(\016"
+    "2\021.entity.LegStatus\022\014\n\004Last\030\003 \002(\001\022\013\n\003Ask"
+    "\030\004 \002(\001\022\017\n\007AskSize\030\005 \002(\005\022\013\n\003Bid\030\006 \002(\001\022\017\n\007"
+    "BidSize\030\007 \002(\005\"\231\004\n\014StrategyItem\022\"\n\004Type\030\001"
+    " \002(\0162\024.entity.StrategyType\022\022\n\nRetryTimes"
+    "\030\002 \002(\005\022\023\n\013OpenTimeout\030\003 \002(\005\022%\n\010Triggers\030"
+    "\004 \003(\0132\023.entity.TriggerItem\022*\n\007AR_Side\030e "
+    "\001(\0162\031.entity.PosiDirectionType\022\024\n\013CP_Clo"
+    "seLeg\030\311\001 \001(\t\0223\n\017CP_CloseLegSide\030\312\001 \001(\0162\031"
+    ".entity.PosiDirectionType\022\025\n\014SC_PriceTic"
+    "k\030\255\002 \001(\001\0221\n\016SC_CaseLE2Tick\030\256\002 \001(\0162\030.enti"
+    "ty.DirectionDepends\0221\n\016SC_CaseLE3Tick\030\257\002"
+    " \001(\0162\030.entity.DirectionDepends\0221\n\016SC_Cas"
+    "eGE4Tick\030\260\002 \001(\0162\030.entity.DirectionDepend"
+    "s\0222\n\017SC_CaseNoChange\030\261\002 \001(\0162\030.entity.Dir"
+    "ectionDepends\022:\n\023SC_StopLossStrategy\030\262\002 "
+    "\001(\0162\034.entity.StopLossCloseMethods\"\244\002\n\013Tr"
+    "iggerItem\022&\n\010Strategy\030\001 \002(\0162\024.entity.Str"
+    "ategyType\022\014\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010"
+    "\022.\n\014AR_Condition\030e \001(\0162\030.entity.CompareC"
+    "ondition\022\024\n\014AR_Threshold\030f \001(\001\022)\n\tAR_Off"
+    "set\030g \001(\0162\026.entity.PosiOffsetFlag\022/\n\014CP_"
+    "Condition\030\311\001 \001(\0162\030.entity.CompareConditi"
+    "on\022\025\n\014CP_Threshold\030\312\001 \001(\001\022\025\n\014SC_Threshol"
+    "d\030\255\002 \001(\001\"V\n\rTriggerStatus\022&\n\010Strategy\030\001 "
+    "\002(\0162\024.entity.StrategyType\022\014\n\004Name\030\002 \002(\t\022"
+    "\017\n\007Enabled\030\003 \002(\010\"\270\001\n\rPortfolioItem\022\n\n\002ID"
+    "\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\035\n\004Legs\030\003 \003(\0132\017"
+    ".entity.LegItem\022\021\n\tMaxCancel\030\004 \002(\005\022\027\n\017Ma"
+    "xOpenPerStart\030\005 \002(\005\022\026\n\016TotalOpenLimit\030\006 "
+    "\002(\005\022&\n\010Strategy\030\007 \002(\0132\024.entity.StrategyI"
+    "tem\"\221\003\n\023PortfolioUpdateItem\022\n\n\002ID\030\001 \002(\t\022"
+    "#\n\004Legs\030\002 \003(\0132\025.entity.LegUpdateItem\022&\n\010"
+    "Strategy\030\003 \002(\0162\024.entity.StrategyType\022\017\n\007"
+    "Running\030\004 \002(\010\022\'\n\010Triggers\030\005 \003(\0132\025.entity"
+    ".TriggerStatus\022\026\n\016TotalOpenTimes\030\006 \002(\005\022\027"
+    "\n\017TotalCloseTimes\030\007 \002(\005\022\027\n\017CurrentPositi"
+    "on\030\010 \002(\005\022\023\n\013CancelTimes\030\t \002(\005\022\017\n\007Message"
+    "\030\n \001(\t\022\017\n\007AR_Diff\030e \001(\001\022\023\n\013AR_LongDiff\030f"
+    " \001(\001\022\024\n\014AR_ShortDiff\030g \001(\001\022\023\n\013AR_LongSiz"
+    "e\030h \001(\005\022\024\n\014AR_ShortSize\030i \001(\005\022\020\n\007SC_Diff"
+    "\030\311\001 \001(\001\":\n\014ConnectParam\022\024\n\014QuoteAddress\030"
+    "\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017Operation"
+    "Return\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030"
+    "\002 \002(\t\"7\n\017AccountSettings\022\021\n\tMaxSubmit\030\001 "
+    "\002(\005\022\021\n\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020\n\010"
+    "BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Passwo"
+    "rd\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entity."
+    "AccountSettings\" \n\rRegQuoteParam\022\017\n\007Symb"
+    "ols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Portfo"
+    "lioItems\030\001 \003(\0132\025.entity.PortfolioItem\"I\n"
+    "\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Q"
+    "uantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Clos"
+    "ePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024."
+    "trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t"
+    "\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027"
+    "\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003"
+    " \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002\n"
+    "\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002(\016"
+    "2\031.entity.PosiDirectionType\022/\n\rOpenCondi"
+    "tion\030\002 \002(\0162\030.entity.CompareCondition\022\031\n\021"
+    "OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCondi"
+    "tion\030\004 \002(\0162\030.entity.CompareCondition\022\031\n\021"
+    "StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCondi"
+    "tion\030\006 \002(\0162\030.entity.CompareCondition\022\031\n\021"
+    "StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiSt"
+    "rategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Clos"
+    "eLegSide\030\002 \002(\0162\031.entity.PosiDirectionTyp"
+    "e\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.Com"
+    "pareCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017Sca"
+    "lperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPrice"
+    "Tick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.entity"
+    ".DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\0162\030"
+    ".entity.DirectionDepends\022-\n\013CaseGE4Tick\030"
+    "\005 \002(\0162\030.entity.DirectionDepends\022.\n\014CaseN"
+    "oChange\030\006 \002(\0162\030.entity.DirectionDepends\022"
+    "6\n\020StopLossStrategy\030\007 \002(\0162\034.entity.StopL"
+    "ossCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n\013O"
+    "penTimeout\030\t \001(\005\"R\n\023ModifyStrategyParam\022"
+    "\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024"
+    "\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolio"
+    "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
+    "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
+    "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
+    "lePrefer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyPara"
+    "m\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006M"
+    "axQty\030\003 \002(\005\"<\n\030ModifyRunningStatusParam\022"
+    "\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Mod"
+    "ifyPortfolioPreferredLegParam\022\017\n\007PortfId"
+    "\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrder"
+    "Param\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 "
+    "\002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n"
+    "\006Symbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016"
+    "\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trad"
+    "e.TradeDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020"
+    "\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstr"
+    "ument\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Excha"
+    "ngeInstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016Vo"
+    "lumeMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n"
+    "\nServerType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRAD"
+    "E\020\001*>\n\023PortfolioSwitchType\022\023\n\017STRATEGY_S"
+    "WITCH\020\000\022\022\n\016TRIGGER_SWITCH\020\001*\?\n\014StrategyT"
+    "ype\022\r\n\tARBITRAGE\020\000\022\023\n\017CHANGE_POSITION\020\001\022"
+    "\013\n\007SCALPER\020\002*o\n\020DirectionDepends\022\017\n\013IGNO"
+    "RE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_S"
+    "IZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CHA"
+    "NGE\020\004*I\n\024StopLossCloseMethods\022\027\n\023BASED_O"
+    "N_NEXT_QUOTE\020\000\022\030\n\024BASED_ON_INPUT_LIMIT\020\001", 5520);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -4132,6 +4133,7 @@ void AddPortfolioRequest::Swap(AddPortfolioRequest* other) {
 const int SwitchPortfolioRequest::kPIDFieldNumber;
 const int SwitchPortfolioRequest::kSwitchTypeFieldNumber;
 const int SwitchPortfolioRequest::kStartStrategyFieldNumber;
+const int SwitchPortfolioRequest::kLastOrderIdFieldNumber;
 const int SwitchPortfolioRequest::kTriggerIndexFieldNumber;
 const int SwitchPortfolioRequest::kEnableTriggerFieldNumber;
 #endif  // !_MSC_VER
@@ -4155,6 +4157,7 @@ void SwitchPortfolioRequest::SharedCtor() {
   pid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   switchtype_ = 0;
   startstrategy_ = false;
+  lastorderid_ = 0;
   triggerindex_ = 0;
   enabletrigger_ = false;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -4201,6 +4204,7 @@ void SwitchPortfolioRequest::Clear() {
     }
     switchtype_ = 0;
     startstrategy_ = false;
+    lastorderid_ = 0;
     triggerindex_ = 0;
     enabletrigger_ = false;
   }
@@ -4247,12 +4251,12 @@ bool SwitchPortfolioRequest::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_StartStrategy;
+        if (input->ExpectTag(88)) goto parse_StartStrategy;
         break;
       }
       
-      // optional bool StartStrategy = 3;
-      case 3: {
+      // optional bool StartStrategy = 11;
+      case 11: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_StartStrategy:
@@ -4263,12 +4267,28 @@ bool SwitchPortfolioRequest::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(32)) goto parse_TriggerIndex;
+        if (input->ExpectTag(96)) goto parse_LastOrderId;
         break;
       }
       
-      // optional int32 TriggerIndex = 4;
-      case 4: {
+      // optional int32 LastOrderId = 12;
+      case 12: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_LastOrderId:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &lastorderid_)));
+          set_has_lastorderid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(168)) goto parse_TriggerIndex;
+        break;
+      }
+      
+      // optional int32 TriggerIndex = 21;
+      case 21: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_TriggerIndex:
@@ -4279,12 +4299,12 @@ bool SwitchPortfolioRequest::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(40)) goto parse_EnableTrigger;
+        if (input->ExpectTag(176)) goto parse_EnableTrigger;
         break;
       }
       
-      // optional bool EnableTrigger = 5;
-      case 5: {
+      // optional bool EnableTrigger = 22;
+      case 22: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_EnableTrigger:
@@ -4332,19 +4352,24 @@ void SwitchPortfolioRequest::SerializeWithCachedSizes(
       2, this->switchtype(), output);
   }
   
-  // optional bool StartStrategy = 3;
+  // optional bool StartStrategy = 11;
   if (has_startstrategy()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->startstrategy(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(11, this->startstrategy(), output);
   }
   
-  // optional int32 TriggerIndex = 4;
+  // optional int32 LastOrderId = 12;
+  if (has_lastorderid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(12, this->lastorderid(), output);
+  }
+  
+  // optional int32 TriggerIndex = 21;
   if (has_triggerindex()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->triggerindex(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(21, this->triggerindex(), output);
   }
   
-  // optional bool EnableTrigger = 5;
+  // optional bool EnableTrigger = 22;
   if (has_enabletrigger()) {
-    ::google::protobuf::internal::WireFormatLite::WriteBool(5, this->enabletrigger(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteBool(22, this->enabletrigger(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -4371,19 +4396,24 @@ void SwitchPortfolioRequest::SerializeWithCachedSizes(
       2, this->switchtype(), target);
   }
   
-  // optional bool StartStrategy = 3;
+  // optional bool StartStrategy = 11;
   if (has_startstrategy()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->startstrategy(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(11, this->startstrategy(), target);
   }
   
-  // optional int32 TriggerIndex = 4;
+  // optional int32 LastOrderId = 12;
+  if (has_lastorderid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(12, this->lastorderid(), target);
+  }
+  
+  // optional int32 TriggerIndex = 21;
   if (has_triggerindex()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->triggerindex(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(21, this->triggerindex(), target);
   }
   
-  // optional bool EnableTrigger = 5;
+  // optional bool EnableTrigger = 22;
   if (has_enabletrigger()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(5, this->enabletrigger(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(22, this->enabletrigger(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -4410,21 +4440,28 @@ int SwitchPortfolioRequest::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->switchtype());
     }
     
-    // optional bool StartStrategy = 3;
+    // optional bool StartStrategy = 11;
     if (has_startstrategy()) {
       total_size += 1 + 1;
     }
     
-    // optional int32 TriggerIndex = 4;
-    if (has_triggerindex()) {
+    // optional int32 LastOrderId = 12;
+    if (has_lastorderid()) {
       total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->lastorderid());
+    }
+    
+    // optional int32 TriggerIndex = 21;
+    if (has_triggerindex()) {
+      total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->triggerindex());
     }
     
-    // optional bool EnableTrigger = 5;
+    // optional bool EnableTrigger = 22;
     if (has_enabletrigger()) {
-      total_size += 1 + 1;
+      total_size += 2 + 1;
     }
     
   }
@@ -4463,6 +4500,9 @@ void SwitchPortfolioRequest::MergeFrom(const SwitchPortfolioRequest& from) {
     if (from.has_startstrategy()) {
       set_startstrategy(from.startstrategy());
     }
+    if (from.has_lastorderid()) {
+      set_lastorderid(from.lastorderid());
+    }
     if (from.has_triggerindex()) {
       set_triggerindex(from.triggerindex());
     }
@@ -4496,6 +4536,7 @@ void SwitchPortfolioRequest::Swap(SwitchPortfolioRequest* other) {
     std::swap(pid_, other->pid_);
     std::swap(switchtype_, other->switchtype_);
     std::swap(startstrategy_, other->startstrategy_);
+    std::swap(lastorderid_, other->lastorderid_);
     std::swap(triggerindex_, other->triggerindex_);
     std::swap(enabletrigger_, other->enabletrigger_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);

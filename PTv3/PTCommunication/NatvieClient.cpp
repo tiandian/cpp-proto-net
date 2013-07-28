@@ -144,12 +144,14 @@ void CNatvieClient::AddPortfolios( array<PTEntity::PortfolioItem^> ^portfolioIte
 	sendRequest(&request);
 }
 
-void CNatvieClient::PortfEnableStrategy( const char* portfId, bool isEnabled )
+void CNatvieClient::PortfEnableStrategy( const char* portfId, bool isEnabled, int lastOrderId )
 {
 	ProtobufPacket<entity::SwitchPortfolioRequest> request(PortfolioSwitchRequestID);
 	request.getData().set_pid(portfId);
 	request.getData().set_switchtype(entity::STRATEGY_SWITCH);
 	request.getData().set_startstrategy(isEnabled);
+	if(isEnabled)
+		request.getData().set_lastorderid(lastOrderId);
 
 	sendRequest(&request);
 }

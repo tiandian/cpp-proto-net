@@ -1,7 +1,5 @@
 #pragma once
 
-#include "ShmQuoteSubscribe.h"
-#include "ShmQuoteFeed.h"
 #include "MarketLoginWaiter.h"
 #include "ThostTraderApi/ThostFtdcMdApi.h"
 
@@ -12,13 +10,13 @@
 
 using namespace std;
 
+class CQuoteProxy;
+
 class CMdSpi : public CThostFtdcMdSpi
 {
 public:
-	CMdSpi(CThostFtdcMdApi* pUserApi);
+	CMdSpi(CQuoteProxy* pQuoteProxy);
 	~CMdSpi(void);
-
-	int ExitCode(){ return m_exitCode; }
 
 	///´íÎóÓ¦´ð
 	virtual void OnRspError(CThostFtdcRspInfoField *pRspInfo,
@@ -54,18 +52,12 @@ public:
 
 private:
 	void ReqUserLogin();
-	void SubscribeMarketData(char** symbolArr, int symCount);
-	void UnsubscribeMarketData(char** symbolArr, int symCount);
-	void OnTerminateNotified();
-	// 
 	bool IsErrorRspInfo(CThostFtdcRspInfoField *pRspInfo);
 
-	int m_exitCode;
-	CThostFtdcMdApi* m_pUserApi;
+	CQuoteProxy* m_pQuoteProxy;
 	CMarketLoginWaiter m_loginWaiter;
 
 	boost::atomic<int> m_iRequestId;
-	boost::shared_ptr<CShmQuoteSubscribeConsumer> m_quoteSubscriber;
-	boost::shared_ptr<CShmQuoteFeedProducer> m_quoteFeeder;
+	bool m_isReady;
 };
 

@@ -1203,24 +1203,31 @@ class SwitchPortfolioRequest : public ::google::protobuf::Message {
   inline entity::PortfolioSwitchType switchtype() const;
   inline void set_switchtype(entity::PortfolioSwitchType value);
   
-  // optional bool StartStrategy = 3;
+  // optional bool StartStrategy = 11;
   inline bool has_startstrategy() const;
   inline void clear_startstrategy();
-  static const int kStartStrategyFieldNumber = 3;
+  static const int kStartStrategyFieldNumber = 11;
   inline bool startstrategy() const;
   inline void set_startstrategy(bool value);
   
-  // optional int32 TriggerIndex = 4;
+  // optional int32 LastOrderId = 12;
+  inline bool has_lastorderid() const;
+  inline void clear_lastorderid();
+  static const int kLastOrderIdFieldNumber = 12;
+  inline ::google::protobuf::int32 lastorderid() const;
+  inline void set_lastorderid(::google::protobuf::int32 value);
+  
+  // optional int32 TriggerIndex = 21;
   inline bool has_triggerindex() const;
   inline void clear_triggerindex();
-  static const int kTriggerIndexFieldNumber = 4;
+  static const int kTriggerIndexFieldNumber = 21;
   inline ::google::protobuf::int32 triggerindex() const;
   inline void set_triggerindex(::google::protobuf::int32 value);
   
-  // optional bool EnableTrigger = 5;
+  // optional bool EnableTrigger = 22;
   inline bool has_enabletrigger() const;
   inline void clear_enabletrigger();
-  static const int kEnableTriggerFieldNumber = 5;
+  static const int kEnableTriggerFieldNumber = 22;
   inline bool enabletrigger() const;
   inline void set_enabletrigger(bool value);
   
@@ -1232,6 +1239,8 @@ class SwitchPortfolioRequest : public ::google::protobuf::Message {
   inline void clear_has_switchtype();
   inline void set_has_startstrategy();
   inline void clear_has_startstrategy();
+  inline void set_has_lastorderid();
+  inline void clear_has_lastorderid();
   inline void set_has_triggerindex();
   inline void clear_has_triggerindex();
   inline void set_has_enabletrigger();
@@ -1241,12 +1250,13 @@ class SwitchPortfolioRequest : public ::google::protobuf::Message {
   
   ::std::string* pid_;
   int switchtype_;
-  ::google::protobuf::int32 triggerindex_;
+  ::google::protobuf::int32 lastorderid_;
   bool startstrategy_;
   bool enabletrigger_;
+  ::google::protobuf::int32 triggerindex_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -6200,7 +6210,7 @@ inline void SwitchPortfolioRequest::set_switchtype(entity::PortfolioSwitchType v
   switchtype_ = value;
 }
 
-// optional bool StartStrategy = 3;
+// optional bool StartStrategy = 11;
 inline bool SwitchPortfolioRequest::has_startstrategy() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -6222,15 +6232,37 @@ inline void SwitchPortfolioRequest::set_startstrategy(bool value) {
   startstrategy_ = value;
 }
 
-// optional int32 TriggerIndex = 4;
-inline bool SwitchPortfolioRequest::has_triggerindex() const {
+// optional int32 LastOrderId = 12;
+inline bool SwitchPortfolioRequest::has_lastorderid() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void SwitchPortfolioRequest::set_has_triggerindex() {
+inline void SwitchPortfolioRequest::set_has_lastorderid() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void SwitchPortfolioRequest::clear_has_triggerindex() {
+inline void SwitchPortfolioRequest::clear_has_lastorderid() {
   _has_bits_[0] &= ~0x00000008u;
+}
+inline void SwitchPortfolioRequest::clear_lastorderid() {
+  lastorderid_ = 0;
+  clear_has_lastorderid();
+}
+inline ::google::protobuf::int32 SwitchPortfolioRequest::lastorderid() const {
+  return lastorderid_;
+}
+inline void SwitchPortfolioRequest::set_lastorderid(::google::protobuf::int32 value) {
+  set_has_lastorderid();
+  lastorderid_ = value;
+}
+
+// optional int32 TriggerIndex = 21;
+inline bool SwitchPortfolioRequest::has_triggerindex() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void SwitchPortfolioRequest::set_has_triggerindex() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void SwitchPortfolioRequest::clear_has_triggerindex() {
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void SwitchPortfolioRequest::clear_triggerindex() {
   triggerindex_ = 0;
@@ -6244,15 +6276,15 @@ inline void SwitchPortfolioRequest::set_triggerindex(::google::protobuf::int32 v
   triggerindex_ = value;
 }
 
-// optional bool EnableTrigger = 5;
+// optional bool EnableTrigger = 22;
 inline bool SwitchPortfolioRequest::has_enabletrigger() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void SwitchPortfolioRequest::set_has_enabletrigger() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void SwitchPortfolioRequest::clear_has_enabletrigger() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void SwitchPortfolioRequest::clear_enabletrigger() {
   enabletrigger_ = false;

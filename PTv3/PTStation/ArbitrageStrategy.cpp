@@ -44,8 +44,8 @@ int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType)
 	}
 	else if(diffType == SHORT_DIFF)
 	{
-		double short_size = legs[0]->BidSize();
-		double long_size = legs[1]->AskSize();
+		int short_size = legs[0]->BidSize();
+		int long_size = legs[1]->AskSize();
 		diffSize = short_size < long_size ? short_size : long_size;
 	}
 	

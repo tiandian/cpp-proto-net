@@ -807,7 +807,15 @@ namespace PortfolioTrading.Modules.Account
         {
             if (_accountVm.IsConnected)
             {
-                _accountVm.Host.PortfEnableStrategy(Id, IsRunning);
+                int existingOrderCount = 0;
+                if (IsRunning)
+                {
+                    PortfolioOrdersView portfOrdersView = ServiceLocator.Current.GetInstance<PortfolioOrdersView>();
+                    if (portfOrdersView != null)
+                        existingOrderCount = portfOrdersView.OrderRepositry.GetAccountOrderCount(AccountId);
+                }
+                
+                _accountVm.Host.PortfEnableStrategy(Id, IsRunning, existingOrderCount);
             }
         }
 
