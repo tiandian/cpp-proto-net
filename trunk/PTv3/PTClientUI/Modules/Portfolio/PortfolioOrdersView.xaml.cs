@@ -95,6 +95,7 @@ namespace PortfolioTrading.Modules.Portfolio
     public class MultiLegOrderRepositry : ObservableCollection<MultiLegOrderVM>
     {
         private Dictionary<string, int> _accountOrderCount = new Dictionary<string, int>();
+        private object _syncObj = new object();
 
         public MultiLegOrderVM GetMlOrderVm(string acctId, string mlOrdId)
         {
@@ -104,7 +105,7 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public MultiLegOrderVM Update(string accountId, PTEntity.MultiLegOrder mlOrder)
         {
-            lock (this)
+            lock (_syncObj)
             {
                 string ordId = mlOrder.OrderId;
                 MultiLegOrderVM mlOrderVm = null;
@@ -144,21 +145,26 @@ namespace PortfolioTrading.Modules.Portfolio
 
         public void Update(OrderUpdateArgs orderUpdateArgs)
         {
-            MultiLegOrderVM mlOrderVm = this.SingleOrDefault
-                (vm => vm.AccountId == orderUpdateArgs.AccountId && vm.OrderId == orderUpdateArgs.MlOrderId);
-            Debug.Assert(mlOrderVm != null, 
-                string.Format("Cannot find parent multileg order({0}) when update individual order",
-                             orderUpdateArgs.MlOrderId));
-            
-            if (mlOrderVm != null)
+            lock (_syncObj)
             {
-                mlOrderVm.From(orderUpdateArgs.LegOrderRef, orderUpdateArgs.LegOrder);
+                MultiLegOrderVM mlOrderVm = GetMlOrderVm(orderUpdateArgs.AccountId, orderUpdateArgs.MlOrderId);
+                Debug.Assert(mlOrderVm != null,
+                    string.Format("Cannot find parent multileg order({0}) when update individual order",
+                                 orderUpdateArgs.MlOrderId));
+
+                if (mlOrderVm != null)
+                {
+                    mlOrderVm.From(orderUpdateArgs.LegOrderRef, orderUpdateArgs.LegOrder);
+                }
             }
         }
 
         public int GetAccountOrderCount(string accountId)
         {
-            return _accountOrderCount.ContainsKey(accountId) ? _accountOrderCount[accountId] : 0;
+            lock (_syncObj)
+            {
+                return _accountOrderCount.ContainsKey(accountId) ? _accountOrderCount[accountId] : 0;
+            }
         }
     }
 }

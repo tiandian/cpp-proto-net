@@ -20,9 +20,9 @@ _FS_OBJS = stdafx \
 		LegOrderPlacer LogManager orderhelper OrderProcessor Portfolio \
 		PortfolioManager PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer \
 		ProtobufPacket ProtobufProtocol QuoteAgent QuoteFetcher QuoteRepositry \
-		QuoteStore RequestedServices ScalperStrategy ScalperTrigger ShmQuoteFeed \
-		ShmQuoteSubscribe Strategy SymbolInfo SymbolInfoRepositry TradeAgent \
-		TradeStation TradingServer TradingServerProtocol Trigger
+		QuoteStore RequestedServices ScalperStrategy ScalperTrigger SettingChangeTrace \
+		ShmQuoteFeed ShmQuoteSubscribe Strategy SymbolInfo SymbolInfoRepositry \
+		TradeAgent TradeStation TradingServer TradingServerProtocol Trigger
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
 _QS_OBJS = stdafx FileOperations MarketLoginWaiter MdSpi QS_Configuration \
