@@ -53,6 +53,7 @@
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="log4cpp.property" />
+    <None Include="Makefile" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

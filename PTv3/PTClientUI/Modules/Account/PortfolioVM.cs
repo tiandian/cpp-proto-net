@@ -630,9 +630,9 @@ namespace PortfolioTrading.Modules.Account
             PTEntity.PortfolioItem portfolioItem = new PTEntity.PortfolioItem();
             portfolioItem.ID = Id;
             portfolioItem.Quantity = Quantity;
-            portfolioItem.MaxOpenPerStart = 4; //MaxOpenPerStart;
-            portfolioItem.MaxCancel = 10; // MaxCancel;
-            portfolioItem.TotalOpenLimit = 8; // TotalOpenLimit;
+            portfolioItem.MaxOpenPerStart = 200; //MaxOpenPerStart;
+            portfolioItem.MaxCancel = 300; // MaxCancel;
+            portfolioItem.TotalOpenLimit = 300; // TotalOpenLimit;
             
             foreach (var legVm in _legs)
             {
