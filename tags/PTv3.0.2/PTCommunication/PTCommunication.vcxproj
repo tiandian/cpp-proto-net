@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{155496B9-C70D-4731-B52D-4D6175559FBD}</ProjectGuid>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <Keyword>ManagedCProj</Keyword>
+    <RootNamespace>PTCommunication</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CLRSupport>true</CLRSupport>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;./tcpsocket;../PTStation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libprotobuf.lib;PushFramework.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Dev\boost_1_53_0\stage\lib;D:\Dev\protobuf-2.4.1\lib\Debug;D:\Dev\PushFramework2.2\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;./tcpsocket;../PTStation;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>libprotobuf.lib;PushFramework.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Dev\boost_1_53_0\stage\lib;D:\Dev\protobuf-2.4.1\lib\Release;D:\Dev\PushFramework2.2\lib\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\PTStation\ClientProtocol.h" />
+    <ClInclude Include="..\PTStation\entity\enum.pb.h" />
+    <ClInclude Include="..\PTStation\entity\message.pb.h" />
+    <ClInclude Include="..\PTStation\entity\packet.pb.h" />
+    <ClInclude Include="..\PTStation\entity\quote.pb.h" />
+    <ClInclude Include="..\PTStation\entity\trade.pb.h" />
+    <ClInclude Include="..\PTStation\ProtobufPacket.h" />
+    <ClInclude Include="..\PTStation\ProtobufProtocol.h" />
+    <ClInclude Include="..\PTStation\ProtocolIDs.h" />
+    <ClInclude Include="AccountInfo.h" />
+    <ClInclude Include="charsetconvert.h" />
+    <ClInclude Include="EntityWrapper.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="IClientRequestHandler.h" />
+    <ClInclude Include="LegUpdateItem.h" />
+    <ClInclude Include="MultiLegOrder.h" />
+    <ClInclude Include="NatvieClient.h" />
+    <ClInclude Include="OperationResult.h" />
+    <ClInclude Include="Order.h" />
+    <ClInclude Include="PortfolioItem.h" />
+    <ClInclude Include="ClientBase.h" />
+    <ClInclude Include="PortfolioUpdateItem.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ResponseHandlers.h" />
+    <ClInclude Include="ServerLoginReturn.h" />
+    <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="StrategyItem.h" />
+    <ClInclude Include="StrategyUpdateItem.h" />
+    <ClInclude Include="SymbolInfo.h" />
+    <ClInclude Include="tcpsocket\ResponseHandler.h" />
+    <ClInclude Include="tcpsocket\ScopedLock.h" />
+    <ClInclude Include="tcpsocket\TCPSocket.h" />
+    <ClInclude Include="tcpsocket\TCPSocketEvents.h" />
+    <ClInclude Include="tcpsocket\TCPSocketImpl.h" />
+    <ClInclude Include="tcpsocket\TCPSocketInclude.h" />
+    <ClInclude Include="TradeUpdate.h" />
+    <ClInclude Include="TriggerItem.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\PTStation\ClientProtocol.cpp" />
+    <ClCompile Include="..\PTStation\entity\enum.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\message.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\packet.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\quote.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\trade.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\ProtobufPacket.cpp" />
+    <ClCompile Include="..\PTStation\ProtobufProtocol.cpp" />
+    <ClCompile Include="AccountInfo.cpp" />
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="charsetconvert.cpp" />
+    <ClCompile Include="Enums.cpp" />
+    <ClCompile Include="LegUpdateItem.cpp" />
+    <ClCompile Include="MultiLegOrder.cpp" />
+    <ClCompile Include="NatvieClient.cpp" />
+    <ClCompile Include="OperationResult.cpp" />
+    <ClCompile Include="Order.cpp" />
+    <ClCompile Include="PortfolioItem.cpp" />
+    <ClCompile Include="ClientBase.cpp" />
+    <ClCompile Include="PortfolioUpdateItem.cpp" />
+    <ClCompile Include="ResponseHandlers.cpp" />
+    <ClCompile Include="ServerLoginReturn.cpp" />
+    <ClCompile Include="Stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="StrategyItem.cpp" />
+    <ClCompile Include="StrategyUpdateItem.cpp" />
+    <ClCompile Include="SymbolInfo.cpp" />
+    <ClCompile Include="tcpsocket\ResponseHandler.cpp" />
+    <ClCompile Include="tcpsocket\TCPSocket.cpp" />
+    <ClCompile Include="tcpsocket\TCPSocketImpl_Win.cpp" />
+    <ClCompile Include="TradeUpdate.cpp" />
+    <ClCompile Include="TriggerItem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.ico" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

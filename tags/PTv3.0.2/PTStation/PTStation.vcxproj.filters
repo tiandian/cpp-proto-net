@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\entity">
+      <UniqueIdentifier>{95243f2f-c34c-438e-b8af-28c740f63827}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\entity">
+      <UniqueIdentifier>{1f70be35-1213-4baa-aa05-ae519306ee38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\connection">
+      <UniqueIdentifier>{701b8f79-476d-4424-9912-58e26835a626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\connection">
+      <UniqueIdentifier>{f37bc6ca-ec8c-4a87-bfe7-6ed3cd678995}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{7e136332-2cc0-494b-870a-24789056dddb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{1950d40c-dbc3-4ad9-9f92-5c43c791cb14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\quote">
+      <UniqueIdentifier>{fc939347-6f49-4a3c-8b59-e36c9da52bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\strategy">
+      <UniqueIdentifier>{8f367e1a-da4d-4091-b9f0-2a3fb4b8f9ce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\strategy">
+      <UniqueIdentifier>{4c420c91-4fa2-4289-b4c9-35d1b0b18e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\trade">
+      <UniqueIdentifier>{9a02d0dd-6555-4c5d-b525-a05f95e8f161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\trade">
+      <UniqueIdentifier>{6d4c63e2-5a6e-4108-8811-cf8ec8c6b914}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\quote">
+      <UniqueIdentifier>{a712f574-4a1f-403b-9cdc-e7c48fb17365}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="log4cpp.property" />
+    <None Include="Makefile" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\enum.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\message.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\packet.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\quote.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="entity\trade.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="AvatarClient.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="AvatarFactory.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtobufProtocol.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtocolIDs.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestedServices.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="TradingServer.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="Configuration.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="LogManager.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TradingServerProtocol.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="ProtobufPacket.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="globalmembers.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientProtocol.h">
+      <Filter>Header Files\connection</Filter>
+    </ClInclude>
+    <ClInclude Include="FileOperations.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="charsetconvert.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteAgent.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="ShmQuoteSubscribe.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteAgentCallback.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="shm_remover.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="ShmQuoteFeed.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="Portfolio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Strategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Leg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScalperStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ArbitrageStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangePositionStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ArbitrageTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangePositionTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ScalperTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteFetcher.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteStore.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteRepositry.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioScalperOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderProcessor.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="TradeAgent.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="TradeAgentCallback.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="InputOrder.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioOrderHelper.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="orderhelper.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolInfo.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolInfoRepositry.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BuildOrderException.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="OrderEvent.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="LegOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
+    <ClInclude Include="AsyncOrderPendingTimer.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="FakeDealer.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncRequest.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferRunner.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleCompare.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingChangeTrace.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TradeStation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\enum.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\message.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\packet.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\quote.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="entity\trade.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="AvatarClient.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="AvatarFactory.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtobufProtocol.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="RequestedServices.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="TradingServer.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="LogManager.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TradingServerProtocol.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ProtobufPacket.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientProtocol.cpp">
+      <Filter>Source Files\connection</Filter>
+    </ClCompile>
+    <ClCompile Include="FileOperations.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="charsetconvert.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteAgent.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="ShmQuoteSubscribe.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="ShmQuoteFeed.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="Portfolio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Strategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Leg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScalperStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ArbitrageStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangePositionStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ArbitrageTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangePositionTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ScalperTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteFetcher.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteStore.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteRepositry.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioScalperOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderProcessor.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="TradeAgent.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="InputOrder.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioOrderHelper.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="orderhelper.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolInfo.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolInfoRepositry.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="LegOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="AsyncOrderPendingTimer.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="FakeDealer.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="DoubleCompare.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingChangeTrace.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="appres.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

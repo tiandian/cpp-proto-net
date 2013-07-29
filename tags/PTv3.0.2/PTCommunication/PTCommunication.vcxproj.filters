@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\tcpsocket">
+      <UniqueIdentifier>{a27d6f7e-b761-4111-bb10-16d0d0315b17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tcpsocket">
+      <UniqueIdentifier>{2e83dadb-7357-4ec4-90a7-328b7c7a57be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocol">
+      <UniqueIdentifier>{b0bb36c0-b02e-44f3-82b8-c25822ab5d2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocol">
+      <UniqueIdentifier>{6806ee4a-10ba-4d20-957a-1b95a988e19d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\entity">
+      <UniqueIdentifier>{94f96b71-fa61-4dca-a479-a30faf0da507}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\entity">
+      <UniqueIdentifier>{7840724a-0539-4f93-910f-7f9d60dc7b92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PTEntity">
+      <UniqueIdentifier>{2545e014-9151-45c0-97d5-cfb4d431e9c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PTCommunication">
+      <UniqueIdentifier>{6b7b8258-53d8-4659-bf93-1e0f29160c53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PTCommunication">
+      <UniqueIdentifier>{dc1e7d7f-8458-4aea-a7be-1f5df7006c5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PTEntity">
+      <UniqueIdentifier>{b32d212d-020e-4bd1-8340-b9dfce211985}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NatvieClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tcpsocket\ScopedLock.h">
+      <Filter>Header Files\tcpsocket</Filter>
+    </ClInclude>
+    <ClInclude Include="tcpsocket\ResponseHandler.h">
+      <Filter>Header Files\tcpsocket</Filter>
+    </ClInclude>
+    <ClInclude Include="tcpsocket\TCPSocket.h">
+      <Filter>Header Files\tcpsocket</Filter>
+    </ClInclude>
+    <ClInclude Include="tcpsocket\TCPSocketInclude.h">
+      <Filter>Header Files\tcpsocket</Filter>
+    </ClInclude>
+    <ClInclude Include="tcpsocket\TCPSocketEvents.h">
+      <Filter>Header Files\tcpsocket</Filter>
+    </ClInclude>
+    <ClInclude Include="tcpsocket\TCPSocketImpl.h">
+      <Filter>Header Files\tcpsocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\ClientProtocol.h">
+      <Filter>Header Files\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\ProtobufProtocol.h">
+      <Filter>Header Files\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\ProtobufPacket.h">
+      <Filter>Header Files\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\entity\enum.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\entity\message.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\entity\packet.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\entity\quote.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\entity\trade.pb.h">
+      <Filter>Header Files\entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PTStation\ProtocolIDs.h">
+      <Filter>Header Files\protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="ResponseHandlers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccountInfo.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiLegOrder.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="OperationResult.h">
+      <Filter>Header Files\PTCommunication</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientBase.h">
+      <Filter>Header Files\PTCommunication</Filter>
+    </ClInclude>
+    <ClInclude Include="Order.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="SymbolInfo.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerLoginReturn.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="IClientRequestHandler.h">
+      <Filter>Header Files\PTCommunication</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityWrapper.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="charsetconvert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="TriggerItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="PortfolioUpdateItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="LegUpdateItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="StrategyUpdateItem.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+    <ClInclude Include="TradeUpdate.h">
+      <Filter>Header Files\PTEntity</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NatvieClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tcpsocket\ResponseHandler.cpp">
+      <Filter>Source Files\tcpsocket</Filter>
+    </ClCompile>
+    <ClCompile Include="tcpsocket\TCPSocket.cpp">
+      <Filter>Source Files\tcpsocket</Filter>
+    </ClCompile>
+    <ClCompile Include="tcpsocket\TCPSocketImpl_Win.cpp">
+      <Filter>Source Files\tcpsocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\ClientProtocol.cpp">
+      <Filter>Source Files\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\ProtobufPacket.cpp">
+      <Filter>Source Files\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\ProtobufProtocol.cpp">
+      <Filter>Source Files\protocol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\enum.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\message.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\packet.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\quote.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\PTStation\entity\trade.pb.cc">
+      <Filter>Source Files\entity</Filter>
+    </ClCompile>
+    <ClCompile Include="ResponseHandlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Enums.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccountInfo.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiLegOrder.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="OperationResult.cpp">
+      <Filter>Source Files\PTCommunication</Filter>
+    </ClCompile>
+    <ClCompile Include="Order.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientBase.cpp">
+      <Filter>Source Files\PTCommunication</Filter>
+    </ClCompile>
+    <ClCompile Include="SymbolInfo.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerLoginReturn.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="charsetconvert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="TriggerItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioUpdateItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="LegUpdateItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyUpdateItem.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+    <ClCompile Include="TradeUpdate.cpp">
+      <Filter>Source Files\PTEntity</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="app.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

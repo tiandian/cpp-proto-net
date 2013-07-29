@@ -1,0 +1,392 @@
+import "enum.proto";
+import "trade.proto";
+
+package entity;
+
+enum ServerType
+{
+	SERV_QUOTE = 0;
+	SERV_TRADE = 1;
+}
+
+message LoginPuzzleResponse
+{
+	required string session_id = 1;
+}
+
+message LoginRequest
+{
+	required bool is_new = 1;
+	required string session_id = 2;
+	required string previous_session_id = 3;
+	optional string pseudo = 4;
+}
+
+message LoginResponse
+{
+	required bool accepted = 1;
+	required string session_id = 2;
+	required bool is_new = 3;
+	required string error_msg = 4;
+}
+
+message HeartbeatRequest
+{
+	required string timestamp = 1;
+}
+
+message HeartbeatResponse
+{
+	required string timestamp = 1;
+}
+
+message ServerLoginRequest
+{
+	required ServerType Type = 1;
+	required string Address = 2;
+	required string BrokerId = 3;
+	required string UserId = 4;
+	required string Password = 5; 
+}
+
+message ServerLoginResponse
+{
+	required bool Success = 1;
+	required string ErrorMessage = 2;
+	required ServerType Type = 3;
+	required string Address = 4;
+	required string BrokerId = 5;
+	required string UserId = 6;
+}
+
+message ServerLogoutRequest
+{	
+	required ServerType Type = 1;
+}
+
+message AddPortfolioRequest
+{
+	repeated PortfolioItem Portfolios = 1;
+}
+
+enum PortfolioSwitchType
+{
+	STRATEGY_SWITCH = 0;
+	TRIGGER_SWITCH = 1;
+}
+
+message SwitchPortfolioRequest
+{
+	required string PID = 1;
+	required PortfolioSwitchType SwitchType = 2;
+
+	// Strategy
+	optional bool StartStrategy = 11;
+	optional int32 LastOrderId = 12;
+	// Trigger
+	optional int32 TriggerIndex = 21;
+	optional bool EnableTrigger = 22;
+}
+
+message ApplyStrategySettingsRequest
+{
+	required string PID = 1;
+	required StrategyItem Strategy = 2;
+}
+
+message StringParam
+{
+	required string Data = 1;
+}
+
+message IntParam
+{
+	required int32 Data = 2;
+}
+
+message LegItem
+{
+	required int32 LegId = 1;
+	required string Symbol = 2;
+	required int32 Ratio = 3;
+	required PosiDirectionType Side = 4;
+	required bool IsPreferred = 5;
+}
+
+message LegUpdateItem
+{
+	required string Symbol = 1;
+	required LegStatus Status = 2;
+	required double Last = 3;
+	required double Ask = 4;
+	required int32 AskSize = 5;
+	required double Bid = 6;
+	required int32 BidSize = 7;
+}
+
+enum StrategyType
+{
+	ARBITRAGE = 0;
+	CHANGE_POSITION = 1;
+	SCALPER = 2;
+}
+
+message StrategyItem
+{
+	required StrategyType Type = 1;
+	required int32 RetryTimes = 2;
+	required int32 OpenTimeout = 3;
+	repeated TriggerItem Triggers = 4;
+
+	// Arbitrage
+	optional PosiDirectionType AR_Side = 101;
+
+	// Change Position
+	optional string CP_CloseLeg = 201;
+	optional PosiDirectionType CP_CloseLegSide = 202;
+
+	// Scalper
+	optional double SC_PriceTick = 301;
+	optional DirectionDepends SC_CaseLE2Tick = 302;
+	optional DirectionDepends SC_CaseLE3Tick = 303;
+	optional DirectionDepends SC_CaseGE4Tick = 304;
+	optional DirectionDepends SC_CaseNoChange = 305;
+	optional StopLossCloseMethods SC_StopLossStrategy = 306;
+
+}
+
+message TriggerItem
+{
+	required StrategyType Strategy = 1;
+	required string Name = 2;
+	required bool Enabled = 3;
+	
+	// Arbitrage
+	optional CompareCondition AR_Condition = 101;
+	optional double AR_Threshold = 102;
+	optional PosiOffsetFlag AR_Offset = 103;
+
+	// Change Position
+	optional CompareCondition CP_Condition = 201;
+	optional double CP_Threshold = 202;
+
+	// Scalper
+	optional double SC_Threshold = 301;
+	
+}
+
+message TriggerStatus
+{
+	required StrategyType Strategy = 1;
+	required string Name = 2;
+	required bool Enabled = 3;
+}
+
+message PortfolioItem
+{
+	required string ID = 1;
+	required int32 Quantity = 2;
+	repeated LegItem Legs = 3;
+	required int32 MaxCancel = 4;
+	required int32 MaxOpenPerStart = 5;
+	required int32 TotalOpenLimit = 6;
+	required StrategyItem Strategy = 7;
+}
+
+message PortfolioUpdateItem
+{
+	required string ID = 1;
+	repeated LegUpdateItem Legs = 2;
+	required StrategyType Strategy = 3;
+	required bool Running = 4;
+	repeated TriggerStatus Triggers = 5;
+	
+	required int32 TotalOpenTimes = 6;
+	required int32 TotalCloseTimes = 7;
+	required int32 CurrentPosition = 8;
+	required int32 CancelTimes = 9;
+
+	optional string Message = 10;
+
+	// Followings are strategy update items
+	// Arbitrage
+	optional double AR_Diff = 101;
+	optional double AR_LongDiff = 102;
+	optional double AR_ShortDiff = 103;
+	optional int32 AR_LongSize = 104;
+	optional int32 AR_ShortSize = 105;
+	// Scalper
+	optional double SC_Diff = 201;
+}
+
+message ConnectParam
+{
+	required string QuoteAddress = 1;
+	required string StreamFolder = 2;
+}
+
+message OperationReturn
+{
+	required bool Success = 1;
+	required string ErrorMessage = 2;
+}
+
+message AccountSettings
+{
+	required int32 MaxSubmit = 1;
+	required int32 MaxCancel = 2;
+}
+
+message LoginParam
+{
+	required string BrokerId = 1;
+	required string UserId = 2;
+	required string Password = 3;
+	optional AccountSettings AcctSettings = 4;
+}
+
+message RegQuoteParam
+{
+	repeated string Symbols = 1;
+}
+
+message AddPortfolioParam
+{
+	repeated PortfolioItem PortfolioItems = 1;
+}
+
+message PorfOpenPosiParam
+{
+	required string PortfId = 1;
+	required int32 Quantity = 2;
+	required bool IsVirtual = 3;
+}
+
+message ClosePositionParam
+{
+	required trade.MultiLegOrder MultiLegOrder = 1;
+	optional string LegOrdRef = 2;
+}
+
+message LegOrderUpdateParam
+{
+	required string PortfId = 1;
+	required string MultiLegOrderId = 2;
+	required string LegOrderRef = 3;
+	required trade.Order LegOrder = 4;
+}
+
+message ArbitrageStrategySettings
+{
+	required PosiDirectionType Side = 1;
+	required CompareCondition OpenCondition = 2;
+	required double OpenPosiThreshold = 3;
+	required CompareCondition StopGainCondition = 4;
+	required double StopGainThreshold = 5;
+	required CompareCondition StopLossCondition = 6;
+	required double StopLossThreshold = 7;
+}
+
+message ChangePosiStrategySettings
+{
+	required string CloseLeg = 1;
+	required PosiDirectionType CloseLegSide = 2;
+	required CompareCondition TriggerCondition = 3;
+	required double Threshold = 4;
+}
+
+enum DirectionDepends
+{
+	IGNORE_THIS = 0;
+	ON_SMALL_SIZE = 1;
+	ON_BIG_SIZE = 2;
+	ON_SMALL_CHANGE = 3;
+	ON_BIG_CHANGE = 4; 
+}
+
+enum StopLossCloseMethods
+{
+	BASED_ON_NEXT_QUOTE = 0;
+	BASED_ON_INPUT_LIMIT = 1;
+}
+
+message ScalperSettings
+{
+	required double Threshold = 1;
+	required double PriceTick = 2;
+	required DirectionDepends CaseLE2Tick = 3;
+	required DirectionDepends CaseLE3Tick = 4;
+	required DirectionDepends CaseGE4Tick = 5;
+	required DirectionDepends CaseNoChange = 6;
+	required StopLossCloseMethods StopLossStrategy = 7;
+	required int32 RetryTimes = 8;
+	optional int32 OpenTimeout = 9;
+}
+
+message ModifyStrategyParam
+{
+	required string PortfId = 1;
+	required string StrategyName = 2;
+	required bytes StrategyData = 3;
+}
+
+message ModifyPortfolioSwitchParam
+{
+	required string PortfId = 1;
+	required bool AutoOpen = 2;
+	required bool AutoStopGain = 3;
+	required bool AutoStopLoss = 4;
+	required bool AutoTracking = 5;
+	required bool EnablePrefer = 6;
+}
+
+message ModifyPortfolioQtyParam
+{
+	required string PortfId = 1;
+	required int32 OnceQty = 2;
+	required int32 MaxQty = 3;
+}
+
+message ModifyRunningStatusParam
+{
+	required string PortfId = 1;
+	required bool Enabled = 2;
+}
+
+message ModifyPortfolioPreferredLegParam
+{
+	required string PortfId = 1;
+	required string LegSymbol = 2;
+}
+
+message CancelOrderParam
+{
+	required string OrderRef = 1; 
+	required string ExchangeId = 2; 
+	required string OrdSysId = 3; 
+	required string UserId = 4;
+	required string Symbol = 5;
+}
+
+message ManualCloseOrderParam
+{
+	required string Symbol = 1;
+	required trade.TradeDirectionType	Direction = 2;
+	required string OpenDate = 3;
+	required int32 Quantity = 4;
+}
+
+message SymbolInfo
+{
+	required string Instrument = 1; 
+	///交易所代码
+	required string ExchangeID = 2;
+	///合约在交易所的代码
+	required string ExchangeInstID = 3;
+	///产品代码
+	required string ProductID = 4;
+	///合约数量乘数
+	required int32	VolumeMultiple = 5;
+	///最小变动价位
+	required double PriceTick = 6;
+}
