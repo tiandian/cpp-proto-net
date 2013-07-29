@@ -160,7 +160,9 @@ void CPortfolio::SubscribeQuotes( CQuoteRepositry* pQuoteRepo )
 
 void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote )
 {
+#ifdef _DEBUG
 	cout << "Quote incoming: " << pQuote->symbol() << ", " << pQuote->last() << ", " << pQuote->update_time() << endl; 
+#endif
 	// Update leg's last with income quote in CStrategy::Test
 	m_strategy->Test(pQuote, this, timestamp);
 
