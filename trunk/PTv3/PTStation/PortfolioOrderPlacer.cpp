@@ -599,6 +599,9 @@ void CPortfolioOrderPlacer::OnOrderCanceled( trade::Order* pRtnOrder )
 	UpdateLegOrder(pRtnOrder);
 	m_activeOrdPlacer->Reset(true);
 	m_pOrderProcessor->RemoveOrderPlacer(Id());
+	// Count cancel volume
+	int remained = pRtnOrder->volumetotal();
+	m_pPortf->IncrementalCancelTimes(remained);
 }
 
 void CPortfolioOrderPlacer::OnCompleted()
@@ -633,7 +636,6 @@ void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 	assert(m_activeOrdPlacer != NULL);
 
 	int remained = pRtnOrder->volumetotal();
-	m_pPortf->IncrementalCancelTimes(remained);
 	int finished = pRtnOrder->volumetraded();
 	if(finished > 0)	// partially fill order has been canceled
 	{
