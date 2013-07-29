@@ -45,6 +45,9 @@
     <ClCompile Include="QuoteAggregator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QS_LogManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MdSpi.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QS_LogManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

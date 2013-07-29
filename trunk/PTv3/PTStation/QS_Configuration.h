@@ -18,6 +18,7 @@ public:
 	const std::string& Password() const { return m_password; }
 
 	bool TestHost() { return m_testHost; }
+	bool LogQuote() { return m_logQuote; }
 
 private:
 	
@@ -27,5 +28,6 @@ private:
 	string m_password;
 
 	bool m_testHost;
+	bool m_logQuote;
 };
 

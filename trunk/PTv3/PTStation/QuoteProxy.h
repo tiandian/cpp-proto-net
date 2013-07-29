@@ -16,7 +16,7 @@ public:
 
 	bool Begin();
 	void End();
-	bool WaitUntilEnd();
+	int WaitUntilEnd();
 
 	void SubscribeMarketData(char** symbolArr, int symCount);
 	void UnsubscribeMarketData(char** symbolArr, int symCount);

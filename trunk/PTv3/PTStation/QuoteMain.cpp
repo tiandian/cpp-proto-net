@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "QS_Configuration.h"
+#include "QS_LogManager.h"
 #include "ShmQuoteSubscribe.h"
 #include "ShmQuoteFeed.h"
 #include "MdSpi.h"
@@ -12,6 +13,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <csignal>
+//#include <set>
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
 #include <boost/shared_array.hpp>
@@ -32,6 +34,7 @@ enum {
 };
 
 CQSConfiguration qsConfig;
+CQSLogManager* pLogger = NULL;
 vector<QuoteProxyPtr> quoteProxyVec;
 
 int launchChildTest(int argc, char* argv[]);
@@ -56,11 +59,19 @@ int main(int argc, char* argv[])
 		return launchChildTest(argc, argv);
 	}
 
-	cout << "Startup QuoteStation v1.0" << endl;
+	CQSLogManager qsLogger;
+	pLogger = &qsLogger;
+	if(qsConfig.LogQuote())
+	{
+		qsLogger.Init();
+	}
+
+	cout << "Startup QuoteStation v3.0.1" << endl;
 	cout << "Connection string: " << qsConfig.ConnectionString() << endl;
 	cout << "BrokerId: " << qsConfig.BrokerId() << endl;
 	cout << "Username: " << qsConfig.Username() << endl;
 	cout << "Password: " << qsConfig.Password() << endl;
+	cout << "Logging quote: " << (qsConfig.LogQuote() ? "Yes" : "No") << endl;
 
 	signal(SIGINT, signalHandler);
 	signal(SIGTERM, signalHandler);
@@ -70,11 +81,28 @@ int main(int argc, char* argv[])
 		boost::bind(&OnUnsubscribeMarketData, _1, _2), 
 		boost::bind(&OnTerminateNotified));
 
-	QuoteProxyPtr quoteProxyMain(QuoteProxyPtr(new CQuoteProxy(&quoteAggregator,
-		qsConfig.ConnectionString(), qsConfig.BrokerId(), qsConfig.Username(), qsConfig.Password())));
-	if(!quoteProxyMain->Begin())
-		return BEGIN_QUOTE_PROXY_ERROR;
-	quoteProxyVec.push_back(quoteProxyMain);
+	/*
+	const string& connections = qsConfig.ConnectionString();
+	boost::split( mktDataSources, connections, boost::is_any_of(","), boost::token_compress_on );
+	*/
+#ifdef _DEBUG
+	vector< string > mktDataSources;
+	mktDataSources.push_back(qsConfig.ConnectionString());
+	for(vector<string>::iterator iter = mktDataSources.begin(); iter != mktDataSources.end(); ++iter)
+#else
+	set< string > mktDataSources;
+	mktDataSources.push_back(qsConfig.ConnectionString());
+	mktDataSources.push_back("udp://192.168.163.61:18213");
+	mktDataSources.push_back("udp://192.168.205.3:18213");
+	for(set<string>::iterator iter = mktDataSources.begin(); iter != mktDataSources.end(); ++iter)
+#endif
+	{
+		QuoteProxyPtr quoteProxyMain(QuoteProxyPtr(new CQuoteProxy(&quoteAggregator,
+			*iter, qsConfig.BrokerId(), qsConfig.Username(), qsConfig.Password())));
+		if(!quoteProxyMain->Begin())
+			return BEGIN_QUOTE_PROXY_ERROR;
+		quoteProxyVec.push_back(quoteProxyMain);
+	}
 
 	if(!quoteAggregator.Initialize(qsConfig.BrokerId(), qsConfig.Username()))
 		return QUOTE_AGGREGATOR_INITIALIZATION_ERROR;

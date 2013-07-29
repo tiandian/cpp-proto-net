@@ -1,7 +1,11 @@
 #include "StdAfx.h"
 #include "QuoteAggregator.h"
+#include "QS_LogManager.h"
 
 #include <exception>
+#include <boost/chrono.hpp>
+
+extern CQSLogManager* pLogger;
 
 CQuoteAggregator::CQuoteAggregator(OnSubscribeQuoteFunc subscribeFunc, OnSubscribeQuoteFunc unsubFunc, OnQuotingEndFunc quoteEndFunc)
 	: m_subscribeFunc(subscribeFunc)
@@ -48,6 +52,7 @@ bool CQuoteAggregator::Initialize(const string& brokerId, const string& userId)
 	{
 		cerr << "QuotoAggregator Initialization Error :" << e.what() << endl;
 	}
+	return false;
 }
 
 void CQuoteAggregator::SubscribeMarketData( char** symbolArr, int symCount )
@@ -67,7 +72,36 @@ void CQuoteAggregator::OnTerminateNotified()
 
 void CQuoteAggregator::OnQuoteReceived( const string& connectIP, CThostFtdcDepthMarketDataField *pDepthMarketData )
 {
-	m_quoteFeeder->Put(pDepthMarketData);
+	boost::mutex::scoped_lock l(m_mutex);
+	long delay = 0;
+	string symbol = pDepthMarketData->InstrumentID;
+	QuoteTimestampMapIter iter = m_lastQuoteTimestamp.find(symbol);
+	if(iter == m_lastQuoteTimestamp.end())
+	{
+		TimestampPtr ts(new QuoteTimestamp(pDepthMarketData->UpdateTime, pDepthMarketData->UpdateMillisec));
+		ts->LastTime = boost::chrono::steady_clock::now();
+		m_lastQuoteTimestamp.insert(make_pair(symbol, ts));
+		m_quoteFeeder->Put(pDepthMarketData);
+	}
+	else
+	{
+		if(iter->second->UpdateTime == pDepthMarketData->UpdateTime &&
+			iter->second->MilliSeconds == pDepthMarketData->UpdateMillisec)
+		{
+			boost::chrono::steady_clock::duration elapsed = boost::chrono::steady_clock::now() - iter->second->LastTime;
+			delay = boost::chrono::duration_cast<boost::chrono::microseconds>(elapsed).count();
+		}
+		else
+		{
+			iter->second->UpdateTime = pDepthMarketData->UpdateTime;
+			iter->second->MilliSeconds = pDepthMarketData->UpdateMillisec;
+			iter->second->LastTime = boost::chrono::steady_clock::now();
+			m_quoteFeeder->Put(pDepthMarketData);
+		}
+	}
+
+	pLogger->Info(boost::str(boost::format("%s\t%s\t%s\t%d\t%d")
+		% connectIP % symbol % pDepthMarketData->UpdateTime % pDepthMarketData->UpdateMillisec % delay));
 }
 
 

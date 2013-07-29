@@ -25,7 +25,8 @@ _FS_OBJS = stdafx \
 		TradeAgent TradeStation TradingServer TradingServerProtocol Trigger
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
-_QS_OBJS = stdafx FileOperations MarketLoginWaiter MdSpi QS_Configuration \
+_QS_OBJS = stdafx \
+		FileOperations MarketLoginWaiter MdSpi QS_Configuration QS_LogManager \
 		QuoteAggregator QuoteMain QuoteProxy ShmQuoteFeed ShmQuoteSubscribe
 QS_OBJS = $(patsubst %, $(QS_OBJ_DIR)/%.o, $(_QS_OBJS))
 

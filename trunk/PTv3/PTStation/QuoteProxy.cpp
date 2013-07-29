@@ -80,7 +80,7 @@ bool CQuoteProxy::Begin()
 	
 }
 
-bool CQuoteProxy::WaitUntilEnd()
+int CQuoteProxy::WaitUntilEnd()
 {
 	m_thQuoting.join();
 	return m_isReady ? 0 : -1;
