@@ -34,6 +34,12 @@ namespace PortfolioTrading.Modules.Watching
         {
             string txt = string.Format("{0} {1}\n", DateTime.Now.ToLongTimeString(), message);
             this.txtOutput.AppendText(txt);
+            this.txtOutput.ScrollToEnd();
+        }
+
+        private void btnClear_Click(object sender, RoutedEventArgs e)
+        {
+            this.txtOutput.Clear();
         }
     }
 }

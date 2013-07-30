@@ -18,7 +18,7 @@ extern CQSConfiguration qsConfig;
 
 CMdSpi::CMdSpi(CQuoteProxy* pQuoteProxy)
 	: m_pQuoteProxy(pQuoteProxy)
-	, m_loginWaiter(pQuoteProxy->MdApi())
+	, m_loginWaiter(pQuoteProxy)
 	, m_iRequestId(0)
 {
 	// Wait Login success for 10 seconds 

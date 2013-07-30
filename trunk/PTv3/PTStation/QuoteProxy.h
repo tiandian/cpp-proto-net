@@ -13,6 +13,8 @@ public:
 	~CQuoteProxy(void);
 
 	CThostFtdcMdApi* MdApi(){ return m_pUserApi; }
+	const string& InvestorId(){ return m_investorId; }
+	const string& ConnectingIP() { return m_connectingIP; }
 
 	bool Begin();
 	void End();
@@ -32,6 +34,7 @@ private:
 	boost::shared_ptr<CMdSpi> m_pMdSpi;
 	string m_connectingIP;
 	bool m_isReady;
+	bool m_isRunning;
 	boost::condition_variable m_readyEvent;
 	boost::mutex m_mutex;
 	boost::thread m_thQuoting;

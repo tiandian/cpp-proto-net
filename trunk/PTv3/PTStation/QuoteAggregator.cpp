@@ -100,7 +100,7 @@ void CQuoteAggregator::OnQuoteReceived( const string& connectIP, CThostFtdcDepth
 		}
 	}
 
-	pLogger->Info(boost::str(boost::format("%s\t%s\t%s\t%d\t%d")
+	pLogger->Info(boost::str(boost::format("%-15s\t%s\t%s\t%d\t%d")
 		% connectIP % symbol % pDepthMarketData->UpdateTime % pDepthMarketData->UpdateMillisec % delay));
 }
 
