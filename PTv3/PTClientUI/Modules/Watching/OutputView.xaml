@@ -7,7 +7,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4">
-            <Button Width="50">清空</Button>
+            <Button Name="btnClear" Width="50" Click="btnClear_Click">清空</Button>
         </StackPanel>
         <TextBox Name="txtOutput" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"></TextBox>
     </DockPanel>

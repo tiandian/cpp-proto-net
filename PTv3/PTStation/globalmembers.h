@@ -3,5 +3,7 @@
 #include "LogManager.h"
 #include "Configuration.h"
 
-extern CLogManager	logger;
+#define logger (*g_pLogger)
+
+extern CLogManager* g_pLogger;
 extern CConfiguration config;

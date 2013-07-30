@@ -88,12 +88,13 @@ int main(int argc, char* argv[])
 #ifdef _DEBUG
 	vector< string > mktDataSources;
 	mktDataSources.push_back(qsConfig.ConnectionString());
+	mktDataSources.push_back("udp://192.168.205.3:18213");
 	for(vector<string>::iterator iter = mktDataSources.begin(); iter != mktDataSources.end(); ++iter)
 #else
 	set< string > mktDataSources;
-	mktDataSources.push_back(qsConfig.ConnectionString());
-	mktDataSources.push_back("udp://192.168.163.61:18213");
-	mktDataSources.push_back("udp://192.168.205.3:18213");
+	mktDataSources.insert(qsConfig.ConnectionString());
+	mktDataSources.insert("udp://192.168.163.61:18213");
+	mktDataSources.insert("udp://192.168.205.3:18213");
 	for(set<string>::iterator iter = mktDataSources.begin(); iter != mktDataSources.end(); ++iter)
 #endif
 	{

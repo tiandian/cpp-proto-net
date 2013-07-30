@@ -10,7 +10,7 @@
 #include "TradingServerProtocol.h"
 
 CConfiguration config;
-CLogManager	logger;
+CLogManager* g_pLogger = NULL;
 
 int main(int argc, char* argv[])
 {
@@ -20,7 +20,8 @@ int main(int argc, char* argv[])
 		return 1;
 
 	GOOGLE_PROTOBUF_VERIFY_VERSION;
-
+	CLogManager	logger;
+	g_pLogger = &logger;
 	logger.Init();
 
 	CTradingServer server;

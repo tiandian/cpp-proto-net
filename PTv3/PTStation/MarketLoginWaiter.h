@@ -6,13 +6,13 @@
 #include <boost/chrono.hpp>
 #include <boost/atomic.hpp>
 
-class CThostFtdcMdApi;
+class CQuoteProxy;
 
 class CMarketLoginWaiter
 {
 public:
-	CMarketLoginWaiter(CThostFtdcMdApi* userApi) 
-		: _userApi(userApi), _timer(_io_service), _stop(true){}
+	CMarketLoginWaiter(CQuoteProxy* quoteProxy) 
+		: _quoteProxy(quoteProxy), _timer(_io_service), _stop(true){}
 	~CMarketLoginWaiter()
 	{
 		if(!_stop.load(boost::memory_order_consume))
@@ -31,6 +31,6 @@ private:
 	boost::asio::steady_timer _timer;
 	
 	boost::thread _thread;
-	CThostFtdcMdApi* _userApi;
+	CQuoteProxy* _quoteProxy;
 	boost::atomic<bool> _stop;
 };

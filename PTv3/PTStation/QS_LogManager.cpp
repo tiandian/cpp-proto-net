@@ -5,11 +5,9 @@
 #include <log4cpp/Category.hh>
 #include <log4cpp/PropertyConfigurator.hh>
 
-std::string loggerName("quote");
-
 log4cpp::Category& GetLogger()
 {
-	return log4cpp::Category::getInstance(loggerName);
+	return log4cpp::Category::getRoot();
 }
 
 CQSLogManager::CQSLogManager(void):
@@ -24,7 +22,7 @@ CQSLogManager::~CQSLogManager(void)
 
 void CQSLogManager::Init()
 {
-	std::string configFilePath("./log4cpp.property");
+	std::string configFilePath("./qs-log4cpp.property");
 	Init(configFilePath);
 }
 

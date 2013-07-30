@@ -26,6 +26,7 @@ CQuoteProxy::CQuoteProxy(CQuoteAggregator* pQuoteAggregator, const string& connA
 	, m_investorId(investorId)
 	, m_passwd(passwd)
 	, m_isReady(false)
+	, m_isRunning(false)
 {
 }
 
@@ -69,7 +70,7 @@ bool CQuoteProxy::Begin()
 		}
 
 		m_thQuoting = boost::thread(boost::bind(&RunQuoteProc, m_pUserApi, connAddress));
-
+		m_isRunning = true;
 		return true;
 	}
 	catch (exception& e)
@@ -83,12 +84,23 @@ bool CQuoteProxy::Begin()
 int CQuoteProxy::WaitUntilEnd()
 {
 	m_thQuoting.join();
-	return m_isReady ? 0 : -1;
+	return m_isReady ? 0 : -1; // if it was ever ready, consider it as normal exit
 }
 
 void CQuoteProxy::End()
 {
-	m_pUserApi->Release();
+	m_isRunning = false;
+	if(m_pUserApi != NULL)
+	{
+		m_pUserApi->Release();
+		m_pUserApi = NULL;
+	}
+	
+	if(!m_isReady)
+	{
+		// if not ready until going to end, subscribeMarketData must be waiting for ready
+		GetReady();
+	}
 }
 
 
@@ -105,17 +117,19 @@ void CQuoteProxy::SubscribeMarketData( char** symbolArr, int symCount )
 	{
 		boost::unique_lock<boost::mutex> l(m_mutex);
 		m_readyEvent.wait(l, boost::bind(&CQuoteProxy::IsReady, this));
-
-		cout << m_investorId << "-" << m_connAddr << " Subscribing " << symCount << " symbol(s). The first is " << symbolArr[0] << endl;
-		int iResult = m_pUserApi->SubscribeMarketData(symbolArr, symCount);
+		if(m_isRunning)
+		{
+			cout << m_investorId << "-" << m_connAddr << " Subscribing " << symCount << " symbol(s). The first is " << symbolArr[0] << endl;
+			int iResult = m_pUserApi->SubscribeMarketData(symbolArr, symCount);
+		}
 	}
 }
 
 void CQuoteProxy::UnsubscribeMarketData( char** symbolArr, int symCount )
 {
-	if(symbolArr != NULL && symCount > 0)
+	if(symbolArr != NULL && symCount > 0 && m_isRunning)
 	{
-		cout << m_investorId << "-" << m_connAddr << " Unsubscribing " << symCount << " symbol(s). The first is " << symbolArr[0] << endl;
+		cout << m_investorId << "-" << m_connAddr << " Un-Subscribing " << symCount << " symbol(s). The first is " << symbolArr[0] << endl;
 		int iResult = m_pUserApi->UnSubscribeMarketData(symbolArr, symCount);
 	}
 }

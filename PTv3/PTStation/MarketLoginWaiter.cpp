@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "MarketLoginWaiter.h"
-#include "ThostTraderApi/ThostFtdcMdApi.h"
+#include "QuoteProxy.h"
 
 #include <iostream>
 
@@ -22,11 +22,11 @@ void CMarketLoginWaiter::TimeUp( const boost::system::error_code& e )
 	_stop.store(true, boost::memory_order_release);
 	if(e.value() == boost::asio::error::operation_aborted)
 	{
-		std::cout << "CMarketLoginWaiter was CANCELED." << std::endl;
+		std::cout << "CMarketLoginWaiter(" << _quoteProxy->InvestorId() << "-" << _quoteProxy->ConnectingIP() << ") was CANCELED." << std::endl;
 		return;
 	}
 
-	std::cout << "CMarketLoginWaiter is Time up, Notify to Release" << std::endl;
-	if(_userApi != NULL)
-		_userApi->Release();
+	std::cout << "CMarketLoginWaiter(" << _quoteProxy->InvestorId() << "-" << _quoteProxy->ConnectingIP() << ") is Time up, Notify to Release" << std::endl;
+	if(_quoteProxy != NULL)
+		_quoteProxy->End();
 }

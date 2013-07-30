@@ -14,5 +14,6 @@ copy /y %PT_SRC%\*.cpp %DEST_SRC%\*.cpp
 echo 4. Copy Makefile and config
 copy /y %PT_SRC%\Makefile %DEST%
 copy /y %PT_SRC%\log4cpp.property %DEST%\conf
+copy /y %PT_SRC%\qs-log4cpp.property %DEST%\conf
 
 pause
