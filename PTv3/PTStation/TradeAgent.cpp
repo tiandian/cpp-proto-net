@@ -4,6 +4,7 @@
 #include "globalmembers.h"
 #include "charsetconvert.h"
 #include "SymbolInfoRepositry.h"
+#include "RtnOrderWrapper.h"
 
 #include <sstream>
 
@@ -486,136 +487,14 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
 	logger.Info(oss.str());
 
-	trade::Order* pOrd(new trade::Order);
-
-	///经纪公司代码
-	pOrd->set_brokerid(pOrder->BrokerID);
-	///投资者代码
-	pOrd->set_investorid(pOrder->InvestorID);
-	///合约代码
-	pOrd->set_instrumentid(pOrder->InstrumentID);
-	///报单引用
-	pOrd->set_orderref(pOrder->OrderRef);
-	///用户代码
-	pOrd->set_userid(pOrder->UserID);
-	///报单价格条件
-	pOrd->set_orderpricetype(static_cast	<trade::OrderPriceTypeType>(pOrder->OrderPriceType));
-	///买卖方向
-	pOrd->set_direction(static_cast<trade::TradeDirectionType>(pOrder->Direction));
-	///组合开平标志
-	pOrd->set_comboffsetflag(pOrder->CombOffsetFlag);
-	///组合投机套保标志
-	pOrd->set_combhedgeflag(pOrder->CombHedgeFlag);
-	///价格
-	pOrd->set_limitprice(pOrder->LimitPrice);
-	///数量
-	pOrd->set_volumetotaloriginal(pOrder->VolumeTotalOriginal);
-	///有效期类型
-	pOrd->set_timecondition(static_cast<trade::TimeConditionType>(pOrder->TimeCondition));
-	///GTD日期
-	pOrd->set_gtddate(pOrder->GTDDate);
-	///成交量类型
-	pOrd->set_volumecondition(static_cast<trade::VolumeConditionType>(pOrder->VolumeCondition));
-	///最小成交量
-	pOrd->set_minvolume(pOrder->MinVolume);
-	///触发条件
-	pOrd->set_contingentcondition(static_cast<trade::ContingentConditionType>(pOrder->ContingentCondition));
-	///止损价
-	pOrd->set_stopprice(pOrder->StopPrice);
-	///强平原因
-	pOrd->set_forceclosereason(static_cast<trade::ForceCloseReasonType>(pOrder->ForceCloseReason));
-	///自动挂起标志
-	pOrd->set_isautosuspend(pOrder->IsAutoSuspend != 0);
-	///业务单元
-	pOrd->set_businessunit(pOrder->BusinessUnit);
-	///请求编号
-	pOrd->set_requestid(pOrder->RequestID);
-	// Above fields are same as InputOrder's
-	////////////////////////////////////////////////////////////////////
-
-	///本地报单编号
-	pOrd->set_orderlocalid(pOrder->OrderLocalID);
-	///交易所代码
-	pOrd->set_exchangeid(pOrder->ExchangeID);
-	///会员代码
-	pOrd->set_participantid(pOrder->ParticipantID);
-	///客户代码
-	pOrd->set_clientid(pOrder->ClientID);
-	///合约在交易所的代码
-	pOrd->set_exchangeinstid(pOrder->ExchangeInstID);
-	///交易所交易员代码
-	pOrd->set_traderid(pOrder->TraderID);
-	///安装编号
-	pOrd->set_installid(pOrder->InstallID);
-	///报单提交状态
-	pOrd->set_ordersubmitstatus(static_cast<trade::OrderSubmitStatusType>(pOrder->OrderSubmitStatus));
-	///报单提示序号
-	pOrd->set_notifysequence(pOrder->NotifySequence);
-	///交易日
-	pOrd->set_tradingday(pOrder->TradingDay);
-	///结算编号
-	pOrd->set_settlementid(pOrder->SettlementID);
-	///报单编号
-	pOrd->set_ordersysid(pOrder->OrderSysID);
-	///报单来源
-	// sometimes OrderSource could be 0 insteade of '0'
-	if(pOrder->OrderSource < trade::PARTICIPANT)
-		pOrd->set_ordersource(trade::PARTICIPANT);
-	else
-		pOrd->set_ordersource(static_cast<trade::OrderSourceType>(pOrder->OrderSource));
-	///报单状态
-	pOrd->set_orderstatus(static_cast<trade::OrderStatusType>(pOrder->OrderStatus));
-	///报单类型
-	// Sometimes OrderType could be 0 instead of '0'
-	if(pOrder->OrderType < trade::NORMAL_ORDER)
-		pOrd->set_ordertype(trade::NORMAL_ORDER);
-	else
-		pOrd->set_ordertype(static_cast<trade::OrderTypeType>(pOrder->OrderType));
-	///今成交数量
-	pOrd->set_volumetraded(pOrder->VolumeTraded);
-	///剩余数量
-	pOrd->set_volumetotal(pOrder->VolumeTotal);
-	///报单日期
-	pOrd->set_insertdate(pOrder->InsertDate);
-	///委托时间
-	pOrd->set_inserttime(pOrder->InsertTime);
-	///激活时间
-	pOrd->set_activetime(pOrder->ActiveTime);
-	///挂起时间
-	pOrd->set_suspendtime(pOrder->SuspendTime);
-	///最后修改时间
-	pOrd->set_updatetime(pOrder->UpdateTime);
-	///撤销时间
-	pOrd->set_canceltime(pOrder->CancelTime);
-	///最后修改交易所交易员代码
-	pOrd->set_activetraderid(pOrder->ActiveTraderID);
-	///结算会员编号
-	pOrd->set_clearingpartid(pOrder->ClearingPartID);
-	///序号
-	pOrd->set_sequenceno(pOrder->SequenceNo);
-	///前置编号
-	pOrd->set_frontid(pOrder->FrontID);
-	///会话编号
-	pOrd->set_sessionid(pOrder->SessionID);
-	///用户端产品信息
-	pOrd->set_userproductinfo(pOrder->UserProductInfo);
-	///状态信息
-	pOrd->set_statusmsg(pOrder->StatusMsg);
-	///用户强评标志
-	pOrd->set_userforceclose(pOrder->UserForceClose != 0);
-	///操作用户代码
-	pOrd->set_activeuserid(pOrder->ActiveUserID);
-	///经纪公司报单编号
-	pOrd->set_brokerorderseq(pOrder->BrokerOrderSeq);
-	///相关报单
-	pOrd->set_relativeordersysid(pOrder->RelativeOrderSysID);
+	RtnOrderWrapperPtr orderWrapper(new CRtnOrderWrapper(pOrder));
 
 	// Print order detail once rejected
 	if(pOrder->OrderSubmitStatus >= THOST_FTDC_OSS_InsertRejected)
 		PrintRtnOrder(pOrder);
 
 	// Order will be actually managed by underlying evtOrder
-	m_orderProcessor->OnRtnOrder(pOrd);
+	m_orderProcessor->OnRtnOrder(orderWrapper);
 }
 
 void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )

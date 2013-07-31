@@ -41,11 +41,11 @@ const string& CLegOrderPlacer::OrderRef()
 	return m_inputOrder.OrderRef();
 }
 
-void CLegOrderPlacer::StartPending(trade::Order* pendingOrder)
+void CLegOrderPlacer::StartPending(const RtnOrderWrapperPtr& pendingOrder)
 {
-	m_exchId = pendingOrder->exchangeid();
-	m_ordSysId = pendingOrder->ordersysid(); 
-	m_userId = pendingOrder->userid();
+	m_exchId = pendingOrder->ExchangeId();
+	m_ordSysId = pendingOrder->OrderSysId(); 
+	m_userId = pendingOrder->UserId();
 	m_isPending = true;
 	if(IsOpen())
 	{
@@ -142,9 +142,9 @@ bool CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 	return true;
 }
 
-void CLegOrderPlacer::UpdateOrder( const trade::Order& order )
+void CLegOrderPlacer::UpdateOrder( const RtnOrderWrapperPtr& order )
 {
-	m_legOrder.CopyFrom(order);
+	m_legOrderWrapper = order;
 	m_bOrderReady = true;
 }
 

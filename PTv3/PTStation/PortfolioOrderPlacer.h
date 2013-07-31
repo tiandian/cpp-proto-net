@@ -1,6 +1,7 @@
 #pragma once
 
 #include "LegOrderPlacer.h"
+#include "RtnOrderWrapper.h"
 #include "entity/trade.pb.h"
 #include "entity/quote.pb.h"
 
@@ -48,25 +49,25 @@ public:
 	// For Fsm to begin sending leg order
 	void Send();
 	// On leg order submit done
-	void OnAccept(trade::Order* pRtnOrder);
+	void OnAccept(const RtnOrderWrapperPtr& pRtnOrder);
 	
 	void OnCanceling();
-	virtual void OnLegCanceled(trade::Order* pRtnOrder);
-	void OnLegRejected(trade::Order* pRtnOrder);
+	virtual void OnLegCanceled(const RtnOrderWrapperPtr& pRtnOrder);
+	void OnLegRejected(const RtnOrderWrapperPtr& pRtnOrder);
 	void OnPortfolioCanceled();
 
-	void OnPending(trade::Order* pRtnOrder);
+	void OnPending(const RtnOrderWrapperPtr& pRtnOrder);
 	void OnPendingTimeUp();
 	void OnQuoteReceived(boost::chrono::steady_clock::time_point& quoteTimestamp, entity::Quote* pQuote);
 
-	void OnFilled(trade::Order* pRtnOrder);
-	void OnPartiallyFilled(trade::Order* pRtnOrder);
-	void OnOrderCanceled(trade::Order* pRtnOrder);
+	void OnFilled(const RtnOrderWrapperPtr& pRtnOrder);
+	void OnPartiallyFilled(const RtnOrderWrapperPtr& pRtnOrder);
+	void OnOrderCanceled(const RtnOrderWrapperPtr& pRtnOrder);
 	void OnCompleted();
 	void OnError(const string& errMsg);
 
 	// Belows is for OrderProcess to invoke
-	void OnOrderReturned(boost::shared_ptr<trade::Order>& pRtnOrder);
+	void OnOrderReturned(RtnOrderWrapperPtr& rtnOrder);
 	void OnOrderPlaceFailed(const string& errMsg);
 	void OnOrderCancelFailed(int errorId, const string& errMsg);
 
@@ -84,12 +85,12 @@ protected:
 	void SetNewOrderId(const string& mlOrdId);
 	void ResetTemplate();
 	void SetFirstLeg();
-	void GotoRetry(trade::Order* pRtnOrder);
+	void GotoRetry(const RtnOrderWrapperPtr& pRtnOrder);
 	void AfterLegDone();
 	void AfterPortfolioDone();
 	
 	void GenLegOrderPlacers();
-	void UpdateLegOrder(trade::Order* pRtnOrder);
+	void UpdateLegOrder(const RtnOrderWrapperPtr& pRtnOrder);
 	void UpdateLastDoneOrder();
 	void UpdateMultiLegOrder();
 	void OutputStatus(const string& statusMsg);

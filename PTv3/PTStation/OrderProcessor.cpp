@@ -95,10 +95,9 @@ void COrderProcessor::OnRspOrderAction( bool succ, const std::string& orderRef, 
 	}
 }
 
-void COrderProcessor::OnRtnOrder( trade::Order* order )
+void COrderProcessor::OnRtnOrder( RtnOrderWrapperPtr& orderWrapper )
 {
-	boost::shared_ptr<trade::Order> orderPtr(order);
-	DispatchRtnOrder(orderPtr);
+	DispatchRtnOrder(orderWrapper);
 }
 
 void COrderProcessor::OnRtnTrade( trade::Trade* pTrade )
@@ -332,15 +331,15 @@ void COrderProcessor::RemoveOrderPlacer( const string& placerId /* order ref*/ )
 	m_workingOrderPlacers.erase(placerId);
 }
 
-void COrderProcessor::DispatchRtnOrder( boost::shared_ptr<trade::Order>& rtnOrder )
+void COrderProcessor::DispatchRtnOrder( RtnOrderWrapperPtr& orderWrapper )
 {
 	boost::lock_guard<boost::recursive_mutex> lock(m_ordPlacersMapMutex);
-	const string& orderRef = rtnOrder->orderref();
+	string orderRef = orderWrapper->OrderRef();
 	boost::unordered_map<string, CPortfolioOrderPlacer*>::iterator iter 
 		= m_workingOrderPlacers.find(orderRef);
 	if(iter != m_workingOrderPlacers.end())
 	{
-		(iter->second)->OnOrderReturned(rtnOrder);
+		(iter->second)->OnOrderReturned(orderWrapper);
 	}
 	else
 	{

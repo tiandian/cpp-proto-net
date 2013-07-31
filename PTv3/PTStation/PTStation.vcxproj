@@ -137,6 +137,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="QuoteStore.h" />
     <ClInclude Include="RequestedServices.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="RtnOrderWrapper.h" />
     <ClInclude Include="ScalperStrategy.h" />
     <ClInclude Include="ScalperTrigger.h" />
     <ClInclude Include="SettingChangeTrace.h" />
@@ -209,6 +210,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="QuoteRepositry.cpp" />
     <ClCompile Include="QuoteStore.cpp" />
     <ClCompile Include="RequestedServices.cpp" />
+    <ClCompile Include="RtnOrderWrapper.cpp" />
     <ClCompile Include="ScalperStrategy.cpp" />
     <ClCompile Include="ScalperTrigger.cpp" />
     <ClCompile Include="SettingChangeTrace.cpp" />

@@ -3,6 +3,7 @@
 #include "TradeAgentCallback.h"
 #include "PortfolioOrderHelper.h"
 #include "entity/quote.pb.h"
+#include "RtnOrderWrapper.h"
 
 #include <boost/tuple/tuple.hpp>
 #include <boost/unordered_map.hpp>
@@ -64,7 +65,7 @@ public:
 	virtual void OnRspOrderAction(bool succ, const std::string& orderRef, int errorId, const std::string& msg);
 
 	///报单通知
-	virtual void OnRtnOrder(trade::Order* order);
+	virtual void OnRtnOrder(RtnOrderWrapperPtr& orderWrapper);
 
 	///成交通知
 	virtual void OnRtnTrade(trade::Trade* pTrade);
@@ -103,7 +104,7 @@ private:
 
 	static void PrintOrderStatus(trade::Order* order);
 	
-	void DispatchRtnOrder(boost::shared_ptr<trade::Order>& rtnOrder);
+	void DispatchRtnOrder(RtnOrderWrapperPtr& orderWrapper);
 
 	trade::InputOrder* BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx);
 	void AddOpenTimes() { ++m_totalOpenTimes; }

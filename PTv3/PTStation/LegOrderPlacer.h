@@ -2,6 +2,7 @@
 
 #include "InputOrder.h"
 #include "AsyncOrderPendingTimer.h"
+#include "RtnOrderWrapper.h"
 #include "entity/trade.pb.h"
 #include "entity/quote.pb.h"
 
@@ -15,6 +16,11 @@ public:
 
 	CInputOrder& InputOrder(){ return m_inputOrder; }
 	trade::Order& Order(){ return m_legOrder; }
+	trade::Order& OrderEntity()
+	{
+		m_legOrderWrapper->ToEntity(&m_legOrder);
+		return m_legOrder; 
+	}
 	
 	int SequenceNo() { return m_seqenceNo; }
 	void SequenceNo(int idx){ m_seqenceNo = idx; }
@@ -34,7 +40,7 @@ public:
 	bool CanRetry(){ return m_submitTimes <= m_maxRetry; }
 	bool ModifyPrice(entity::Quote* pQuote);
 
-	void StartPending(trade::Order* pendingOrder);
+	void StartPending(const RtnOrderWrapperPtr& pendingOrder);
 
 	bool IsOpen();
 	void Reset(bool afterCancel = false);
@@ -42,7 +48,7 @@ public:
 	void CancelPending();
 
 	void SetPriceTick(double pxTick){ m_priceTick = pxTick; }
-	void UpdateOrder(const trade::Order& order);
+	void UpdateOrder(const RtnOrderWrapperPtr& order);
 	bool IsOrderReady(){ return m_bOrderReady; }
 
 	void PartiallyFill(int tradedCount) { m_isPartiallyFilled = true; }
@@ -64,6 +70,7 @@ private:
 	double m_priceTick;
 
 	trade::Order m_legOrder;
+	RtnOrderWrapperPtr m_legOrderWrapper;
 	bool m_bOrderReady;
 
 	// pending Info;
