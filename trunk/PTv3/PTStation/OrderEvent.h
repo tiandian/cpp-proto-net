@@ -1,37 +1,37 @@
 #pragma once
 
-#include "entity/trade.pb.h"
+#include "RtnOrderWrapper.h"
 
 struct evtOrder
 {
-	evtOrder(boost::shared_ptr<trade::Order>& pOrd):m_pOrd(pOrd){}
+	evtOrder(RtnOrderWrapperPtr& pOrd):m_pOrd(pOrd){}
 
-	boost::shared_ptr<trade::Order> m_pOrd;
+	RtnOrderWrapperPtr m_pOrd;
 };
 
 struct evtSubmit : public evtOrder 
 {
-	evtSubmit(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
+	evtSubmit(RtnOrderWrapperPtr& pOrd):evtOrder(pOrd){}
 };
 
 struct evtPending : public evtOrder 
 {
-	evtPending(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
+	evtPending(RtnOrderWrapperPtr& pOrd):evtOrder(pOrd){}
 };
 
 struct evtReject: public evtOrder 
 {
-	evtReject(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
+	evtReject(RtnOrderWrapperPtr& pOrd):evtOrder(pOrd){}
 };
 
 struct evtFilled : public evtOrder 
 {
-	evtFilled(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
+	evtFilled(RtnOrderWrapperPtr& pOrd):evtOrder(pOrd){}
 };
 
 struct evtPartiallyFilled : public evtOrder 
 {
-	evtPartiallyFilled(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
+	evtPartiallyFilled(RtnOrderWrapperPtr& pOrd):evtOrder(pOrd){}
 };
 
 struct evtAllFilled {};
@@ -39,7 +39,7 @@ struct evtNextLeg {};
 
 struct evtCancelSuccess : public evtOrder 
 {
-	evtCancelSuccess(boost::shared_ptr<trade::Order>& pOrd):evtOrder(pOrd){}
+	evtCancelSuccess(RtnOrderWrapperPtr& pOrd):evtOrder(pOrd){}
 };
 
 struct evtRetry {};
@@ -71,7 +71,7 @@ struct evtFilledCanceled
 
 struct evtErrorFound 
 {
-	evtErrorFound(const string& errMsg):m_ErrorMsg(errMsg){}
+	evtErrorFound(const char* errMsg):m_ErrorMsg(errMsg){}
 
 	string m_ErrorMsg;
 };

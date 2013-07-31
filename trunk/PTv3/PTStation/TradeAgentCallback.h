@@ -1,5 +1,6 @@
 #pragma once
 
+#include "RtnOrderWrapper.h"
 #include "entity/trade.pb.h"
 
 class CTradeAgentCallback
@@ -18,7 +19,7 @@ public:
 	virtual void OnRspOrderAction(bool succ, const std::string& orderRef, int errorId, const std::string& msg) = 0;
 
 	///报单通知
-	virtual void OnRtnOrder(trade::Order* order) = 0;
+	virtual void OnRtnOrder(RtnOrderWrapperPtr& order) = 0;
 
 	///成交通知
 	virtual void OnRtnTrade(trade::Trade* pTrade) = 0;

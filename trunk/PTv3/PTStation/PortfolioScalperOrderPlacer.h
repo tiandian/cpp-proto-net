@@ -13,7 +13,6 @@ public:
 	virtual void SetDirection(trade::PosiDirectionType posiDirection);
 	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize);
 
-	virtual void OnLegCanceled(trade::Order* pRtnOrder);
 	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer);
 };
 

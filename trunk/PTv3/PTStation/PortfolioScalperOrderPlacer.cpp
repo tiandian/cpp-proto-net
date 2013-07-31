@@ -117,11 +117,6 @@ void CPortfolioScalperOrderPlacer::SetLimitPrice(double* pLmtPxArr, int iPxSize)
 	}
 }
 
-void CPortfolioScalperOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
-{
-	CPortfolioOrderPlacer::OnLegCanceled(pRtnOrder);
-}
-
 void CPortfolioScalperOrderPlacer::OnAddingLegOrderPlacer( CLegOrderPlacer* pLegOrderPlacer )
 {
 	CScalperStrategy* scalperStrategy = dynamic_cast<CScalperStrategy*>(m_pPortf->Strategy());

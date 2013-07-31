@@ -74,7 +74,7 @@ namespace // Concrete FSM implementation
 #ifdef LOG_FOR_TRADE
 				LOG_DEBUG(logger, "entering: LegOrderFilled");
 #endif
-				fsm.m_pPlacer->OnFilled(evt.m_pOrd.get());
+				fsm.m_pPlacer->OnFilled(evt.m_pOrd);
 			}
 #ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
@@ -87,7 +87,7 @@ namespace // Concrete FSM implementation
 			template <class Event,class FSM>
 			void on_entry(Event const& evt,FSM& fsm) 
 			{
-				fsm.m_pPlacer->OnLegCanceled(evt.m_pOrd.get());
+				fsm.m_pPlacer->OnLegCanceled(evt.m_pOrd);
 			}
 #ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
@@ -100,7 +100,7 @@ namespace // Concrete FSM implementation
 			template <class Event,class FSM>
 			void on_entry(Event const& evt,FSM& fsm) 
 			{
-				fsm.m_pPlacer->OnLegRejected(evt.m_pOrd.get());
+				fsm.m_pPlacer->OnLegRejected(evt.m_pOrd);
 			}
 #ifdef LOG_FOR_TRADE
 			template <class Event,class FSM>
@@ -168,7 +168,7 @@ namespace // Concrete FSM implementation
 #ifdef LOG_FOR_TRADE
 					LOG_DEBUG(logger, "entering: Accepted");
 #endif
-					fsm.m_pPlacer->OnAccept(evt.m_pOrd.get());
+					fsm.m_pPlacer->OnAccept(evt.m_pOrd);
 				}
 #ifdef LOG_FOR_TRADE
 				template <class Event,class FSM>
@@ -184,7 +184,7 @@ namespace // Concrete FSM implementation
 #ifdef LOG_FOR_TRADE
 					LOG_DEBUG(logger, "entering: Pending");
 #endif
-					fsm.m_pPlacer->OnPending(evt.m_pOrd.get());
+					fsm.m_pPlacer->OnPending(evt.m_pOrd);
 				}
 #ifdef LOG_FOR_TRADE
 				template <class Event,class FSM>
@@ -200,7 +200,7 @@ namespace // Concrete FSM implementation
 #ifdef LOG_FOR_TRADE
 					LOG_DEBUG(logger, "entering: PartiallyFilled");
 #endif
-					fsm.m_pPlacer->OnPartiallyFilled(evt.m_pOrd.get());
+					fsm.m_pPlacer->OnPartiallyFilled(evt.m_pOrd);
 				}
 #ifdef LOG_FOR_TRADE
 				template <class Event,class FSM>
@@ -279,7 +279,7 @@ namespace // Concrete FSM implementation
 		
 		void on_cancel_success(evtCancelSuccess const& evt)       
 		{
-			m_pPlacer->OnOrderCanceled(evt.m_pOrd.get());
+			m_pPlacer->OnOrderCanceled(evt.m_pOrd);
 		}
 
 		// guards
@@ -533,12 +533,12 @@ void CPortfolioOrderPlacer::Send()
 
 }
 
-void CPortfolioOrderPlacer::OnAccept(trade::Order* pRtnOrder)
+void CPortfolioOrderPlacer::OnAccept(const RtnOrderWrapperPtr& pRtnOrder)
 {
 	UpdateLegOrder(pRtnOrder);
 }
 
-void CPortfolioOrderPlacer::OnPending( trade::Order* pRtnOrder )
+void CPortfolioOrderPlacer::OnPending(const RtnOrderWrapperPtr& pRtnOrder )
 {
 	assert(m_activeOrdPlacer != NULL);
 	if(!m_activeOrdPlacer->IsPending())
@@ -549,10 +549,10 @@ void CPortfolioOrderPlacer::OnPending( trade::Order* pRtnOrder )
 	}
 	else
 		LOG_DEBUG(logger, boost::str(boost::format("Duplicate pending order event.(ordRef: %s, sysId: %s)")
-					% pRtnOrder->orderref() % pRtnOrder->ordersysid()));
+					% pRtnOrder->OrderRef() % pRtnOrder->OrderSysId()));
 }
 
-void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
+void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 {
 	// The first thing is to cancel pending timer
 	m_activeOrdPlacer->CancelPending();
@@ -565,7 +565,7 @@ void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 	++sendingIdx;
 	if(sendingIdx < (int)m_legPlacers.size())
 	{
-		m_activeOrdPlacer->UpdateOrder(*pRtnOrder);
+		m_activeOrdPlacer->UpdateOrder(pRtnOrder);
 		m_lastDoneOrdPlacer = m_activeOrdPlacer;
 		// Go to send next order
 		m_activeOrdPlacer = m_legPlacers[sendingIdx].get();
@@ -580,27 +580,27 @@ void CPortfolioOrderPlacer::OnFilled( trade::Order* pRtnOrder )
 
 }
 
-void CPortfolioOrderPlacer::OnPartiallyFilled( trade::Order* pRtnOrder )
+void CPortfolioOrderPlacer::OnPartiallyFilled(const RtnOrderWrapperPtr& pRtnOrder )
 {
 	if(!m_activeOrdPlacer->IsPending())
 	{
 		m_activeOrdPlacer->StartPending(pRtnOrder);
 	}
 
-	int remained = pRtnOrder->volumetotal();
-	int finished = pRtnOrder->volumetraded();
+	int remained = pRtnOrder->VolumeTotal();
+	int finished = pRtnOrder->VolumeTraded();
 	
 	m_activeOrdPlacer->PartiallyFill(finished);
 	UpdateLegOrder(pRtnOrder);
 }
 
-void CPortfolioOrderPlacer::OnOrderCanceled( trade::Order* pRtnOrder )
+void CPortfolioOrderPlacer::OnOrderCanceled(const RtnOrderWrapperPtr& pRtnOrder )
 {
 	UpdateLegOrder(pRtnOrder);
 	m_activeOrdPlacer->Reset(true);
 	m_pOrderProcessor->RemoveOrderPlacer(Id());
 	// Count cancel volume
-	int remained = pRtnOrder->volumetotal();
+	int remained = pRtnOrder->VolumeTotal();
 	m_pPortf->IncrementalCancelTimes(remained);
 }
 
@@ -631,16 +631,16 @@ void CPortfolioOrderPlacer::OnCanceling()
 		m_activeOrdPlacer->UserId(), m_activeOrdPlacer->Symbol());
 }
 
-void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
+void CPortfolioOrderPlacer::OnLegCanceled(const RtnOrderWrapperPtr& pRtnOrder )
 {
 	assert(m_activeOrdPlacer != NULL);
 
-	int remained = pRtnOrder->volumetotal();
-	int finished = pRtnOrder->volumetraded();
+	int remained = pRtnOrder->VolumeTotal();
+	int finished = pRtnOrder->VolumeTraded();
 	if(finished > 0)	// partially fill order has been canceled
 	{
 		LOG_INFO(logger, boost::str(boost::format("OrderRef(%s) canceled as %d/%d filled")
-			% m_activeOrdPlacer->OrderRef() % finished % pRtnOrder->volumetotaloriginal()));
+			% m_activeOrdPlacer->OrderRef() % finished % pRtnOrder->VolumeTotalOriginal()));
 
 		if(m_activeOrdPlacer->IsOpen())
 		{
@@ -666,7 +666,7 @@ void CPortfolioOrderPlacer::OnLegCanceled( trade::Order* pRtnOrder )
 		{
 			m_activeOrdPlacer->AdjustVolume(remained);
 			LOG_DEBUG(logger, boost::str(boost::format("Partially filled close Order adjust volume from %d to %d, And Goto Retry...")
-				% pRtnOrder->volumetotaloriginal() % pRtnOrder->volumetotal()));
+				% pRtnOrder->VolumeTotalOriginal() % pRtnOrder->VolumeTotal()));
 			GotoRetry(pRtnOrder);
 		}
 	}
@@ -696,12 +696,12 @@ void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_p
 	}
 }
 
-void CPortfolioOrderPlacer::OnLegRejected( trade::Order* pRtnOrder )
+void CPortfolioOrderPlacer::OnLegRejected(const RtnOrderWrapperPtr& pRtnOrder )
 {
 	AfterLegDone();
 	UpdateLegOrder(pRtnOrder);
 	
-	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtErrorFound(pRtnOrder->statusmsg()));
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtErrorFound(pRtnOrder->StatusMsg()));
 }
 
 void CPortfolioOrderPlacer::OnPortfolioCanceled()
@@ -752,60 +752,56 @@ void CPortfolioOrderPlacer::OutputStatus( const string& statusMsg )
 	UpdateMultiLegOrder();
 }
 
-void CPortfolioOrderPlacer::OnOrderReturned( boost::shared_ptr<trade::Order>& pRtnOrder )
+void CPortfolioOrderPlacer::OnOrderReturned( RtnOrderWrapperPtr& rtnOrder )
 {
 	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
 
-	trade::OrderSubmitStatusType submitStatus = pRtnOrder->ordersubmitstatus();
-	trade::OrderStatusType status = pRtnOrder->orderstatus();
+	trade::OrderSubmitStatusType submitStatus = rtnOrder->OrderSubmitStatus();
+	trade::OrderStatusType status = rtnOrder->OrderStatus();
 #ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("Order(%s, %s) - submit status(%s), order status(%s)")
-		% pRtnOrder->orderref() %  pRtnOrder->ordersysid() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
+		% rtnOrder->OrderRef() %  rtnOrder->OrderSysId() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
 #endif
 	if(submitStatus > trade::NOT_SUBMITTED && 
 		submitStatus <= trade::ACCEPTED && status >= trade::STATUS_UNKNOWN)
 	{
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtSubmit(pRtnOrder));
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtSubmit(rtnOrder));
 	}
 	else if(submitStatus > trade::ACCEPTED)
 	{
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtReject(pRtnOrder));
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtReject(rtnOrder));
 	}
 	else if(status == trade::ALL_TRADED)
 	{
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtFilled(pRtnOrder));
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtFilled(rtnOrder));
 	}
 	else if(status == trade::ORDER_CANCELED)
 	{
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtCancelSuccess(pRtnOrder));
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtCancelSuccess(rtnOrder));
 	}
 	else if(status == trade::NO_TRADE_QUEUEING ||
 		status == trade::NO_TRADE_NOT_QUEUEING)
 	{
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPending(pRtnOrder));
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPending(rtnOrder));
 	}
 	else if(status == trade::PART_TRADED_QUEUEING ||
 		status == trade::PART_TRADED_NOT_QUEUEING)
 	{
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPartiallyFilled(pRtnOrder));
+		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPartiallyFilled(rtnOrder));
 	}
 	else
 	{
 		logger.Warning(boost::str(boost::format("Cannot identify status of order (ref: %s, sysId: %s)") 
-			% pRtnOrder->orderref() % pRtnOrder->ordersysid()));
+			% rtnOrder->OrderRef() % rtnOrder->OrderSysId()));
 	}
 }
 
-void CPortfolioOrderPlacer::UpdateLegOrder( trade::Order* pRtnOrder )
+void CPortfolioOrderPlacer::UpdateLegOrder(const RtnOrderWrapperPtr& pRtnOrder )
 {
 	if(pRtnOrder != NULL)
 	{
-		m_activeOrdPlacer->UpdateOrder(*pRtnOrder);
-		trade::Order& legOrder = m_activeOrdPlacer->Order();
-
-		string ordStatusMsg;
-		GB2312ToUTF_8(ordStatusMsg, pRtnOrder->statusmsg().c_str());
-		legOrder.set_statusmsg(ordStatusMsg);
+		m_activeOrdPlacer->UpdateOrder(pRtnOrder);
+		trade::Order& legOrder = m_activeOrdPlacer->OrderEntity();
 
 		m_pOrderProcessor->PublishOrderUpdate(m_multiLegOrderTemplate->portfolioid(), 
 			m_multiLegOrderTemplate->orderid(), &legOrder);
@@ -816,11 +812,7 @@ void CPortfolioOrderPlacer::UpdateLastDoneOrder()
 {
 	if(m_lastDoneOrdPlacer != NULL)
 	{
-		trade::Order& legOrder = m_lastDoneOrdPlacer->Order();
-
-		string ordStatusMsg;
-		GB2312ToUTF_8(ordStatusMsg, legOrder.statusmsg().c_str());
-		legOrder.set_statusmsg(ordStatusMsg);
+		trade::Order& legOrder = m_lastDoneOrdPlacer->OrderEntity();
 
 		m_pOrderProcessor->PublishOrderUpdate(m_multiLegOrderTemplate->portfolioid(), 
 			m_multiLegOrderTemplate->orderid(), &legOrder);
@@ -889,7 +881,7 @@ void CPortfolioOrderPlacer::SetFirstLeg()
 	m_isFirstLeg = true;
 }
 
-void CPortfolioOrderPlacer::GotoRetry(trade::Order* pRtnOrder)
+void CPortfolioOrderPlacer::GotoRetry(const RtnOrderWrapperPtr& pRtnOrder)
 {
 	if(m_activeOrdPlacer->CanRetry())
 	{
@@ -903,7 +895,7 @@ void CPortfolioOrderPlacer::GotoRetry(trade::Order* pRtnOrder)
 	{
 		AfterLegDone();
 		LOG_INFO(logger, boost::str(boost::format("Retry times is used up. Order(%s) has been retried %d times")
-			% pRtnOrder->instrumentid() % m_activeOrdPlacer->SubmitTimes()));
+			% pRtnOrder->Symbol() % m_activeOrdPlacer->SubmitTimes()));
 
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(
 			evtFilledCanceled("µ•Õ»:∆Ω≤÷ ß∞‹"));
