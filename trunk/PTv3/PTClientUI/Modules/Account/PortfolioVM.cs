@@ -353,6 +353,24 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region CancelVolume
+        private int _cancelVol;
+
+        public int CancelVolume
+        {
+            get { return _cancelVol; }
+            set
+            {
+                if (_cancelVol != value)
+                {
+                    _cancelVol = value;
+                    RaisePropertyChanged("CancelVolume");
+                }
+            }
+        }
+        #endregion
+        
+
         #region IsRunning
         private bool _isRunning;
 
@@ -507,7 +525,7 @@ namespace PortfolioTrading.Modules.Account
             {
                 portf.Quantity = int.Parse(attr.Value);
             }
-
+            
             attr = xmlElement.Attribute("currentPosition");
             if (attr != null)
             {
@@ -515,7 +533,7 @@ namespace PortfolioTrading.Modules.Account
                 portf.Position = currPos;
                 portf.OpenTimes = currPos;
             }
-
+            
             attr = xmlElement.Attribute("avgCost");
             if(attr != null)
             {
@@ -671,7 +689,7 @@ namespace PortfolioTrading.Modules.Account
 
             OpenTimes = item.TotalOpenTimes;
             DoneTimes = item.TotalCloseTimes;
-            Position = item.CancelTimes;
+            CancelVolume = item.CancelTimes;
             //Position = item.CurrentPosition;
 
             //Gain = item.Profit;

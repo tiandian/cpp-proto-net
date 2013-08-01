@@ -3,7 +3,7 @@
 #include "ShmQuoteFeed.h"
 #include "ThostTraderApi/ThostFtdcMdApi.h"
 
-#include <unordered_map>
+#include <boost/unordered_map.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
@@ -24,7 +24,7 @@ public:
 };
 
 typedef boost::shared_ptr<QuoteTimestamp> TimestampPtr;
-typedef unordered_map<string, TimestampPtr> QuoteTimestampMap;
+typedef boost::unordered_map<string, TimestampPtr> QuoteTimestampMap;
 typedef QuoteTimestampMap::iterator QuoteTimestampMapIter;
 
 class CQuoteAggregator

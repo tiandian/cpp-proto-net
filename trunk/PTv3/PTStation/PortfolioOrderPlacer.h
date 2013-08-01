@@ -42,7 +42,7 @@ public:
 		return m_activeOrdPlacer->OrderRef(); 
 	}
 
-	boost::chrono::steady_clock::time_point& TrigTimestamp(){ return m_trigQuoteTimestamp; }
+	boost::chrono::steady_clock::time_point& TrigTimestamp(){ return m_triggingTimestamp; }
 
 	bool IsWorking(){ return m_isWorking.load(boost::memory_order_consume); }
 
@@ -114,7 +114,7 @@ protected:
 	bool m_isFirstLeg;
 	boost::atomic<bool> m_isWorking;
 	bool m_isReady;
-	boost::chrono::steady_clock::time_point m_trigQuoteTimestamp;
+	boost::chrono::steady_clock::time_point m_triggingTimestamp;
 
 	boost::thread m_thCleanup;
 
