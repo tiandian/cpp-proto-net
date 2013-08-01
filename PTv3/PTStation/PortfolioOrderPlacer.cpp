@@ -463,7 +463,7 @@ void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* 
 	// Limit price
 	SetLimitPrice(pLmtPxArr, iPxSize);
 
-	m_trigQuoteTimestamp = trigQuoteTimestamp;
+	m_triggingTimestamp = trigQuoteTimestamp;
 
 	// Start fsm, fsm goes into Sending status
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->start();
@@ -502,7 +502,7 @@ void CPortfolioOrderPlacer::Send()
 	m_activeOrdPlacer->AddSubmitTimes();
 
 	boost::chrono::steady_clock::duration elapsed = 
-		boost::chrono::steady_clock::now() - m_trigQuoteTimestamp;
+		boost::chrono::steady_clock::now() - m_triggingTimestamp;
 	long usElapse = boost::chrono::duration_cast<boost::chrono::microseconds>(elapsed).count();
 
 	if(m_isFirstLeg && m_activeOrdPlacer->SubmitTimes() == 1)	// Only publish it for the first time
@@ -512,7 +512,7 @@ void CPortfolioOrderPlacer::Send()
 		m_pPortf->NewOrderId(mlOrderId);
 		SetNewOrderId(mlOrderId);
 
-		LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the lastest QUOTE")
+		LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the last QUOTE")
 			% ((m_activeOrdPlacer->InputOrder().OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
 			% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() % m_activeOrdPlacer->SubmitTimes() % usElapse));
 
@@ -523,7 +523,7 @@ void CPortfolioOrderPlacer::Send()
 	}
 	else
 	{
-		LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the lastest QUOTE")
+		LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the last QUOTE")
 			% ((m_activeOrdPlacer->InputOrder().OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
 			% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() % m_activeOrdPlacer->SubmitTimes() % usElapse));
 
@@ -569,6 +569,7 @@ void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 		m_lastDoneOrdPlacer = m_activeOrdPlacer;
 		// Go to send next order
 		m_activeOrdPlacer = m_legPlacers[sendingIdx].get();
+		m_triggingTimestamp = pRtnOrder->Timestamp();
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
 	}
 	else
@@ -692,7 +693,7 @@ void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_p
 			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextQuoteIn());
 
 		}
-		m_trigQuoteTimestamp = quoteTimestamp;
+		m_triggingTimestamp = quoteTimestamp;
 	}
 }
 

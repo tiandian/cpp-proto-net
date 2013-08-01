@@ -166,7 +166,7 @@
                                          FontWeight="Bold" FontSize="20" VerticalAlignment="Bottom"/>
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text=" "/>
-                                        / <Run Text="{Binding Record.DataItem.MaxPosition, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                        / <Run Text="{Binding Record.DataItem.Quantity, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </ControlTemplate>
@@ -255,7 +255,7 @@
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="OpenClose" Label="持仓/最大" Row="0" Column="7">
+                    <igDP:UnboundField Name="OpenClose" Label="撤单/每次手数" Row="0" Column="7">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource posiColStyle}" CellMinWidth="80"/>
                         </igDP:UnboundField.Settings>

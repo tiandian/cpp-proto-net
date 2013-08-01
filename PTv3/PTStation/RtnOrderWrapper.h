@@ -2,6 +2,7 @@
 
 #include "ThostTraderApi/ThostFtdcTraderApi.h"
 #include "entity/message.pb.h"
+#include <boost/chrono.hpp>
 
 class CRtnOrderWrapper
 {
@@ -40,8 +41,11 @@ public:
 	}
 	void ClearStatusMsg(){ memset(&m_orderField.StatusMsg, 0, sizeof(TThostFtdcErrorMsgType)); }
 
+	boost::chrono::steady_clock::time_point& Timestamp(){ return m_orderTimestamp; }
+
 private:
 	CThostFtdcOrderField m_orderField;
+	boost::chrono::steady_clock::time_point m_orderTimestamp;
 };
 
 typedef boost::shared_ptr<CRtnOrderWrapper> RtnOrderWrapperPtr;

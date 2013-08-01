@@ -11,6 +11,7 @@ void CMarketLoginWaiter::Cancel()
 
 void CMarketLoginWaiter::BeginWait(int secondsToWait)
 {
+	std::cout << "CMarketLoginWaiter(" << _quoteProxy->InvestorId() << "-" << _quoteProxy->ConnectingIP() << ") BEGIN ..." << std::endl;
 	_timer.expires_from_now(boost::chrono::seconds(secondsToWait));
 	_timer.async_wait(boost::bind(&CMarketLoginWaiter::TimeUp, this, _1));
 	_stop.store(false, boost::memory_order_release);

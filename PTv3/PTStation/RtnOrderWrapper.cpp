@@ -6,6 +6,7 @@
 CRtnOrderWrapper::CRtnOrderWrapper(CThostFtdcOrderField* pOrder)
 {
 	memcpy(&m_orderField, pOrder, sizeof(m_orderField));
+	m_orderTimestamp = boost::chrono::steady_clock::now();
 }
 
 

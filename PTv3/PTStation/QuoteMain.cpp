@@ -13,7 +13,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <csignal>
-//#include <set>
+#include <set>
 #include <boost/thread.hpp>
 #include <boost/chrono.hpp>
 #include <boost/shared_array.hpp>

@@ -1,6 +1,6 @@
 CC = g++
 INC_DIR=-I../dev/pushframework-2.2/include
-CFLAGS=$(INC_DIR) -DUSE_NET_LIBS
+CFLAGS=$(INC_DIR) -DUSE_NET_LIBS -O3
 PROTO_DIR = ./proto
 SRC = ./src
 ENTITY_DIR = ./src/entity
@@ -20,9 +20,10 @@ _FS_OBJS = stdafx \
 		LegOrderPlacer LogManager orderhelper OrderProcessor Portfolio \
 		PortfolioManager PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer \
 		ProtobufPacket ProtobufProtocol QuoteAgent QuoteFetcher QuoteRepositry \
-		QuoteStore RequestedServices ScalperStrategy ScalperTrigger SettingChangeTrace \
-		ShmQuoteFeed ShmQuoteSubscribe Strategy SymbolInfo SymbolInfoRepositry \
-		TradeAgent TradeStation TradingServer TradingServerProtocol Trigger
+		QuoteStore RequestedServices RtnOrderWrapper ScalperStrategy ScalperTrigger \
+		SettingChangeTrace ShmQuoteFeed ShmQuoteSubscribe Strategy SymbolInfo \
+		SymbolInfoRepositry TradeAgent TradeStation TradingServer TradingServerProtocol \
+		Trigger
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
 _QS_OBJS = stdafx \
@@ -46,7 +47,7 @@ $(OBJ_DIR)/%.o: $(SRC)/%.cpp
 
 # Compile quote station cpp
 $(QS_OBJ_DIR)/%.o: $(SRC)/%.cpp
-	$(CC) -c -o $@ $< 
+	$(CC) -c -o $@ $< -O3
 
 # Generate proto .h and .cc
 $(ENTITY_DIR)/packet.pb.cc: $(PROTO_DIR)/packet.proto

@@ -38,6 +38,8 @@ bool CQuoteProxy::Begin()
 {
 	try
 	{
+		cout << m_investorId << " Connecting " << m_connAddr << endl; 
+
 		unsigned ipEndPos = m_connAddr.find_last_of(":");
 		m_connectingIP = m_connAddr.substr(6, ipEndPos - 6);
 		string flowFolder = m_investorId + "/Md-" + m_connectingIP;
