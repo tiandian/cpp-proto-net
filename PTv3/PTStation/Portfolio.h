@@ -38,6 +38,7 @@ public:
 	void StartStrategy(int lastOrderId);
 	void StopStrategy();
 	void EnableTrigger(int triggerIdx, bool enabled);
+	void SetQuantity(int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty);
 
 	// legs
 	vector<LegPtr>& Legs(){ return m_legs;}

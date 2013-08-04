@@ -22,12 +22,12 @@ namespace PortfolioTrading.Modules.Account
     /// </summary>
     public partial class EditPortfolioDlg : Window
     {
-        private EditPortfolioVM _viewModel { get; set; }
+        private EditPortfolioVM _viewModel = new EditPortfolioVM();
 
         public EditPortfolioDlg()
         {
             InitializeComponent();
-            
+            this.DataContext = _viewModel;
         }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
@@ -45,17 +45,16 @@ namespace PortfolioTrading.Modules.Account
             DialogResult = false;
         }
 
+        private PortfolioVM _portfolio;
+
         public PortfolioVM Portfolio
         {
-            get;
-            set;
-        }
-
-
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            _viewModel = this.FindResource("editPortfolioVM") as EditPortfolioVM;
-            _viewModel.From(Portfolio);
+            get { return _portfolio; }
+            set 
+            { 
+                _portfolio = value;
+                _viewModel.From(_portfolio);
+            }
         }
 
         private void btnQuerySymbol_Click(object sender, RoutedEventArgs e)
@@ -102,7 +101,9 @@ namespace PortfolioTrading.Modules.Account
         {
             PortfId = portf.Id;
             Quantity = portf.Quantity;
-            MaxQuantity = portf.MaxPosition;
+            MaxOpenPerStart = portf.MaxOpenPerStart;
+            MaxCancelVol = portf.MaxCancel;
+            TotalOpenLimit = portf.TotalOpenLimit;
 
             int legIdx = 0;
             foreach (var leg in portf.Legs)
@@ -131,7 +132,9 @@ namespace PortfolioTrading.Modules.Account
         public void To(PortfolioVM portf)
         {
             portf.Quantity = this.Quantity;
-            portf.MaxPosition = this.MaxQuantity;
+            portf.TotalOpenLimit = this.TotalOpenLimit;
+            portf.MaxCancel = this.MaxCancelVol;
+            portf.MaxOpenPerStart = this.MaxOpenPerStart;
 
             if (Leg1)
             {
@@ -243,23 +246,56 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
-        #region MaxQuantity
-        private int _maxQuantity = 1;
+        #region TotalOpenLimit
+        private int _totalOpenLimit = 450;
 
-        public int MaxQuantity
+        public int TotalOpenLimit
         {
-            get { return _maxQuantity; }
+            get { return _totalOpenLimit; }
             set
             {
-                if (_maxQuantity != value)
+                if (_totalOpenLimit != value)
                 {
-                    _maxQuantity = value;
-                    RaisePropertyChanged("MaxQuantity");
+                    _totalOpenLimit = value;
+                    RaisePropertyChanged("TotalOpenLimit");
                 }
             }
         }
         #endregion
-        
+
+        #region MaxCancelVol
+        private int _maxCancelVol = 450;
+
+        public int MaxCancelVol
+        {
+            get { return _maxCancelVol; }
+            set
+            {
+                if (_maxCancelVol != value)
+                {
+                    _maxCancelVol = value;
+                    RaisePropertyChanged("MaxCancelVol");
+                }
+            }
+        }
+        #endregion
+
+        #region MaxOpenPerStart
+        private int _maxOpenPerStart = 200;
+
+        public int MaxOpenPerStart
+        {
+            get { return _maxOpenPerStart; }
+            set
+            {
+                if (_maxOpenPerStart != value)
+                {
+                    _maxOpenPerStart = value;
+                    RaisePropertyChanged("MaxOpenPerStart");
+                }
+            }
+        }
+        #endregion
 
         #region Leg1
         private bool _leg1 = true;

@@ -57,18 +57,52 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
-        #region MaxQuantity
-        private int _maxQty;
+        #region MaxOpenPerStart
+        private int _maxOpenPerStart;
 
-        public int MaxQuantity
+        public int MaxOpenPerStart
         {
-            get { return _maxQty; }
+            get { return _maxOpenPerStart; }
             set
             {
-                if (_maxQty != value)
+                if (_maxOpenPerStart != value)
                 {
-                    _maxQty = value;
-                    RaisePropertyChanged("MaxQuantity");
+                    _maxOpenPerStart = value;
+                    RaisePropertyChanged("MaxOpenPerStart");
+                }
+            }
+        }
+        #endregion
+
+        #region MaxCancel
+        private int _maxCancel;
+
+        public int MaxCancel
+        {
+            get { return _maxCancel; }
+            set
+            {
+                if (_maxCancel != value)
+                {
+                    _maxCancel = value;
+                    RaisePropertyChanged("MaxCancel");
+                }
+            }
+        }
+        #endregion
+
+        #region TotalOpenLimit
+        private int _totalOpenLimit;
+
+        public int TotalOpenLimit
+        {
+            get { return _totalOpenLimit; }
+            set
+            {
+                if (_totalOpenLimit != value)
+                {
+                    _totalOpenLimit = value;
+                    RaisePropertyChanged("TotalOpenLimit");
                 }
             }
         }

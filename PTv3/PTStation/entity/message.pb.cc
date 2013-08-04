@@ -773,10 +773,12 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioSwitchParam));
   ModifyPortfolioQtyParam_descriptor_ = file->message_type(34);
-  static const int ModifyPortfolioQtyParam_offsets_[3] = {
+  static const int ModifyPortfolioQtyParam_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, portfid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, onceqty_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, maxqty_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, peropenqty_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, perstartqty_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, totalopenlimit_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, maxcancelqty_),
   };
   ModifyPortfolioQtyParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -1185,30 +1187,32 @@ void protobuf_AddDesc_message_2eproto() {
     "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
     "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
     "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
-    "lePrefer\030\006 \002(\010\"K\n\027ModifyPortfolioQtyPara"
-    "m\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007OnceQty\030\002 \002(\005\022\016\n\006M"
-    "axQty\030\003 \002(\005\"<\n\030ModifyRunningStatusParam\022"
-    "\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Mod"
-    "ifyPortfolioPreferredLegParam\022\017\n\007PortfId"
-    "\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrder"
-    "Param\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 "
-    "\002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n"
-    "\006Symbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016"
-    "\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trad"
-    "e.TradeDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020"
-    "\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstr"
-    "ument\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Excha"
-    "ngeInstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016Vo"
-    "lumeMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n"
-    "\nServerType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRAD"
-    "E\020\001*>\n\023PortfolioSwitchType\022\023\n\017STRATEGY_S"
-    "WITCH\020\000\022\022\n\016TRIGGER_SWITCH\020\001*\?\n\014StrategyT"
-    "ype\022\r\n\tARBITRAGE\020\000\022\023\n\017CHANGE_POSITION\020\001\022"
-    "\013\n\007SCALPER\020\002*o\n\020DirectionDepends\022\017\n\013IGNO"
-    "RE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_S"
-    "IZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CHA"
-    "NGE\020\004*I\n\024StopLossCloseMethods\022\027\n\023BASED_O"
-    "N_NEXT_QUOTE\020\000\022\030\n\024BASED_ON_INPUT_LIMIT\020\001", 5520);
+    "lePrefer\030\006 \002(\010\"\201\001\n\027ModifyPortfolioQtyPar"
+    "am\022\017\n\007PortfId\030\001 \002(\t\022\022\n\nPerOpenQty\030\002 \002(\005\022"
+    "\023\n\013PerStartQty\030\003 \002(\005\022\026\n\016TotalOpenLimit\030\004"
+    " \002(\005\022\024\n\014MaxCancelQty\030\005 \002(\005\"<\n\030ModifyRunn"
+    "ingStatusParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabl"
+    "ed\030\002 \002(\010\"F\n ModifyPortfolioPreferredLegP"
+    "aram\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t"
+    "\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030\001 \002(\t\022\022"
+    "\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006"
+    "UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"y\n\025ManualCl"
+    "oseOrderParam\022\016\n\006Symbol\030\001 \002(\t\022,\n\tDirecti"
+    "on\030\002 \002(\0162\031.trade.TradeDirectionType\022\020\n\010O"
+    "penDate\030\003 \002(\t\022\020\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymb"
+    "olInfo\022\022\n\nInstrument\030\001 \002(\t\022\022\n\nExchangeID"
+    "\030\002 \002(\t\022\026\n\016ExchangeInstID\030\003 \002(\t\022\021\n\tProduc"
+    "tID\030\004 \002(\t\022\026\n\016VolumeMultiple\030\005 \002(\005\022\021\n\tPri"
+    "ceTick\030\006 \002(\001*,\n\nServerType\022\016\n\nSERV_QUOTE"
+    "\020\000\022\016\n\nSERV_TRADE\020\001*>\n\023PortfolioSwitchTyp"
+    "e\022\023\n\017STRATEGY_SWITCH\020\000\022\022\n\016TRIGGER_SWITCH"
+    "\020\001*\?\n\014StrategyType\022\r\n\tARBITRAGE\020\000\022\023\n\017CHA"
+    "NGE_POSITION\020\001\022\013\n\007SCALPER\020\002*o\n\020Direction"
+    "Depends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SIZ"
+    "E\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020"
+    "\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseMet"
+    "hods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_O"
+    "N_INPUT_LIMIT\020\001", 5575);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -13763,8 +13767,10 @@ void ModifyPortfolioSwitchParam::Swap(ModifyPortfolioSwitchParam* other) {
 
 #ifndef _MSC_VER
 const int ModifyPortfolioQtyParam::kPortfIdFieldNumber;
-const int ModifyPortfolioQtyParam::kOnceQtyFieldNumber;
-const int ModifyPortfolioQtyParam::kMaxQtyFieldNumber;
+const int ModifyPortfolioQtyParam::kPerOpenQtyFieldNumber;
+const int ModifyPortfolioQtyParam::kPerStartQtyFieldNumber;
+const int ModifyPortfolioQtyParam::kTotalOpenLimitFieldNumber;
+const int ModifyPortfolioQtyParam::kMaxCancelQtyFieldNumber;
 #endif  // !_MSC_VER
 
 ModifyPortfolioQtyParam::ModifyPortfolioQtyParam()
@@ -13784,8 +13790,10 @@ ModifyPortfolioQtyParam::ModifyPortfolioQtyParam(const ModifyPortfolioQtyParam& 
 void ModifyPortfolioQtyParam::SharedCtor() {
   _cached_size_ = 0;
   portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  onceqty_ = 0;
-  maxqty_ = 0;
+  peropenqty_ = 0;
+  perstartqty_ = 0;
+  totalopenlimit_ = 0;
+  maxcancelqty_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -13828,8 +13836,10 @@ void ModifyPortfolioQtyParam::Clear() {
         portfid_->clear();
       }
     }
-    onceqty_ = 0;
-    maxqty_ = 0;
+    peropenqty_ = 0;
+    perstartqty_ = 0;
+    totalopenlimit_ = 0;
+    maxcancelqty_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -13853,35 +13863,67 @@ bool ModifyPortfolioQtyParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(16)) goto parse_OnceQty;
+        if (input->ExpectTag(16)) goto parse_PerOpenQty;
         break;
       }
       
-      // required int32 OnceQty = 2;
+      // required int32 PerOpenQty = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_OnceQty:
+         parse_PerOpenQty:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &onceqty_)));
-          set_has_onceqty();
+                 input, &peropenqty_)));
+          set_has_peropenqty();
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_MaxQty;
+        if (input->ExpectTag(24)) goto parse_PerStartQty;
         break;
       }
       
-      // required int32 MaxQty = 3;
+      // required int32 PerStartQty = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
-         parse_MaxQty:
+         parse_PerStartQty:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &maxqty_)));
-          set_has_maxqty();
+                 input, &perstartqty_)));
+          set_has_perstartqty();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_TotalOpenLimit;
+        break;
+      }
+      
+      // required int32 TotalOpenLimit = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_TotalOpenLimit:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &totalopenlimit_)));
+          set_has_totalopenlimit();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(40)) goto parse_MaxCancelQty;
+        break;
+      }
+      
+      // required int32 MaxCancelQty = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_MaxCancelQty:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxcancelqty_)));
+          set_has_maxcancelqty();
         } else {
           goto handle_uninterpreted;
         }
@@ -13916,14 +13958,24 @@ void ModifyPortfolioQtyParam::SerializeWithCachedSizes(
       1, this->portfid(), output);
   }
   
-  // required int32 OnceQty = 2;
-  if (has_onceqty()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->onceqty(), output);
+  // required int32 PerOpenQty = 2;
+  if (has_peropenqty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->peropenqty(), output);
   }
   
-  // required int32 MaxQty = 3;
-  if (has_maxqty()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->maxqty(), output);
+  // required int32 PerStartQty = 3;
+  if (has_perstartqty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->perstartqty(), output);
+  }
+  
+  // required int32 TotalOpenLimit = 4;
+  if (has_totalopenlimit()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(4, this->totalopenlimit(), output);
+  }
+  
+  // required int32 MaxCancelQty = 5;
+  if (has_maxcancelqty()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->maxcancelqty(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -13944,14 +13996,24 @@ void ModifyPortfolioQtyParam::SerializeWithCachedSizes(
         1, this->portfid(), target);
   }
   
-  // required int32 OnceQty = 2;
-  if (has_onceqty()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->onceqty(), target);
+  // required int32 PerOpenQty = 2;
+  if (has_peropenqty()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->peropenqty(), target);
   }
   
-  // required int32 MaxQty = 3;
-  if (has_maxqty()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->maxqty(), target);
+  // required int32 PerStartQty = 3;
+  if (has_perstartqty()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->perstartqty(), target);
+  }
+  
+  // required int32 TotalOpenLimit = 4;
+  if (has_totalopenlimit()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(4, this->totalopenlimit(), target);
+  }
+  
+  // required int32 MaxCancelQty = 5;
+  if (has_maxcancelqty()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->maxcancelqty(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -13972,18 +14034,32 @@ int ModifyPortfolioQtyParam::ByteSize() const {
           this->portfid());
     }
     
-    // required int32 OnceQty = 2;
-    if (has_onceqty()) {
+    // required int32 PerOpenQty = 2;
+    if (has_peropenqty()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->onceqty());
+          this->peropenqty());
     }
     
-    // required int32 MaxQty = 3;
-    if (has_maxqty()) {
+    // required int32 PerStartQty = 3;
+    if (has_perstartqty()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
-          this->maxqty());
+          this->perstartqty());
+    }
+    
+    // required int32 TotalOpenLimit = 4;
+    if (has_totalopenlimit()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->totalopenlimit());
+    }
+    
+    // required int32 MaxCancelQty = 5;
+    if (has_maxcancelqty()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->maxcancelqty());
     }
     
   }
@@ -14016,11 +14092,17 @@ void ModifyPortfolioQtyParam::MergeFrom(const ModifyPortfolioQtyParam& from) {
     if (from.has_portfid()) {
       set_portfid(from.portfid());
     }
-    if (from.has_onceqty()) {
-      set_onceqty(from.onceqty());
+    if (from.has_peropenqty()) {
+      set_peropenqty(from.peropenqty());
     }
-    if (from.has_maxqty()) {
-      set_maxqty(from.maxqty());
+    if (from.has_perstartqty()) {
+      set_perstartqty(from.perstartqty());
+    }
+    if (from.has_totalopenlimit()) {
+      set_totalopenlimit(from.totalopenlimit());
+    }
+    if (from.has_maxcancelqty()) {
+      set_maxcancelqty(from.maxcancelqty());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -14039,7 +14121,7 @@ void ModifyPortfolioQtyParam::CopyFrom(const ModifyPortfolioQtyParam& from) {
 }
 
 bool ModifyPortfolioQtyParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if ((_has_bits_[0] & 0x0000001f) != 0x0000001f) return false;
   
   return true;
 }
@@ -14047,8 +14129,10 @@ bool ModifyPortfolioQtyParam::IsInitialized() const {
 void ModifyPortfolioQtyParam::Swap(ModifyPortfolioQtyParam* other) {
   if (other != this) {
     std::swap(portfid_, other->portfid_);
-    std::swap(onceqty_, other->onceqty_);
-    std::swap(maxqty_, other->maxqty_);
+    std::swap(peropenqty_, other->peropenqty_);
+    std::swap(perstartqty_, other->perstartqty_);
+    std::swap(totalopenlimit_, other->totalopenlimit_);
+    std::swap(maxcancelqty_, other->maxcancelqty_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

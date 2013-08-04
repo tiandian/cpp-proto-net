@@ -343,8 +343,10 @@ message ModifyPortfolioSwitchParam
 message ModifyPortfolioQtyParam
 {
 	required string PortfId = 1;
-	required int32 OnceQty = 2;
-	required int32 MaxQty = 3;
+	required int32 PerOpenQty = 2;
+	required int32 PerStartQty = 3;
+	required int32 TotalOpenLimit = 4;
+	required int32 MaxCancelQty = 5;
 }
 
 message ModifyRunningStatusParam

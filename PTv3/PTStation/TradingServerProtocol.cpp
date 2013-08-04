@@ -30,6 +30,8 @@ ProtobufPacketImpl* CTradingServerProtocol::createIncomingPacketFromServiceId( i
 		return new ProtobufPacket<entity::ApplyStrategySettingsRequest>(serviceId);
 	case HeartbeatRequestID:
 		return new ProtobufPacket<entity::HeartbeatRequest>(serviceId);
+	case PortfolioModifyQtyRequestID:
+		return new ProtobufPacket<entity::ModifyPortfolioQtyParam>(serviceId);
 	default:
 		assert(false);
 		return NULL;

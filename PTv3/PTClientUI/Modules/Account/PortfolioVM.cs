@@ -302,23 +302,6 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
-        #region MaxPosition
-        private int _maxPosition = 1;
-
-        public int MaxPosition
-        {
-            get { return _maxPosition; }
-            set
-            {
-                if (_maxPosition != value)
-                {
-                    _maxPosition = value;
-                    RaisePropertyChanged("MaxPosition");
-                }
-            }
-        }
-        #endregion
-
         #region AvgCost
         private double _avgCost;
 
@@ -370,7 +353,6 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
         
-
         #region IsRunning
         private bool _isRunning;
 
@@ -389,7 +371,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region MaxOpenPerStart
-        private int _maxOpenPerStart = 100;
+        private int _maxOpenPerStart = 200;
 
         public int MaxOpenPerStart
         {
@@ -406,7 +388,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region MaxCancel
-        private int _maxCancel = 250;
+        private int _maxCancel = 450;
 
         public int MaxCancel
         {
@@ -423,7 +405,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region TotalOpenLimit
-        private int _totalOpenLimit = 200;
+        private int _totalOpenLimit = 450;
 
         public int TotalOpenLimit
         {
@@ -541,12 +523,6 @@ namespace PortfolioTrading.Modules.Account
                 portf.AvgCost = avgCost;
             }
 
-            attr = xmlElement.Attribute("maxPosition");
-            if (attr != null)
-            {
-                portf.MaxPosition = int.Parse(attr.Value);
-            }
-
             attr = xmlElement.Attribute("autoOpen");
             if (attr != null)
             {
@@ -617,7 +593,6 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("quantity", _qty));
             elem.Add(new XAttribute("currentPosition", _position));
             elem.Add(new XAttribute("avgCost", _avgCost.ToString("F2")));
-            elem.Add(new XAttribute("maxPosition", _maxPosition));
             elem.Add(new XAttribute("autoOpen", _autoOpen.ToString()));
             elem.Add(new XAttribute("autoStopGain", _autoStopGain.ToString()));
             elem.Add(new XAttribute("autoStopLoss", _autoStopLoss.ToString()));
@@ -626,7 +601,6 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("maxOpenPerStart", _maxOpenPerStart));
             elem.Add(new XAttribute("maxCancel", _maxCancel));
             elem.Add(new XAttribute("totalOpenLimit", _totalOpenLimit));
-            
 
             XElement elemLegs = new XElement("legs");
             foreach (var l in _legs)
@@ -790,20 +764,24 @@ namespace PortfolioTrading.Modules.Account
             var viewModel = new ModifyQtyViewModel();
             viewModel.PortfolioId = Id;
             viewModel.OnceQuantity = Quantity;
-            viewModel.MaxQuantity = MaxPosition;
+            viewModel.TotalOpenLimit = TotalOpenLimit;
+            viewModel.MaxOpenPerStart = MaxOpenPerStart;
+            viewModel.MaxCancel = MaxCancel;
             ModifyMaxQtyDlg dlg = new ModifyMaxQtyDlg(viewModel);
             dlg.Owner = System.Windows.Application.Current.MainWindow;
             bool? ret = dlg.ShowDialog();
             if (ret ?? false)
             {
-                int onceQty = viewModel.OnceQuantity;
-                int maxQty = viewModel.MaxQuantity;
+                Quantity = viewModel.OnceQuantity;
+                TotalOpenLimit = viewModel.TotalOpenLimit;
+                MaxOpenPerStart = viewModel.MaxOpenPerStart;
+                MaxCancel = viewModel.MaxCancel;
 
                 if (_accountVm.VerifyStatus())
                 {
-                    _accountVm.Host.PortfModifyQuantity(Id, onceQty, maxQty);
-                    EventLogger.Write("{0} 修改组合 {1}数量: 每次 {2}, 最大 {3}",
-                        _accountVm.InvestorId, DisplayText, onceQty, maxQty);
+                    _accountVm.Host.PortfModifyQuantity(Id, Quantity, MaxOpenPerStart, TotalOpenLimit, MaxCancel);
+                    EventLogger.Write("{0} 修改组合 {1}数量: 每次->{2}, 每组->{3}， 最多->{4}, 撤单->{5}",
+                        _accountVm.InvestorId, DisplayText, Quantity, MaxOpenPerStart, TotalOpenLimit, MaxCancel);
                 }
             }
             

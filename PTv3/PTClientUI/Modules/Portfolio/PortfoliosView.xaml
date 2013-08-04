@@ -142,31 +142,48 @@
                     </Setter>
                 </Style>
 
-                <!-- Open/Close statistics -->
+                <!-- perOpen/perStart -->
+                <Style x:Key="perOpenColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Record.DataItem.Quantity, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                          VerticalAlignment="Bottom"/>
+                                    <TextBlock VerticalAlignment="Center">
+                                         &#160;/&#160;<Run Text="{Binding Record.DataItem.MaxOpenPerStart, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+
+                <!-- Open/Close/Max Open statistics -->
                 <Style x:Key="openColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Run Text="{Binding Record.DataItem.OpenTimes, RelativeSource={RelativeSource Mode=TemplatedParent}}"/> / 
-                                    <Run Text="{Binding Record.DataItem.DoneTimes, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                    <Run Text="{Binding Record.DataItem.OpenTimes, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>&#160;/&#160;
+                                    <Run Text="{Binding Record.DataItem.DoneTimes, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>&#160;/&#160;
+                                    <Run Text="{Binding Record.DataItem.TotalOpenLimit, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
                                 </TextBlock>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
                 </Style>
 
-                <!-- Position -->
+                <!-- Cancel vol/Max -->
                 <Style x:Key="posiColStyle"  TargetType="{x:Type igDP:CellValuePresenter}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type igDP:CellValuePresenter}">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Record.DataItem.Position, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                         FontWeight="Bold" FontSize="20" VerticalAlignment="Bottom"/>
+                                    <TextBlock Text="{Binding Record.DataItem.CancelVolume, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                               VerticalAlignment="Bottom"/>
                                     <TextBlock VerticalAlignment="Center">
-                                        <Run Text=" "/>
-                                        / <Run Text="{Binding Record.DataItem.Quantity, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
+                                         &#160;/&#160;<Run Text="{Binding Record.DataItem.MaxCancel, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
                                     </TextBlock>
                                 </StackPanel>
                             </ControlTemplate>
@@ -249,23 +266,23 @@
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="OpenClose" Label="开仓/平仓" Row="0" Column="6">
+                    <igDP:UnboundField Name="PerOpen" Label="每次/每组" Row="0" Column="6">
+                        <igDP:Field.Settings>
+                            <igDP:FieldSettings CellValuePresenterStyle="{StaticResource perOpenColStyle}" CellMinWidth="80"/>
+                        </igDP:Field.Settings>
+                    </igDP:UnboundField>
+
+                    <igDP:UnboundField Name="OpenClose" Label="开仓/平仓/最多" Row="0" Column="7">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource openColStyle}" CellMinWidth="80"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
 
-                    <igDP:UnboundField Name="OpenClose" Label="撤单/每次手数" Row="0" Column="7">
+                    <igDP:UnboundField Name="OpenClose" Label="撤单/最多" Row="0" Column="8">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource posiColStyle}" CellMinWidth="80"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
-
-                    <igDP:Field Name="AvgCost" Label="平均成本" Row="0" Column="8">
-                        <igDP:Field.Settings>
-                            <igDP:FieldSettings CellMinWidth="80"/>
-                        </igDP:Field.Settings>
-                    </igDP:Field>
                     
                     <igDP:Field Name="Gain" Label="盈利" Row="0" Column="9">
                         <igDP:Field.Settings>
