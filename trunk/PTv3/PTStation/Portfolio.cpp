@@ -23,9 +23,9 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	, m_cancelTimes(0)
 	, m_profit(0)
 	, m_avgCost(0)
-	, m_maxOpenPerStart(30)
-	, m_maxCancel(100)
-	, m_totalOpenLimit(80)
+	, m_maxOpenPerStart(100)
+	, m_maxCancel(450)
+	, m_totalOpenLimit(450)
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
@@ -288,4 +288,17 @@ void CPortfolio::UpdatePosition()
 	if(posiQty < 0)
 		posiQty = 0;
 	m_currentPosition = posiQty;
+}
+
+void CPortfolio::SetQuantity( int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty )
+{
+	m_portfolioItem.set_quantity(perOpenQty);
+	m_portfolioItem.set_maxopenperstart(perStartQty);
+	m_portfolioItem.set_totalopenlimit(totalOpenLimit);
+	m_portfolioItem.set_maxcancel(maxCancelQty);
+	
+	InitOpenCancelLimit(m_portfolioItem);
+
+	logger.Info(boost::str(boost::format("[%s] Portfolio (%s) Modify Quantity: PerOpen = %d, PerStart = %d, MaxOpen = %d, MaxCancel = %d") 
+		% InvestorId() % ID() % perOpenQty % perStartQty % totalOpenLimit % maxCancelQty));
 }

@@ -79,6 +79,33 @@ void ClientBase::Disconnect()
 	EndHeartbeat();
 }
 
+void ClientBase::SendHeartbeat(Object ^obj)
+{
+	IntPtr tsPtr;
+	try
+	{
+		String ^tsClient = System::DateTime::Now.ToString();
+		tsPtr = (IntPtr)Marshal::StringToHGlobalAnsi(tsClient);
+		_nativeClient->SendHeartbeat((char*)tsPtr.ToPointer());
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(tsPtr);
+	}
+}
+
+void ClientBase::BeginHeartbeat()
+{
+	TimerCallback^ tcb = gcnew TimerCallback(this, &ClientBase::SendHeartbeat);
+	_heartTimer = gcnew Timer(tcb, nullptr, 10000, 60000);
+}
+
+void ClientBase::EndHeartbeat()
+{
+	if(_heartTimer != nullptr)
+		_heartTimer->Change(Timeout::Infinite, Timeout::Infinite);
+}
+
 void ClientBase::AddPortfolio( PortfolioItem ^portfItem )
 {
 	if(this->IsConnected)
@@ -142,31 +169,22 @@ void ClientBase::PortfApplyStrategySettings( String ^portfId, StrategyItem ^stra
 	}
 }
 
-void ClientBase::SendHeartbeat(Object ^obj)
+void ClientBase::PortfModifyQuantity( String ^portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty )
 {
-	IntPtr tsPtr;
+	if(!this->IsConnected)
+		return;
+
+	IntPtr pPortfIdAddress;
 	try
 	{
-		String ^tsClient = System::DateTime::Now.ToString();
-		tsPtr = (IntPtr)Marshal::StringToHGlobalAnsi(tsClient);
-		_nativeClient->SendHeartbeat((char*)tsPtr.ToPointer());
+		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(portfId);
+		_nativeClient->PortfModifyQuantity((char*)pPortfIdAddress.ToPointer(), 
+			perOpenQty, perStartQty, totalOpenLimit, maxCancelQty);
 	}
 	finally
 	{
-		Marshal::FreeHGlobal(tsPtr);
+		Marshal::FreeHGlobal(pPortfIdAddress);
 	}
-}
-
-void ClientBase::BeginHeartbeat()
-{
-	TimerCallback^ tcb = gcnew TimerCallback(this, &ClientBase::SendHeartbeat);
-	_heartTimer = gcnew Timer(tcb, nullptr, 10000, 60000);
-}
-
-void ClientBase::EndHeartbeat()
-{
-	if(_heartTimer != nullptr)
-		_heartTimer->Change(Timeout::Infinite, Timeout::Infinite);
 }
 
 }

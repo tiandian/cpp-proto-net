@@ -4331,37 +4331,57 @@ class ModifyPortfolioQtyParam : public ::google::protobuf::Message {
   inline ::std::string* mutable_portfid();
   inline ::std::string* release_portfid();
   
-  // required int32 OnceQty = 2;
-  inline bool has_onceqty() const;
-  inline void clear_onceqty();
-  static const int kOnceQtyFieldNumber = 2;
-  inline ::google::protobuf::int32 onceqty() const;
-  inline void set_onceqty(::google::protobuf::int32 value);
+  // required int32 PerOpenQty = 2;
+  inline bool has_peropenqty() const;
+  inline void clear_peropenqty();
+  static const int kPerOpenQtyFieldNumber = 2;
+  inline ::google::protobuf::int32 peropenqty() const;
+  inline void set_peropenqty(::google::protobuf::int32 value);
   
-  // required int32 MaxQty = 3;
-  inline bool has_maxqty() const;
-  inline void clear_maxqty();
-  static const int kMaxQtyFieldNumber = 3;
-  inline ::google::protobuf::int32 maxqty() const;
-  inline void set_maxqty(::google::protobuf::int32 value);
+  // required int32 PerStartQty = 3;
+  inline bool has_perstartqty() const;
+  inline void clear_perstartqty();
+  static const int kPerStartQtyFieldNumber = 3;
+  inline ::google::protobuf::int32 perstartqty() const;
+  inline void set_perstartqty(::google::protobuf::int32 value);
+  
+  // required int32 TotalOpenLimit = 4;
+  inline bool has_totalopenlimit() const;
+  inline void clear_totalopenlimit();
+  static const int kTotalOpenLimitFieldNumber = 4;
+  inline ::google::protobuf::int32 totalopenlimit() const;
+  inline void set_totalopenlimit(::google::protobuf::int32 value);
+  
+  // required int32 MaxCancelQty = 5;
+  inline bool has_maxcancelqty() const;
+  inline void clear_maxcancelqty();
+  static const int kMaxCancelQtyFieldNumber = 5;
+  inline ::google::protobuf::int32 maxcancelqty() const;
+  inline void set_maxcancelqty(::google::protobuf::int32 value);
   
   // @@protoc_insertion_point(class_scope:entity.ModifyPortfolioQtyParam)
  private:
   inline void set_has_portfid();
   inline void clear_has_portfid();
-  inline void set_has_onceqty();
-  inline void clear_has_onceqty();
-  inline void set_has_maxqty();
-  inline void clear_has_maxqty();
+  inline void set_has_peropenqty();
+  inline void clear_has_peropenqty();
+  inline void set_has_perstartqty();
+  inline void clear_has_perstartqty();
+  inline void set_has_totalopenlimit();
+  inline void clear_has_totalopenlimit();
+  inline void set_has_maxcancelqty();
+  inline void clear_has_maxcancelqty();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   ::std::string* portfid_;
-  ::google::protobuf::int32 onceqty_;
-  ::google::protobuf::int32 maxqty_;
+  ::google::protobuf::int32 peropenqty_;
+  ::google::protobuf::int32 perstartqty_;
+  ::google::protobuf::int32 totalopenlimit_;
+  ::google::protobuf::int32 maxcancelqty_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -9999,48 +10019,92 @@ inline ::std::string* ModifyPortfolioQtyParam::release_portfid() {
   }
 }
 
-// required int32 OnceQty = 2;
-inline bool ModifyPortfolioQtyParam::has_onceqty() const {
+// required int32 PerOpenQty = 2;
+inline bool ModifyPortfolioQtyParam::has_peropenqty() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ModifyPortfolioQtyParam::set_has_onceqty() {
+inline void ModifyPortfolioQtyParam::set_has_peropenqty() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ModifyPortfolioQtyParam::clear_has_onceqty() {
+inline void ModifyPortfolioQtyParam::clear_has_peropenqty() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void ModifyPortfolioQtyParam::clear_onceqty() {
-  onceqty_ = 0;
-  clear_has_onceqty();
+inline void ModifyPortfolioQtyParam::clear_peropenqty() {
+  peropenqty_ = 0;
+  clear_has_peropenqty();
 }
-inline ::google::protobuf::int32 ModifyPortfolioQtyParam::onceqty() const {
-  return onceqty_;
+inline ::google::protobuf::int32 ModifyPortfolioQtyParam::peropenqty() const {
+  return peropenqty_;
 }
-inline void ModifyPortfolioQtyParam::set_onceqty(::google::protobuf::int32 value) {
-  set_has_onceqty();
-  onceqty_ = value;
+inline void ModifyPortfolioQtyParam::set_peropenqty(::google::protobuf::int32 value) {
+  set_has_peropenqty();
+  peropenqty_ = value;
 }
 
-// required int32 MaxQty = 3;
-inline bool ModifyPortfolioQtyParam::has_maxqty() const {
+// required int32 PerStartQty = 3;
+inline bool ModifyPortfolioQtyParam::has_perstartqty() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void ModifyPortfolioQtyParam::set_has_maxqty() {
+inline void ModifyPortfolioQtyParam::set_has_perstartqty() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void ModifyPortfolioQtyParam::clear_has_maxqty() {
+inline void ModifyPortfolioQtyParam::clear_has_perstartqty() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void ModifyPortfolioQtyParam::clear_maxqty() {
-  maxqty_ = 0;
-  clear_has_maxqty();
+inline void ModifyPortfolioQtyParam::clear_perstartqty() {
+  perstartqty_ = 0;
+  clear_has_perstartqty();
 }
-inline ::google::protobuf::int32 ModifyPortfolioQtyParam::maxqty() const {
-  return maxqty_;
+inline ::google::protobuf::int32 ModifyPortfolioQtyParam::perstartqty() const {
+  return perstartqty_;
 }
-inline void ModifyPortfolioQtyParam::set_maxqty(::google::protobuf::int32 value) {
-  set_has_maxqty();
-  maxqty_ = value;
+inline void ModifyPortfolioQtyParam::set_perstartqty(::google::protobuf::int32 value) {
+  set_has_perstartqty();
+  perstartqty_ = value;
+}
+
+// required int32 TotalOpenLimit = 4;
+inline bool ModifyPortfolioQtyParam::has_totalopenlimit() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void ModifyPortfolioQtyParam::set_has_totalopenlimit() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void ModifyPortfolioQtyParam::clear_has_totalopenlimit() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void ModifyPortfolioQtyParam::clear_totalopenlimit() {
+  totalopenlimit_ = 0;
+  clear_has_totalopenlimit();
+}
+inline ::google::protobuf::int32 ModifyPortfolioQtyParam::totalopenlimit() const {
+  return totalopenlimit_;
+}
+inline void ModifyPortfolioQtyParam::set_totalopenlimit(::google::protobuf::int32 value) {
+  set_has_totalopenlimit();
+  totalopenlimit_ = value;
+}
+
+// required int32 MaxCancelQty = 5;
+inline bool ModifyPortfolioQtyParam::has_maxcancelqty() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void ModifyPortfolioQtyParam::set_has_maxcancelqty() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void ModifyPortfolioQtyParam::clear_has_maxcancelqty() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void ModifyPortfolioQtyParam::clear_maxcancelqty() {
+  maxcancelqty_ = 0;
+  clear_has_maxcancelqty();
+}
+inline ::google::protobuf::int32 ModifyPortfolioQtyParam::maxcancelqty() const {
+  return maxcancelqty_;
+}
+inline void ModifyPortfolioQtyParam::set_maxcancelqty(::google::protobuf::int32 value) {
+  set_has_maxcancelqty();
+  maxcancelqty_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -133,3 +133,14 @@ void HeartbeatService::handle( LogicalConnection* pClient, IncomingPacket* pRequ
 	resp.getData().set_timestamp(tsSvr);
 	pClient->PushPacket(&resp);
 }
+
+void PortfModifyQtyService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
+{
+	ProtobufPacket<entity::ModifyPortfolioQtyParam>* pReqPacket = (ProtobufPacket<entity::ModifyPortfolioQtyParam>*)pRequest;
+	entity::ModifyPortfolioQtyParam& modifyQtyParam = pReqPacket->getData();
+	
+	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
+	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(modifyQtyParam.portfid());
+	pPortf->SetQuantity(modifyQtyParam.peropenqty(), modifyQtyParam.perstartqty(), 
+		modifyQtyParam.totalopenlimit(), modifyQtyParam.maxcancelqty());
+}

@@ -178,6 +178,18 @@ void CNatvieClient::ApplyStrategySettings( const char* portfId, PTEntity::Strate
 	sendRequest(&request);
 }
 
+void CNatvieClient::PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty)
+{
+	ProtobufPacket<entity::ModifyPortfolioQtyParam> request(PortfolioModifyQtyRequestID);
+	request.getData().set_portfid(portfId);
+	request.getData().set_peropenqty(perOpenQty);
+	request.getData().set_perstartqty(perStartQty);
+	request.getData().set_totalopenlimit(totalOpenLimit);
+	request.getData().set_maxcancelqty(maxCancelQty);
+	
+	sendRequest(&request);
+}
+
 void CNatvieClient::OnPortfolioUpdateResponse( entity::PortfolioUpdateItem& resp )
 {
 	msclr::auto_gcroot<PortfolioUpdateItem^> updateItem = gcnew PortfolioUpdateItem(&resp);

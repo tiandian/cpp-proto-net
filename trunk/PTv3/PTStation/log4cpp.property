@@ -1,6 +1,5 @@
 log4cpp.rootCategory=DEBUG, rollingAppender
 log4cpp.category.logger=DEBUG, consoleAppender
-log4cpp.category.quote=DEBUG, quoteTracer
 
 log4cpp.appender.consoleAppender=ConsoleAppender
 log4cpp.appender.consoleAppender.layout=PatternLayout
@@ -13,9 +12,3 @@ log4cpp.appender.rollingAppender.maxBackupIndex=10
 log4cpp.appender.rollingAppender.layout=PatternLayout
 log4cpp.appender.rollingAppender.layout.ConversionPattern=%d{%m-%d %H:%M:%S,%l} <%t> [%p] %m%n
 
-log4cpp.appender.quoteTracer=RollingFileAppender
-log4cpp.appender.quoteTracer.fileName=./log/qs_log.txt
-log4cpp.appender.quoteTracer.maxFileSize=1024000
-log4cpp.appender.quoteTracer.maxBackupIndex=10
-log4cpp.appender.quoteTracer.layout=PatternLayout
-log4cpp.appender.quoteTracer.layout.ConversionPattern=%d{%m-%d %H:%M:%S,%l} <%t> [%p] %m%n

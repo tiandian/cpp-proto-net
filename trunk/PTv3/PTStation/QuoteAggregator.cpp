@@ -57,17 +57,20 @@ bool CQuoteAggregator::Initialize(const string& brokerId, const string& userId)
 
 void CQuoteAggregator::SubscribeMarketData( char** symbolArr, int symCount )
 {
-	m_subscribeFunc(symbolArr, symCount);
+	if(!m_subscribeFunc.empty())
+		m_subscribeFunc(symbolArr, symCount);
 }
 
 void CQuoteAggregator::UnsubscribeMarketData( char** symbolArr, int symCount )
 {
-	m_unsubscribeFunc(symbolArr, symCount);
+	if(!m_subscribeFunc.empty())
+		m_unsubscribeFunc(symbolArr, symCount);
 }
 
 void CQuoteAggregator::OnTerminateNotified()
 {
-	m_quotingEndFunc();
+	if(!m_quotingEndFunc.empty())
+		m_quotingEndFunc();
 }
 
 void CQuoteAggregator::OnQuoteReceived( const string& connectIP, CThostFtdcDepthMarketDataField *pDepthMarketData )

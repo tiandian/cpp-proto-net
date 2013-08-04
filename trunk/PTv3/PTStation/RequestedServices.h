@@ -52,3 +52,8 @@ protected:
 	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
 };
 
+class PortfModifyQtyService : public Service
+{
+protected:
+	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
+};

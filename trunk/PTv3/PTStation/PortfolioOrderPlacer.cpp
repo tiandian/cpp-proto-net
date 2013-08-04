@@ -680,6 +680,9 @@ void CPortfolioOrderPlacer::OnLegCanceled(const RtnOrderWrapperPtr& pRtnOrder )
 void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_point& quoteTimestamp, entity::Quote* pQuote )
 {
 	boost::lock_guard<boost::mutex> l(m_mutOuterAccessFsm);
+	
+	if(m_activeOrdPlacer == NULL)
+		return;	// in case already cleaned up
 
 	// if order placer is closing order and retry times available
 	if(!(m_activeOrdPlacer->IsOpen()) && m_activeOrdPlacer->CanRetry())
