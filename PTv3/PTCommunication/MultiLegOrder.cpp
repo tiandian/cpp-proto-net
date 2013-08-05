@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "MultiLegOrder.h"
+#include "charsetconvert.h"
 
 
 PTEntity::MultiLegOrder::MultiLegOrder( const trade::MultiLegOrder* pEntity )
@@ -12,7 +13,11 @@ PTEntity::MultiLegOrder::MultiLegOrder( const trade::MultiLegOrder* pEntity )
 	OpenDate = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->opendate().c_str());
 	Reason = static_cast<SubmitReason>(pEntity->reason());
 	HasWarn = pEntity->haswarn();
-	StatusMsg = Marshal::PtrToStringAnsi((IntPtr) (char *) pEntity->statusmsg().c_str());
+
+	wchar_t* uniStr = UTF8ToUnicode(pEntity->statusmsg().c_str());
+	StatusMsg = Marshal::PtrToStringAuto((IntPtr)uniStr);
+	delete[] uniStr;
+
 	Offset = static_cast<MlOrderOffset>(pEntity->offset());
 
 	// legs
