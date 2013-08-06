@@ -30,8 +30,8 @@ public:
 	virtual int OnPortfolioRemovePosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder);
 
 	bool IsRunning(){ return m_running.load(boost::memory_order_acquire); }
-	void Start(){ m_running.store(true, boost::memory_order_release); }
-	void Stop(){ m_running.store(false, boost::memory_order_release); }
+	virtual void Start(){ m_running.store(true, boost::memory_order_release); }
+	virtual void Stop(){ m_running.store(false, boost::memory_order_release); }
 
 protected:
 

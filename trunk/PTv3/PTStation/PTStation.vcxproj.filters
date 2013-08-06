@@ -49,6 +49,12 @@
     <Filter Include="Source Files\quote">
       <UniqueIdentifier>{a712f574-4a1f-403b-9cdc-e7c48fb17365}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\tech">
+      <UniqueIdentifier>{7fdc702b-a63c-4f69-8e5e-71e5072a4edf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\tech">
+      <UniqueIdentifier>{deebf15d-372c-4a25-9cf5-a51c10b07483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -239,6 +245,24 @@
     <ClInclude Include="RtnOrderWrapper.h">
       <Filter>Header Files\trade</Filter>
     </ClInclude>
+    <ClInclude Include="TechAnalyStrategy.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="PriceBarGen.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="HistDataWriter.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="HistDataReader.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="PriceBarDataSource.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="OHLCRecordSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -393,6 +417,24 @@
     </ClCompile>
     <ClCompile Include="RtnOrderWrapper.cpp">
       <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="TechAnalyStrategy.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="PriceBarGen.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="HistDataReader.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="HistDataWriter.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="PriceBarDataSource.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="OHLCRecordSet.cpp">
+      <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
