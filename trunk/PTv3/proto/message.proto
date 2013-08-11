@@ -153,6 +153,8 @@ message StrategyItem
 	optional DirectionDepends SC_CaseNoChange = 305;
 	optional StopLossCloseMethods SC_StopLossStrategy = 306;
 
+	// HistSlope
+	optional double HS_StdHist = 401;
 }
 
 message TriggerItem
@@ -173,6 +175,9 @@ message TriggerItem
 	// Scalper
 	optional double SC_Threshold = 301;
 	
+	// HistSlope
+	optional double HS_AngelThreshold = 401;
+	optional PosiOffsetFlag HS_Offset = 402;
 }
 
 message TriggerStatus
@@ -190,7 +195,8 @@ message PortfolioItem
 	required int32 MaxCancel = 4;
 	required int32 MaxOpenPerStart = 5;
 	required int32 TotalOpenLimit = 6;
-	required StrategyItem Strategy = 7;
+	repeated string EndTimePoints = 7;
+	required StrategyItem Strategy = 8;
 }
 
 message PortfolioUpdateItem
@@ -217,6 +223,9 @@ message PortfolioUpdateItem
 	optional int32 AR_ShortSize = 105;
 	// Scalper
 	optional double SC_Diff = 201;
+	// HistSlope
+	optional double HS_FastAngel = 301;
+	optional double HS_SlowAngel = 302;
 }
 
 message ConnectParam
@@ -347,6 +356,7 @@ message ModifyPortfolioQtyParam
 	required int32 PerStartQty = 3;
 	required int32 TotalOpenLimit = 4;
 	required int32 MaxCancelQty = 5;
+	repeated string EndTimePoints = 6;
 }
 
 message ModifyRunningStatusParam

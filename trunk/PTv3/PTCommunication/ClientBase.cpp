@@ -3,6 +3,8 @@
 #include "stdafx.h"
 
 #include "ClientBase.h"
+#include <string>
+#include <vector>
 
 namespace PTCommunication {
 
@@ -169,7 +171,7 @@ void ClientBase::PortfApplyStrategySettings( String ^portfId, StrategyItem ^stra
 	}
 }
 
-void ClientBase::PortfModifyQuantity( String ^portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty )
+void ClientBase::PortfModifyQuantity( String ^portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty, array<String^> ^timepoints )
 {
 	if(!this->IsConnected)
 		return;
@@ -178,8 +180,15 @@ void ClientBase::PortfModifyQuantity( String ^portfId, int perOpenQty, int perSt
 	try
 	{
 		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(portfId);
+		vector<string> timepointsVector;
+		for each(String ^tp in timepoints)
+		{
+			IntPtr tpPtr = (IntPtr)Marshal::StringToHGlobalAnsi(tp);
+			timepointsVector.push_back((char*)tpPtr.ToPointer());
+			Marshal::FreeHGlobal(tpPtr);
+		}
 		_nativeClient->PortfModifyQuantity((char*)pPortfIdAddress.ToPointer(), 
-			perOpenQty, perStartQty, totalOpenLimit, maxCancelQty);
+			perOpenQty, perStartQty, totalOpenLimit, maxCancelQty, timepointsVector);
 	}
 	finally
 	{

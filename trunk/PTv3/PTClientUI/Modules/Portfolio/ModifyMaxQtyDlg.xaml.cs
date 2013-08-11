@@ -108,5 +108,37 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        #region EndTimePointsExpr
+        private string _endTimePointsExpr;
+
+        public string EndTimePointsExpr
+        {
+            get { return _endTimePointsExpr; }
+            set
+            {
+                if (_endTimePointsExpr != value)
+                {
+                    _endTimePointsExpr = value;
+                    RaisePropertyChanged("EndTimePointsExpr");
+                }
+            }
+        }
+        #endregion
+
+        public string[] getEndTimePoints()
+        {
+            List<string> ret = new List<string>();
+            if (!string.IsNullOrEmpty(_endTimePointsExpr))
+            {
+                string[] tps = _endTimePointsExpr.Split(',');
+                foreach (string s in tps)
+                {
+                    if (!string.IsNullOrWhiteSpace(s))
+                        ret.Add(s.Trim());
+                }
+            }
+
+            return ret.ToArray(); ;
+        }
     }
 }

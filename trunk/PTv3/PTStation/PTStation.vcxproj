@@ -118,6 +118,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="globalmembers.h" />
     <ClInclude Include="HistDataReader.h" />
     <ClInclude Include="HistDataWriter.h" />
+    <ClInclude Include="HistSlopeStrategy.h" />
+    <ClInclude Include="HistSlopeTrigger.h" />
     <ClInclude Include="InputOrder.h" />
     <ClInclude Include="Leg.h" />
     <ClInclude Include="LegOrderPlacer.h" />
@@ -131,6 +133,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="PortfolioOrderHelper.h" />
     <ClInclude Include="PortfolioOrderPlacer.h" />
     <ClInclude Include="PortfolioScalperOrderPlacer.h" />
+    <ClInclude Include="PriceBarDataProxy.h" />
     <ClInclude Include="PriceBarDataSource.h" />
     <ClInclude Include="PriceBarGen.h" />
     <ClInclude Include="ProtobufPacket.h" />
@@ -199,6 +202,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="FileOperations.cpp" />
     <ClCompile Include="HistDataReader.cpp" />
     <ClCompile Include="HistDataWriter.cpp" />
+    <ClCompile Include="HistSlopeStrategy.cpp" />
+    <ClCompile Include="HistSlopeTrigger.cpp" />
     <ClCompile Include="InputOrder.cpp" />
     <ClCompile Include="Leg.cpp" />
     <ClCompile Include="LegOrderPlacer.cpp" />
@@ -213,6 +218,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="PortfolioOrderHelper.cpp" />
     <ClCompile Include="PortfolioOrderPlacer.cpp" />
     <ClCompile Include="PortfolioScalperOrderPlacer.cpp" />
+    <ClCompile Include="PriceBarDataProxy.cpp" />
     <ClCompile Include="PriceBarDataSource.cpp" />
     <ClCompile Include="PriceBarGen.cpp" />
     <ClCompile Include="ProtobufPacket.cpp" />

@@ -143,4 +143,15 @@ void PortfModifyQtyService::handle( LogicalConnection* pClient, IncomingPacket* 
 	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(modifyQtyParam.portfid());
 	pPortf->SetQuantity(modifyQtyParam.peropenqty(), modifyQtyParam.perstartqty(), 
 		modifyQtyParam.totalopenlimit(), modifyQtyParam.maxcancelqty());
+
+	vector<string> timepointVec;
+	int count = modifyQtyParam.endtimepoints_size();
+	if(count > 0)
+	{
+		for(int i = 0; i < count; ++i)
+		{
+			timepointVec.push_back(modifyQtyParam.endtimepoints(i));
+		}
+	}
+	pPortf->SetEndTimePoints(timepointVec);
 }

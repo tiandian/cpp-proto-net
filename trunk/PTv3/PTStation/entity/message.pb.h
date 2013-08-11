@@ -1958,6 +1958,13 @@ class StrategyItem : public ::google::protobuf::Message {
   inline entity::StopLossCloseMethods sc_stoplossstrategy() const;
   inline void set_sc_stoplossstrategy(entity::StopLossCloseMethods value);
   
+  // optional double HS_StdHist = 401;
+  inline bool has_hs_stdhist() const;
+  inline void clear_hs_stdhist();
+  static const int kHSStdHistFieldNumber = 401;
+  inline double hs_stdhist() const;
+  inline void set_hs_stdhist(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.StrategyItem)
  private:
   inline void set_has_type();
@@ -1984,6 +1991,8 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_sc_casenochange();
   inline void set_has_sc_stoplossstrategy();
   inline void clear_has_sc_stoplossstrategy();
+  inline void set_has_hs_stdhist();
+  inline void clear_has_hs_stdhist();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2000,9 +2009,10 @@ class StrategyItem : public ::google::protobuf::Message {
   int sc_casege4tick_;
   int sc_casenochange_;
   int sc_stoplossstrategy_;
+  double hs_stdhist_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(14 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2134,6 +2144,20 @@ class TriggerItem : public ::google::protobuf::Message {
   inline double sc_threshold() const;
   inline void set_sc_threshold(double value);
   
+  // optional double HS_AngelThreshold = 401;
+  inline bool has_hs_angelthreshold() const;
+  inline void clear_hs_angelthreshold();
+  static const int kHSAngelThresholdFieldNumber = 401;
+  inline double hs_angelthreshold() const;
+  inline void set_hs_angelthreshold(double value);
+  
+  // optional .entity.PosiOffsetFlag HS_Offset = 402;
+  inline bool has_hs_offset() const;
+  inline void clear_hs_offset();
+  static const int kHSOffsetFieldNumber = 402;
+  inline entity::PosiOffsetFlag hs_offset() const;
+  inline void set_hs_offset(entity::PosiOffsetFlag value);
+  
   // @@protoc_insertion_point(class_scope:entity.TriggerItem)
  private:
   inline void set_has_strategy();
@@ -2154,6 +2178,10 @@ class TriggerItem : public ::google::protobuf::Message {
   inline void clear_has_cp_threshold();
   inline void set_has_sc_threshold();
   inline void clear_has_sc_threshold();
+  inline void set_has_hs_angelthreshold();
+  inline void clear_has_hs_angelthreshold();
+  inline void set_has_hs_offset();
+  inline void clear_has_hs_offset();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2166,9 +2194,11 @@ class TriggerItem : public ::google::protobuf::Message {
   double cp_threshold_;
   double sc_threshold_;
   int cp_condition_;
+  int hs_offset_;
+  double hs_angelthreshold_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(11 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2390,10 +2420,26 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 totalopenlimit() const;
   inline void set_totalopenlimit(::google::protobuf::int32 value);
   
-  // required .entity.StrategyItem Strategy = 7;
+  // repeated string EndTimePoints = 7;
+  inline int endtimepoints_size() const;
+  inline void clear_endtimepoints();
+  static const int kEndTimePointsFieldNumber = 7;
+  inline const ::std::string& endtimepoints(int index) const;
+  inline ::std::string* mutable_endtimepoints(int index);
+  inline void set_endtimepoints(int index, const ::std::string& value);
+  inline void set_endtimepoints(int index, const char* value);
+  inline void set_endtimepoints(int index, const char* value, size_t size);
+  inline ::std::string* add_endtimepoints();
+  inline void add_endtimepoints(const ::std::string& value);
+  inline void add_endtimepoints(const char* value);
+  inline void add_endtimepoints(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& endtimepoints() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_endtimepoints();
+  
+  // required .entity.StrategyItem Strategy = 8;
   inline bool has_strategy() const;
   inline void clear_strategy();
-  static const int kStrategyFieldNumber = 7;
+  static const int kStrategyFieldNumber = 8;
   inline const ::entity::StrategyItem& strategy() const;
   inline ::entity::StrategyItem* mutable_strategy();
   inline ::entity::StrategyItem* release_strategy();
@@ -2421,10 +2467,11 @@ class PortfolioItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 maxcancel_;
   ::google::protobuf::int32 maxopenperstart_;
   ::google::protobuf::int32 totalopenlimit_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> endtimepoints_;
   ::entity::StrategyItem* strategy_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2619,6 +2666,20 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline double sc_diff() const;
   inline void set_sc_diff(double value);
   
+  // optional double HS_FastAngel = 301;
+  inline bool has_hs_fastangel() const;
+  inline void clear_hs_fastangel();
+  static const int kHSFastAngelFieldNumber = 301;
+  inline double hs_fastangel() const;
+  inline void set_hs_fastangel(double value);
+  
+  // optional double HS_SlowAngel = 302;
+  inline bool has_hs_slowangel() const;
+  inline void clear_hs_slowangel();
+  static const int kHSSlowAngelFieldNumber = 302;
+  inline double hs_slowangel() const;
+  inline void set_hs_slowangel(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioUpdateItem)
  private:
   inline void set_has_id();
@@ -2649,6 +2710,10 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_ar_shortsize();
   inline void set_has_sc_diff();
   inline void clear_has_sc_diff();
+  inline void set_has_hs_fastangel();
+  inline void clear_has_hs_fastangel();
+  inline void set_has_hs_slowangel();
+  inline void clear_has_hs_slowangel();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2668,9 +2733,11 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 ar_longsize_;
   ::google::protobuf::int32 ar_shortsize_;
   double sc_diff_;
+  double hs_fastangel_;
+  double hs_slowangel_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(16 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(18 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -4359,6 +4426,22 @@ class ModifyPortfolioQtyParam : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 maxcancelqty() const;
   inline void set_maxcancelqty(::google::protobuf::int32 value);
   
+  // repeated string EndTimePoints = 6;
+  inline int endtimepoints_size() const;
+  inline void clear_endtimepoints();
+  static const int kEndTimePointsFieldNumber = 6;
+  inline const ::std::string& endtimepoints(int index) const;
+  inline ::std::string* mutable_endtimepoints(int index);
+  inline void set_endtimepoints(int index, const ::std::string& value);
+  inline void set_endtimepoints(int index, const char* value);
+  inline void set_endtimepoints(int index, const char* value, size_t size);
+  inline ::std::string* add_endtimepoints();
+  inline void add_endtimepoints(const ::std::string& value);
+  inline void add_endtimepoints(const char* value);
+  inline void add_endtimepoints(const char* value, size_t size);
+  inline const ::google::protobuf::RepeatedPtrField< ::std::string>& endtimepoints() const;
+  inline ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_endtimepoints();
+  
   // @@protoc_insertion_point(class_scope:entity.ModifyPortfolioQtyParam)
  private:
   inline void set_has_portfid();
@@ -4379,9 +4462,10 @@ class ModifyPortfolioQtyParam : public ::google::protobuf::Message {
   ::google::protobuf::int32 perstartqty_;
   ::google::protobuf::int32 totalopenlimit_;
   ::google::protobuf::int32 maxcancelqty_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> endtimepoints_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -7180,6 +7264,28 @@ inline void StrategyItem::set_sc_stoplossstrategy(entity::StopLossCloseMethods v
   sc_stoplossstrategy_ = value;
 }
 
+// optional double HS_StdHist = 401;
+inline bool StrategyItem::has_hs_stdhist() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void StrategyItem::set_has_hs_stdhist() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void StrategyItem::clear_has_hs_stdhist() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void StrategyItem::clear_hs_stdhist() {
+  hs_stdhist_ = 0;
+  clear_has_hs_stdhist();
+}
+inline double StrategyItem::hs_stdhist() const {
+  return hs_stdhist_;
+}
+inline void StrategyItem::set_hs_stdhist(double value) {
+  set_has_hs_stdhist();
+  hs_stdhist_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // TriggerItem
@@ -7420,6 +7526,51 @@ inline double TriggerItem::sc_threshold() const {
 inline void TriggerItem::set_sc_threshold(double value) {
   set_has_sc_threshold();
   sc_threshold_ = value;
+}
+
+// optional double HS_AngelThreshold = 401;
+inline bool TriggerItem::has_hs_angelthreshold() const {
+  return (_has_bits_[0] & 0x00000200u) != 0;
+}
+inline void TriggerItem::set_has_hs_angelthreshold() {
+  _has_bits_[0] |= 0x00000200u;
+}
+inline void TriggerItem::clear_has_hs_angelthreshold() {
+  _has_bits_[0] &= ~0x00000200u;
+}
+inline void TriggerItem::clear_hs_angelthreshold() {
+  hs_angelthreshold_ = 0;
+  clear_has_hs_angelthreshold();
+}
+inline double TriggerItem::hs_angelthreshold() const {
+  return hs_angelthreshold_;
+}
+inline void TriggerItem::set_hs_angelthreshold(double value) {
+  set_has_hs_angelthreshold();
+  hs_angelthreshold_ = value;
+}
+
+// optional .entity.PosiOffsetFlag HS_Offset = 402;
+inline bool TriggerItem::has_hs_offset() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void TriggerItem::set_has_hs_offset() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void TriggerItem::clear_has_hs_offset() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void TriggerItem::clear_hs_offset() {
+  hs_offset_ = 0;
+  clear_has_hs_offset();
+}
+inline entity::PosiOffsetFlag TriggerItem::hs_offset() const {
+  return static_cast< entity::PosiOffsetFlag >(hs_offset_);
+}
+inline void TriggerItem::set_hs_offset(entity::PosiOffsetFlag value) {
+  GOOGLE_DCHECK(entity::PosiOffsetFlag_IsValid(value));
+  set_has_hs_offset();
+  hs_offset_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7704,15 +7855,59 @@ inline void PortfolioItem::set_totalopenlimit(::google::protobuf::int32 value) {
   totalopenlimit_ = value;
 }
 
-// required .entity.StrategyItem Strategy = 7;
+// repeated string EndTimePoints = 7;
+inline int PortfolioItem::endtimepoints_size() const {
+  return endtimepoints_.size();
+}
+inline void PortfolioItem::clear_endtimepoints() {
+  endtimepoints_.Clear();
+}
+inline const ::std::string& PortfolioItem::endtimepoints(int index) const {
+  return endtimepoints_.Get(index);
+}
+inline ::std::string* PortfolioItem::mutable_endtimepoints(int index) {
+  return endtimepoints_.Mutable(index);
+}
+inline void PortfolioItem::set_endtimepoints(int index, const ::std::string& value) {
+  endtimepoints_.Mutable(index)->assign(value);
+}
+inline void PortfolioItem::set_endtimepoints(int index, const char* value) {
+  endtimepoints_.Mutable(index)->assign(value);
+}
+inline void PortfolioItem::set_endtimepoints(int index, const char* value, size_t size) {
+  endtimepoints_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* PortfolioItem::add_endtimepoints() {
+  return endtimepoints_.Add();
+}
+inline void PortfolioItem::add_endtimepoints(const ::std::string& value) {
+  endtimepoints_.Add()->assign(value);
+}
+inline void PortfolioItem::add_endtimepoints(const char* value) {
+  endtimepoints_.Add()->assign(value);
+}
+inline void PortfolioItem::add_endtimepoints(const char* value, size_t size) {
+  endtimepoints_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+PortfolioItem::endtimepoints() const {
+  return endtimepoints_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+PortfolioItem::mutable_endtimepoints() {
+  return &endtimepoints_;
+}
+
+// required .entity.StrategyItem Strategy = 8;
 inline bool PortfolioItem::has_strategy() const {
-  return (_has_bits_[0] & 0x00000040u) != 0;
+  return (_has_bits_[0] & 0x00000080u) != 0;
 }
 inline void PortfolioItem::set_has_strategy() {
-  _has_bits_[0] |= 0x00000040u;
+  _has_bits_[0] |= 0x00000080u;
 }
 inline void PortfolioItem::clear_has_strategy() {
-  _has_bits_[0] &= ~0x00000040u;
+  _has_bits_[0] &= ~0x00000080u;
 }
 inline void PortfolioItem::clear_strategy() {
   if (strategy_ != NULL) strategy_->::entity::StrategyItem::Clear();
@@ -8166,6 +8361,50 @@ inline double PortfolioUpdateItem::sc_diff() const {
 inline void PortfolioUpdateItem::set_sc_diff(double value) {
   set_has_sc_diff();
   sc_diff_ = value;
+}
+
+// optional double HS_FastAngel = 301;
+inline bool PortfolioUpdateItem::has_hs_fastangel() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_hs_fastangel() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void PortfolioUpdateItem::clear_has_hs_fastangel() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void PortfolioUpdateItem::clear_hs_fastangel() {
+  hs_fastangel_ = 0;
+  clear_has_hs_fastangel();
+}
+inline double PortfolioUpdateItem::hs_fastangel() const {
+  return hs_fastangel_;
+}
+inline void PortfolioUpdateItem::set_hs_fastangel(double value) {
+  set_has_hs_fastangel();
+  hs_fastangel_ = value;
+}
+
+// optional double HS_SlowAngel = 302;
+inline bool PortfolioUpdateItem::has_hs_slowangel() const {
+  return (_has_bits_[0] & 0x00020000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_hs_slowangel() {
+  _has_bits_[0] |= 0x00020000u;
+}
+inline void PortfolioUpdateItem::clear_has_hs_slowangel() {
+  _has_bits_[0] &= ~0x00020000u;
+}
+inline void PortfolioUpdateItem::clear_hs_slowangel() {
+  hs_slowangel_ = 0;
+  clear_has_hs_slowangel();
+}
+inline double PortfolioUpdateItem::hs_slowangel() const {
+  return hs_slowangel_;
+}
+inline void PortfolioUpdateItem::set_hs_slowangel(double value) {
+  set_has_hs_slowangel();
+  hs_slowangel_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -10105,6 +10344,50 @@ inline ::google::protobuf::int32 ModifyPortfolioQtyParam::maxcancelqty() const {
 inline void ModifyPortfolioQtyParam::set_maxcancelqty(::google::protobuf::int32 value) {
   set_has_maxcancelqty();
   maxcancelqty_ = value;
+}
+
+// repeated string EndTimePoints = 6;
+inline int ModifyPortfolioQtyParam::endtimepoints_size() const {
+  return endtimepoints_.size();
+}
+inline void ModifyPortfolioQtyParam::clear_endtimepoints() {
+  endtimepoints_.Clear();
+}
+inline const ::std::string& ModifyPortfolioQtyParam::endtimepoints(int index) const {
+  return endtimepoints_.Get(index);
+}
+inline ::std::string* ModifyPortfolioQtyParam::mutable_endtimepoints(int index) {
+  return endtimepoints_.Mutable(index);
+}
+inline void ModifyPortfolioQtyParam::set_endtimepoints(int index, const ::std::string& value) {
+  endtimepoints_.Mutable(index)->assign(value);
+}
+inline void ModifyPortfolioQtyParam::set_endtimepoints(int index, const char* value) {
+  endtimepoints_.Mutable(index)->assign(value);
+}
+inline void ModifyPortfolioQtyParam::set_endtimepoints(int index, const char* value, size_t size) {
+  endtimepoints_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ModifyPortfolioQtyParam::add_endtimepoints() {
+  return endtimepoints_.Add();
+}
+inline void ModifyPortfolioQtyParam::add_endtimepoints(const ::std::string& value) {
+  endtimepoints_.Add()->assign(value);
+}
+inline void ModifyPortfolioQtyParam::add_endtimepoints(const char* value) {
+  endtimepoints_.Add()->assign(value);
+}
+inline void ModifyPortfolioQtyParam::add_endtimepoints(const char* value, size_t size) {
+  endtimepoints_.Add()->assign(reinterpret_cast<const char*>(value), size);
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+ModifyPortfolioQtyParam::endtimepoints() const {
+  return endtimepoints_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+ModifyPortfolioQtyParam::mutable_endtimepoints() {
+  return &endtimepoints_;
 }
 
 // -------------------------------------------------------------------

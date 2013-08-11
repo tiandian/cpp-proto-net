@@ -263,6 +263,15 @@
     <ClInclude Include="OHLCRecordSet.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
+    <ClInclude Include="HistSlopeStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="HistSlopeTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="PriceBarDataProxy.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -434,6 +443,15 @@
       <Filter>Source Files\tech</Filter>
     </ClCompile>
     <ClCompile Include="OHLCRecordSet.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="HistSlopeStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="HistSlopeTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="PriceBarDataProxy.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>

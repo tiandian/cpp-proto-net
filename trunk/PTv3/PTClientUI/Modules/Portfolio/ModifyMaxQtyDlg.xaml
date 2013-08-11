@@ -39,6 +39,10 @@
                 <xctk:DecimalUpDown Margin="2" Increment="10"
                                     Value="{Binding MaxCancel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DockPanel>
+            <DockPanel Margin="4">
+                <TextBlock VerticalAlignment="Center" Margin="2">自动停止时间点</TextBlock>
+                <TextBox VerticalAlignment="Center" Margin="2" DockPanel.Dock="Right" Text="{Binding EndTimePointsExpr, Mode=TwoWay}"/>
+            </DockPanel>
         </StackPanel>
     </DockPanel>
 </Window>
