@@ -25,7 +25,7 @@ private:
 	CPriceBarGen m_priceBarGen;
 	CHistDataWriter m_histDataWriter;
 	CHistDataReader m_histDataReader;
-	CPriceBarDataSource m_dataSource;
+	CTechDataRepo m_dataSource;
 
 	int m_precision;
 };

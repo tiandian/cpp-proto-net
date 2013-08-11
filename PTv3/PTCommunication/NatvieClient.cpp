@@ -178,7 +178,7 @@ void CNatvieClient::ApplyStrategySettings( const char* portfId, PTEntity::Strate
 	sendRequest(&request);
 }
 
-void CNatvieClient::PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty)
+void CNatvieClient::PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty, vector<string>& endTimePointsVec)
 {
 	ProtobufPacket<entity::ModifyPortfolioQtyParam> request(PortfolioModifyQtyRequestID);
 	request.getData().set_portfid(portfId);
@@ -187,6 +187,11 @@ void CNatvieClient::PortfModifyQuantity(const char* portfId, int perOpenQty, int
 	request.getData().set_totalopenlimit(totalOpenLimit);
 	request.getData().set_maxcancelqty(maxCancelQty);
 	
+	for(vector<string>::iterator iter = endTimePointsVec.begin(); iter != endTimePointsVec.end(); ++iter)
+	{
+		request.getData().add_endtimepoints(*iter);
+	}
+
 	sendRequest(&request);
 }
 

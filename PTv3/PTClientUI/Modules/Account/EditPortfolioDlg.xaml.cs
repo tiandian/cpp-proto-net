@@ -104,6 +104,7 @@ namespace PortfolioTrading.Modules.Account
             MaxOpenPerStart = portf.MaxOpenPerStart;
             MaxCancelVol = portf.MaxCancel;
             TotalOpenLimit = portf.TotalOpenLimit;
+            EndTimePointsExpr = portf.EndTimePointsExpr;
 
             int legIdx = 0;
             foreach (var leg in portf.Legs)
@@ -135,6 +136,7 @@ namespace PortfolioTrading.Modules.Account
             portf.TotalOpenLimit = this.TotalOpenLimit;
             portf.MaxCancel = this.MaxCancelVol;
             portf.MaxOpenPerStart = this.MaxOpenPerStart;
+            portf.EndTimePointsExpr = this.EndTimePointsExpr;
 
             if (Leg1)
             {
@@ -292,6 +294,23 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _maxOpenPerStart = value;
                     RaisePropertyChanged("MaxOpenPerStart");
+                }
+            }
+        }
+        #endregion
+
+        #region EndTimePointsExpr
+        private string _endTimePointsExpr;
+
+        public string EndTimePointsExpr
+        {
+            get { return _endTimePointsExpr; }
+            set
+            {
+                if (_endTimePointsExpr != value)
+                {
+                    _endTimePointsExpr = value;
+                    RaisePropertyChanged("EndTimePointsExpr");
                 }
             }
         }

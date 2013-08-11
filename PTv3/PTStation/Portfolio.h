@@ -39,6 +39,7 @@ public:
 	void StopStrategy();
 	void EnableTrigger(int triggerIdx, bool enabled);
 	void SetQuantity(int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty);
+	void SetEndTimePoints(vector<string>& timepoints);
 
 	// legs
 	vector<LegPtr>& Legs(){ return m_legs;}
@@ -64,6 +65,9 @@ private:
 	void PrepareTriggerUpdate();
 	StrategyPtr CreateStrategy(const entity::StrategyItem& strategyItem);
 	void InitOpenCancelLimit( const entity::PortfolioItem &srcPortfolioItem );
+	void InitEndTimePoints( const entity::PortfolioItem& srcPortfolioItem);
+	void CheckForStop(const string& quoteUpdateTime);
+	void StopStrategyDueTo(const string& stopReason);
 	
 	void OnQuoteRecevied(boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote);
 	
@@ -92,6 +96,11 @@ private:
 	int m_maxOpenPerStart;
 	int m_maxCancel;
 	int m_totalOpenLimit;
+
+	// end time points
+	vector<string> m_endTimePoints;
+	string m_targetEnd;
+	boost::mutex m_endTimeMutex;
 
 	// statistics
 	int m_openTimes;

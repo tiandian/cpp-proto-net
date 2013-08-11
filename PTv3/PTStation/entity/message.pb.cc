@@ -409,7 +409,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(LegUpdateItem));
   StrategyItem_descriptor_ = file->message_type(15);
-  static const int StrategyItem_offsets_[13] = {
+  static const int StrategyItem_offsets_[14] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, retrytimes_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, opentimeout_),
@@ -423,6 +423,7 @@ void protobuf_AssignDesc_message_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_casege4tick_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_casenochange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_stoplossstrategy_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, hs_stdhist_),
   };
   StrategyItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -436,7 +437,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StrategyItem));
   TriggerItem_descriptor_ = file->message_type(16);
-  static const int TriggerItem_offsets_[9] = {
+  static const int TriggerItem_offsets_[11] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, strategy_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, enabled_),
@@ -446,6 +447,8 @@ void protobuf_AssignDesc_message_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, cp_condition_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, cp_threshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, sc_threshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, hs_angelthreshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, hs_offset_),
   };
   TriggerItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -476,13 +479,14 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(TriggerStatus));
   PortfolioItem_descriptor_ = file->message_type(18);
-  static const int PortfolioItem_offsets_[7] = {
+  static const int PortfolioItem_offsets_[8] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, quantity_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, legs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, maxcancel_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, maxopenperstart_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, totalopenlimit_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, endtimepoints_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioItem, strategy_),
   };
   PortfolioItem_reflection_ =
@@ -497,7 +501,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(PortfolioItem));
   PortfolioUpdateItem_descriptor_ = file->message_type(19);
-  static const int PortfolioUpdateItem_offsets_[16] = {
+  static const int PortfolioUpdateItem_offsets_[18] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, legs_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, strategy_),
@@ -514,6 +518,8 @@ void protobuf_AssignDesc_message_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, ar_longsize_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, ar_shortsize_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, sc_diff_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, hs_fastangel_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfolioUpdateItem, hs_slowangel_),
   };
   PortfolioUpdateItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -773,12 +779,13 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(ModifyPortfolioSwitchParam));
   ModifyPortfolioQtyParam_descriptor_ = file->message_type(34);
-  static const int ModifyPortfolioQtyParam_offsets_[5] = {
+  static const int ModifyPortfolioQtyParam_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, portfid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, peropenqty_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, perstartqty_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, totalopenlimit_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, maxcancelqty_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ModifyPortfolioQtyParam, endtimepoints_),
   };
   ModifyPortfolioQtyParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -1106,7 +1113,7 @@ void protobuf_AddDesc_message_2eproto() {
     "dateItem\022\016\n\006Symbol\030\001 \002(\t\022!\n\006Status\030\002 \002(\016"
     "2\021.entity.LegStatus\022\014\n\004Last\030\003 \002(\001\022\013\n\003Ask"
     "\030\004 \002(\001\022\017\n\007AskSize\030\005 \002(\005\022\013\n\003Bid\030\006 \002(\001\022\017\n\007"
-    "BidSize\030\007 \002(\005\"\231\004\n\014StrategyItem\022\"\n\004Type\030\001"
+    "BidSize\030\007 \002(\005\"\256\004\n\014StrategyItem\022\"\n\004Type\030\001"
     " \002(\0162\024.entity.StrategyType\022\022\n\nRetryTimes"
     "\030\002 \002(\005\022\023\n\013OpenTimeout\030\003 \002(\005\022%\n\010Triggers\030"
     "\004 \003(\0132\023.entity.TriggerItem\022*\n\007AR_Side\030e "
@@ -1119,100 +1126,104 @@ void protobuf_AddDesc_message_2eproto() {
     "eGE4Tick\030\260\002 \001(\0162\030.entity.DirectionDepend"
     "s\0222\n\017SC_CaseNoChange\030\261\002 \001(\0162\030.entity.Dir"
     "ectionDepends\022:\n\023SC_StopLossStrategy\030\262\002 "
-    "\001(\0162\034.entity.StopLossCloseMethods\"\244\002\n\013Tr"
-    "iggerItem\022&\n\010Strategy\030\001 \002(\0162\024.entity.Str"
-    "ategyType\022\014\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010"
-    "\022.\n\014AR_Condition\030e \001(\0162\030.entity.CompareC"
-    "ondition\022\024\n\014AR_Threshold\030f \001(\001\022)\n\tAR_Off"
-    "set\030g \001(\0162\026.entity.PosiOffsetFlag\022/\n\014CP_"
-    "Condition\030\311\001 \001(\0162\030.entity.CompareConditi"
-    "on\022\025\n\014CP_Threshold\030\312\001 \001(\001\022\025\n\014SC_Threshol"
-    "d\030\255\002 \001(\001\"V\n\rTriggerStatus\022&\n\010Strategy\030\001 "
-    "\002(\0162\024.entity.StrategyType\022\014\n\004Name\030\002 \002(\t\022"
-    "\017\n\007Enabled\030\003 \002(\010\"\270\001\n\rPortfolioItem\022\n\n\002ID"
-    "\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\035\n\004Legs\030\003 \003(\0132\017"
-    ".entity.LegItem\022\021\n\tMaxCancel\030\004 \002(\005\022\027\n\017Ma"
-    "xOpenPerStart\030\005 \002(\005\022\026\n\016TotalOpenLimit\030\006 "
-    "\002(\005\022&\n\010Strategy\030\007 \002(\0132\024.entity.StrategyI"
-    "tem\"\221\003\n\023PortfolioUpdateItem\022\n\n\002ID\030\001 \002(\t\022"
-    "#\n\004Legs\030\002 \003(\0132\025.entity.LegUpdateItem\022&\n\010"
-    "Strategy\030\003 \002(\0162\024.entity.StrategyType\022\017\n\007"
-    "Running\030\004 \002(\010\022\'\n\010Triggers\030\005 \003(\0132\025.entity"
-    ".TriggerStatus\022\026\n\016TotalOpenTimes\030\006 \002(\005\022\027"
-    "\n\017TotalCloseTimes\030\007 \002(\005\022\027\n\017CurrentPositi"
-    "on\030\010 \002(\005\022\023\n\013CancelTimes\030\t \002(\005\022\017\n\007Message"
-    "\030\n \001(\t\022\017\n\007AR_Diff\030e \001(\001\022\023\n\013AR_LongDiff\030f"
-    " \001(\001\022\024\n\014AR_ShortDiff\030g \001(\001\022\023\n\013AR_LongSiz"
-    "e\030h \001(\005\022\024\n\014AR_ShortSize\030i \001(\005\022\020\n\007SC_Diff"
-    "\030\311\001 \001(\001\":\n\014ConnectParam\022\024\n\014QuoteAddress\030"
-    "\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017Operation"
-    "Return\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030"
-    "\002 \002(\t\"7\n\017AccountSettings\022\021\n\tMaxSubmit\030\001 "
-    "\002(\005\022\021\n\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020\n\010"
-    "BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Passwo"
-    "rd\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entity."
-    "AccountSettings\" \n\rRegQuoteParam\022\017\n\007Symb"
-    "ols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Portfo"
-    "lioItems\030\001 \003(\0132\025.entity.PortfolioItem\"I\n"
-    "\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Q"
-    "uantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Clos"
-    "ePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024."
-    "trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t"
-    "\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027"
-    "\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003"
-    " \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002\n"
-    "\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002(\016"
-    "2\031.entity.PosiDirectionType\022/\n\rOpenCondi"
-    "tion\030\002 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCondi"
-    "tion\030\004 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCondi"
-    "tion\030\006 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiSt"
-    "rategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Clos"
-    "eLegSide\030\002 \002(\0162\031.entity.PosiDirectionTyp"
-    "e\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.Com"
-    "pareCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017Sca"
-    "lperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPrice"
-    "Tick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.entity"
-    ".DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\0162\030"
-    ".entity.DirectionDepends\022-\n\013CaseGE4Tick\030"
-    "\005 \002(\0162\030.entity.DirectionDepends\022.\n\014CaseN"
-    "oChange\030\006 \002(\0162\030.entity.DirectionDepends\022"
-    "6\n\020StopLossStrategy\030\007 \002(\0162\034.entity.StopL"
-    "ossCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n\013O"
-    "penTimeout\030\t \001(\005\"R\n\023ModifyStrategyParam\022"
-    "\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024"
-    "\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolio"
-    "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
-    "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
-    "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
-    "lePrefer\030\006 \002(\010\"\201\001\n\027ModifyPortfolioQtyPar"
-    "am\022\017\n\007PortfId\030\001 \002(\t\022\022\n\nPerOpenQty\030\002 \002(\005\022"
-    "\023\n\013PerStartQty\030\003 \002(\005\022\026\n\016TotalOpenLimit\030\004"
-    " \002(\005\022\024\n\014MaxCancelQty\030\005 \002(\005\"<\n\030ModifyRunn"
-    "ingStatusParam\022\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabl"
-    "ed\030\002 \002(\010\"F\n ModifyPortfolioPreferredLegP"
-    "aram\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t"
-    "\"j\n\020CancelOrderParam\022\020\n\010OrderRef\030\001 \002(\t\022\022"
-    "\n\nExchangeId\030\002 \002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006"
-    "UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 \002(\t\"y\n\025ManualCl"
-    "oseOrderParam\022\016\n\006Symbol\030\001 \002(\t\022,\n\tDirecti"
-    "on\030\002 \002(\0162\031.trade.TradeDirectionType\022\020\n\010O"
-    "penDate\030\003 \002(\t\022\020\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymb"
-    "olInfo\022\022\n\nInstrument\030\001 \002(\t\022\022\n\nExchangeID"
-    "\030\002 \002(\t\022\026\n\016ExchangeInstID\030\003 \002(\t\022\021\n\tProduc"
-    "tID\030\004 \002(\t\022\026\n\016VolumeMultiple\030\005 \002(\005\022\021\n\tPri"
-    "ceTick\030\006 \002(\001*,\n\nServerType\022\016\n\nSERV_QUOTE"
-    "\020\000\022\016\n\nSERV_TRADE\020\001*>\n\023PortfolioSwitchTyp"
-    "e\022\023\n\017STRATEGY_SWITCH\020\000\022\022\n\016TRIGGER_SWITCH"
-    "\020\001*\?\n\014StrategyType\022\r\n\tARBITRAGE\020\000\022\023\n\017CHA"
-    "NGE_POSITION\020\001\022\013\n\007SCALPER\020\002*o\n\020Direction"
-    "Depends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SIZ"
-    "E\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020"
-    "\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseMet"
-    "hods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_O"
-    "N_INPUT_LIMIT\020\001", 5575);
+    "\001(\0162\034.entity.StopLossCloseMethods\022\023\n\nHS_"
+    "StdHist\030\221\003 \001(\001\"\354\002\n\013TriggerItem\022&\n\010Strate"
+    "gy\030\001 \002(\0162\024.entity.StrategyType\022\014\n\004Name\030\002"
+    " \002(\t\022\017\n\007Enabled\030\003 \002(\010\022.\n\014AR_Condition\030e "
+    "\001(\0162\030.entity.CompareCondition\022\024\n\014AR_Thre"
+    "shold\030f \001(\001\022)\n\tAR_Offset\030g \001(\0162\026.entity."
+    "PosiOffsetFlag\022/\n\014CP_Condition\030\311\001 \001(\0162\030."
+    "entity.CompareCondition\022\025\n\014CP_Threshold\030"
+    "\312\001 \001(\001\022\025\n\014SC_Threshold\030\255\002 \001(\001\022\032\n\021HS_Ange"
+    "lThreshold\030\221\003 \001(\001\022*\n\tHS_Offset\030\222\003 \001(\0162\026."
+    "entity.PosiOffsetFlag\"V\n\rTriggerStatus\022&"
+    "\n\010Strategy\030\001 \002(\0162\024.entity.StrategyType\022\014"
+    "\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010\"\317\001\n\rPortfo"
+    "lioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\035\n"
+    "\004Legs\030\003 \003(\0132\017.entity.LegItem\022\021\n\tMaxCance"
+    "l\030\004 \002(\005\022\027\n\017MaxOpenPerStart\030\005 \002(\005\022\026\n\016Tota"
+    "lOpenLimit\030\006 \002(\005\022\025\n\rEndTimePoints\030\007 \003(\t\022"
+    "&\n\010Strategy\030\010 \002(\0132\024.entity.StrategyItem\""
+    "\277\003\n\023PortfolioUpdateItem\022\n\n\002ID\030\001 \002(\t\022#\n\004L"
+    "egs\030\002 \003(\0132\025.entity.LegUpdateItem\022&\n\010Stra"
+    "tegy\030\003 \002(\0162\024.entity.StrategyType\022\017\n\007Runn"
+    "ing\030\004 \002(\010\022\'\n\010Triggers\030\005 \003(\0132\025.entity.Tri"
+    "ggerStatus\022\026\n\016TotalOpenTimes\030\006 \002(\005\022\027\n\017To"
+    "talCloseTimes\030\007 \002(\005\022\027\n\017CurrentPosition\030\010"
+    " \002(\005\022\023\n\013CancelTimes\030\t \002(\005\022\017\n\007Message\030\n \001"
+    "(\t\022\017\n\007AR_Diff\030e \001(\001\022\023\n\013AR_LongDiff\030f \001(\001"
+    "\022\024\n\014AR_ShortDiff\030g \001(\001\022\023\n\013AR_LongSize\030h "
+    "\001(\005\022\024\n\014AR_ShortSize\030i \001(\005\022\020\n\007SC_Diff\030\311\001 "
+    "\001(\001\022\025\n\014HS_FastAngel\030\255\002 \001(\001\022\025\n\014HS_SlowAng"
+    "el\030\256\002 \001(\001\":\n\014ConnectParam\022\024\n\014QuoteAddres"
+    "s\030\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017Operati"
+    "onReturn\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessag"
+    "e\030\002 \002(\t\"7\n\017AccountSettings\022\021\n\tMaxSubmit\030"
+    "\001 \002(\005\022\021\n\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020"
+    "\n\010BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Pass"
+    "word\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entit"
+    "y.AccountSettings\" \n\rRegQuoteParam\022\017\n\007Sy"
+    "mbols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Port"
+    "folioItems\030\001 \003(\0132\025.entity.PortfolioItem\""
+    "I\n\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n"
+    "\010Quantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Cl"
+    "osePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132"
+    "\024.trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t"
+    "\"t\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t"
+    "\022\027\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef"
+    "\030\003 \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260"
+    "\002\n\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002"
+    "(\0162\031.entity.PosiDirectionType\022/\n\rOpenCon"
+    "dition\030\002 \002(\0162\030.entity.CompareCondition\022\031"
+    "\n\021OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCon"
+    "dition\030\004 \002(\0162\030.entity.CompareCondition\022\031"
+    "\n\021StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCon"
+    "dition\030\006 \002(\0162\030.entity.CompareCondition\022\031"
+    "\n\021StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosi"
+    "StrategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Cl"
+    "oseLegSide\030\002 \002(\0162\031.entity.PosiDirectionT"
+    "ype\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.C"
+    "ompareCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017S"
+    "calperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPri"
+    "ceTick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.enti"
+    "ty.DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\016"
+    "2\030.entity.DirectionDepends\022-\n\013CaseGE4Tic"
+    "k\030\005 \002(\0162\030.entity.DirectionDepends\022.\n\014Cas"
+    "eNoChange\030\006 \002(\0162\030.entity.DirectionDepend"
+    "s\0226\n\020StopLossStrategy\030\007 \002(\0162\034.entity.Sto"
+    "pLossCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n"
+    "\013OpenTimeout\030\t \001(\005\"R\n\023ModifyStrategyPara"
+    "m\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t"
+    "\022\024\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfol"
+    "ioSwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOp"
+    "en\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoSt"
+    "opLoss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014En"
+    "ablePrefer\030\006 \002(\010\"\230\001\n\027ModifyPortfolioQtyP"
+    "aram\022\017\n\007PortfId\030\001 \002(\t\022\022\n\nPerOpenQty\030\002 \002("
+    "\005\022\023\n\013PerStartQty\030\003 \002(\005\022\026\n\016TotalOpenLimit"
+    "\030\004 \002(\005\022\024\n\014MaxCancelQty\030\005 \002(\005\022\025\n\rEndTimeP"
+    "oints\030\006 \003(\t\"<\n\030ModifyRunningStatusParam\022"
+    "\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Mod"
+    "ifyPortfolioPreferredLegParam\022\017\n\007PortfId"
+    "\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrder"
+    "Param\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 "
+    "\002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n"
+    "\006Symbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016"
+    "\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trad"
+    "e.TradeDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020"
+    "\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstr"
+    "ument\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Excha"
+    "ngeInstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016Vo"
+    "lumeMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n"
+    "\nServerType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRAD"
+    "E\020\001*>\n\023PortfolioSwitchType\022\023\n\017STRATEGY_S"
+    "WITCH\020\000\022\022\n\016TRIGGER_SWITCH\020\001*\?\n\014StrategyT"
+    "ype\022\r\n\tARBITRAGE\020\000\022\023\n\017CHANGE_POSITION\020\001\022"
+    "\013\n\007SCALPER\020\002*o\n\020DirectionDepends\022\017\n\013IGNO"
+    "RE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_S"
+    "IZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CHA"
+    "NGE\020\004*I\n\024StopLossCloseMethods\022\027\n\023BASED_O"
+    "N_NEXT_QUOTE\020\000\022\030\n\024BASED_ON_INPUT_LIMIT\020\001", 5760);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -6134,6 +6145,7 @@ const int StrategyItem::kSCCaseLE3TickFieldNumber;
 const int StrategyItem::kSCCaseGE4TickFieldNumber;
 const int StrategyItem::kSCCaseNoChangeFieldNumber;
 const int StrategyItem::kSCStopLossStrategyFieldNumber;
+const int StrategyItem::kHSStdHistFieldNumber;
 #endif  // !_MSC_VER
 
 StrategyItem::StrategyItem()
@@ -6164,6 +6176,7 @@ void StrategyItem::SharedCtor() {
   sc_casege4tick_ = 0;
   sc_casenochange_ = 0;
   sc_stoplossstrategy_ = 0;
+  hs_stdhist_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6219,6 +6232,7 @@ void StrategyItem::Clear() {
     sc_casege4tick_ = 0;
     sc_casenochange_ = 0;
     sc_stoplossstrategy_ = 0;
+    hs_stdhist_ = 0;
   }
   triggers_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -6474,6 +6488,22 @@ bool StrategyItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(3209)) goto parse_HS_StdHist;
+        break;
+      }
+      
+      // optional double HS_StdHist = 401;
+      case 401: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_HS_StdHist:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &hs_stdhist_)));
+          set_has_hs_stdhist();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -6574,6 +6604,11 @@ void StrategyItem::SerializeWithCachedSizes(
       306, this->sc_stoplossstrategy(), output);
   }
   
+  // optional double HS_StdHist = 401;
+  if (has_hs_stdhist()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(401, this->hs_stdhist(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -6660,6 +6695,11 @@ void StrategyItem::SerializeWithCachedSizes(
   if (has_sc_stoplossstrategy()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
       306, this->sc_stoplossstrategy(), target);
+  }
+  
+  // optional double HS_StdHist = 401;
+  if (has_hs_stdhist()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(401, this->hs_stdhist(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -6749,6 +6789,11 @@ int StrategyItem::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->sc_stoplossstrategy());
     }
     
+    // optional double HS_StdHist = 401;
+    if (has_hs_stdhist()) {
+      total_size += 2 + 8;
+    }
+    
   }
   // repeated .entity.TriggerItem Triggers = 4;
   total_size += 1 * this->triggers_size();
@@ -6823,6 +6868,9 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_sc_stoplossstrategy()) {
       set_sc_stoplossstrategy(from.sc_stoplossstrategy());
     }
+    if (from.has_hs_stdhist()) {
+      set_hs_stdhist(from.hs_stdhist());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -6863,6 +6911,7 @@ void StrategyItem::Swap(StrategyItem* other) {
     std::swap(sc_casege4tick_, other->sc_casege4tick_);
     std::swap(sc_casenochange_, other->sc_casenochange_);
     std::swap(sc_stoplossstrategy_, other->sc_stoplossstrategy_);
+    std::swap(hs_stdhist_, other->hs_stdhist_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -6890,6 +6939,8 @@ const int TriggerItem::kAROffsetFieldNumber;
 const int TriggerItem::kCPConditionFieldNumber;
 const int TriggerItem::kCPThresholdFieldNumber;
 const int TriggerItem::kSCThresholdFieldNumber;
+const int TriggerItem::kHSAngelThresholdFieldNumber;
+const int TriggerItem::kHSOffsetFieldNumber;
 #endif  // !_MSC_VER
 
 TriggerItem::TriggerItem()
@@ -6917,6 +6968,8 @@ void TriggerItem::SharedCtor() {
   cp_condition_ = 0;
   cp_threshold_ = 0;
   sc_threshold_ = 0;
+  hs_angelthreshold_ = 0;
+  hs_offset_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6969,6 +7022,8 @@ void TriggerItem::Clear() {
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     sc_threshold_ = 0;
+    hs_angelthreshold_ = 0;
+    hs_offset_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -7140,6 +7195,43 @@ bool TriggerItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(3209)) goto parse_HS_AngelThreshold;
+        break;
+      }
+      
+      // optional double HS_AngelThreshold = 401;
+      case 401: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_HS_AngelThreshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &hs_angelthreshold_)));
+          set_has_hs_angelthreshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(3216)) goto parse_HS_Offset;
+        break;
+      }
+      
+      // optional .entity.PosiOffsetFlag HS_Offset = 402;
+      case 402: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_HS_Offset:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (entity::PosiOffsetFlag_IsValid(value)) {
+            set_hs_offset(static_cast< entity::PosiOffsetFlag >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(402, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -7215,6 +7307,17 @@ void TriggerItem::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(301, this->sc_threshold(), output);
   }
   
+  // optional double HS_AngelThreshold = 401;
+  if (has_hs_angelthreshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(401, this->hs_angelthreshold(), output);
+  }
+  
+  // optional .entity.PosiOffsetFlag HS_Offset = 402;
+  if (has_hs_offset()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      402, this->hs_offset(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -7275,6 +7378,17 @@ void TriggerItem::SerializeWithCachedSizes(
   // optional double SC_Threshold = 301;
   if (has_sc_threshold()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(301, this->sc_threshold(), target);
+  }
+  
+  // optional double HS_AngelThreshold = 401;
+  if (has_hs_angelthreshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(401, this->hs_angelthreshold(), target);
+  }
+  
+  // optional .entity.PosiOffsetFlag HS_Offset = 402;
+  if (has_hs_offset()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      402, this->hs_offset(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -7341,6 +7455,17 @@ int TriggerItem::ByteSize() const {
       total_size += 2 + 8;
     }
     
+    // optional double HS_AngelThreshold = 401;
+    if (has_hs_angelthreshold()) {
+      total_size += 2 + 8;
+    }
+    
+    // optional .entity.PosiOffsetFlag HS_Offset = 402;
+    if (has_hs_offset()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->hs_offset());
+    }
+    
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -7397,6 +7522,12 @@ void TriggerItem::MergeFrom(const TriggerItem& from) {
     if (from.has_sc_threshold()) {
       set_sc_threshold(from.sc_threshold());
     }
+    if (from.has_hs_angelthreshold()) {
+      set_hs_angelthreshold(from.hs_angelthreshold());
+    }
+    if (from.has_hs_offset()) {
+      set_hs_offset(from.hs_offset());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -7430,6 +7561,8 @@ void TriggerItem::Swap(TriggerItem* other) {
     std::swap(cp_condition_, other->cp_condition_);
     std::swap(cp_threshold_, other->cp_threshold_);
     std::swap(sc_threshold_, other->sc_threshold_);
+    std::swap(hs_angelthreshold_, other->hs_angelthreshold_);
+    std::swap(hs_offset_, other->hs_offset_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -7763,6 +7896,7 @@ const int PortfolioItem::kLegsFieldNumber;
 const int PortfolioItem::kMaxCancelFieldNumber;
 const int PortfolioItem::kMaxOpenPerStartFieldNumber;
 const int PortfolioItem::kTotalOpenLimitFieldNumber;
+const int PortfolioItem::kEndTimePointsFieldNumber;
 const int PortfolioItem::kStrategyFieldNumber;
 #endif  // !_MSC_VER
 
@@ -7841,6 +7975,7 @@ void PortfolioItem::Clear() {
     }
   }
   legs_.Clear();
+  endtimepoints_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -7942,12 +8077,30 @@ bool PortfolioItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(58)) goto parse_Strategy;
+        if (input->ExpectTag(58)) goto parse_EndTimePoints;
         break;
       }
       
-      // required .entity.StrategyItem Strategy = 7;
+      // repeated string EndTimePoints = 7;
       case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_EndTimePoints:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_endtimepoints()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->endtimepoints(0).data(), this->endtimepoints(0).length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(58)) goto parse_EndTimePoints;
+        if (input->ExpectTag(66)) goto parse_Strategy;
+        break;
+      }
+      
+      // required .entity.StrategyItem Strategy = 8;
+      case 8: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_Strategy:
@@ -8013,10 +8166,19 @@ void PortfolioItem::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->totalopenlimit(), output);
   }
   
-  // required .entity.StrategyItem Strategy = 7;
+  // repeated string EndTimePoints = 7;
+  for (int i = 0; i < this->endtimepoints_size(); i++) {
+  ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    this->endtimepoints(i).data(), this->endtimepoints(i).length(),
+    ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      7, this->endtimepoints(i), output);
+  }
+  
+  // required .entity.StrategyItem Strategy = 8;
   if (has_strategy()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      7, this->strategy(), output);
+      8, this->strategy(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -8064,11 +8226,20 @@ void PortfolioItem::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->totalopenlimit(), target);
   }
   
-  // required .entity.StrategyItem Strategy = 7;
+  // repeated string EndTimePoints = 7;
+  for (int i = 0; i < this->endtimepoints_size(); i++) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->endtimepoints(i).data(), this->endtimepoints(i).length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(7, this->endtimepoints(i), target);
+  }
+  
+  // required .entity.StrategyItem Strategy = 8;
   if (has_strategy()) {
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
-        7, this->strategy(), target);
+        8, this->strategy(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -8117,7 +8288,7 @@ int PortfolioItem::ByteSize() const {
           this->totalopenlimit());
     }
     
-    // required .entity.StrategyItem Strategy = 7;
+    // required .entity.StrategyItem Strategy = 8;
     if (has_strategy()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
@@ -8131,6 +8302,13 @@ int PortfolioItem::ByteSize() const {
     total_size +=
       ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
         this->legs(i));
+  }
+  
+  // repeated string EndTimePoints = 7;
+  total_size += 1 * this->endtimepoints_size();
+  for (int i = 0; i < this->endtimepoints_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->endtimepoints(i));
   }
   
   if (!unknown_fields().empty()) {
@@ -8159,6 +8337,7 @@ void PortfolioItem::MergeFrom(const ::google::protobuf::Message& from) {
 void PortfolioItem::MergeFrom(const PortfolioItem& from) {
   GOOGLE_CHECK_NE(&from, this);
   legs_.MergeFrom(from.legs_);
+  endtimepoints_.MergeFrom(from.endtimepoints_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_id()) {
       set_id(from.id());
@@ -8195,7 +8374,7 @@ void PortfolioItem::CopyFrom(const PortfolioItem& from) {
 }
 
 bool PortfolioItem::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000007b) != 0x0000007b) return false;
+  if ((_has_bits_[0] & 0x000000bb) != 0x000000bb) return false;
   
   for (int i = 0; i < legs_size(); i++) {
     if (!this->legs(i).IsInitialized()) return false;
@@ -8214,6 +8393,7 @@ void PortfolioItem::Swap(PortfolioItem* other) {
     std::swap(maxcancel_, other->maxcancel_);
     std::swap(maxopenperstart_, other->maxopenperstart_);
     std::swap(totalopenlimit_, other->totalopenlimit_);
+    endtimepoints_.Swap(&other->endtimepoints_);
     std::swap(strategy_, other->strategy_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
@@ -8249,6 +8429,8 @@ const int PortfolioUpdateItem::kARShortDiffFieldNumber;
 const int PortfolioUpdateItem::kARLongSizeFieldNumber;
 const int PortfolioUpdateItem::kARShortSizeFieldNumber;
 const int PortfolioUpdateItem::kSCDiffFieldNumber;
+const int PortfolioUpdateItem::kHSFastAngelFieldNumber;
+const int PortfolioUpdateItem::kHSSlowAngelFieldNumber;
 #endif  // !_MSC_VER
 
 PortfolioUpdateItem::PortfolioUpdateItem()
@@ -8281,6 +8463,8 @@ void PortfolioUpdateItem::SharedCtor() {
   ar_longsize_ = 0;
   ar_shortsize_ = 0;
   sc_diff_ = 0;
+  hs_fastangel_ = 0;
+  hs_slowangel_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -8345,6 +8529,10 @@ void PortfolioUpdateItem::Clear() {
     ar_longsize_ = 0;
     ar_shortsize_ = 0;
     sc_diff_ = 0;
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    hs_fastangel_ = 0;
+    hs_slowangel_ = 0;
   }
   legs_.Clear();
   triggers_.Clear();
@@ -8614,6 +8802,38 @@ bool PortfolioUpdateItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(2409)) goto parse_HS_FastAngel;
+        break;
+      }
+      
+      // optional double HS_FastAngel = 301;
+      case 301: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_HS_FastAngel:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &hs_fastangel_)));
+          set_has_hs_fastangel();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(2417)) goto parse_HS_SlowAngel;
+        break;
+      }
+      
+      // optional double HS_SlowAngel = 302;
+      case 302: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_HS_SlowAngel:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &hs_slowangel_)));
+          set_has_hs_slowangel();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -8727,6 +8947,16 @@ void PortfolioUpdateItem::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(201, this->sc_diff(), output);
   }
   
+  // optional double HS_FastAngel = 301;
+  if (has_hs_fastangel()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(301, this->hs_fastangel(), output);
+  }
+  
+  // optional double HS_SlowAngel = 302;
+  if (has_hs_slowangel()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(302, this->hs_slowangel(), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -8830,6 +9060,16 @@ void PortfolioUpdateItem::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(201, this->sc_diff(), target);
   }
   
+  // optional double HS_FastAngel = 301;
+  if (has_hs_fastangel()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(301, this->hs_fastangel(), target);
+  }
+  
+  // optional double HS_SlowAngel = 302;
+  if (has_hs_slowangel()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(302, this->hs_slowangel(), target);
+  }
+  
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -8931,6 +9171,18 @@ int PortfolioUpdateItem::ByteSize() const {
     }
     
   }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    // optional double HS_FastAngel = 301;
+    if (has_hs_fastangel()) {
+      total_size += 2 + 8;
+    }
+    
+    // optional double HS_SlowAngel = 302;
+    if (has_hs_slowangel()) {
+      total_size += 2 + 8;
+    }
+    
+  }
   // repeated .entity.LegUpdateItem Legs = 2;
   total_size += 1 * this->legs_size();
   for (int i = 0; i < this->legs_size(); i++) {
@@ -9020,6 +9272,14 @@ void PortfolioUpdateItem::MergeFrom(const PortfolioUpdateItem& from) {
       set_sc_diff(from.sc_diff());
     }
   }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    if (from.has_hs_fastangel()) {
+      set_hs_fastangel(from.hs_fastangel());
+    }
+    if (from.has_hs_slowangel()) {
+      set_hs_slowangel(from.hs_slowangel());
+    }
+  }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
@@ -9065,6 +9325,8 @@ void PortfolioUpdateItem::Swap(PortfolioUpdateItem* other) {
     std::swap(ar_longsize_, other->ar_longsize_);
     std::swap(ar_shortsize_, other->ar_shortsize_);
     std::swap(sc_diff_, other->sc_diff_);
+    std::swap(hs_fastangel_, other->hs_fastangel_);
+    std::swap(hs_slowangel_, other->hs_slowangel_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -13771,6 +14033,7 @@ const int ModifyPortfolioQtyParam::kPerOpenQtyFieldNumber;
 const int ModifyPortfolioQtyParam::kPerStartQtyFieldNumber;
 const int ModifyPortfolioQtyParam::kTotalOpenLimitFieldNumber;
 const int ModifyPortfolioQtyParam::kMaxCancelQtyFieldNumber;
+const int ModifyPortfolioQtyParam::kEndTimePointsFieldNumber;
 #endif  // !_MSC_VER
 
 ModifyPortfolioQtyParam::ModifyPortfolioQtyParam()
@@ -13841,6 +14104,7 @@ void ModifyPortfolioQtyParam::Clear() {
     totalopenlimit_ = 0;
     maxcancelqty_ = 0;
   }
+  endtimepoints_.Clear();
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
 }
@@ -13927,6 +14191,24 @@ bool ModifyPortfolioQtyParam::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(50)) goto parse_EndTimePoints;
+        break;
+      }
+      
+      // repeated string EndTimePoints = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_EndTimePoints:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->add_endtimepoints()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->endtimepoints(0).data(), this->endtimepoints(0).length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(50)) goto parse_EndTimePoints;
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -13978,6 +14260,15 @@ void ModifyPortfolioQtyParam::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->maxcancelqty(), output);
   }
   
+  // repeated string EndTimePoints = 6;
+  for (int i = 0; i < this->endtimepoints_size(); i++) {
+  ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+    this->endtimepoints(i).data(), this->endtimepoints(i).length(),
+    ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      6, this->endtimepoints(i), output);
+  }
+  
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -14014,6 +14305,15 @@ void ModifyPortfolioQtyParam::SerializeWithCachedSizes(
   // required int32 MaxCancelQty = 5;
   if (has_maxcancelqty()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->maxcancelqty(), target);
+  }
+  
+  // repeated string EndTimePoints = 6;
+  for (int i = 0; i < this->endtimepoints_size(); i++) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->endtimepoints(i).data(), this->endtimepoints(i).length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteStringToArray(6, this->endtimepoints(i), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -14063,6 +14363,13 @@ int ModifyPortfolioQtyParam::ByteSize() const {
     }
     
   }
+  // repeated string EndTimePoints = 6;
+  total_size += 1 * this->endtimepoints_size();
+  for (int i = 0; i < this->endtimepoints_size(); i++) {
+    total_size += ::google::protobuf::internal::WireFormatLite::StringSize(
+      this->endtimepoints(i));
+  }
+  
   if (!unknown_fields().empty()) {
     total_size +=
       ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
@@ -14088,6 +14395,7 @@ void ModifyPortfolioQtyParam::MergeFrom(const ::google::protobuf::Message& from)
 
 void ModifyPortfolioQtyParam::MergeFrom(const ModifyPortfolioQtyParam& from) {
   GOOGLE_CHECK_NE(&from, this);
+  endtimepoints_.MergeFrom(from.endtimepoints_);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_portfid()) {
       set_portfid(from.portfid());
@@ -14133,6 +14441,7 @@ void ModifyPortfolioQtyParam::Swap(ModifyPortfolioQtyParam* other) {
     std::swap(perstartqty_, other->perstartqty_);
     std::swap(totalopenlimit_, other->totalopenlimit_);
     std::swap(maxcancelqty_, other->maxcancelqty_);
+    endtimepoints_.Swap(&other->endtimepoints_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

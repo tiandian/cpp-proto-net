@@ -19,6 +19,13 @@ void PTEntity::PortfolioItem::To( entity::PortfolioItem* pNativePortfolio )
 			entity::LegItem* pAddedLeg = pNativePortfolio->add_legs();
 			l->To(pAddedLeg);
 		}
+
+		for each(String ^tp in _endTimePoints)
+		{
+			IntPtr tpPtr = (IntPtr)Marshal::StringToHGlobalAnsi(tp);
+			pNativePortfolio->add_endtimepoints((char*)tpPtr.ToPointer());
+			Marshal::FreeHGlobal(tpPtr);
+		}
 		
 		entity::StrategyItem* pStraItem = pNativePortfolio->mutable_strategy();
 		if(_strategy != nullptr)

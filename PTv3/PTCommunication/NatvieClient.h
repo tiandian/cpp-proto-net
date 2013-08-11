@@ -8,6 +8,8 @@
 
 #include <gcroot.h>
 #include <msclr/auto_gcroot.h>
+#include <string>
+#include <vector>
 
 class CNatvieClient : public TCPSocket
 {
@@ -33,7 +35,8 @@ public:
 	void PortfEnableStrategy(const char* portfId, bool isEnabled, int lastOrderId);
 	void PortfTurnSwitches(const char* portfId, int triggerIndex, bool enabled);
 	void ApplyStrategySettings(const char* portfId, PTEntity::StrategyItem ^strategyItem);
-	void PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty);
+	void PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty,
+		vector<string>& endTimePointsVec);
 
 	bool logged();
 	void Logout();

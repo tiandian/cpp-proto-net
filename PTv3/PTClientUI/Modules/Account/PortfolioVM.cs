@@ -421,6 +421,22 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region EndTimePointsExpr
+        private string _endTimePointsExpr = string.Empty;
+
+        public string EndTimePointsExpr
+        {
+            get { return _endTimePointsExpr; }
+            set
+            {
+                if (_endTimePointsExpr != value)
+                {
+                    _endTimePointsExpr = value;
+                    RaisePropertyChanged("EndTimePointsExpr");
+                }
+            }
+        }
+        #endregion
 
 
         public StrategySetting StrategySetting { get; set; }
@@ -571,6 +587,12 @@ namespace PortfolioTrading.Modules.Account
                 portf.TotalOpenLimit = int.Parse(attr.Value);
             }
 
+            attr = xmlElement.Attribute("endTimePointsExpr");
+            if (attr != null)
+            {
+                portf.EndTimePointsExpr = attr.Value;
+            }
+
             foreach (var legElem in xmlElement.Element("legs").Elements("leg"))
             {
                 LegVM legVm = LegVM.Load(legElem);
@@ -601,6 +623,7 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("maxOpenPerStart", _maxOpenPerStart));
             elem.Add(new XAttribute("maxCancel", _maxCancel));
             elem.Add(new XAttribute("totalOpenLimit", _totalOpenLimit));
+            elem.Add(new XAttribute("endTimePointsExpr", _endTimePointsExpr));
 
             XElement elemLegs = new XElement("legs");
             foreach (var l in _legs)
@@ -634,6 +657,16 @@ namespace PortfolioTrading.Modules.Account
                 leg.Ratio = legVm.Ratio;
                 leg.IsPreferred = legVm.IsPreferred;
                 portfolioItem.Legs.Add(leg);
+            }
+
+            if(!string.IsNullOrEmpty(_endTimePointsExpr))
+            {
+                string[] tps = _endTimePointsExpr.Split(',');
+                foreach(string s in tps)
+                {
+                    if(!string.IsNullOrWhiteSpace(s))
+                    portfolioItem.EndTimePoints.Add(s.Trim());
+                }
             }
 
             portfolioItem.Strategy = StrategySetting.GetEntity();
@@ -767,6 +800,7 @@ namespace PortfolioTrading.Modules.Account
             viewModel.TotalOpenLimit = TotalOpenLimit;
             viewModel.MaxOpenPerStart = MaxOpenPerStart;
             viewModel.MaxCancel = MaxCancel;
+            viewModel.EndTimePointsExpr = EndTimePointsExpr;
             ModifyMaxQtyDlg dlg = new ModifyMaxQtyDlg(viewModel);
             dlg.Owner = System.Windows.Application.Current.MainWindow;
             bool? ret = dlg.ShowDialog();
@@ -776,10 +810,11 @@ namespace PortfolioTrading.Modules.Account
                 TotalOpenLimit = viewModel.TotalOpenLimit;
                 MaxOpenPerStart = viewModel.MaxOpenPerStart;
                 MaxCancel = viewModel.MaxCancel;
+                EndTimePointsExpr = viewModel.EndTimePointsExpr;
 
                 if (_accountVm.VerifyStatus())
                 {
-                    _accountVm.Host.PortfModifyQuantity(Id, Quantity, MaxOpenPerStart, TotalOpenLimit, MaxCancel);
+                    _accountVm.Host.PortfModifyQuantity(Id, Quantity, MaxOpenPerStart, TotalOpenLimit, MaxCancel, viewModel.getEndTimePoints());
                     EventLogger.Write("{0} 修改组合 {1}数量: 每次->{2}, 每组->{3}， 最多->{4}, 撤单->{5}",
                         _accountVm.InvestorId, DisplayText, Quantity, MaxOpenPerStart, TotalOpenLimit, MaxCancel);
                 }

@@ -91,7 +91,8 @@ public ref class PortfolioItem
 public:
 	PortfolioItem(void)
 	{
-		_legs = gcnew List<LegItem^>();;
+		_legs = gcnew List<LegItem^>();
+		_endTimePoints = gcnew List<String^>();
 	}
 
 	property String^ ID
@@ -162,6 +163,14 @@ public:
 		}
 	}
 
+	property List<String^>^ EndTimePoints
+	{
+		List<String^>^ get()
+		{
+			return _endTimePoints;
+		}
+	}
+
 	property StrategyItem^ Strategy
 	{
 		StrategyItem^ get()
@@ -183,6 +192,7 @@ private:
 	int _maxCancel;
 	int _maxOpenPerStart;
 	int _totalOpenLimit;
+	List<String^>^ _endTimePoints;
 	StrategyItem ^_strategy;
 };
 

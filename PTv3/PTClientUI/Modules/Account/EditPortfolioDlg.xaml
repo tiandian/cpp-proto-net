@@ -44,6 +44,10 @@
                     <TextBlock DockPanel.Dock="Right">手</TextBlock>
                     <xctk:DecimalUpDown Value="{Binding MaxCancelVol, Mode=TwoWay}" Increment="10" Margin="2"/>
                 </DockPanel>
+                <DockPanel>
+                    <TextBlock Width="120">自动停止时间点</TextBlock>
+                    <TextBox Text="{Binding EndTimePointsExpr, Mode=TwoWay}"  Margin="2"/>
+                </DockPanel>
             </StackPanel>
         </StackPanel>
         <Grid  DockPanel.Dock="Bottom">

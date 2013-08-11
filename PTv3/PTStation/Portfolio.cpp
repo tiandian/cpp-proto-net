@@ -10,6 +10,8 @@
 #include "PortfolioScalperOrderPlacer.h"
 #include "charsetconvert.h"
 
+#include <algorithm>
+
 
 CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPortfolioItem)
 	: m_avatar(client)
@@ -31,7 +33,7 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
 
 	InitOpenCancelLimit(srcPortfolioItem);
-
+	InitEndTimePoints(srcPortfolioItem);
 
 	// Initialize portfolio update item
 	m_portfolioUpdate.set_id(m_portfolioItem.id());
@@ -175,6 +177,8 @@ void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point& times
 	GetStatisticsUpdate();
 	// 4. finally publish PortfolioUpdateItem to client
 	PushUpdate();
+	// 5. detect whether to stop
+	CheckForStop(pQuote->update_time());
 }
 
 void CPortfolio::GetLegUpdate()
@@ -220,6 +224,7 @@ void CPortfolio::StartStrategy(int lastOrderId)
 {
 	logger.Info(boost::str(boost::format("[%s] Portfolio (%s) START strategy >>>") % InvestorId() % ID()));
 	m_openTimes = 0;
+	m_targetEnd.clear();
 	m_serialOrderId = lastOrderId;
 	m_orderPlacer->Prepare();
 	m_strategy->Start();
@@ -258,27 +263,17 @@ void CPortfolio::CheckOpenCancelLimit()
 	if(m_openTimes >= m_maxOpenPerStart)
 	{
 		msg = boost::str(boost::format("本次策略开仓%d手已达到上限%d") % m_openTimes % m_maxOpenPerStart);
-		StopStrategy();
+		StopStrategyDueTo(msg);
 	}
 	else if(m_cancelTimes >= m_maxCancel)
 	{
 		msg = boost::str(boost::format("撤单%d手已达到上限%d") % m_cancelTimes % m_maxCancel);
-		StopStrategy();
+		StopStrategyDueTo(msg);
 	}
 	else if(m_totalOpenTimes >= m_totalOpenLimit)
 	{
 		msg = boost::str(boost::format("总开仓%d手已达到上限%d") % m_totalOpenTimes % m_totalOpenLimit);
-		StopStrategy();
-	}
-
-	if(msg.length() > 0)
-	{
-		m_portfolioUpdate.set_running(false);
-		string utf8Msg;
-		GB2312ToUTF_8(utf8Msg, msg.c_str());
-		m_portfolioUpdate.set_message(utf8Msg);
-		PushUpdate();
-		m_portfolioUpdate.clear_message();
+		StopStrategyDueTo(msg);
 	}
 }
 
@@ -301,4 +296,79 @@ void CPortfolio::SetQuantity( int perOpenQty, int perStartQty, int totalOpenLimi
 
 	logger.Info(boost::str(boost::format("[%s] Portfolio (%s) Modify Quantity: PerOpen = %d, PerStart = %d, MaxOpen = %d, MaxCancel = %d") 
 		% InvestorId() % ID() % perOpenQty % perStartQty % totalOpenLimit % maxCancelQty));
+}
+
+bool compareTimePoint(const string& tp1, const string& tp2)
+{
+	return tp1.compare(tp2) < 0;
+}
+
+void CPortfolio::InitEndTimePoints( const entity::PortfolioItem& srcPortfolioItem )
+{
+	int count = srcPortfolioItem.endtimepoints_size();
+	if(count > 0)
+	{
+		for(int i = 0; i < count; ++i)
+		{
+			m_endTimePoints.push_back(srcPortfolioItem.endtimepoints(i));
+		}
+
+		sort(m_endTimePoints.begin(), m_endTimePoints.end(), compareTimePoint);
+	}
+}
+
+void CPortfolio::SetEndTimePoints(vector<string>& timepoints)
+{
+	boost::mutex::scoped_lock l(m_endTimeMutex);
+
+	m_endTimePoints.swap(timepoints);
+	m_targetEnd.clear();
+	sort(m_endTimePoints.begin(), m_endTimePoints.end(), compareTimePoint);
+}
+
+void CPortfolio::CheckForStop(const string& quoteUpdateTime)
+{
+	boost::mutex::scoped_lock l(m_endTimeMutex);
+
+	if(m_endTimePoints.size() == 0 || !m_strategy->IsRunning())
+	{
+		return;
+	}
+
+	if(m_targetEnd.empty())
+	{
+		for(vector<string>::iterator iter = m_endTimePoints.begin(); iter !=m_endTimePoints.end(); ++iter)
+		{
+			if(iter->compare(quoteUpdateTime) > 0)
+			{
+				m_targetEnd = *iter;
+				break;
+			}
+		}
+	}
+	else
+	{
+		if(quoteUpdateTime.compare(m_targetEnd) >= 0)
+		{
+			string msg = boost::str(boost::format("策略已自动停止于%s") % m_targetEnd);
+			StopStrategyDueTo(msg);
+			logger.Info(boost::str(boost::format("[%s] Portfolio (%s) Auto Stop at %s") 
+				% InvestorId() % ID() % m_targetEnd));
+		}
+	}
+}
+
+void CPortfolio::StopStrategyDueTo( const string& stopReason )
+{
+	StopStrategy();
+	m_portfolioUpdate.set_running(false);
+
+	if(stopReason.length() > 0)
+	{
+		string utf8Msg;
+		GB2312ToUTF_8(utf8Msg, stopReason.c_str());
+		m_portfolioUpdate.set_message(utf8Msg);
+		PushUpdate();
+		m_portfolioUpdate.clear_message();
+	}
 }

@@ -90,7 +90,7 @@ namespace PTCommunication {
 
 		}
 
-		void PortfModifyQuantity(String ^portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty);
+		void PortfModifyQuantity(String ^portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty, array<String^> ^timepoints);
 
 		void PortfSetPreferredLeg(String ^portfId, String ^legName)
 		{
