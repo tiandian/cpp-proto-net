@@ -267,7 +267,7 @@ void CPortfolio::CheckOpenCancelLimit()
 	}
 	else if(m_cancelTimes >= m_maxCancel)
 	{
-		msg = boost::str(boost::format("撤单%d手已达到上限%d") % m_cancelTimes % m_maxCancel);
+		msg = boost::str(boost::format("撤单%d次已达到上限%d") % m_cancelTimes % m_maxCancel);
 		StopStrategyDueTo(msg);
 	}
 	else if(m_totalOpenTimes >= m_totalOpenLimit)
