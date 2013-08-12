@@ -35,7 +35,7 @@
             </DockPanel>
             <DockPanel Margin="4">
                 <TextBlock VerticalAlignment="Center" Margin="2" Width="120">最多撤单</TextBlock>
-                <TextBlock VerticalAlignment="Center" Margin="2" DockPanel.Dock="Right">手</TextBlock>
+                <TextBlock VerticalAlignment="Center" Margin="2" DockPanel.Dock="Right">次</TextBlock>
                 <xctk:DecimalUpDown Margin="2" Increment="10"
                                     Value="{Binding MaxCancel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </DockPanel>

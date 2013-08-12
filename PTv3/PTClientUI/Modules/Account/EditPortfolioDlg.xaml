@@ -41,7 +41,7 @@
                 </DockPanel>
                 <DockPanel>
                     <TextBlock Width="120">最多撤单</TextBlock>
-                    <TextBlock DockPanel.Dock="Right">手</TextBlock>
+                    <TextBlock DockPanel.Dock="Right">次</TextBlock>
                     <xctk:DecimalUpDown Value="{Binding MaxCancelVol, Mode=TwoWay}" Increment="10" Margin="2"/>
                 </DockPanel>
                 <DockPanel>

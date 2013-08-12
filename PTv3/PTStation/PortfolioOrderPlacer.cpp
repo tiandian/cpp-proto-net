@@ -602,7 +602,8 @@ void CPortfolioOrderPlacer::OnOrderCanceled(const RtnOrderWrapperPtr& pRtnOrder 
 	m_pOrderProcessor->RemoveOrderPlacer(Id());
 	// Count cancel volume
 	int remained = pRtnOrder->VolumeTotal();
-	m_pPortf->IncrementalCancelTimes(remained);
+	// only count cancel TIMES instead of volumes
+	m_pPortf->IncrementalCancelTimes(1);
 }
 
 void CPortfolioOrderPlacer::OnCompleted()
