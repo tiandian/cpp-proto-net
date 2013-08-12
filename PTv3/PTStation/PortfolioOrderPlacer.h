@@ -65,6 +65,7 @@ public:
 	void OnOrderCanceled(const RtnOrderWrapperPtr& pRtnOrder);
 	void OnCompleted();
 	void OnError(const string& errMsg);
+	void OnPartiallyFilledToCanceling(const RtnOrderWrapperPtr& pRtnOrder);
 
 	// Belows is for OrderProcess to invoke
 	void OnOrderReturned(RtnOrderWrapperPtr& rtnOrder);

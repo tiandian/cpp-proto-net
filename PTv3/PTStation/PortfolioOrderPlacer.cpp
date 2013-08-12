@@ -232,11 +232,12 @@ namespace // Concrete FSM implementation
 #endif
 			}
 
-			void duplicate_partially(evtPartiallyFilled const&)
+			void partiallyfilled_to_canceling(evtPartiallyFilled const& evt)
 			{
 #ifdef LOG_FOR_TRADE
-				LOG_DEBUG(logger, "Ignore duplicate partially filled"); 
+				LOG_DEBUG(logger, "partially filled event on canceling"); 
 #endif
+				m_pPlacer->OnPartiallyFilledToCanceling(evt.m_pOrd);
 			}
 
 			// the initial state. Must be defined
@@ -257,7 +258,7 @@ namespace // Concrete FSM implementation
 			  a_irow < Pending   , evtPending		  ,					   &s::duplicate_pending	>,
 				_row < Pending	 , evtPartiallyFilled , PartiallyFilled >,
 			  a_irow < Canceling , evtPending	      ,					   &s::duplicate_pending	>,
-			  a_irow < Canceling , evtPartiallyFilled ,					   &s::duplicate_partially  >,
+			  a_irow < Canceling , evtPartiallyFilled ,					   &s::partiallyfilled_to_canceling  >,
 			   _irow < Canceling , evtNextQuoteIn						>,
 			    _row < PartiallyFilled , evtPendingTimeUp   , Canceling	>,
 				_row < PartiallyFilled , evtNextQuoteIn	    , Canceling	>,
@@ -593,6 +594,14 @@ void CPortfolioOrderPlacer::OnPartiallyFilled(const RtnOrderWrapperPtr& pRtnOrde
 	
 	m_activeOrdPlacer->PartiallyFill(finished);
 	UpdateLegOrder(pRtnOrder);
+}
+
+void CPortfolioOrderPlacer::OnPartiallyFilledToCanceling(const RtnOrderWrapperPtr& pRtnOrder)
+{
+	int remained = pRtnOrder->VolumeTotal();
+	int finished = pRtnOrder->VolumeTraded();
+
+	m_activeOrdPlacer->PartiallyFill(finished);
 }
 
 void CPortfolioOrderPlacer::OnOrderCanceled(const RtnOrderWrapperPtr& pRtnOrder )
