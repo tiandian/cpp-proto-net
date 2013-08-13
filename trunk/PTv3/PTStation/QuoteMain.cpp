@@ -92,9 +92,14 @@ int main(int argc, char* argv[])
 	for(vector<string>::iterator iter = mktDataSources.begin(); iter != mktDataSources.end(); ++iter)
 #else
 	set< string > mktDataSources;
-	mktDataSources.insert(qsConfig.ConnectionString());
+	mktDataSources.insert("tcp://172.21.5.12:41213");
 	mktDataSources.insert("udp://192.168.163.61:18213");
 	mktDataSources.insert("udp://192.168.205.3:18213");
+	//mktDataSources.insert("tcp://192.168.217.4:41213");
+	//mktDataSources.insert("tcp://192.168.217.5:41213");
+
+	mktDataSources.insert(qsConfig.ConnectionString());
+
 	for(set<string>::iterator iter = mktDataSources.begin(); iter != mktDataSources.end(); ++iter)
 #endif
 	{
