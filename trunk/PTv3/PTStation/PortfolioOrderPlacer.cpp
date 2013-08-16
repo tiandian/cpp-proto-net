@@ -880,6 +880,7 @@ void CPortfolioOrderPlacer::CleanupProc()
 
 	m_activeOrdPlacer = NULL;
 	m_multiLegOrderTemplate.reset();
+	m_isReady = false;
 	m_legPlacers.clear();
 }
 
