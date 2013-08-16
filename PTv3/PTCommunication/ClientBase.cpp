@@ -13,6 +13,10 @@ bool ClientBase::Connect( String ^host, int port )
 	IntPtr stringPointer;
 	try
 	{
+		if(!_nativeClient->IsDisconnected())
+		{
+			_nativeClient->disconnect(false);
+		}
 		stringPointer = (IntPtr)Marshal::StringToHGlobalAnsi(host);
 		bool succ = _nativeClient->connect((char*)stringPointer.ToPointer(), port);
 		return succ;

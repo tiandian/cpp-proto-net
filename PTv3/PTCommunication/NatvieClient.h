@@ -41,7 +41,7 @@ public:
 	bool logged();
 	void Logout();
 	void setPseudo(const char* pseudo){ m_pseudo = pseudo; }
-
+	bool IsDisconnected(){ return getStatus() == Disconnected; }
 protected:
 	virtual void onConnected();
 	virtual void onConnectionClosed();
