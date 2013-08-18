@@ -43,6 +43,8 @@ namespace PortfolioTrading.Modules.Account
             DisconnectCommand = new DelegateCommand<AccountVM>(OnDisconnectHost);
             RemovePortfolioCommand = new DelegateCommand<XamDataGrid>(OnRemovePortfolio);
             DetachCommand = new DelegateCommand<AccountVM>(OnDetachHost);
+            StartAllPortfolioCmd = new DelegateCommand<AccountVM>(OnStartAllPortfolio);
+            StopAllPortfolioCmd = new DelegateCommand<AccountVM>(OnStopAllPortfolio);
 
             _host = new NativeHost();
             AccountInfo = new AccountInfoVM(this);
@@ -273,6 +275,18 @@ namespace PortfolioTrading.Modules.Account
             private set;
         }
 
+        public ICommand StartAllPortfolioCmd
+        {
+            get;
+            private set;
+        }
+
+        public ICommand StopAllPortfolioCmd
+        {
+            get;
+            private set;
+        }
+
         public void QueryAccountInfo(Action<trade.AccountInfo> accountInfoCallback)
         {
             Func<trade.AccountInfo> funcQryAcctInfo = _client.QueryAccountInfo;
@@ -339,6 +353,27 @@ namespace PortfolioTrading.Modules.Account
 
                 PublishChanged();
             }
+        }
+
+        public void StartAccountPortfolios(bool running)
+        {
+            if (IsConnected)
+            {
+                foreach (var portf in _acctPortfolios)
+                {
+                    portf.StartStrategy(running);
+                }
+            }
+        }
+
+        private void OnStartAllPortfolio(AccountVM acct)
+        {
+            StartAccountPortfolios(true);
+        }
+
+        private void OnStopAllPortfolio(AccountVM acct)
+        {
+            StartAccountPortfolios(false);
         }
 
         private string NextPortfId()

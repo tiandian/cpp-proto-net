@@ -7,14 +7,21 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300" >
     <DockPanel>
-        <DockPanel DockPanel.Dock="Top" LastChildFill="False" Margin="4">
-            <Button Width="50" Margin="4, 0" Command="{Binding AddAccountCommand}">添加</Button>
-            <Button Width="50" Margin="4, 0" Command="{Binding EditAccountCommand}"
+        <StackPanel DockPanel.Dock="Top">
+            <DockPanel LastChildFill="False" Margin="4">
+                <Button Width="50" Margin="4, 0" Command="{Binding AddAccountCommand}">添加</Button>
+                <Button Width="50" Margin="4, 0" Command="{Binding EditAccountCommand}"
                     CommandParameter="{Binding ElementName=xamDataTreeAccount}">修改</Button>
-            <Button Width="50" Margin="4, 0" Command="{Binding RemoveAccountCommand}"
+                <Button Width="50" Margin="4, 0" Command="{Binding RemoveAccountCommand}"
                     CommandParameter="{Binding ElementName=xamDataTreeAccount}">删除</Button>
-            <Button Width="50" Margin="4, 0" Name="btnServerSettings" Click="btnServerSettings_Click">设置</Button>
-        </DockPanel>
+                <Button Width="50" Margin="4, 0" Name="btnServerSettings" Click="btnServerSettings_Click">设置</Button>
+            </DockPanel>
+            <DockPanel LastChildFill="False" Margin="4, 0, 4, 4">
+                <Button Width="100" Margin="4, 0" Command="{Binding StartAccountCommand}">启动所有账户</Button>
+                <Button Width="100" Margin="4, 0" Command="{Binding StopAccountCommand}">停止所有账户</Button>
+            </DockPanel>
+        </StackPanel>
+        
         <ig:XamDataTree Name="xamDataTreeAccount" Margin="4,0,4,4" ItemsSource="{Binding Accounts}" 
                         ActiveNodeChanged="xamDataTreeAccount_ActiveNodeChanged"
                         IsDraggable="True" IsDropTarget="True"

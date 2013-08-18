@@ -843,11 +843,19 @@ namespace PortfolioTrading.Modules.Account
                 {
                     PortfolioOrdersView portfOrdersView = ServiceLocator.Current.GetInstance<PortfolioOrdersView>();
                     if (portfOrdersView != null)
-                        existingOrderCount = portfOrdersView.OrderRepositry.GetAccountOrderCount(AccountId);
+                        existingOrderCount = portfOrdersView.OrderRepositry.GetAccountOrderCount(AccountId, Id);
                 }
                 
                 _accountVm.Host.PortfEnableStrategy(Id, IsRunning, existingOrderCount);
             }
+        }
+
+        public void StartStrategy(bool running)
+        {
+            if (running)
+                OnStart();
+            else
+                OnStop();
         }
 
         private void OnSwitchChanged()
