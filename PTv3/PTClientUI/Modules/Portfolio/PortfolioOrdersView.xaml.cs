@@ -94,7 +94,7 @@ namespace PortfolioTrading.Modules.Portfolio
 
     public class MultiLegOrderRepositry : ObservableCollection<MultiLegOrderVM>
     {
-        private Dictionary<string, int> _accountOrderCount = new Dictionary<string, int>();
+        private Dictionary<string, int> _accountPortfolioOrderCount = new Dictionary<string, int>();
         private object _syncObj = new object();
 
         public MultiLegOrderVM GetMlOrderVm(string acctId, string mlOrdId)
@@ -126,13 +126,14 @@ namespace PortfolioTrading.Modules.Portfolio
                 }
                 else
                 {
-                    if (_accountOrderCount.ContainsKey(accountId))
+                    string accountPortfKey = BuildAcctPortfKey(accountId, mlOrder.PortfolioId);
+                    if (_accountPortfolioOrderCount.ContainsKey(accountPortfKey))
                     {
-                        _accountOrderCount[accountId] += 1;
+                        _accountPortfolioOrderCount[accountPortfKey] += 1;
                     }
                     else
                     {
-                        _accountOrderCount.Add(accountId, 1);
+                        _accountPortfolioOrderCount.Add(accountPortfKey, 1);
                     }
 
                     mlOrderVm = new MultiLegOrderVM(accountId);
@@ -141,6 +142,11 @@ namespace PortfolioTrading.Modules.Portfolio
                     return mlOrderVm;
                 }
             }
+        }
+
+        private static string BuildAcctPortfKey(string accountId, string portfolioId)
+        {
+            return string.Format("{0}-{1}", accountId, portfolioId);
         }
 
         public void Update(OrderUpdateArgs orderUpdateArgs)
@@ -159,11 +165,12 @@ namespace PortfolioTrading.Modules.Portfolio
             }
         }
 
-        public int GetAccountOrderCount(string accountId)
+        public int GetAccountOrderCount(string accountId, string portfolioId)
         {
             lock (_syncObj)
             {
-                return _accountOrderCount.ContainsKey(accountId) ? _accountOrderCount[accountId] : 0;
+                string acctPortfKey = BuildAcctPortfKey(accountId, portfolioId);
+                return _accountPortfolioOrderCount.ContainsKey(acctPortfKey) ? _accountPortfolioOrderCount[acctPortfKey] : 0;
             }
         }
     }

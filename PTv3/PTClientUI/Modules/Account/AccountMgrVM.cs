@@ -43,6 +43,18 @@ namespace PortfolioTrading.Modules.Account
             get { return _removeAccountCommand; }
         }
 
+        public ICommand StartAccountCommand
+        {
+            get;
+            private set;
+        }
+
+        public ICommand StopAccountCommand
+        {
+            get;
+            private set;
+        }
+
         private DelegateCommand _addAccountCommand;
         private DelegateCommand<XamDataTree> _editAccountCommand;
         private DelegateCommand<XamDataTree> _removeAccountCommand;
@@ -60,8 +72,9 @@ namespace PortfolioTrading.Modules.Account
             _addAccountCommand = new DelegateCommand(OnAddAccount);
             _editAccountCommand = new DelegateCommand<XamDataTree>(OnEditAccount);
             _removeAccountCommand = new DelegateCommand<XamDataTree>(OnRemoveAccount);
-            //_accounts.Add(new AccountVM() { BrokerId="0240", InvestorId="0240050008", Password="888888" });
-            
+            StartAccountCommand = new DelegateCommand(OnStartAllAccount);
+            StopAccountCommand = new DelegateCommand(OnStopAllAccount);
+
             // load server address list
             ServerAddrRepoVM = serverAddrRepoVm;
             serverAddrRepoVm.LoadServerList();
@@ -71,6 +84,22 @@ namespace PortfolioTrading.Modules.Account
         private void OnCertainAccountChanged(AccountVM acctVm)
         {
             Persist();
+        }
+
+        private void OnStartAllAccount()
+        {
+            foreach (var acct in _accounts)
+            {
+                acct.StartAccountPortfolios(true);
+            }
+        }
+
+        private void OnStopAllAccount()
+        {
+            foreach (var acct in _accounts)
+            {
+                acct.StartAccountPortfolios(false);
+            }
         }
 
         private void OnAddAccount()
