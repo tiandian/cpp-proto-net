@@ -466,7 +466,7 @@ bool CTradeAgent::SubmitOrder( CThostFtdcInputOrderField& inputOrderField )
 void CTradeAgent::OnRspOrderInsert( CThostFtdcInputOrderField *pInputOrder, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
 	ostringstream oss;
-	oss << "--->>> " << "OnRspOrderInsert for order ( OrderRef: " << pInputOrder->OrderRef << " ) with RequestID: " << nRequestID <<  endl;
+	oss << "--->>> " << m_investorId <<" OnRspOrderInsert for order ( OrderRef: " << pInputOrder->OrderRef << " ) with RequestID: " << nRequestID <<  endl;
 	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
 	if (bResult)
 		oss << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
@@ -484,7 +484,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 		return;
 
 	ostringstream oss;
-	oss << "--->>> " << "OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
+	oss << "--->>> " << m_investorId <<" OnRtnOrder (OrdRef:"  << pOrder->OrderRef << ") Status:" << pOrder->StatusMsg;
 	logger.Info(oss.str());
 
 	RtnOrderWrapperPtr orderWrapper(new CRtnOrderWrapper(pOrder));
@@ -500,7 +500,7 @@ void CTradeAgent::OnRtnOrder( CThostFtdcOrderField *pOrder )
 void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 {
 	ostringstream oss;
-	oss << "--->>> " << "OnRtnTrade (OrdRef:"  << pTrade->OrderRef << ") TradeId:" << pTrade->TradeID;
+	oss << "--->>> " << m_investorId <<" OnRtnTrade (OrdRef:"  << pTrade->OrderRef << ") TradeId:" << pTrade->TradeID;
 	oss << " " << pTrade->Volume << " traded.";
 	logger.Info(oss.str());
 

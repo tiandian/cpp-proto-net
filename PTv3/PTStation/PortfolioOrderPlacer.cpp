@@ -513,9 +513,12 @@ void CPortfolioOrderPlacer::Send()
 		m_pPortf->NewOrderId(mlOrderId);
 		SetNewOrderId(mlOrderId);
 
-		LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the last QUOTE")
+		LOG_INFO(logger, boost::str(boost::format("%s [%s] Submit Order(%s - %s, OrderRef: %d, vol: %d) [No. %d time(s)] in %d us after the last QUOTE")
+			% m_pOrderProcessor->InvestorId()
 			% ((m_activeOrdPlacer->InputOrder().OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
-			% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() % m_activeOrdPlacer->SubmitTimes() % usElapse));
+			% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() 
+			% iOrdRef % (m_activeOrdPlacer->InputOrder()).VolumeTotalOriginal()
+			% m_activeOrdPlacer->SubmitTimes() % usElapse));
 
 		ResetTemplate();
 		m_isFirstLeg = false;
@@ -524,9 +527,12 @@ void CPortfolioOrderPlacer::Send()
 	}
 	else
 	{
-		LOG_INFO(logger, boost::str(boost::format("[%s] Submit Order(%s - %s) [No. %d time(s)] in %d us after the last QUOTE")
+		LOG_INFO(logger, boost::str(boost::format("%s [%s] Submit Order(%s - %s, OrderRef: %d, vol: %d) [No. %d time(s)] in %d us after the last QUOTE")
+			% m_pOrderProcessor->InvestorId()
 			% ((m_activeOrdPlacer->InputOrder().OffsetFlag()[0] == trade::OF_OPEN) ? "OPEN" : "CLOSE")
-			% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() % m_activeOrdPlacer->SubmitTimes() % usElapse));
+			% m_multiLegOrderTemplate->orderid() % m_activeOrdPlacer->Symbol() 
+			% iOrdRef % (m_activeOrdPlacer->InputOrder()).VolumeTotalOriginal()
+			% m_activeOrdPlacer->SubmitTimes() % usElapse));
 
 		// if second leg
 		UpdateLastDoneOrder();
