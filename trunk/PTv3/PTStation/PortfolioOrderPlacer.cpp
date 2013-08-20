@@ -440,13 +440,18 @@ void CPortfolioOrderPlacer::GenLegOrderPlacers()
 		if(o.preferred())	// always put preferred order at front
 		{
 			m_legPlacers.insert(m_legPlacers.begin(), legOrderPlacer);
-			legOrderPlacer->SequenceNo(0);
 		}
 		else
 		{
 			m_legPlacers.push_back(legOrderPlacer);
-			legOrderPlacer->SequenceNo(m_legPlacers.size() - 1);
 		}
+	}
+	
+	unsigned int seq = 0;
+	for(vector<LegOrderPlacerPtr>::iterator iter = m_legPlacers.begin();
+		iter != m_legPlacers.end(); ++iter, ++seq)
+	{
+		(*iter)->SequenceNo(seq);
 	}
 }
 
@@ -570,7 +575,7 @@ void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 	LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer gets filled") % sendingIdx));
 #endif
 	++sendingIdx;
-	if(sendingIdx < (int)m_legPlacers.size())
+	if(sendingIdx < m_legPlacers.size())
 	{
 		m_activeOrdPlacer->UpdateOrder(pRtnOrder);
 		m_lastDoneOrdPlacer = m_activeOrdPlacer;
@@ -667,7 +672,7 @@ void CPortfolioOrderPlacer::OnLegCanceled(const RtnOrderWrapperPtr& pRtnOrder )
 			int sendingIdx = m_activeOrdPlacer->SequenceNo();
 			LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer(OPEN) gets partially filled") % sendingIdx));
 			++sendingIdx;
-			if(sendingIdx < (int)m_legPlacers.size())
+			if(sendingIdx < m_legPlacers.size())
 			{
 				// Go to send next order
 				m_activeOrdPlacer = m_legPlacers[sendingIdx].get();

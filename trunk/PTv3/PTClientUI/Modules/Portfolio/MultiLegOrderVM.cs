@@ -253,6 +253,8 @@ namespace PortfolioTrading.Modules.Portfolio
                     return "止损";
                 case PTEntity.SubmitReason.SR_AutoSwitch:
                     return "移仓";
+                case PTEntity.SubmitReason.SR_Scalpe:
+                    return "高频";
                 default:
                     return "未知";
             }

@@ -10,7 +10,7 @@ CLegOrderPlacer::CLegOrderPlacer(CPortfolioOrderPlacer* portfOrdPlacer, int open
 	, m_pendingTimer(portfOrdPlacer)
 	, m_maxRetry(maxRetry)
 	, m_submitTimes(0)
-	, m_seqenceNo(-1)
+	, m_sequenceNo(0)
 	, m_legIdx(-1)
 	, m_openTimeout(openTimeout)
 	, m_isPending(false)
