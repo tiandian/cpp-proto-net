@@ -22,8 +22,8 @@ public:
 		return m_legOrder; 
 	}
 	
-	int SequenceNo() { return m_seqenceNo; }
-	void SequenceNo(int idx){ m_seqenceNo = idx; }
+	unsigned int SequenceNo() { return m_sequenceNo; }
+	void SequenceNo(unsigned int idx){ m_sequenceNo = idx; }
 
 	int LegIndex(){ return m_legIdx; }
 	void LegIndex(int legIdx){ m_legIdx = legIdx; }
@@ -62,7 +62,7 @@ private:
 	CAsyncOrderPendingTimer m_pendingTimer;
 	
 	int m_legIdx;
-	int m_seqenceNo;
+	unsigned int m_sequenceNo;
 	int m_maxRetry;
 	string m_currentOrdRef;
 	int m_submitTimes;
