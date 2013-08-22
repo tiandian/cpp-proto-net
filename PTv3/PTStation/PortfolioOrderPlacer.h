@@ -96,6 +96,7 @@ protected:
 	void UpdateMultiLegOrder();
 	void OutputStatus(const string& statusMsg);
 	void CleanupProc();
+	bool IsReadyForPrepare(){ return !m_isReady; }
 
 	struct NextQuote
 	{
@@ -118,6 +119,8 @@ protected:
 	boost::chrono::steady_clock::time_point m_triggingTimestamp;
 
 	boost::thread m_thCleanup;
+	boost::condition_variable m_condCleanDone;
+	boost::mutex m_mutCleaning;
 
 	boost::shared_ptr<void> m_fsm;
 	boost::mutex m_mutOuterAccessFsm;

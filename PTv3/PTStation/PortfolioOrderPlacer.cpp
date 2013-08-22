@@ -388,6 +388,9 @@ void CPortfolioOrderPlacer::ResetTemplate()
 
 void CPortfolioOrderPlacer::Prepare()
 {
+	boost::unique_lock<boost::mutex> l(m_mutCleaning);
+	m_condCleanDone.wait(l, boost::bind(&CPortfolioOrderPlacer::IsReadyForPrepare, this));
+
 	BuildTemplateOrder();
 
 	// Create input orders from template multi-leg order, then m_inputOrders will have items
@@ -570,7 +573,7 @@ void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 	m_activeOrdPlacer->CancelPending();
 	AfterLegDone();
 	
-	int sendingIdx = m_activeOrdPlacer->SequenceNo();
+	unsigned int sendingIdx = m_activeOrdPlacer->SequenceNo();
 #ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer gets filled") % sendingIdx));
 #endif
@@ -669,7 +672,7 @@ void CPortfolioOrderPlacer::OnLegCanceled(const RtnOrderWrapperPtr& pRtnOrder )
 			// adjust next order placer volume
 			m_activeOrdPlacer->Reset();
 			
-			int sendingIdx = m_activeOrdPlacer->SequenceNo();
+			unsigned int sendingIdx = m_activeOrdPlacer->SequenceNo();
 			LOG_DEBUG(logger, boost::str(boost::format("No.%d OrderPlacer(OPEN) gets partially filled") % sendingIdx));
 			++sendingIdx;
 			if(sendingIdx < m_legPlacers.size())
@@ -891,8 +894,12 @@ void CPortfolioOrderPlacer::CleanupProc()
 
 	m_activeOrdPlacer = NULL;
 	m_multiLegOrderTemplate.reset();
-	m_isReady = false;
 	m_legPlacers.clear();
+	{
+		boost::unique_lock<boost::mutex> l(m_mutCleaning);
+		m_isReady = false;
+		m_condCleanDone.notify_one();
+	}
 }
 
 bool CPortfolioOrderPlacer::IfPortfolioCanceled()
