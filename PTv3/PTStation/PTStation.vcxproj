@@ -158,8 +158,10 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="SymbolInfo.h" />
     <ClInclude Include="SymbolInfoRepositry.h" />
     <ClInclude Include="SyncRequest.h" />
+    <ClInclude Include="TaIndicatorSet.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TechAnalyStrategy.h" />
+    <ClInclude Include="TechDataRepo.h" />
     <ClInclude Include="TradeAgent.h" />
     <ClInclude Include="TradeAgentCallback.h" />
     <ClInclude Include="TradingServer.h" />
@@ -237,7 +239,9 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="Strategy.cpp" />
     <ClCompile Include="SymbolInfo.cpp" />
     <ClCompile Include="SymbolInfoRepositry.cpp" />
+    <ClCompile Include="TaIndicatorSet.cpp" />
     <ClCompile Include="TechAnalyStrategy.cpp" />
+    <ClCompile Include="TechDataRepo.cpp" />
     <ClCompile Include="TradeAgent.cpp" />
     <ClCompile Include="TradeStation.cpp" />
     <ClCompile Include="stdafx.cpp">

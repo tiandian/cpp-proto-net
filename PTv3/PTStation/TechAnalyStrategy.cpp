@@ -1,48 +1,47 @@
 #include "StdAfx.h"
 #include "TechAnalyStrategy.h"
+#include "PriceBarDataSource.h"
+#include "TechDataRepo.h"
+#include <assert.h>
 
+CTechDataRepo g_dataRepo;
 
 CTechAnalyStrategy::CTechAnalyStrategy(const entity::StrategyItem& strategyItem)
 	: CStrategy(strategyItem)
 	, m_precision(60)
+	, m_pDataProxy(NULL)
 {
 }
 
 CTechAnalyStrategy::~CTechAnalyStrategy(void)
 {
+	m_pDataProxy = NULL;
 }
 
 void CTechAnalyStrategy::Start()
 {
-	m_dataSource.Init(m_precision);
+	// TODO will replace below parameters
+	m_pDataProxy = g_dataRepo.Register("Symbol", 60, TA_MACD);
+	assert(m_pDataProxy != NULL);
+	//m_dataSource.Init(m_precision);
 
-	m_priceBarGen.Init(m_precision);
+	//m_priceBarGen.Init(m_precision);
 
 	// read history data and have data source ready
-	m_histDataReader.Read(m_dataSource.RecordSet());
+	//m_histDataReader.Read(m_dataSource.RecordSet());
 
 	CStrategy::Start();
 }
 
 void CTechAnalyStrategy::Stop()
 {
+	g_dataRepo.Unregister(m_pDataProxy);
+	m_pDataProxy = NULL;
 	CStrategy::Stop();
 }
 
 void CTechAnalyStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
-	m_priceBarGen.Calculate(pQuote);
+	m_pDataProxy->InQuote(pQuote, timestamp);
 }
 
-void CTechAnalyStrategy::OnBarChanged( int barIdx, double open, double high, double low, double close )
-{
-	m_dataSource.RecordSet()->OpenSeries[barIdx] = open;
-	m_dataSource.RecordSet()->HighSeries[barIdx] = high;
-	m_dataSource.RecordSet()->LowSeries[barIdx] = low;
-	m_dataSource.RecordSet()->CloseSeries[barIdx] = close;
-}
-
-void CTechAnalyStrategy::OnBarFinalized( int barIdx, double open, double high, double low, double close )
-{
-	m_histDataWriter.Write(open, high, low, close);
-}

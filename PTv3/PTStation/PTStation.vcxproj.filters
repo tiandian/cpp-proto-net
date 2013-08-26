@@ -272,6 +272,12 @@
     <ClInclude Include="PriceBarDataProxy.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
+    <ClInclude Include="TaIndicatorSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="TechDataRepo.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -452,6 +458,12 @@
       <Filter>Source Files\strategy</Filter>
     </ClCompile>
     <ClCompile Include="PriceBarDataProxy.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="TaIndicatorSet.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="TechDataRepo.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>
