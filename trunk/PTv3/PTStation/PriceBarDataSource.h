@@ -1,9 +1,15 @@
 #pragma once
 
+#include "PriceBarGen.h"
+#include "HistDataWriter.h"
+#include "HistDataReader.h"
 #include "OHLCRecordSet.h"
+#include "TaIndicatorSet.h"
 #include "PriceBarDataProxy.h"
+#include "entity/quote.pb.h"
 
 #include <boost/unordered_map.hpp>
+
 
 enum TA_INDICATOR
 {
@@ -14,36 +20,46 @@ enum TA_INDICATOR
 class CPriceBarDataSource
 {
 public:
-	CPriceBarDataSource(){}
+	CPriceBarDataSource(const string& id):m_id(id), m_proxyIdxSeed(0){}
 	~CPriceBarDataSource(){}
+
+	const string& Id(){ return m_id; }
+	void Init(int precision);
+	CPriceBarDataProxy* AddProxy();
+	void RemoveProxy(CPriceBarDataProxy* proxy);
+	bool IsDisposable(){ return m_proxiesMap.size() == 0; }
+
+	void InQuote(entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
+
+	COHLCRecordSet* RecordSet(){ return m_recordSet.get(); }
+	CTaIndicatorSet* GetTaIndicatorSet(boost::chrono::steady_clock::time_point& timestamp);
 
 private:
 
+	void OnBarChanged(int barIdx, double open, double high, double low, double close);
+	void OnBarFinalized(int barIdx, double open, double high, double low, double close);
+
+	typedef boost::unordered_map<unsigned int, PriceBarDataProxyPtr> PriceBarDataProxyMap;
+	typedef PriceBarDataProxyMap::iterator PriceBarDataProxyMapIter;
+	bool IsDataReady(boost::chrono::steady_clock::time_point& timestamp){ return m_dataTimestamp == timestamp; }
+
+	unsigned int m_proxyIdxSeed;
+	boost::mutex m_mutProxyMap;
+
+	boost::condition_variable m_condDataReady;
+	boost::mutex m_mutDataReady;
+	boost::chrono::steady_clock::time_point m_dataTimestamp;
+
+	string m_id;
+	PriceBarDataProxyMap m_proxiesMap;
+	OHLCRecordSetPtr m_recordSet;
+	TaIndicatorSetPtr m_taIndicatorSet;
+
+	CPriceBarGen m_priceBarGen;
+	CHistDataWriter m_histDataWriter;
+	CHistDataReader m_histDataReader;
 };
 
 typedef boost::shared_ptr<CPriceBarDataSource> PriceBarDataSourcePtr;
 
-class CTechDataRepo
-{
-public:
-	CTechDataRepo(void);
-	~CTechDataRepo(void);
-
-	CPriceBarDataProxy* Register(const string& symbol, int precision, TA_INDICATOR indicator = TA_OHLC);
-	void Init(int precision);
-	COHLCRecordSet* RecordSet(){ return m_recordSet.get(); }
-
-private:
-	static void BuildKey(const string& symbol, int precision, TA_INDICATOR indicator, string* outKey);
-	
-	OHLCRecordSetPtr m_recordSet;
-
-	typedef boost::unordered_map<string, PriceBarDataProxyPtr> PriceBarDataProxyMap;
-	typedef PriceBarDataProxyMap::iterator PriceBarDataProxyMapIter;
-	PriceBarDataProxyMap m_dataProxyMap;
-
-	typedef boost::unordered_map<string, PriceBarDataSourcePtr> PriceBarDSMap;
-	typedef PriceBarDSMap::iterator PriceBarDSMapIter;
-	PriceBarDSMap m_priceBarDSMap;
-};
 

@@ -1,10 +1,8 @@
 #pragma once
 
 #include "Strategy.h"
-#include "PriceBarGen.h"
-#include "HistDataWriter.h"
-#include "HistDataReader.h"
-#include "PriceBarDataSource.h"
+
+class CPriceBarDataProxy;
 
 class CTechAnalyStrategy : public CStrategy
 {
@@ -19,14 +17,8 @@ public:
 
 private:
 
-	void OnBarChanged(int barIdx, double open, double high, double low, double close);
-	void OnBarFinalized(int barIdx, double open, double high, double low, double close);
-
-	CPriceBarGen m_priceBarGen;
-	CHistDataWriter m_histDataWriter;
-	CHistDataReader m_histDataReader;
-	CTechDataRepo m_dataSource;
 
 	int m_precision;
+	CPriceBarDataProxy* m_pDataProxy;
 };
 

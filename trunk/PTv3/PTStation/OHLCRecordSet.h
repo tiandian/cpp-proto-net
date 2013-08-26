@@ -11,8 +11,12 @@ public:
 	vector<double> LowSeries;
 	vector<double> CloseSeries;
 
+	unsigned int GetSize(){ return m_size; }
+
 private:
 	int m_precision;
+	unsigned int m_size;
+	unsigned int m_lastIndex;
 };
 
 typedef boost::shared_ptr<COHLCRecordSet> OHLCRecordSetPtr;
