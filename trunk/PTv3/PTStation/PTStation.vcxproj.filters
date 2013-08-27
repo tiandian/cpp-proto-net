@@ -278,6 +278,9 @@
     <ClInclude Include="TechDataRepo.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
+    <ClInclude Include="TaCalculator.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -464,6 +467,9 @@
       <Filter>Source Files\tech</Filter>
     </ClCompile>
     <ClCompile Include="TechDataRepo.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="TaCalculator.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>

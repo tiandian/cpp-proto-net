@@ -6,6 +6,7 @@
 #include "OHLCRecordSet.h"
 #include "TaIndicatorSet.h"
 #include "PriceBarDataProxy.h"
+#include "TaCalculator.h"
 #include "entity/quote.pb.h"
 
 #include <boost/unordered_map.hpp>
@@ -24,7 +25,7 @@ public:
 	~CPriceBarDataSource(){}
 
 	const string& Id(){ return m_id; }
-	void Init(int precision);
+	void Init(int precision, TA_INDICATOR indicator);
 	CPriceBarDataProxy* AddProxy();
 	void RemoveProxy(CPriceBarDataProxy* proxy);
 	bool IsDisposable(){ return m_proxiesMap.size() == 0; }
@@ -58,6 +59,7 @@ private:
 	CPriceBarGen m_priceBarGen;
 	CHistDataWriter m_histDataWriter;
 	CHistDataReader m_histDataReader;
+	TaCalculatorPtr m_taCalculator;
 };
 
 typedef boost::shared_ptr<CPriceBarDataSource> PriceBarDataSourcePtr;

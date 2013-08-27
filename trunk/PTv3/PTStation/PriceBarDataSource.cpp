@@ -4,11 +4,17 @@
 
 #include <boost/date_time.hpp>
 
-void CPriceBarDataSource::Init( int precision )
+void CPriceBarDataSource::Init( int precision, TA_INDICATOR indicator )
 {
 	m_recordSet = OHLCRecordSetPtr(new COHLCRecordSet(precision));
 	unsigned int length = m_recordSet->GetSize();
 	m_taIndicatorSet = TaIndicatorSetPtr(new CTaIndicatorSet(length));
+	switch(indicator)
+	{
+	case TA_MACD:
+		m_taCalculator = TaCalculatorPtr(new CMACDCalculator);
+		break;
+	}
 
 	m_priceBarGen.Init(precision);
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5));
@@ -68,10 +74,11 @@ CTaIndicatorSet* CPriceBarDataSource::GetTaIndicatorSet( boost::chrono::steady_c
 
 void CPriceBarDataSource::OnBarChanged( int barIdx, double open, double high, double low, double close )
 {
-	m_recordSet->OpenSeries[barIdx] = open;
-	m_recordSet->HighSeries[barIdx] = high;
-	m_recordSet->LowSeries[barIdx] = low;
-	m_recordSet->CloseSeries[barIdx] = close;
+	m_recordSet->Set(barIdx, open, high, low	, close);
+	if(m_taCalculator.get() != NULL)
+	{
+		m_taCalculator->Calc(m_recordSet.get(), m_taIndicatorSet.get());
+	}
 }
 
 void CPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close )

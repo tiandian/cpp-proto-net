@@ -6,6 +6,8 @@ public:
 	COHLCRecordSet(int m_precision);
 	~COHLCRecordSet(void);
 
+	void Set(int barIdx, double open, double high, double low, double close);
+
 	vector<double> OpenSeries;
 	vector<double> HighSeries;
 	vector<double> LowSeries;
