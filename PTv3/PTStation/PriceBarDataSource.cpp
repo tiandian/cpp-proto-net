@@ -4,17 +4,9 @@
 
 #include <boost/date_time.hpp>
 
-void CPriceBarDataSource::Init( int precision, TA_INDICATOR indicator )
+void CPriceBarDataSource::Init( int precision)
 {
 	m_recordSet = OHLCRecordSetPtr(new COHLCRecordSet(precision));
-	unsigned int length = m_recordSet->GetSize();
-	m_taIndicatorSet = TaIndicatorSetPtr(new CTaIndicatorSet(length));
-	switch(indicator)
-	{
-	case TA_MACD:
-		m_taCalculator = TaCalculatorPtr(new CMACDCalculator);
-		break;
-	}
 
 	m_priceBarGen.Init(precision);
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5));
@@ -59,14 +51,14 @@ void CPriceBarDataSource::InQuote( entity::Quote* pQuote, boost::chrono::steady_
 	}
 }
 
-CTaIndicatorSet* CPriceBarDataSource::GetTaIndicatorSet( boost::chrono::steady_clock::time_point& timestamp )
+COHLCRecordSet* CPriceBarDataSource::GetRecordSet(boost::chrono::steady_clock::time_point& timestamp)
 {
 	boost::unique_lock<boost::mutex> l(m_mutDataReady);
 	bool isLatestReady = m_condDataReady.timed_wait(l, boost::posix_time::seconds(1), 
 		boost::bind(&CPriceBarDataSource::IsDataReady, this, timestamp));
 	if(isLatestReady)
 	{
-		return m_taIndicatorSet.get();
+		return m_recordSet.get();
 	}
 
 	return NULL;
@@ -75,14 +67,11 @@ CTaIndicatorSet* CPriceBarDataSource::GetTaIndicatorSet( boost::chrono::steady_c
 void CPriceBarDataSource::OnBarChanged( int barIdx, double open, double high, double low, double close )
 {
 	m_recordSet->Set(barIdx, open, high, low	, close);
-	if(m_taCalculator.get() != NULL)
-	{
-		m_taCalculator->Calc(m_recordSet.get(), m_taIndicatorSet.get());
-	}
 }
 
 void CPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close )
 {
 	m_histDataWriter.Write(open, high, low, close);
 }
+
 

@@ -17,7 +17,7 @@ CHistSlopeStrategy::~CHistSlopeStrategy(void)
 
 void CHistSlopeStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
 {
-	CStrategy::Apply(strategyItem, withTriggers);
+	CTechAnalyStrategy::Apply(strategyItem, withTriggers);
 	m_stdHist = strategyItem.hs_stdhist();
 }
 

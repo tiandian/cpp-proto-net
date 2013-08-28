@@ -4,9 +4,7 @@
 #include "HistDataWriter.h"
 #include "HistDataReader.h"
 #include "OHLCRecordSet.h"
-#include "TaIndicatorSet.h"
 #include "PriceBarDataProxy.h"
-#include "TaCalculator.h"
 #include "entity/quote.pb.h"
 
 #include <boost/unordered_map.hpp>
@@ -25,15 +23,14 @@ public:
 	~CPriceBarDataSource(){}
 
 	const string& Id(){ return m_id; }
-	void Init(int precision, TA_INDICATOR indicator);
+	void Init(int precision);
 	CPriceBarDataProxy* AddProxy();
 	void RemoveProxy(CPriceBarDataProxy* proxy);
 	bool IsDisposable(){ return m_proxiesMap.size() == 0; }
 
 	void InQuote(entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 
-	COHLCRecordSet* RecordSet(){ return m_recordSet.get(); }
-	CTaIndicatorSet* GetTaIndicatorSet(boost::chrono::steady_clock::time_point& timestamp);
+	COHLCRecordSet* GetRecordSet(boost::chrono::steady_clock::time_point& timestamp);
 
 private:
 
@@ -54,12 +51,10 @@ private:
 	string m_id;
 	PriceBarDataProxyMap m_proxiesMap;
 	OHLCRecordSetPtr m_recordSet;
-	TaIndicatorSetPtr m_taIndicatorSet;
 
 	CPriceBarGen m_priceBarGen;
 	CHistDataWriter m_histDataWriter;
 	CHistDataReader m_histDataReader;
-	TaCalculatorPtr m_taCalculator;
 };
 
 typedef boost::shared_ptr<CPriceBarDataSource> PriceBarDataSourcePtr;

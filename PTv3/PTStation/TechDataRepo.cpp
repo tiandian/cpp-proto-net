@@ -11,10 +11,11 @@ CTechDataRepo::~CTechDataRepo(void)
 {
 }
 
-CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision, TA_INDICATOR indicator, map<string, double>* indicatorParams )
+CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision)
 {
+	boost::mutex::scoped_lock l(m_mutex);
 	string dsKey;
-	BuildKey(symbol, precision, indicator, &dsKey);
+	BuildKey(symbol, precision, &dsKey);
 	PriceBarDSMapIter iterDS = m_priceBarDSMap.find(dsKey);
 	if(iterDS != m_priceBarDSMap.end())
 	{
@@ -24,7 +25,7 @@ CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision
 	{
 		// new PriceBarDataSource
 		PriceBarDataSourcePtr ds(new CPriceBarDataSource(dsKey));
-		ds->Init(precision, indicator);
+		ds->Init(precision);
 		m_priceBarDSMap.insert(make_pair(dsKey, ds));
 		return ds->AddProxy();
 	}
@@ -33,6 +34,7 @@ CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision
 
 bool CTechDataRepo::Unregister( CPriceBarDataProxy* proxy )
 {
+	boost::mutex::scoped_lock l(m_mutex);
 	string dsKey = proxy->DataSourceId();
 	PriceBarDSMapIter iterDS = m_priceBarDSMap.find(dsKey);
 	if(iterDS != m_priceBarDSMap.end())
@@ -47,7 +49,7 @@ bool CTechDataRepo::Unregister( CPriceBarDataProxy* proxy )
 	return false;
 }
 
-void CTechDataRepo::BuildKey( const string& symbol, int precision, TA_INDICATOR indicator, string* outKey )
+void CTechDataRepo::BuildKey( const string& symbol, int precision, string* outKey )
 {
-	*outKey = boost::str(boost::format("%s-%d-%d") % symbol % precision % indicator);
+	*outKey = boost::str(boost::format("%s-%d") % symbol % precision);
 }
