@@ -131,6 +131,12 @@ enum StrategyType
 	SCALPER = 2;
 }
 
+message HistSourceCfg
+{
+	required string Symbol = 1;
+	required int32 Precision = 2;
+}
+
 message StrategyItem
 {
 	required StrategyType Type = 1;
@@ -153,8 +159,11 @@ message StrategyItem
 	optional DirectionDepends SC_CaseNoChange = 305;
 	optional StopLossCloseMethods SC_StopLossStrategy = 306;
 
+	// TechAnaly
+	repeated HistSourceCfg HistSources = 401;
+
 	// HistSlope
-	optional double HS_StdHist = 401;
+	optional double HS_StdHist = 501;
 }
 
 message TriggerItem

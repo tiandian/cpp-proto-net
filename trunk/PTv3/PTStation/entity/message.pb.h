@@ -49,6 +49,7 @@ class StringParam;
 class IntParam;
 class LegItem;
 class LegUpdateItem;
+class HistSourceCfg;
 class StrategyItem;
 class TriggerItem;
 class TriggerStatus;
@@ -1804,6 +1805,102 @@ class LegUpdateItem : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
+class HistSourceCfg : public ::google::protobuf::Message {
+ public:
+  HistSourceCfg();
+  virtual ~HistSourceCfg();
+  
+  HistSourceCfg(const HistSourceCfg& from);
+  
+  inline HistSourceCfg& operator=(const HistSourceCfg& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+  
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+  
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const HistSourceCfg& default_instance();
+  
+  void Swap(HistSourceCfg* other);
+  
+  // implements Message ----------------------------------------------
+  
+  HistSourceCfg* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const HistSourceCfg& from);
+  void MergeFrom(const HistSourceCfg& from);
+  void Clear();
+  bool IsInitialized() const;
+  
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+  
+  ::google::protobuf::Metadata GetMetadata() const;
+  
+  // nested types ----------------------------------------------------
+  
+  // accessors -------------------------------------------------------
+  
+  // required string Symbol = 1;
+  inline bool has_symbol() const;
+  inline void clear_symbol();
+  static const int kSymbolFieldNumber = 1;
+  inline const ::std::string& symbol() const;
+  inline void set_symbol(const ::std::string& value);
+  inline void set_symbol(const char* value);
+  inline void set_symbol(const char* value, size_t size);
+  inline ::std::string* mutable_symbol();
+  inline ::std::string* release_symbol();
+  
+  // required int32 Precision = 2;
+  inline bool has_precision() const;
+  inline void clear_precision();
+  static const int kPrecisionFieldNumber = 2;
+  inline ::google::protobuf::int32 precision() const;
+  inline void set_precision(::google::protobuf::int32 value);
+  
+  // @@protoc_insertion_point(class_scope:entity.HistSourceCfg)
+ private:
+  inline void set_has_symbol();
+  inline void clear_has_symbol();
+  inline void set_has_precision();
+  inline void clear_has_precision();
+  
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+  
+  ::std::string* symbol_;
+  ::google::protobuf::int32 precision_;
+  
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  
+  friend void  protobuf_AddDesc_message_2eproto();
+  friend void protobuf_AssignDesc_message_2eproto();
+  friend void protobuf_ShutdownFile_message_2eproto();
+  
+  void InitAsDefaultInstance();
+  static HistSourceCfg* default_instance_;
+};
+// -------------------------------------------------------------------
+
 class StrategyItem : public ::google::protobuf::Message {
  public:
   StrategyItem();
@@ -1958,10 +2055,22 @@ class StrategyItem : public ::google::protobuf::Message {
   inline entity::StopLossCloseMethods sc_stoplossstrategy() const;
   inline void set_sc_stoplossstrategy(entity::StopLossCloseMethods value);
   
-  // optional double HS_StdHist = 401;
+  // repeated .entity.HistSourceCfg HistSources = 401;
+  inline int histsources_size() const;
+  inline void clear_histsources();
+  static const int kHistSourcesFieldNumber = 401;
+  inline const ::entity::HistSourceCfg& histsources(int index) const;
+  inline ::entity::HistSourceCfg* mutable_histsources(int index);
+  inline ::entity::HistSourceCfg* add_histsources();
+  inline const ::google::protobuf::RepeatedPtrField< ::entity::HistSourceCfg >&
+      histsources() const;
+  inline ::google::protobuf::RepeatedPtrField< ::entity::HistSourceCfg >*
+      mutable_histsources();
+  
+  // optional double HS_StdHist = 501;
   inline bool has_hs_stdhist() const;
   inline void clear_hs_stdhist();
-  static const int kHSStdHistFieldNumber = 401;
+  static const int kHSStdHistFieldNumber = 501;
   inline double hs_stdhist() const;
   inline void set_hs_stdhist(double value);
   
@@ -2009,10 +2118,11 @@ class StrategyItem : public ::google::protobuf::Message {
   int sc_casege4tick_;
   int sc_casenochange_;
   int sc_stoplossstrategy_;
+  ::google::protobuf::RepeatedPtrField< ::entity::HistSourceCfg > histsources_;
   double hs_stdhist_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(14 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(15 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -6929,6 +7039,90 @@ inline void LegUpdateItem::set_bidsize(::google::protobuf::int32 value) {
 
 // -------------------------------------------------------------------
 
+// HistSourceCfg
+
+// required string Symbol = 1;
+inline bool HistSourceCfg::has_symbol() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void HistSourceCfg::set_has_symbol() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void HistSourceCfg::clear_has_symbol() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void HistSourceCfg::clear_symbol() {
+  if (symbol_ != &::google::protobuf::internal::kEmptyString) {
+    symbol_->clear();
+  }
+  clear_has_symbol();
+}
+inline const ::std::string& HistSourceCfg::symbol() const {
+  return *symbol_;
+}
+inline void HistSourceCfg::set_symbol(const ::std::string& value) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(value);
+}
+inline void HistSourceCfg::set_symbol(const char* value) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(value);
+}
+inline void HistSourceCfg::set_symbol(const char* value, size_t size) {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  symbol_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* HistSourceCfg::mutable_symbol() {
+  set_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    symbol_ = new ::std::string;
+  }
+  return symbol_;
+}
+inline ::std::string* HistSourceCfg::release_symbol() {
+  clear_has_symbol();
+  if (symbol_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = symbol_;
+    symbol_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// required int32 Precision = 2;
+inline bool HistSourceCfg::has_precision() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void HistSourceCfg::set_has_precision() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void HistSourceCfg::clear_has_precision() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void HistSourceCfg::clear_precision() {
+  precision_ = 0;
+  clear_has_precision();
+}
+inline ::google::protobuf::int32 HistSourceCfg::precision() const {
+  return precision_;
+}
+inline void HistSourceCfg::set_precision(::google::protobuf::int32 value) {
+  set_has_precision();
+  precision_ = value;
+}
+
+// -------------------------------------------------------------------
+
 // StrategyItem
 
 // required .entity.StrategyType Type = 1;
@@ -7264,15 +7458,40 @@ inline void StrategyItem::set_sc_stoplossstrategy(entity::StopLossCloseMethods v
   sc_stoplossstrategy_ = value;
 }
 
-// optional double HS_StdHist = 401;
+// repeated .entity.HistSourceCfg HistSources = 401;
+inline int StrategyItem::histsources_size() const {
+  return histsources_.size();
+}
+inline void StrategyItem::clear_histsources() {
+  histsources_.Clear();
+}
+inline const ::entity::HistSourceCfg& StrategyItem::histsources(int index) const {
+  return histsources_.Get(index);
+}
+inline ::entity::HistSourceCfg* StrategyItem::mutable_histsources(int index) {
+  return histsources_.Mutable(index);
+}
+inline ::entity::HistSourceCfg* StrategyItem::add_histsources() {
+  return histsources_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::entity::HistSourceCfg >&
+StrategyItem::histsources() const {
+  return histsources_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::entity::HistSourceCfg >*
+StrategyItem::mutable_histsources() {
+  return &histsources_;
+}
+
+// optional double HS_StdHist = 501;
 inline bool StrategyItem::has_hs_stdhist() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
+  return (_has_bits_[0] & 0x00004000u) != 0;
 }
 inline void StrategyItem::set_has_hs_stdhist() {
-  _has_bits_[0] |= 0x00002000u;
+  _has_bits_[0] |= 0x00004000u;
 }
 inline void StrategyItem::clear_has_hs_stdhist() {
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline void StrategyItem::clear_hs_stdhist() {
   hs_stdhist_ = 0;
