@@ -12,7 +12,7 @@ CTaCalculator::~CTaCalculator(void)
 {
 }
 
-void CMACDCalculator::Calc( COHLCRecordSet* ohlcRecordSet, CTaIndicatorSet* taSet )
+void CMACDCalculator::Calc( COHLCRecordSet* ohlcRecordSet)
 {
 
 }

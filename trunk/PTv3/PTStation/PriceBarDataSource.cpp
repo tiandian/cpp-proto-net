@@ -4,11 +4,13 @@
 
 #include <boost/date_time.hpp>
 
-void CPriceBarDataSource::Init( int precision)
+void CPriceBarDataSource::Init( const string& symbol, int precision)
 {
-	m_recordSet = OHLCRecordSetPtr(new COHLCRecordSet(precision));
+	m_symbol = symbol;
+	m_precision = precision;
+	m_recordSet = OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision));
 
-	m_priceBarGen.Init(precision);
+	m_priceBarGen.Init(symbol, precision);
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5));
 	m_priceBarGen.SetBarFinalizedHandler(boost::bind(&CPriceBarDataSource::OnBarFinalized, this, _1, _2, _3, _4, _5));
 }
@@ -18,7 +20,7 @@ CPriceBarDataProxy* CPriceBarDataSource::AddProxy()
 	boost::mutex::scoped_lock l(m_mutProxyMap);
 
 	unsigned int newIdx = ++m_proxyIdxSeed;
-	PriceBarDataProxyPtr proxy(new CPriceBarDataProxy(newIdx, this));
+	PriceBarDataProxyPtr proxy(new CPriceBarDataProxy(newIdx, m_symbol, m_precision, this));
 	m_proxiesMap.insert(make_pair(newIdx, proxy));
 	return proxy.get();
 }

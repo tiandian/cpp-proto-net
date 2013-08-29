@@ -12,8 +12,9 @@ CPriceBarGen::~CPriceBarGen(void)
 {
 }
 
-void CPriceBarGen::Init( int precision )
+void CPriceBarGen::Init( const string& symbol, int precision )
 {
+	m_symbol = symbol;
 	m_precision = precision;
 }
 
