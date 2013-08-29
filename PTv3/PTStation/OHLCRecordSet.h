@@ -3,7 +3,7 @@
 class COHLCRecordSet
 {
 public:
-	COHLCRecordSet(int m_precision);
+	COHLCRecordSet(const string& symbol, int precision);
 	~COHLCRecordSet(void);
 
 	void Set(int barIdx, double open, double high, double low, double close);
@@ -16,6 +16,7 @@ public:
 	unsigned int GetSize(){ return m_size; }
 
 private:
+	string m_symbol;
 	int m_precision;
 	unsigned int m_size;
 	unsigned int m_lastIndex;

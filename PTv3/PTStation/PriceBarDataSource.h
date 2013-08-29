@@ -19,11 +19,12 @@ enum TA_INDICATOR
 class CPriceBarDataSource
 {
 public:
-	CPriceBarDataSource(const string& id):m_id(id), m_proxyIdxSeed(0){}
+	CPriceBarDataSource(const string& id)
+		: m_id(id), m_proxyIdxSeed(0){}
 	~CPriceBarDataSource(){}
 
 	const string& Id(){ return m_id; }
-	void Init(int precision);
+	void Init(const string& symbol, int precision);
 	CPriceBarDataProxy* AddProxy();
 	void RemoveProxy(CPriceBarDataProxy* proxy);
 	bool IsDisposable(){ return m_proxiesMap.size() == 0; }
@@ -43,6 +44,8 @@ private:
 
 	unsigned int m_proxyIdxSeed;
 	boost::mutex m_mutProxyMap;
+	string m_symbol;
+	int m_precision;
 
 	boost::condition_variable m_condDataReady;
 	boost::mutex m_mutDataReady;

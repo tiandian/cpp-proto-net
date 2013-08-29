@@ -12,7 +12,7 @@ public:
 	CPriceBarGen(void);
 	~CPriceBarGen(void);
 
-	void Init(int precision);
+	void Init(const string& symbol, int precision);
 	void Calculate(entity::Quote* pQuote);
 
 	void SetBarChangedHandler(BarChangeFunc onBarChanged)
@@ -26,6 +26,7 @@ public:
 	}
 
 private:
+	string m_symbol;
 	int m_precision;
 	BarChangeFunc m_onBarChanged;
 	BarChangeFunc m_onBarFinalized;

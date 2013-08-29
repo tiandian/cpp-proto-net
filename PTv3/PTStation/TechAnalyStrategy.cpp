@@ -26,15 +26,6 @@ void CTechAnalyStrategy::Start()
 		if(proxy != NULL)
 			m_pDataProxies.push_back(proxy);
 	}
-	// TODO will replace below parameters
-	/*m_pDataProxy = g_dataRepo.Register("Symbol", 60);
-	assert(m_pDataProxy != NULL);*/
-	//m_dataSource.Init(m_precision);
-
-	//m_priceBarGen.Init(m_precision);
-
-	// read history data and have data source ready
-	//m_histDataReader.Read(m_dataSource.RecordSet());
 
 	CStrategy::Start();
 }

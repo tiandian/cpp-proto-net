@@ -11,9 +11,11 @@ public:
 	virtual ~CTaCalculator(void);
 
 	virtual void Calc(COHLCRecordSet* ohlcRecordSet) = 0;
+	
+	CTaIndicatorSet* GetTaSet(){ return m_taSet.get(); }
 
 private:
-
+	TaIndicatorSetPtr m_taSet;
 };
 
 class CMACDCalculator : public CTaCalculator

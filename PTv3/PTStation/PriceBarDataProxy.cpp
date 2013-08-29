@@ -3,8 +3,10 @@
 #include "PriceBarDataSource.h"
 
 
-CPriceBarDataProxy::CPriceBarDataProxy(unsigned int idx, CPriceBarDataSource* pDataSource)
+CPriceBarDataProxy::CPriceBarDataProxy(unsigned int idx, const string& symbol, int precision, CPriceBarDataSource* pDataSource)
 	: m_index(idx)
+	, m_symbol(symbol)
+	, m_precision(precision)
 	, m_dataSource(pDataSource)
 {
 }
@@ -24,7 +26,7 @@ void CPriceBarDataProxy::InQuote( entity::Quote* pQuote, boost::chrono::steady_c
 	m_dataSource->InQuote(pQuote, timestamp);
 }
 
-CTaIndicatorSet* CPriceBarDataProxy::GetTaIndicatorSet(boost::chrono::steady_clock::time_point& timestamp)
+COHLCRecordSet* CPriceBarDataProxy::GetOHLCRecordSet( boost::chrono::steady_clock::time_point& timestamp )
 {
-	return m_dataSource->GetTaIndicatorSet(timestamp);
+	return m_dataSource->GetRecordSet(timestamp);
 }

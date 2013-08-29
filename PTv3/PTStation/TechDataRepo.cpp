@@ -25,7 +25,7 @@ CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision
 	{
 		// new PriceBarDataSource
 		PriceBarDataSourcePtr ds(new CPriceBarDataSource(dsKey));
-		ds->Init(precision);
+		ds->Init(symbol, precision);
 		m_priceBarDSMap.insert(make_pair(dsKey, ds));
 		return ds->AddProxy();
 	}

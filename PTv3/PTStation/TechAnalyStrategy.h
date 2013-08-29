@@ -13,7 +13,7 @@ public:
 
 	string Symbol;
 	int Precision;
-}
+};
 
 typedef boost::shared_ptr<CHistSourceCfg> HistSrcCfgPtr;
 
