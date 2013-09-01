@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "PriceBarGen.h"
-
+#include "ExchangeRelatedCalculation.h"
+#include <boost/chrono.hpp>
 
 CPriceBarGen::CPriceBarGen(void)
 	: m_precision(0)

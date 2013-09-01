@@ -30,5 +30,17 @@ private:
 	int m_precision;
 	BarChangeFunc m_onBarChanged;
 	BarChangeFunc m_onBarFinalized;
+
+	boost::chrono::seconds if_start_1;
+	boost::chrono::seconds if_end_1;
+	boost::chrono::seconds if_start_2;
+	boost::chrono::seconds if_end_2;
+
+	boost::chrono::seconds non_if_start_1;
+	boost::chrono::seconds non_if_end_1;
+	boost::chrono::seconds non_if_start_2;
+	boost::chrono::seconds non_if_end_2;
+	boost::chrono::seconds non_if_start_3;
+	boost::chrono::seconds non_if_end_3;
 };
 
