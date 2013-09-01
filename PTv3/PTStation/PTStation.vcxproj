@@ -113,6 +113,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\packet.pb.h" />
     <ClInclude Include="entity\quote.pb.h" />
     <ClInclude Include="entity\trade.pb.h" />
+    <ClInclude Include="ExchangeRelatedCalculation.h" />
     <ClInclude Include="FakeDealer.h" />
     <ClInclude Include="FileOperations.h" />
     <ClInclude Include="globalmembers.h" />
@@ -201,6 +202,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ExchangeRelatedCalculation.cpp" />
     <ClCompile Include="FakeDealer.cpp" />
     <ClCompile Include="FileOperations.cpp" />
     <ClCompile Include="HistDataReader.cpp" />

@@ -40,7 +40,6 @@ void CPriceBarDataSource::InQuote( entity::Quote* pQuote, boost::chrono::steady_
 	// ensure to process latest quote, ONLY the first incoming quote with timestamp trigger TA calculation
 	if(timestamp > m_dataTimestamp)
 	{
-		// TODO: call underlying for TA calculation
 		m_dataTimestamp = timestamp;
 
 		m_priceBarGen.Calculate(pQuote);

@@ -44,7 +44,12 @@ void CTechAnalyStrategy::Stop()
 
 void CTechAnalyStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
-	//m_pDataProxy->InQuote(pQuote, timestamp);
+	for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
+		iter != m_pDataProxies.end(); ++iter)
+	{
+		if((*iter)->Symbol() == pQuote->symbol())
+			(*iter)->InQuote(pQuote, timestamp);
+	}
 }
 
 void CTechAnalyStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
