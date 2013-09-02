@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "PriceBarGen.h"
+#include "TechStrategyDefs.h"
 
 
 CPriceBarGen::CPriceBarGen(void)
@@ -37,10 +38,10 @@ void CPriceBarGen::Init(const string& symbol, unsigned int precision)
     }
 }
 
-void CPriceBarGen::Calculate(const string& quoteTime)
+void CPriceBarGen::Calculate(entity::Quote* pQuote)
 {
-    int barIdx = GetIndex(quoteTime);
-    cout << quoteTime << ": " << barIdx << endl;
+    int barIdx = GetIndex(pQuote->update_time());
+    //cout << quoteTime << ": " << barIdx << endl;
 }
 
 unsigned int CPriceBarGen::GetIndex(const string& quoteTime)

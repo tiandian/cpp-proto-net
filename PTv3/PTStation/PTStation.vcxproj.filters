@@ -281,7 +281,10 @@
     <ClInclude Include="TaCalculator.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
-    <ClInclude Include="ExchangeRelatedCalculation.h">
+    <ClInclude Include="TradingTimeSpan.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="TechStrategyDefs.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
   </ItemGroup>
@@ -475,7 +478,7 @@
     <ClCompile Include="TaCalculator.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
-    <ClCompile Include="ExchangeRelatedCalculation.cpp">
+    <ClCompile Include="TradingTimeSpan.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>

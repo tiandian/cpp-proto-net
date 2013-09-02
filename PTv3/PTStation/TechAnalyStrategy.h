@@ -7,12 +7,12 @@ class CPriceBarDataProxy;
 class CHistSourceCfg
 {
 public:
-	CHistSourceCfg(const string& symb, int precision)
+	CHistSourceCfg(const string& symb, unsigned int precision)
 		: Symbol(symb), Precision(precision)
 	{}
 
 	string Symbol;
-	int Precision;
+	unsigned int Precision;
 };
 
 typedef boost::shared_ptr<CHistSourceCfg> HistSrcCfgPtr;

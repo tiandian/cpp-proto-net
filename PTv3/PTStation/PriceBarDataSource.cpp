@@ -1,14 +1,18 @@
 #include "StdAfx.h"
 #include "PriceBarDataSource.h"
+#include "HistDataReader.h"
 #include "globalmembers.h"
 
 #include <boost/date_time.hpp>
 
-void CPriceBarDataSource::Init( const string& symbol, int precision)
+void CPriceBarDataSource::Init( const string& symbol, unsigned int precision)
 {
 	m_symbol = symbol;
 	m_precision = precision;
 	m_recordSet = OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision));
+
+	CHistDataReader dataReader(symbol, precision);
+	dataReader.Read(m_recordSet.get());
 
 	m_priceBarGen.Init(symbol, precision);
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5));

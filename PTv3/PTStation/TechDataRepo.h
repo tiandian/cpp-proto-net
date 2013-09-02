@@ -11,11 +11,11 @@ public:
 	CTechDataRepo(void);
 	~CTechDataRepo(void);
 
-	CPriceBarDataProxy* Register(const string& symbol, int precision);
+	CPriceBarDataProxy* Register(const string& symbol, unsigned int precision);
 	bool Unregister(CPriceBarDataProxy* proxy);
 
 private:
-	static void BuildKey(const string& symbol, int precision, string* outKey);
+	static void BuildKey(const string& symbol, unsigned int precision, string* outKey);
 
 	typedef boost::unordered_map<string, PriceBarDataSourcePtr> PriceBarDSMap;
 	typedef PriceBarDSMap::iterator PriceBarDSMapIter;

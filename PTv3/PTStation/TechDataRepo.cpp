@@ -1,9 +1,12 @@
 #include "StdAfx.h"
 #include "TechDataRepo.h"
-
+#include "FileOperations.h"
+#include "TechStrategyDefs.h"
 
 CTechDataRepo::CTechDataRepo(void)
 {
+	// ensure the folder existing
+	CreateFolderIfNotExists(HIST_DATA_FOLDER);
 }
 
 
@@ -11,7 +14,7 @@ CTechDataRepo::~CTechDataRepo(void)
 {
 }
 
-CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision)
+CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, unsigned int precision)
 {
 	boost::mutex::scoped_lock l(m_mutex);
 	string dsKey;
@@ -49,7 +52,7 @@ bool CTechDataRepo::Unregister( CPriceBarDataProxy* proxy )
 	return false;
 }
 
-void CTechDataRepo::BuildKey( const string& symbol, int precision, string* outKey )
+void CTechDataRepo::BuildKey( const string& symbol, unsigned int precision, string* outKey )
 {
-	*outKey = boost::str(boost::format("%s-%d") % symbol % precision);
+	*outKey = boost::str(boost::format("%s-%u") % symbol % precision);
 }

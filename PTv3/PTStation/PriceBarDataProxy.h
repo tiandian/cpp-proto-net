@@ -8,7 +8,7 @@ class COHLCRecordSet;
 class CPriceBarDataProxy
 {
 public:
-	CPriceBarDataProxy(unsigned int idx, const string& symbol, int precision, CPriceBarDataSource* pDataSource);
+	CPriceBarDataProxy(unsigned int idx, const string& symbol, unsigned int precision, CPriceBarDataSource* pDataSource);
 	~CPriceBarDataProxy(void);
 
 	const string& DataSourceId();

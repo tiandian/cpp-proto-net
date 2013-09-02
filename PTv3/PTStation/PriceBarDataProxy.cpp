@@ -3,7 +3,7 @@
 #include "PriceBarDataSource.h"
 
 
-CPriceBarDataProxy::CPriceBarDataProxy(unsigned int idx, const string& symbol, int precision, CPriceBarDataSource* pDataSource)
+CPriceBarDataProxy::CPriceBarDataProxy(unsigned int idx, const string& symbol, unsigned int precision, CPriceBarDataSource* pDataSource)
 	: m_index(idx)
 	, m_symbol(symbol)
 	, m_precision(precision)
@@ -14,11 +14,13 @@ CPriceBarDataProxy::CPriceBarDataProxy(unsigned int idx, const string& symbol, i
 
 CPriceBarDataProxy::~CPriceBarDataProxy(void)
 {
+	m_dataSource = NULL;
 }
 
 const string& CPriceBarDataProxy::DataSourceId()
 {
-	return m_dataSource != NULL ? m_dataSource->Id() : "";
+	assert(m_dataSource != NULL);
+	return m_dataSource->Id();
 }
 
 void CPriceBarDataProxy::InQuote( entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp )
