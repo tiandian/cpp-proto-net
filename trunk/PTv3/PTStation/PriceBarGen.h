@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entity/quote.pb.h"
-
+#include "ExchangeRelatedCalculation.h"
 #include <boost/thread.hpp>
 
 typedef boost::function<void(int, double, double, double, double)> BarChangeFunc;
@@ -12,7 +12,7 @@ public:
 	CPriceBarGen(void);
 	~CPriceBarGen(void);
 
-	void Init(const string& symbol, int precision);
+	void Init(const string& symbol, unsigned int precision);
 	void Calculate(entity::Quote* pQuote);
 
 	void SetBarChangedHandler(BarChangeFunc onBarChanged)
@@ -26,21 +26,13 @@ public:
 	}
 
 private:
-	string m_symbol;
-	int m_precision;
-	BarChangeFunc m_onBarChanged;
-	BarChangeFunc m_onBarFinalized;
+    unsigned int GetIndex(const string& quoteTime);
 
-	boost::chrono::seconds if_start_1;
-	boost::chrono::seconds if_end_1;
-	boost::chrono::seconds if_start_2;
-	boost::chrono::seconds if_end_2;
+    string m_symbol;
+    int m_precision;
 
-	boost::chrono::seconds non_if_start_1;
-	boost::chrono::seconds non_if_end_1;
-	boost::chrono::seconds non_if_start_2;
-	boost::chrono::seconds non_if_end_2;
-	boost::chrono::seconds non_if_start_3;
-	boost::chrono::seconds non_if_end_3;
+    typedef vector<TradingTimeSpanPtr> TimeSpanVec;
+    typedef TimeSpanVec::iterator TimeSpanVecIter;
+    TimeSpanVec m_vecTimeSpan;
 };
 
