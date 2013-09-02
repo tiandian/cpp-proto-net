@@ -1,10 +1,10 @@
 #include "StdAfx.h"
 #include "OHLCRecordSet.h"
-#include "ExchangeRelatedCalculation.h"
+#include "TechStrategyDefs.h"
 #include <boost/algorithm/string.hpp>
 
 
-COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision)
+COHLCRecordSet::COHLCRecordSet(const string& symbol, unsigned int precision)
 	: m_symbol(symbol)
 	, m_precision(precision)
 {

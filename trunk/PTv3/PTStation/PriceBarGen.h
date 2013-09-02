@@ -1,7 +1,7 @@
 #pragma once
 
 #include "entity/quote.pb.h"
-#include "ExchangeRelatedCalculation.h"
+#include "TradingTimeSpan.h"
 #include <boost/thread.hpp>
 
 typedef boost::function<void(int, double, double, double, double)> BarChangeFunc;
@@ -25,11 +25,15 @@ public:
 		m_onBarFinalized = onBarFinalized;
 	}
 
+	unsigned int GetIndex(const string& quoteTime);
+
 private:
-    unsigned int GetIndex(const string& quoteTime);
+    
 
     string m_symbol;
     int m_precision;
+	BarChangeFunc m_onBarChanged;
+	BarChangeFunc m_onBarFinalized;
 
     typedef vector<TradingTimeSpanPtr> TimeSpanVec;
     typedef TimeSpanVec::iterator TimeSpanVecIter;

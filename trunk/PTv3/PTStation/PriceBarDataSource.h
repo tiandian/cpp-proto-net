@@ -2,7 +2,6 @@
 
 #include "PriceBarGen.h"
 #include "HistDataWriter.h"
-#include "HistDataReader.h"
 #include "OHLCRecordSet.h"
 #include "PriceBarDataProxy.h"
 #include "entity/quote.pb.h"
@@ -24,7 +23,7 @@ public:
 	~CPriceBarDataSource(){}
 
 	const string& Id(){ return m_id; }
-	void Init(const string& symbol, int precision);
+	void Init(const string& symbol, unsigned int precision);
 	CPriceBarDataProxy* AddProxy();
 	void RemoveProxy(CPriceBarDataProxy* proxy);
 	bool IsDisposable(){ return m_proxiesMap.size() == 0; }
@@ -57,7 +56,6 @@ private:
 
 	CPriceBarGen m_priceBarGen;
 	CHistDataWriter m_histDataWriter;
-	CHistDataReader m_histDataReader;
 };
 
 typedef boost::shared_ptr<CPriceBarDataSource> PriceBarDataSourcePtr;

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
-#include "ExchangeRelatedCalculation.h"
+#include "TradingTimeSpan.h"
+#include "TechStrategyDefs.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -25,7 +26,7 @@ boost::chrono::seconds ParseTimeString(const string& time)
 
 bool isSymbolIF(const string& symbol)
 {
-    return boost::starts_with(symbol, "IF");
+    return boost::starts_with(symbol, IF_PREFIX);
 }
 
 unsigned int GetIndexFromTime(const boost::chrono::seconds& baseTp, const boost::chrono::seconds& timePoint, unsigned int precision)
