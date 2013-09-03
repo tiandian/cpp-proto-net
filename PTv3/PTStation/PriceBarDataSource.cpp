@@ -13,6 +13,12 @@ void CPriceBarDataSource::Init( const string& symbol, unsigned int precision)
 
 	CHistDataReader dataReader(symbol, precision);
 	dataReader.Read(m_recordSet.get());
+   
+  bool writerReady = m_histDataWriter.Open(symbol, precision);
+  if(!writerReady)
+  {
+    logger.Error(boost::str(boost::format("Cannot open HistDataWriter for %s-%u") % symbol % precision));
+  }
 
 	m_priceBarGen.Init(symbol, precision);
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5));
