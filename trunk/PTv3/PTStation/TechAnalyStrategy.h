@@ -3,6 +3,7 @@
 #include "Strategy.h"
 
 class CPriceBarDataProxy;
+class CAvatarClient;
 
 class CHistSourceCfg
 {
@@ -20,7 +21,7 @@ typedef boost::shared_ptr<CHistSourceCfg> HistSrcCfgPtr;
 class CTechAnalyStrategy : public CStrategy
 {
 public:
-	CTechAnalyStrategy(const entity::StrategyItem& strategyItem);
+	CTechAnalyStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar);
 	virtual ~CTechAnalyStrategy(void);
 
 	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);
@@ -32,5 +33,7 @@ public:
 private:
 	vector<HistSrcCfgPtr> m_histSrcConfigs;
 	vector<CPriceBarDataProxy*> m_pDataProxies;
+
+	CAvatarClient* m_avatar;
 };
 

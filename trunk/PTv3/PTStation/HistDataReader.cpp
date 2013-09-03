@@ -19,7 +19,7 @@ CHistDataReader::~CHistDataReader(void)
 {
 }
 
-void CHistDataReader::Read( COHLCRecordSet* pRecordSet )
+void CHistDataReader::Read( COHLCRecordSet* pRecordSet, CPriceBarGen* pPriceBarGen )
 {
 	assert(pRecordSet != NULL);
 
@@ -30,9 +30,6 @@ void CHistDataReader::Read( COHLCRecordSet* pRecordSet )
 		ifstream f(filePath);
 		if(f.good())
 		{
-			CPriceBarGen barIndexCalculator;
-			barIndexCalculator.Init(m_symbol, m_precision);
-
 			while(!f.eof())
 			{
 				f.getline(m_buf, HIST_LINE_MAX_LENGTH);
@@ -42,7 +39,7 @@ void CHistDataReader::Read( COHLCRecordSet* pRecordSet )
 				bool succ = ParseLine(&timestamp, &open, &high, &low, &close);
 				if(succ)
 				{
-					unsigned int idx = barIndexCalculator.GetIndex(timestamp);
+					unsigned int idx = pPriceBarGen->GetIndex(timestamp);
 					pRecordSet->Set(idx, open, high, low, close);
 				}
 			}
@@ -59,6 +56,6 @@ bool CHistDataReader::ParseLine( string* timestamp, double* open, double* high, 
 {
 	char timeBuf[10];
 	int got = sscanf(m_buf, "%s %lf, %lf, %lf, %lf", timeBuf, open, high, low, close);
-  *timestamp = timeBuf;
+	*timestamp = timeBuf;
 	return got == 5;
 }

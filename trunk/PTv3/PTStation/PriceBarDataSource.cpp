@@ -11,18 +11,19 @@ void CPriceBarDataSource::Init( const string& symbol, unsigned int precision)
 	m_precision = precision;
 	m_recordSet = OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision));
 
-	CHistDataReader dataReader(symbol, precision);
-	dataReader.Read(m_recordSet.get());
-   
-  bool writerReady = m_histDataWriter.Open(symbol, precision);
-  if(!writerReady)
-  {
-    logger.Error(boost::str(boost::format("Cannot open HistDataWriter for %s-%u") % symbol % precision));
-  }
-
 	m_priceBarGen.Init(symbol, precision);
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5));
 	m_priceBarGen.SetBarFinalizedHandler(boost::bind(&CPriceBarDataSource::OnBarFinalized, this, _1, _2, _3, _4, _5));
+
+	CHistDataReader dataReader(symbol, precision);
+	dataReader.Read(m_recordSet.get(), &m_priceBarGen);
+   
+	bool writerReady = m_histDataWriter.Open(symbol, precision);
+	if(!writerReady)
+	{
+		logger.Error(boost::str(boost::format("Cannot open HistDataWriter for %s-%u") % symbol % precision));
+	}
+
 }
 
 CPriceBarDataProxy* CPriceBarDataSource::AddProxy()
@@ -82,7 +83,7 @@ void CPriceBarDataSource::OnBarChanged( int barIdx, double open, double high, do
 
 void CPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close )
 {
-	m_histDataWriter.Write(open, high, low, close);
+	//m_histDataWriter.Write(open, high, low, close);
 }
 
 

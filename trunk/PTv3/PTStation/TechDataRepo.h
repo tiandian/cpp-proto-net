@@ -11,7 +11,7 @@ public:
 	CTechDataRepo(void);
 	~CTechDataRepo(void);
 
-	CPriceBarDataProxy* Register(const string& symbol, unsigned int precision);
+	CPriceBarDataProxy* Register(const string& symbol, unsigned int precision, const boost::gregorian::date& tradingDay);
 	bool Unregister(CPriceBarDataProxy* proxy);
 
 private:

@@ -7,6 +7,8 @@
 #include "OrderProcessor.h"
 #include "entity/message.pb.h"
 
+#include <boost/date_time.hpp>
+
 class CAvatarClient : public LogicalConnection
 {
 public:
@@ -32,6 +34,7 @@ public:
 	void PublishTradeUpdate(trade::Trade* pTrade);
 	void PublishPositionDetail(trade::PositionDetailInfo* pPosiDetailInfo);
 
+	const boost::gregorian::date& TradingDay(){ return m_tradeAgent.TradingDay(); }
 private:
 	string				m_sessionId;
 	string				m_investorId;

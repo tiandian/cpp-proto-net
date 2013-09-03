@@ -20,6 +20,7 @@ public:
 	friend class CStrategy;
 
 	// properties
+	CAvatarClient* ParentAvatar(){ return m_avatar; }
 	const string& ID(){ return m_portfolioItem.id(); }
 	int Quantity(){ return m_portfolioItem.quantity(); }
 	int Count(){ return m_legs.size(); }

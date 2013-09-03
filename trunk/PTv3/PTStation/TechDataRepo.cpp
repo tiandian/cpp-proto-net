@@ -3,6 +3,8 @@
 #include "FileOperations.h"
 #include "TechStrategyDefs.h"
 
+#include <boost/date_time.hpp>
+
 CTechDataRepo::CTechDataRepo(void)
 {
 	// ensure the folder existing
@@ -14,7 +16,7 @@ CTechDataRepo::~CTechDataRepo(void)
 {
 }
 
-CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, unsigned int precision)
+CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, unsigned int precision, const boost::gregorian::date& tradingDay)
 {
 	boost::mutex::scoped_lock l(m_mutex);
 	string dsKey;
@@ -27,7 +29,7 @@ CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, unsigned int 
 	else
 	{
 		// new PriceBarDataSource
-		PriceBarDataSourcePtr ds(new CPriceBarDataSource(dsKey));
+		PriceBarDataSourcePtr ds(new CPriceBarDataSource(dsKey, tradingDay));
 		ds->Init(symbol, precision);
 		m_priceBarDSMap.insert(make_pair(dsKey, ds));
 		return ds->AddProxy();
