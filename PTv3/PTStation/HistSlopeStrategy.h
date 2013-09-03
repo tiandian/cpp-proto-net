@@ -2,10 +2,12 @@
 
 #include "TechAnalyStrategy.h"
 
+class CAvatarClient;
+
 class CHistSlopeStrategy : public CTechAnalyStrategy
 {
 public:
-	CHistSlopeStrategy(const entity::StrategyItem& strategyItem);
+	CHistSlopeStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar);
 	~CHistSlopeStrategy(void);
 
 	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);

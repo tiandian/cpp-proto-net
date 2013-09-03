@@ -2,12 +2,14 @@
 #include "TechAnalyStrategy.h"
 #include "PriceBarDataSource.h"
 #include "TechDataRepo.h"
+#include "AvatarClient.h"
 #include <assert.h>
 
 CTechDataRepo g_dataRepo;
 
-CTechAnalyStrategy::CTechAnalyStrategy(const entity::StrategyItem& strategyItem)
+CTechAnalyStrategy::CTechAnalyStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
 	: CStrategy(strategyItem)
+	, m_avatar(pAvatar)
 {
 }
 
@@ -22,7 +24,7 @@ void CTechAnalyStrategy::Start()
 	for (vector<HistSrcCfgPtr>::iterator iter = m_histSrcConfigs.begin();
 		iter != m_histSrcConfigs.end(); ++iter)
 	{
-		CPriceBarDataProxy* proxy = g_dataRepo.Register((*iter)->Symbol, (*iter)->Precision);
+		CPriceBarDataProxy* proxy = g_dataRepo.Register((*iter)->Symbol, (*iter)->Precision, m_avatar->TradingDay());
 		if(proxy != NULL)
 			m_pDataProxies.push_back(proxy);
 	}

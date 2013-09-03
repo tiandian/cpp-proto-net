@@ -7,7 +7,7 @@
 #include "entity/quote.pb.h"
 
 #include <boost/unordered_map.hpp>
-
+#include <boost/date_time.hpp>
 
 enum TA_INDICATOR
 {
@@ -18,8 +18,8 @@ enum TA_INDICATOR
 class CPriceBarDataSource
 {
 public:
-	CPriceBarDataSource(const string& id)
-		: m_id(id), m_proxyIdxSeed(0){}
+	CPriceBarDataSource(const string& id, const boost::gregorian::date& tradingDay)
+		: m_id(id), m_tradingDay(tradingDay), m_proxyIdxSeed(0){}
 	~CPriceBarDataSource(){}
 
 	const string& Id(){ return m_id; }
@@ -56,6 +56,7 @@ private:
 
 	CPriceBarGen m_priceBarGen;
 	CHistDataWriter m_histDataWriter;
+	boost::gregorian::date m_tradingDay;
 };
 
 typedef boost::shared_ptr<CPriceBarDataSource> PriceBarDataSourcePtr;

@@ -1,9 +1,10 @@
 #include "StdAfx.h"
 #include "HistSlopeStrategy.h"
 #include "HistSlopeTrigger.h"
+#include "AvatarClient.h"
 
-CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem)
-	: CTechAnalyStrategy(strategyItem)
+CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
+	: CTechAnalyStrategy(strategyItem, pAvatar)
 {
 	Apply(strategyItem, false);
 

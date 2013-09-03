@@ -143,12 +143,12 @@ void CAvatarFactory::onClientDisconnected( LogicalConnection* pClient, CloseReas
 	CAvatarClient* pAvatar = (CAvatarClient*) pClient;
 	LOG_INFO(logger, boost::str(boost::format("Client(%s) disconnected due to %s") 
 		% pAvatar->Pseudo() % CLOSE_REASON_TEXT[closeReason]));
-	
 }
 
 void CAvatarFactory::disposeClient( LogicalConnection* pClient )
 {
 	CAvatarClient* pAvatar = (CAvatarClient*) pClient;
+	Disconnect(pClient, false);
 	LOG_INFO(logger, boost::str(boost::format("Disposing client %s ...") % pAvatar->Pseudo()));
 	delete pAvatar;
 }
