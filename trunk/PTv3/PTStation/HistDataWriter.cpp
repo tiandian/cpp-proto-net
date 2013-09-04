@@ -19,6 +19,7 @@ bool CHistDataWriter::Open(const string& symbol, unsigned int precision, const b
 {
     m_symbol = symbol;
     m_precision = precision;
+	string tradingDayString = boost::gregorian::to_iso_string(tradingDay);
     string filePath = boost::str(boost::format("%s/%s-%u-%s.txt") 
         % HIST_DATA_FOLDER % m_symbol % m_precision % tradingDayString);
     m_ofstream.open(filePath, std::ofstream::out | std::ofstream::app);

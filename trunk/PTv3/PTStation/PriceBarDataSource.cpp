@@ -15,10 +15,10 @@ void CPriceBarDataSource::Init( const string& symbol, unsigned int precision)
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5));
 	m_priceBarGen.SetBarFinalizedHandler(boost::bind(&CPriceBarDataSource::OnBarFinalized, this, _1, _2, _3, _4, _5));
 
-	CHistDataReader dataReader(symbol, precision);
+	CHistDataReader dataReader(symbol, precision, m_tradingDay);
 	dataReader.Read(m_recordSet.get(), &m_priceBarGen);
    
-	bool writerReady = m_histDataWriter.Open(symbol, precision);
+	bool writerReady = m_histDataWriter.Open(symbol, precision, m_tradingDay);
 	if(!writerReady)
 	{
 		logger.Error(boost::str(boost::format("Cannot open HistDataWriter for %s-%u") % symbol % precision));
