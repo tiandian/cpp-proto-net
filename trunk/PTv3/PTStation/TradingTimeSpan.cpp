@@ -42,3 +42,15 @@ unsigned int GetIndexFromTime(const boost::chrono::seconds& baseTp, const boost:
     }
     return 0;
 }
+
+string GetISOTimeString(const boost::chrono::seconds& timepoint)
+{
+    boost::chrono::seconds s = timepoint;
+    // separate minutes from seconds
+    boost::chrono::minutes m = boost::chrono::duration_cast<boost::chrono::minutes>(s);
+    s -= m;
+    // separate hours from minutes
+    boost::chrono::hours h = boost::chrono::duration_cast<boost::chrono::hours>(m);
+    m -= h;
+    return boost::str(boost::format("%02d:%02d:%02d") % h.count() % m.count() % s.count());
+}
