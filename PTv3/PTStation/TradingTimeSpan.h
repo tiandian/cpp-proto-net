@@ -35,6 +35,13 @@ public:
     {
         return GetIndexFromTime(m_Start, timePoint, m_precision) + m_offset;
     }
+    
+    unsigned int GetIndex(const boost::chrono::seconds& timePoint, string* outTimestamp)
+    {
+        unsigned int idx = GetIndexFromTime(m_Start, timePoint, m_precision);
+        *outTimestamp = GetISOTimeString(m_Start + boost::chrono::seconds(idx * m_precision));
+        return  idx + m_offset;
+    }
 
 private:
     boost::chrono::seconds m_Start;
