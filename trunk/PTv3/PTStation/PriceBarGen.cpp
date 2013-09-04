@@ -40,8 +40,26 @@ void CPriceBarGen::Init(const string& symbol, unsigned int precision)
 
 void CPriceBarGen::Calculate(entity::Quote* pQuote)
 {
-    int barIdx = GetIndex(pQuote->update_time());
-    //cout << quoteTime << ": " << barIdx << endl;
+    string timestamp;
+    unsigned int barIdx = GetIndex(pQuote->update_time(), &timestamp);
+    //cout << quoteTime << ": " << barIdx << " ->" << timestamp << endl;
+}
+
+unsigned int CPriceBarGen::GetIndex(const string& quoteTime, string* timestamp)
+{
+    boost::chrono::seconds quoteTimePoint = ParseTimeString(quoteTime);
+
+    for(TimeSpanVecIter iter = m_vecTimeSpan.begin();
+        iter != m_vecTimeSpan.end(); ++iter)
+    {
+        if((*iter)->InScope(quoteTimePoint))
+        {
+            return (*iter)->GetIndex(quoteTimePoint, timestamp);
+        }
+    }
+
+    // input quote time is NOT in valid trading time
+    return 0;
 }
 
 unsigned int CPriceBarGen::GetIndex(const string& quoteTime)
