@@ -5,6 +5,7 @@ boost::chrono::seconds ParseTimeString(const string& time);
 
 bool isSymbolIF(const string& symbol);
 unsigned int GetIndexFromTime(const boost::chrono::seconds& baseTp, const boost::chrono::seconds& timePoint, unsigned int precision);
+string GetISOTimeString(const boost::chrono::seconds& timepoint);
 
 class CTradingTimeSpan
 {
