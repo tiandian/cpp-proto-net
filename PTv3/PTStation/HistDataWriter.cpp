@@ -15,11 +15,12 @@ CHistDataWriter::~CHistDataWriter(void)
         Close();
 }
 
-bool CHistDataWriter::Open(const string& symbol, unsigned int precision)
+bool CHistDataWriter::Open(const string& symbol, unsigned int precision, const boost::gregorian::date& tradingDay)
 {
     m_symbol = symbol;
     m_precision = precision;
-    string filePath = boost::str(boost::format("%s/%s-%u.txt") % HIST_DATA_FOLDER % m_symbol % m_precision);
+    string filePath = boost::str(boost::format("%s/%s-%u-%s.txt") 
+        % HIST_DATA_FOLDER % m_symbol % m_precision % tradingDayString);
     m_ofstream.open(filePath, std::ofstream::out | std::ofstream::app);
     return m_ofstream.is_open();
 }
