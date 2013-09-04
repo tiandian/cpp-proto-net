@@ -26,7 +26,7 @@ public:
 	}
 
 	unsigned int GetIndex(const string& quoteTime);
-
+  unsigned int GetIndex(const string& quoteTime, string* timestamp);
 private:
     
 
