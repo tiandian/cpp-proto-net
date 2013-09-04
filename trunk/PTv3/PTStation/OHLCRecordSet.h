@@ -7,6 +7,7 @@ public:
 	~COHLCRecordSet(void);
 
 	void Set(int barIdx, double open, double high, double low, double close);
+  void SetHistory(unsigned int idx, double open, double high, double low, double close){} 
 
 	vector<double> OpenSeries;
 	vector<double> HighSeries;
