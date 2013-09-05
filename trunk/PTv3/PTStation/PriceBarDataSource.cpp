@@ -12,8 +12,8 @@ void CPriceBarDataSource::Init( const string& symbol, unsigned int precision)
 	m_recordSet = OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision));
 
 	m_priceBarGen.Init(symbol, precision);
-	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5));
-	m_priceBarGen.SetBarFinalizedHandler(boost::bind(&CPriceBarDataSource::OnBarFinalized, this, _1, _2, _3, _4, _5));
+	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5, _6));
+	m_priceBarGen.SetBarFinalizedHandler(boost::bind(&CPriceBarDataSource::OnBarFinalized, this, _1, _2, _3, _4, _5, _6));
 
 	CHistDataReader dataReader(symbol, precision, m_tradingDay);
 	dataReader.Read(m_recordSet.get(), &m_priceBarGen);
@@ -76,14 +76,14 @@ COHLCRecordSet* CPriceBarDataSource::GetRecordSet(boost::chrono::steady_clock::t
 	return NULL;
 }
 
-void CPriceBarDataSource::OnBarChanged( int barIdx, double open, double high, double low, double close )
+void CPriceBarDataSource::OnBarChanged( unsigned int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
-	m_recordSet->Set(barIdx, open, high, low	, close);
+	m_recordSet->SetToday(barIdx, open, high, low	, close);
 }
 
-void CPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close )
+void CPriceBarDataSource::OnBarFinalized( unsigned int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
-	//m_histDataWriter.Write(open, high, low, close);
+	m_histDataWriter.Write(timestamp, open, high, low, close);
 }
 
 

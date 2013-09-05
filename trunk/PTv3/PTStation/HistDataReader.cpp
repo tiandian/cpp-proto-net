@@ -78,7 +78,7 @@ void CHistDataReader::ReadFromFile(const string& dataFilePath, COHLCRecordSet* p
                 if(histData)
                     pRecordSet->SetHistory(idx, open, high, low, close);
                 else
-                    pRecordSet->Set(idx, open, high, low, close);
+                    pRecordSet->SetToday(idx, open, high, low, close);
             }
         }
     }

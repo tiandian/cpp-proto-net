@@ -34,8 +34,8 @@ public:
 
 private:
 
-	void OnBarChanged(int barIdx, double open, double high, double low, double close);
-	void OnBarFinalized(int barIdx, double open, double high, double low, double close);
+	void OnBarChanged(unsigned int barIdx, double open, double high, double low, double close, const string& timestamp);
+	void OnBarFinalized(unsigned int barIdx, double open, double high, double low, double close, const string& timestamp);
 
 	typedef boost::unordered_map<unsigned int, PriceBarDataProxyPtr> PriceBarDataProxyMap;
 	typedef PriceBarDataProxyMap::iterator PriceBarDataProxyMapIter;
