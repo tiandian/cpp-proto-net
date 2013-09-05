@@ -4,6 +4,11 @@
 
 
 CPriceBarGen::CPriceBarGen(void)
+	: m_currentIdx(0)
+	, m_open(0)
+	, m_high(0)
+	, m_low(0)
+	, m_close(0)
 {
 }
 
@@ -42,7 +47,30 @@ void CPriceBarGen::Calculate(entity::Quote* pQuote)
 {
     string timestamp;
     unsigned int barIdx = GetIndex(pQuote->update_time(), &timestamp);
-    //cout << quoteTime << ": " << barIdx << " ->" << timestamp << endl;
+	double last = pQuote->last();;
+	if(barIdx > m_currentIdx)
+	{
+		// if not the first one, finalize the last bar
+		if(m_currentIdx > 0 && !m_onBarFinalized.empty())
+		{
+			m_onBarFinalized(barIdx, m_open, m_high, m_low, m_close, timestamp);
+		}
+
+		m_currentIdx = barIdx;
+		m_close = m_low = m_high = m_open = last;
+	}
+	else if(barIdx == m_currentIdx)
+	{
+		m_close = last;
+		if(last > m_high)
+			m_high = last;
+		if(last < m_low)
+			m_low = last;
+	}
+	else // barIdx < m_currentIdx ???
+		assert(barIdx > m_currentIdx);
+
+	RaiseBarChangeEvent(barIdx, timestamp);
 }
 
 unsigned int CPriceBarGen::GetIndex(const string& quoteTime, string* timestamp)
