@@ -12,7 +12,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public const string ArbitrageStrategyName = "ArbitrageStrategy";
         public const string ChangePositionStrategyName = "ChangePosition";
         public const string ScalperStrategyName = "Scalper";
-        public const string TrendStrategyName = "TrendStrategy";
+        public const string MACDHistSlopeStrategyName = "MACDHistSlope";
 
         public abstract string Name { get; }
 
@@ -34,8 +34,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     return "移仓";
                 case ScalperStrategyName:
                     return "高频";
-                case TrendStrategyName:
-                    return "趋势";
+                case MACDHistSlopeStrategyName:
+                    return "MACD角度";
             }
             return "未知";
         }

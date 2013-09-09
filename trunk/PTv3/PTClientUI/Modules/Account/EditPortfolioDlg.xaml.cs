@@ -195,6 +195,19 @@ namespace PortfolioTrading.Modules.Account
                     setting.Threshold = this.Threshold;
                 }
             }
+            else if (StrategyName == StrategySetting.MACDHistSlopeStrategyName)
+            {
+                if (!string.IsNullOrEmpty(Symbol1))
+                {
+                    MACDHistSlopeStrategySetting setting = (MACDHistSlopeStrategySetting)portf.StrategySetting;
+                    setting.Symbol = Symbol1;
+                    setting.MACD_Short = 12;
+                    setting.MACD_Long = 26;
+                    setting.MACD_M = 9;
+                    setting.FastPeriod = this.FastPeriod;
+                    setting.SlowPeriod = this.SlowPeriod;
+                }
+            }
         }
 
         #region StrategyName
@@ -536,7 +549,46 @@ namespace PortfolioTrading.Modules.Account
             }
         }
         #endregion
+
+        #region MACD Hist slope
+
+        #region FastPeriod
+        private int _fastPeriod;
+
+        public int FastPeriod
+        {
+            get { return _fastPeriod; }
+            set
+            {
+                if (_fastPeriod != value)
+                {
+                    _fastPeriod = value;
+                    RaisePropertyChanged("FastPeriod");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowPeriod
+        private int _slowPeriod;
+
+        public int SlowPeriod
+        {
+            get { return _slowPeriod; }
+            set
+            {
+                if (_slowPeriod != value)
+                {
+                    _slowPeriod = value;
+                    RaisePropertyChanged("SlowPeriod");
+                }
+            }
+        }
+        #endregion
+
         
+
+        #endregion
     }
 
     public class StrategyItem

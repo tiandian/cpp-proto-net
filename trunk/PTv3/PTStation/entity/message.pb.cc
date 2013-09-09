@@ -1244,13 +1244,13 @@ void protobuf_AddDesc_message_2eproto() {
     "riceTick\030\006 \002(\001*,\n\nServerType\022\016\n\nSERV_QUO"
     "TE\020\000\022\016\n\nSERV_TRADE\020\001*>\n\023PortfolioSwitchT"
     "ype\022\023\n\017STRATEGY_SWITCH\020\000\022\022\n\016TRIGGER_SWIT"
-    "CH\020\001*\?\n\014StrategyType\022\r\n\tARBITRAGE\020\000\022\023\n\017C"
-    "HANGE_POSITION\020\001\022\013\n\007SCALPER\020\002*o\n\020Directi"
-    "onDepends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_S"
-    "IZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANG"
-    "E\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseM"
-    "ethods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED"
-    "_ON_INPUT_LIMIT\020\001", 5857);
+    "CH\020\001*O\n\014StrategyType\022\r\n\tARBITRAGE\020\000\022\023\n\017C"
+    "HANGE_POSITION\020\001\022\013\n\007SCALPER\020\002\022\016\n\nHIST_SL"
+    "OPE\020\003*o\n\020DirectionDepends\022\017\n\013IGNORE_THIS"
+    "\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023"
+    "\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CHANGE\020\004*I"
+    "\n\024StopLossCloseMethods\022\027\n\023BASED_ON_NEXT_"
+    "QUOTE\020\000\022\030\n\024BASED_ON_INPUT_LIMIT\020\001", 5873);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -1382,6 +1382,7 @@ bool StrategyType_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
