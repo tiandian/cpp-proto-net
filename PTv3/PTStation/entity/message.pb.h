@@ -117,11 +117,12 @@ inline bool PortfolioSwitchType_Parse(
 enum StrategyType {
   ARBITRAGE = 0,
   CHANGE_POSITION = 1,
-  SCALPER = 2
+  SCALPER = 2,
+  HIST_SLOPE = 3
 };
 bool StrategyType_IsValid(int value);
 const StrategyType StrategyType_MIN = ARBITRAGE;
-const StrategyType StrategyType_MAX = SCALPER;
+const StrategyType StrategyType_MAX = HIST_SLOPE;
 const int StrategyType_ARRAYSIZE = StrategyType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* StrategyType_descriptor();

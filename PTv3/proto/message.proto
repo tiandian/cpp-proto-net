@@ -129,6 +129,7 @@ enum StrategyType
 	ARBITRAGE = 0;
 	CHANGE_POSITION = 1;
 	SCALPER = 2;
+	HIST_SLOPE = 3;
 }
 
 message HistSourceCfg

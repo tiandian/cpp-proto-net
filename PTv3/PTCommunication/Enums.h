@@ -35,7 +35,8 @@ namespace PTEntity {
 	{
 		ARBITRAGE = 0,
 		CHANGE_POSITION = 1,
-		SCALPER = 2
+		SCALPER = 2,
+		HIST_SLOPE = 3
 	};
 
 	public enum class DirectionDepends : int

@@ -171,4 +171,96 @@ private:
 	StopLossCloseMethods _stopLossStrategy;
 };
 
+public ref class MACDSlopeStrategyItem : StrategyItem
+{
+public:
+	MACDSlopeStrategyItem()
+	{
+		_type = StrategyType::HIST_SLOPE;
+	}
+
+	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
+
+	property String^ Symbol
+	{
+		String^ get()
+		{
+			return _symbol; 
+		}
+		void set(String^ val)
+		{
+			_symbol = val;
+		}
+	}
+
+	property int Short
+	{
+		int get()
+		{
+			return _short; 
+		}
+		void set(int val)
+		{
+			_short = val;
+		}
+	}
+
+	property int Long
+	{
+		int get()
+		{
+			return _long; 
+		}
+		void set(int val)
+		{
+			_long = val;
+		}
+	}
+
+	property int M
+	{
+		int get()
+		{
+			return _m; 
+		}
+		void set(int val)
+		{
+			_m = val;
+		}
+	}
+
+	property int FastPeriod
+	{
+		int get()
+		{
+			return _fastPeriod; 
+		}
+		void set(int val)
+		{
+			_fastPeriod = val;
+		}
+	}
+
+	property int SlowPeriod
+	{
+		int get()
+		{
+			return _slowPeriod; 
+		}
+		void set(int val)
+		{
+			_slowPeriod = val;
+		}
+	}
+
+private:
+	int _short;
+	int _long;
+	int _m;
+	int _fastPeriod;
+	int _slowPeriod;
+
+	String^ _symbol;
+};
+
 }

@@ -197,7 +197,7 @@
                     </DockPanel>
                 </StackPanel>
             </igWindows:TabItemEx>
-            <igWindows:TabItemEx Header="趋势" Name="tabTrend" Width="60" Tag="ArbitrageStrategy">
+            <igWindows:TabItemEx Header="MACD" Name="tabTrend" Width="60" Tag="MACDHistSlope">
                 <StackPanel Margin="4">
                     <StackPanel.Resources>
                         <DataTemplate x:Key="sideItemTempl">
@@ -209,19 +209,26 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <DockPanel Margin="10, 4, 10, 8">
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                            <TextBlock>多空</TextBlock>
-                            <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
-                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
-                              SelectedValuePath="Side" SelectedValue="{Binding Side1}">
-                            </ComboBox>
-                        </StackPanel>
+                    <StackPanel Margin="10, 4, 10, 8">
                         <DockPanel>
-                            <TextBlock>品种</TextBlock>
-                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 10, 0"></TextBox>
+                            <TextBlock Width="60">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="4"></TextBox>
                         </DockPanel>
-                    </DockPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <DockPanel Grid.Column="0">
+                                <TextBlock Margin="2">快线</TextBlock>
+                                <xctk:DecimalUpDown Value="{Binding FastPeriod, Mode=TwoWay}" Increment="10" Margin="6, 4"/>
+                            </DockPanel>
+                            <DockPanel Grid.Column="1">
+                                <TextBlock Margin="2">慢线</TextBlock>
+                                <xctk:DecimalUpDown Value="{Binding SlowPeriod, Mode=TwoWay}" Increment="10" Margin="6, 4"/>
+                            </DockPanel>
+                        </Grid>
+                    </StackPanel>
                     
                 </StackPanel>
             </igWindows:TabItemEx>

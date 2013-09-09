@@ -60,4 +60,10 @@ void ScalperStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 	StrategyItem::To(pNativeStrategyItem);
 }
 
+
+void MACDSlopeStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
+{
+	
+}
+
 }
