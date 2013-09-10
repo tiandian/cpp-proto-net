@@ -188,6 +188,9 @@ message TriggerItem
 	// HistSlope
 	optional double HS_AngelThreshold = 401;
 	optional PosiOffsetFlag HS_Offset = 402;
+
+	// Trailing Stop
+	optional double TS_BackValue = 411;
 }
 
 message TriggerStatus
