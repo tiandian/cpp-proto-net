@@ -9,6 +9,15 @@ public:
 
 	void Apply( const entity::TriggerItem& triggerItem );
 
+	// Input value should be latest price
+	bool OnTest(double val)
+	{
+		double absVal = fabs(val);
+		// return true if absolute value larger than or equal to threshold
+		return absVal > m_angelThreshold			// explicitly larger
+			|| m_angelThreshold - absVal < 0.001;	// regard as equal if diff less then 0.001
+	}
+
 private:
 	double m_angelThreshold;
 	entity::PosiOffsetFlag m_offset;
@@ -17,11 +26,10 @@ private:
 class CHistSlopeTrailingStop : public CTrigger
 {
 public:
-    CHistSlopeTrailingStop()
-        :CTrigger("TrailingStop"){}
+    CHistSlopeTrailingStop(const entity::TriggerItem& triggerItem);
     ~CHistSlopeTrailingStop(){}
 
-    void Enable(double cost, LongShort direction)
+    void Enable(double cost, entity::PosiDirectionType direction)
     {
         m_lastHigh = cost;
         m_effectiveStop = CalcOffset(cost, -m_backValue);
@@ -29,10 +37,7 @@ public:
         CTrigger::Enable(true);
     }
 
-    void Apply()
-    {
-        // m_backValue = 
-    }
+    void Apply( const entity::TriggerItem& triggerItem );
 
     // Input value should be latest price
     bool OnTest(double val)
@@ -44,6 +49,9 @@ public:
         }
         else if(!Compare(val, m_effectiveStop))
         {
+			// disable this trigger once fired
+			CTrigger::Enable(false);
+
             return true;
         }
 
@@ -54,13 +62,13 @@ private:
 
     double CalcOffset(double base, double offset)
     {
-        return m_direction == LS_LONG ? 
+        return m_direction == entity::LONG ? 
             base + offset : base - offset;
     }
 
     bool Compare(double src, double dest)
     {
-        return m_direction == LS_LONG ?
+        return m_direction == entity::LONG ?
             src > dest : src < dest;
     }
 
@@ -68,6 +76,6 @@ private:
     double m_effectiveStop;
     double m_lastHigh;
 
-    LongShort m_direction;
+    entity::PosiDirectionType m_direction;
 };
 

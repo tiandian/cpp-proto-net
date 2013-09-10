@@ -9,6 +9,7 @@
 #include "QuoteRepositry.h"
 #include "AvatarClient.h"
 #include "PortfolioScalperOrderPlacer.h"
+#include "PortfolioTrendOrderPlacer.h"
 #include "charsetconvert.h"
 
 #include <algorithm>
@@ -131,9 +132,9 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 		m_orderPlacer = OrderPlacerPtr(new CPortfolioScalperOrderPlacer);
 		break;
   case entity::HIST_SLOPE :
-    created = StrategyPtr(new CHistSlopeStrategy(strategyItem));
-    m_orderPlacer = OrderPlacerPtr(new CPortfolioOrderPlacer);
-    break;
+		created = StrategyPtr(new CHistSlopeStrategy(strategyItem, m_avatar));
+		m_orderPlacer = OrderPlacerPtr(new CPortfolioTrendOrderPlacer);
+		break;
   }
 	
 	return created;
@@ -272,17 +273,17 @@ void CPortfolio::CheckOpenCancelLimit()
 	string msg;
 	if(m_openTimes >= m_maxOpenPerStart)
 	{
-		msg = boost::str(boost::format("卤戮麓脦虏脽脗脭驴陋虏脰%d脢脰脪脩麓茂碌陆脡脧脧脼%d") % m_openTimes % m_maxOpenPerStart);
+		msg = boost::str(boost::format("本次策略开仓%d手已达到上限%d") % m_openTimes % m_maxOpenPerStart);
 		StopStrategyDueTo(msg);
 	}
 	else if(m_cancelTimes >= m_maxCancel)
 	{
-		msg = boost::str(boost::format("鲁路碌楼%d麓脦脪脩麓茂碌陆脡脧脧脼%d") % m_cancelTimes % m_maxCancel);
+		msg = boost::str(boost::format("撤单%d次已达到上限%d") % m_cancelTimes % m_maxCancel);
 		StopStrategyDueTo(msg);
 	}
 	else if(m_totalOpenTimes >= m_totalOpenLimit)
 	{
-		msg = boost::str(boost::format("脳脺驴陋虏脰%d脢脰脪脩麓茂碌陆脡脧脧脼%d") % m_totalOpenTimes % m_totalOpenLimit);
+		msg = boost::str(boost::format("总开仓%d手已达到上限%d") % m_totalOpenTimes % m_totalOpenLimit);
 		StopStrategyDueTo(msg);
 	}
 }
@@ -360,7 +361,7 @@ void CPortfolio::CheckForStop(const string& quoteUpdateTime)
 	{
 		if(quoteUpdateTime.compare(m_targetEnd) >= 0)
 		{
-			string msg = boost::str(boost::format("虏脽脗脭脪脩脳脭露炉脥拢脰鹿脫脷%s") % m_targetEnd);
+			string msg = boost::str(boost::format("策略已自动停止于%s") % m_targetEnd);
 			StopStrategyDueTo(msg);
 			logger.Info(boost::str(boost::format("[%s] Portfolio (%s) Auto Stop at %s") 
 				% InvestorId() % ID() % m_targetEnd));

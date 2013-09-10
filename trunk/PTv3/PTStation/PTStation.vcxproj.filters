@@ -287,6 +287,9 @@
     <ClInclude Include="TechStrategyDefs.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="PortfolioTrendOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -480,6 +483,9 @@
     </ClCompile>
     <ClCompile Include="TradingTimeSpan.cpp">
       <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioTrendOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

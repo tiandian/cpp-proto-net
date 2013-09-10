@@ -2269,6 +2269,13 @@ class TriggerItem : public ::google::protobuf::Message {
   inline entity::PosiOffsetFlag hs_offset() const;
   inline void set_hs_offset(entity::PosiOffsetFlag value);
   
+  // optional double TS_BackValue = 411;
+  inline bool has_ts_backvalue() const;
+  inline void clear_ts_backvalue();
+  static const int kTSBackValueFieldNumber = 411;
+  inline double ts_backvalue() const;
+  inline void set_ts_backvalue(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.TriggerItem)
  private:
   inline void set_has_strategy();
@@ -2293,6 +2300,8 @@ class TriggerItem : public ::google::protobuf::Message {
   inline void clear_has_hs_angelthreshold();
   inline void set_has_hs_offset();
   inline void clear_has_hs_offset();
+  inline void set_has_ts_backvalue();
+  inline void clear_has_ts_backvalue();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2307,9 +2316,10 @@ class TriggerItem : public ::google::protobuf::Message {
   int cp_condition_;
   int hs_offset_;
   double hs_angelthreshold_;
+  double ts_backvalue_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(11 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(12 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -7791,6 +7801,28 @@ inline void TriggerItem::set_hs_offset(entity::PosiOffsetFlag value) {
   GOOGLE_DCHECK(entity::PosiOffsetFlag_IsValid(value));
   set_has_hs_offset();
   hs_offset_ = value;
+}
+
+// optional double TS_BackValue = 411;
+inline bool TriggerItem::has_ts_backvalue() const {
+  return (_has_bits_[0] & 0x00000800u) != 0;
+}
+inline void TriggerItem::set_has_ts_backvalue() {
+  _has_bits_[0] |= 0x00000800u;
+}
+inline void TriggerItem::clear_has_ts_backvalue() {
+  _has_bits_[0] &= ~0x00000800u;
+}
+inline void TriggerItem::clear_ts_backvalue() {
+  ts_backvalue_ = 0;
+  clear_has_ts_backvalue();
+}
+inline double TriggerItem::ts_backvalue() const {
+  return ts_backvalue_;
+}
+inline void TriggerItem::set_ts_backvalue(double value) {
+  set_has_ts_backvalue();
+  ts_backvalue_ = value;
 }
 
 // -------------------------------------------------------------------
