@@ -34,6 +34,22 @@ void CHistSlopeStrategy::CreateTriggers( const entity::StrategyItem& strategyIte
 void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
+   
+   // 1. Calculate MACD hist value of 1 min and 5 min
+   
+   // 2. Test 5 min angle, see if Up or Down.
+   
+   // 3. Calculate value of 1 min angle
+   // 3.1 if sign of 1 min is same as 5 min, Goes to Trigger test
+   
+   // 3.2 In scope of Trigger test
+   // 3.2.1 if not opened, test open trigger
+   // 3.2.2 if open tigger is fired, be sure to enable trailing stop trigger with Enable(cost, direction)
+   
+   // 3.2.2 else, test close trigger
+   
+   // 3.3 else sign of 1 min is different than 5 min, Goes to close existing position if any
+   
 }
 
 void CHistSlopeStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
