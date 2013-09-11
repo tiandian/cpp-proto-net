@@ -16,11 +16,11 @@ public:
 	COHLCRecordSet* GetOHLCRecordSet(boost::chrono::steady_clock::time_point& timestamp);
 	unsigned int Index(){ return m_index; }
 	const string& Symbol(){ return m_symbol; }
-	int Precision(){ return m_precision; }
+	unsigned int Precision(){ return m_precision; }
 
 private:
 	string m_symbol;
-	int m_precision;
+	unsigned int m_precision;
 	unsigned int m_index;
 	CPriceBarDataSource* m_dataSource;
 };
