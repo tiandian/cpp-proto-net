@@ -64,3 +64,14 @@ void CTechAnalyStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	}
 }
 
+COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, unsigned int precision, boost::chrono::steady_clock::time_point& timestamp)
+{
+  for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
+		iter != m_pDataProxies.end(); ++iter)
+	{
+		if((*iter)->Symbol() == symbol &&
+			(*iter)->Precision() == precision)
+         return (*iter)->GetOHLCRecordSet (timestamp);
+   }
+   return NULL;
+}
