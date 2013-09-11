@@ -4,6 +4,7 @@
 
 class CPriceBarDataProxy;
 class CAvatarClient;
+class COHLCRecordSet;
 
 class CHistSourceCfg
 {
@@ -29,6 +30,8 @@ public:
 
 	void Start();
 	void Stop();
+   
+  COHLCRecordSet* GetRecordSet(const string& symbol, unsigned int precision, boost::chrono::steady_clock::time_point& timestamp);  
 
 private:
 	vector<HistSrcCfgPtr> m_histSrcConfigs;
