@@ -4,6 +4,11 @@
 
 class CAvatarClient;
 
+enum MACDSlopeDirection
+{
+  NO_DIRECTION, GOING_UP, GOING_DOWN
+};
+
 class CHistSlopeStrategy : public CTechAnalyStrategy
 {
 public:
@@ -21,9 +26,11 @@ protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
 
 private:
-	void CalculateAngel();
+	double CalculateAngle(double val1, double val2);
 
 	double m_stdHist;
-	double m_angel;
+	double m_stdHistDiff;    // standard diff between last 2 bar regarded as angle 45
+   double m_angel;
+   
 };
 
