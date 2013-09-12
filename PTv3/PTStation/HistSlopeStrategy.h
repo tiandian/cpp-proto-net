@@ -28,9 +28,8 @@ protected:
 private:
 	double CalculateAngle(double val1, double val2);
 
-	double m_stdHist;
 	double m_stdHistDiff;    // standard diff between last 2 bar regarded as angle 45
-   double m_angel;
-   
+	double m_angel;
+	bool m_positionOpened;
 };
 

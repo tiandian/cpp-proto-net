@@ -18,6 +18,8 @@ public:
 			|| m_angelThreshold - absVal < 0.001;	// regard as equal if diff less then 0.001
 	}
 
+	entity::PosiOffsetFlag Offset(){ return m_offset; }
+
 private:
 	double m_angelThreshold;
 	entity::PosiOffsetFlag m_offset;

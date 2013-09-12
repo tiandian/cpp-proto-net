@@ -20,3 +20,8 @@ void CTaIndicatorSet::Init( const vector<string>& seriesNames )
 		m_dataSeriesMap.insert(make_pair(*iter, dataSeries));
 	}
 }
+
+double CTaIndicatorSet::GetRef( const string& indicator, int rpos )
+{
+	return 0;
+}
