@@ -15,6 +15,8 @@ public:
 
 	void Init(const vector<string>& seriesNames);
 
+	double GetRef(const string& indicator, int rpos);
+
 private:
 	DataSeriesMap m_dataSeriesMap;
 };
