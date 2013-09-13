@@ -1,8 +1,16 @@
 #include "StdAfx.h"
 #include "OHLCRecordSet.h"
 #include "TechStrategyDefs.h"
+
 #include <boost/algorithm/string.hpp>
 
+void ResetArray(double arr[], int length)
+{
+	for(int i = 0; i < length; ++i)
+	{
+		arr[i] = 0;
+	}
+}
 
 COHLCRecordSet::COHLCRecordSet(const string& symbol, unsigned int precision)
 	: m_symbol(symbol)
@@ -15,10 +23,16 @@ COHLCRecordSet::COHLCRecordSet(const string& symbol, unsigned int precision)
 		m_countPerDay += 1;
 	
 	unsigned int sizeOfVector = 2 * m_countPerDay;
-	OpenSeries.reserve(sizeOfVector);
-	HighSeries.reserve(sizeOfVector);
-	LowSeries.reserve(sizeOfVector);
-	CloseSeries.reserve(sizeOfVector);
+	OpenSeries = boost::shared_array<double>(new double[sizeOfVector]);
+	ResetArray(OpenSeries.get(), sizeOfVector);
+	HighSeries = boost::shared_array<double>(new double[sizeOfVector]);
+	ResetArray(HighSeries.get(), sizeOfVector);
+	LowSeries = boost::shared_array<double>(new double[sizeOfVector]);
+	ResetArray(LowSeries.get(), sizeOfVector);
+	CloseSeries = boost::shared_array<double>(new double[sizeOfVector]);
+	ResetArray(CloseSeries.get(), sizeOfVector);
+
+	m_lastIndex = m_countPerDay - 1;
 }
 
 
@@ -28,10 +42,14 @@ COHLCRecordSet::~COHLCRecordSet(void)
 
 void COHLCRecordSet::SetToday( unsigned int barIdx, double open, double high, double low, double close )
 {
-	OpenSeries[m_countPerDay + barIdx - 1] = open;
-	HighSeries[m_countPerDay + barIdx - 1] = high;
-	LowSeries[m_countPerDay + barIdx - 1] = low;
-	CloseSeries[m_countPerDay + barIdx - 1] = close;
+	unsigned int settingIdx = m_countPerDay + barIdx - 1;
+	if(settingIdx > m_lastIndex)
+		m_lastIndex = settingIdx;
+
+	OpenSeries[settingIdx] = open;
+	HighSeries[settingIdx] = high;
+	LowSeries[settingIdx] = low;
+	CloseSeries[settingIdx] = close;
 }
 
 void COHLCRecordSet::SetHistory( unsigned int barIdx, double open, double high, double low, double close )

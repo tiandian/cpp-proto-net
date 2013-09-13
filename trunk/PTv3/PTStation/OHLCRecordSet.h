@@ -1,5 +1,7 @@
 #pragma once
 
+#include <boost/shared_array.hpp>
+
 class COHLCRecordSet
 {
 public:
@@ -9,13 +11,14 @@ public:
 	void SetToday(unsigned int barIdx, double open, double high, double low, double close);
 	void SetHistory(unsigned int barIdx, double open, double high, double low, double close);
 
-	vector<double> OpenSeries;
-	vector<double> HighSeries;
-	vector<double> LowSeries;
-	vector<double> CloseSeries;
+	 
+	boost::shared_array<double> OpenSeries;
+	boost::shared_array<double> HighSeries;
+	boost::shared_array<double> LowSeries;
+	boost::shared_array<double> CloseSeries;
 
 	unsigned int GetSize(){ return 2 * m_countPerDay; }
-
+	unsigned int GetLastIndex(){ return m_lastIndex; }
 private:
 	string m_symbol;
 	unsigned int m_precision;
