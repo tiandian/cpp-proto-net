@@ -3,11 +3,24 @@
 #include "HistSlopeTrigger.h"
 #include "AvatarClient.h"
 #include "TaIndicatorSet.h"
+#include "OHLCRecordSet.h"
+
+#include <ta_libc.h>
 
 #define PI 3.1415926
 
 TaIndicatorSetPtr CalculateMACD(COHLCRecordSet* ohlcRecordSet)
 {
+	int outBeg = -1;
+	int outNbElement = -1;
+	double outMacd = 0;
+	double outMacdSignal = 0;
+	double outMacdHist = 0;
+
+	int lastIdx = ohlcRecordSet->GetLastIndex();
+	TA_RetCode rc = TA_MACD(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), 12, 26, 9, 
+		&outBeg, &outNbElement, &outMacd, &outMacdSignal, &outMacdHist);
+	
 	return TaIndicatorSetPtr();
 }
 

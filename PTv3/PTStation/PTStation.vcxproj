@@ -51,13 +51,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;LOG_FOR_TRADE;FAKE_DEAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;D:\Dev\ta-lib\ta-lib\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Dev\boost_1_53_0\stage\lib;D:\Dev\log4cpp\lib\debug;D:\Dev\protobuf-2.4.1\lib\Debug;D:\Dev\PushFramework2.2\lib\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libprotobuf.lib;log4cppD.lib;PushFramework.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Dev\boost_1_53_0\stage\lib;D:\Dev\log4cpp\lib\debug;D:\Dev\protobuf-2.4.1\lib\Debug;D:\Dev\PushFramework2.2\lib\debug;D:\Dev\ta-lib\ta-lib\c\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib;log4cppD.lib;PushFramework.lib;ws2_32.lib;ta_libc_cdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /y log4cpp.property $(OutDir)
