@@ -428,7 +428,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(HistSourceCfg));
   StrategyItem_descriptor_ = file->message_type(16);
-  static const int StrategyItem_offsets_[15] = {
+  static const int StrategyItem_offsets_[19] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, retrytimes_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, opentimeout_),
@@ -443,7 +443,11 @@ void protobuf_AssignDesc_message_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_casenochange_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, sc_stoplossstrategy_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, histsources_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, hs_stdhist_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, hs_short_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, hs_long_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, hs_m_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, hs_faststddiff_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, hs_slowstddiff_),
   };
   StrategyItem_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -457,7 +461,7 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StrategyItem));
   TriggerItem_descriptor_ = file->message_type(17);
-  static const int TriggerItem_offsets_[12] = {
+  static const int TriggerItem_offsets_[13] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, strategy_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, name_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, enabled_),
@@ -467,8 +471,9 @@ void protobuf_AssignDesc_message_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, cp_condition_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, cp_threshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, sc_threshold_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, hs_angelthreshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, hs_offset_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, hs_fastanglethreshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, hs_slowanglethreshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(TriggerItem, ts_backvalue_),
   };
   TriggerItem_reflection_ =
@@ -1139,7 +1144,7 @@ void protobuf_AddDesc_message_2eproto() {
     "2\021.entity.LegStatus\022\014\n\004Last\030\003 \002(\001\022\013\n\003Ask"
     "\030\004 \002(\001\022\017\n\007AskSize\030\005 \002(\005\022\013\n\003Bid\030\006 \002(\001\022\017\n\007"
     "BidSize\030\007 \002(\005\"2\n\rHistSourceCfg\022\016\n\006Symbol"
-    "\030\001 \002(\t\022\021\n\tPrecision\030\002 \002(\005\"\333\004\n\014StrategyIt"
+    "\030\001 \002(\t\022\021\n\tPrecision\030\002 \002(\005\"\254\005\n\014StrategyIt"
     "em\022\"\n\004Type\030\001 \002(\0162\024.entity.StrategyType\022\022"
     "\n\nRetryTimes\030\002 \002(\005\022\023\n\013OpenTimeout\030\003 \002(\005\022"
     "%\n\010Triggers\030\004 \003(\0132\023.entity.TriggerItem\022*"
@@ -1154,105 +1159,108 @@ void protobuf_AddDesc_message_2eproto() {
     "\030.entity.DirectionDepends\022:\n\023SC_StopLoss"
     "Strategy\030\262\002 \001(\0162\034.entity.StopLossCloseMe"
     "thods\022+\n\013HistSources\030\221\003 \003(\0132\025.entity.His"
-    "tSourceCfg\022\023\n\nHS_StdHist\030\365\003 \001(\001\"\203\003\n\013Trig"
-    "gerItem\022&\n\010Strategy\030\001 \002(\0162\024.entity.Strat"
-    "egyType\022\014\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010\022."
-    "\n\014AR_Condition\030e \001(\0162\030.entity.CompareCon"
-    "dition\022\024\n\014AR_Threshold\030f \001(\001\022)\n\tAR_Offse"
-    "t\030g \001(\0162\026.entity.PosiOffsetFlag\022/\n\014CP_Co"
-    "ndition\030\311\001 \001(\0162\030.entity.CompareCondition"
-    "\022\025\n\014CP_Threshold\030\312\001 \001(\001\022\025\n\014SC_Threshold\030"
-    "\255\002 \001(\001\022\032\n\021HS_AngelThreshold\030\221\003 \001(\001\022*\n\tHS"
-    "_Offset\030\222\003 \001(\0162\026.entity.PosiOffsetFlag\022\025"
-    "\n\014TS_BackValue\030\233\003 \001(\001\"V\n\rTriggerStatus\022&"
-    "\n\010Strategy\030\001 \002(\0162\024.entity.StrategyType\022\014"
-    "\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010\"\317\001\n\rPortfo"
-    "lioItem\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\035\n"
-    "\004Legs\030\003 \003(\0132\017.entity.LegItem\022\021\n\tMaxCance"
-    "l\030\004 \002(\005\022\027\n\017MaxOpenPerStart\030\005 \002(\005\022\026\n\016Tota"
-    "lOpenLimit\030\006 \002(\005\022\025\n\rEndTimePoints\030\007 \003(\t\022"
-    "&\n\010Strategy\030\010 \002(\0132\024.entity.StrategyItem\""
-    "\277\003\n\023PortfolioUpdateItem\022\n\n\002ID\030\001 \002(\t\022#\n\004L"
-    "egs\030\002 \003(\0132\025.entity.LegUpdateItem\022&\n\010Stra"
-    "tegy\030\003 \002(\0162\024.entity.StrategyType\022\017\n\007Runn"
-    "ing\030\004 \002(\010\022\'\n\010Triggers\030\005 \003(\0132\025.entity.Tri"
-    "ggerStatus\022\026\n\016TotalOpenTimes\030\006 \002(\005\022\027\n\017To"
-    "talCloseTimes\030\007 \002(\005\022\027\n\017CurrentPosition\030\010"
-    " \002(\005\022\023\n\013CancelTimes\030\t \002(\005\022\017\n\007Message\030\n \001"
-    "(\t\022\017\n\007AR_Diff\030e \001(\001\022\023\n\013AR_LongDiff\030f \001(\001"
-    "\022\024\n\014AR_ShortDiff\030g \001(\001\022\023\n\013AR_LongSize\030h "
-    "\001(\005\022\024\n\014AR_ShortSize\030i \001(\005\022\020\n\007SC_Diff\030\311\001 "
-    "\001(\001\022\025\n\014HS_FastAngel\030\255\002 \001(\001\022\025\n\014HS_SlowAng"
-    "el\030\256\002 \001(\001\":\n\014ConnectParam\022\024\n\014QuoteAddres"
-    "s\030\001 \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017Operati"
-    "onReturn\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessag"
-    "e\030\002 \002(\t\"7\n\017AccountSettings\022\021\n\tMaxSubmit\030"
-    "\001 \002(\005\022\021\n\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020"
-    "\n\010BrokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Pass"
-    "word\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entit"
-    "y.AccountSettings\" \n\rRegQuoteParam\022\017\n\007Sy"
-    "mbols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Port"
-    "folioItems\030\001 \003(\0132\025.entity.PortfolioItem\""
-    "I\n\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n"
-    "\010Quantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Cl"
-    "osePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132"
-    "\024.trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t"
-    "\"t\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t"
-    "\022\027\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef"
-    "\030\003 \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260"
-    "\002\n\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002"
-    "(\0162\031.entity.PosiDirectionType\022/\n\rOpenCon"
-    "dition\030\002 \002(\0162\030.entity.CompareCondition\022\031"
-    "\n\021OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCon"
-    "dition\030\004 \002(\0162\030.entity.CompareCondition\022\031"
-    "\n\021StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCon"
-    "dition\030\006 \002(\0162\030.entity.CompareCondition\022\031"
-    "\n\021StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosi"
-    "StrategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Cl"
-    "oseLegSide\030\002 \002(\0162\031.entity.PosiDirectionT"
-    "ype\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.C"
-    "ompareCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017S"
-    "calperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPri"
-    "ceTick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.enti"
-    "ty.DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\016"
-    "2\030.entity.DirectionDepends\022-\n\013CaseGE4Tic"
-    "k\030\005 \002(\0162\030.entity.DirectionDepends\022.\n\014Cas"
-    "eNoChange\030\006 \002(\0162\030.entity.DirectionDepend"
-    "s\0226\n\020StopLossStrategy\030\007 \002(\0162\034.entity.Sto"
-    "pLossCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n"
-    "\013OpenTimeout\030\t \001(\005\"R\n\023ModifyStrategyPara"
-    "m\022\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t"
-    "\022\024\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfol"
-    "ioSwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOp"
-    "en\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoSt"
-    "opLoss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014En"
-    "ablePrefer\030\006 \002(\010\"\230\001\n\027ModifyPortfolioQtyP"
-    "aram\022\017\n\007PortfId\030\001 \002(\t\022\022\n\nPerOpenQty\030\002 \002("
-    "\005\022\023\n\013PerStartQty\030\003 \002(\005\022\026\n\016TotalOpenLimit"
-    "\030\004 \002(\005\022\024\n\014MaxCancelQty\030\005 \002(\005\022\025\n\rEndTimeP"
-    "oints\030\006 \003(\t\"<\n\030ModifyRunningStatusParam\022"
-    "\017\n\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Mod"
-    "ifyPortfolioPreferredLegParam\022\017\n\007PortfId"
-    "\030\001 \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrder"
-    "Param\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 "
-    "\002(\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n"
-    "\006Symbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016"
-    "\n\006Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trad"
-    "e.TradeDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020"
-    "\n\010Quantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstr"
-    "ument\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Excha"
-    "ngeInstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016Vo"
-    "lumeMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n"
-    "\nServerType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRAD"
-    "E\020\001*>\n\023PortfolioSwitchType\022\023\n\017STRATEGY_S"
-    "WITCH\020\000\022\022\n\016TRIGGER_SWITCH\020\001*O\n\014StrategyT"
-    "ype\022\r\n\tARBITRAGE\020\000\022\023\n\017CHANGE_POSITION\020\001\022"
-    "\013\n\007SCALPER\020\002\022\016\n\nHIST_SLOPE\020\003*o\n\020Directio"
-    "nDepends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SI"
-    "ZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE"
-    "\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseMe"
-    "thods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_"
-    "ON_INPUT_LIMIT\020\001", 5896);
+    "tSourceCfg\022\021\n\010HS_Short\030\365\003 \001(\005\022\020\n\007HS_Long"
+    "\030\366\003 \001(\005\022\r\n\004HS_M\030\367\003 \001(\005\022\027\n\016HS_FastStdDiff"
+    "\030\370\003 \001(\001\022\027\n\016HS_SlowStdDiff\030\371\003 \001(\001\"\247\003\n\013Tri"
+    "ggerItem\022&\n\010Strategy\030\001 \002(\0162\024.entity.Stra"
+    "tegyType\022\014\n\004Name\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010\022"
+    ".\n\014AR_Condition\030e \001(\0162\030.entity.CompareCo"
+    "ndition\022\024\n\014AR_Threshold\030f \001(\001\022)\n\tAR_Offs"
+    "et\030g \001(\0162\026.entity.PosiOffsetFlag\022/\n\014CP_C"
+    "ondition\030\311\001 \001(\0162\030.entity.CompareConditio"
+    "n\022\025\n\014CP_Threshold\030\312\001 \001(\001\022\025\n\014SC_Threshold"
+    "\030\255\002 \001(\001\022*\n\tHS_Offset\030\221\003 \001(\0162\026.entity.Pos"
+    "iOffsetFlag\022\036\n\025HS_FastAngleThreshold\030\222\003 "
+    "\001(\001\022\036\n\025HS_SlowAngleThreshold\030\223\003 \001(\001\022\025\n\014T"
+    "S_BackValue\030\233\003 \001(\001\"V\n\rTriggerStatus\022&\n\010S"
+    "trategy\030\001 \002(\0162\024.entity.StrategyType\022\014\n\004N"
+    "ame\030\002 \002(\t\022\017\n\007Enabled\030\003 \002(\010\"\317\001\n\rPortfolio"
+    "Item\022\n\n\002ID\030\001 \002(\t\022\020\n\010Quantity\030\002 \002(\005\022\035\n\004Le"
+    "gs\030\003 \003(\0132\017.entity.LegItem\022\021\n\tMaxCancel\030\004"
+    " \002(\005\022\027\n\017MaxOpenPerStart\030\005 \002(\005\022\026\n\016TotalOp"
+    "enLimit\030\006 \002(\005\022\025\n\rEndTimePoints\030\007 \003(\t\022&\n\010"
+    "Strategy\030\010 \002(\0132\024.entity.StrategyItem\"\277\003\n"
+    "\023PortfolioUpdateItem\022\n\n\002ID\030\001 \002(\t\022#\n\004Legs"
+    "\030\002 \003(\0132\025.entity.LegUpdateItem\022&\n\010Strateg"
+    "y\030\003 \002(\0162\024.entity.StrategyType\022\017\n\007Running"
+    "\030\004 \002(\010\022\'\n\010Triggers\030\005 \003(\0132\025.entity.Trigge"
+    "rStatus\022\026\n\016TotalOpenTimes\030\006 \002(\005\022\027\n\017Total"
+    "CloseTimes\030\007 \002(\005\022\027\n\017CurrentPosition\030\010 \002("
+    "\005\022\023\n\013CancelTimes\030\t \002(\005\022\017\n\007Message\030\n \001(\t\022"
+    "\017\n\007AR_Diff\030e \001(\001\022\023\n\013AR_LongDiff\030f \001(\001\022\024\n"
+    "\014AR_ShortDiff\030g \001(\001\022\023\n\013AR_LongSize\030h \001(\005"
+    "\022\024\n\014AR_ShortSize\030i \001(\005\022\020\n\007SC_Diff\030\311\001 \001(\001"
+    "\022\025\n\014HS_FastAngel\030\255\002 \001(\001\022\025\n\014HS_SlowAngel\030"
+    "\256\002 \001(\001\":\n\014ConnectParam\022\024\n\014QuoteAddress\030\001"
+    " \002(\t\022\024\n\014StreamFolder\030\002 \002(\t\"8\n\017OperationR"
+    "eturn\022\017\n\007Success\030\001 \002(\010\022\024\n\014ErrorMessage\030\002"
+    " \002(\t\"7\n\017AccountSettings\022\021\n\tMaxSubmit\030\001 \002"
+    "(\005\022\021\n\tMaxCancel\030\002 \002(\005\"o\n\nLoginParam\022\020\n\010B"
+    "rokerId\030\001 \002(\t\022\016\n\006UserId\030\002 \002(\t\022\020\n\010Passwor"
+    "d\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entity.A"
+    "ccountSettings\" \n\rRegQuoteParam\022\017\n\007Symbo"
+    "ls\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Portfol"
+    "ioItems\030\001 \003(\0132\025.entity.PortfolioItem\"I\n\021"
+    "PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Qu"
+    "antity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Close"
+    "PositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024.t"
+    "rade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t\n"
+    "\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027\n"
+    "\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 "
+    "\002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002\n\031"
+    "ArbitrageStrategySettings\022\'\n\004Side\030\001 \002(\0162"
+    "\031.entity.PosiDirectionType\022/\n\rOpenCondit"
+    "ion\030\002 \002(\0162\030.entity.CompareCondition\022\031\n\021O"
+    "penPosiThreshold\030\003 \002(\001\0223\n\021StopGainCondit"
+    "ion\030\004 \002(\0162\030.entity.CompareCondition\022\031\n\021S"
+    "topGainThreshold\030\005 \002(\001\0223\n\021StopLossCondit"
+    "ion\030\006 \002(\0162\030.entity.CompareCondition\022\031\n\021S"
+    "topLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiStr"
+    "ategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Close"
+    "LegSide\030\002 \002(\0162\031.entity.PosiDirectionType"
+    "\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.Comp"
+    "areCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017Scal"
+    "perSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPriceT"
+    "ick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.entity."
+    "DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\0162\030."
+    "entity.DirectionDepends\022-\n\013CaseGE4Tick\030\005"
+    " \002(\0162\030.entity.DirectionDepends\022.\n\014CaseNo"
+    "Change\030\006 \002(\0162\030.entity.DirectionDepends\0226"
+    "\n\020StopLossStrategy\030\007 \002(\0162\034.entity.StopLo"
+    "ssCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n\013Op"
+    "enTimeout\030\t \001(\005\"R\n\023ModifyStrategyParam\022\017"
+    "\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n"
+    "\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolioS"
+    "witchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen\030"
+    "\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStopL"
+    "oss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enabl"
+    "ePrefer\030\006 \002(\010\"\230\001\n\027ModifyPortfolioQtyPara"
+    "m\022\017\n\007PortfId\030\001 \002(\t\022\022\n\nPerOpenQty\030\002 \002(\005\022\023"
+    "\n\013PerStartQty\030\003 \002(\005\022\026\n\016TotalOpenLimit\030\004 "
+    "\002(\005\022\024\n\014MaxCancelQty\030\005 \002(\005\022\025\n\rEndTimePoin"
+    "ts\030\006 \003(\t\"<\n\030ModifyRunningStatusParam\022\017\n\007"
+    "PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Modify"
+    "PortfolioPreferredLegParam\022\017\n\007PortfId\030\001 "
+    "\002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrderPar"
+    "am\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t"
+    "\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Sy"
+    "mbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016\n\006S"
+    "ymbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trade.T"
+    "radeDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020\n\010Q"
+    "uantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstrume"
+    "nt\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Exchange"
+    "InstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016Volum"
+    "eMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n\nSe"
+    "rverType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRADE\020\001"
+    "*>\n\023PortfolioSwitchType\022\023\n\017STRATEGY_SWIT"
+    "CH\020\000\022\022\n\016TRIGGER_SWITCH\020\001*O\n\014StrategyType"
+    "\022\r\n\tARBITRAGE\020\000\022\023\n\017CHANGE_POSITION\020\001\022\013\n\007"
+    "SCALPER\020\002\022\016\n\nHIST_SLOPE\020\003*o\n\020DirectionDe"
+    "pends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020"
+    "\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022"
+    "\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseMetho"
+    "ds\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_ON_"
+    "INPUT_LIMIT\020\001", 6013);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -6443,7 +6451,11 @@ const int StrategyItem::kSCCaseGE4TickFieldNumber;
 const int StrategyItem::kSCCaseNoChangeFieldNumber;
 const int StrategyItem::kSCStopLossStrategyFieldNumber;
 const int StrategyItem::kHistSourcesFieldNumber;
-const int StrategyItem::kHSStdHistFieldNumber;
+const int StrategyItem::kHSShortFieldNumber;
+const int StrategyItem::kHSLongFieldNumber;
+const int StrategyItem::kHSMFieldNumber;
+const int StrategyItem::kHSFastStdDiffFieldNumber;
+const int StrategyItem::kHSSlowStdDiffFieldNumber;
 #endif  // !_MSC_VER
 
 StrategyItem::StrategyItem()
@@ -6474,7 +6486,11 @@ void StrategyItem::SharedCtor() {
   sc_casege4tick_ = 0;
   sc_casenochange_ = 0;
   sc_stoplossstrategy_ = 0;
-  hs_stdhist_ = 0;
+  hs_short_ = 0;
+  hs_long_ = 0;
+  hs_m_ = 0;
+  hs_faststddiff_ = 0;
+  hs_slowstddiff_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -6530,7 +6546,13 @@ void StrategyItem::Clear() {
     sc_casege4tick_ = 0;
     sc_casenochange_ = 0;
     sc_stoplossstrategy_ = 0;
-    hs_stdhist_ = 0;
+    hs_short_ = 0;
+    hs_long_ = 0;
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    hs_m_ = 0;
+    hs_faststddiff_ = 0;
+    hs_slowstddiff_ = 0;
   }
   triggers_.Clear();
   histsources_.Clear();
@@ -6802,19 +6824,83 @@ bool StrategyItem::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(3210)) goto parse_HistSources;
-        if (input->ExpectTag(4009)) goto parse_HS_StdHist;
+        if (input->ExpectTag(4008)) goto parse_HS_Short;
         break;
       }
       
-      // optional double HS_StdHist = 501;
+      // optional int32 HS_Short = 501;
       case 501: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_HS_Short:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &hs_short_)));
+          set_has_hs_short();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(4016)) goto parse_HS_Long;
+        break;
+      }
+      
+      // optional int32 HS_Long = 502;
+      case 502: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_HS_Long:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &hs_long_)));
+          set_has_hs_long();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(4024)) goto parse_HS_M;
+        break;
+      }
+      
+      // optional int32 HS_M = 503;
+      case 503: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_HS_M:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &hs_m_)));
+          set_has_hs_m();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(4033)) goto parse_HS_FastStdDiff;
+        break;
+      }
+      
+      // optional double HS_FastStdDiff = 504;
+      case 504: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
-         parse_HS_StdHist:
+         parse_HS_FastStdDiff:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &hs_stdhist_)));
-          set_has_hs_stdhist();
+                 input, &hs_faststddiff_)));
+          set_has_hs_faststddiff();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(4041)) goto parse_HS_SlowStdDiff;
+        break;
+      }
+      
+      // optional double HS_SlowStdDiff = 505;
+      case 505: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_HS_SlowStdDiff:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &hs_slowstddiff_)));
+          set_has_hs_slowstddiff();
         } else {
           goto handle_uninterpreted;
         }
@@ -6924,9 +7010,29 @@ void StrategyItem::SerializeWithCachedSizes(
       401, this->histsources(i), output);
   }
   
-  // optional double HS_StdHist = 501;
-  if (has_hs_stdhist()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(501, this->hs_stdhist(), output);
+  // optional int32 HS_Short = 501;
+  if (has_hs_short()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(501, this->hs_short(), output);
+  }
+  
+  // optional int32 HS_Long = 502;
+  if (has_hs_long()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(502, this->hs_long(), output);
+  }
+  
+  // optional int32 HS_M = 503;
+  if (has_hs_m()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(503, this->hs_m(), output);
+  }
+  
+  // optional double HS_FastStdDiff = 504;
+  if (has_hs_faststddiff()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(504, this->hs_faststddiff(), output);
+  }
+  
+  // optional double HS_SlowStdDiff = 505;
+  if (has_hs_slowstddiff()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(505, this->hs_slowstddiff(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -7024,9 +7130,29 @@ void StrategyItem::SerializeWithCachedSizes(
         401, this->histsources(i), target);
   }
   
-  // optional double HS_StdHist = 501;
-  if (has_hs_stdhist()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(501, this->hs_stdhist(), target);
+  // optional int32 HS_Short = 501;
+  if (has_hs_short()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(501, this->hs_short(), target);
+  }
+  
+  // optional int32 HS_Long = 502;
+  if (has_hs_long()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(502, this->hs_long(), target);
+  }
+  
+  // optional int32 HS_M = 503;
+  if (has_hs_m()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(503, this->hs_m(), target);
+  }
+  
+  // optional double HS_FastStdDiff = 504;
+  if (has_hs_faststddiff()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(504, this->hs_faststddiff(), target);
+  }
+  
+  // optional double HS_SlowStdDiff = 505;
+  if (has_hs_slowstddiff()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(505, this->hs_slowstddiff(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -7116,8 +7242,36 @@ int StrategyItem::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->sc_stoplossstrategy());
     }
     
-    // optional double HS_StdHist = 501;
-    if (has_hs_stdhist()) {
+    // optional int32 HS_Short = 501;
+    if (has_hs_short()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->hs_short());
+    }
+    
+    // optional int32 HS_Long = 502;
+    if (has_hs_long()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->hs_long());
+    }
+    
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    // optional int32 HS_M = 503;
+    if (has_hs_m()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->hs_m());
+    }
+    
+    // optional double HS_FastStdDiff = 504;
+    if (has_hs_faststddiff()) {
+      total_size += 2 + 8;
+    }
+    
+    // optional double HS_SlowStdDiff = 505;
+    if (has_hs_slowstddiff()) {
       total_size += 2 + 8;
     }
     
@@ -7204,8 +7358,22 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_sc_stoplossstrategy()) {
       set_sc_stoplossstrategy(from.sc_stoplossstrategy());
     }
-    if (from.has_hs_stdhist()) {
-      set_hs_stdhist(from.hs_stdhist());
+    if (from.has_hs_short()) {
+      set_hs_short(from.hs_short());
+    }
+    if (from.has_hs_long()) {
+      set_hs_long(from.hs_long());
+    }
+  }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
+    if (from.has_hs_m()) {
+      set_hs_m(from.hs_m());
+    }
+    if (from.has_hs_faststddiff()) {
+      set_hs_faststddiff(from.hs_faststddiff());
+    }
+    if (from.has_hs_slowstddiff()) {
+      set_hs_slowstddiff(from.hs_slowstddiff());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -7251,7 +7419,11 @@ void StrategyItem::Swap(StrategyItem* other) {
     std::swap(sc_casenochange_, other->sc_casenochange_);
     std::swap(sc_stoplossstrategy_, other->sc_stoplossstrategy_);
     histsources_.Swap(&other->histsources_);
-    std::swap(hs_stdhist_, other->hs_stdhist_);
+    std::swap(hs_short_, other->hs_short_);
+    std::swap(hs_long_, other->hs_long_);
+    std::swap(hs_m_, other->hs_m_);
+    std::swap(hs_faststddiff_, other->hs_faststddiff_);
+    std::swap(hs_slowstddiff_, other->hs_slowstddiff_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -7279,8 +7451,9 @@ const int TriggerItem::kAROffsetFieldNumber;
 const int TriggerItem::kCPConditionFieldNumber;
 const int TriggerItem::kCPThresholdFieldNumber;
 const int TriggerItem::kSCThresholdFieldNumber;
-const int TriggerItem::kHSAngelThresholdFieldNumber;
 const int TriggerItem::kHSOffsetFieldNumber;
+const int TriggerItem::kHSFastAngleThresholdFieldNumber;
+const int TriggerItem::kHSSlowAngleThresholdFieldNumber;
 const int TriggerItem::kTSBackValueFieldNumber;
 #endif  // !_MSC_VER
 
@@ -7309,8 +7482,9 @@ void TriggerItem::SharedCtor() {
   cp_condition_ = 0;
   cp_threshold_ = 0;
   sc_threshold_ = 0;
-  hs_angelthreshold_ = 0;
   hs_offset_ = 0;
+  hs_fastanglethreshold_ = 0;
+  hs_slowanglethreshold_ = 0;
   ts_backvalue_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -7364,8 +7538,9 @@ void TriggerItem::Clear() {
   }
   if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     sc_threshold_ = 0;
-    hs_angelthreshold_ = 0;
     hs_offset_ = 0;
+    hs_fastanglethreshold_ = 0;
+    hs_slowanglethreshold_ = 0;
     ts_backvalue_ = 0;
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -7538,28 +7713,12 @@ bool TriggerItem::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(3209)) goto parse_HS_AngelThreshold;
+        if (input->ExpectTag(3208)) goto parse_HS_Offset;
         break;
       }
       
-      // optional double HS_AngelThreshold = 401;
+      // optional .entity.PosiOffsetFlag HS_Offset = 401;
       case 401: {
-        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
-         parse_HS_AngelThreshold:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &hs_angelthreshold_)));
-          set_has_hs_angelthreshold();
-        } else {
-          goto handle_uninterpreted;
-        }
-        if (input->ExpectTag(3216)) goto parse_HS_Offset;
-        break;
-      }
-      
-      // optional .entity.PosiOffsetFlag HS_Offset = 402;
-      case 402: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_HS_Offset:
@@ -7570,8 +7729,40 @@ bool TriggerItem::MergePartialFromCodedStream(
           if (entity::PosiOffsetFlag_IsValid(value)) {
             set_hs_offset(static_cast< entity::PosiOffsetFlag >(value));
           } else {
-            mutable_unknown_fields()->AddVarint(402, value);
+            mutable_unknown_fields()->AddVarint(401, value);
           }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(3217)) goto parse_HS_FastAngleThreshold;
+        break;
+      }
+      
+      // optional double HS_FastAngleThreshold = 402;
+      case 402: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_HS_FastAngleThreshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &hs_fastanglethreshold_)));
+          set_has_hs_fastanglethreshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(3225)) goto parse_HS_SlowAngleThreshold;
+        break;
+      }
+      
+      // optional double HS_SlowAngleThreshold = 403;
+      case 403: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_HS_SlowAngleThreshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &hs_slowanglethreshold_)));
+          set_has_hs_slowanglethreshold();
         } else {
           goto handle_uninterpreted;
         }
@@ -7666,15 +7857,20 @@ void TriggerItem::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(301, this->sc_threshold(), output);
   }
   
-  // optional double HS_AngelThreshold = 401;
-  if (has_hs_angelthreshold()) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(401, this->hs_angelthreshold(), output);
-  }
-  
-  // optional .entity.PosiOffsetFlag HS_Offset = 402;
+  // optional .entity.PosiOffsetFlag HS_Offset = 401;
   if (has_hs_offset()) {
     ::google::protobuf::internal::WireFormatLite::WriteEnum(
-      402, this->hs_offset(), output);
+      401, this->hs_offset(), output);
+  }
+  
+  // optional double HS_FastAngleThreshold = 402;
+  if (has_hs_fastanglethreshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(402, this->hs_fastanglethreshold(), output);
+  }
+  
+  // optional double HS_SlowAngleThreshold = 403;
+  if (has_hs_slowanglethreshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(403, this->hs_slowanglethreshold(), output);
   }
   
   // optional double TS_BackValue = 411;
@@ -7744,15 +7940,20 @@ void TriggerItem::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(301, this->sc_threshold(), target);
   }
   
-  // optional double HS_AngelThreshold = 401;
-  if (has_hs_angelthreshold()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(401, this->hs_angelthreshold(), target);
-  }
-  
-  // optional .entity.PosiOffsetFlag HS_Offset = 402;
+  // optional .entity.PosiOffsetFlag HS_Offset = 401;
   if (has_hs_offset()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
-      402, this->hs_offset(), target);
+      401, this->hs_offset(), target);
+  }
+  
+  // optional double HS_FastAngleThreshold = 402;
+  if (has_hs_fastanglethreshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(402, this->hs_fastanglethreshold(), target);
+  }
+  
+  // optional double HS_SlowAngleThreshold = 403;
+  if (has_hs_slowanglethreshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(403, this->hs_slowanglethreshold(), target);
   }
   
   // optional double TS_BackValue = 411;
@@ -7824,15 +8025,20 @@ int TriggerItem::ByteSize() const {
       total_size += 2 + 8;
     }
     
-    // optional double HS_AngelThreshold = 401;
-    if (has_hs_angelthreshold()) {
-      total_size += 2 + 8;
-    }
-    
-    // optional .entity.PosiOffsetFlag HS_Offset = 402;
+    // optional .entity.PosiOffsetFlag HS_Offset = 401;
     if (has_hs_offset()) {
       total_size += 2 +
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->hs_offset());
+    }
+    
+    // optional double HS_FastAngleThreshold = 402;
+    if (has_hs_fastanglethreshold()) {
+      total_size += 2 + 8;
+    }
+    
+    // optional double HS_SlowAngleThreshold = 403;
+    if (has_hs_slowanglethreshold()) {
+      total_size += 2 + 8;
     }
     
     // optional double TS_BackValue = 411;
@@ -7896,11 +8102,14 @@ void TriggerItem::MergeFrom(const TriggerItem& from) {
     if (from.has_sc_threshold()) {
       set_sc_threshold(from.sc_threshold());
     }
-    if (from.has_hs_angelthreshold()) {
-      set_hs_angelthreshold(from.hs_angelthreshold());
-    }
     if (from.has_hs_offset()) {
       set_hs_offset(from.hs_offset());
+    }
+    if (from.has_hs_fastanglethreshold()) {
+      set_hs_fastanglethreshold(from.hs_fastanglethreshold());
+    }
+    if (from.has_hs_slowanglethreshold()) {
+      set_hs_slowanglethreshold(from.hs_slowanglethreshold());
     }
     if (from.has_ts_backvalue()) {
       set_ts_backvalue(from.ts_backvalue());
@@ -7938,8 +8147,9 @@ void TriggerItem::Swap(TriggerItem* other) {
     std::swap(cp_condition_, other->cp_condition_);
     std::swap(cp_threshold_, other->cp_threshold_);
     std::swap(sc_threshold_, other->sc_threshold_);
-    std::swap(hs_angelthreshold_, other->hs_angelthreshold_);
     std::swap(hs_offset_, other->hs_offset_);
+    std::swap(hs_fastanglethreshold_, other->hs_fastanglethreshold_);
+    std::swap(hs_slowanglethreshold_, other->hs_slowanglethreshold_);
     std::swap(ts_backvalue_, other->ts_backvalue_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

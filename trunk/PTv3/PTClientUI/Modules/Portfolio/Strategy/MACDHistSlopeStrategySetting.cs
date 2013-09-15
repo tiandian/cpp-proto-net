@@ -110,6 +110,92 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region FastStdDiff
+        private double _fastStdDiff;
+
+        public double FastStdDiff
+        {
+            get { return _fastStdDiff; }
+            set
+            {
+                if (_fastStdDiff != value)
+                {
+                    _fastStdDiff = value;
+                    RaisePropertyChanged("FastStdDiff");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowStdDiff
+        private double _slowStdDiff;
+
+        public double SlowStdDiff
+        {
+            get { return _slowStdDiff; }
+            set
+            {
+                if (_slowStdDiff != value)
+                {
+                    _slowStdDiff = value;
+                    RaisePropertyChanged("SlowStdDiff");
+                }
+            }
+        }
+        #endregion
+
+        #region FastAngleThreshold
+        private int _fastAngleThreshold;
+
+        public int FastAngleThreshold
+        {
+            get { return _fastAngleThreshold; }
+            set
+            {
+                if (_fastAngleThreshold != value)
+                {
+                    _fastAngleThreshold = value;
+                    RaisePropertyChanged("FastAngleThreshold");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowAngleThreshold
+        private int _slowAngleThreshold;
+
+        public int SlowAngleThreshold
+        {
+            get { return _slowAngleThreshold; }
+            set
+            {
+                if (_slowAngleThreshold != value)
+                {
+                    _slowAngleThreshold = value;
+                    RaisePropertyChanged("SlowAngleThreshold");
+                }
+            }
+        }
+        #endregion
+
+        #region TrailingStopValue
+        private double _trailingStopValue;
+
+        public double TrailingStopValue
+        {
+            get { return _trailingStopValue; }
+            set
+            {
+                if (_trailingStopValue != value)
+                {
+                    _trailingStopValue = value;
+                    RaisePropertyChanged("TrailingStopValue");
+                }
+            }
+        }
+        #endregion
+
+
         public override string Name
         {
             get { return MACDHistSlopeStrategyName; }
@@ -118,11 +204,17 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public override string Persist()
         {
             XElement elem = new XElement("macdHistSlopeSetting",
+                new XAttribute("symbol", Symbol),
                 new XAttribute("short", MACD_Short),
                 new XAttribute("long", MACD_Long),
                 new XAttribute("m", MACD_M),
                 new XAttribute("fastPeriod", FastPeriod),
-                new XAttribute("slowPeriod", SlowPeriod)
+                new XAttribute("fastStdDiff", FastStdDiff),
+                new XAttribute("fastAngleThreshold", FastAngleThreshold),
+                new XAttribute("slowPeriod", SlowPeriod),
+                new XAttribute("slowStdDiff", SlowStdDiff),
+                new XAttribute("slowAngleThreshold", SlowAngleThreshold),
+                new XAttribute("trailingStopValue", TrailingStopValue)
                 );
 
             return elem.ToString();
@@ -131,7 +223,12 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public override void Load(string xmlText)
         {
             XElement elem = XElement.Parse(xmlText);
-            XAttribute attr = elem.Attribute("short");
+            XAttribute attr = elem.Attribute("symbol");
+            if (attr != null)
+            {
+                Symbol = attr.Value;
+            }
+            attr = elem.Attribute("short");
             if (attr != null)
             {
                 MACD_Short = int.Parse(attr.Value);
@@ -151,22 +248,81 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             {
                 FastPeriod = int.Parse(attr.Value);
             }
+            attr = elem.Attribute("fastStdDiff");
+            if (attr != null)
+            {
+                FastStdDiff = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("fastAngleThreshold");
+            if (attr != null)
+            {
+                FastAngleThreshold = int.Parse(attr.Value);
+            }
             attr = elem.Attribute("slowPeriod");
             if (attr != null)
             {
                 SlowPeriod = int.Parse(attr.Value);
             }
-            
+            attr = elem.Attribute("slowStdDiff");
+            if (attr != null)
+            {
+                SlowStdDiff = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("slowAngleThreshold");
+            if (attr != null)
+            {
+                SlowAngleThreshold = int.Parse(attr.Value);
+            }
+            attr = elem.Attribute("trailingStopValue");
+            if (attr != null)
+            {
+                TrailingStopValue = double.Parse(attr.Value);
+            }
         }
 
         public override PTEntity.StrategyItem GetEntity()
         {
-            throw new NotImplementedException();
+            PTEntity.MACDSlopeStrategyItem macdSlopeStrategy = new PTEntity.MACDSlopeStrategyItem();
+            macdSlopeStrategy.Symbol = this.Symbol;
+            macdSlopeStrategy.Short = this.MACD_Short;
+            macdSlopeStrategy.Long = this.MACD_Long;
+            macdSlopeStrategy.M = this.MACD_M;
+            macdSlopeStrategy.FastPeriod = this.FastPeriod;
+            macdSlopeStrategy.FastStdDiff = this.FastStdDiff;
+            macdSlopeStrategy.SlowPeriod = this.SlowPeriod;
+            macdSlopeStrategy.SlowStdDiff = this.SlowStdDiff;
+            
+            macdSlopeStrategy.Triggers.Add(new PTEntity.HistSlopeTriggerItem
+            {
+                Offset = PTEntity.PosiOffsetFlag.OPEN,
+                FastAngleThreshold = this.FastAngleThreshold,
+                SlowAngleThreshold = this.SlowAngleThreshold
+            });
+            macdSlopeStrategy.Triggers.Add(new PTEntity.HistSlopeTriggerItem
+            {
+                Offset = PTEntity.PosiOffsetFlag.CLOSE,
+                FastAngleThreshold = this.FastAngleThreshold,
+                SlowAngleThreshold = this.SlowAngleThreshold
+            });
+            macdSlopeStrategy.Triggers.Add(new PTEntity.HistSlopeTrailingStopTriggerItem(this.TrailingStopValue));
+
+            return macdSlopeStrategy;
         }
 
         public override void CopyFrom(StrategySetting settings)
         {
-            throw new NotImplementedException();
+            MACDHistSlopeStrategySetting otherSettings = (MACDHistSlopeStrategySetting)settings;
+            Symbol = otherSettings.Symbol;
+            MACD_Short = otherSettings.MACD_Short;
+            MACD_Long = otherSettings.MACD_Long;
+            MACD_M = otherSettings.MACD_M;
+            FastPeriod = otherSettings.FastPeriod;
+            FastStdDiff = otherSettings.FastStdDiff;
+            FastAngleThreshold = otherSettings.FastAngleThreshold;
+            SlowPeriod = otherSettings.SlowPeriod;
+            SlowStdDiff = otherSettings.SlowStdDiff;
+            SlowAngleThreshold = otherSettings.SlowAngleThreshold;
+            TrailingStopValue = otherSettings.TrailingStopValue;
         }
     }
 }

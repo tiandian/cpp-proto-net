@@ -13,6 +13,7 @@ namespace PortfolioTrading.Controls
         public DataTemplate ArbitrageTemplate { get; set; }
         public DataTemplate ChangePositionTemplate { get; set; }
         public DataTemplate ScalperTemplate { get; set; }
+        public DataTemplate MACDHistSlopeTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -22,6 +23,8 @@ namespace PortfolioTrading.Controls
                 return ChangePositionTemplate;
             else if (item is ScalperSettingVM)
                 return ScalperTemplate;
+            else if (item is MACDHistSlopeSettingsVM)
+                return MACDHistSlopeTemplate;
             return null;
         }
     }

@@ -26,10 +26,14 @@ protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
 
 private:
-	double CalculateAngle(double val1, double val2);
+	double CalculateAngle(double stdHistDiff, double currentHistDiff);
 
-	double m_stdHistDiff;    // standard diff between last 2 bar regarded as angle 45
-	double m_angel;
+	int m_macdShort;
+	int m_macdLong;
+	int m_macdM;
+	double m_fastStdDiff;
+	double m_slowStdDiff;
+
 	bool m_positionOpened;
 };
 

@@ -299,10 +299,86 @@
                     </StackPanel>
                 </DataTemplate>
                 
+                <DataTemplate x:Key="macdHistSlopeSettingTemplate">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="2"/>
+                                <Setter Property="BorderBrush" Value="Green" />
+                                <Setter Property="CornerRadius" Value="2"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <DockPanel DataContext="{Binding Settings}">
+                            <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">MACD参数</TextBlock>
+                            <StackPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">Short</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding MACD_Short, FallbackValue=12, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                </DockPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">Long</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding MACD_Long, FallbackValue=26, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                </DockPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">M</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding MACD_M, FallbackValue=9, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel DataContext="{Binding Settings}">
+                            <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">快线参数</TextBlock>
+                            <StackPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">周期(秒)</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding FastPeriod, FallbackValue=60, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                </DockPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">45度高差</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding FastStdDiff, FallbackValue=0.1, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel DataContext="{Binding Settings}">
+                            <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">慢线参数</TextBlock>
+                            <StackPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">周期(秒)</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding SlowPeriod, FallbackValue=300, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                </DockPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">45度高差</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding SlowStdDiff, FallbackValue=0.1, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </DockPanel>
+                        <DockPanel DataContext="{Binding Settings}">
+                            <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">开平仓参数</TextBlock>
+                            <StackPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">快线角度</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding FastAngleThreshold, FallbackValue=45, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                </DockPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">慢线角度</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding SlowAngleThreshold, FallbackValue=30, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                </DockPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">回头止损</TextBlock>
+                                    <igEditor:XamTextEditor Value="{Binding TrailingStopValue, FallbackValue=0.6, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                </DockPanel>
+                            </StackPanel>
+                        </DockPanel>
+                        
+                    </StackPanel>
+                </DataTemplate>
+                
                 <local:PortfSettingTemplateSelector x:Key="strategySettingSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageSettingTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionSettingTemplate}"
-                                    ScalperTemplate="{StaticResource scalperSettingTemplate}"/>
+                                    ScalperTemplate="{StaticResource scalperSettingTemplate}"
+                                    MACDHistSlopeTemplate="{StaticResource macdHistSlopeSettingTemplate}"/>
             </Grid.Resources>
 
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

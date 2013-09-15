@@ -206,6 +206,11 @@ namespace PortfolioTrading.Modules.Account
                     setting.MACD_M = 9;
                     setting.FastPeriod = this.FastPeriod;
                     setting.SlowPeriod = this.SlowPeriod;
+                    setting.FastStdDiff = this.FastStdDiff;
+                    setting.SlowStdDiff = this.SlowStdDiff;
+                    setting.FastAngleThreshold = 45;
+                    setting.SlowAngleThreshold = 30;
+                    setting.TrailingStopValue = this.TrailingStop;
                 }
             }
         }
@@ -586,8 +591,57 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
-        
+        #region FastStdDiff
+        private double _fastStdDiff;
 
+        public double FastStdDiff
+        {
+            get { return _fastStdDiff; }
+            set
+            {
+                if (_fastStdDiff != value)
+                {
+                    _fastStdDiff = value;
+                    RaisePropertyChanged("FastStdDiff");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowStdDiff
+        private double _slowStdDiff;
+
+        public double SlowStdDiff
+        {
+            get { return _slowStdDiff; }
+            set
+            {
+                if (_slowStdDiff != value)
+                {
+                    _slowStdDiff = value;
+                    RaisePropertyChanged("SlowStdDiff");
+                }
+            }
+        }
+        #endregion
+
+        #region TrailingStop
+        private double _trailingStop;
+
+        public double TrailingStop
+        {
+            get { return _trailingStop; }
+            set
+            {
+                if (_trailingStop != value)
+                {
+                    _trailingStop = value;
+                    RaisePropertyChanged("TrailingStop");
+                }
+            }
+        }
+        #endregion
+        
         #endregion
     }
 

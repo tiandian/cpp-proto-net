@@ -241,6 +241,30 @@ public:
 		}
 	}
 
+	property double FastStdDiff
+	{
+		double get()
+		{
+			return _fastStdDiff; 
+		}
+		void set(double val)
+		{
+			_fastStdDiff = val;
+		}
+	}
+
+	property int FastAngleThreshold
+	{
+		int get()
+		{
+			return _fastAngleThreshold; 
+		}
+		void set(int val)
+		{
+			_fastAngleThreshold = val;
+		}
+	}
+
 	property int SlowPeriod
 	{
 		int get()
@@ -253,12 +277,53 @@ public:
 		}
 	}
 
+	property double SlowStdDiff
+	{
+		double get()
+		{
+			return _slowStdDiff; 
+		}
+		void set(double val)
+		{
+			_slowStdDiff = val;
+		}
+	}
+
+	property int SlowAngleThreshold
+	{
+		int get()
+		{
+			return _slowAngleThreshold; 
+		}
+		void set(int val)
+		{
+			_slowAngleThreshold = val;
+		}
+	}
+
+	property double TrailingStopValue
+	{
+		double get()
+		{
+			return _trailingStopValue; 
+		}
+		void set(double val)
+		{
+			_trailingStopValue = val;
+		}
+	}
+
 private:
 	int _short;
 	int _long;
 	int _m;
 	int _fastPeriod;
+	double _fastStdDiff;
+	int _fastAngleThreshold;
 	int _slowPeriod;
+	double _slowStdDiff;
+	int _slowAngleThreshold;
+	double _trailingStopValue;
 
 	String^ _symbol;
 };

@@ -164,7 +164,12 @@ message StrategyItem
 	repeated HistSourceCfg HistSources = 401;
 
 	// HistSlope
-	optional double HS_StdHist = 501;
+	optional int32 HS_Short = 501;
+	optional int32 HS_Long = 502;
+	optional int32 HS_M = 503;
+	optional double HS_FastStdDiff = 504;
+	optional double HS_SlowStdDiff = 505;
+	
 }
 
 message TriggerItem
@@ -186,8 +191,9 @@ message TriggerItem
 	optional double SC_Threshold = 301;
 	
 	// HistSlope
-	optional double HS_AngelThreshold = 401;
-	optional PosiOffsetFlag HS_Offset = 402;
+	optional PosiOffsetFlag HS_Offset = 401;
+	optional double HS_FastAngleThreshold = 402;
+	optional double HS_SlowAngleThreshold = 403;
 
 	// Trailing Stop
 	optional double TS_BackValue = 411;

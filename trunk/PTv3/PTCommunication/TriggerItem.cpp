@@ -51,4 +51,22 @@ void ScalperTriggerItem::To( entity::TriggerItem* pNativeTriggerItem )
 	TriggerItem::To(pNativeTriggerItem);
 }
 
+
+void HistSlopeTriggerItem::To( entity::TriggerItem* pNativeTriggerItem )
+{
+	pNativeTriggerItem->set_hs_offset(static_cast<entity::PosiOffsetFlag>(_offset));
+	pNativeTriggerItem->set_hs_fastanglethreshold(_fastAngleThreshold);
+	pNativeTriggerItem->set_hs_slowanglethreshold(_slowAngleThreshold);
+
+	TriggerItem::To(pNativeTriggerItem);
+}
+
+
+void HistSlopeTrailingStopTriggerItem::To( entity::TriggerItem* pNativeTriggerItem )
+{
+	pNativeTriggerItem->set_ts_backvalue(_backValue);
+
+	TriggerItem::To(pNativeTriggerItem);
+}
+
 }

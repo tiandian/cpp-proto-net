@@ -21,3 +21,10 @@ bool CTrigger::Test( double val )
 
 	return false;
 }
+
+bool CTrigger::Test( const double vals[], int size )
+{
+	if(IsEnabled())
+		return OnTest(vals, size);
+	return false;
+}
