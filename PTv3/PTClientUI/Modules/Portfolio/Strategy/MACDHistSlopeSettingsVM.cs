@@ -9,7 +9,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
     {
         protected override StrategySetting CreateSettings()
         {
-            throw new NotImplementedException();
+            return new MACDHistSlopeStrategySetting();
         }
     }
 }

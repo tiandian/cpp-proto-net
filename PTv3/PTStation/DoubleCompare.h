@@ -1,6 +1,6 @@
 #pragma once
 
-#define DOUBLE_PRECISION 0.01
+#define DOUBLE_PRECISION 0.001
 
 bool DoubleGreaterEqual(double a, double b);
 

@@ -175,4 +175,101 @@ private:
 	double _threshold;
 };
 
+public ref class HistSlopeTriggerItem : TriggerItem
+{
+public:
+	HistSlopeTriggerItem()
+	{
+		init();
+	}
+
+	virtual void To(entity::TriggerItem* pNativeTriggerItem) override;
+
+	property PosiOffsetFlag Offset
+	{
+		PosiOffsetFlag get()
+		{
+			return _offset; 
+		}
+		void set(PosiOffsetFlag val)
+		{
+			_offset = val;
+		}
+	}
+
+	property double FastAngleThreshold
+	{
+		double get()
+		{
+			return _fastAngleThreshold; 
+		}
+		void set(double val)
+		{
+			_fastAngleThreshold = val;
+		}
+	}
+
+	property double SlowAngleThreshold
+	{
+		double get()
+		{
+			return _slowAngleThreshold; 
+		}
+		void set(double val)
+		{
+			_slowAngleThreshold = val;
+		}
+	}
+
+private:
+	void init()
+	{
+		_strategy = StrategyType::HIST_SLOPE;
+		_name = gcnew String("HistSlopeTrigger");
+	}
+
+	PosiOffsetFlag _offset;
+	double _fastAngleThreshold;
+	double _slowAngleThreshold;
+
+};
+
+public ref class HistSlopeTrailingStopTriggerItem : TriggerItem
+{
+public:
+	HistSlopeTrailingStopTriggerItem()
+	{
+		init();
+	}
+	HistSlopeTrailingStopTriggerItem(double backValue)
+	{
+		init();
+		_backValue = backValue;
+	}
+
+	virtual void To(entity::TriggerItem* pNativeTriggerItem) override;
+
+	property double BackValue
+	{
+		double get()
+		{
+			return _backValue; 
+		}
+		void set(double val)
+		{
+			_backValue = val;
+		}
+	}
+
+private:
+	void init()
+	{
+		_strategy = StrategyType::HIST_SLOPE;
+		_name = gcnew String("HistSlopeTrailingStopTrigger");
+	}
+
+	double _backValue;
+};
+
+
 }

@@ -2068,12 +2068,40 @@ class StrategyItem : public ::google::protobuf::Message {
   inline ::google::protobuf::RepeatedPtrField< ::entity::HistSourceCfg >*
       mutable_histsources();
   
-  // optional double HS_StdHist = 501;
-  inline bool has_hs_stdhist() const;
-  inline void clear_hs_stdhist();
-  static const int kHSStdHistFieldNumber = 501;
-  inline double hs_stdhist() const;
-  inline void set_hs_stdhist(double value);
+  // optional int32 HS_Short = 501;
+  inline bool has_hs_short() const;
+  inline void clear_hs_short();
+  static const int kHSShortFieldNumber = 501;
+  inline ::google::protobuf::int32 hs_short() const;
+  inline void set_hs_short(::google::protobuf::int32 value);
+  
+  // optional int32 HS_Long = 502;
+  inline bool has_hs_long() const;
+  inline void clear_hs_long();
+  static const int kHSLongFieldNumber = 502;
+  inline ::google::protobuf::int32 hs_long() const;
+  inline void set_hs_long(::google::protobuf::int32 value);
+  
+  // optional int32 HS_M = 503;
+  inline bool has_hs_m() const;
+  inline void clear_hs_m();
+  static const int kHSMFieldNumber = 503;
+  inline ::google::protobuf::int32 hs_m() const;
+  inline void set_hs_m(::google::protobuf::int32 value);
+  
+  // optional double HS_FastStdDiff = 504;
+  inline bool has_hs_faststddiff() const;
+  inline void clear_hs_faststddiff();
+  static const int kHSFastStdDiffFieldNumber = 504;
+  inline double hs_faststddiff() const;
+  inline void set_hs_faststddiff(double value);
+  
+  // optional double HS_SlowStdDiff = 505;
+  inline bool has_hs_slowstddiff() const;
+  inline void clear_hs_slowstddiff();
+  static const int kHSSlowStdDiffFieldNumber = 505;
+  inline double hs_slowstddiff() const;
+  inline void set_hs_slowstddiff(double value);
   
   // @@protoc_insertion_point(class_scope:entity.StrategyItem)
  private:
@@ -2101,8 +2129,16 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_sc_casenochange();
   inline void set_has_sc_stoplossstrategy();
   inline void clear_has_sc_stoplossstrategy();
-  inline void set_has_hs_stdhist();
-  inline void clear_has_hs_stdhist();
+  inline void set_has_hs_short();
+  inline void clear_has_hs_short();
+  inline void set_has_hs_long();
+  inline void clear_has_hs_long();
+  inline void set_has_hs_m();
+  inline void clear_has_hs_m();
+  inline void set_has_hs_faststddiff();
+  inline void clear_has_hs_faststddiff();
+  inline void set_has_hs_slowstddiff();
+  inline void clear_has_hs_slowstddiff();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2120,10 +2156,14 @@ class StrategyItem : public ::google::protobuf::Message {
   int sc_casenochange_;
   int sc_stoplossstrategy_;
   ::google::protobuf::RepeatedPtrField< ::entity::HistSourceCfg > histsources_;
-  double hs_stdhist_;
+  ::google::protobuf::int32 hs_short_;
+  ::google::protobuf::int32 hs_long_;
+  double hs_faststddiff_;
+  double hs_slowstddiff_;
+  ::google::protobuf::int32 hs_m_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(15 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(19 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2255,19 +2295,26 @@ class TriggerItem : public ::google::protobuf::Message {
   inline double sc_threshold() const;
   inline void set_sc_threshold(double value);
   
-  // optional double HS_AngelThreshold = 401;
-  inline bool has_hs_angelthreshold() const;
-  inline void clear_hs_angelthreshold();
-  static const int kHSAngelThresholdFieldNumber = 401;
-  inline double hs_angelthreshold() const;
-  inline void set_hs_angelthreshold(double value);
-  
-  // optional .entity.PosiOffsetFlag HS_Offset = 402;
+  // optional .entity.PosiOffsetFlag HS_Offset = 401;
   inline bool has_hs_offset() const;
   inline void clear_hs_offset();
-  static const int kHSOffsetFieldNumber = 402;
+  static const int kHSOffsetFieldNumber = 401;
   inline entity::PosiOffsetFlag hs_offset() const;
   inline void set_hs_offset(entity::PosiOffsetFlag value);
+  
+  // optional double HS_FastAngleThreshold = 402;
+  inline bool has_hs_fastanglethreshold() const;
+  inline void clear_hs_fastanglethreshold();
+  static const int kHSFastAngleThresholdFieldNumber = 402;
+  inline double hs_fastanglethreshold() const;
+  inline void set_hs_fastanglethreshold(double value);
+  
+  // optional double HS_SlowAngleThreshold = 403;
+  inline bool has_hs_slowanglethreshold() const;
+  inline void clear_hs_slowanglethreshold();
+  static const int kHSSlowAngleThresholdFieldNumber = 403;
+  inline double hs_slowanglethreshold() const;
+  inline void set_hs_slowanglethreshold(double value);
   
   // optional double TS_BackValue = 411;
   inline bool has_ts_backvalue() const;
@@ -2296,10 +2343,12 @@ class TriggerItem : public ::google::protobuf::Message {
   inline void clear_has_cp_threshold();
   inline void set_has_sc_threshold();
   inline void clear_has_sc_threshold();
-  inline void set_has_hs_angelthreshold();
-  inline void clear_has_hs_angelthreshold();
   inline void set_has_hs_offset();
   inline void clear_has_hs_offset();
+  inline void set_has_hs_fastanglethreshold();
+  inline void clear_has_hs_fastanglethreshold();
+  inline void set_has_hs_slowanglethreshold();
+  inline void clear_has_hs_slowanglethreshold();
   inline void set_has_ts_backvalue();
   inline void clear_has_ts_backvalue();
   
@@ -2312,14 +2361,15 @@ class TriggerItem : public ::google::protobuf::Message {
   int ar_condition_;
   int ar_offset_;
   double cp_threshold_;
-  double sc_threshold_;
   int cp_condition_;
   int hs_offset_;
-  double hs_angelthreshold_;
+  double sc_threshold_;
+  double hs_fastanglethreshold_;
+  double hs_slowanglethreshold_;
   double ts_backvalue_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(12 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(13 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -7494,26 +7544,114 @@ StrategyItem::mutable_histsources() {
   return &histsources_;
 }
 
-// optional double HS_StdHist = 501;
-inline bool StrategyItem::has_hs_stdhist() const {
+// optional int32 HS_Short = 501;
+inline bool StrategyItem::has_hs_short() const {
   return (_has_bits_[0] & 0x00004000u) != 0;
 }
-inline void StrategyItem::set_has_hs_stdhist() {
+inline void StrategyItem::set_has_hs_short() {
   _has_bits_[0] |= 0x00004000u;
 }
-inline void StrategyItem::clear_has_hs_stdhist() {
+inline void StrategyItem::clear_has_hs_short() {
   _has_bits_[0] &= ~0x00004000u;
 }
-inline void StrategyItem::clear_hs_stdhist() {
-  hs_stdhist_ = 0;
-  clear_has_hs_stdhist();
+inline void StrategyItem::clear_hs_short() {
+  hs_short_ = 0;
+  clear_has_hs_short();
 }
-inline double StrategyItem::hs_stdhist() const {
-  return hs_stdhist_;
+inline ::google::protobuf::int32 StrategyItem::hs_short() const {
+  return hs_short_;
 }
-inline void StrategyItem::set_hs_stdhist(double value) {
-  set_has_hs_stdhist();
-  hs_stdhist_ = value;
+inline void StrategyItem::set_hs_short(::google::protobuf::int32 value) {
+  set_has_hs_short();
+  hs_short_ = value;
+}
+
+// optional int32 HS_Long = 502;
+inline bool StrategyItem::has_hs_long() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+inline void StrategyItem::set_has_hs_long() {
+  _has_bits_[0] |= 0x00008000u;
+}
+inline void StrategyItem::clear_has_hs_long() {
+  _has_bits_[0] &= ~0x00008000u;
+}
+inline void StrategyItem::clear_hs_long() {
+  hs_long_ = 0;
+  clear_has_hs_long();
+}
+inline ::google::protobuf::int32 StrategyItem::hs_long() const {
+  return hs_long_;
+}
+inline void StrategyItem::set_hs_long(::google::protobuf::int32 value) {
+  set_has_hs_long();
+  hs_long_ = value;
+}
+
+// optional int32 HS_M = 503;
+inline bool StrategyItem::has_hs_m() const {
+  return (_has_bits_[0] & 0x00010000u) != 0;
+}
+inline void StrategyItem::set_has_hs_m() {
+  _has_bits_[0] |= 0x00010000u;
+}
+inline void StrategyItem::clear_has_hs_m() {
+  _has_bits_[0] &= ~0x00010000u;
+}
+inline void StrategyItem::clear_hs_m() {
+  hs_m_ = 0;
+  clear_has_hs_m();
+}
+inline ::google::protobuf::int32 StrategyItem::hs_m() const {
+  return hs_m_;
+}
+inline void StrategyItem::set_hs_m(::google::protobuf::int32 value) {
+  set_has_hs_m();
+  hs_m_ = value;
+}
+
+// optional double HS_FastStdDiff = 504;
+inline bool StrategyItem::has_hs_faststddiff() const {
+  return (_has_bits_[0] & 0x00020000u) != 0;
+}
+inline void StrategyItem::set_has_hs_faststddiff() {
+  _has_bits_[0] |= 0x00020000u;
+}
+inline void StrategyItem::clear_has_hs_faststddiff() {
+  _has_bits_[0] &= ~0x00020000u;
+}
+inline void StrategyItem::clear_hs_faststddiff() {
+  hs_faststddiff_ = 0;
+  clear_has_hs_faststddiff();
+}
+inline double StrategyItem::hs_faststddiff() const {
+  return hs_faststddiff_;
+}
+inline void StrategyItem::set_hs_faststddiff(double value) {
+  set_has_hs_faststddiff();
+  hs_faststddiff_ = value;
+}
+
+// optional double HS_SlowStdDiff = 505;
+inline bool StrategyItem::has_hs_slowstddiff() const {
+  return (_has_bits_[0] & 0x00040000u) != 0;
+}
+inline void StrategyItem::set_has_hs_slowstddiff() {
+  _has_bits_[0] |= 0x00040000u;
+}
+inline void StrategyItem::clear_has_hs_slowstddiff() {
+  _has_bits_[0] &= ~0x00040000u;
+}
+inline void StrategyItem::clear_hs_slowstddiff() {
+  hs_slowstddiff_ = 0;
+  clear_has_hs_slowstddiff();
+}
+inline double StrategyItem::hs_slowstddiff() const {
+  return hs_slowstddiff_;
+}
+inline void StrategyItem::set_hs_slowstddiff(double value) {
+  set_has_hs_slowstddiff();
+  hs_slowstddiff_ = value;
 }
 
 // -------------------------------------------------------------------
@@ -7758,37 +7896,15 @@ inline void TriggerItem::set_sc_threshold(double value) {
   sc_threshold_ = value;
 }
 
-// optional double HS_AngelThreshold = 401;
-inline bool TriggerItem::has_hs_angelthreshold() const {
+// optional .entity.PosiOffsetFlag HS_Offset = 401;
+inline bool TriggerItem::has_hs_offset() const {
   return (_has_bits_[0] & 0x00000200u) != 0;
 }
-inline void TriggerItem::set_has_hs_angelthreshold() {
+inline void TriggerItem::set_has_hs_offset() {
   _has_bits_[0] |= 0x00000200u;
 }
-inline void TriggerItem::clear_has_hs_angelthreshold() {
-  _has_bits_[0] &= ~0x00000200u;
-}
-inline void TriggerItem::clear_hs_angelthreshold() {
-  hs_angelthreshold_ = 0;
-  clear_has_hs_angelthreshold();
-}
-inline double TriggerItem::hs_angelthreshold() const {
-  return hs_angelthreshold_;
-}
-inline void TriggerItem::set_hs_angelthreshold(double value) {
-  set_has_hs_angelthreshold();
-  hs_angelthreshold_ = value;
-}
-
-// optional .entity.PosiOffsetFlag HS_Offset = 402;
-inline bool TriggerItem::has_hs_offset() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
-}
-inline void TriggerItem::set_has_hs_offset() {
-  _has_bits_[0] |= 0x00000400u;
-}
 inline void TriggerItem::clear_has_hs_offset() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000200u;
 }
 inline void TriggerItem::clear_hs_offset() {
   hs_offset_ = 0;
@@ -7803,15 +7919,59 @@ inline void TriggerItem::set_hs_offset(entity::PosiOffsetFlag value) {
   hs_offset_ = value;
 }
 
-// optional double TS_BackValue = 411;
-inline bool TriggerItem::has_ts_backvalue() const {
+// optional double HS_FastAngleThreshold = 402;
+inline bool TriggerItem::has_hs_fastanglethreshold() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void TriggerItem::set_has_hs_fastanglethreshold() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void TriggerItem::clear_has_hs_fastanglethreshold() {
+  _has_bits_[0] &= ~0x00000400u;
+}
+inline void TriggerItem::clear_hs_fastanglethreshold() {
+  hs_fastanglethreshold_ = 0;
+  clear_has_hs_fastanglethreshold();
+}
+inline double TriggerItem::hs_fastanglethreshold() const {
+  return hs_fastanglethreshold_;
+}
+inline void TriggerItem::set_hs_fastanglethreshold(double value) {
+  set_has_hs_fastanglethreshold();
+  hs_fastanglethreshold_ = value;
+}
+
+// optional double HS_SlowAngleThreshold = 403;
+inline bool TriggerItem::has_hs_slowanglethreshold() const {
   return (_has_bits_[0] & 0x00000800u) != 0;
 }
-inline void TriggerItem::set_has_ts_backvalue() {
+inline void TriggerItem::set_has_hs_slowanglethreshold() {
   _has_bits_[0] |= 0x00000800u;
 }
-inline void TriggerItem::clear_has_ts_backvalue() {
+inline void TriggerItem::clear_has_hs_slowanglethreshold() {
   _has_bits_[0] &= ~0x00000800u;
+}
+inline void TriggerItem::clear_hs_slowanglethreshold() {
+  hs_slowanglethreshold_ = 0;
+  clear_has_hs_slowanglethreshold();
+}
+inline double TriggerItem::hs_slowanglethreshold() const {
+  return hs_slowanglethreshold_;
+}
+inline void TriggerItem::set_hs_slowanglethreshold(double value) {
+  set_has_hs_slowanglethreshold();
+  hs_slowanglethreshold_ = value;
+}
+
+// optional double TS_BackValue = 411;
+inline bool TriggerItem::has_ts_backvalue() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void TriggerItem::set_has_ts_backvalue() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void TriggerItem::clear_has_ts_backvalue() {
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void TriggerItem::clear_ts_backvalue() {
   ts_backvalue_ = 0;

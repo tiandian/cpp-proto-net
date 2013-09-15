@@ -63,7 +63,31 @@ void ScalperStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 
 void MACDSlopeStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 {
-	
+	IntPtr symbolPtr;
+	try
+	{
+		symbolPtr = (IntPtr)Marshal::StringToHGlobalAnsi(_symbol);
+
+		entity::HistSourceCfg* fastSourceCfg = pNativeStrategyItem->add_histsources();
+		fastSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
+		fastSourceCfg->set_precision(_fastPeriod);
+
+		entity::HistSourceCfg* slowSourceCfg = pNativeStrategyItem->add_histsources();
+		slowSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
+		slowSourceCfg->set_precision(_slowPeriod);
+
+		pNativeStrategyItem->set_hs_short(_short);
+		pNativeStrategyItem->set_hs_long(_long);
+		pNativeStrategyItem->set_hs_m(_m);
+		pNativeStrategyItem->set_hs_faststddiff(_fastStdDiff);
+		pNativeStrategyItem->set_hs_slowstddiff(_slowStdDiff);
+
+		StrategyItem::To(pNativeStrategyItem);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(symbolPtr);
+	}
 }
 
 }

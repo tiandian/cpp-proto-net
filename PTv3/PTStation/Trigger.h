@@ -13,6 +13,10 @@ public:
 
 	bool Test(double val);
 	virtual bool OnTest(double val){ return false; }
+
+	bool Test(const double vals[], int size);
+	virtual bool OnTest(const double vals[], int size){ return false; }
+
 	bool IsEnabled(){ return m_enabled; }
 	void Enable(bool enabled){ m_enabled = enabled; }
 

@@ -1,6 +1,9 @@
 #pragma once
 #include "Trigger.h"
 
+#define HistSlopeTriggerName "HistSlopeTrigger"
+#define HistSlopeTrailingStopTriggerName "HistSlopeTrailingStopTrigger"
+
 class CHistSlopeTrigger : public CTrigger
 {
 public:
@@ -10,18 +13,13 @@ public:
 	void Apply( const entity::TriggerItem& triggerItem );
 
 	// Input value should be latest price
-	bool OnTest(double val)
-	{
-		double absVal = fabs(val);
-		// return true if absolute value larger than or equal to threshold
-		return absVal > m_angelThreshold			// explicitly larger
-			|| m_angelThreshold - absVal < 0.001;	// regard as equal if diff less then 0.001
-	}
+	bool OnTest(const double vals[], int size);
 
 	entity::PosiOffsetFlag Offset(){ return m_offset; }
 
 private:
-	double m_angelThreshold;
+	double m_fastAngleThreshold;
+	double m_slowAngleThreshold;
 	entity::PosiOffsetFlag m_offset;
 };
 
@@ -42,23 +40,7 @@ public:
     void Apply( const entity::TriggerItem& triggerItem );
 
     // Input value should be latest price
-    bool OnTest(double val)
-    { 
-        if(Compare(val, m_lastHigh))
-        {
-            m_lastHigh = val;
-            m_effectiveStop = CalcOffset(m_lastHigh, -m_backValue);
-        }
-        else if(!Compare(val, m_effectiveStop))
-        {
-			// disable this trigger once fired
-			CTrigger::Enable(false);
-
-            return true;
-        }
-
-        return false; 
-    }
+    bool OnTest(double val);
 
 private:
 
