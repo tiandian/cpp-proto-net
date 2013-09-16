@@ -61,6 +61,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 case ScalperStrategyName:
                     setting = new ScalperSetting();
                     break;
+                case MACDHistSlopeStrategyName:
+                    setting = new MACDHistSlopeStrategySetting();
+                    break;
                 default:
                     throw new ArgumentException(string.Format("Unexpected strategy setting ({0})", name));
             }

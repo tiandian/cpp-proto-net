@@ -279,10 +279,50 @@
         </Grid>
     </DataTemplate>
     
+    <DataTemplate x:Key="macdHistSlopeTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="38"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="36"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" BorderThickness="0, 0, 1, 1">
+                    <TextBlock Margin="4" VerticalAlignment="Center">快线</TextBlock>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Margin="4" VerticalAlignment="Center">慢线</TextBlock>
+                </Border>
+                <Border Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Width="60" Text="大于等于" VerticalAlignment="Center"/>
+                        <TextBlock Width="60" Text="{Binding StrategySetting.FastAngleThreshold}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Width="60" Text="大于等于" VerticalAlignment="Center"/>
+                        <TextBlock Width="60" Text="{Binding StrategySetting.SlowAngleThreshold}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+    
     <local:PortfMonTemplateSelector x:Key="portfMonSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionTemplate}"
-                                    ScalperTemplate="{StaticResource scalperTemplate}"/>
+                                    ScalperTemplate="{StaticResource scalperTemplate}"
+                                    MACDHistSlopeTemplate="{StaticResource macdHistSlopeTemplate}"/>
     
     <Style TargetType="{x:Type local:PortfMonitorPanel}">
         <Setter Property="Template">
