@@ -14,6 +14,7 @@ namespace PortfolioTrading.Controls
         public DataTemplate ArbitrageTemplate { get; set; }
         public DataTemplate ScalperTemplate { get; set; }
         public DataTemplate ChangePositionTemplate { get; set; }
+        public DataTemplate MACDHistSlopeTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -26,6 +27,8 @@ namespace PortfolioTrading.Controls
                     return ChangePositionTemplate;
                 else if (portfVm.StrategySetting.Name == StrategySetting.ScalperStrategyName)
                     return ScalperTemplate;
+                else if (portfVm.StrategySetting.Name == StrategySetting.MACDHistSlopeStrategyName)
+                    return MACDHistSlopeTemplate;
             }
 
             return null;
