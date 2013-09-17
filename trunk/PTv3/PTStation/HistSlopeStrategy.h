@@ -31,9 +31,12 @@ private:
 	int m_macdShort;
 	int m_macdLong;
 	int m_macdM;
+	int m_fastPeriod;
+	int m_slowPeriod;
 	double m_fastStdDiff;
 	double m_slowStdDiff;
 
+	double m_angleArray[2];
 	bool m_positionOpened;
 };
 

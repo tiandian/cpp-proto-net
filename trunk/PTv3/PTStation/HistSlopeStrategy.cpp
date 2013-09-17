@@ -39,10 +39,15 @@ CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem,
 	, m_macdShort(0)
 	, m_macdLong(0)
 	, m_macdM(0)
+	, m_fastPeriod(0)
+	, m_slowPeriod(0)
 	, m_fastStdDiff(0)
 	, m_slowStdDiff(0)
 	, m_positionOpened(false)
 {
+	m_angleArray[0] = 0;
+	m_angleArray[1] = 0;
+
 	Apply(strategyItem, false);
 
 	CreateTriggers(strategyItem);
@@ -61,6 +66,8 @@ void CHistSlopeStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	m_macdM = strategyItem.hs_m();
 	m_fastStdDiff = strategyItem.hs_faststddiff();
 	m_slowStdDiff = strategyItem.hs_slowstddiff();
+	m_fastPeriod = strategyItem.hs_fastperiod();
+	m_slowPeriod = strategyItem.hs_slowperiod();
 }
 
 void CHistSlopeStrategy::CreateTriggers( const entity::StrategyItem& strategyItem )
@@ -85,10 +92,13 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 {
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
+	if(!IsRunning())
+		return;
+
 	// 1. Calculate MACD hist value of 1 min and 5 min
 	string symbol = pQuote->symbol();
 
-	COHLCRecordSet* slowOHLC = GetRecordSet(symbol, 300, timestamp);
+	COHLCRecordSet* slowOHLC = GetRecordSet(symbol, m_slowPeriod, timestamp);
 	TaIndicatorSetPtr slowIndicatorSet = CalculateMACD(slowOHLC, m_macdShort, m_macdLong, m_macdM);
 
 	double slowLast0 = slowIndicatorSet->GetRef("MACD", 0);
@@ -97,7 +107,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	MACDSlopeDirection slowPeriodDirection = CheckDirection(slowLast0, slowLast1);
 
 	// 3. Calculate value of 1 min angle
-	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, 60, timestamp);
+	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
 	TaIndicatorSetPtr fastIndicatorSet = CalculateMACD(fastOHLC, m_macdShort, m_macdLong, m_macdM);
 	// 3.1 if sign of 1 min is same as 5 min, Goes to Trigger test
 	double fastLast0 = fastIndicatorSet->GetRef("MACD", 0);
@@ -106,9 +116,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	MACDSlopeDirection fastPeriodDirection = CheckDirection(fastLast0 , fastLast1);
 	if(fastPeriodDirection == slowPeriodDirection )
 	{
-		double angleArr[2];
-		angleArr[0] = CalculateAngle(m_fastStdDiff, fastLast0 - fastLast1);
-		angleArr[1] = CalculateAngle(m_slowStdDiff, slowLast0 - slowLast1);
+		m_angleArray[0] = CalculateAngle(m_fastStdDiff, fastLast0 - fastLast1);
+		m_angleArray[1] = CalculateAngle(m_slowStdDiff, slowLast0 - slowLast1);
 
 		// 3.2 In scope of Trigger test
 		for(TriggerIter iter = m_triggers.begin(); iter != m_triggers.end(); ++iter)
@@ -123,7 +132,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					// 3.2.1 if not opened, test open trigger
 					if(slopeTrigger->Offset() == entity::OPEN)
 					{
-						bool meetOpenCondition = slopeTrigger->Test(angleArr, 2);
+						bool meetOpenCondition = slopeTrigger->Test(m_angleArray, 2);
 						if(meetOpenCondition)
 						{
 							// 3.2.1.1 Do OPEN position
@@ -142,7 +151,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					CHistSlopeTrigger* slopeTrigger = dynamic_cast<CHistSlopeTrigger*>(pTrigger);
 					if(slopeTrigger->Offset() == entity::CLOSE)
 					{
-						bool meetCloseCondition = slopeTrigger->Test(angleArr, 2);
+						bool meetCloseCondition = slopeTrigger->Test(m_angleArray, 2);
 						if(meetCloseCondition)
 						{
 							// TODO Close position
@@ -178,8 +187,8 @@ void CHistSlopeStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 {
 	CStrategy::GetStrategyUpdate(pPortfUpdateItem);
 	
-	pPortfUpdateItem->set_hs_fastangel(45);
-	pPortfUpdateItem->set_hs_slowangel(30);
+	pPortfUpdateItem->set_hs_fastangle(m_angleArray[0]);
+	pPortfUpdateItem->set_hs_slowangle(m_angleArray[1]);
 }
 
 int CHistSlopeStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )

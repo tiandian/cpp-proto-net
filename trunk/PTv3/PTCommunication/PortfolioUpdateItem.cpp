@@ -35,6 +35,13 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				pEntity->sc_diff()
 			);
 		break;
+	case StrategyType::HIST_SLOPE:
+		retStrategyUpdate = gcnew HistSlopeStrategyUpdateItem
+			(
+				pEntity->hs_fastangle(),
+				pEntity->hs_slowangle()
+			);
+		break;
 	default:
 		return nullptr;
 	}

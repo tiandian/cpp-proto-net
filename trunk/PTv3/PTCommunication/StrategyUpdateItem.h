@@ -194,4 +194,50 @@ private:
 	double _diff;
 };
 
+public ref class HistSlopeStrategyUpdateItem : StrategyUpdateItem
+{
+public:
+	HistSlopeStrategyUpdateItem(double fastAngle, double slowAngle)
+	{
+		_fastAngle = fastAngle;
+		_slowAngle = slowAngle;
+	}
+
+	property StrategyType Kind
+	{
+		virtual StrategyType get() override
+		{
+			return StrategyType::HIST_SLOPE;
+		}
+	}
+
+	property double FastAngle
+	{
+		double get()
+		{
+			return _fastAngle; 
+		}
+		void set(double val)
+		{
+			_fastAngle = val;
+		}
+	}
+
+	property double SlowAngle
+	{
+		double get()
+		{
+			return _slowAngle; 
+		}
+		void set(double val)
+		{
+			_slowAngle = val;
+		}
+	}
+
+private:
+	double _fastAngle;
+	double _slowAngle;
+};
+
 }
