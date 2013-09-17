@@ -79,6 +79,8 @@ void MACDSlopeStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 		pNativeStrategyItem->set_hs_short(_short);
 		pNativeStrategyItem->set_hs_long(_long);
 		pNativeStrategyItem->set_hs_m(_m);
+		pNativeStrategyItem->set_hs_fastperiod(_fastPeriod);
+		pNativeStrategyItem->set_hs_slowperiod(_slowPeriod);
 		pNativeStrategyItem->set_hs_faststddiff(_fastStdDiff);
 		pNativeStrategyItem->set_hs_slowstddiff(_slowStdDiff);
 

@@ -2103,6 +2103,20 @@ class StrategyItem : public ::google::protobuf::Message {
   inline double hs_slowstddiff() const;
   inline void set_hs_slowstddiff(double value);
   
+  // optional int32 HS_FastPeriod = 506;
+  inline bool has_hs_fastperiod() const;
+  inline void clear_hs_fastperiod();
+  static const int kHSFastPeriodFieldNumber = 506;
+  inline ::google::protobuf::int32 hs_fastperiod() const;
+  inline void set_hs_fastperiod(::google::protobuf::int32 value);
+  
+  // optional int32 HS_SlowPeriod = 507;
+  inline bool has_hs_slowperiod() const;
+  inline void clear_hs_slowperiod();
+  static const int kHSSlowPeriodFieldNumber = 507;
+  inline ::google::protobuf::int32 hs_slowperiod() const;
+  inline void set_hs_slowperiod(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:entity.StrategyItem)
  private:
   inline void set_has_type();
@@ -2139,6 +2153,10 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_hs_faststddiff();
   inline void set_has_hs_slowstddiff();
   inline void clear_has_hs_slowstddiff();
+  inline void set_has_hs_fastperiod();
+  inline void clear_has_hs_fastperiod();
+  inline void set_has_hs_slowperiod();
+  inline void clear_has_hs_slowperiod();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2159,11 +2177,13 @@ class StrategyItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 hs_short_;
   ::google::protobuf::int32 hs_long_;
   double hs_faststddiff_;
-  double hs_slowstddiff_;
   ::google::protobuf::int32 hs_m_;
+  ::google::protobuf::int32 hs_fastperiod_;
+  double hs_slowstddiff_;
+  ::google::protobuf::int32 hs_slowperiod_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(19 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(21 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -2837,19 +2857,19 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline double sc_diff() const;
   inline void set_sc_diff(double value);
   
-  // optional double HS_FastAngel = 301;
-  inline bool has_hs_fastangel() const;
-  inline void clear_hs_fastangel();
-  static const int kHSFastAngelFieldNumber = 301;
-  inline double hs_fastangel() const;
-  inline void set_hs_fastangel(double value);
+  // optional double HS_FastAngle = 301;
+  inline bool has_hs_fastangle() const;
+  inline void clear_hs_fastangle();
+  static const int kHSFastAngleFieldNumber = 301;
+  inline double hs_fastangle() const;
+  inline void set_hs_fastangle(double value);
   
-  // optional double HS_SlowAngel = 302;
-  inline bool has_hs_slowangel() const;
-  inline void clear_hs_slowangel();
-  static const int kHSSlowAngelFieldNumber = 302;
-  inline double hs_slowangel() const;
-  inline void set_hs_slowangel(double value);
+  // optional double HS_SlowAngle = 302;
+  inline bool has_hs_slowangle() const;
+  inline void clear_hs_slowangle();
+  static const int kHSSlowAngleFieldNumber = 302;
+  inline double hs_slowangle() const;
+  inline void set_hs_slowangle(double value);
   
   // @@protoc_insertion_point(class_scope:entity.PortfolioUpdateItem)
  private:
@@ -2881,10 +2901,10 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_ar_shortsize();
   inline void set_has_sc_diff();
   inline void clear_has_sc_diff();
-  inline void set_has_hs_fastangel();
-  inline void clear_has_hs_fastangel();
-  inline void set_has_hs_slowangel();
-  inline void clear_has_hs_slowangel();
+  inline void set_has_hs_fastangle();
+  inline void clear_has_hs_fastangle();
+  inline void set_has_hs_slowangle();
+  inline void clear_has_hs_slowangle();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2904,8 +2924,8 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 ar_longsize_;
   ::google::protobuf::int32 ar_shortsize_;
   double sc_diff_;
-  double hs_fastangel_;
-  double hs_slowangel_;
+  double hs_fastangle_;
+  double hs_slowangle_;
   
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(18 + 31) / 32];
@@ -7654,6 +7674,50 @@ inline void StrategyItem::set_hs_slowstddiff(double value) {
   hs_slowstddiff_ = value;
 }
 
+// optional int32 HS_FastPeriod = 506;
+inline bool StrategyItem::has_hs_fastperiod() const {
+  return (_has_bits_[0] & 0x00080000u) != 0;
+}
+inline void StrategyItem::set_has_hs_fastperiod() {
+  _has_bits_[0] |= 0x00080000u;
+}
+inline void StrategyItem::clear_has_hs_fastperiod() {
+  _has_bits_[0] &= ~0x00080000u;
+}
+inline void StrategyItem::clear_hs_fastperiod() {
+  hs_fastperiod_ = 0;
+  clear_has_hs_fastperiod();
+}
+inline ::google::protobuf::int32 StrategyItem::hs_fastperiod() const {
+  return hs_fastperiod_;
+}
+inline void StrategyItem::set_hs_fastperiod(::google::protobuf::int32 value) {
+  set_has_hs_fastperiod();
+  hs_fastperiod_ = value;
+}
+
+// optional int32 HS_SlowPeriod = 507;
+inline bool StrategyItem::has_hs_slowperiod() const {
+  return (_has_bits_[0] & 0x00100000u) != 0;
+}
+inline void StrategyItem::set_has_hs_slowperiod() {
+  _has_bits_[0] |= 0x00100000u;
+}
+inline void StrategyItem::clear_has_hs_slowperiod() {
+  _has_bits_[0] &= ~0x00100000u;
+}
+inline void StrategyItem::clear_hs_slowperiod() {
+  hs_slowperiod_ = 0;
+  clear_has_hs_slowperiod();
+}
+inline ::google::protobuf::int32 StrategyItem::hs_slowperiod() const {
+  return hs_slowperiod_;
+}
+inline void StrategyItem::set_hs_slowperiod(::google::protobuf::int32 value) {
+  set_has_hs_slowperiod();
+  hs_slowperiod_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // TriggerItem
@@ -8775,48 +8839,48 @@ inline void PortfolioUpdateItem::set_sc_diff(double value) {
   sc_diff_ = value;
 }
 
-// optional double HS_FastAngel = 301;
-inline bool PortfolioUpdateItem::has_hs_fastangel() const {
+// optional double HS_FastAngle = 301;
+inline bool PortfolioUpdateItem::has_hs_fastangle() const {
   return (_has_bits_[0] & 0x00010000u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_hs_fastangel() {
+inline void PortfolioUpdateItem::set_has_hs_fastangle() {
   _has_bits_[0] |= 0x00010000u;
 }
-inline void PortfolioUpdateItem::clear_has_hs_fastangel() {
+inline void PortfolioUpdateItem::clear_has_hs_fastangle() {
   _has_bits_[0] &= ~0x00010000u;
 }
-inline void PortfolioUpdateItem::clear_hs_fastangel() {
-  hs_fastangel_ = 0;
-  clear_has_hs_fastangel();
+inline void PortfolioUpdateItem::clear_hs_fastangle() {
+  hs_fastangle_ = 0;
+  clear_has_hs_fastangle();
 }
-inline double PortfolioUpdateItem::hs_fastangel() const {
-  return hs_fastangel_;
+inline double PortfolioUpdateItem::hs_fastangle() const {
+  return hs_fastangle_;
 }
-inline void PortfolioUpdateItem::set_hs_fastangel(double value) {
-  set_has_hs_fastangel();
-  hs_fastangel_ = value;
+inline void PortfolioUpdateItem::set_hs_fastangle(double value) {
+  set_has_hs_fastangle();
+  hs_fastangle_ = value;
 }
 
-// optional double HS_SlowAngel = 302;
-inline bool PortfolioUpdateItem::has_hs_slowangel() const {
+// optional double HS_SlowAngle = 302;
+inline bool PortfolioUpdateItem::has_hs_slowangle() const {
   return (_has_bits_[0] & 0x00020000u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_hs_slowangel() {
+inline void PortfolioUpdateItem::set_has_hs_slowangle() {
   _has_bits_[0] |= 0x00020000u;
 }
-inline void PortfolioUpdateItem::clear_has_hs_slowangel() {
+inline void PortfolioUpdateItem::clear_has_hs_slowangle() {
   _has_bits_[0] &= ~0x00020000u;
 }
-inline void PortfolioUpdateItem::clear_hs_slowangel() {
-  hs_slowangel_ = 0;
-  clear_has_hs_slowangel();
+inline void PortfolioUpdateItem::clear_hs_slowangle() {
+  hs_slowangle_ = 0;
+  clear_has_hs_slowangle();
 }
-inline double PortfolioUpdateItem::hs_slowangel() const {
-  return hs_slowangel_;
+inline double PortfolioUpdateItem::hs_slowangle() const {
+  return hs_slowangle_;
 }
-inline void PortfolioUpdateItem::set_hs_slowangel(double value) {
-  set_has_hs_slowangel();
-  hs_slowangel_ = value;
+inline void PortfolioUpdateItem::set_hs_slowangle(double value) {
+  set_has_hs_slowangle();
+  hs_slowangle_ = value;
 }
 
 // -------------------------------------------------------------------
