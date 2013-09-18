@@ -46,6 +46,8 @@ void CTechAnalyStrategy::Stop()
 
 void CTechAnalyStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
+	CStrategy::Test(pQuote, pPortfolio, timestamp);
+
 	for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
 		iter != m_pDataProxies.end(); ++iter)
 	{
