@@ -1,8 +1,10 @@
 #pragma once
 
 #include "TechAnalyStrategy.h"
+#include "TaIndicatorSet.h"
 
 class CAvatarClient;
+class COHLCRecordSet;
 
 enum MACDSlopeDirection
 {
@@ -26,6 +28,7 @@ protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
 
 private:
+	int CalculateMACD(COHLCRecordSet* ohlcRecordSet, CTaIndicatorSet*  targetIndicatorSet, int paramShort, int paramLong, int paramM);
 	double CalculateAngle(double stdHistDiff, double currentHistDiff);
 
 	int m_macdShort;
@@ -38,5 +41,8 @@ private:
 
 	double m_angleArray[2];
 	bool m_positionOpened;
+
+	TaIndicatorSetPtr m_slowPeriodIndicatorSet;
+	TaIndicatorSetPtr m_fastPeriodIndicatorSet;
 };
 

@@ -10,13 +10,7 @@ string GetISOTimeString(const boost::chrono::seconds& timepoint);
 class CTradingTimeSpan
 {
 public:
-    CTradingTimeSpan(const char* timeBegin, const char* timeEnd, unsigned int precision)
-        :m_precision(precision), m_offset(0)
-    {
-        m_Start = ParseTimeString(timeBegin);
-        m_End = ParseTimeString(timeEnd);
-        m_endIndex = GetIndexFromTime(m_Start, m_End, precision);
-    }
+    CTradingTimeSpan(const char* timeBegin, const char* timeEnd, unsigned int precision);
 
     const boost::chrono::seconds& Start(){ return m_Start; }
     const boost::chrono::seconds& End(){ return m_End; }

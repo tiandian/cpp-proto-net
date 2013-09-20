@@ -31,11 +31,15 @@ public:
 	void Start();
 	void Stop();
    
-  COHLCRecordSet* GetRecordSet(const string& symbol, unsigned int precision, boost::chrono::steady_clock::time_point& timestamp);  
+	COHLCRecordSet* GetRecordSet(const string& symbol, unsigned int precision, boost::chrono::steady_clock::time_point& timestamp);  
+
+protected:
+	const vector<HistSrcCfgPtr>& HistSrcConfigs(){ return m_histSrcConfigs; }
 
 private:
 	vector<HistSrcCfgPtr> m_histSrcConfigs;
 	vector<CPriceBarDataProxy*> m_pDataProxies;
+	boost::mutex m_mutDataProxy;
 
 	CAvatarClient* m_avatar;
 };
