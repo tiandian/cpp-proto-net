@@ -2,27 +2,14 @@
 #include "HistSlopeStrategy.h"
 #include "HistSlopeTrigger.h"
 #include "AvatarClient.h"
-#include "TaIndicatorSet.h"
 #include "OHLCRecordSet.h"
 
 #include <ta_libc.h>
 
 #define PI 3.1415926
-
-TaIndicatorSetPtr CalculateMACD(COHLCRecordSet* ohlcRecordSet, int paramShort, int paramLong, int paramM)
-{
-	int outBeg = -1;
-	int outNbElement = -1;
-	double outMacd = 0;
-	double outMacdSignal = 0;
-	double outMacdHist = 0;
-
-	int lastIdx = ohlcRecordSet->GetLastIndex();
-	TA_RetCode rc = TA_MACD(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), paramShort, paramLong, paramM, 
-		&outBeg, &outNbElement, &outMacd, &outMacdSignal, &outMacdHist);
-	
-	return TaIndicatorSetPtr();
-}
+#define IND_MACD "MACD"
+#define IND_MACD_SIGNAL "MACDSignal"
+#define IND_MACD_HIST "MACDHist"
 
 MACDSlopeDirection CheckDirection(double point1, double point2)
 {
@@ -68,6 +55,26 @@ void CHistSlopeStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	m_slowStdDiff = strategyItem.hs_slowstddiff();
 	m_fastPeriod = strategyItem.hs_fastperiod();
 	m_slowPeriod = strategyItem.hs_slowperiod();
+
+	vector<string> indicatorNames;
+	indicatorNames.push_back(IND_MACD);
+	indicatorNames.push_back(IND_MACD_SIGNAL);
+	indicatorNames.push_back(IND_MACD_HIST);
+
+	const vector<HistSrcCfgPtr>& vecDSCfg = HistSrcConfigs();
+	for(vector<HistSrcCfgPtr>::const_iterator iter = vecDSCfg.begin(); iter != vecDSCfg.end(); ++iter)
+	{
+		if((*iter)->Precision == m_fastPeriod)
+		{
+			m_fastPeriodIndicatorSet = TaIndicatorSetPtr(new CTaIndicatorSet((*iter)->Symbol, (*iter)->Precision));
+			m_fastPeriodIndicatorSet->Init(indicatorNames);
+		}
+		else if((*iter)->Precision == m_slowPeriod)
+		{
+			m_slowPeriodIndicatorSet = TaIndicatorSetPtr(new CTaIndicatorSet((*iter)->Symbol, (*iter)->Precision));
+			m_slowPeriodIndicatorSet->Init(indicatorNames);
+		}
+	}
 }
 
 void CHistSlopeStrategy::CreateTriggers( const entity::StrategyItem& strategyItem )
@@ -99,22 +106,22 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	string symbol = pQuote->symbol();
 
 	COHLCRecordSet* slowOHLC = GetRecordSet(symbol, m_slowPeriod, timestamp);
-	TaIndicatorSetPtr slowIndicatorSet = CalculateMACD(slowOHLC, m_macdShort, m_macdLong, m_macdM);
+	int lastIdxOfSlow = CalculateMACD(slowOHLC, m_slowPeriodIndicatorSet.get(), m_macdShort, m_macdLong, m_macdM);
 
-	double slowLast0 = slowIndicatorSet->GetRef("MACD", 0);
-	double slowLast1 = slowIndicatorSet->GetRef("MACD", 1);
+	double slowLast0 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
+	double slowLast1 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	// 2. Test 5 min angle, see if Up or Down.
 	MACDSlopeDirection slowPeriodDirection = CheckDirection(slowLast0, slowLast1);
 
 	// 3. Calculate value of 1 min angle
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
-	TaIndicatorSetPtr fastIndicatorSet = CalculateMACD(fastOHLC, m_macdShort, m_macdLong, m_macdM);
+	int lastIdxOfFast = CalculateMACD(fastOHLC, m_fastPeriodIndicatorSet.get(), m_macdShort, m_macdLong, m_macdM);
 	// 3.1 if sign of 1 min is same as 5 min, Goes to Trigger test
-	double fastLast0 = fastIndicatorSet->GetRef("MACD", 0);
-	double fastLast1 = fastIndicatorSet->GetRef("MACD", 1);
+	double fastLast0 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
+	double fastLast1 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 
 	MACDSlopeDirection fastPeriodDirection = CheckDirection(fastLast0 , fastLast1);
-	if(fastPeriodDirection == slowPeriodDirection )
+	if(slowPeriodDirection > NO_DIRECTION && fastPeriodDirection == slowPeriodDirection )
 	{
 		m_angleArray[0] = CalculateAngle(m_fastStdDiff, fastLast0 - fastLast1);
 		m_angleArray[1] = CalculateAngle(m_slowStdDiff, slowLast0 - slowLast1);
@@ -210,4 +217,22 @@ double CHistSlopeStrategy::CalculateAngle(double stdHistDiff, double currentHist
 	double angle = arcTan * 180 / PI;
 	return angle;
 }
+
+int CHistSlopeStrategy::CalculateMACD( COHLCRecordSet* ohlcRecordSet, CTaIndicatorSet* targetIndicatorSet, int paramShort, int paramLong, int paramM )
+{
+	int outBeg = -1;
+	int outNbElement = -1;
+	double outMacd = 0;
+	double outMacdSignal = 0;
+	double outMacdHist = 0;
+
+	int lastIdx = ohlcRecordSet->GetLastIndex();
+	TA_RetCode rc = TA_MACD(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), paramShort, paramLong, paramM, 
+		&outBeg, &outNbElement, &outMacd, &outMacdSignal, &outMacdHist);
+
+	targetIndicatorSet->Set(IND_MACD_HIST, outBeg, outMacdHist);
+
+	return outBeg;
+}
+
 

@@ -4,6 +4,8 @@
 
 #include <boost/algorithm/string.hpp>
 
+#define TIME_HOUR_OFFSET 7
+
 boost::chrono::seconds ParseTimeString(const char* time)
 {
     boost::chrono::seconds finalVal;
@@ -53,4 +55,17 @@ string GetISOTimeString(const boost::chrono::seconds& timepoint)
     boost::chrono::hours h = boost::chrono::duration_cast<boost::chrono::hours>(m);
     m -= h;
     return boost::str(boost::format("%02d:%02d:%02d") % h.count() % m.count() % s.count());
+}
+
+CTradingTimeSpan::CTradingTimeSpan( const char* timeBegin, const char* timeEnd, unsigned int precision ) :m_precision(precision), m_offset(0)
+{
+	m_Start = ParseTimeString(timeBegin);
+	m_End = ParseTimeString(timeEnd);
+
+#ifdef _DEBUG
+	m_Start += boost::chrono::hours(TIME_HOUR_OFFSET);
+	m_End += boost::chrono::hours(TIME_HOUR_OFFSET);
+#endif
+
+	m_endIndex = GetIndexFromTime(m_Start, m_End, precision);
 }

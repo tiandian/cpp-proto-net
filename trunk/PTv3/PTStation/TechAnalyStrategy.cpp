@@ -21,6 +21,8 @@ CTechAnalyStrategy::~CTechAnalyStrategy(void)
 
 void CTechAnalyStrategy::Start()
 {
+	boost::mutex::scoped_lock l(m_mutDataProxy);
+
 	for (vector<HistSrcCfgPtr>::iterator iter = m_histSrcConfigs.begin();
 		iter != m_histSrcConfigs.end(); ++iter)
 	{
@@ -34,6 +36,8 @@ void CTechAnalyStrategy::Start()
 
 void CTechAnalyStrategy::Stop()
 {
+	boost::mutex::scoped_lock l(m_mutDataProxy);
+
 	for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
 		iter != m_pDataProxies.end(); ++iter)
 	{
@@ -47,12 +51,14 @@ void CTechAnalyStrategy::Stop()
 void CTechAnalyStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
 	CStrategy::Test(pQuote, pPortfolio, timestamp);
-
-	for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
-		iter != m_pDataProxies.end(); ++iter)
 	{
-		if((*iter)->Symbol() == pQuote->symbol())
-			(*iter)->InQuote(pQuote, timestamp);
+		boost::mutex::scoped_lock l(m_mutDataProxy);
+		for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
+			iter != m_pDataProxies.end(); ++iter)
+		{
+			if((*iter)->Symbol() == pQuote->symbol())
+				(*iter)->InQuote(pQuote, timestamp);
+		}
 	}
 }
 

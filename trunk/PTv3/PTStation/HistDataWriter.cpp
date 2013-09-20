@@ -2,6 +2,8 @@
 #include "HistDataWriter.h"
 #include "TechStrategyDefs.h"
 
+#define FIELD_WIDTH 12
+
 using namespace boost::filesystem;
 
 CHistDataWriter::CHistDataWriter(void)
@@ -36,9 +38,9 @@ void CHistDataWriter::Write(const string& timestamp, double open, double high, d
     if(IsOpen())
     {
         m_ofstream << timestamp << " ";
-        m_ofstream << open << ", ";
-        m_ofstream << high << ", ";
-        m_ofstream << low << ", ";
-        m_ofstream << close << endl;
+        m_ofstream << setw(FIELD_WIDTH) << open << ", ";
+        m_ofstream << setw(FIELD_WIDTH) << high << ", ";
+        m_ofstream << setw(FIELD_WIDTH) << low << ", ";
+        m_ofstream << setw(FIELD_WIDTH) << close << endl;
     }
 }
