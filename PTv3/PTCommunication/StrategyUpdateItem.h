@@ -197,10 +197,17 @@ private:
 public ref class HistSlopeStrategyUpdateItem : StrategyUpdateItem
 {
 public:
-	HistSlopeStrategyUpdateItem(double fastAngle, double slowAngle)
+	HistSlopeStrategyUpdateItem(double fastAngle, double slowAngle,
+		double fastHistVal, double fastHistDiff, double slowHistVal, double slowHistDiff)
 	{
 		_fastAngle = fastAngle;
 		_slowAngle = slowAngle;
+		
+		_fastHistVal = fastHistVal;
+		_fastHistDiff = fastHistDiff;
+		_slowHistVal = slowHistVal;
+		_slowHistDiff = slowHistDiff;
+		
 	}
 
 	property StrategyType Kind
@@ -235,9 +242,62 @@ public:
 		}
 	}
 
+	property double FastMacdHist
+	{
+		double get()
+		{
+			return _fastHistVal; 
+		}
+		void set(double val)
+		{
+			_fastHistVal = val;
+		}
+	}
+
+	property double FastMacdHistDiff
+	{
+		double get()
+		{
+			return _fastHistDiff; 
+		}
+		void set(double val)
+		{
+			_fastHistDiff = val;
+		}
+	}
+
+	property double SlowMacdHist
+	{
+		double get()
+		{
+			return _slowHistVal; 
+		}
+		void set(double val)
+		{
+			_slowHistVal = val;
+		}
+	}
+
+	property double SlowMacdHistDiff
+	{
+		double get()
+		{
+			return _slowHistDiff; 
+		}
+		void set(double val)
+		{
+			_slowHistDiff = val;
+		}
+	}
+
 private:
 	double _fastAngle;
 	double _slowAngle;
+
+	double _fastHistVal;
+	double _fastHistDiff;
+	double _slowHistVal;
+	double _slowHistDiff;
 };
 
 }

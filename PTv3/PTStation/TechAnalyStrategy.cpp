@@ -15,37 +15,6 @@ CTechAnalyStrategy::CTechAnalyStrategy(const entity::StrategyItem& strategyItem,
 
 CTechAnalyStrategy::~CTechAnalyStrategy(void)
 {
-	if(IsRunning())
-		Stop();
-}
-
-void CTechAnalyStrategy::Start()
-{
-	boost::mutex::scoped_lock l(m_mutDataProxy);
-
-	for (vector<HistSrcCfgPtr>::iterator iter = m_histSrcConfigs.begin();
-		iter != m_histSrcConfigs.end(); ++iter)
-	{
-		CPriceBarDataProxy* proxy = g_dataRepo.Register((*iter)->Symbol, (*iter)->Precision, m_avatar->TradingDay());
-		if(proxy != NULL)
-			m_pDataProxies.push_back(proxy);
-	}
-
-	CStrategy::Start();
-}
-
-void CTechAnalyStrategy::Stop()
-{
-	boost::mutex::scoped_lock l(m_mutDataProxy);
-
-	for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
-		iter != m_pDataProxies.end(); ++iter)
-	{
-		g_dataRepo.Unregister(*iter);
-	}
-	m_pDataProxies.clear();
-
-	CStrategy::Stop();
 }
 
 void CTechAnalyStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
@@ -70,6 +39,8 @@ void CTechAnalyStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 		HistSrcCfgPtr histCfg(new CHistSourceCfg(entityCfg.symbol(), entityCfg.precision()));
 		m_histSrcConfigs.push_back(histCfg);
 	}
+
+	RegHistDataSrc();
 }
 
 COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, unsigned int precision, boost::chrono::steady_clock::time_point& timestamp)
@@ -82,4 +53,34 @@ COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, unsigned 
          return (*iter)->GetOHLCRecordSet (timestamp);
    }
    return NULL;
+}
+
+void CTechAnalyStrategy::RegHistDataSrc()
+{
+	boost::mutex::scoped_lock l(m_mutDataProxy);
+
+	for (vector<HistSrcCfgPtr>::iterator iter = m_histSrcConfigs.begin();
+		iter != m_histSrcConfigs.end(); ++iter)
+	{
+		CPriceBarDataProxy* proxy = g_dataRepo.Register((*iter)->Symbol, (*iter)->Precision, m_avatar->TradingDay());
+		if(proxy != NULL)
+			m_pDataProxies.push_back(proxy);
+	}
+}
+
+void CTechAnalyStrategy::UnregHistDataSrc()
+{
+	boost::mutex::scoped_lock l(m_mutDataProxy);
+
+	for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
+		iter != m_pDataProxies.end(); ++iter)
+	{
+		g_dataRepo.Unregister(*iter);
+	}
+	m_pDataProxies.clear();
+}
+
+void CTechAnalyStrategy::Cleanup()
+{
+	UnregHistDataSrc();
 }

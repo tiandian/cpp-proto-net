@@ -57,10 +57,12 @@ void CPriceBarDataSource::InQuote( entity::Quote* pQuote, boost::chrono::steady_
 
 		m_condDataReady.notify_all();
 	}
+	/*
 	else
 	{
 		LOG_DEBUG(logger, boost::str(boost::format("Ignored incoming quote for %d") % timestamp.time_since_epoch()));
 	}
+	*/
 }
 
 COHLCRecordSet* CPriceBarDataSource::GetRecordSet(boost::chrono::steady_clock::time_point& timestamp)

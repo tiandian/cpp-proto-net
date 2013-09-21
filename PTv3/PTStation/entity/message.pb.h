@@ -2871,6 +2871,34 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline double hs_slowangle() const;
   inline void set_hs_slowangle(double value);
   
+  // optional double HS_FastMacdHist = 303;
+  inline bool has_hs_fastmacdhist() const;
+  inline void clear_hs_fastmacdhist();
+  static const int kHSFastMacdHistFieldNumber = 303;
+  inline double hs_fastmacdhist() const;
+  inline void set_hs_fastmacdhist(double value);
+  
+  // optional double HS_FastMacdHistDiff = 304;
+  inline bool has_hs_fastmacdhistdiff() const;
+  inline void clear_hs_fastmacdhistdiff();
+  static const int kHSFastMacdHistDiffFieldNumber = 304;
+  inline double hs_fastmacdhistdiff() const;
+  inline void set_hs_fastmacdhistdiff(double value);
+  
+  // optional double HS_SlowMacdHist = 305;
+  inline bool has_hs_slowmacdhist() const;
+  inline void clear_hs_slowmacdhist();
+  static const int kHSSlowMacdHistFieldNumber = 305;
+  inline double hs_slowmacdhist() const;
+  inline void set_hs_slowmacdhist(double value);
+  
+  // optional double HS_SlowMacdHistDiff = 306;
+  inline bool has_hs_slowmacdhistdiff() const;
+  inline void clear_hs_slowmacdhistdiff();
+  static const int kHSSlowMacdHistDiffFieldNumber = 306;
+  inline double hs_slowmacdhistdiff() const;
+  inline void set_hs_slowmacdhistdiff(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioUpdateItem)
  private:
   inline void set_has_id();
@@ -2905,6 +2933,14 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_hs_fastangle();
   inline void set_has_hs_slowangle();
   inline void clear_has_hs_slowangle();
+  inline void set_has_hs_fastmacdhist();
+  inline void clear_has_hs_fastmacdhist();
+  inline void set_has_hs_fastmacdhistdiff();
+  inline void clear_has_hs_fastmacdhistdiff();
+  inline void set_has_hs_slowmacdhist();
+  inline void clear_has_hs_slowmacdhist();
+  inline void set_has_hs_slowmacdhistdiff();
+  inline void clear_has_hs_slowmacdhistdiff();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2926,9 +2962,13 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   double sc_diff_;
   double hs_fastangle_;
   double hs_slowangle_;
+  double hs_fastmacdhist_;
+  double hs_fastmacdhistdiff_;
+  double hs_slowmacdhist_;
+  double hs_slowmacdhistdiff_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(18 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(22 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -8881,6 +8921,94 @@ inline double PortfolioUpdateItem::hs_slowangle() const {
 inline void PortfolioUpdateItem::set_hs_slowangle(double value) {
   set_has_hs_slowangle();
   hs_slowangle_ = value;
+}
+
+// optional double HS_FastMacdHist = 303;
+inline bool PortfolioUpdateItem::has_hs_fastmacdhist() const {
+  return (_has_bits_[0] & 0x00040000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_hs_fastmacdhist() {
+  _has_bits_[0] |= 0x00040000u;
+}
+inline void PortfolioUpdateItem::clear_has_hs_fastmacdhist() {
+  _has_bits_[0] &= ~0x00040000u;
+}
+inline void PortfolioUpdateItem::clear_hs_fastmacdhist() {
+  hs_fastmacdhist_ = 0;
+  clear_has_hs_fastmacdhist();
+}
+inline double PortfolioUpdateItem::hs_fastmacdhist() const {
+  return hs_fastmacdhist_;
+}
+inline void PortfolioUpdateItem::set_hs_fastmacdhist(double value) {
+  set_has_hs_fastmacdhist();
+  hs_fastmacdhist_ = value;
+}
+
+// optional double HS_FastMacdHistDiff = 304;
+inline bool PortfolioUpdateItem::has_hs_fastmacdhistdiff() const {
+  return (_has_bits_[0] & 0x00080000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_hs_fastmacdhistdiff() {
+  _has_bits_[0] |= 0x00080000u;
+}
+inline void PortfolioUpdateItem::clear_has_hs_fastmacdhistdiff() {
+  _has_bits_[0] &= ~0x00080000u;
+}
+inline void PortfolioUpdateItem::clear_hs_fastmacdhistdiff() {
+  hs_fastmacdhistdiff_ = 0;
+  clear_has_hs_fastmacdhistdiff();
+}
+inline double PortfolioUpdateItem::hs_fastmacdhistdiff() const {
+  return hs_fastmacdhistdiff_;
+}
+inline void PortfolioUpdateItem::set_hs_fastmacdhistdiff(double value) {
+  set_has_hs_fastmacdhistdiff();
+  hs_fastmacdhistdiff_ = value;
+}
+
+// optional double HS_SlowMacdHist = 305;
+inline bool PortfolioUpdateItem::has_hs_slowmacdhist() const {
+  return (_has_bits_[0] & 0x00100000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_hs_slowmacdhist() {
+  _has_bits_[0] |= 0x00100000u;
+}
+inline void PortfolioUpdateItem::clear_has_hs_slowmacdhist() {
+  _has_bits_[0] &= ~0x00100000u;
+}
+inline void PortfolioUpdateItem::clear_hs_slowmacdhist() {
+  hs_slowmacdhist_ = 0;
+  clear_has_hs_slowmacdhist();
+}
+inline double PortfolioUpdateItem::hs_slowmacdhist() const {
+  return hs_slowmacdhist_;
+}
+inline void PortfolioUpdateItem::set_hs_slowmacdhist(double value) {
+  set_has_hs_slowmacdhist();
+  hs_slowmacdhist_ = value;
+}
+
+// optional double HS_SlowMacdHistDiff = 306;
+inline bool PortfolioUpdateItem::has_hs_slowmacdhistdiff() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_hs_slowmacdhistdiff() {
+  _has_bits_[0] |= 0x00200000u;
+}
+inline void PortfolioUpdateItem::clear_has_hs_slowmacdhistdiff() {
+  _has_bits_[0] &= ~0x00200000u;
+}
+inline void PortfolioUpdateItem::clear_hs_slowmacdhistdiff() {
+  hs_slowmacdhistdiff_ = 0;
+  clear_has_hs_slowmacdhistdiff();
+}
+inline double PortfolioUpdateItem::hs_slowmacdhistdiff() const {
+  return hs_slowmacdhistdiff_;
+}
+inline void PortfolioUpdateItem::set_hs_slowmacdhistdiff(double value) {
+  set_has_hs_slowmacdhistdiff();
+  hs_slowmacdhistdiff_ = value;
 }
 
 // -------------------------------------------------------------------

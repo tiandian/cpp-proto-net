@@ -14,9 +14,10 @@ public:
 	const string& DataSourceId();
 	void InQuote(entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 	COHLCRecordSet* GetOHLCRecordSet(boost::chrono::steady_clock::time_point& timestamp);
+	unsigned int GetRecordSetSize();
 	unsigned int Index(){ return m_index; }
 	const string& Symbol(){ return m_symbol; }
-	unsigned int Precision(){ return m_precision; }
+	unsigned int Precision() const { return m_precision; }
 
 private:
 	string m_symbol;

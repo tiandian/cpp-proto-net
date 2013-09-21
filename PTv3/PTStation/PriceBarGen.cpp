@@ -15,6 +15,8 @@ CPriceBarGen::CPriceBarGen(void)
 
 CPriceBarGen::~CPriceBarGen(void)
 {
+	// Write the last quote to file
+	RaiseBarFinalizedEvent();
 }
 
 
@@ -51,12 +53,10 @@ void CPriceBarGen::Calculate(entity::Quote* pQuote)
 	if(barIdx > m_currentIdx)
 	{
 		// if not the first one, finalize the last bar
-		if(m_currentIdx > 0 && !m_onBarFinalized.empty())
-		{
-			m_onBarFinalized(barIdx, m_open, m_high, m_low, m_close, timestamp);
-		}
+		RaiseBarFinalizedEvent();
 
 		m_currentIdx = barIdx;
+		m_currentTimestamp = timestamp;
 		m_close = m_low = m_high = m_open = last;
 	}
 	else if(barIdx == m_currentIdx)
@@ -105,4 +105,12 @@ unsigned int CPriceBarGen::GetIndex(const string& quoteTime)
 
     // input quote time is NOT in valid trading time
     return 0;
+}
+
+void CPriceBarGen::RaiseBarFinalizedEvent()
+{
+	if(m_currentIdx > 0 && !m_onBarFinalized.empty())
+	{
+		m_onBarFinalized(m_currentIdx, m_open, m_high, m_low, m_close, m_currentTimestamp);
+	}
 }

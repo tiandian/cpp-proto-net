@@ -290,6 +290,9 @@
     <ClInclude Include="PortfolioTrendOrderPlacer.h">
       <Filter>Header Files\trade</Filter>
     </ClInclude>
+    <ClInclude Include="MACDDataSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -486,6 +489,9 @@
     </ClCompile>
     <ClCompile Include="PortfolioTrendOrderPlacer.cpp">
       <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="MACDDataSet.cpp">
+      <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
