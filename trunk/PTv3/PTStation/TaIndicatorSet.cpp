@@ -5,47 +5,53 @@
 
 #include <boost/algorithm/string.hpp>
 
-CTaIndicatorSet::CTaIndicatorSet(const string& symbol, unsigned int precision)
+void CTaIndicatorSet::ResetArray(double arr[], int length)
 {
-	bool isIF = boost::starts_with(symbol, "IF");
-	unsigned int tradingTime = isIF ? IF_TOTAL_TRADING_SECONDS : NON_IF_TOTAL_TRADING_SECONDS ;
-	int countPerDay = tradingTime / precision;
-	if(tradingTime % precision > 0)
-		countPerDay += 1;
-
-	unsigned int sizeOfVector = 2 * countPerDay;
-
-	for(DataSeriesMapIter iter = m_dataSeriesMap.begin(); iter != m_dataSeriesMap.end(); ++iter)
+	for(int i = 0; i < length; ++i)
 	{
-		(iter->second)->reserve(sizeOfVector);
+		arr[i] = 0;
 	}
 }
 
+CTaIndicatorSet::CTaIndicatorSet(unsigned int size)
+	: m_size(size)
+	, m_lastPosition(0)
+{
+}
 
 CTaIndicatorSet::~CTaIndicatorSet(void)
 {
 }
 
-void CTaIndicatorSet::Init( const vector<string>& seriesNames )
+double* CTaIndicatorSet::AddIndicator( const string& seriesName )
 {
-	for(vector<string>::const_iterator iter = seriesNames.begin();
-		iter != seriesNames.end(); ++iter)
-	{
-		DataSeriesPtr dataSeries(new DataSeries);
-		m_dataSeriesMap.insert(make_pair(*iter, dataSeries));
-	}
+	DataSeries dataSeries(new double[m_size]);
+	m_dataSeriesMap.insert(make_pair(seriesName, dataSeries));
+	ResetArray(dataSeries.get(), m_size);
+	return dataSeries.get();
 }
+
+double* CTaIndicatorSet::FindDataSeries( const string& indicator )
+{
+	DataSeriesMapIter iter = m_dataSeriesMap.find(indicator);
+	if(iter != m_dataSeriesMap.end())
+	{
+		return (iter->second).get();
+	}
+
+	return NULL;
+}
+
 
 double CTaIndicatorSet::GetRef( const string& indicator, int rpos )
 {
-	DataSeries* dataSeries = FindDataSeries(indicator);
+	double* dataSeries = FindDataSeries(indicator);
 	if(dataSeries != NULL)
 	{
-		long size = dataSeries->size();
-		int idx = size - rpos - 1;
+		int idx = m_lastPosition - rpos - 1;
 		if(idx >= 0)
 		{
-			return dataSeries->at(idx);
+			return dataSeries[idx];
 		}
 	}
 
@@ -55,36 +61,26 @@ double CTaIndicatorSet::GetRef( const string& indicator, int rpos )
 
 void CTaIndicatorSet::SetRef( const string& indicator, int rpos, double val )
 {
-	DataSeries* dataSeries = FindDataSeries(indicator);
+	double* dataSeries = FindDataSeries(indicator);
 	if(dataSeries != NULL)
 	{
-		long size = dataSeries->size();
-		int idx = size - rpos - 1;
+		int idx = m_lastPosition - rpos - 1;
 		if(idx >= 0)
 		{
-			(*dataSeries)[idx] = val;
+			dataSeries[idx] = val;
 		}
 	}
 }
 
 void CTaIndicatorSet::Set( const string& indicator, int index, double val )
 {
-	DataSeries* dataSeries = FindDataSeries(indicator);
+	double* dataSeries = FindDataSeries(indicator);
 	if(dataSeries != NULL)
 	{
-		if(index >= 0)
+		if(index >= 0 && index < m_size)
 		{
-			(*dataSeries)[index] = val;
+			dataSeries[index] = val;
+			m_lastPosition = index;
 		}
 	}
-}
-
-DataSeries* CTaIndicatorSet::FindDataSeries( const string& indicator )
-{
-	DataSeriesMapIter iter = m_dataSeriesMap.find(indicator);
-	if(iter != m_dataSeriesMap.end())
-	{
-		return (iter->second).get();
-	}
-	return NULL;
 }

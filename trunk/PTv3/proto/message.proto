@@ -169,6 +169,8 @@ message StrategyItem
 	optional int32 HS_M = 503;
 	optional double HS_FastStdDiff = 504;
 	optional double HS_SlowStdDiff = 505;
+	optional int32 HS_FastPeriod = 506;
+	optional int32 HS_SlowPeriod = 507;
 	
 }
 
@@ -243,8 +245,12 @@ message PortfolioUpdateItem
 	// Scalper
 	optional double SC_Diff = 201;
 	// HistSlope
-	optional double HS_FastAngel = 301;
-	optional double HS_SlowAngel = 302;
+	optional double HS_FastAngle = 301;
+	optional double HS_SlowAngle = 302;
+	optional double HS_FastMacdHist = 303;
+	optional double HS_FastMacdHistDiff = 304;
+	optional double HS_SlowMacdHist = 305;
+	optional double HS_SlowMacdHistDiff = 306;
 }
 
 message ConnectParam

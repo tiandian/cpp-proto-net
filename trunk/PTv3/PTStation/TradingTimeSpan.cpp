@@ -4,7 +4,7 @@
 
 #include <boost/algorithm/string.hpp>
 
-#define TIME_HOUR_OFFSET 7
+#define TIME_HOUR_OFFSET 0
 
 boost::chrono::seconds ParseTimeString(const char* time)
 {

@@ -35,10 +35,14 @@ private:
 			m_onBarChanged(barIdx, m_open, m_high, m_low, m_close, timestamp);
 	}
 
+	void RaiseBarFinalizedEvent();
+
     string m_symbol;
     int m_precision;
 
 	unsigned int m_currentIdx;
+	string m_currentTimestamp;
+
 	double m_open;
 	double m_high;
 	double m_low;

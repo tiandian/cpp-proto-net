@@ -77,6 +77,11 @@ void CPortfolio::Cleanup()
 		}
 		m_quoteFetcherVec.clear();
 	}
+
+	if(m_strategy.get() != NULL)
+	{
+		m_strategy->Cleanup();
+	}
 }
 
 void CPortfolio::AddLeg( const entity::LegItem& legItem )

@@ -4,7 +4,7 @@
 
 #include <boost/algorithm/string.hpp>
 
-void ResetArray(double arr[], int length)
+void COHLCRecordSet::ResetArray(double arr[], int length)
 {
 	for(int i = 0; i < length; ++i)
 	{

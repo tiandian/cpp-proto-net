@@ -3,13 +3,9 @@
 #include "HistSlopeTrigger.h"
 #include "AvatarClient.h"
 #include "OHLCRecordSet.h"
-
-#include <ta_libc.h>
+#include "PriceBarDataProxy.h"
 
 #define PI 3.1415926
-#define IND_MACD "MACD"
-#define IND_MACD_SIGNAL "MACDSignal"
-#define IND_MACD_HIST "MACDHist"
 
 MACDSlopeDirection CheckDirection(double point1, double point2)
 {
@@ -31,6 +27,10 @@ CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem,
 	, m_fastStdDiff(0)
 	, m_slowStdDiff(0)
 	, m_positionOpened(false)
+	, m_fastHistVal(0.0)
+	, m_fastHistDiff(0.0)
+	, m_slowHistVal(0.0)
+	, m_slowHistDiff(0.0)
 {
 	m_angleArray[0] = 0;
 	m_angleArray[1] = 0;
@@ -56,23 +56,19 @@ void CHistSlopeStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	m_fastPeriod = strategyItem.hs_fastperiod();
 	m_slowPeriod = strategyItem.hs_slowperiod();
 
-	vector<string> indicatorNames;
-	indicatorNames.push_back(IND_MACD);
-	indicatorNames.push_back(IND_MACD_SIGNAL);
-	indicatorNames.push_back(IND_MACD_HIST);
-
-	const vector<HistSrcCfgPtr>& vecDSCfg = HistSrcConfigs();
-	for(vector<HistSrcCfgPtr>::const_iterator iter = vecDSCfg.begin(); iter != vecDSCfg.end(); ++iter)
+	// Initialize Indicator set
+	const vector<CPriceBarDataProxy*>& dataProxies = DataProxies();
+	for(vector<CPriceBarDataProxy*>::const_iterator iter = dataProxies.begin(); iter != dataProxies.end(); ++iter)
 	{
-		if((*iter)->Precision == m_fastPeriod)
+		if((*iter)->Precision() == m_fastPeriod)
 		{
-			m_fastPeriodIndicatorSet = TaIndicatorSetPtr(new CTaIndicatorSet((*iter)->Symbol, (*iter)->Precision));
-			m_fastPeriodIndicatorSet->Init(indicatorNames);
+			m_fastPeriodIndicatorSet = MACDDataSetPtr(new CMACDDataSet((*iter)->GetRecordSetSize(), 
+				m_macdShort, m_macdLong, m_macdM));
 		}
-		else if((*iter)->Precision == m_slowPeriod)
+		else if((*iter)->Precision() == m_slowPeriod)
 		{
-			m_slowPeriodIndicatorSet = TaIndicatorSetPtr(new CTaIndicatorSet((*iter)->Symbol, (*iter)->Precision));
-			m_slowPeriodIndicatorSet->Init(indicatorNames);
+			m_slowPeriodIndicatorSet = MACDDataSetPtr(new CMACDDataSet((*iter)->GetRecordSetSize(),
+				m_macdShort, m_macdLong, m_macdM));
 		}
 	}
 }
@@ -106,25 +102,28 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	string symbol = pQuote->symbol();
 
 	COHLCRecordSet* slowOHLC = GetRecordSet(symbol, m_slowPeriod, timestamp);
-	int lastIdxOfSlow = CalculateMACD(slowOHLC, m_slowPeriodIndicatorSet.get(), m_macdShort, m_macdLong, m_macdM);
-
+	m_slowPeriodIndicatorSet->Calculate(slowOHLC);
+	
 	double slowLast0 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
 	double slowLast1 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
+	m_slowHistVal = slowLast0;
 	// 2. Test 5 min angle, see if Up or Down.
 	MACDSlopeDirection slowPeriodDirection = CheckDirection(slowLast0, slowLast1);
 
 	// 3. Calculate value of 1 min angle
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
-	int lastIdxOfFast = CalculateMACD(fastOHLC, m_fastPeriodIndicatorSet.get(), m_macdShort, m_macdLong, m_macdM);
+	m_fastPeriodIndicatorSet->Calculate(fastOHLC);
 	// 3.1 if sign of 1 min is same as 5 min, Goes to Trigger test
 	double fastLast0 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
 	double fastLast1 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
-
+	m_fastHistVal = fastLast0;
 	MACDSlopeDirection fastPeriodDirection = CheckDirection(fastLast0 , fastLast1);
 	if(slowPeriodDirection > NO_DIRECTION && fastPeriodDirection == slowPeriodDirection )
 	{
-		m_angleArray[0] = CalculateAngle(m_fastStdDiff, fastLast0 - fastLast1);
-		m_angleArray[1] = CalculateAngle(m_slowStdDiff, slowLast0 - slowLast1);
+		m_fastHistDiff = fastLast0 - fastLast1;
+		m_angleArray[0] = CalculateAngle(m_fastStdDiff, m_fastHistDiff);
+		m_slowHistDiff = slowLast0 - slowLast1;
+		m_angleArray[1] = CalculateAngle(m_slowStdDiff, m_slowHistDiff);
 
 		// 3.2 In scope of Trigger test
 		for(TriggerIter iter = m_triggers.begin(); iter != m_triggers.end(); ++iter)
@@ -196,6 +195,10 @@ void CHistSlopeStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 	
 	pPortfUpdateItem->set_hs_fastangle(m_angleArray[0]);
 	pPortfUpdateItem->set_hs_slowangle(m_angleArray[1]);
+	pPortfUpdateItem->set_hs_fastmacdhist(m_fastHistVal);
+	pPortfUpdateItem->set_hs_fastmacdhistdiff(m_fastHistDiff);
+	pPortfUpdateItem->set_hs_slowmacdhist(m_slowHistVal);
+	pPortfUpdateItem->set_hs_slowmacdhistdiff(m_slowHistDiff);
 }
 
 int CHistSlopeStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
@@ -217,22 +220,3 @@ double CHistSlopeStrategy::CalculateAngle(double stdHistDiff, double currentHist
 	double angle = arcTan * 180 / PI;
 	return angle;
 }
-
-int CHistSlopeStrategy::CalculateMACD( COHLCRecordSet* ohlcRecordSet, CTaIndicatorSet* targetIndicatorSet, int paramShort, int paramLong, int paramM )
-{
-	int outBeg = -1;
-	int outNbElement = -1;
-	double outMacd = 0;
-	double outMacdSignal = 0;
-	double outMacdHist = 0;
-
-	int lastIdx = ohlcRecordSet->GetLastIndex();
-	TA_RetCode rc = TA_MACD(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), paramShort, paramLong, paramM, 
-		&outBeg, &outNbElement, &outMacd, &outMacdSignal, &outMacdHist);
-
-	targetIndicatorSet->Set(IND_MACD_HIST, outBeg, outMacdHist);
-
-	return outBeg;
-}
-
-

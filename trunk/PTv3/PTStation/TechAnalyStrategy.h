@@ -27,14 +27,16 @@ public:
 
 	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
-
-	void Start();
-	void Stop();
+	virtual void Cleanup();
    
 	COHLCRecordSet* GetRecordSet(const string& symbol, unsigned int precision, boost::chrono::steady_clock::time_point& timestamp);  
 
 protected:
 	const vector<HistSrcCfgPtr>& HistSrcConfigs(){ return m_histSrcConfigs; }
+	const vector<CPriceBarDataProxy*>& DataProxies() { return m_pDataProxies; }
+
+	void RegHistDataSrc();
+	void UnregHistDataSrc();
 
 private:
 	vector<HistSrcCfgPtr> m_histSrcConfigs;
