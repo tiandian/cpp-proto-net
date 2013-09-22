@@ -135,6 +135,26 @@ inline bool StrategyType_Parse(
   return ::google::protobuf::internal::ParseNamedEnum<StrategyType>(
     StrategyType_descriptor(), name, value);
 }
+enum SlopeDirection {
+  NO_DIRECTION = 0,
+  GOING_UP = 1,
+  GOING_DOWN = 2
+};
+bool SlopeDirection_IsValid(int value);
+const SlopeDirection SlopeDirection_MIN = NO_DIRECTION;
+const SlopeDirection SlopeDirection_MAX = GOING_DOWN;
+const int SlopeDirection_ARRAYSIZE = SlopeDirection_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* SlopeDirection_descriptor();
+inline const ::std::string& SlopeDirection_Name(SlopeDirection value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    SlopeDirection_descriptor(), value);
+}
+inline bool SlopeDirection_Parse(
+    const ::std::string& name, SlopeDirection* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<SlopeDirection>(
+    SlopeDirection_descriptor(), name, value);
+}
 enum DirectionDepends {
   IGNORE_THIS = 0,
   ON_SMALL_SIZE = 1,
@@ -2899,6 +2919,20 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline double hs_slowmacdhistdiff() const;
   inline void set_hs_slowmacdhistdiff(double value);
   
+  // optional .entity.SlopeDirection HS_FastSlopeDirection = 307;
+  inline bool has_hs_fastslopedirection() const;
+  inline void clear_hs_fastslopedirection();
+  static const int kHSFastSlopeDirectionFieldNumber = 307;
+  inline entity::SlopeDirection hs_fastslopedirection() const;
+  inline void set_hs_fastslopedirection(entity::SlopeDirection value);
+  
+  // optional .entity.SlopeDirection HS_SlowSlopeDirection = 308;
+  inline bool has_hs_slowslopedirection() const;
+  inline void clear_hs_slowslopedirection();
+  static const int kHSSlowSlopeDirectionFieldNumber = 308;
+  inline entity::SlopeDirection hs_slowslopedirection() const;
+  inline void set_hs_slowslopedirection(entity::SlopeDirection value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioUpdateItem)
  private:
   inline void set_has_id();
@@ -2941,6 +2975,10 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_hs_slowmacdhist();
   inline void set_has_hs_slowmacdhistdiff();
   inline void clear_has_hs_slowmacdhistdiff();
+  inline void set_has_hs_fastslopedirection();
+  inline void clear_has_hs_fastslopedirection();
+  inline void set_has_hs_slowslopedirection();
+  inline void clear_has_hs_slowslopedirection();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2966,9 +3004,11 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   double hs_fastmacdhistdiff_;
   double hs_slowmacdhist_;
   double hs_slowmacdhistdiff_;
+  int hs_fastslopedirection_;
+  int hs_slowslopedirection_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(22 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(24 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -9011,6 +9051,52 @@ inline void PortfolioUpdateItem::set_hs_slowmacdhistdiff(double value) {
   hs_slowmacdhistdiff_ = value;
 }
 
+// optional .entity.SlopeDirection HS_FastSlopeDirection = 307;
+inline bool PortfolioUpdateItem::has_hs_fastslopedirection() const {
+  return (_has_bits_[0] & 0x00400000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_hs_fastslopedirection() {
+  _has_bits_[0] |= 0x00400000u;
+}
+inline void PortfolioUpdateItem::clear_has_hs_fastslopedirection() {
+  _has_bits_[0] &= ~0x00400000u;
+}
+inline void PortfolioUpdateItem::clear_hs_fastslopedirection() {
+  hs_fastslopedirection_ = 0;
+  clear_has_hs_fastslopedirection();
+}
+inline entity::SlopeDirection PortfolioUpdateItem::hs_fastslopedirection() const {
+  return static_cast< entity::SlopeDirection >(hs_fastslopedirection_);
+}
+inline void PortfolioUpdateItem::set_hs_fastslopedirection(entity::SlopeDirection value) {
+  GOOGLE_DCHECK(entity::SlopeDirection_IsValid(value));
+  set_has_hs_fastslopedirection();
+  hs_fastslopedirection_ = value;
+}
+
+// optional .entity.SlopeDirection HS_SlowSlopeDirection = 308;
+inline bool PortfolioUpdateItem::has_hs_slowslopedirection() const {
+  return (_has_bits_[0] & 0x00800000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_hs_slowslopedirection() {
+  _has_bits_[0] |= 0x00800000u;
+}
+inline void PortfolioUpdateItem::clear_has_hs_slowslopedirection() {
+  _has_bits_[0] &= ~0x00800000u;
+}
+inline void PortfolioUpdateItem::clear_hs_slowslopedirection() {
+  hs_slowslopedirection_ = 0;
+  clear_has_hs_slowslopedirection();
+}
+inline entity::SlopeDirection PortfolioUpdateItem::hs_slowslopedirection() const {
+  return static_cast< entity::SlopeDirection >(hs_slowslopedirection_);
+}
+inline void PortfolioUpdateItem::set_hs_slowslopedirection(entity::SlopeDirection value) {
+  GOOGLE_DCHECK(entity::SlopeDirection_IsValid(value));
+  set_has_hs_slowslopedirection();
+  hs_slowslopedirection_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // ConnectParam
@@ -11957,6 +12043,10 @@ inline const EnumDescriptor* GetEnumDescriptor< entity::PortfolioSwitchType>() {
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::StrategyType>() {
   return entity::StrategyType_descriptor();
+}
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< entity::SlopeDirection>() {
+  return entity::SlopeDirection_descriptor();
 }
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< entity::DirectionDepends>() {

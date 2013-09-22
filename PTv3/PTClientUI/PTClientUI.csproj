@@ -112,11 +112,13 @@
     <Compile Include="Controls\DropDownMenuContainer.cs" />
     <Compile Include="Controls\PortfMonTemplateSelector.cs" />
     <Compile Include="Controls\PortfSettingTemplateSelector.cs" />
+    <Compile Include="Controls\PortfWatchTemplateSelector.cs" />
     <Compile Include="Controls\PriceDiffWatchPanel.cs" />
     <Compile Include="Controls\RadioButtonExtended.cs" />
     <Compile Include="Converters\CompareConditionDisplayConverter.cs" />
     <Compile Include="Converters\DirectionTypeConverter.cs" />
     <Compile Include="Converters\OrderPriceTypeConverter.cs" />
+    <Compile Include="Converters\SlopeDirectionConverter.cs" />
     <Compile Include="entity\Entity.cs" />
     <Compile Include="entity\Enums.cs" />
     <Compile Include="entity\Quote.cs" />

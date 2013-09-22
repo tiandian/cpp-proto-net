@@ -7,14 +7,14 @@
 
 #define PI 3.1415926
 
-MACDSlopeDirection CheckDirection(double point1, double point2)
+entity::SlopeDirection CheckDirection(double point1, double point2)
 {
 	if(point2 - point1 > 0.01)
-		return GOING_UP;
+		return entity::GOING_UP;
 	else if(point1 - point2 > 0.01)
-		return GOING_DOWN;
+		return entity::GOING_DOWN;
 	else
-		return NO_DIRECTION;
+		return entity::NO_DIRECTION;
 }
 
 CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
@@ -31,6 +31,8 @@ CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem,
 	, m_fastHistDiff(0.0)
 	, m_slowHistVal(0.0)
 	, m_slowHistDiff(0.0)
+	, m_fastSlopeDirection(entity::NO_DIRECTION)
+	, m_slowSlopeDirection(entity::NO_DIRECTION)
 {
 	m_angleArray[0] = 0;
 	m_angleArray[1] = 0;
@@ -108,7 +110,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	double slowLast1 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	m_slowHistVal = slowLast0;
 	// 2. Test 5 min angle, see if Up or Down.
-	MACDSlopeDirection slowPeriodDirection = CheckDirection(slowLast0, slowLast1);
+	m_slowSlopeDirection = CheckDirection(slowLast0, slowLast1);
 
 	// 3. Calculate value of 1 min angle
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
@@ -117,14 +119,15 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	double fastLast0 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
 	double fastLast1 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	m_fastHistVal = fastLast0;
-	MACDSlopeDirection fastPeriodDirection = CheckDirection(fastLast0 , fastLast1);
-	if(slowPeriodDirection > NO_DIRECTION && fastPeriodDirection == slowPeriodDirection )
-	{
-		m_fastHistDiff = fastLast0 - fastLast1;
-		m_angleArray[0] = CalculateAngle(m_fastStdDiff, m_fastHistDiff);
-		m_slowHistDiff = slowLast0 - slowLast1;
-		m_angleArray[1] = CalculateAngle(m_slowStdDiff, m_slowHistDiff);
+	m_fastSlopeDirection = CheckDirection(fastLast0 , fastLast1);
 
+	m_fastHistDiff = fastLast0 - fastLast1;
+	m_angleArray[0] = CalculateAngle(m_fastStdDiff, m_fastHistDiff);
+	m_slowHistDiff = slowLast0 - slowLast1;
+	m_angleArray[1] = CalculateAngle(m_slowStdDiff, m_slowHistDiff);
+
+	if(m_slowSlopeDirection > entity::NO_DIRECTION && m_fastSlopeDirection == m_slowSlopeDirection )
+	{
 		// 3.2 In scope of Trigger test
 		for(TriggerIter iter = m_triggers.begin(); iter != m_triggers.end(); ++iter)
 		{
@@ -199,6 +202,8 @@ void CHistSlopeStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 	pPortfUpdateItem->set_hs_fastmacdhistdiff(m_fastHistDiff);
 	pPortfUpdateItem->set_hs_slowmacdhist(m_slowHistVal);
 	pPortfUpdateItem->set_hs_slowmacdhistdiff(m_slowHistDiff);
+	pPortfUpdateItem->set_hs_fastslopedirection(m_fastSlopeDirection);
+	pPortfUpdateItem->set_hs_slowslopedirection(m_slowSlopeDirection);
 }
 
 int CHistSlopeStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )

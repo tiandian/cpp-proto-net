@@ -49,4 +49,6 @@ void CMACDDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 			m_arrMacdSignal + lookback, 
 			m_arrMacdHist + lookback);
 	}
+
+	m_lastPosition = lastIdx;
 }

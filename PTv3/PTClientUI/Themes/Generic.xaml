@@ -125,6 +125,7 @@
     </Style>
     
     <conv:CompareConditionDisplayConverter x:Key="condDisplayConverter" />
+    <conv:SlopeDirectionConverter x:Key="slopeDirectionConverter" />
 
     <DataTemplate x:Key="arbitrageTemplate">
         <Grid>
@@ -334,58 +335,132 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <DataTemplate x:Key="arbitrageWatchTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Margin="4" HorizontalAlignment="Center">价差</TextBlock>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Text="{Binding Diff}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">多差</TextBlock>
+                        <TextBlock Text="{Binding LongDiff}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">盘口</TextBlock>
+                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                               Text="{Binding LongSize}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 0, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">空差</TextBlock>
+                        <TextBlock Text="{Binding ShortDiff}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="1" BorderBrush="Blue">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">盘口</TextBlock>
+                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                               Text="{Binding ShortSize}"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="histSlopeWatchTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2" Text="{Binding FastSlopeDirection, Converter={StaticResource slopeDirectionConverter}}"/>
+                        <TextBlock Text="{Binding FastAngle}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2" Text="{Binding SlowSlopeDirection, Converter={StaticResource slopeDirectionConverter}}"/>
+                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   Text="{Binding SlowAngle}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">MACD</TextBlock>
+                        <TextBlock Text="{Binding FastMacdHist}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">MACD</TextBlock>
+                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                               Text="{Binding SlowMacdHist}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 0, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">高差</TextBlock>
+                        <TextBlock Text="{Binding FastMacdHistDiff}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="1" BorderBrush="Blue">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">高差</TextBlock>
+                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                               Text="{Binding SlowMacdHistDiff}"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <local:PortfWatchTemplateSelector x:Key="portfWatchSelector"
+                                      ArbitrageTemplate="{StaticResource arbitrageWatchTemplate}"
+                                      MACDHistSlopeTemplate="{StaticResource histSlopeWatchTemplate}"/>
 
     <Style TargetType="{x:Type local:PriceDiffWatchPanel}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:PriceDiffWatchPanel}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="Blue"
-                            BorderThickness="0, 1, 1, 1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
-                                <TextBlock Margin="4" HorizontalAlignment="Center">价差</TextBlock>
-                            </Border>
-                            <Border Grid.Column="0" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
-                                <TextBlock Text="{Binding Diff}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
-                            </Border>
-                            <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
-                                <DockPanel>
-                                    <TextBlock Margin="4, 2">多差</TextBlock>
-                                    <TextBlock Text="{Binding LongDiff}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                                </DockPanel>
-                            </Border>
-                            <Border Grid.Column="1" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
-                                <DockPanel>
-                                    <TextBlock Margin="4, 2">盘口</TextBlock>
-                                    <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                               Text="{Binding LongSize}"/>
-                                </DockPanel>
-                            </Border>
-                            <Border Grid.Column="2" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 0, 1">
-                                <DockPanel>
-                                    <TextBlock Margin="4, 2">空差</TextBlock>
-                                    <TextBlock Text="{Binding ShortDiff}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-                                </DockPanel>
-                            </Border>
-                            <Border Grid.Column="2" Grid.Row="1" BorderBrush="Blue">
-                                <DockPanel>
-                                    <TextBlock Margin="4, 2">盘口</TextBlock>
-                                    <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                               Text="{Binding ShortSize}"/>
-                                </DockPanel>
-                            </Border>
-                        </Grid>
-                    </Border>
+                    <ContentControl ContentTemplateSelector="{StaticResource portfWatchSelector}"
+                                    VerticalAlignment="Stretch" Content="{Binding }"/>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

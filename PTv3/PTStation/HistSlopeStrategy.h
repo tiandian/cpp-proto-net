@@ -42,6 +42,8 @@ private:
 	double m_fastHistDiff;
 	double m_slowHistVal;
 	double m_slowHistDiff;
+	entity::SlopeDirection m_fastSlopeDirection;
+	entity::SlopeDirection m_slowSlopeDirection;
 
 	double m_angleArray[2];
 	bool m_positionOpened;

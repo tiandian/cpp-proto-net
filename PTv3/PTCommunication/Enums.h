@@ -93,6 +93,13 @@ namespace PTEntity {
 		HEDGE = 51
 	};
 
+	public enum class SlopeDirection : int
+	{
+		NO_DIRECTION = 0,
+		GOING_UP = 1,
+		GOING_DOWN = 2
+	};
+
 	//TFtdcOrderPriceTypeType是一个报单价格条件类型
 	public enum class OrderPriceTypeType : int
 	{
