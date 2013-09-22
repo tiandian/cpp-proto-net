@@ -43,7 +43,9 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				pEntity->hs_fastmacdhist(),
 				pEntity->hs_fastmacdhistdiff(),
 				pEntity->hs_slowmacdhist(),
-				pEntity->hs_slowmacdhistdiff()
+				pEntity->hs_slowmacdhistdiff(),
+				static_cast<SlopeDirection>(pEntity->hs_fastslopedirection()),
+				static_cast<SlopeDirection>(pEntity->hs_slowslopedirection())
 			);
 		break;
 	default:

@@ -220,6 +220,13 @@ message PortfolioItem
 	required StrategyItem Strategy = 8;
 }
 
+enum SlopeDirection
+{
+	NO_DIRECTION = 0;
+	GOING_UP = 1;
+	GOING_DOWN = 2;
+}
+
 message PortfolioUpdateItem
 {
 	required string ID = 1;
@@ -251,6 +258,8 @@ message PortfolioUpdateItem
 	optional double HS_FastMacdHistDiff = 304;
 	optional double HS_SlowMacdHist = 305;
 	optional double HS_SlowMacdHistDiff = 306;
+	optional SlopeDirection HS_FastSlopeDirection = 307;
+	optional SlopeDirection HS_SlowSlopeDirection = 308;
 }
 
 message ConnectParam

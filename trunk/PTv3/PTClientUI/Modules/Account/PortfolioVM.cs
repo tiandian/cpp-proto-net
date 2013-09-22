@@ -438,6 +438,145 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+#region MACD Hist Slope strategy updating fields
+
+        #region FastAngle
+        private decimal _fastAngle;
+
+        public decimal FastAngle
+        {
+            get { return _fastAngle; }
+            set
+            {
+                if (_fastAngle != value)
+                {
+                    _fastAngle = value;
+                    RaisePropertyChanged("FastAngle");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowAngle
+        private decimal _slowAngle;
+
+        public decimal SlowAngle
+        {
+            get { return _slowAngle; }
+            set
+            {
+                if (_slowAngle != value)
+                {
+                    _slowAngle = value;
+                    RaisePropertyChanged("SlowAngle");
+                }
+            }
+        }
+        #endregion
+
+        #region FastMacdHist
+        private decimal _fastMacdHist;
+
+        public decimal FastMacdHist
+        {
+            get { return _fastMacdHist; }
+            set
+            {
+                if (_fastMacdHist != value)
+                {
+                    _fastMacdHist = value;
+                    RaisePropertyChanged("FastMacdHist");
+                }
+            }
+        }
+        #endregion
+
+        #region FastMacdHistDiff
+        private decimal _fastMacdHistDiff;
+
+        public decimal FastMacdHistDiff
+        {
+            get { return _fastMacdHistDiff; }
+            set
+            {
+                if (_fastMacdHistDiff != value)
+                {
+                    _fastMacdHistDiff = value;
+                    RaisePropertyChanged("FastMacdHistDiff");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowMacdHist
+        private decimal _slowMacdHist;
+
+        public decimal SlowMacdHist
+        {
+            get { return _slowMacdHist; }
+            set
+            {
+                if (_slowMacdHist != value)
+                {
+                    _slowMacdHist = value;
+                    RaisePropertyChanged("SlowMacdHist");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowMacdHistDiff
+        private decimal _slowMacdHistDiff;
+
+        public decimal SlowMacdHistDiff
+        {
+            get { return _slowMacdHistDiff; }
+            set
+            {
+                if (_slowMacdHistDiff != value)
+                {
+                    _slowMacdHistDiff = value;
+                    RaisePropertyChanged("SlowMacdHistDiff");
+                }
+            }
+        }
+        #endregion
+
+        #region FastSlopeDirection
+        private PTEntity.SlopeDirection _fastSlopeDirection;
+
+        public PTEntity.SlopeDirection FastSlopeDirection
+        {
+            get { return _fastSlopeDirection; }
+            set
+            {
+                if (_fastSlopeDirection != value)
+                {
+                    _fastSlopeDirection = value;
+                    RaisePropertyChanged("FastSlopeDirection");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowSlopeDirection
+        private PTEntity.SlopeDirection _slowSlopeDirection;
+
+        public PTEntity.SlopeDirection SlowSlopeDirection
+        {
+            get { return _slowSlopeDirection; }
+            set
+            {
+                if (_slowSlopeDirection != value)
+                {
+                    _slowSlopeDirection = value;
+                    RaisePropertyChanged("SlowSlopeDirection");
+                }
+            }
+        }
+        #endregion
+        
+#endregion
 
         public StrategySetting StrategySetting { get; set; }
 
@@ -692,6 +831,18 @@ namespace PortfolioTrading.Modules.Account
                 ShortDiff = ToDecimal(strategyUpdate.ShortDiff);
                 LongSize = strategyUpdate.LongSize;
                 ShortSize = strategyUpdate.ShortSize;
+            }
+            else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.HIST_SLOPE)
+            {
+                PTEntity.HistSlopeStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.HistSlopeStrategyUpdateItem;
+                FastAngle = ToDecimal(strategyUpdate.FastAngle);
+                SlowAngle = ToDecimal(strategyUpdate.SlowAngle);
+                FastMacdHist = ToDecimal(strategyUpdate.FastMacdHist);
+                SlowMacdHist = ToDecimal(strategyUpdate.SlowMacdHist);
+                FastMacdHistDiff = ToDecimal(strategyUpdate.FastMacdHistDiff);
+                SlowMacdHistDiff = ToDecimal(strategyUpdate.SlowMacdHistDiff);
+                FastSlopeDirection = strategyUpdate.FastMacdSlopeDirection;
+                SlowSlopeDirection = strategyUpdate.SlowMacdSlopeDirection;
             }
 
             OpenTimes = item.TotalOpenTimes;
