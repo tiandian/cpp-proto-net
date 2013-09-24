@@ -8,7 +8,7 @@ class CHistDataWriter
 public:
     CHistDataWriter(void);
     ~CHistDataWriter(void);
-    bool Open(const string& symbol, unsigned int precision, const boost::gregorian::date& tradingDay);
+    bool Open(const string& symbol, int precision, const boost::gregorian::date& tradingDay);
     bool IsOpen(){ return m_ofstream.is_open(); }
     void Close();
     void Write(const string& timestamp, double open, double high, double low, double close);

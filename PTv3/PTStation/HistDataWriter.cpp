@@ -17,7 +17,7 @@ CHistDataWriter::~CHistDataWriter(void)
         Close();
 }
 
-bool CHistDataWriter::Open(const string& symbol, unsigned int precision, const boost::gregorian::date& tradingDay)
+bool CHistDataWriter::Open(const string& symbol, int precision, const boost::gregorian::date& tradingDay)
 {
     m_symbol = symbol;
     m_precision = precision;
@@ -37,7 +37,7 @@ void CHistDataWriter::Write(const string& timestamp, double open, double high, d
 {
     if(IsOpen())
     {
-        m_ofstream << timestamp << " ";
+        m_ofstream << timestamp << ", ";
         m_ofstream << setw(FIELD_WIDTH) << open << ", ";
         m_ofstream << setw(FIELD_WIDTH) << high << ", ";
         m_ofstream << setw(FIELD_WIDTH) << low << ", ";

@@ -13,7 +13,7 @@ void CTaIndicatorSet::ResetArray(double arr[], int length)
 	}
 }
 
-CTaIndicatorSet::CTaIndicatorSet(unsigned int size)
+CTaIndicatorSet::CTaIndicatorSet(int size)
 	: m_size(size)
 	, m_lastPosition(0)
 {
@@ -48,7 +48,7 @@ double CTaIndicatorSet::GetRef( const string& indicator, int rpos )
 	double* dataSeries = FindDataSeries(indicator);
 	if(dataSeries != NULL)
 	{
-		int idx = m_lastPosition - rpos - 1;
+		int idx = m_lastPosition - rpos;
 		if(idx >= 0)
 		{
 			return dataSeries[idx];
@@ -64,7 +64,7 @@ void CTaIndicatorSet::SetRef( const string& indicator, int rpos, double val )
 	double* dataSeries = FindDataSeries(indicator);
 	if(dataSeries != NULL)
 	{
-		int idx = m_lastPosition - rpos - 1;
+		int idx = m_lastPosition - rpos;
 		if(idx >= 0)
 		{
 			dataSeries[idx] = val;

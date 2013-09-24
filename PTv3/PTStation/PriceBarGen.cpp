@@ -4,7 +4,7 @@
 
 
 CPriceBarGen::CPriceBarGen(void)
-	: m_currentIdx(0)
+	: m_currentIdx(-1)
 	, m_open(0)
 	, m_high(0)
 	, m_low(0)
@@ -20,7 +20,7 @@ CPriceBarGen::~CPriceBarGen(void)
 }
 
 
-void CPriceBarGen::Init(const string& symbol, unsigned int precision)
+void CPriceBarGen::Init(const string& symbol, int precision)
 {
     bool isIF = isSymbolIF(symbol);
     if(isIF)
@@ -48,7 +48,7 @@ void CPriceBarGen::Init(const string& symbol, unsigned int precision)
 void CPriceBarGen::Calculate(entity::Quote* pQuote)
 {
     string timestamp;
-    unsigned int barIdx = GetIndex(pQuote->update_time(), &timestamp);
+    int barIdx = GetIndex(pQuote->update_time(), &timestamp);
 	double last = pQuote->last();;
 	if(barIdx > m_currentIdx)
 	{
@@ -73,7 +73,7 @@ void CPriceBarGen::Calculate(entity::Quote* pQuote)
 	RaiseBarChangeEvent(barIdx, timestamp);
 }
 
-unsigned int CPriceBarGen::GetIndex(const string& quoteTime, string* timestamp)
+int CPriceBarGen::GetIndex(const string& quoteTime, string* timestamp)
 {
     boost::chrono::seconds quoteTimePoint = ParseTimeString(quoteTime);
 
@@ -90,7 +90,7 @@ unsigned int CPriceBarGen::GetIndex(const string& quoteTime, string* timestamp)
     return 0;
 }
 
-unsigned int CPriceBarGen::GetIndex(const string& quoteTime)
+int CPriceBarGen::GetIndex(const string& quoteTime)
 {
     boost::chrono::seconds quoteTimePoint = ParseTimeString(quoteTime);
 

@@ -5,7 +5,7 @@
 
 #include <boost/date_time.hpp>
 
-void CPriceBarDataSource::Init( const string& symbol, unsigned int precision)
+void CPriceBarDataSource::Init( const string& symbol, int precision)
 {
 	m_symbol = symbol;
 	m_precision = precision;
@@ -78,12 +78,12 @@ COHLCRecordSet* CPriceBarDataSource::GetRecordSet(boost::chrono::steady_clock::t
 	return NULL;
 }
 
-void CPriceBarDataSource::OnBarChanged( unsigned int barIdx, double open, double high, double low, double close, const string& timestamp )
+void CPriceBarDataSource::OnBarChanged( int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
-	m_recordSet->SetToday(barIdx, open, high, low	, close);
+	m_recordSet->SetToday(barIdx, open, high, low, close);
 }
 
-void CPriceBarDataSource::OnBarFinalized( unsigned int barIdx, double open, double high, double low, double close, const string& timestamp )
+void CPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
 	m_histDataWriter.Write(timestamp, open, high, low, close);
 }

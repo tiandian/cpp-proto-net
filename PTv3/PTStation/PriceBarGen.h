@@ -4,7 +4,7 @@
 #include "TradingTimeSpan.h"
 #include <boost/thread.hpp>
 
-typedef boost::function<void(unsigned int, double, double, double, double, const string&)> BarChangeFunc;
+typedef boost::function<void(int, double, double, double, double, const string&)> BarChangeFunc;
 
 class CPriceBarGen
 {
@@ -12,7 +12,7 @@ public:
 	CPriceBarGen(void);
 	~CPriceBarGen(void);
 
-	void Init(const string& symbol, unsigned int precision);
+	void Init(const string& symbol, int precision);
 	void Calculate(entity::Quote* pQuote);
 
 	void SetBarChangedHandler(BarChangeFunc onBarChanged)
@@ -25,11 +25,11 @@ public:
 		m_onBarFinalized = onBarFinalized;
 	}
 
-	unsigned int GetIndex(const string& quoteTime);
-	unsigned int GetIndex(const string& quoteTime, string* timestamp);
+	int GetIndex(const string& quoteTime);
+	int GetIndex(const string& quoteTime, string* timestamp);
 private:
     
-	void RaiseBarChangeEvent(unsigned int barIdx, const string& timestamp)
+	void RaiseBarChangeEvent(int barIdx, const string& timestamp)
 	{
 		if(!m_onBarChanged.empty())
 			m_onBarChanged(barIdx, m_open, m_high, m_low, m_close, timestamp);
@@ -40,7 +40,7 @@ private:
     string m_symbol;
     int m_precision;
 
-	unsigned int m_currentIdx;
+	int m_currentIdx;
 	string m_currentTimestamp;
 
 	double m_open;

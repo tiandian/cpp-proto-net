@@ -12,7 +12,7 @@ class COHLCRecordSet;
 class CTaIndicatorSet
 {
 public:
-	CTaIndicatorSet(unsigned int size);
+	CTaIndicatorSet(int size);
 	virtual ~CTaIndicatorSet(void);
 
 	double GetRef(const string& indicator, int rpos);
@@ -20,7 +20,7 @@ public:
 	void SetRef(const string& indicator, int rpos, double val);
 	void Set(const string& indicator, int index, double val);
 
-	unsigned int GetSize() const { return m_size; }
+	int GetSize() const { return m_size; }
 
 	virtual void Calculate(COHLCRecordSet* ohlcRecordSet) = 0;
 
@@ -32,8 +32,8 @@ protected:
 	double* FindDataSeries(const string& indicator);
 
 	DataSeriesMap m_dataSeriesMap;
-	unsigned int m_size;
-	unsigned int m_lastPosition;
+	int m_size;
+	int m_lastPosition;
 };
 
 typedef boost::shared_ptr<CTaIndicatorSet> TaIndicatorSetPtr;
