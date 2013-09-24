@@ -9,6 +9,7 @@ CPriceBarGen::CPriceBarGen(void)
 	, m_high(0)
 	, m_low(0)
 	, m_close(0)
+	, m_barCount(0)
 {
 }
 
@@ -30,7 +31,7 @@ void CPriceBarGen::Init(const string& symbol, int precision)
         TradingTimeSpanPtr if_span_2(new CTradingTimeSpan(IF_START_2, IF_END_2, precision));
         m_vecTimeSpan.push_back(if_span_2);
         if_span_2->SetOffset(if_span_1->EndIndex());
-        
+        m_barCount = if_span_2->EndIndex();
     }
     else
     {
@@ -42,6 +43,7 @@ void CPriceBarGen::Init(const string& symbol, int precision)
         TradingTimeSpanPtr non_if_span_3(new CTradingTimeSpan(NON_IF_START_3, NON_IF_END_3, precision));
         m_vecTimeSpan.push_back(non_if_span_3);
         non_if_span_3->SetOffset(non_if_span_2->EndIndex());
+		m_barCount = non_if_span_3->EndIndex();
     }
 }
 
@@ -49,28 +51,31 @@ void CPriceBarGen::Calculate(entity::Quote* pQuote)
 {
     string timestamp;
     int barIdx = GetIndex(pQuote->update_time(), &timestamp);
-	double last = pQuote->last();;
-	if(barIdx > m_currentIdx)
+	if(barIdx < m_barCount)
 	{
-		// if not the first one, finalize the last bar
-		RaiseBarFinalizedEvent();
+		double last = pQuote->last();;
+		if(barIdx > m_currentIdx)
+		{
+			// if not the first one, finalize the last bar
+			RaiseBarFinalizedEvent();
 
-		m_currentIdx = barIdx;
-		m_currentTimestamp = timestamp;
-		m_close = m_low = m_high = m_open = last;
-	}
-	else if(barIdx == m_currentIdx)
-	{
-		m_close = last;
-		if(last > m_high)
-			m_high = last;
-		if(last < m_low)
-			m_low = last;
-	}
-	else // barIdx < m_currentIdx ???
-		assert(barIdx > m_currentIdx);
+			m_currentIdx = barIdx;
+			m_currentTimestamp = timestamp;
+			m_close = m_low = m_high = m_open = last;
+		}
+		else if(barIdx == m_currentIdx)
+		{
+			m_close = last;
+			if(last > m_high)
+				m_high = last;
+			if(last < m_low)
+				m_low = last;
+		}
+		else // barIdx < m_currentIdx ???
+			assert(barIdx > m_currentIdx);
 
-	RaiseBarChangeEvent(barIdx, timestamp);
+		RaiseBarChangeEvent(barIdx, timestamp);
+	}
 }
 
 int CPriceBarGen::GetIndex(const string& quoteTime, string* timestamp)

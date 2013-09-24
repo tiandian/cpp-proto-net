@@ -91,7 +91,7 @@ void CHistDataReader::ReadFromFile(const string& dataFilePath, COHLCRecordSet* p
 bool CHistDataReader::ParseLine( string* timestamp, double* open, double* high, double* low, double* close )
 {
 	char timeBuf[10];
-	int got = sscanf(m_buf, "%s, %lf, %lf, %lf, %lf", timeBuf, open, high, low, close);
+	int got = sscanf(m_buf, "%s , %lf, %lf, %lf, %lf", timeBuf, open, high, low, close);
 	*timestamp = timeBuf;
 	return got == 5;
 }
