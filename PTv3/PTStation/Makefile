@@ -7,7 +7,7 @@ ENTITY_DIR = ./src/entity
 OBJ_DIR = ./obj
 QS_OBJ_DIR = $(OBJ_DIR)/qs
 LIBS = -lPushFramework -lboost_thread -lboost_program_options -lboost_filesystem -lboost_chrono \
- -lboost_date_time -lprotobuf -llog4cpp -lthostmduserapi_13 -lthosttraderapi_13
+ -lboost_date_time -lprotobuf -llog4cpp -lta_lib -lthostmduserapi_13 -lthosttraderapi_13
 
 _ENTITY_FILES = packet enum quote trade message  
 ENTITY_FILES = $(patsubst %, $(ENTITY_DIR)/%.pb.cc, $(_ENTITY_FILES))
@@ -16,14 +16,17 @@ ENTITY_OBJS = $(patsubst %, $(OBJ_DIR)/%.pb.o, $(_ENTITY_FILES))
 _FS_OBJS = stdafx \
 		ArbitrageStrategy ArbitrageTrigger AsyncOrderPendingTimer AvatarClient AvatarFactory \
 		ChangePositionStrategy ChangePositionTrigger charsetconvert ClientProtocol Configuration \
-	    DoubleCompare FakeDealer FileOperations InputOrder Leg \
-		LegOrderPlacer LogManager orderhelper OrderProcessor Portfolio \
-		PortfolioManager PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer \
-		ProtobufPacket ProtobufProtocol QuoteAgent QuoteFetcher QuoteRepositry \
-		QuoteStore RequestedServices RtnOrderWrapper ScalperStrategy ScalperTrigger \
-		SettingChangeTrace ShmQuoteFeed ShmQuoteSubscribe Strategy SymbolInfo \
-		SymbolInfoRepositry TradeAgent TradeStation TradingServer TradingServerProtocol \
-		Trigger
+	    DoubleCompare FakeDealer FileOperations HistDataReader HistDataWriter \
+		HistSlopeStrategy HistSlopeTrigger InputOrder Leg LegOrderPlacer \
+		LogManager MACDDataSet OHLCRecordSet orderhelper OrderProcessor \
+		Portfolio PortfolioManager PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer \
+		PortfolioTrendOrderPlacer PriceBarDataProxy PriceBarDataSource PriceBarGen ProtobufPacket \
+		ProtobufProtocol QuoteAgent QuoteFetcher QuoteRepositry QuoteStore \
+		RequestedServices RtnOrderWrapper ScalperStrategy ScalperTrigger SettingChangeTrace \
+		ShmQuoteFeed ShmQuoteSubscribe Strategy SymbolInfo SymbolInfoRepositry \
+		TaIndicatorSet TechAnalyStrategy TechDataRepo TradeAgent TradeStation \
+		TradingServer TradingServerProtocol TradingTimeSpan Trigger
+
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
 _QS_OBJS = stdafx \

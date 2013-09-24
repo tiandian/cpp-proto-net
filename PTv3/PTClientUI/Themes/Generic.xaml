@@ -423,13 +423,13 @@
                 </Border>
                 <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
                     <DockPanel>
-                        <TextBlock Margin="4, 2">MACD</TextBlock>
+                        <TextBlock Margin="4, 2" VerticalAlignment="Top">MACD</TextBlock>
                         <TextBlock Text="{Binding FastMacdHist}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                     </DockPanel>
                 </Border>
                 <Border Grid.Column="1" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
                     <DockPanel>
-                        <TextBlock Margin="4, 2">MACD</TextBlock>
+                        <TextBlock Margin="4, 2" VerticalAlignment="Top">MACD</TextBlock>
                         <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
                                                Text="{Binding SlowMacdHist}"/>
                     </DockPanel>

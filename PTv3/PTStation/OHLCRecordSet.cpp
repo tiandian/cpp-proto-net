@@ -19,20 +19,18 @@ COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision)
 	bool isIF = boost::starts_with(symbol, "IF");
 	int tradingTime = isIF ? IF_TOTAL_TRADING_SECONDS : NON_IF_TOTAL_TRADING_SECONDS ;
 	m_countPerDay = tradingTime / precision;
-	if(tradingTime % precision > 0)
-		m_countPerDay += 1;
 	
-	int sizeOfVector = 2 * m_countPerDay;
-	OpenSeries = boost::shared_array<double>(new double[sizeOfVector]);
-	ResetArray(OpenSeries.get(), sizeOfVector);
-	HighSeries = boost::shared_array<double>(new double[sizeOfVector]);
-	ResetArray(HighSeries.get(), sizeOfVector);
-	LowSeries = boost::shared_array<double>(new double[sizeOfVector]);
-	ResetArray(LowSeries.get(), sizeOfVector);
-	CloseSeries = boost::shared_array<double>(new double[sizeOfVector]);
-	ResetArray(CloseSeries.get(), sizeOfVector);
+	m_totalCount = 2 * m_countPerDay;
+	OpenSeries = boost::shared_array<double>(new double[m_totalCount]);
+	ResetArray(OpenSeries.get(), m_totalCount);
+	HighSeries = boost::shared_array<double>(new double[m_totalCount]);
+	ResetArray(HighSeries.get(), m_totalCount);
+	LowSeries = boost::shared_array<double>(new double[m_totalCount]);
+	ResetArray(LowSeries.get(), m_totalCount);
+	CloseSeries = boost::shared_array<double>(new double[m_totalCount]);
+	ResetArray(CloseSeries.get(), m_totalCount);
 
-	m_lastIndex = m_countPerDay - 1;
+	m_lastIndex = m_totalCount - 1;
 }
 
 
@@ -47,10 +45,14 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 	if(settingIdx > m_lastIndex)
 		m_lastIndex = settingIdx;
 
-	OpenSeries[settingIdx] = open;
-	HighSeries[settingIdx] = high;
-	LowSeries[settingIdx] = low;
-	CloseSeries[settingIdx] = close;
+	// protect from out of array boundary
+	if(settingIdx < m_totalCount)
+	{
+		OpenSeries[settingIdx] = open;
+		HighSeries[settingIdx] = high;
+		LowSeries[settingIdx] = low;
+		CloseSeries[settingIdx] = close;
+	}
 
 #ifdef _DEBUG
 	cout << "Setting Today: last Index - " << m_lastIndex << ", last close - " << close << endl; 

@@ -37,7 +37,7 @@ void CHistDataWriter::Write(const string& timestamp, double open, double high, d
 {
     if(IsOpen())
     {
-        m_ofstream << timestamp << ", ";
+        m_ofstream << timestamp << " , ";
         m_ofstream << setw(FIELD_WIDTH) << open << ", ";
         m_ofstream << setw(FIELD_WIDTH) << high << ", ";
         m_ofstream << setw(FIELD_WIDTH) << low << ", ";

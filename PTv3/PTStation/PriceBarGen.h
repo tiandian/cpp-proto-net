@@ -39,6 +39,7 @@ private:
 
     string m_symbol;
     int m_precision;
+	int m_barCount;
 
 	int m_currentIdx;
 	string m_currentTimestamp;

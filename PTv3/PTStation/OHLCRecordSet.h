@@ -16,13 +16,14 @@ public:
 	boost::shared_array<double> LowSeries;
 	boost::shared_array<double> CloseSeries;
 
-	int GetSize(){ return 2 * m_countPerDay; }
+	int GetSize(){ return m_totalCount; }
 	int GetLastIndex(){ return m_lastIndex; }
 private:
 	static void ResetArray(double arr[], int length);
 
 	string m_symbol;
 	int m_precision;
+	int m_totalCount;
 	int m_countPerDay;
 	int m_lastIndex;
 };
