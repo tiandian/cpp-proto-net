@@ -9,7 +9,7 @@
 class CMACDDataSet : public CTaIndicatorSet
 {
 public:
-	CMACDDataSet(unsigned int size, double paramShort, double paramLong, double paramM);
+	CMACDDataSet(int size, int paramShort, int paramLong, int paramM);
 	~CMACDDataSet(void);
 
 	void SetShort(double val){ m_paramShort = val; }
@@ -24,9 +24,9 @@ public:
 	void Calculate(COHLCRecordSet* ohlcRecordSet);
 
 private:
-	double m_paramShort;
-	double m_paramLong;
-	double m_paramM;
+	int m_paramShort;
+	int m_paramLong;
+	int m_paramM;
 
 	double* m_arrMacd;
 	double* m_arrMacdSignal;

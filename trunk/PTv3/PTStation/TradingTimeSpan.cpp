@@ -31,17 +31,16 @@ bool isSymbolIF(const string& symbol)
     return boost::starts_with(symbol, IF_PREFIX);
 }
 
-unsigned int GetIndexFromTime(const boost::chrono::seconds& baseTp, const boost::chrono::seconds& timePoint, unsigned int precision)
+// returned index is 0 based
+int GetIndexFromTime(const boost::chrono::seconds& baseTp, const boost::chrono::seconds& timePoint, int precision)
 {
     boost::chrono::seconds diff = timePoint - baseTp;
     if(diff > boost::chrono::seconds::zero())
     {
-        unsigned int idx = diff.count() / precision;
-        if(diff.count() % precision > 0)
-            ++idx;
-
+        int idx = diff.count() / precision;
         return idx;
     }
+
     return 0;
 }
 
@@ -57,7 +56,7 @@ string GetISOTimeString(const boost::chrono::seconds& timepoint)
     return boost::str(boost::format("%02d:%02d:%02d") % h.count() % m.count() % s.count());
 }
 
-CTradingTimeSpan::CTradingTimeSpan( const char* timeBegin, const char* timeEnd, unsigned int precision ) :m_precision(precision), m_offset(0)
+CTradingTimeSpan::CTradingTimeSpan( const char* timeBegin, const char* timeEnd, int precision ) :m_precision(precision), m_offset(0)
 {
 	m_Start = ParseTimeString(timeBegin);
 	m_End = ParseTimeString(timeEnd);

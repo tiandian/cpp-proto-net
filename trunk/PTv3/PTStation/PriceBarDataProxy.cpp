@@ -3,7 +3,7 @@
 #include "PriceBarDataSource.h"
 
 
-CPriceBarDataProxy::CPriceBarDataProxy(unsigned int idx, const string& symbol, unsigned int precision, CPriceBarDataSource* pDataSource)
+CPriceBarDataProxy::CPriceBarDataProxy(unsigned int idx, const string& symbol, int precision, CPriceBarDataSource* pDataSource)
 	: m_index(idx)
 	, m_symbol(symbol)
 	, m_precision(precision)
@@ -33,7 +33,7 @@ COHLCRecordSet* CPriceBarDataProxy::GetOHLCRecordSet( boost::chrono::steady_cloc
 	return m_dataSource->GetRecordSet(timestamp);
 }
 
-unsigned int CPriceBarDataProxy::GetRecordSetSize()
+int CPriceBarDataProxy::GetRecordSetSize()
 {
 	return m_dataSource->GetRecordSetSize();
 }

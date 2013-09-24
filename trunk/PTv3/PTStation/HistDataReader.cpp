@@ -8,10 +8,10 @@
 #include <boost/filesystem.hpp>
 using namespace boost::filesystem;
 
-CHistDataReader::CHistDataReader(const string& symbol, unsigned int precision, const boost::gregorian::date& tradingDay)
+CHistDataReader::CHistDataReader(const string& symbol, int precision, const boost::gregorian::date& tradingDay)
 	: m_symbol(symbol)
 	, m_precision(precision)
-  , m_tradingDay(tradingDay)
+	, m_tradingDay(tradingDay)
 {
 }
 
@@ -74,7 +74,7 @@ void CHistDataReader::ReadFromFile(const string& dataFilePath, COHLCRecordSet* p
             bool succ = ParseLine(&timestamp, &open, &high, &low, &close);
             if(succ)
             {
-                unsigned int idx = pPriceBarGen->GetIndex(timestamp);
+                int idx = pPriceBarGen->GetIndex(timestamp);
                 if(histData)
                     pRecordSet->SetHistory(idx, open, high, low, close);
                 else
@@ -91,7 +91,7 @@ void CHistDataReader::ReadFromFile(const string& dataFilePath, COHLCRecordSet* p
 bool CHistDataReader::ParseLine( string* timestamp, double* open, double* high, double* low, double* close )
 {
 	char timeBuf[10];
-	int got = sscanf(m_buf, "%s %lf, %lf, %lf, %lf", timeBuf, open, high, low, close);
+	int got = sscanf(m_buf, "%s, %lf, %lf, %lf, %lf", timeBuf, open, high, low, close);
 	*timestamp = timeBuf;
 	return got == 5;
 }

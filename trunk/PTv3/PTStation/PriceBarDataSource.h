@@ -23,7 +23,7 @@ public:
 	~CPriceBarDataSource(){}
 
 	const string& Id(){ return m_id; }
-	void Init(const string& symbol, unsigned int precision);
+	void Init(const string& symbol, int precision);
 	CPriceBarDataProxy* AddProxy();
 	void RemoveProxy(CPriceBarDataProxy* proxy);
 	bool IsDisposable(){ return m_proxiesMap.size() == 0; }
@@ -31,11 +31,11 @@ public:
 	void InQuote(entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 
 	COHLCRecordSet* GetRecordSet(boost::chrono::steady_clock::time_point& timestamp);
-	unsigned int GetRecordSetSize(){ return m_recordSet.get() != NULL ? m_recordSet->GetSize() : 0; }
+	int GetRecordSetSize(){ return m_recordSet.get() != NULL ? m_recordSet->GetSize() : 0; }
 private:
 
-	void OnBarChanged(unsigned int barIdx, double open, double high, double low, double close, const string& timestamp);
-	void OnBarFinalized(unsigned int barIdx, double open, double high, double low, double close, const string& timestamp);
+	void OnBarChanged(int barIdx, double open, double high, double low, double close, const string& timestamp);
+	void OnBarFinalized(int barIdx, double open, double high, double low, double close, const string& timestamp);
 
 	typedef boost::unordered_map<unsigned int, PriceBarDataProxyPtr> PriceBarDataProxyMap;
 	typedef PriceBarDataProxyMap::iterator PriceBarDataProxyMapIter;

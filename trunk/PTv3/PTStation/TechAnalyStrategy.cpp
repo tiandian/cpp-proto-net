@@ -43,7 +43,7 @@ void CTechAnalyStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	RegHistDataSrc();
 }
 
-COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, unsigned int precision, boost::chrono::steady_clock::time_point& timestamp)
+COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, int precision, boost::chrono::steady_clock::time_point& timestamp)
 {
   for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
 		iter != m_pDataProxies.end(); ++iter)

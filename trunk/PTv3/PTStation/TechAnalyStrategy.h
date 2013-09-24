@@ -9,12 +9,12 @@ class COHLCRecordSet;
 class CHistSourceCfg
 {
 public:
-	CHistSourceCfg(const string& symb, unsigned int precision)
+	CHistSourceCfg(const string& symb, int precision)
 		: Symbol(symb), Precision(precision)
 	{}
 
 	string Symbol;
-	unsigned int Precision;
+	int Precision;
 };
 
 typedef boost::shared_ptr<CHistSourceCfg> HistSrcCfgPtr;
@@ -29,7 +29,7 @@ public:
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	virtual void Cleanup();
    
-	COHLCRecordSet* GetRecordSet(const string& symbol, unsigned int precision, boost::chrono::steady_clock::time_point& timestamp);  
+	COHLCRecordSet* GetRecordSet(const string& symbol, int precision, boost::chrono::steady_clock::time_point& timestamp);  
 
 protected:
 	const vector<HistSrcCfgPtr>& HistSrcConfigs(){ return m_histSrcConfigs; }

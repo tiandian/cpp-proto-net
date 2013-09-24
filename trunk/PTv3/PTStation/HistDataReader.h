@@ -10,7 +10,7 @@ class CPriceBarGen;
 class CHistDataReader
 {
 public:
-	CHistDataReader(const string& symbol, unsigned int precision, const boost::gregorian::date& tradingDay);
+	CHistDataReader(const string& symbol, int precision, const boost::gregorian::date& tradingDay);
 	~CHistDataReader(void);
 
 	void Read(COHLCRecordSet* pRecordSet, CPriceBarGen* pPriceBarGen);
@@ -22,7 +22,7 @@ private:
 	bool ParseLine(string* timestamp, double* open, double* high, double* low, double* close);
 
 	string m_symbol;
-	unsigned int m_precision;
+	int m_precision;
 	char m_buf[HIST_LINE_MAX_LENGTH];
   boost::gregorian::date m_tradingDay;
 };

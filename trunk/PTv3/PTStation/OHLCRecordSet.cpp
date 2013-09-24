@@ -12,17 +12,17 @@ void COHLCRecordSet::ResetArray(double arr[], int length)
 	}
 }
 
-COHLCRecordSet::COHLCRecordSet(const string& symbol, unsigned int precision)
+COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision)
 	: m_symbol(symbol)
 	, m_precision(precision)
 {
 	bool isIF = boost::starts_with(symbol, "IF");
-	unsigned int tradingTime = isIF ? IF_TOTAL_TRADING_SECONDS : NON_IF_TOTAL_TRADING_SECONDS ;
+	int tradingTime = isIF ? IF_TOTAL_TRADING_SECONDS : NON_IF_TOTAL_TRADING_SECONDS ;
 	m_countPerDay = tradingTime / precision;
 	if(tradingTime % precision > 0)
 		m_countPerDay += 1;
 	
-	unsigned int sizeOfVector = 2 * m_countPerDay;
+	int sizeOfVector = 2 * m_countPerDay;
 	OpenSeries = boost::shared_array<double>(new double[sizeOfVector]);
 	ResetArray(OpenSeries.get(), sizeOfVector);
 	HighSeries = boost::shared_array<double>(new double[sizeOfVector]);
@@ -40,9 +40,10 @@ COHLCRecordSet::~COHLCRecordSet(void)
 {
 }
 
-void COHLCRecordSet::SetToday( unsigned int barIdx, double open, double high, double low, double close )
+// barIdx is 0 based
+void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low, double close )
 {
-	unsigned int settingIdx = m_countPerDay + barIdx - 1;
+	int settingIdx = m_countPerDay + barIdx;
 	if(settingIdx > m_lastIndex)
 		m_lastIndex = settingIdx;
 
@@ -50,12 +51,19 @@ void COHLCRecordSet::SetToday( unsigned int barIdx, double open, double high, do
 	HighSeries[settingIdx] = high;
 	LowSeries[settingIdx] = low;
 	CloseSeries[settingIdx] = close;
+
+#ifdef _DEBUG
+	cout << "Setting Today: last Index - " << m_lastIndex << ", last close - " << close << endl; 
+#endif
 }
 
-void COHLCRecordSet::SetHistory( unsigned int barIdx, double open, double high, double low, double close )
+void COHLCRecordSet::SetHistory( int barIdx, double open, double high, double low, double close )
 {
-	OpenSeries[barIdx - 1] = open;
-	HighSeries[barIdx - 1] = high;
-	LowSeries[barIdx - 1] = low;
-	CloseSeries[barIdx - 1] = close;
+	OpenSeries[barIdx] = open;
+	HighSeries[barIdx] = high;
+	LowSeries[barIdx] = low;
+	CloseSeries[barIdx] = close;
+#ifdef _DEBUG
+	cout << "Setting History: bar Index - " << barIdx << ", close - " << close << endl; 
+#endif
 }

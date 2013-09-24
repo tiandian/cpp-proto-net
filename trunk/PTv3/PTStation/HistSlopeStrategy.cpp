@@ -110,7 +110,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	double slowLast1 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	m_slowHistVal = slowLast0;
 	// 2. Test 5 min angle, see if Up or Down.
-	m_slowSlopeDirection = CheckDirection(slowLast0, slowLast1);
+	m_slowSlopeDirection = CheckDirection(slowLast1, slowLast0);
 
 	// 3. Calculate value of 1 min angle
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
@@ -119,7 +119,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	double fastLast0 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
 	double fastLast1 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	m_fastHistVal = fastLast0;
-	m_fastSlopeDirection = CheckDirection(fastLast0 , fastLast1);
+	m_fastSlopeDirection = CheckDirection(fastLast1, fastLast0);
 
 	m_fastHistDiff = fastLast0 - fastLast1;
 	m_angleArray[0] = CalculateAngle(m_fastStdDiff, m_fastHistDiff);

@@ -16,7 +16,7 @@ CTechDataRepo::~CTechDataRepo(void)
 {
 }
 
-CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, unsigned int precision, const boost::gregorian::date& tradingDay)
+CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision, const boost::gregorian::date& tradingDay)
 {
 	boost::mutex::scoped_lock l(m_mutex);
 	string dsKey;
@@ -54,7 +54,7 @@ bool CTechDataRepo::Unregister( CPriceBarDataProxy* proxy )
 	return false;
 }
 
-void CTechDataRepo::BuildKey( const string& symbol, unsigned int precision, string* outKey )
+void CTechDataRepo::BuildKey( const string& symbol, int precision, string* outKey )
 {
-	*outKey = boost::str(boost::format("%s-%u") % symbol % precision);
+	*outKey = boost::str(boost::format("%s-%d") % symbol % precision);
 }

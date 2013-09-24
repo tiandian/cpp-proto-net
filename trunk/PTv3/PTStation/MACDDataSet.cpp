@@ -4,7 +4,7 @@
 
 #include <ta_libc.h>
 
-CMACDDataSet::CMACDDataSet(unsigned int size, double paramShort, double paramLong, double paramM)
+CMACDDataSet::CMACDDataSet(int size, int paramShort, int paramLong, int paramM)
 	: CTaIndicatorSet(size)
 	, m_paramShort(paramShort)
 	, m_paramLong(paramLong)
@@ -22,11 +22,14 @@ CMACDDataSet::~CMACDDataSet(void)
 
 void CMACDDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 {
+
 	int outBeg = -1;
 	int outNbElement = -1;
 
 	int lastIdx = ohlcRecordSet->GetLastIndex();
-
+#ifdef _DEBUG
+	cout << "Calculating OHLC RecordSet: lastIdx - " << lastIdx << ", last - " << (ohlcRecordSet->CloseSeries)[lastIdx] << endl;
+#endif
 	if(m_lastPosition > 0)
 	{
 		double outMacd = 0;
@@ -39,6 +42,10 @@ void CMACDDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 		m_arrMacd[outBeg] = outMacd;
 		m_arrMacdSignal[outBeg] = outMacdSignal;
 		m_arrMacdHist[outBeg] = outMacdHist;
+
+#ifdef _DEBUG
+	cout << "Calculated MACD values: macd - " << outMacd << ", signal - " << outMacdSignal << ", hist - " << outMacdHist << endl; 
+#endif
 	}
 	else	// the first time, calculate and fill all 
 	{
