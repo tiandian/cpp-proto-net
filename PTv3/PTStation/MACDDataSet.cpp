@@ -2,7 +2,7 @@
 #include "MACDDataSet.h"
 #include "OHLCRecordSet.h"
 
-#include <ta_libc.h>
+#include <ta-lib/ta_libc.h>
 
 CMACDDataSet::CMACDDataSet(int size, int paramShort, int paramLong, int paramM)
 	: CTaIndicatorSet(size)
