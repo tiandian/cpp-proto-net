@@ -12,14 +12,14 @@ public:
 	CMACDDataSet(int size, int paramShort, int paramLong, int paramM);
 	~CMACDDataSet(void);
 
-	void SetShort(double val){ m_paramShort = val; }
-	double GetShort(){ return m_paramShort; }
+	void SetShort(int val){ m_paramShort = val; }
+	int GetShort(){ return m_paramShort; }
 
-	void SetLong(double val){ m_paramLong = val; }
-	double GetLong(){ return m_paramLong; }
+	void SetLong(int val){ m_paramLong = val; }
+	int GetLong(){ return m_paramLong; }
 
-	void SetM(double val){ m_paramM = val; }
-	double GetM(){ return m_paramM; }
+	void SetM(int val){ m_paramM = val; }
+	int GetM(){ return m_paramM; }
 
 	void Calculate(COHLCRecordSet* ohlcRecordSet);
 
