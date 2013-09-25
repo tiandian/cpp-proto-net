@@ -71,4 +71,4 @@ $(ENTITY_DIR)/trade.pb.cc: $(PROTO_DIR)/trade.proto
 
 .PHONY : clean
 clean: 
-	rm $(OBJ_DIR)/* 
+	rm $(OBJ_DIR)/*.* 
