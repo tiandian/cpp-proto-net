@@ -3,7 +3,6 @@
 #include "Portfolio.h"
 #include "InputOrder.h"
 #include "OrderProcessor.h"
-#include "BuildOrderException.h"
 #include "ScalperStrategy.h"
 
 #include <boost/date_time.hpp>
@@ -76,45 +75,6 @@ void CPortfolioScalperOrderPlacer::BuildTemplateOrder()
 	}
 
 	m_multiLegOrderTemplate = pMultiLegOrder;
-}
-
-void CPortfolioScalperOrderPlacer::SetDirection( trade::PosiDirectionType posiDirection )
-{
-	static trade::TradeDirectionType LONG_TRADE_SEQ[2] = {trade::BUY, trade::SELL};
-	static trade::TradeDirectionType SHORT_TRADE_SEQ[2] = {trade::SELL, trade::BUY};
-
-	for(int i = 0; i < m_multiLegOrderTemplate->legs_size(); ++i)
-	{
-		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
-
-		// in case wanna open position
-		if(posiDirection == trade::LONG)
-		{
-			// open long position
-			pOrd->set_direction(LONG_TRADE_SEQ[i]);
-			m_legPlacers[i]->InputOrder().set_direction(LONG_TRADE_SEQ[i]);
-		}
-		else if(posiDirection == trade::SHORT)
-		{
-			pOrd->set_direction(SHORT_TRADE_SEQ[i]);
-			m_legPlacers[i]->InputOrder().set_direction(SHORT_TRADE_SEQ[i]);
-		}
-		else
-		{
-			throw CUnexpectedPositionDirectionException();
-		}
-	}
-}
-
-void CPortfolioScalperOrderPlacer::SetLimitPrice(double* pLmtPxArr, int iPxSize)
-{
-	for(int i = 0; i < iPxSize; ++i)
-	{
-		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
-		double lmtPx = pLmtPxArr[i];
-		pOrd->set_limitprice(lmtPx);
-		m_legPlacers[i]->InputOrder().set_limitprice(lmtPx);
-	}
 }
 
 void CPortfolioScalperOrderPlacer::OnAddingLegOrderPlacer( CLegOrderPlacer* pLegOrderPlacer )

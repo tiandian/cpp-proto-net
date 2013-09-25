@@ -4,12 +4,12 @@
 #include "MACDDataSet.h"
 
 class CAvatarClient;
-
+/*
 enum MACDSlopeDirection
 {
   NO_DIRECTION, GOING_UP, GOING_DOWN
 };
-
+*/
 class CHistSlopeStrategy : public CTechAnalyStrategy
 {
 public:
@@ -25,7 +25,8 @@ public:
 
 protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
-
+	void OpenPosition(entity::SlopeDirection slopeDirection, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
+	void ClosePosition(CPortfolio* pPortfolio, entity::Quote* pQuote);
 private:
 	double CalculateAngle(double stdHistDiff, double currentHistDiff);
 

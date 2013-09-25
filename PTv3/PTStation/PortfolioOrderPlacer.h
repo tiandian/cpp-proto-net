@@ -74,13 +74,15 @@ public:
 
 	bool IfPortfolioCanceled();
 
+	trade::PosiDirectionType PosiDirection(){ return m_posiDirection; }
+
 protected:
 
 	void Initialize(const string& mlOrdId);
 
 	virtual void BuildTemplateOrder(){}
-	virtual void SetDirection(trade::PosiDirectionType posiDirection){}
-	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize){}
+	virtual void SetDirection(trade::PosiDirectionType posiDirection);
+	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize);
 	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer){}
 	
 	void SetNewOrderId(const string& mlOrdId);
@@ -97,6 +99,9 @@ protected:
 	void OutputStatus(const string& statusMsg);
 	void CleanupProc();
 	bool IsReadyForPrepare(){ return !m_isReady; }
+
+	bool SendNextOnFilled(){ return m_sendNextOnFilled; }
+	void SendNextOnFilled(bool val){ m_sendNextOnFilled = val; }
 
 	struct NextQuote
 	{
@@ -116,6 +121,8 @@ protected:
 	bool m_isFirstLeg;
 	boost::atomic<bool> m_isWorking;
 	bool m_isReady;
+	bool m_sendNextOnFilled;
+	trade::PosiDirectionType m_posiDirection;
 	boost::chrono::steady_clock::time_point m_triggingTimestamp;
 
 	boost::thread m_thCleanup;
