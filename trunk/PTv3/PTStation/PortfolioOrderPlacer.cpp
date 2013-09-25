@@ -7,6 +7,7 @@
 #include "orderhelper.h"
 #include "OrderEvent.h"
 #include "charsetconvert.h"
+#include "BuildOrderException.h"
 
 // back-end
 #include <boost/msm/back/state_machine.hpp>
@@ -352,6 +353,8 @@ CPortfolioOrderPlacer::CPortfolioOrderPlacer(void)
 	, m_isReady(false)
 	, m_isWorking(false)
 	, m_isFirstLeg(false)
+	, m_sendNextOnFilled(true)
+	, m_posiDirection(trade::NET)
 {
 	m_fsm = boost::shared_ptr<void>(new OrderPlacerFsm(this));
 }
@@ -585,7 +588,8 @@ void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 		// Go to send next order
 		m_activeOrdPlacer = m_legPlacers[sendingIdx].get();
 		m_triggingTimestamp = pRtnOrder->Timestamp();
-		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
+		if(m_sendNextOnFilled)
+			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
 	}
 	else
 	{
@@ -932,6 +936,47 @@ void CPortfolioOrderPlacer::GotoRetry(const RtnOrderWrapperPtr& pRtnOrder)
 
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(
 			evtFilledCanceled("µ•Õ»:∆Ω≤÷ ß∞‹"));
+	}
+}
+
+void CPortfolioOrderPlacer::SetDirection( trade::PosiDirectionType posiDirection )
+{
+	m_posiDirection = posiDirection;
+
+	static trade::TradeDirectionType LONG_TRADE_SEQ[2] = {trade::BUY, trade::SELL};
+	static trade::TradeDirectionType SHORT_TRADE_SEQ[2] = {trade::SELL, trade::BUY};
+
+	for(int i = 0; i < m_multiLegOrderTemplate->legs_size(); ++i)
+	{
+		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
+
+		// in case wanna open position
+		if(posiDirection == trade::LONG)
+		{
+			// open long position
+			pOrd->set_direction(LONG_TRADE_SEQ[i]);
+			m_legPlacers[i]->InputOrder().set_direction(LONG_TRADE_SEQ[i]);
+		}
+		else if(posiDirection == trade::SHORT)
+		{
+			pOrd->set_direction(SHORT_TRADE_SEQ[i]);
+			m_legPlacers[i]->InputOrder().set_direction(SHORT_TRADE_SEQ[i]);
+		}
+		else
+		{
+			throw CUnexpectedPositionDirectionException();
+		}
+	}
+}
+
+void CPortfolioOrderPlacer::SetLimitPrice( double* pLmtPxArr, int iPxSize )
+{
+	for(int i = 0; i < iPxSize; ++i)
+	{
+		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
+		double lmtPx = pLmtPxArr[i];
+		pOrd->set_limitprice(lmtPx);
+		m_legPlacers[i]->InputOrder().set_limitprice(lmtPx);
 	}
 }
 

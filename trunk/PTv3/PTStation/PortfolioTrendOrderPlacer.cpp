@@ -8,6 +8,8 @@
 
 CPortfolioTrendOrderPlacer::CPortfolioTrendOrderPlacer(void)
 {
+	// This is important for TrendOrderPlacer. The next leg is always triggered explicitly.
+	SendNextOnFilled(false);
 }
 
 
@@ -74,4 +76,11 @@ void CPortfolioTrendOrderPlacer::BuildTemplateOrder()
 	}
 
 	m_multiLegOrderTemplate = pMultiLegOrder;
+}
+
+void CPortfolioTrendOrderPlacer::CloseOrder( double limitprice )
+{
+	// set limit price
+
+	Send();
 }

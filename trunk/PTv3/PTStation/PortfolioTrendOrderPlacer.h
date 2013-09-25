@@ -8,11 +8,10 @@ public:
 	CPortfolioTrendOrderPlacer(void);
 	~CPortfolioTrendOrderPlacer(void);
 
+	void CloseOrder(double limitprice);
+
 	virtual void BuildTemplateOrder();
-
-	virtual void SetDirection(trade::PosiDirectionType posiDirection){}
-	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize){}
-
 	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer){}
+
 };
 

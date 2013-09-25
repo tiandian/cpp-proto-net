@@ -4,6 +4,8 @@
 #include "AvatarClient.h"
 #include "OHLCRecordSet.h"
 #include "PriceBarDataProxy.h"
+#include "PortfolioTrendOrderPlacer.h"
+#include "Portfolio.h"
 
 #define PI 3.1415926
 
@@ -133,7 +135,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		{
 			CTrigger* pTrigger = iter->get();
 			
-			if(m_positionOpened)
+			if(!m_positionOpened)
 			{
 				if(pTrigger->Name() == HistSlopeTriggerName)
 				{
@@ -145,7 +147,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 						if(meetOpenCondition)
 						{
 							// 3.2.1.1 Do OPEN position
-
+							OpenPosition(m_fastSlopeDirection, pPortfolio, pQuote, timestamp);
 							// 3.2.1.2 if open trigger is fired, be sure to enable trailing stop trigger with Enable(cost, direction)
 							break;
 						}
@@ -224,4 +226,41 @@ double CHistSlopeStrategy::CalculateAngle(double stdHistDiff, double currentHist
 	double arcTan = atan(tanVal);
 	double angle = arcTan * 180 / PI;
 	return angle;
+}
+
+void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp )
+{
+	if(slopeDirection > entity::NO_DIRECTION)
+	{
+		double lmtPrice[2];
+		trade::PosiDirectionType direction = trade::LONG;
+		if(slopeDirection == entity::GOING_UP)
+		{
+			lmtPrice[0] = pQuote->ask();
+		}
+		else if(slopeDirection == entity::GOING_DOWN)
+		{
+			lmtPrice[0] = pQuote->bid();
+		}
+		lmtPrice[1] = 0.0;
+		CPortfolioOrderPlacer* pOrderPlacer = pPortfolio->OrderPlacer();
+		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
+	}
+}
+
+void CHistSlopeStrategy::ClosePosition( CPortfolio* pPortfolio, entity::Quote* pQuote )
+{
+	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
+	if(pOrderPlacer != NULL)
+	{
+		trade::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
+		if(posiDirection == trade::LONG)
+		{
+			pOrderPlacer->CloseOrder(pQuote->bid());
+		}
+		else if(posiDirection == trade::SHORT)
+		{
+			pOrderPlacer->CloseOrder(pQuote->ask());
+		}
+	}
 }
