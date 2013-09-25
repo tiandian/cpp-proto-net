@@ -2,6 +2,7 @@
 #include "TradingTimeSpan.h"
 #include "TechStrategyDefs.h"
 
+#include <cstdio>
 #include <boost/algorithm/string.hpp>
 
 #define TIME_HOUR_OFFSET 0

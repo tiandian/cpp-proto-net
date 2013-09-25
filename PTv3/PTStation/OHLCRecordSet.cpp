@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "OHLCRecordSet.h"
 #include "TechStrategyDefs.h"
+#include "globalmembers.h"
 
 #include <boost/algorithm/string.hpp>
 
@@ -30,7 +31,7 @@ COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision)
 	CloseSeries = boost::shared_array<double>(new double[m_totalCount]);
 	ResetArray(CloseSeries.get(), m_totalCount);
 
-	m_lastIndex = m_totalCount - 1;
+	m_lastIndex = m_countPerDay - 1;
 }
 
 
@@ -54,9 +55,8 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 		CloseSeries[settingIdx] = close;
 	}
 
-#ifdef _DEBUG
-	cout << "Setting Today: last Index - " << m_lastIndex << ", last close - " << close << endl; 
-#endif
+	logger.Info(boost::str(boost::format("Setting Today: last Index - %d, last close - %f")
+		% m_lastIndex % close));
 }
 
 void COHLCRecordSet::SetHistory( int barIdx, double open, double high, double low, double close )
@@ -65,7 +65,7 @@ void COHLCRecordSet::SetHistory( int barIdx, double open, double high, double lo
 	HighSeries[barIdx] = high;
 	LowSeries[barIdx] = low;
 	CloseSeries[barIdx] = close;
-#ifdef _DEBUG
-	cout << "Setting History: bar Index - " << barIdx << ", close - " << close << endl; 
-#endif
+
+	logger.Info(boost::str(boost::format("Setting History: bar Index - %d, close - %f")
+		% barIdx % close));
 }

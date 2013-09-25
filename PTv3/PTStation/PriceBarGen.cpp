@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "PriceBarGen.h"
 #include "TechStrategyDefs.h"
-
+#include "globalmembers.h"
 
 CPriceBarGen::CPriceBarGen(void)
 	: m_currentIdx(-1)
@@ -71,8 +71,11 @@ void CPriceBarGen::Calculate(entity::Quote* pQuote)
 			if(last < m_low)
 				m_low = last;
 		}
-		else // barIdx < m_currentIdx ???
+		else 
+		{	// barIdx < m_currentIdx ???
+			logger.Error(boost::str(boost::format("!!! barIdx(%d) < m_currentIdx(%d) !!!") % barIdx % m_currentIdx));
 			assert(barIdx > m_currentIdx);
+		}
 
 		RaiseBarChangeEvent(barIdx, timestamp);
 	}

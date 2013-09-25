@@ -23,19 +23,27 @@ public:
     
     bool InScope(const boost::chrono::seconds& timePoint)
     {
-        return timePoint > m_Start && timePoint <= m_End;
+        return timePoint >= m_Start && timePoint <= m_End;
     }
-	// return is 0 based
+	// return is 0 based. if incoming time point equals to m_End, regard it as last point before m_End
     int GetIndex(const boost::chrono::seconds& timePoint)
     {
-        return GetIndexFromTime(m_Start, timePoint, m_precision) + m_offset;
+		if(timePoint < m_End)
+			return GetIndexFromTime(m_Start, timePoint, m_precision) + m_offset;
+		else
+			return EndIndex() - 1;
     }
     // return is 0 based
     int GetIndex(const boost::chrono::seconds& timePoint, string* outTimestamp)
     {
-        int idx = GetIndexFromTime(m_Start, timePoint, m_precision);
-        *outTimestamp = GetISOTimeString(m_Start + boost::chrono::seconds(idx * m_precision));
-        return  idx + m_offset;
+		if(timePoint < m_End)
+		{
+			int idx = GetIndexFromTime(m_Start, timePoint, m_precision);
+			*outTimestamp = GetISOTimeString(m_Start + boost::chrono::seconds(idx * m_precision));
+			return  idx + m_offset;
+		}
+		else
+			return EndIndex() - 1;
     }
 
 private:

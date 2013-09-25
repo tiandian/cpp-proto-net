@@ -79,15 +79,15 @@ void CHistSlopeStrategy::CreateTriggers( const entity::StrategyItem& strategyIte
 {
 	for (int i = 0; i < strategyItem.triggers_size(); ++i)
 	{
-		const entity::TriggerItem& trigger = strategyItem.triggers(i);
-		if(trigger.name() == HistSlopeTriggerName)
+		const entity::TriggerItem& triggerItem = strategyItem.triggers(i);
+		if(triggerItem.name() == HistSlopeTriggerName)
 		{
-			TriggerPtr trigger(new CHistSlopeTrigger(trigger));
+			TriggerPtr trigger(new CHistSlopeTrigger(triggerItem));
 			m_triggers.push_back(trigger);
 		}
-		else if(trigger.name() == HistSlopeTrailingStopTriggerName)
+		else if(triggerItem.name() == HistSlopeTrailingStopTriggerName)
 		{
-			TriggerPtr trigger(new CHistSlopeTrailingStop(trigger));
+			TriggerPtr trigger(new CHistSlopeTrailingStop(triggerItem));
 			m_triggers.push_back(trigger);
 		}
 	}

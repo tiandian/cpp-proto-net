@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "MACDDataSet.h"
 #include "OHLCRecordSet.h"
+#include "globalmembers.h"
 
 #include <ta-lib/ta_libc.h>
 
@@ -27,9 +28,8 @@ void CMACDDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	int outNbElement = -1;
 
 	int lastIdx = ohlcRecordSet->GetLastIndex();
-#ifdef _DEBUG
-	cout << "Calculating OHLC RecordSet: lastIdx - " << lastIdx << ", last - " << (ohlcRecordSet->CloseSeries)[lastIdx] << endl;
-#endif
+	logger.Info(boost::str(boost::format("Calculating OHLC RecordSet: lastIdx - %d, last - %f")
+		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 	if(m_lastPosition > 0)
 	{
 		double outMacd = 0;
@@ -43,9 +43,8 @@ void CMACDDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 		m_arrMacdSignal[outBeg] = outMacdSignal;
 		m_arrMacdHist[outBeg] = outMacdHist;
 
-#ifdef _DEBUG
-	cout << "Calculated MACD values: macd - " << outMacd << ", signal - " << outMacdSignal << ", hist - " << outMacdHist << endl; 
-#endif
+		logger.Info(boost::str(boost::format("Calculated MACD values: macd - %f, signal - %f, hist - %f")
+			% outMacd % outMacdSignal % outMacdHist ));
 	}
 	else	// the first time, calculate and fill all 
 	{
