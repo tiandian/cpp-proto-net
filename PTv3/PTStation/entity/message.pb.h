@@ -2137,6 +2137,48 @@ class StrategyItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 hs_slowperiod() const;
   inline void set_hs_slowperiod(::google::protobuf::int32 value);
   
+  // optional double HS_FastShortEMASeed = 508;
+  inline bool has_hs_fastshortemaseed() const;
+  inline void clear_hs_fastshortemaseed();
+  static const int kHSFastShortEMASeedFieldNumber = 508;
+  inline double hs_fastshortemaseed() const;
+  inline void set_hs_fastshortemaseed(double value);
+  
+  // optional double HS_FastLongEMASeed = 509;
+  inline bool has_hs_fastlongemaseed() const;
+  inline void clear_hs_fastlongemaseed();
+  static const int kHSFastLongEMASeedFieldNumber = 509;
+  inline double hs_fastlongemaseed() const;
+  inline void set_hs_fastlongemaseed(double value);
+  
+  // optional double HS_FastSignalEMASeed = 510;
+  inline bool has_hs_fastsignalemaseed() const;
+  inline void clear_hs_fastsignalemaseed();
+  static const int kHSFastSignalEMASeedFieldNumber = 510;
+  inline double hs_fastsignalemaseed() const;
+  inline void set_hs_fastsignalemaseed(double value);
+  
+  // optional double HS_SlowShortEMASeed = 511;
+  inline bool has_hs_slowshortemaseed() const;
+  inline void clear_hs_slowshortemaseed();
+  static const int kHSSlowShortEMASeedFieldNumber = 511;
+  inline double hs_slowshortemaseed() const;
+  inline void set_hs_slowshortemaseed(double value);
+  
+  // optional double HS_SlowLongEMASeed = 512;
+  inline bool has_hs_slowlongemaseed() const;
+  inline void clear_hs_slowlongemaseed();
+  static const int kHSSlowLongEMASeedFieldNumber = 512;
+  inline double hs_slowlongemaseed() const;
+  inline void set_hs_slowlongemaseed(double value);
+  
+  // optional double HS_SlowSignalEMASeed = 513;
+  inline bool has_hs_slowsignalemaseed() const;
+  inline void clear_hs_slowsignalemaseed();
+  static const int kHSSlowSignalEMASeedFieldNumber = 513;
+  inline double hs_slowsignalemaseed() const;
+  inline void set_hs_slowsignalemaseed(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.StrategyItem)
  private:
   inline void set_has_type();
@@ -2177,6 +2219,18 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_hs_fastperiod();
   inline void set_has_hs_slowperiod();
   inline void clear_has_hs_slowperiod();
+  inline void set_has_hs_fastshortemaseed();
+  inline void clear_has_hs_fastshortemaseed();
+  inline void set_has_hs_fastlongemaseed();
+  inline void clear_has_hs_fastlongemaseed();
+  inline void set_has_hs_fastsignalemaseed();
+  inline void clear_has_hs_fastsignalemaseed();
+  inline void set_has_hs_slowshortemaseed();
+  inline void clear_has_hs_slowshortemaseed();
+  inline void set_has_hs_slowlongemaseed();
+  inline void clear_has_hs_slowlongemaseed();
+  inline void set_has_hs_slowsignalemaseed();
+  inline void clear_has_hs_slowsignalemaseed();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2200,10 +2254,16 @@ class StrategyItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 hs_m_;
   ::google::protobuf::int32 hs_fastperiod_;
   double hs_slowstddiff_;
+  double hs_fastshortemaseed_;
+  double hs_fastlongemaseed_;
+  double hs_fastsignalemaseed_;
+  double hs_slowshortemaseed_;
+  double hs_slowlongemaseed_;
+  double hs_slowsignalemaseed_;
   ::google::protobuf::int32 hs_slowperiod_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(21 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(27 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -7796,6 +7856,138 @@ inline ::google::protobuf::int32 StrategyItem::hs_slowperiod() const {
 inline void StrategyItem::set_hs_slowperiod(::google::protobuf::int32 value) {
   set_has_hs_slowperiod();
   hs_slowperiod_ = value;
+}
+
+// optional double HS_FastShortEMASeed = 508;
+inline bool StrategyItem::has_hs_fastshortemaseed() const {
+  return (_has_bits_[0] & 0x00200000u) != 0;
+}
+inline void StrategyItem::set_has_hs_fastshortemaseed() {
+  _has_bits_[0] |= 0x00200000u;
+}
+inline void StrategyItem::clear_has_hs_fastshortemaseed() {
+  _has_bits_[0] &= ~0x00200000u;
+}
+inline void StrategyItem::clear_hs_fastshortemaseed() {
+  hs_fastshortemaseed_ = 0;
+  clear_has_hs_fastshortemaseed();
+}
+inline double StrategyItem::hs_fastshortemaseed() const {
+  return hs_fastshortemaseed_;
+}
+inline void StrategyItem::set_hs_fastshortemaseed(double value) {
+  set_has_hs_fastshortemaseed();
+  hs_fastshortemaseed_ = value;
+}
+
+// optional double HS_FastLongEMASeed = 509;
+inline bool StrategyItem::has_hs_fastlongemaseed() const {
+  return (_has_bits_[0] & 0x00400000u) != 0;
+}
+inline void StrategyItem::set_has_hs_fastlongemaseed() {
+  _has_bits_[0] |= 0x00400000u;
+}
+inline void StrategyItem::clear_has_hs_fastlongemaseed() {
+  _has_bits_[0] &= ~0x00400000u;
+}
+inline void StrategyItem::clear_hs_fastlongemaseed() {
+  hs_fastlongemaseed_ = 0;
+  clear_has_hs_fastlongemaseed();
+}
+inline double StrategyItem::hs_fastlongemaseed() const {
+  return hs_fastlongemaseed_;
+}
+inline void StrategyItem::set_hs_fastlongemaseed(double value) {
+  set_has_hs_fastlongemaseed();
+  hs_fastlongemaseed_ = value;
+}
+
+// optional double HS_FastSignalEMASeed = 510;
+inline bool StrategyItem::has_hs_fastsignalemaseed() const {
+  return (_has_bits_[0] & 0x00800000u) != 0;
+}
+inline void StrategyItem::set_has_hs_fastsignalemaseed() {
+  _has_bits_[0] |= 0x00800000u;
+}
+inline void StrategyItem::clear_has_hs_fastsignalemaseed() {
+  _has_bits_[0] &= ~0x00800000u;
+}
+inline void StrategyItem::clear_hs_fastsignalemaseed() {
+  hs_fastsignalemaseed_ = 0;
+  clear_has_hs_fastsignalemaseed();
+}
+inline double StrategyItem::hs_fastsignalemaseed() const {
+  return hs_fastsignalemaseed_;
+}
+inline void StrategyItem::set_hs_fastsignalemaseed(double value) {
+  set_has_hs_fastsignalemaseed();
+  hs_fastsignalemaseed_ = value;
+}
+
+// optional double HS_SlowShortEMASeed = 511;
+inline bool StrategyItem::has_hs_slowshortemaseed() const {
+  return (_has_bits_[0] & 0x01000000u) != 0;
+}
+inline void StrategyItem::set_has_hs_slowshortemaseed() {
+  _has_bits_[0] |= 0x01000000u;
+}
+inline void StrategyItem::clear_has_hs_slowshortemaseed() {
+  _has_bits_[0] &= ~0x01000000u;
+}
+inline void StrategyItem::clear_hs_slowshortemaseed() {
+  hs_slowshortemaseed_ = 0;
+  clear_has_hs_slowshortemaseed();
+}
+inline double StrategyItem::hs_slowshortemaseed() const {
+  return hs_slowshortemaseed_;
+}
+inline void StrategyItem::set_hs_slowshortemaseed(double value) {
+  set_has_hs_slowshortemaseed();
+  hs_slowshortemaseed_ = value;
+}
+
+// optional double HS_SlowLongEMASeed = 512;
+inline bool StrategyItem::has_hs_slowlongemaseed() const {
+  return (_has_bits_[0] & 0x02000000u) != 0;
+}
+inline void StrategyItem::set_has_hs_slowlongemaseed() {
+  _has_bits_[0] |= 0x02000000u;
+}
+inline void StrategyItem::clear_has_hs_slowlongemaseed() {
+  _has_bits_[0] &= ~0x02000000u;
+}
+inline void StrategyItem::clear_hs_slowlongemaseed() {
+  hs_slowlongemaseed_ = 0;
+  clear_has_hs_slowlongemaseed();
+}
+inline double StrategyItem::hs_slowlongemaseed() const {
+  return hs_slowlongemaseed_;
+}
+inline void StrategyItem::set_hs_slowlongemaseed(double value) {
+  set_has_hs_slowlongemaseed();
+  hs_slowlongemaseed_ = value;
+}
+
+// optional double HS_SlowSignalEMASeed = 513;
+inline bool StrategyItem::has_hs_slowsignalemaseed() const {
+  return (_has_bits_[0] & 0x04000000u) != 0;
+}
+inline void StrategyItem::set_has_hs_slowsignalemaseed() {
+  _has_bits_[0] |= 0x04000000u;
+}
+inline void StrategyItem::clear_has_hs_slowsignalemaseed() {
+  _has_bits_[0] &= ~0x04000000u;
+}
+inline void StrategyItem::clear_hs_slowsignalemaseed() {
+  hs_slowsignalemaseed_ = 0;
+  clear_has_hs_slowsignalemaseed();
+}
+inline double StrategyItem::hs_slowsignalemaseed() const {
+  return hs_slowsignalemaseed_;
+}
+inline void StrategyItem::set_hs_slowsignalemaseed(double value) {
+  set_has_hs_slowsignalemaseed();
+  hs_slowsignalemaseed_ = value;
 }
 
 // -------------------------------------------------------------------

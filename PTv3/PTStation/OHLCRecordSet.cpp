@@ -13,15 +13,30 @@ void COHLCRecordSet::ResetArray(double arr[], int length)
 	}
 }
 
-COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision)
+COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA_MODE histDataMode)
 	: m_symbol(symbol)
 	, m_precision(precision)
+	, m_histDataMode(histDataMode)
+	, m_nbElements(0)
 {
 	bool isIF = boost::starts_with(symbol, "IF");
 	int tradingTime = isIF ? IF_TOTAL_TRADING_SECONDS : NON_IF_TOTAL_TRADING_SECONDS ;
-	m_countPerDay = tradingTime / precision;
+	int countPerDay = tradingTime / precision;
 	
-	m_totalCount = 2 * m_countPerDay;
+	switch(histDataMode)
+	{
+	case NONE:
+		m_historyDataSize = 0;
+		break;
+	case ONE_BAR:
+		m_historyDataSize = 1;
+		break;
+	case ONE_DAY:
+		m_historyDataSize = countPerDay;
+		break;
+	}
+	m_totalCount = countPerDay + m_historyDataSize;
+
 	OpenSeries = boost::shared_array<double>(new double[m_totalCount]);
 	ResetArray(OpenSeries.get(), m_totalCount);
 	HighSeries = boost::shared_array<double>(new double[m_totalCount]);
@@ -31,7 +46,7 @@ COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision)
 	CloseSeries = boost::shared_array<double>(new double[m_totalCount]);
 	ResetArray(CloseSeries.get(), m_totalCount);
 
-	m_lastIndex = m_countPerDay - 1;
+	m_endIndex = m_historyDataSize - 1;
 }
 
 
@@ -42,9 +57,12 @@ COHLCRecordSet::~COHLCRecordSet(void)
 // barIdx is 0 based
 void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low, double close )
 {
-	int settingIdx = m_countPerDay + barIdx;
-	if(settingIdx > m_lastIndex)
-		m_lastIndex = settingIdx;
+	int settingIdx = m_historyDataSize + barIdx;
+	if(settingIdx > m_endIndex)
+	{
+		m_endIndex = settingIdx;
+		++m_nbElements;
+	}
 
 	// protect from out of array boundary
 	if(settingIdx < m_totalCount)
@@ -56,7 +74,7 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 	}
 
 	logger.Info(boost::str(boost::format("Setting Today: last Index - %d, last close - %f")
-		% m_lastIndex % close));
+		% m_endIndex % close));
 }
 
 void COHLCRecordSet::SetHistory( int barIdx, double open, double high, double low, double close )

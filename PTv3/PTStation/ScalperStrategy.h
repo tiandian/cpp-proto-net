@@ -22,8 +22,8 @@ public:
 private:
 	void CreateTriggers(const entity::StrategyItem& strategyItem);
 
-	trade::PosiDirectionType GetTradeDirection();
-	trade::PosiDirectionType CalcTradeDirection(int askSize, int bidSize, double askDiff, double bidDiff, entity::DirectionDepends dependsOn);
+	entity::PosiDirectionType GetTradeDirection();
+	entity::PosiDirectionType CalcTradeDirection(int askSize, int bidSize, double askDiff, double bidDiff, entity::DirectionDepends dependsOn);
 
 	double m_priceTick;
 	entity::DirectionDepends m_caseLE2Tick;

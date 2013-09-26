@@ -80,7 +80,14 @@ void CPortfolioTrendOrderPlacer::BuildTemplateOrder()
 
 void CPortfolioTrendOrderPlacer::CloseOrder( double limitprice )
 {
-	// set limit price
+	if(m_multiLegOrderTemplate->legs_size() > 1)
+	{
+		// set limit price
+		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(1);
+		pOrd->set_limitprice(limitprice);
+		
+		m_legPlacers[1]->InputOrder().set_limitprice(limitprice);
 
-	Send();
+		Send();
+	}
 }

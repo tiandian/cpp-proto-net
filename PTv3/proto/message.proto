@@ -171,7 +171,12 @@ message StrategyItem
 	optional double HS_SlowStdDiff = 505;
 	optional int32 HS_FastPeriod = 506;
 	optional int32 HS_SlowPeriod = 507;
-	
+	optional double HS_FastShortEMASeed = 508;
+	optional double HS_FastLongEMASeed = 509;
+	optional double HS_FastSignalEMASeed = 510;
+	optional double HS_SlowShortEMASeed = 511;
+	optional double HS_SlowLongEMASeed = 512;
+	optional double HS_SlowSignalEMASeed = 513;
 }
 
 message TriggerItem

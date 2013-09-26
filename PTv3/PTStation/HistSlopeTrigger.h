@@ -29,6 +29,8 @@ public:
     CHistSlopeTrailingStop(const entity::TriggerItem& triggerItem);
     ~CHistSlopeTrailingStop(){}
 
+	void Enable(bool isEnabled){ CTrigger::Enable(isEnabled); }
+
     void Enable(double cost, entity::PosiDirectionType direction)
     {
         m_lastHigh = cost;

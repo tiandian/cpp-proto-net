@@ -354,7 +354,7 @@ CPortfolioOrderPlacer::CPortfolioOrderPlacer(void)
 	, m_isWorking(false)
 	, m_isFirstLeg(false)
 	, m_sendNextOnFilled(true)
-	, m_posiDirection(trade::NET)
+	, m_posiDirection(entity::NET)
 {
 	m_fsm = boost::shared_ptr<void>(new OrderPlacerFsm(this));
 }
@@ -461,7 +461,7 @@ void CPortfolioOrderPlacer::GenLegOrderPlacers()
 	}
 }
 
-void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize,
+void CPortfolioOrderPlacer::Run(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize,
 		const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
 {
 	if(!m_isReady)
@@ -484,7 +484,7 @@ void CPortfolioOrderPlacer::Run(trade::PosiDirectionType posiDirection, double* 
 	Send();
 }
 
-void CPortfolioOrderPlacer::Run( trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize )
+void CPortfolioOrderPlacer::Run( entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize )
 {
 	Run(posiDirection, pLmtPxArr, iPxSize, boost::chrono::steady_clock::now());
 }
@@ -939,7 +939,7 @@ void CPortfolioOrderPlacer::GotoRetry(const RtnOrderWrapperPtr& pRtnOrder)
 	}
 }
 
-void CPortfolioOrderPlacer::SetDirection( trade::PosiDirectionType posiDirection )
+void CPortfolioOrderPlacer::SetDirection( entity::PosiDirectionType posiDirection )
 {
 	m_posiDirection = posiDirection;
 
@@ -951,13 +951,13 @@ void CPortfolioOrderPlacer::SetDirection( trade::PosiDirectionType posiDirection
 		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
 
 		// in case wanna open position
-		if(posiDirection == trade::LONG)
+		if(posiDirection == entity::LONG)
 		{
 			// open long position
 			pOrd->set_direction(LONG_TRADE_SEQ[i]);
 			m_legPlacers[i]->InputOrder().set_direction(LONG_TRADE_SEQ[i]);
 		}
-		else if(posiDirection == trade::SHORT)
+		else if(posiDirection == entity::SHORT)
 		{
 			pOrd->set_direction(SHORT_TRADE_SEQ[i]);
 			m_legPlacers[i]->InputOrder().set_direction(SHORT_TRADE_SEQ[i]);
