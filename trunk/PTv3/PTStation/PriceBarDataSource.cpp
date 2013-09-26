@@ -15,15 +15,7 @@ void CPriceBarDataSource::Init( const string& symbol, int precision)
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5, _6));
 	m_priceBarGen.SetBarFinalizedHandler(boost::bind(&CPriceBarDataSource::OnBarFinalized, this, _1, _2, _3, _4, _5, _6));
 
-	CHistDataReader dataReader(symbol, precision, m_tradingDay);
-	dataReader.Read(m_recordSet.get(), &m_priceBarGen);
-   
-	bool writerReady = m_histDataWriter.Open(symbol, precision, m_tradingDay);
-	if(!writerReady)
-	{
-		logger.Error(boost::str(boost::format("Cannot open HistDataWriter for %s-%u") % symbol % precision));
-	}
-
+	OnInit();
 }
 
 CPriceBarDataProxy* CPriceBarDataSource::AddProxy()
@@ -85,7 +77,21 @@ void CPriceBarDataSource::OnBarChanged( int barIdx, double open, double high, do
 
 void CPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
-	m_histDataWriter.Write(timestamp, open, high, low, close);
 }
 
+void CHistoryPriceBarDataSource::OnInit()
+{
+	CHistDataReader dataReader(m_symbol, m_precision, m_tradingDay);
+	dataReader.Read(m_recordSet.get(), &m_priceBarGen);
 
+	bool writerReady = m_histDataWriter.Open(m_symbol, m_precision, m_tradingDay);
+	if(!writerReady)
+	{
+		logger.Error(boost::str(boost::format("Cannot open HistDataWriter for %s-%u") % m_symbol % m_precision));
+	}
+}
+
+void CHistoryPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close, const string& timestamp )
+{
+	m_histDataWriter.Write(timestamp, open, high, low, close);
+}

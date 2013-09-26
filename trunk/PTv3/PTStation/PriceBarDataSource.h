@@ -20,7 +20,7 @@ class CPriceBarDataSource
 public:
 	CPriceBarDataSource(const string& id, const boost::gregorian::date& tradingDay)
 		: m_id(id), m_tradingDay(tradingDay), m_proxyIdxSeed(0){}
-	~CPriceBarDataSource(){}
+	virtual ~CPriceBarDataSource(){}
 
 	const string& Id(){ return m_id; }
 	void Init(const string& symbol, int precision);
@@ -32,10 +32,11 @@ public:
 
 	COHLCRecordSet* GetRecordSet(boost::chrono::steady_clock::time_point& timestamp);
 	int GetRecordSetSize(){ return m_recordSet.get() != NULL ? m_recordSet->GetSize() : 0; }
-private:
 
-	void OnBarChanged(int barIdx, double open, double high, double low, double close, const string& timestamp);
-	void OnBarFinalized(int barIdx, double open, double high, double low, double close, const string& timestamp);
+protected:
+	virtual void OnInit(){}
+	virtual void OnBarChanged(int barIdx, double open, double high, double low, double close, const string& timestamp);
+	virtual void OnBarFinalized(int barIdx, double open, double high, double low, double close, const string& timestamp);
 
 	typedef boost::unordered_map<unsigned int, PriceBarDataProxyPtr> PriceBarDataProxyMap;
 	typedef PriceBarDataProxyMap::iterator PriceBarDataProxyMapIter;
@@ -55,8 +56,25 @@ private:
 	OHLCRecordSetPtr m_recordSet;
 
 	CPriceBarGen m_priceBarGen;
-	CHistDataWriter m_histDataWriter;
 	boost::gregorian::date m_tradingDay;
+};
+
+class CHistoryPriceBarDataSource : public CPriceBarDataSource
+{
+public:
+	CHistoryPriceBarDataSource(const string& id, const boost::gregorian::date& tradingDay)
+		: CPriceBarDataSource(id, tradingDay)
+	{}
+
+	~CHistoryPriceBarDataSource(){}
+
+protected:
+	virtual void OnInit();
+	virtual void OnBarFinalized(int barIdx, double open, double high, double low, double close, const string& timestamp);
+
+private:
+	CHistDataWriter m_histDataWriter;
+
 };
 
 typedef boost::shared_ptr<CPriceBarDataSource> PriceBarDataSourcePtr;

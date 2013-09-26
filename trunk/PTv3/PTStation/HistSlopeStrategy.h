@@ -4,6 +4,7 @@
 #include "MACDDataSet.h"
 
 class CAvatarClient;
+class CHistSlopeTrailingStop;
 /*
 enum MACDSlopeDirection
 {
@@ -51,5 +52,7 @@ private:
 
 	MACDDataSetPtr m_slowPeriodIndicatorSet;
 	MACDDataSetPtr m_fastPeriodIndicatorSet;
+
+	CHistSlopeTrailingStop* m_pTrailingStopTrigger;
 };
 

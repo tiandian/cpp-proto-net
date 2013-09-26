@@ -93,23 +93,6 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
-        #region SlowPeriod
-        private int _slowPeriod = 300;
-
-        public int SlowPeriod
-        {
-            get { return _slowPeriod; }
-            set
-            {
-                if (_slowPeriod != value)
-                {
-                    _slowPeriod = value;
-                    RaisePropertyChanged("SlowPeriod");
-                }
-            }
-        }
-        #endregion
-
         #region FastStdDiff
         private double _fastStdDiff;
 
@@ -122,6 +105,74 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     _fastStdDiff = value;
                     RaisePropertyChanged("FastStdDiff");
+                }
+            }
+        }
+        #endregion
+
+        #region FastShortSeed
+        private double _fastShortSeed;
+
+        public double FastShortSeed
+        {
+            get { return _fastShortSeed; }
+            set
+            {
+                if (_fastShortSeed != value)
+                {
+                    _fastShortSeed = value;
+                    RaisePropertyChanged("FastShortSeed");
+                }
+            }
+        }
+        #endregion
+
+        #region FastLongSeed
+        private double _fastLongSeed;
+
+        public double FastLongSeed
+        {
+            get { return _fastLongSeed; }
+            set
+            {
+                if (_fastLongSeed != value)
+                {
+                    _fastLongSeed = value;
+                    RaisePropertyChanged("FastLongSeed");
+                }
+            }
+        }
+        #endregion
+
+        #region FastSignalSeed
+        private double _fastSignalSeed;
+
+        public double FastSignalSeed
+        {
+            get { return _fastSignalSeed; }
+            set
+            {
+                if (_fastSignalSeed != value)
+                {
+                    _fastSignalSeed = value;
+                    RaisePropertyChanged("FastSignalSeed");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowPeriod
+        private int _slowPeriod = 300;
+
+        public int SlowPeriod
+        {
+            get { return _slowPeriod; }
+            set
+            {
+                if (_slowPeriod != value)
+                {
+                    _slowPeriod = value;
+                    RaisePropertyChanged("SlowPeriod");
                 }
             }
         }
@@ -143,6 +194,58 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             }
         }
         #endregion
+
+        #region SlowShortSeed
+        private double _slowShortSeed;
+
+        public double SlowShortSeed
+        {
+            get { return _slowShortSeed; }
+            set
+            {
+                if (_slowShortSeed != value)
+                {
+                    _slowShortSeed = value;
+                    RaisePropertyChanged("SlowShortSeed");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowLongSeed
+        private double _slowLongSeed;
+
+        public double SlowLongSeed
+        {
+            get { return _slowLongSeed; }
+            set
+            {
+                if (_slowLongSeed != value)
+                {
+                    _slowLongSeed = value;
+                    RaisePropertyChanged("SlowLongSeed");
+                }
+            }
+        }
+        #endregion
+
+        #region SlowSignalSeed
+        private double _slowSignalSeed;
+
+        public double SlowSignalSeed
+        {
+            get { return _slowSignalSeed; }
+            set
+            {
+                if (_slowSignalSeed != value)
+                {
+                    _slowSignalSeed = value;
+                    RaisePropertyChanged("SlowSignalSeed");
+                }
+            }
+        }
+        #endregion
+
 
         #region FastAngleThreshold
         private int _fastAngleThreshold;
@@ -210,9 +313,15 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 new XAttribute("m", MACD_M),
                 new XAttribute("fastPeriod", FastPeriod),
                 new XAttribute("fastStdDiff", FastStdDiff),
+                new XAttribute("fastShortSeed", FastShortSeed),
+                new XAttribute("fastLongSeed", FastLongSeed),
+                new XAttribute("fastSignalSeed", FastSignalSeed),
                 new XAttribute("fastAngleThreshold", FastAngleThreshold),
                 new XAttribute("slowPeriod", SlowPeriod),
                 new XAttribute("slowStdDiff", SlowStdDiff),
+                new XAttribute("slowShortSeed", SlowShortSeed),
+                new XAttribute("slowLongSeed", SlowLongSeed),
+                new XAttribute("slowSignalSeed", SlowSignalSeed),
                 new XAttribute("slowAngleThreshold", SlowAngleThreshold),
                 new XAttribute("trailingStopValue", TrailingStopValue)
                 );
@@ -253,6 +362,21 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             {
                 FastStdDiff = double.Parse(attr.Value);
             }
+            attr = elem.Attribute("fastShortSeed");
+            if (attr != null)
+            {
+                FastShortSeed = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("fastLongSeed");
+            if (attr != null)
+            {
+                FastLongSeed = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("fastSignalSeed");
+            if (attr != null)
+            {
+                FastSignalSeed = double.Parse(attr.Value);
+            }
             attr = elem.Attribute("fastAngleThreshold");
             if (attr != null)
             {
@@ -267,6 +391,21 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             if (attr != null)
             {
                 SlowStdDiff = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("slowShortSeed");
+            if (attr != null)
+            {
+                SlowShortSeed = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("slowLongSeed");
+            if (attr != null)
+            {
+                SlowLongSeed = double.Parse(attr.Value);
+            }
+            attr = elem.Attribute("slowSignalSeed");
+            if (attr != null)
+            {
+                SlowSignalSeed = double.Parse(attr.Value);
             }
             attr = elem.Attribute("slowAngleThreshold");
             if (attr != null)
@@ -291,6 +430,14 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             macdSlopeStrategy.FastStdDiff = this.FastStdDiff;
             macdSlopeStrategy.SlowPeriod = this.SlowPeriod;
             macdSlopeStrategy.SlowStdDiff = this.SlowStdDiff;
+
+            macdSlopeStrategy.FastShortSeed = this.FastShortSeed;
+            macdSlopeStrategy.FastLongSeed = this.FastLongSeed;
+            macdSlopeStrategy.FastSignalSeed = this.FastSignalSeed;
+
+            macdSlopeStrategy.SlowShortSeed = this.SlowShortSeed;
+            macdSlopeStrategy.SlowLongSeed = this.SlowLongSeed;
+            macdSlopeStrategy.SlowSignalSeed = this.SlowSignalSeed;
             
             macdSlopeStrategy.Triggers.Add(new PTEntity.HistSlopeTriggerItem
             {
@@ -318,9 +465,15 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             MACD_M = otherSettings.MACD_M;
             FastPeriod = otherSettings.FastPeriod;
             FastStdDiff = otherSettings.FastStdDiff;
+            FastShortSeed = otherSettings.FastShortSeed;
+            FastLongSeed = otherSettings.FastLongSeed;
+            FastSignalSeed = otherSettings.FastSignalSeed;
             FastAngleThreshold = otherSettings.FastAngleThreshold;
             SlowPeriod = otherSettings.SlowPeriod;
             SlowStdDiff = otherSettings.SlowStdDiff;
+            SlowShortSeed = otherSettings.SlowShortSeed;
+            SlowLongSeed = otherSettings.SlowLongSeed;
+            SlowSignalSeed = otherSettings.SlowSignalSeed;
             SlowAngleThreshold = otherSettings.SlowAngleThreshold;
             TrailingStopValue = otherSettings.TrailingStopValue;
         }

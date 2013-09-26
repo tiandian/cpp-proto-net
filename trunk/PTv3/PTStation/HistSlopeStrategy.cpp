@@ -35,6 +35,7 @@ CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem,
 	, m_slowHistDiff(0.0)
 	, m_fastSlopeDirection(entity::NO_DIRECTION)
 	, m_slowSlopeDirection(entity::NO_DIRECTION)
+	, m_pTrailingStopTrigger(NULL)
 {
 	m_angleArray[0] = 0;
 	m_angleArray[1] = 0;
@@ -68,11 +69,17 @@ void CHistSlopeStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 		{
 			m_fastPeriodIndicatorSet = MACDDataSetPtr(new CMACDDataSet((*iter)->GetRecordSetSize(), 
 				m_macdShort, m_macdLong, m_macdM));
+			m_fastPeriodIndicatorSet->SeedShort(strategyItem.hs_fastshortemaseed());
+			m_fastPeriodIndicatorSet->SeedLong(strategyItem.hs_fastlongemaseed());
+			m_fastPeriodIndicatorSet->SeedSignal(strategyItem.hs_fastsignalemaseed());
 		}
 		else if((*iter)->Precision() == m_slowPeriod)
 		{
 			m_slowPeriodIndicatorSet = MACDDataSetPtr(new CMACDDataSet((*iter)->GetRecordSetSize(),
 				m_macdShort, m_macdLong, m_macdM));
+			m_slowPeriodIndicatorSet->SeedShort(strategyItem.hs_slowshortemaseed());
+			m_slowPeriodIndicatorSet->SeedLong(strategyItem.hs_slowlongemaseed());
+			m_slowPeriodIndicatorSet->SeedSignal(strategyItem.hs_slowsignalemaseed());
 		}
 	}
 }
@@ -89,7 +96,8 @@ void CHistSlopeStrategy::CreateTriggers( const entity::StrategyItem& strategyIte
 		}
 		else if(triggerItem.name() == HistSlopeTrailingStopTriggerName)
 		{
-			TriggerPtr trigger(new CHistSlopeTrailingStop(triggerItem));
+			m_pTrailingStopTrigger = new CHistSlopeTrailingStop(triggerItem);
+			TriggerPtr trigger(m_pTrailingStopTrigger);
 			m_triggers.push_back(trigger);
 		}
 	}
@@ -108,8 +116,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	COHLCRecordSet* slowOHLC = GetRecordSet(symbol, m_slowPeriod, timestamp);
 	m_slowPeriodIndicatorSet->Calculate(slowOHLC);
 	
-	double slowLast0 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
-	double slowLast1 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
+	double slowLast0 = 2 * m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
+	double slowLast1 = 2 * m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	m_slowHistVal = slowLast0;
 	// 2. Test 5 min angle, see if Up or Down.
 	m_slowSlopeDirection = CheckDirection(slowLast1, slowLast0);
@@ -118,8 +126,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
 	m_fastPeriodIndicatorSet->Calculate(fastOHLC);
 	// 3.1 if sign of 1 min is same as 5 min, Goes to Trigger test
-	double fastLast0 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
-	double fastLast1 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
+	double fastLast0 = 2 * m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
+	double fastLast1 = 2 * m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	m_fastHistVal = fastLast0;
 	m_fastSlopeDirection = CheckDirection(fastLast1, fastLast0);
 
@@ -147,8 +155,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 						if(meetOpenCondition)
 						{
 							// 3.2.1.1 Do OPEN position
-							OpenPosition(m_fastSlopeDirection, pPortfolio, pQuote, timestamp);
 							// 3.2.1.2 if open trigger is fired, be sure to enable trailing stop trigger with Enable(cost, direction)
+							OpenPosition(m_fastSlopeDirection, pPortfolio, pQuote, timestamp);
 							break;
 						}
 					}
@@ -165,8 +173,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 						bool meetCloseCondition = slopeTrigger->Test(m_angleArray, 2);
 						if(meetCloseCondition)
 						{
-							// TODO Close position
-
+							ClosePosition(pPortfolio, pQuote);
 							break;
 						}
 					}
@@ -178,8 +185,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					bool meetCloseCondition = trailingStop->Test(gainLoss);
 					if(meetCloseCondition)
 					{
-						// TODO Close position
-
+						ClosePosition(pPortfolio, pQuote);
 						break;
 					}
 				}
@@ -189,8 +195,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	else
 	{
 		// 3.3 else sign of 1 min is different than 5 min, Goes to close existing position if any
-		// TODO Close position
-
+		ClosePosition(pPortfolio, pQuote);
 	}
 }
 
@@ -233,18 +238,25 @@ void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CP
 	if(slopeDirection > entity::NO_DIRECTION)
 	{
 		double lmtPrice[2];
-		trade::PosiDirectionType direction = trade::LONG;
+		entity::PosiDirectionType direction = entity::LONG;
 		if(slopeDirection == entity::GOING_UP)
 		{
 			lmtPrice[0] = pQuote->ask();
+			direction = entity::LONG;
 		}
 		else if(slopeDirection == entity::GOING_DOWN)
 		{
 			lmtPrice[0] = pQuote->bid();
+			direction = entity::SHORT;
 		}
 		lmtPrice[1] = 0.0;
 		CPortfolioOrderPlacer* pOrderPlacer = pPortfolio->OrderPlacer();
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
+		
+		if(m_pTrailingStopTrigger != NULL)
+		{
+			m_pTrailingStopTrigger->Enable(lmtPrice[0], direction);
+		}
 	}
 }
 
@@ -253,7 +265,7 @@ void CHistSlopeStrategy::ClosePosition( CPortfolio* pPortfolio, entity::Quote* p
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
 	if(pOrderPlacer != NULL)
 	{
-		trade::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
+		entity::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
 		if(posiDirection == trade::LONG)
 		{
 			pOrderPlacer->CloseOrder(pQuote->bid());
@@ -261,6 +273,11 @@ void CHistSlopeStrategy::ClosePosition( CPortfolio* pPortfolio, entity::Quote* p
 		else if(posiDirection == trade::SHORT)
 		{
 			pOrderPlacer->CloseOrder(pQuote->ask());
+		}
+
+		if(m_pTrailingStopTrigger != NULL)
+		{
+			m_pTrailingStopTrigger->Enable(false);
 		}
 	}
 }

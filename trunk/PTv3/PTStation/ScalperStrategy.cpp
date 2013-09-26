@@ -68,7 +68,7 @@ void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boos
 			if(m_triggers[0]->Test(m_diff))
 			{
 				// open position
-				trade::PosiDirectionType direction = GetTradeDirection();
+				entity::PosiDirectionType direction = GetTradeDirection();
 #ifdef LOG_FOR_TRADE
 				logger.Info(boost::str(boost::format("[%s] Ask: %.2f => %.2f, Bid: %.2f => %.2f, Ask size VS Bid size: %d vs %d")
 					% (direction > trade::NET ? (direction == trade::LONG ? "LONG" : "SHORT") : "IGNORE") 
@@ -151,7 +151,7 @@ double CScalperStrategy::CalcOrderProfit( const trade::MultiLegOrder& openOrder 
 	return profit;
 }
 
-trade::PosiDirectionType CScalperStrategy::GetTradeDirection()
+entity::PosiDirectionType CScalperStrategy::GetTradeDirection()
 {
 	double askDiff = fabs(m_ask - m_prevAsk);
 	double bidDiff = fabs(m_bid - m_prevBid);
@@ -160,11 +160,11 @@ trade::PosiDirectionType CScalperStrategy::GetTradeDirection()
 
 	if(m_ask > m_prevAsk && m_bid > m_prevBid)
 	{
-		return trade::LONG;
+		return entity::LONG;
 	}
 	else if(m_ask < m_prevAsk && m_bid < m_prevBid)
 	{
-		return trade::SHORT;
+		return entity::SHORT;
 	}
 	else if(DoubleEqual(m_bid, m_prevBid) && DoubleEqual(m_ask, m_prevAsk))
 	{
@@ -184,23 +184,23 @@ trade::PosiDirectionType CScalperStrategy::GetTradeDirection()
 	}
 	else
 	{
-		return m_askSize < m_bidSize ? trade::SHORT : trade::LONG;
+		return m_askSize < m_bidSize ? entity::SHORT : entity::LONG;
 	}
 }
 
-trade::PosiDirectionType CScalperStrategy::CalcTradeDirection(int askSize, int bidSize, double askDiff, double bidDiff, entity::DirectionDepends dependsOn)
+entity::PosiDirectionType CScalperStrategy::CalcTradeDirection(int askSize, int bidSize, double askDiff, double bidDiff, entity::DirectionDepends dependsOn)
 {
 	switch (dependsOn)
 	{
 	case entity::ON_SMALL_SIZE:
-		return askSize < bidSize ? trade::SHORT : trade::LONG;
+		return askSize < bidSize ? entity::SHORT : entity::LONG;
 	case entity::ON_BIG_SIZE:
-		return askSize > bidSize ? trade::SHORT : trade::LONG;
+		return askSize > bidSize ? entity::SHORT : entity::LONG;
 	case entity::ON_SMALL_CHANGE:
-		return askDiff < bidDiff ? trade::SHORT : trade::LONG;
+		return askDiff < bidDiff ? entity::SHORT : entity::LONG;
 	case entity::ON_BIG_CHANGE:
-		return askDiff > bidDiff ? trade::SHORT : trade::LONG;
+		return askDiff > bidDiff ? entity::SHORT : entity::LONG;
 	}
 
-	return trade::NET;
+	return entity::NET;
 }

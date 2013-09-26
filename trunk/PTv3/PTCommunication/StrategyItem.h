@@ -313,6 +313,78 @@ public:
 		}
 	}
 
+	property double FastShortSeed
+	{
+		double get()
+		{
+			return _fastShortSeed; 
+		}
+		void set(double val)
+		{
+			_fastShortSeed = val;
+		}
+	}
+
+	property double FastLongSeed
+	{
+		double get()
+		{
+			return _fastLongSeed; 
+		}
+		void set(double val)
+		{
+			_fastLongSeed = val;
+		}
+	}
+
+	property double FastSignalSeed
+	{
+		double get()
+		{
+			return _fastSignalSeed; 
+		}
+		void set(double val)
+		{
+			_fastSignalSeed = val;
+		}
+	}
+
+	property double SlowShortSeed
+	{
+		double get()
+		{
+			return _slowShortSeed; 
+		}
+		void set(double val)
+		{
+			_slowShortSeed = val;
+		}
+	}
+
+	property double SlowLongSeed
+	{
+		double get()
+		{
+			return _slowLongSeed; 
+		}
+		void set(double val)
+		{
+			_slowLongSeed = val;
+		}
+	}
+
+	property double SlowSignalSeed
+	{
+		double get()
+		{
+			return _slowSignalSeed; 
+		}
+		void set(double val)
+		{
+			_slowSignalSeed = val;
+		}
+	}
+
 private:
 	int _short;
 	int _long;
@@ -324,6 +396,13 @@ private:
 	double _slowStdDiff;
 	int _slowAngleThreshold;
 	double _trailingStopValue;
+
+	double _fastShortSeed;
+	double _fastLongSeed;
+	double _fastSignalSeed;
+	double _slowShortSeed;
+	double _slowLongSeed;
+	double _slowSignalSeed;
 
 	String^ _symbol;
 };

@@ -31,8 +31,8 @@ public:
 	void Cleanup();
 
 	// Truly submit order to trade agent
-	void Run(trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize);
-	void Run(trade::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, 
+	void Run(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize);
+	void Run(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, 
 		const boost::chrono::steady_clock::time_point& trigQuoteTimestamp);
 	
 	// Identification for order processor to lookup while order returned
@@ -74,14 +74,14 @@ public:
 
 	bool IfPortfolioCanceled();
 
-	trade::PosiDirectionType PosiDirection(){ return m_posiDirection; }
+	entity::PosiDirectionType PosiDirection(){ return m_posiDirection; }
 
 protected:
 
 	void Initialize(const string& mlOrdId);
 
 	virtual void BuildTemplateOrder(){}
-	virtual void SetDirection(trade::PosiDirectionType posiDirection);
+	virtual void SetDirection(entity::PosiDirectionType posiDirection);
 	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize);
 	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer){}
 	
@@ -122,7 +122,7 @@ protected:
 	boost::atomic<bool> m_isWorking;
 	bool m_isReady;
 	bool m_sendNextOnFilled;
-	trade::PosiDirectionType m_posiDirection;
+	entity::PosiDirectionType m_posiDirection;
 	boost::chrono::steady_clock::time_point m_triggingTimestamp;
 
 	boost::thread m_thCleanup;
