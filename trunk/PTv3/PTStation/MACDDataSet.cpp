@@ -90,9 +90,10 @@ void CMACDDataSet::CalculateBaseOnSeed( COHLCRecordSet* ohlcRecordSet )
 {
 	int endIdx = ohlcRecordSet->GetEndIndex();
 	int beginIdx = ohlcRecordSet->GetBeginIndex();
-	if( m_size < 100)
-	logger.Info(boost::str(boost::format("[%d] Before CalculateBaseOnSeed, beginIdx: %d, endIdx: %d, m_lastPosition: %d")
-		% m_size % beginIdx % endIdx % m_lastPosition));
+	
+	//logger.Info(boost::str(boost::format("[%d] Before CalculateBaseOnSeed, beginIdx: %d, endIdx: %d, m_lastPosition: %d")
+	//	% m_size % beginIdx % endIdx % m_lastPosition));
+
 	// only we have all today history data, the seed is regarded as last point of yesterday
 	if(beginIdx == 1 && m_lastPosition < 1) 
 	{
@@ -122,10 +123,11 @@ void CMACDDataSet::CalculateBaseOnSeed( COHLCRecordSet* ohlcRecordSet )
 	}
 
 	m_lastPosition = endIdx;
-	if( m_size < 100)
+	/*
 	logger.Info(boost::str(boost::format("[%d] Calculated MACD values: ema12 - %.2f, ema26 - %.2f macd - %.2f, signal - %.2f, hist - %.2f")
 		% m_size % m_arrEmaShort[m_lastPosition] % m_arrEmaLong[m_lastPosition]
 	% m_arrMacd[m_lastPosition] % m_arrMacdSignal[m_lastPosition] % m_arrMacdHist[m_lastPosition] ));
+	*/
 }
 
 void CMACDDataSet::CalculateBaseOnHistData( COHLCRecordSet* ohlcRecordSet )

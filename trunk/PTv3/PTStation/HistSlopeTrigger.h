@@ -31,13 +31,7 @@ public:
 
 	void Enable(bool isEnabled){ CTrigger::Enable(isEnabled); }
 
-    void Enable(double cost, entity::PosiDirectionType direction)
-    {
-        m_lastHigh = cost;
-        m_effectiveStop = CalcOffset(cost, -m_backValue);
-        m_direction = direction;
-        CTrigger::Enable(true);
-    }
+    void Enable(double cost, entity::PosiDirectionType direction);
 
     void Apply( const entity::TriggerItem& triggerItem );
 

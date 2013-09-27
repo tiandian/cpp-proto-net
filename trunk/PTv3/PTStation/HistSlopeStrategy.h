@@ -5,6 +5,7 @@
 
 class CAvatarClient;
 class CHistSlopeTrailingStop;
+class CPortfolioTrendOrderPlacer;
 /*
 enum MACDSlopeDirection
 {
@@ -26,8 +27,8 @@ public:
 
 protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
-	void OpenPosition(entity::SlopeDirection slopeDirection, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
-	void ClosePosition(CPortfolio* pPortfolio, entity::Quote* pQuote);
+	void OpenPosition(entity::SlopeDirection slopeDirection, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
+	void ClosePosition(CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote);
 private:
 	double CalculateAngle(double stdHistDiff, double currentHistDiff);
 
