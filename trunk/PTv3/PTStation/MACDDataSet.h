@@ -39,11 +39,15 @@ public:
 	void SeedSignal(double val){ m_seedSignal = val;}
 	double SeedSignal(){ return m_seedSignal; }
 
-	void ResetSeedPosition(){}
+	void ResetSeedPosition();
 
 private:
 	void CalculateBaseOnHistData( COHLCRecordSet* ohlcRecordSet );
 	void CalculateBaseOnSeed( COHLCRecordSet* ohlcRecordSet );
+
+	void CalculateMACD( int beginIdx, int endIdx, COHLCRecordSet* ohlcRecordSet );
+
+	void ResetSeed(int seedPosition);
 
 	int m_paramShort;
 	int m_paramLong;

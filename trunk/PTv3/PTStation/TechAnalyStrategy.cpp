@@ -33,14 +33,18 @@ void CTechAnalyStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 void CTechAnalyStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
 {
-	for(int i = 0; i < strategyItem.histsources_size(); ++i)
+	CStrategy::Apply(strategyItem, withTriggers);
+	if(!withTriggers) // don't touch hist data source when editing strategy
 	{
-		const entity::HistSourceCfg entityCfg = strategyItem.histsources(i);
-		HistSrcCfgPtr histCfg(new CHistSourceCfg(entityCfg.symbol(), entityCfg.precision()));
-		m_histSrcConfigs.push_back(histCfg);
-	}
+		for(int i = 0; i < strategyItem.histsources_size(); ++i)
+		{
+			const entity::HistSourceCfg entityCfg = strategyItem.histsources(i);
+			HistSrcCfgPtr histCfg(new CHistSourceCfg(entityCfg.symbol(), entityCfg.precision()));
+			m_histSrcConfigs.push_back(histCfg);
+		}
 
-	RegHistDataSrc();
+		RegHistDataSrc();
+	}
 }
 
 COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, int precision, boost::chrono::steady_clock::time_point& timestamp)

@@ -54,5 +54,7 @@ private:
 	MACDDataSetPtr m_fastPeriodIndicatorSet;
 
 	CHistSlopeTrailingStop* m_pTrailingStopTrigger;
+
+	boost::mutex m_mut;
 };
 

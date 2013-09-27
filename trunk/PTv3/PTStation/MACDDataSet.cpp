@@ -48,63 +48,84 @@ void CMACDDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	}
 }
 
-void CalculateEMA(int startIdx, int endIdx, double factor, double seed, double* inRealArr, double* outRealArr)
+void CalculateEMA(int startIdx, int endIdx, double factor, double* inRealArr, double* outRealArr)
 {
-	double prevMA = seed;
-	int today = startIdx;
+	assert(startIdx > 0);
 
+	double prevMA = outRealArr[startIdx - 1];
+
+	int today = startIdx;
 	while( today <= endIdx )
 	{
-		prevMA = ( (inRealArr[today++] - prevMA) * factor) + prevMA;
-		outRealArr[today++] = prevMA;
+		prevMA = ( (inRealArr[today] - prevMA) * factor) + prevMA;
+		outRealArr[today] = prevMA;
+		++today;
 	}
 }
+
+void CMACDDataSet::CalculateMACD( int beginIdx, int endIdx, COHLCRecordSet* ohlcRecordSet )
+{
+	// Calculate EMA(Close, 12)
+	CalculateEMA(beginIdx, endIdx, m_ShortEmaFactor, ohlcRecordSet->CloseSeries.get(), m_arrEmaShort.get());
+	// Calculate EMA(Close, 26)
+	CalculateEMA(beginIdx, endIdx, m_LongEmaFactor, ohlcRecordSet->CloseSeries.get(), m_arrEmaLong.get());
+	// Calculate MACD (DIFF)
+	for(int idx = beginIdx - 1; idx <= endIdx; ++idx)
+	{
+		assert(idx >= 0);
+		m_arrMacd[idx] = m_arrEmaShort[idx] - m_arrEmaLong[idx];
+	}
+	// Calculate MACD Signal (DEA)
+	CalculateEMA(beginIdx, endIdx, m_SignalEmaFactor, m_arrMacd, m_arrMacdSignal);
+	// Calculate MACD Hist
+	for(int idx = beginIdx - 1; idx <= endIdx; ++idx)
+	{
+		assert(idx >=0 );
+		m_arrMacdHist[idx] = (double)2.0 * (m_arrMacd[idx] - m_arrMacdSignal[idx]);
+	}
+}
+
 
 void CMACDDataSet::CalculateBaseOnSeed( COHLCRecordSet* ohlcRecordSet )
 {
 	int endIdx = ohlcRecordSet->GetEndIndex();
 	int beginIdx = ohlcRecordSet->GetBeginIndex();
-
-	if(m_lastPosition < 1)
+	if( m_size < 100)
+	logger.Info(boost::str(boost::format("[%d] Before CalculateBaseOnSeed, beginIdx: %d, endIdx: %d, m_lastPosition: %d")
+		% m_size % beginIdx % endIdx % m_lastPosition));
+	// only we have all today history data, the seed is regarded as last point of yesterday
+	if(beginIdx == 1 && m_lastPosition < 1) 
 	{
-		// Calculate EMA(Close, 12)
-		CalculateEMA(beginIdx, endIdx, m_ShortEmaFactor, m_seedShort, 
-			&(ohlcRecordSet->CloseSeries)[beginIdx], &m_arrEmaShort[beginIdx]);
-		// Calculate EMA(Close, 26)
-		CalculateEMA(beginIdx, endIdx, m_LongEmaFactor, m_seedLong, 
-			&(ohlcRecordSet->CloseSeries)[beginIdx], &m_arrEmaLong[beginIdx]);
-		// Calculate MACD (DIFF)
-		for(int idx = beginIdx; idx <= endIdx; ++idx)
-		{
-			m_arrMacd[idx] = m_arrEmaShort[idx] - m_arrEmaLong[idx];
-		}
-		// Calculate MACD Signal (DEA)
-		CalculateEMA(beginIdx, endIdx, m_SignalEmaFactor, m_seedSignal,
-			&m_arrMacd[beginIdx], &m_arrMacdSignal[beginIdx]);
-		// Calculate MACD Hist
-		for(int idx = beginIdx; idx <= endIdx; ++idx)
-		{
-			m_arrMacdHist[idx] = (double)2.0 * (m_arrMacd[idx] - m_arrMacdSignal[idx]);
-		}
+		ResetSeed(0);
+		CalculateMACD(beginIdx, endIdx, ohlcRecordSet);
 	}
 	else
 	{
-		// Calculate EMA(Close, 12)
-		CalculateEMA(endIdx, endIdx, m_ShortEmaFactor, m_arrEmaShort[endIdx - 1], 
-			&(ohlcRecordSet->CloseSeries)[endIdx], &m_arrEmaShort[endIdx]);
-		// Calculate EMA(Close, 26)
-		CalculateEMA(endIdx, endIdx, m_LongEmaFactor, m_arrEmaLong[endIdx - 1], 
-			&(ohlcRecordSet->CloseSeries)[endIdx], &m_arrEmaLong[endIdx]);
-		// Calculate MACD (DIFF)
-		m_arrMacd[endIdx] = m_arrEmaShort[endIdx] - m_arrEmaLong[endIdx];
-		// Calculate MACD Signal (DEA)
-		CalculateEMA(endIdx, endIdx, m_SignalEmaFactor, m_arrMacdSignal[endIdx - 1],
-			&m_arrMacd[endIdx], &m_arrMacdSignal[endIdx]);
-		// Calculate MACD Hist
-		m_arrMacdHist[endIdx] = (double)2.0 * (m_arrMacd[endIdx] - m_arrMacdSignal[endIdx]);
+		if(m_lastPosition < 1)
+		{
+			ResetSeed(endIdx - 1);
+			CalculateMACD(endIdx, endIdx, ohlcRecordSet);
+		}
+		else // only calculate value of the last point
+		{
+			// Calculate EMA(Close, 12)
+			CalculateEMA(endIdx, endIdx, m_ShortEmaFactor, ohlcRecordSet->CloseSeries.get(), m_arrEmaShort.get());
+			// Calculate EMA(Close, 26)
+			CalculateEMA(endIdx, endIdx, m_LongEmaFactor, ohlcRecordSet->CloseSeries.get(), m_arrEmaLong.get());
+			// Calculate MACD (DIFF)
+			m_arrMacd[endIdx] = m_arrEmaShort[endIdx] - m_arrEmaLong[endIdx];
+			// Calculate MACD Signal (DEA)
+			CalculateEMA(endIdx, endIdx, m_SignalEmaFactor, m_arrMacd, m_arrMacdSignal);
+			// Calculate MACD Hist
+			m_arrMacdHist[endIdx] = (double)2.0 * (m_arrMacd[endIdx] - m_arrMacdSignal[endIdx]);
+		}
 	}
 
 	m_lastPosition = endIdx;
+	if( m_size < 100)
+	logger.Info(boost::str(boost::format("[%d] Calculated MACD values: ema12 - %.2f, ema26 - %.2f macd - %.2f, signal - %.2f, hist - %.2f")
+		% m_size % m_arrEmaShort[m_lastPosition] % m_arrEmaLong[m_lastPosition]
+	% m_arrMacd[m_lastPosition] % m_arrMacdSignal[m_lastPosition] % m_arrMacdHist[m_lastPosition] ));
 }
 
 void CMACDDataSet::CalculateBaseOnHistData( COHLCRecordSet* ohlcRecordSet )
@@ -161,4 +182,17 @@ void CMACDDataSet::SetM( int val )
 	m_paramM = val;
 	m_SignalEmaFactor = PERIOD_TO_FACTOR(m_paramM);
 }
+
+void CMACDDataSet::ResetSeedPosition()
+{
+	m_lastPosition = 0;
+}
+
+void CMACDDataSet::ResetSeed( int seedPosition )
+{
+	m_arrEmaShort[seedPosition] = m_seedShort;
+	m_arrEmaLong[seedPosition] = m_seedLong;
+	m_arrMacdSignal[seedPosition] = m_seedSignal;
+}
+
 
