@@ -176,6 +176,10 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	m_slowHistDiff = slowLast0 - slowLast1;
 	m_angleArray[1] = CalculateAngle(m_slowStdDiff, m_slowHistDiff);
 
+	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
+	if(pOrderPlacer == NULL || pOrderPlacer->IsWorking())
+		return;
+
 	if(m_slowSlopeDirection > entity::NO_DIRECTION && m_fastSlopeDirection == m_slowSlopeDirection )
 	{
 		// 3.2 In scope of Trigger test
@@ -196,7 +200,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 						{
 							// 3.2.1.1 Do OPEN position
 							// 3.2.1.2 if open trigger is fired, be sure to enable trailing stop trigger with Enable(cost, direction)
-							OpenPosition(m_fastSlopeDirection, pPortfolio, pQuote, timestamp);
+							OpenPosition(m_fastSlopeDirection, pOrderPlacer, pQuote, timestamp);
 							break;
 						}
 					}
@@ -213,7 +217,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 						bool meetCloseCondition = slopeTrigger->Test(m_angleArray, 2);
 						if(meetCloseCondition)
 						{
-							ClosePosition(pPortfolio, pQuote);
+							ClosePosition(pOrderPlacer, pQuote);
 							break;
 						}
 					}
@@ -221,11 +225,11 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				else if(pTrigger->Name() == HistSlopeTrailingStopTriggerName)
 				{
 					CHistSlopeTrailingStop* trailingStop = dynamic_cast<CHistSlopeTrailingStop*>(pTrigger);
-					double gainLoss = 0;
-					bool meetCloseCondition = trailingStop->Test(gainLoss);
+					
+					bool meetCloseCondition = trailingStop->Test(pQuote->last());
 					if(meetCloseCondition)
 					{
-						ClosePosition(pPortfolio, pQuote);
+						ClosePosition(pOrderPlacer, pQuote);
 						break;
 					}
 				}
@@ -235,7 +239,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	else
 	{
 		// 3.3 else sign of 1 min is different than 5 min, Goes to close existing position if any
-		ClosePosition(pPortfolio, pQuote);
+		ClosePosition(pOrderPlacer, pQuote);
 	}
 }
 
@@ -273,7 +277,7 @@ double CHistSlopeStrategy::CalculateAngle(double stdHistDiff, double currentHist
 	return angle;
 }
 
-void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp )
+void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp )
 {
 	if(slopeDirection > entity::NO_DIRECTION)
 	{
@@ -290,7 +294,6 @@ void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CP
 			direction = entity::SHORT;
 		}
 		lmtPrice[1] = 0.0;
-		CPortfolioOrderPlacer* pOrderPlacer = pPortfolio->OrderPlacer();
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 		
 		if(m_pTrailingStopTrigger != NULL)
@@ -300,9 +303,8 @@ void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CP
 	}
 }
 
-void CHistSlopeStrategy::ClosePosition( CPortfolio* pPortfolio, entity::Quote* pQuote )
+void CHistSlopeStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote )
 {
-	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
 	if(pOrderPlacer != NULL)
 	{
 		entity::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
