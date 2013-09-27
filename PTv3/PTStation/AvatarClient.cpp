@@ -7,6 +7,7 @@ CAvatarClient::CAvatarClient(const string& sessionId)
 	: m_sessionId(sessionId)
 	, m_tradeLogged(false)
 	, m_quoteLogged(false)
+	, m_destroyed(false)
 {
 	// Connect quoteAgent and Quote repository
 	m_quoteRepositry.Init(&m_quoteAgent);
@@ -19,6 +20,7 @@ CAvatarClient::CAvatarClient(const string& sessionId)
 
 CAvatarClient::~CAvatarClient(void)
 {
+	m_destroyed = true;
 }
 
 boost::tuple<bool, string> CAvatarClient::TradeLogin( const string& address, const string& brokerId, const string& investorId, const string& password )

@@ -870,7 +870,7 @@ namespace PortfolioTrading.Modules.Account
 
         private static decimal ToDecimal(double val)
         {
-            return val == double.MaxValue || val == double.MinValue ? 
+            return val >= (double)decimal.MaxValue || val <= (double)decimal.MinValue ? 
                 0 : (decimal)Math.Round(val, 2);
         }
 

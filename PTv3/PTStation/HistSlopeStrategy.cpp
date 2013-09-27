@@ -6,6 +6,7 @@
 #include "PriceBarDataProxy.h"
 #include "PortfolioTrendOrderPlacer.h"
 #include "Portfolio.h"
+#include "DoubleCompare.h"
 
 #define PI 3.1415926
 
@@ -48,11 +49,15 @@ CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem,
 
 CHistSlopeStrategy::~CHistSlopeStrategy(void)
 {
+	boost::mutex::scoped_lock l(m_mut);
 }
 
 void CHistSlopeStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
 {
+	boost::mutex::scoped_lock l(m_mut);
+
 	CTechAnalyStrategy::Apply(strategyItem, withTriggers);
+	
 	m_macdShort = strategyItem.hs_short();
 	m_macdLong = strategyItem.hs_long();
 	m_macdM = strategyItem.hs_m();
@@ -61,25 +66,57 @@ void CHistSlopeStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	m_fastPeriod = strategyItem.hs_fastperiod();
 	m_slowPeriod = strategyItem.hs_slowperiod();
 
-	// Initialize Indicator set
-	const vector<CPriceBarDataProxy*>& dataProxies = DataProxies();
-	for(vector<CPriceBarDataProxy*>::const_iterator iter = dataProxies.begin(); iter != dataProxies.end(); ++iter)
+	if(withTriggers)
 	{
-		if((*iter)->Precision() == m_fastPeriod)
+		// Editing parameters of strategy, including seed of MACDDataSet
+		if(m_fastPeriodIndicatorSet.get() != NULL)
 		{
-			m_fastPeriodIndicatorSet = MACDDataSetPtr(new CMACDDataSet((*iter)->GetRecordSetSize(), 
-				m_macdShort, m_macdLong, m_macdM));
-			m_fastPeriodIndicatorSet->SeedShort(strategyItem.hs_fastshortemaseed());
-			m_fastPeriodIndicatorSet->SeedLong(strategyItem.hs_fastlongemaseed());
-			m_fastPeriodIndicatorSet->SeedSignal(strategyItem.hs_fastsignalemaseed());
+			if(!DoubleEqual(m_fastPeriodIndicatorSet->SeedShort(), strategyItem.hs_fastshortemaseed())
+				|| !DoubleEqual(m_fastPeriodIndicatorSet->SeedLong(), strategyItem.hs_fastlongemaseed())
+				|| !DoubleEqual(m_fastPeriodIndicatorSet->SeedSignal(), strategyItem.hs_fastsignalemaseed()))
+			{
+				m_fastPeriodIndicatorSet->SeedShort(strategyItem.hs_fastshortemaseed());
+				m_fastPeriodIndicatorSet->SeedLong(strategyItem.hs_fastlongemaseed());
+				m_fastPeriodIndicatorSet->SeedSignal(strategyItem.hs_fastsignalemaseed());
+				m_fastPeriodIndicatorSet->ResetSeedPosition();
+			}
 		}
-		else if((*iter)->Precision() == m_slowPeriod)
+
+		if(m_slowPeriodIndicatorSet.get() != NULL)
 		{
-			m_slowPeriodIndicatorSet = MACDDataSetPtr(new CMACDDataSet((*iter)->GetRecordSetSize(),
-				m_macdShort, m_macdLong, m_macdM));
-			m_slowPeriodIndicatorSet->SeedShort(strategyItem.hs_slowshortemaseed());
-			m_slowPeriodIndicatorSet->SeedLong(strategyItem.hs_slowlongemaseed());
-			m_slowPeriodIndicatorSet->SeedSignal(strategyItem.hs_slowsignalemaseed());
+			if(!DoubleEqual(m_slowPeriodIndicatorSet->SeedShort(), strategyItem.hs_slowshortemaseed())
+				|| !DoubleEqual(m_slowPeriodIndicatorSet->SeedLong(), strategyItem.hs_slowlongemaseed())
+				|| !DoubleEqual(m_slowPeriodIndicatorSet->SeedSignal(), strategyItem.hs_slowsignalemaseed()))
+			{
+				m_slowPeriodIndicatorSet->SeedShort(strategyItem.hs_slowshortemaseed());
+				m_slowPeriodIndicatorSet->SeedLong(strategyItem.hs_slowlongemaseed());
+				m_slowPeriodIndicatorSet->SeedSignal(strategyItem.hs_slowsignalemaseed());
+				m_slowPeriodIndicatorSet->ResetSeedPosition();
+			}
+		}
+	}
+	else
+	{
+		// Initialize Indicator set
+		const vector<CPriceBarDataProxy*>& dataProxies = DataProxies();
+		for(vector<CPriceBarDataProxy*>::const_iterator iter = dataProxies.begin(); iter != dataProxies.end(); ++iter)
+		{
+			if((*iter)->Precision() == m_fastPeriod)
+			{
+				m_fastPeriodIndicatorSet = MACDDataSetPtr(new CMACDDataSet((*iter)->GetRecordSetSize(), 
+					m_macdShort, m_macdLong, m_macdM));
+				m_fastPeriodIndicatorSet->SeedShort(strategyItem.hs_fastshortemaseed());
+				m_fastPeriodIndicatorSet->SeedLong(strategyItem.hs_fastlongemaseed());
+				m_fastPeriodIndicatorSet->SeedSignal(strategyItem.hs_fastsignalemaseed());
+			}
+			else if((*iter)->Precision() == m_slowPeriod)
+			{
+				m_slowPeriodIndicatorSet = MACDDataSetPtr(new CMACDDataSet((*iter)->GetRecordSetSize(),
+					m_macdShort, m_macdLong, m_macdM));
+				m_slowPeriodIndicatorSet->SeedShort(strategyItem.hs_slowshortemaseed());
+				m_slowPeriodIndicatorSet->SeedLong(strategyItem.hs_slowlongemaseed());
+				m_slowPeriodIndicatorSet->SeedSignal(strategyItem.hs_slowsignalemaseed());
+			}
 		}
 	}
 }
@@ -105,6 +142,9 @@ void CHistSlopeStrategy::CreateTriggers( const entity::StrategyItem& strategyIte
 
 void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
+	// a mutex to protect from unexpected applying strategy settings concurrently
+	boost::mutex::scoped_lock l(m_mut);
+
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
 	if(!IsRunning())
@@ -116,8 +156,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	COHLCRecordSet* slowOHLC = GetRecordSet(symbol, m_slowPeriod, timestamp);
 	m_slowPeriodIndicatorSet->Calculate(slowOHLC);
 	
-	double slowLast0 = 2 * m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
-	double slowLast1 = 2 * m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
+	double slowLast0 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
+	double slowLast1 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	m_slowHistVal = slowLast0;
 	// 2. Test 5 min angle, see if Up or Down.
 	m_slowSlopeDirection = CheckDirection(slowLast1, slowLast0);
@@ -126,8 +166,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
 	m_fastPeriodIndicatorSet->Calculate(fastOHLC);
 	// 3.1 if sign of 1 min is same as 5 min, Goes to Trigger test
-	double fastLast0 = 2 * m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
-	double fastLast1 = 2 * m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
+	double fastLast0 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
+	double fastLast1 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
 	m_fastHistVal = fastLast0;
 	m_fastSlopeDirection = CheckDirection(fastLast1, fastLast0);
 
@@ -266,11 +306,11 @@ void CHistSlopeStrategy::ClosePosition( CPortfolio* pPortfolio, entity::Quote* p
 	if(pOrderPlacer != NULL)
 	{
 		entity::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
-		if(posiDirection == trade::LONG)
+		if(posiDirection == entity::LONG)
 		{
 			pOrderPlacer->CloseOrder(pQuote->bid());
 		}
-		else if(posiDirection == trade::SHORT)
+		else if(posiDirection == entity::SHORT)
 		{
 			pOrderPlacer->CloseOrder(pQuote->ask());
 		}

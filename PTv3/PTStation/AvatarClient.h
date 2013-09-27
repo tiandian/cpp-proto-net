@@ -35,6 +35,9 @@ public:
 	void PublishPositionDetail(trade::PositionDetailInfo* pPosiDetailInfo);
 
 	const boost::gregorian::date& TradingDay(){ return m_tradeAgent.TradingDay(); }
+
+	bool m_destroyed;
+
 private:
 	string				m_sessionId;
 	string				m_investorId;
@@ -48,5 +51,6 @@ private:
 	
 	bool m_tradeLogged;
 	bool m_quoteLogged;
+
 };
 
