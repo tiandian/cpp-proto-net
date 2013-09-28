@@ -7,6 +7,7 @@
 
 
 CPortfolioTrendOrderPlacer::CPortfolioTrendOrderPlacer(void)
+	: m_sentOrderIdx(-1)
 {
 	// This is important for TrendOrderPlacer. The next leg is always triggered explicitly.
 	SendNextOnFilled(false);
@@ -90,4 +91,24 @@ void CPortfolioTrendOrderPlacer::CloseOrder( double limitprice )
 
 		Send();
 	}
+}
+
+void CPortfolioTrendOrderPlacer::OnLegOrderSent( int orderPlacerIdx )
+{
+	m_sentOrderIdx = orderPlacerIdx;
+}
+
+void CPortfolioTrendOrderPlacer::OnPortfolioDone()
+{
+	m_sentOrderIdx = -1;
+}
+
+bool CPortfolioTrendOrderPlacer::IsOpened()
+{
+	return IsWorking() && m_sentOrderIdx == 0;
+}
+
+bool CPortfolioTrendOrderPlacer::IsClosing()
+{
+	return IsWorking() && m_sentOrderIdx == 1;
 }

@@ -73,8 +73,10 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 		CloseSeries[settingIdx] = close;
 	}
 
+#ifdef LOG_FOR_TECH_CALC
 	logger.Info(boost::str(boost::format("Setting Today: last Index - %d, last close - %f")
 		% m_endIndex % close));
+#endif
 }
 
 void COHLCRecordSet::SetHistory( int barIdx, double open, double high, double low, double close )
@@ -84,6 +86,8 @@ void COHLCRecordSet::SetHistory( int barIdx, double open, double high, double lo
 	LowSeries[barIdx] = low;
 	CloseSeries[barIdx] = close;
 
+#ifdef LOG_FOR_TECH_CALC
 	logger.Info(boost::str(boost::format("Setting History: bar Index - %d, close - %f")
 		% barIdx % close));
+#endif
 }

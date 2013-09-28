@@ -546,9 +546,11 @@ void CPortfolioOrderPlacer::Send()
 			% m_activeOrdPlacer->SubmitTimes() % usElapse));
 
 		// if second leg
-		UpdateLastDoneOrder();
+		if(m_sendNextOnFilled)
+			UpdateLastDoneOrder();
 	}
 
+	OnLegOrderSent( m_activeOrdPlacer->SequenceNo());
 }
 
 void CPortfolioOrderPlacer::OnAccept(const RtnOrderWrapperPtr& pRtnOrder)
@@ -590,6 +592,8 @@ void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 		m_triggingTimestamp = pRtnOrder->Timestamp();
 		if(m_sendNextOnFilled)
 			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
+		else
+			UpdateLastDoneOrder();
 	}
 	else
 	{
@@ -866,6 +870,8 @@ void CPortfolioOrderPlacer::AfterPortfolioDone()
 	SetFirstLeg();
 	// Give portfolio a chance to check whether open times, positon or cancel times reach limit
 	m_pPortf->CheckOpenCancelLimit();
+
+	OnPortfolioDone();
 }
 
 void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )
