@@ -591,7 +591,7 @@ void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 		m_activeOrdPlacer = m_legPlacers[sendingIdx].get();
 		m_triggingTimestamp = pRtnOrder->Timestamp();
 		if(m_sendNextOnFilled)
-			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
+			GotoNext();
 		else
 			UpdateLastDoneOrder();
 	}
@@ -688,7 +688,7 @@ void CPortfolioOrderPlacer::OnLegCanceled(const RtnOrderWrapperPtr& pRtnOrder )
 				// Go to send next order
 				m_activeOrdPlacer = m_legPlacers[sendingIdx].get();
 				m_activeOrdPlacer->AdjustVolume(finished);
-				boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
+				GotoNext();
 			}
 			else
 			{
@@ -984,6 +984,11 @@ void CPortfolioOrderPlacer::SetLimitPrice( double* pLmtPxArr, int iPxSize )
 		pOrd->set_limitprice(lmtPx);
 		m_legPlacers[i]->InputOrder().set_limitprice(lmtPx);
 	}
+}
+
+void CPortfolioOrderPlacer::GotoNext()
+{
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
 }
 
 

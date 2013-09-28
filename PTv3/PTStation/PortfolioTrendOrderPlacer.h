@@ -15,7 +15,7 @@ public:
 
 protected:
 	virtual void BuildTemplateOrder();
-	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer){}
+	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer);
 	virtual void OnLegOrderSent(int orderPlacerIdx);
 	virtual void OnPortfolioDone();
 
