@@ -47,21 +47,24 @@ bool CHistSlopeTrigger::OnTest( const double vals[], int size )
 			LOG_DEBUG(logger, boost::str(boost::format("HistSlope Testing for CLOSE: slowAngle: %.2f, fastAngle: %.2f")
 				% sa % fa));
 
-			if((fa > 0 && sa > 0)
-				|| (fa < 0 && sa < 0))
+
+			if(fa * sa < 0 &&	// fast and slow have different slope direction
+				DoubleGreaterEqual(fastAngle, m_fastAngleThreshold))// fast Angle different than slow Angle, AND > 45
 			{
-				// 5 min <= 45
-				if(DoubleLessEqual(slowAngle, m_fastAngleThreshold))
-				{
-					// 1 min get flat
-					if(DoubleLessEqual(fastAngle, 1))
-						return true;
-				}
+				return true;
 			}
-			else // 5 min slope direction different than 1 min
+
+			// 5 min <= 45
+			if(DoubleLessEqual(slowAngle, m_fastAngleThreshold))
 			{
-				if(DoubleGreaterEqual(fastAngle, m_fastAngleThreshold))
+				if(fa * sa < 0)
 					return true;
+
+				// 1 min get flat
+				if(DoubleLessEqual(fastAngle, 2))
+				{
+					return true;
+				}
 			}
 		}
 	}
@@ -76,6 +79,8 @@ CHistSlopeTrailingStop::CHistSlopeTrailingStop( const entity::TriggerItem& trigg
 {
 	// disable trailing stop trigger by default
 	CTrigger::Enable(false);
+
+	Apply(triggerItem);
 }
 
 void CHistSlopeTrailingStop::Apply( const entity::TriggerItem& triggerItem )
@@ -86,7 +91,7 @@ void CHistSlopeTrailingStop::Apply( const entity::TriggerItem& triggerItem )
 bool CHistSlopeTrailingStop::OnTest( double val )
 {
 	LOG_DEBUG(logger, boost::str(boost::format("HistSlope trailing stop TESTING: Last:%.2f, m_effectiveStop:%.2f, m_lastHigh:%.2f")
-		% val % m_lastHigh % m_effectiveStop));
+		% val % m_effectiveStop % m_lastHigh));
 
 	if(Compare(val, m_lastHigh))
 	{
@@ -106,10 +111,12 @@ bool CHistSlopeTrailingStop::OnTest( double val )
 
 void CHistSlopeTrailingStop::Enable( double cost, entity::PosiDirectionType direction )
 {
-	m_lastHigh = cost;
-	m_effectiveStop = CalcOffset(cost, -m_backValue);
-	m_direction = direction;
 	CTrigger::Enable(true);
+
+	m_lastHigh = cost;
+	m_direction = direction;
+	m_effectiveStop = CalcOffset(cost, -m_backValue);
+	
 	LOG_DEBUG(logger, boost::str(boost::format("HistSlope trailing stop ENABLED. m_lastHigh:%.2f, m_backValue:%.2f, m_effectiveStop:%.2f")
 		% m_lastHigh % m_backValue % m_effectiveStop ));
 }

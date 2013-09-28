@@ -87,10 +87,12 @@ protected:
 	virtual void OnLegOrderSent(int orderPlacerIdx){}
 	virtual void OnPortfolioDone(){}
 	
+	
 	void SetNewOrderId(const string& mlOrdId);
 	void ResetTemplate();
 	void SetFirstLeg();
 	void GotoRetry(const RtnOrderWrapperPtr& pRtnOrder);
+	void GotoNext();
 	void AfterLegDone();
 	void AfterPortfolioDone();
 	

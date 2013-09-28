@@ -16,6 +16,8 @@ CLegOrderPlacer::CLegOrderPlacer(CPortfolioOrderPlacer* portfOrdPlacer, int open
 	, m_isPending(false)
 	, m_bOrderReady(false)
 	, m_isPartiallyFilled(false)
+	, m_priceTick(0)
+	, m_modifyPriceWay(BASED_ON_TICK)
 {
 	m_pendingTimer.SetLegOrderPlacer(this);
 }
@@ -83,6 +85,18 @@ void CLegOrderPlacer::Reset(bool afterCancel)
 
 bool CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 {
+	if(m_modifyPriceWay == BASED_ON_TICK)
+	{
+		return ModifyPriceBasedOnTick(pQuote);
+	}
+	else
+	{
+		return ModifyPriceBasedOnOpposite(pQuote);
+	}
+}
+
+bool CLegOrderPlacer::ModifyPriceBasedOnTick( entity::Quote* pQuote )
+{
 #ifdef LOG_FOR_TRADE
 	LOG_DEBUG(logger, boost::str(boost::format("Next quote (%s) - L:%.2f, A:%.2f, B:%.2f")
 		% pQuote->symbol() % pQuote->last() % pQuote->ask() % pQuote->bid()));
@@ -103,7 +117,7 @@ bool CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 	if(direction == trade::BUY)
 	{
 		double buy = basePx + m_priceTick;
-		
+
 #ifdef FAKE_DEAL
 		bool needChange = true;
 #else
@@ -117,7 +131,7 @@ bool CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 #endif
 			m_inputOrder.set_limitprice(buy);
 		}
-		
+
 		return needChange;
 	}
 	else if(direction == trade::SELL)
@@ -141,6 +155,53 @@ bool CLegOrderPlacer::ModifyPrice( entity::Quote* pQuote )
 
 	return true;
 }
+
+bool CLegOrderPlacer::ModifyPriceBasedOnOpposite( entity::Quote* pQuote )
+{
+	trade::TradeDirectionType direction = m_inputOrder.Direction();
+
+	if(direction == trade::BUY)
+	{
+		double buy = pQuote->ask();
+
+#ifdef FAKE_DEAL
+		bool needChange = true;
+#else
+		bool needChange = buy - m_inputOrder.LimitPrice() > 0.001;
+#endif
+		if(needChange)
+		{
+#ifdef LOG_FOR_TRADE
+			LOG_DEBUG(logger, boost::str(boost::format("Modify order(%s): Buy @ %.2f -> %.2f")
+				% Symbol() % m_inputOrder.LimitPrice() % buy));
+#endif
+			m_inputOrder.set_limitprice(buy);
+		}
+
+		return needChange;
+	}
+	else if(direction == trade::SELL)
+	{
+		double sell = pQuote->bid();
+#ifdef FAKE_DEAL
+		bool needChange = true;
+#else
+		bool needChange = m_inputOrder.LimitPrice() - sell  > 0.001;
+#endif
+		if(needChange)
+		{
+#ifdef LOG_FOR_TRADE
+			LOG_DEBUG(logger, boost::str(boost::format("Modify order(%s): Sell @ %.2f -> %.2f")
+				% Symbol() % m_inputOrder.LimitPrice() % sell));
+#endif
+			m_inputOrder.set_limitprice(sell);
+		}
+		return needChange;
+	}
+
+	return true;
+}
+
 
 void CLegOrderPlacer::UpdateOrder( const RtnOrderWrapperPtr& order )
 {

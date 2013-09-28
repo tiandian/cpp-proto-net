@@ -8,6 +8,12 @@
 
 class CPortfolioOrderPlacer;
 
+enum MODIFY_PRICE_WAY
+{
+	BASED_ON_TICK,
+	BASED_ON_OPPOSITE
+};
+
 class CLegOrderPlacer
 {
 public:
@@ -39,6 +45,11 @@ public:
 	int AddSubmitTimes() { return ++m_submitTimes; }
 	bool CanRetry(){ return m_submitTimes <= m_maxRetry; }
 	bool ModifyPrice(entity::Quote* pQuote);
+	bool ModifyPriceBasedOnTick(entity::Quote* pQuote);
+	bool ModifyPriceBasedOnOpposite(entity::Quote* pQuote);
+
+	MODIFY_PRICE_WAY ModifyPriceWay(){ return m_modifyPriceWay; }
+	void ModifyPriceWay(MODIFY_PRICE_WAY way){ m_modifyPriceWay = way; }
 
 	void StartPending(const RtnOrderWrapperPtr& pendingOrder);
 
@@ -67,7 +78,9 @@ private:
 	string m_currentOrdRef;
 	int m_submitTimes;
 	int m_openTimeout;
+
 	double m_priceTick;
+	MODIFY_PRICE_WAY m_modifyPriceWay;
 
 	trade::Order m_legOrder;
 	RtnOrderWrapperPtr m_legOrderWrapper;

@@ -89,7 +89,7 @@ void CPortfolioTrendOrderPlacer::CloseOrder( double limitprice )
 		
 		m_legPlacers[1]->InputOrder().set_limitprice(limitprice);
 
-		Send();
+		GotoNext();
 	}
 }
 
@@ -111,4 +111,12 @@ bool CPortfolioTrendOrderPlacer::IsOpened()
 bool CPortfolioTrendOrderPlacer::IsClosing()
 {
 	return IsWorking() && m_sentOrderIdx == 1;
+}
+
+void CPortfolioTrendOrderPlacer::OnAddingLegOrderPlacer( CLegOrderPlacer* pLegOrderPlacer )
+{
+	if(pLegOrderPlacer != NULL)
+	{
+		pLegOrderPlacer->ModifyPriceWay(BASED_ON_OPPOSITE);
+	}
 }
