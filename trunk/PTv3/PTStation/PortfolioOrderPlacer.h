@@ -84,6 +84,8 @@ protected:
 	virtual void SetDirection(entity::PosiDirectionType posiDirection);
 	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize);
 	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer){}
+	virtual void OnLegOrderSent(int orderPlacerIdx){}
+	virtual void OnPortfolioDone(){}
 	
 	void SetNewOrderId(const string& mlOrdId);
 	void ResetTemplate();

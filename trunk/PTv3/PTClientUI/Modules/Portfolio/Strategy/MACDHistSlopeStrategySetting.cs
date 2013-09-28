@@ -422,6 +422,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public override PTEntity.StrategyItem GetEntity()
         {
             PTEntity.MACDSlopeStrategyItem macdSlopeStrategy = new PTEntity.MACDSlopeStrategyItem();
+            macdSlopeStrategy.OpenTimeout = 500;
+            macdSlopeStrategy.RetryTimes = 8;
             macdSlopeStrategy.Symbol = this.Symbol;
             macdSlopeStrategy.Short = this.MACD_Short;
             macdSlopeStrategy.Long = this.MACD_Long;
@@ -443,13 +445,15 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             {
                 Offset = PTEntity.PosiOffsetFlag.OPEN,
                 FastAngleThreshold = this.FastAngleThreshold,
-                SlowAngleThreshold = this.SlowAngleThreshold
+                SlowAngleThreshold = this.SlowAngleThreshold,
+                Enabled = true
             });
             macdSlopeStrategy.Triggers.Add(new PTEntity.HistSlopeTriggerItem
             {
                 Offset = PTEntity.PosiOffsetFlag.CLOSE,
                 FastAngleThreshold = this.FastAngleThreshold,
-                SlowAngleThreshold = this.SlowAngleThreshold
+                SlowAngleThreshold = this.SlowAngleThreshold,
+                Enabled = true
             });
             macdSlopeStrategy.Triggers.Add(new PTEntity.HistSlopeTrailingStopTriggerItem(this.TrailingStopValue));
 
