@@ -91,7 +91,8 @@ protected:
 	
 	void SetNewOrderId(const string& mlOrdId);
 	void ResetTemplate();
-	void ResetTemplateOrderStatusMsg();
+	void FillSendingOrderNote();
+	void ResetSendingOrderNote();
 	void SetFirstLeg();
 	void GotoRetry(const RtnOrderWrapperPtr& pRtnOrder);
 	void GotoNext();
@@ -128,6 +129,7 @@ protected:
 	boost::atomic<bool> m_isWorking;
 	bool m_isReady;
 	bool m_sendNextOnFilled;
+	string m_sendingOrderNote;
 	entity::PosiDirectionType m_posiDirection;
 	boost::chrono::steady_clock::time_point m_triggingTimestamp;
 

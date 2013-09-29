@@ -344,9 +344,11 @@ void CHistSlopeStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer
 
 		LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Close position @ %.2f")
 			% GetPosiDirectionText(posiDirection) % closePx ));
-		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("%s - %s Æ½²Ö @ %.2f")
+		
+		pOrderPlacer->CloseOrder(closePx);
+
+		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s Æ½²Ö @ %.2f")
 			% noteText % GetPosiDirectionText(posiDirection) % closePx));
 
-		pOrderPlacer->CloseOrder(closePx);
 	}
 }
