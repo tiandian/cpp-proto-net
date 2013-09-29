@@ -31,7 +31,7 @@ bool CHistSlopeTrigger::OnTest( const double vals[], int size )
 
 		if(m_offset == entity::OPEN)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("HistSlope Testing for OPEN: slowAngle: %.2f >= %.2f, fastAngle: %.2f >= %.2f")
+			LOG_DEBUG(logger, boost::str(boost::format("HistSlope Testing for OPEN: slowAngle: %.2f >= %.2f ?, fastAngle: %.2f >= %.2f ?")
 				% slowAngle % m_slowAngleThreshold % fastAngle % m_fastAngleThreshold));
 			if(DoubleGreaterEqual(slowAngle, m_slowAngleThreshold)
 				&& DoubleGreaterEqual(fastAngle, m_fastAngleThreshold))

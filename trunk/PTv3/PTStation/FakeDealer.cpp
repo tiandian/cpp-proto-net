@@ -74,6 +74,10 @@ int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRe
 	}
 	else
 	{
+		boost::thread thIns(boost::bind(
+			&CFakeDealer::FullFillOrder, this, tmpInputOrder, nRequestID)
+			);
+		/*
 		// Fill and pending
 		if(times % 2 == 1)
 		{
@@ -89,6 +93,7 @@ int CFakeDealer::ReqOrderInsert( CThostFtdcInputOrderField *pInputOrder, int nRe
 				&CFakeDealer::PendingOrder, this, tmpInputOrder, nRequestID)
 				);
 		}
+		*/
 	}
 	
 	return 0;

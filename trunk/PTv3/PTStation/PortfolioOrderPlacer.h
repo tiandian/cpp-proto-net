@@ -75,7 +75,8 @@ public:
 	bool IfPortfolioCanceled();
 
 	entity::PosiDirectionType PosiDirection(){ return m_posiDirection; }
-
+	void OutputStatus(const string& statusMsg);
+	void SetMlOrderStatus(const string& statusMsg);
 protected:
 
 	void Initialize(const string& mlOrdId);
@@ -90,6 +91,7 @@ protected:
 	
 	void SetNewOrderId(const string& mlOrdId);
 	void ResetTemplate();
+	void ResetTemplateOrderStatusMsg();
 	void SetFirstLeg();
 	void GotoRetry(const RtnOrderWrapperPtr& pRtnOrder);
 	void GotoNext();
@@ -100,7 +102,7 @@ protected:
 	void UpdateLegOrder(const RtnOrderWrapperPtr& pRtnOrder);
 	void UpdateLastDoneOrder();
 	void UpdateMultiLegOrder();
-	void OutputStatus(const string& statusMsg);
+	
 	void CleanupProc();
 	bool IsReadyForPrepare(){ return !m_isReady; }
 
