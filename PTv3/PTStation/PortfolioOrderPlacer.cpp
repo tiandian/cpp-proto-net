@@ -533,9 +533,9 @@ void CPortfolioOrderPlacer::Send()
 
 		ResetTemplate();
 		m_isFirstLeg = false;
-
+		FillSendingOrderNote();
 		m_pOrderProcessor->PublishMultiLegOrderUpdate(m_multiLegOrderTemplate.get());
-		ResetTemplateOrderStatusMsg();
+		ResetSendingOrderNote();
 	}
 	else
 	{
@@ -997,14 +997,25 @@ void CPortfolioOrderPlacer::GotoNext()
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtNextLeg());
 }
 
-void CPortfolioOrderPlacer::ResetTemplateOrderStatusMsg()
+void CPortfolioOrderPlacer::ResetSendingOrderNote()
 {
+	m_sendingOrderNote.clear();
 	m_multiLegOrderTemplate->set_statusmsg("");
 }
 
 void CPortfolioOrderPlacer::SetMlOrderStatus( const string& statusMsg )
 {
-	m_multiLegOrderTemplate->set_statusmsg(statusMsg);
+	m_sendingOrderNote = statusMsg;
+}
+
+void CPortfolioOrderPlacer::FillSendingOrderNote()
+{
+	if(!m_sendingOrderNote.empty())
+	{
+		string ordStatusMsg;
+		GB2312ToUTF_8(ordStatusMsg, m_sendingOrderNote.c_str());
+		m_multiLegOrderTemplate->set_statusmsg(ordStatusMsg);
+	}
 }
 
 
