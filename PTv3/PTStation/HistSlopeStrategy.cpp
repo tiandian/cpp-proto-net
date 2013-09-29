@@ -224,7 +224,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] HistSlope - Portfolio(%s) Closing position due to Angle mismaching condition")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pOrderPlacer, pQuote);
+			ClosePosition(pOrderPlacer, pQuote, "MACD角度不再满足条件");
 			return;
 		}
 
@@ -233,7 +233,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] HistSlope - Portfolio(%s) Closing position due to Trailing stop")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pOrderPlacer, pQuote);
+			ClosePosition(pOrderPlacer, pQuote, "回头触发止损(盈)");
 			return;
 		}
 
@@ -311,10 +311,13 @@ void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CP
 			direction = entity::SHORT;
 		}
 		lmtPrice[1] = 0.0;
-		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
-		
+
 		LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Open position @ %.2f")
 			% GetPosiDirectionText(direction) % lmtPrice[0] ));
+		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("MACD角度满足 - %s 开仓 @ %.2f")
+			% GetPosiDirectionText(direction) % lmtPrice[0]));
+
+		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 
 		if(m_pTrailingStopTrigger != NULL)
 		{
@@ -323,22 +326,27 @@ void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CP
 	}
 }
 
-void CHistSlopeStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote )
+void CHistSlopeStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText )
 {
 	if(pOrderPlacer != NULL)
 	{
 		entity::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
+
+		double closePx = 0.0;
 		if(posiDirection == entity::LONG)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Close position @ %.2f")
-				% GetPosiDirectionText(posiDirection) % pQuote->bid() ));
-			pOrderPlacer->CloseOrder(pQuote->bid());
+			closePx = pQuote->bid();
 		}
 		else if(posiDirection == entity::SHORT)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Close position @ %.2f")
-				% GetPosiDirectionText(posiDirection) % pQuote->ask() ));
-			pOrderPlacer->CloseOrder(pQuote->ask());
+			closePx = pQuote->ask();
 		}
+
+		LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Close position @ %.2f")
+			% GetPosiDirectionText(posiDirection) % closePx ));
+		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f")
+			% noteText % GetPosiDirectionText(posiDirection) % closePx));
+
+		pOrderPlacer->CloseOrder(closePx);
 	}
 }
