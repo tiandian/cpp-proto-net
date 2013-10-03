@@ -218,3 +218,9 @@ void CLegOrderPlacer::AdjustVolume( int adjustedVolume )
 {
 	m_inputOrder.set_volumetotaloriginal(adjustedVolume);
 }
+
+trade::Order& CLegOrderPlacer::OrderEntity()
+{
+	m_legOrderWrapper->ToEntity(&m_legOrder);
+	return m_legOrder;
+}

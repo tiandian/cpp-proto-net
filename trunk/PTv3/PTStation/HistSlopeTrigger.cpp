@@ -47,24 +47,11 @@ bool CHistSlopeTrigger::OnTest( const double vals[], int size )
 			LOG_DEBUG(logger, boost::str(boost::format("HistSlope Testing for CLOSE: slowAngle: %.2f, fastAngle: %.2f")
 				% sa % fa));
 
-
 			if(fa * sa < 0 &&	// fast and slow have different slope direction
 				DoubleGreaterEqual(fastAngle, m_fastAngleThreshold))// fast Angle different than slow Angle, AND > 45
 			{
+				LOG_DEBUG(logger, boost::str(boost::format("Fast Angle has become against Slow Angle and greater than %.2f") % m_fastAngleThreshold));
 				return true;
-			}
-
-			// 5 min <= 45
-			if(DoubleLessEqual(slowAngle, m_fastAngleThreshold))
-			{
-				if(fa * sa < 0)
-					return true;
-
-				// 1 min get flat
-				if(DoubleLessEqual(fastAngle, 2))
-				{
-					return true;
-				}
 			}
 		}
 	}

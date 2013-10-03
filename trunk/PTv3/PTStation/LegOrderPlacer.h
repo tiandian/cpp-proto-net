@@ -22,11 +22,7 @@ public:
 
 	CInputOrder& InputOrder(){ return m_inputOrder; }
 	trade::Order& Order(){ return m_legOrder; }
-	trade::Order& OrderEntity()
-	{
-		m_legOrderWrapper->ToEntity(&m_legOrder);
-		return m_legOrder; 
-	}
+	trade::Order& OrderEntity();
 	
 	unsigned int SequenceNo() { return m_sequenceNo; }
 	void SequenceNo(unsigned int idx){ m_sequenceNo = idx; }
@@ -66,6 +62,11 @@ public:
 	bool IsPartiallyFilled(){ return m_isPartiallyFilled; }
 	void SetVolumeOriginal(int volOrig) { m_volumeOriginial = volOrig; }
 	void AdjustVolume(int adjustedVolume);
+
+	// OrderEntity status would be set after operation Reset because of Filled Order incoming after Reset 
+	// So do this after portfolio completely done for ensuring correct status
+	void ResetOrderEntityStatus(){ m_bOrderReady = false; }
+
 private:
 
 	CInputOrder m_inputOrder;

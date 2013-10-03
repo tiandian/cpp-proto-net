@@ -437,11 +437,12 @@ enum SubmitReason {
   SR_StopGain = 2,
   SR_StopLoss = 3,
   SR_AutoSwitch = 4,
-  SR_Scalpe = 5
+  SR_Scalpe = 5,
+  SR_Trend = 6
 };
 bool SubmitReason_IsValid(int value);
 const SubmitReason SubmitReason_MIN = SR_Manual;
-const SubmitReason SubmitReason_MAX = SR_Scalpe;
+const SubmitReason SubmitReason_MAX = SR_Trend;
 const int SubmitReason_ARRAYSIZE = SubmitReason_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* SubmitReason_descriptor();

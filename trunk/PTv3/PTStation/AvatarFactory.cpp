@@ -153,7 +153,9 @@ void CAvatarFactory::disposeClient( LogicalConnection* pClient )
 	{
 		logger.Warning("Disposing client has been destroyed already");
 	}
-
-	LOG_INFO(logger, boost::str(boost::format("Disposing client %s ...") % pAvatar->Pseudo()));
-	delete pAvatar;
+	else
+	{
+		LOG_INFO(logger, boost::str(boost::format("Disposing client %s ...") % pAvatar->Pseudo()));
+		delete pAvatar;
+	}
 }

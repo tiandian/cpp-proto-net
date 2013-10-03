@@ -73,8 +73,10 @@ void CPriceBarGen::Calculate(entity::Quote* pQuote)
 		}
 		else 
 		{	// barIdx < m_currentIdx ???
-			logger.Error(boost::str(boost::format("!!! barIdx(%d) < m_currentIdx(%d) !!!") % barIdx % m_currentIdx));
-			assert(barIdx > m_currentIdx);
+			logger.Error(boost::str(boost::format("!!! %s -> barIdx(%d) < m_currentIdx(%d) !!!") % pQuote->update_time() % barIdx % m_currentIdx));
+					
+			//assert(barIdx > m_currentIdx);
+			return;	// ignore the quote with invalid calculated index
 		}
 
 		RaiseBarChangeEvent(barIdx, timestamp);

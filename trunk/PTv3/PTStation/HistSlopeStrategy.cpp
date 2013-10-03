@@ -174,7 +174,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 {
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
-
+	//pQuote->set_last(2407.8);
+	//pQuote->set_update_time("09:15:00");
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
 	if(!IsRunning())
@@ -224,7 +225,7 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] HistSlope - Portfolio(%s) Closing position due to Angle mismaching condition")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pOrderPlacer, pQuote, "MACD角度不再满足条件");
+			ClosePosition(pOrderPlacer, pQuote, "MACD快线角度反向并达到设定值");
 			return;
 		}
 

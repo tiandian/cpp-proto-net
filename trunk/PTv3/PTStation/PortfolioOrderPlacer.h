@@ -94,6 +94,7 @@ protected:
 	void FillSendingOrderNote();
 	void ResetSendingOrderNote();
 	void SetFirstLeg();
+	void ResetOrderPlacerStatus();
 	void GotoRetry(const RtnOrderWrapperPtr& pRtnOrder);
 	void GotoNext();
 	void AfterLegDone();

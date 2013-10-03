@@ -113,15 +113,27 @@ namespace PortfolioTrading.Modules.Portfolio
                 if (mlOrderVm != null)
                 {
                     mlOrderVm.From(mlOrder);
-                    if (!mlOrderVm.IsOpenOrder && mlOrderVm.IsAllFinished)
+
+                    if (mlOrderVm.IsAllFinished)
                     {
-                        if (!string.IsNullOrEmpty(mlOrder.OpenOrderId))
+                        if (mlOrderVm.IsPortfolio)
                         {
-                            var openOrderVm = GetMlOrderVm(accountId, mlOrder.OpenOrderId);
-                            if(openOrderVm != null)
-                                mlOrderVm.CalcProfit(openOrderVm);
+                            if (!mlOrderVm.IsOpenOrder)
+                            {
+                                if (!string.IsNullOrEmpty(mlOrder.OpenOrderId))
+                                {
+                                    var openOrderVm = GetMlOrderVm(accountId, mlOrder.OpenOrderId);
+                                    if (openOrderVm != null)
+                                        mlOrderVm.CalcProfit(openOrderVm);
+                                }
+                            }
+                        }
+                        else // the first leg is to open position, and the second leg is to close position
+                        {
+                            mlOrderVm.CalcProfit();
                         }
                     }
+                    
                     return null;
                 }
                 else

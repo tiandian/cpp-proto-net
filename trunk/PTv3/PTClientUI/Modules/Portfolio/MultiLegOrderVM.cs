@@ -157,6 +157,23 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        #region IsPortfolio
+        private bool _isPortfolio;
+
+        public bool IsPortfolio
+        {
+            get { return _isPortfolio; }
+            set
+            {
+                if (_isPortfolio != value)
+                {
+                    _isPortfolio = value;
+                    RaisePropertyChanged("IsPortfolio");
+                }
+            }
+        }
+        #endregion
+        
 
         public IEnumerable<OrderVM> Legs
         {
@@ -173,6 +190,7 @@ namespace PortfolioTrading.Modules.Portfolio
             PortfolioId = mlOrder.PortfolioId;
             Quantity = mlOrder.Quantity;
             IsOpenOrder = mlOrder.OrderId == mlOrder.OpenOrderId;
+            IsPortfolio = string.IsNullOrEmpty(mlOrder.OpenOrderId);
 
             bool allFinished = false;
             for (int i = 0; i < mlOrder.Legs.Length; ++i )
@@ -212,6 +230,29 @@ namespace PortfolioTrading.Modules.Portfolio
                     }
                 }
             }
+        }
+
+        public void CalcProfit()
+        {
+            double profit = 0;
+            if (LastOrder == null) return;
+
+            if (LastOrder.Legs.Length > 1)
+            {
+                var openOrd = LastOrder.Legs[0];
+                var closeOrd = LastOrder.Legs[1];
+
+                if (closeOrd.Direction == PTEntity.TradeDirectionType.SELL)
+                {
+                    profit += (closeOrd.LimitPrice - openOrd.LimitPrice);
+                }
+                else
+                {
+                    profit += (openOrd.LimitPrice - closeOrd.LimitPrice);
+                }
+            }
+
+            Profit = profit;
         }
 
         public void CalcProfit(MultiLegOrderVM openOrderVm)
@@ -255,6 +296,8 @@ namespace PortfolioTrading.Modules.Portfolio
                     return "移仓";
                 case PTEntity.SubmitReason.SR_Scalpe:
                     return "高频";
+                case PTEntity.SubmitReason.SR_Trend:
+                    return "趋势";
                 default:
                     return "未知";
             }
