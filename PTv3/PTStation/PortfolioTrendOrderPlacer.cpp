@@ -33,7 +33,7 @@ void CPortfolioTrendOrderPlacer::BuildTemplateOrder()
 
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
 	pMultiLegOrder->set_opendate(boost::gregorian::to_iso_string(d));
-	pMultiLegOrder->set_reason(trade::SR_AutoOpen);
+	pMultiLegOrder->set_reason(trade::SR_Trend);
 
 	assert(m_pPortf->Count() == 1);
 

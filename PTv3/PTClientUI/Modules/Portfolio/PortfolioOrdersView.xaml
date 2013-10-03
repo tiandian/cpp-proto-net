@@ -188,7 +188,7 @@
                                 <ItemsControl ItemsSource="{Binding Record.DataItem.Legs, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <TextBlock Text="{Binding InsertTime, StringFormat=T, FallbackValue=--:--:--}"/>
+                                            <TextBlock HorizontalAlignment="Center"  Text="{Binding InsertTime, StringFormat=HH:mm:ss}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>

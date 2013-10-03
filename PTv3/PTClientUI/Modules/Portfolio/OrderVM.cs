@@ -81,9 +81,9 @@ namespace PortfolioTrading.Modules.Portfolio
         #endregion
 
         #region InsertTime
-        private DateTime _insertTime;
+        private DateTime? _insertTime;
 
-        public DateTime InsertTime
+        public DateTime? InsertTime
         {
             get { return _insertTime; }
             set
@@ -192,8 +192,10 @@ namespace PortfolioTrading.Modules.Portfolio
             OCFlag = GetOCFlag(order.CombOffsetFlag);
             StatusMsg = GetStatus(order.OrderSubmitStatus, order.OrderStatus);
             IsFinished = CheckForFinish(order.OrderSubmitStatus, order.OrderStatus);
-            if(!string.IsNullOrEmpty(order.InsertTime))
+            if (!string.IsNullOrEmpty(order.InsertTime))
                 InsertTime = DateTime.Parse(order.InsertTime);
+            else
+                InsertTime = null;
             Volume = order.VolumeTotalOriginal;
             VolTraded = order.VolumeTraded;
             OrderPriceType = GetPriceType(order.OrderPriceType);

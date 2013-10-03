@@ -380,6 +380,10 @@
                                         <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">回头止损</TextBlock>
                                         <igEditor:XamTextEditor Value="{Binding TrailingStopValue, FallbackValue=0.6, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
                                     </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">反向角度</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding FastReverseAngle, FallbackValue=15, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </DockPanel>
                         </Border>

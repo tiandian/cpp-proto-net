@@ -281,6 +281,24 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region FastReverseAngle
+        private int _fastReverseAngle;
+
+        public int FastReverseAngle
+        {
+            get { return _fastReverseAngle; }
+            set
+            {
+                if (_fastReverseAngle != value)
+                {
+                    _fastReverseAngle = value;
+                    RaisePropertyChanged("FastReverseAngle");
+                }
+            }
+        }
+        #endregion
+
+
         #region TrailingStopValue
         private double _trailingStopValue;
 
@@ -323,6 +341,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 new XAttribute("slowLongSeed", SlowLongSeed),
                 new XAttribute("slowSignalSeed", SlowSignalSeed),
                 new XAttribute("slowAngleThreshold", SlowAngleThreshold),
+                new XAttribute("fastReverseAngle", FastReverseAngle),
                 new XAttribute("trailingStopValue", TrailingStopValue)
                 );
 
@@ -412,6 +431,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             {
                 SlowAngleThreshold = int.Parse(attr.Value);
             }
+            attr = elem.Attribute("fastReverseAngle");
+            if (attr != null)
+            {
+                FastReverseAngle = int.Parse(attr.Value);
+            }
             attr = elem.Attribute("trailingStopValue");
             if (attr != null)
             {
@@ -451,7 +475,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             macdSlopeStrategy.Triggers.Add(new PTEntity.HistSlopeTriggerItem
             {
                 Offset = PTEntity.PosiOffsetFlag.CLOSE,
-                FastAngleThreshold = this.FastAngleThreshold,
+                FastAngleThreshold = this.FastReverseAngle,
                 SlowAngleThreshold = this.SlowAngleThreshold,
                 Enabled = true
             });
@@ -479,6 +503,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             SlowLongSeed = otherSettings.SlowLongSeed;
             SlowSignalSeed = otherSettings.SlowSignalSeed;
             SlowAngleThreshold = otherSettings.SlowAngleThreshold;
+            FastReverseAngle = otherSettings.FastReverseAngle;
             TrailingStopValue = otherSettings.TrailingStopValue;
         }
     }

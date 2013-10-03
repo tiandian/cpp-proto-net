@@ -386,6 +386,7 @@ void CPortfolioOrderPlacer::ResetTemplate()
 		pOrd->set_ordersubmitstatus(trade::NOT_SUBMITTED);
 		pOrd->set_orderstatus(trade::STATUS_UNKNOWN);
 		pOrd->set_statusmsg("");
+		pOrd->set_inserttime("");
 	}
 }
 
@@ -602,7 +603,6 @@ void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 		// All leg order done
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtAllFilled());
 	}
-
 }
 
 void CPortfolioOrderPlacer::OnPartiallyFilled(const RtnOrderWrapperPtr& pRtnOrder )
@@ -840,7 +840,7 @@ void CPortfolioOrderPlacer::OnOrderReturned( RtnOrderWrapperPtr& rtnOrder )
 
 void CPortfolioOrderPlacer::UpdateLegOrder(const RtnOrderWrapperPtr& pRtnOrder )
 {
-	if(pRtnOrder != NULL)
+	if(pRtnOrder.get() != NULL)
 	{
 		m_activeOrdPlacer->UpdateOrder(pRtnOrder);
 		trade::Order& legOrder = m_activeOrdPlacer->OrderEntity();
@@ -926,6 +926,7 @@ bool CPortfolioOrderPlacer::IfPortfolioCanceled()
 
 void CPortfolioOrderPlacer::SetFirstLeg()
 {
+	ResetOrderPlacerStatus();
 	m_activeOrdPlacer = m_legPlacers[0].get();
 	m_isFirstLeg = true;
 }
@@ -1015,6 +1016,15 @@ void CPortfolioOrderPlacer::FillSendingOrderNote()
 		string ordStatusMsg;
 		GB2312ToUTF_8(ordStatusMsg, m_sendingOrderNote.c_str());
 		m_multiLegOrderTemplate->set_statusmsg(ordStatusMsg);
+	}
+}
+
+void CPortfolioOrderPlacer::ResetOrderPlacerStatus()
+{
+	// Copy order info from legOrder Placer
+	BOOST_FOREACH(const LegOrderPlacerPtr& legPlacer, m_legPlacers)
+	{
+		legPlacer->ResetOrderEntityStatus();
 	}
 }
 
