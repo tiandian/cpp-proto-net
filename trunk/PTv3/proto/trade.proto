@@ -771,6 +771,7 @@ enum SubmitReason
 	SR_StopLoss = 3;
 	SR_AutoSwitch = 4;
 	SR_Scalpe = 5;
+	SR_Trend = 6;
 }
 
 enum MlOrderOffset
