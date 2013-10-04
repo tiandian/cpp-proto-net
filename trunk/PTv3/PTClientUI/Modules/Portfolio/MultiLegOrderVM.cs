@@ -229,6 +229,12 @@ namespace PortfolioTrading.Modules.Portfolio
                         break;
                     }
                 }
+
+                // updating the second leg order
+                if (idx > 0)
+                {
+                    IsAllFinished = _orders[idx].IsFinished;
+                }
             }
         }
 

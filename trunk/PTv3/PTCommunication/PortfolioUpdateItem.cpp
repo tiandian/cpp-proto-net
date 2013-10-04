@@ -78,6 +78,7 @@ PortfolioUpdateItem::PortfolioUpdateItem(entity::PortfolioUpdateItem* pEntity)
 	_totalCloseTimes = pEntity->totalclosetimes();
 	_currentPosition = pEntity->currentposition();
 	_cancelTimes = pEntity->canceltimes();
+	_profit = pEntity->profit();
 	
 	_strategyType = static_cast<StrategyType>(pEntity->strategy());
 

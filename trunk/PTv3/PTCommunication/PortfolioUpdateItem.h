@@ -64,6 +64,14 @@ public:
 		}
 	}
 
+	property double Profit
+	{
+		double get()
+		{
+			return _profit;
+		}
+	}
+
 	property StrategyType Kind
 	{
 		StrategyType get()
@@ -97,6 +105,7 @@ private:
 	int _totalCloseTimes;
 	int _currentPosition;
 	int _cancelTimes;
+	double _profit;
 	StrategyType _strategyType;
 	StrategyUpdateItem ^_strategyUpdate;
 

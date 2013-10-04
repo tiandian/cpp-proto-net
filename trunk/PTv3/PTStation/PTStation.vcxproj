@@ -115,6 +115,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\trade.pb.h" />
     <ClInclude Include="MACDDataSet.h" />
     <ClInclude Include="PortfolioTrendOrderPlacer.h" />
+    <ClInclude Include="SymbolTimeUtil.h" />
     <ClInclude Include="TechStrategyDefs.h" />
     <ClInclude Include="TradingTimeSpan.h" />
     <ClInclude Include="FakeDealer.h" />
@@ -207,6 +208,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="MACDDataSet.cpp" />
     <ClCompile Include="PortfolioTrendOrderPlacer.cpp" />
+    <ClCompile Include="SymbolTimeUtil.cpp" />
     <ClCompile Include="TradingTimeSpan.cpp" />
     <ClCompile Include="FakeDealer.cpp" />
     <ClCompile Include="FileOperations.cpp" />

@@ -75,10 +75,13 @@ void CHistDataReader::ReadFromFile(const string& dataFilePath, COHLCRecordSet* p
             if(succ)
             {
                 int idx = pPriceBarGen->GetIndex(timestamp);
-                if(histData)
-                    pRecordSet->SetHistory(idx, open, high, low, close);
-                else
-                    pRecordSet->SetToday(idx, open, high, low, close);
+				if(idx > -1)
+				{
+					if(histData)
+						pRecordSet->SetHistory(idx, open, high, low, close);
+					else
+						pRecordSet->SetToday(idx, open, high, low, close);
+				}
             }
         }
     }

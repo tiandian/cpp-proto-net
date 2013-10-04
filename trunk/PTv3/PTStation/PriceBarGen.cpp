@@ -2,6 +2,7 @@
 #include "PriceBarGen.h"
 #include "TechStrategyDefs.h"
 #include "globalmembers.h"
+#include "SymbolTimeUtil.h"
 
 CPriceBarGen::CPriceBarGen(void)
 	: m_currentIdx(-1)
@@ -12,7 +13,6 @@ CPriceBarGen::CPriceBarGen(void)
 	, m_barCount(0)
 {
 }
-
 
 CPriceBarGen::~CPriceBarGen(void)
 {
@@ -51,7 +51,7 @@ void CPriceBarGen::Calculate(entity::Quote* pQuote)
 {
     string timestamp;
     int barIdx = GetIndex(pQuote->update_time(), &timestamp);
-	if(barIdx < m_barCount)
+	if(barIdx < m_barCount && barIdx > -1)
 	{
 		double last = pQuote->last();;
 		if(barIdx > m_currentIdx)
@@ -97,7 +97,7 @@ int CPriceBarGen::GetIndex(const string& quoteTime, string* timestamp)
     }
 
     // input quote time is NOT in valid trading time
-    return 0;
+    return -1;
 }
 
 int CPriceBarGen::GetIndex(const string& quoteTime)
@@ -114,7 +114,7 @@ int CPriceBarGen::GetIndex(const string& quoteTime)
     }
 
     // input quote time is NOT in valid trading time
-    return 0;
+    return -1;
 }
 
 void CPriceBarGen::RaiseBarFinalizedEvent()

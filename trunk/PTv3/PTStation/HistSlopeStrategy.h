@@ -51,6 +51,7 @@ private:
 
 	double m_angleArray[2];
 	bool m_positionOpened;
+	bool m_marketOpen;
 
 	MACDDataSetPtr m_slowPeriodIndicatorSet;
 	MACDDataSetPtr m_fastPeriodIndicatorSet;
