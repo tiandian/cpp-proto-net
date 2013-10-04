@@ -214,6 +214,7 @@ void CPortfolio::GetStatisticsUpdate()
 	m_portfolioUpdate.set_totalclosetimes(m_totalOpenTimes);
 	m_portfolioUpdate.set_currentposition(m_currentPosition);
 	m_portfolioUpdate.set_canceltimes(m_cancelTimes);
+	m_portfolioUpdate.set_profit(m_profit);
 }
 
 void CPortfolio::AddPosition( const trade::MultiLegOrder& openOrder )

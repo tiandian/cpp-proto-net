@@ -8,6 +8,8 @@
 #include "Portfolio.h"
 #include "DoubleCompare.h"
 #include "globalmembers.h"
+#include "SymbolTimeUtil.h"
+#include "TechStrategyDefs.h"
 
 #define PI 3.1415926
 
@@ -44,6 +46,7 @@ CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem,
 	, m_fastStdDiff(0)
 	, m_slowStdDiff(0)
 	, m_positionOpened(false)
+	, m_marketOpen(false)
 	, m_fastHistVal(0.0)
 	, m_fastHistDiff(0.0)
 	, m_slowHistVal(0.0)
@@ -174,12 +177,26 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 {
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
-	//pQuote->set_last(2407.8);
-	//pQuote->set_update_time("09:15:00");
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
 	if(!IsRunning())
 		return;
+
+	if(!m_marketOpen)
+	{
+		string symbol = pQuote->symbol();
+		string quoteUpdateTime = pQuote->update_time();
+		bool isIF = isSymbolIF(symbol);
+		string targetBeginTime = isIF ? IF_START_1 : NON_IF_START_1;
+		if(quoteUpdateTime.compare(targetBeginTime) >= 0)
+		{
+			m_marketOpen = true;
+		}
+		else
+		{
+			return;
+		}
+	}
 
 	// 1. Calculate MACD hist value of 1 min and 5 min
 	string symbol = pQuote->symbol();

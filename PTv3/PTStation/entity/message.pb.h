@@ -2884,10 +2884,17 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 canceltimes() const;
   inline void set_canceltimes(::google::protobuf::int32 value);
   
-  // optional string Message = 10;
+  // required double Profit = 10;
+  inline bool has_profit() const;
+  inline void clear_profit();
+  static const int kProfitFieldNumber = 10;
+  inline double profit() const;
+  inline void set_profit(double value);
+  
+  // optional string Message = 11;
   inline bool has_message() const;
   inline void clear_message();
-  static const int kMessageFieldNumber = 10;
+  static const int kMessageFieldNumber = 11;
   inline const ::std::string& message() const;
   inline void set_message(const ::std::string& value);
   inline void set_message(const char* value);
@@ -3009,6 +3016,8 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_currentposition();
   inline void set_has_canceltimes();
   inline void clear_has_canceltimes();
+  inline void set_has_profit();
+  inline void clear_has_profit();
   inline void set_has_message();
   inline void clear_has_message();
   inline void set_has_ar_diff();
@@ -3051,6 +3060,7 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 totalclosetimes_;
   ::google::protobuf::int32 currentposition_;
   ::google::protobuf::int32 canceltimes_;
+  double profit_;
   ::std::string* message_;
   double ar_diff_;
   double ar_longdiff_;
@@ -3068,7 +3078,7 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   int hs_slowslopedirection_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(24 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(25 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -8921,15 +8931,37 @@ inline void PortfolioUpdateItem::set_canceltimes(::google::protobuf::int32 value
   canceltimes_ = value;
 }
 
-// optional string Message = 10;
-inline bool PortfolioUpdateItem::has_message() const {
+// required double Profit = 10;
+inline bool PortfolioUpdateItem::has_profit() const {
   return (_has_bits_[0] & 0x00000200u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_message() {
+inline void PortfolioUpdateItem::set_has_profit() {
   _has_bits_[0] |= 0x00000200u;
 }
-inline void PortfolioUpdateItem::clear_has_message() {
+inline void PortfolioUpdateItem::clear_has_profit() {
   _has_bits_[0] &= ~0x00000200u;
+}
+inline void PortfolioUpdateItem::clear_profit() {
+  profit_ = 0;
+  clear_has_profit();
+}
+inline double PortfolioUpdateItem::profit() const {
+  return profit_;
+}
+inline void PortfolioUpdateItem::set_profit(double value) {
+  set_has_profit();
+  profit_ = value;
+}
+
+// optional string Message = 11;
+inline bool PortfolioUpdateItem::has_message() const {
+  return (_has_bits_[0] & 0x00000400u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_message() {
+  _has_bits_[0] |= 0x00000400u;
+}
+inline void PortfolioUpdateItem::clear_has_message() {
+  _has_bits_[0] &= ~0x00000400u;
 }
 inline void PortfolioUpdateItem::clear_message() {
   if (message_ != &::google::protobuf::internal::kEmptyString) {
@@ -8981,13 +9013,13 @@ inline ::std::string* PortfolioUpdateItem::release_message() {
 
 // optional double AR_Diff = 101;
 inline bool PortfolioUpdateItem::has_ar_diff() const {
-  return (_has_bits_[0] & 0x00000400u) != 0;
+  return (_has_bits_[0] & 0x00000800u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_diff() {
-  _has_bits_[0] |= 0x00000400u;
+  _has_bits_[0] |= 0x00000800u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_diff() {
-  _has_bits_[0] &= ~0x00000400u;
+  _has_bits_[0] &= ~0x00000800u;
 }
 inline void PortfolioUpdateItem::clear_ar_diff() {
   ar_diff_ = 0;
@@ -9003,13 +9035,13 @@ inline void PortfolioUpdateItem::set_ar_diff(double value) {
 
 // optional double AR_LongDiff = 102;
 inline bool PortfolioUpdateItem::has_ar_longdiff() const {
-  return (_has_bits_[0] & 0x00000800u) != 0;
+  return (_has_bits_[0] & 0x00001000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_longdiff() {
-  _has_bits_[0] |= 0x00000800u;
+  _has_bits_[0] |= 0x00001000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_longdiff() {
-  _has_bits_[0] &= ~0x00000800u;
+  _has_bits_[0] &= ~0x00001000u;
 }
 inline void PortfolioUpdateItem::clear_ar_longdiff() {
   ar_longdiff_ = 0;
@@ -9025,13 +9057,13 @@ inline void PortfolioUpdateItem::set_ar_longdiff(double value) {
 
 // optional double AR_ShortDiff = 103;
 inline bool PortfolioUpdateItem::has_ar_shortdiff() const {
-  return (_has_bits_[0] & 0x00001000u) != 0;
+  return (_has_bits_[0] & 0x00002000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_shortdiff() {
-  _has_bits_[0] |= 0x00001000u;
+  _has_bits_[0] |= 0x00002000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_shortdiff() {
-  _has_bits_[0] &= ~0x00001000u;
+  _has_bits_[0] &= ~0x00002000u;
 }
 inline void PortfolioUpdateItem::clear_ar_shortdiff() {
   ar_shortdiff_ = 0;
@@ -9047,13 +9079,13 @@ inline void PortfolioUpdateItem::set_ar_shortdiff(double value) {
 
 // optional int32 AR_LongSize = 104;
 inline bool PortfolioUpdateItem::has_ar_longsize() const {
-  return (_has_bits_[0] & 0x00002000u) != 0;
+  return (_has_bits_[0] & 0x00004000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_longsize() {
-  _has_bits_[0] |= 0x00002000u;
+  _has_bits_[0] |= 0x00004000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_longsize() {
-  _has_bits_[0] &= ~0x00002000u;
+  _has_bits_[0] &= ~0x00004000u;
 }
 inline void PortfolioUpdateItem::clear_ar_longsize() {
   ar_longsize_ = 0;
@@ -9069,13 +9101,13 @@ inline void PortfolioUpdateItem::set_ar_longsize(::google::protobuf::int32 value
 
 // optional int32 AR_ShortSize = 105;
 inline bool PortfolioUpdateItem::has_ar_shortsize() const {
-  return (_has_bits_[0] & 0x00004000u) != 0;
+  return (_has_bits_[0] & 0x00008000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_ar_shortsize() {
-  _has_bits_[0] |= 0x00004000u;
+  _has_bits_[0] |= 0x00008000u;
 }
 inline void PortfolioUpdateItem::clear_has_ar_shortsize() {
-  _has_bits_[0] &= ~0x00004000u;
+  _has_bits_[0] &= ~0x00008000u;
 }
 inline void PortfolioUpdateItem::clear_ar_shortsize() {
   ar_shortsize_ = 0;
@@ -9091,13 +9123,13 @@ inline void PortfolioUpdateItem::set_ar_shortsize(::google::protobuf::int32 valu
 
 // optional double SC_Diff = 201;
 inline bool PortfolioUpdateItem::has_sc_diff() const {
-  return (_has_bits_[0] & 0x00008000u) != 0;
+  return (_has_bits_[0] & 0x00010000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_sc_diff() {
-  _has_bits_[0] |= 0x00008000u;
+  _has_bits_[0] |= 0x00010000u;
 }
 inline void PortfolioUpdateItem::clear_has_sc_diff() {
-  _has_bits_[0] &= ~0x00008000u;
+  _has_bits_[0] &= ~0x00010000u;
 }
 inline void PortfolioUpdateItem::clear_sc_diff() {
   sc_diff_ = 0;
@@ -9113,13 +9145,13 @@ inline void PortfolioUpdateItem::set_sc_diff(double value) {
 
 // optional double HS_FastAngle = 301;
 inline bool PortfolioUpdateItem::has_hs_fastangle() const {
-  return (_has_bits_[0] & 0x00010000u) != 0;
+  return (_has_bits_[0] & 0x00020000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_hs_fastangle() {
-  _has_bits_[0] |= 0x00010000u;
+  _has_bits_[0] |= 0x00020000u;
 }
 inline void PortfolioUpdateItem::clear_has_hs_fastangle() {
-  _has_bits_[0] &= ~0x00010000u;
+  _has_bits_[0] &= ~0x00020000u;
 }
 inline void PortfolioUpdateItem::clear_hs_fastangle() {
   hs_fastangle_ = 0;
@@ -9135,13 +9167,13 @@ inline void PortfolioUpdateItem::set_hs_fastangle(double value) {
 
 // optional double HS_SlowAngle = 302;
 inline bool PortfolioUpdateItem::has_hs_slowangle() const {
-  return (_has_bits_[0] & 0x00020000u) != 0;
+  return (_has_bits_[0] & 0x00040000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_hs_slowangle() {
-  _has_bits_[0] |= 0x00020000u;
+  _has_bits_[0] |= 0x00040000u;
 }
 inline void PortfolioUpdateItem::clear_has_hs_slowangle() {
-  _has_bits_[0] &= ~0x00020000u;
+  _has_bits_[0] &= ~0x00040000u;
 }
 inline void PortfolioUpdateItem::clear_hs_slowangle() {
   hs_slowangle_ = 0;
@@ -9157,13 +9189,13 @@ inline void PortfolioUpdateItem::set_hs_slowangle(double value) {
 
 // optional double HS_FastMacdHist = 303;
 inline bool PortfolioUpdateItem::has_hs_fastmacdhist() const {
-  return (_has_bits_[0] & 0x00040000u) != 0;
+  return (_has_bits_[0] & 0x00080000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_hs_fastmacdhist() {
-  _has_bits_[0] |= 0x00040000u;
+  _has_bits_[0] |= 0x00080000u;
 }
 inline void PortfolioUpdateItem::clear_has_hs_fastmacdhist() {
-  _has_bits_[0] &= ~0x00040000u;
+  _has_bits_[0] &= ~0x00080000u;
 }
 inline void PortfolioUpdateItem::clear_hs_fastmacdhist() {
   hs_fastmacdhist_ = 0;
@@ -9179,13 +9211,13 @@ inline void PortfolioUpdateItem::set_hs_fastmacdhist(double value) {
 
 // optional double HS_FastMacdHistDiff = 304;
 inline bool PortfolioUpdateItem::has_hs_fastmacdhistdiff() const {
-  return (_has_bits_[0] & 0x00080000u) != 0;
+  return (_has_bits_[0] & 0x00100000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_hs_fastmacdhistdiff() {
-  _has_bits_[0] |= 0x00080000u;
+  _has_bits_[0] |= 0x00100000u;
 }
 inline void PortfolioUpdateItem::clear_has_hs_fastmacdhistdiff() {
-  _has_bits_[0] &= ~0x00080000u;
+  _has_bits_[0] &= ~0x00100000u;
 }
 inline void PortfolioUpdateItem::clear_hs_fastmacdhistdiff() {
   hs_fastmacdhistdiff_ = 0;
@@ -9201,13 +9233,13 @@ inline void PortfolioUpdateItem::set_hs_fastmacdhistdiff(double value) {
 
 // optional double HS_SlowMacdHist = 305;
 inline bool PortfolioUpdateItem::has_hs_slowmacdhist() const {
-  return (_has_bits_[0] & 0x00100000u) != 0;
+  return (_has_bits_[0] & 0x00200000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_hs_slowmacdhist() {
-  _has_bits_[0] |= 0x00100000u;
+  _has_bits_[0] |= 0x00200000u;
 }
 inline void PortfolioUpdateItem::clear_has_hs_slowmacdhist() {
-  _has_bits_[0] &= ~0x00100000u;
+  _has_bits_[0] &= ~0x00200000u;
 }
 inline void PortfolioUpdateItem::clear_hs_slowmacdhist() {
   hs_slowmacdhist_ = 0;
@@ -9223,13 +9255,13 @@ inline void PortfolioUpdateItem::set_hs_slowmacdhist(double value) {
 
 // optional double HS_SlowMacdHistDiff = 306;
 inline bool PortfolioUpdateItem::has_hs_slowmacdhistdiff() const {
-  return (_has_bits_[0] & 0x00200000u) != 0;
+  return (_has_bits_[0] & 0x00400000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_hs_slowmacdhistdiff() {
-  _has_bits_[0] |= 0x00200000u;
+  _has_bits_[0] |= 0x00400000u;
 }
 inline void PortfolioUpdateItem::clear_has_hs_slowmacdhistdiff() {
-  _has_bits_[0] &= ~0x00200000u;
+  _has_bits_[0] &= ~0x00400000u;
 }
 inline void PortfolioUpdateItem::clear_hs_slowmacdhistdiff() {
   hs_slowmacdhistdiff_ = 0;
@@ -9245,13 +9277,13 @@ inline void PortfolioUpdateItem::set_hs_slowmacdhistdiff(double value) {
 
 // optional .entity.SlopeDirection HS_FastSlopeDirection = 307;
 inline bool PortfolioUpdateItem::has_hs_fastslopedirection() const {
-  return (_has_bits_[0] & 0x00400000u) != 0;
+  return (_has_bits_[0] & 0x00800000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_hs_fastslopedirection() {
-  _has_bits_[0] |= 0x00400000u;
+  _has_bits_[0] |= 0x00800000u;
 }
 inline void PortfolioUpdateItem::clear_has_hs_fastslopedirection() {
-  _has_bits_[0] &= ~0x00400000u;
+  _has_bits_[0] &= ~0x00800000u;
 }
 inline void PortfolioUpdateItem::clear_hs_fastslopedirection() {
   hs_fastslopedirection_ = 0;
@@ -9268,13 +9300,13 @@ inline void PortfolioUpdateItem::set_hs_fastslopedirection(entity::SlopeDirectio
 
 // optional .entity.SlopeDirection HS_SlowSlopeDirection = 308;
 inline bool PortfolioUpdateItem::has_hs_slowslopedirection() const {
-  return (_has_bits_[0] & 0x00800000u) != 0;
+  return (_has_bits_[0] & 0x01000000u) != 0;
 }
 inline void PortfolioUpdateItem::set_has_hs_slowslopedirection() {
-  _has_bits_[0] |= 0x00800000u;
+  _has_bits_[0] |= 0x01000000u;
 }
 inline void PortfolioUpdateItem::clear_has_hs_slowslopedirection() {
-  _has_bits_[0] &= ~0x00800000u;
+  _has_bits_[0] &= ~0x01000000u;
 }
 inline void PortfolioUpdateItem::clear_hs_slowslopedirection() {
   hs_slowslopedirection_ = 0;

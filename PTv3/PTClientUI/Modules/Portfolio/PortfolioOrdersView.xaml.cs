@@ -128,10 +128,6 @@ namespace PortfolioTrading.Modules.Portfolio
                                 }
                             }
                         }
-                        else // the first leg is to open position, and the second leg is to close position
-                        {
-                            mlOrderVm.CalcProfit();
-                        }
                     }
                     
                     return null;
@@ -173,6 +169,11 @@ namespace PortfolioTrading.Modules.Portfolio
                 if (mlOrderVm != null)
                 {
                     mlOrderVm.From(orderUpdateArgs.LegOrderRef, orderUpdateArgs.LegOrder);
+
+                    if (mlOrderVm.IsAllFinished && !mlOrderVm.IsPortfolio)
+                    {
+                        mlOrderVm.CalcProfit();
+                    }
                 }
             }
         }
