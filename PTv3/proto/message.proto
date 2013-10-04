@@ -244,8 +244,9 @@ message PortfolioUpdateItem
 	required int32 TotalCloseTimes = 7;
 	required int32 CurrentPosition = 8;
 	required int32 CancelTimes = 9;
+	required double Profit = 10;
 
-	optional string Message = 10;
+	optional string Message = 11;
 
 	// Followings are strategy update items
 	// Arbitrage
