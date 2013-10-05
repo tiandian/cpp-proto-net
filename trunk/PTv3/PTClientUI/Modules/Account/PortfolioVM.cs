@@ -850,7 +850,7 @@ namespace PortfolioTrading.Modules.Account
             CancelVolume = item.CancelTimes;
             //Position = item.CurrentPosition;
 
-            //Gain = item.Profit;
+            Gain = item.Profit;
             //Quantity = item.Quantity;
             //MaxPosition = item.MaxPosition;
             //AvgCost = item.AvgCost;

@@ -100,6 +100,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="AsyncOrderPendingTimer.h" />
     <ClInclude Include="AvatarClient.h" />
     <ClInclude Include="AvatarFactory.h" />
+    <ClInclude Include="BollDataSet.h" />
     <ClInclude Include="BufferRunner.h" />
     <ClInclude Include="BuildOrderException.h" />
     <ClInclude Include="ChangePositionStrategy.h" />
@@ -113,6 +114,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\packet.pb.h" />
     <ClInclude Include="entity\quote.pb.h" />
     <ClInclude Include="entity\trade.pb.h" />
+    <ClInclude Include="MACDCrossStrategy.h" />
+    <ClInclude Include="MACDCrossTrigger.h" />
     <ClInclude Include="MACDDataSet.h" />
     <ClInclude Include="PortfolioTrendOrderPlacer.h" />
     <ClInclude Include="SymbolTimeUtil.h" />
@@ -172,6 +175,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="TradeAgentCallback.h" />
     <ClInclude Include="TradingServer.h" />
     <ClInclude Include="TradingServerProtocol.h" />
+    <ClInclude Include="TrailingStopTrigger.h" />
     <ClInclude Include="Trigger.h" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +184,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="AsyncOrderPendingTimer.cpp" />
     <ClCompile Include="AvatarClient.cpp" />
     <ClCompile Include="AvatarFactory.cpp" />
+    <ClCompile Include="BollDataSet.cpp" />
     <ClCompile Include="ChangePositionStrategy.cpp" />
     <ClCompile Include="ChangePositionTrigger.cpp" />
     <ClCompile Include="charsetconvert.cpp" />
@@ -206,6 +211,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="MACDCrossStrategy.cpp" />
+    <ClCompile Include="MACDCrossTrigger.cpp" />
     <ClCompile Include="MACDDataSet.cpp" />
     <ClCompile Include="PortfolioTrendOrderPlacer.cpp" />
     <ClCompile Include="SymbolTimeUtil.cpp" />
@@ -261,6 +268,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="TradingServer.cpp" />
     <ClCompile Include="TradingServerProtocol.cpp" />
+    <ClCompile Include="TrailingStopTrigger.cpp" />
     <ClCompile Include="Trigger.cpp" />
   </ItemGroup>
   <ItemGroup>

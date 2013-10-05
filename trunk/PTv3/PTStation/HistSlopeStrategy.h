@@ -5,7 +5,7 @@
 
 class CAvatarClient;
 class CHistSlopeTrigger;
-class CHistSlopeTrailingStop;
+class CTrailingStopTrigger;
 class CPortfolioTrendOrderPlacer;
 /*
 enum MACDSlopeDirection
@@ -24,7 +24,6 @@ public:
 	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
 
 	virtual int OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder);
-	virtual int OnPortfolioRemovePosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder);
 
 protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
@@ -58,7 +57,7 @@ private:
 
 	CHistSlopeTrigger* m_pOpenTrigger;
 	CHistSlopeTrigger* m_pCloseTrigger;
-	CHistSlopeTrailingStop* m_pTrailingStopTrigger;
+	CTrailingStopTrigger* m_pTrailingStopTrigger;
 
 	boost::mutex m_mut;
 };
