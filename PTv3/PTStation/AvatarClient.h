@@ -39,6 +39,13 @@ public:
 	bool m_destroyed;
 
 private:
+
+	void UnderlyingPushPacket(OutgoingPacket* pPacket)
+	{
+		if(!IsInactive())
+			PushPacket(pPacket);
+	}
+
 	string				m_sessionId;
 	string				m_investorId;
 

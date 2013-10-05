@@ -148,7 +148,7 @@ void CAvatarFactory::onClientDisconnected( LogicalConnection* pClient, CloseReas
 void CAvatarFactory::disposeClient( LogicalConnection* pClient )
 {
 	CAvatarClient* pAvatar = (CAvatarClient*) pClient;
-	Disconnect(pClient, false);
+	//Disconnect(pClient, false);
 	if(pAvatar->m_destroyed)
 	{
 		logger.Warning("Disposing client has been destroyed already");

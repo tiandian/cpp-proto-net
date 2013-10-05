@@ -34,6 +34,8 @@ public:
 	virtual void Start(){ m_running.store(true, boost::memory_order_release); }
 	virtual void Stop(){ m_running.store(false, boost::memory_order_release); }
 
+	static double CalcOrderProfit(const trade::MultiLegOrder& openOrder);
+
 protected:
 
 	void AddProfit(CPortfolio* pPortfolio, double profit);

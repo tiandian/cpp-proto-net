@@ -131,7 +131,8 @@ void HeartbeatService::handle( LogicalConnection* pClient, IncomingPacket* pRequ
 	ProtobufPacket<entity::HeartbeatResponse> resp(HeartbeatResponseID);
 	string tsSvr = boost::posix_time::to_iso_string(boost::posix_time::second_clock::local_time());
 	resp.getData().set_timestamp(tsSvr);
-	pClient->PushPacket(&resp);
+	if(!pClient->IsInactive())
+		pClient->PushPacket(&resp);
 }
 
 void PortfModifyQtyService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )

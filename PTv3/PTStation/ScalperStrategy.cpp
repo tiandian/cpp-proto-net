@@ -120,35 +120,12 @@ int CScalperStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trad
 {
 	int qty = openOrder.quantity();
 
-	double ord_profit = CalcOrderProfit(openOrder);
+	double ord_profit = CStrategy::CalcOrderProfit(openOrder);
 	AddProfit(pPortfolio, ord_profit);
 	int totalOpenTimes = IncrementOpenTimes(pPortfolio, qty);
 	IncrementCloseTimes(pPortfolio, qty);
 	
 	return totalOpenTimes;
-}
-
-double CScalperStrategy::CalcOrderProfit( const trade::MultiLegOrder& openOrder )
-{
-	double profit = 0;
-	int legCount = openOrder.legs_size();
-	for(int ordIdx = 0; ordIdx < legCount; ++ordIdx)
-	{
-		const trade::Order& legOrd = openOrder.legs(ordIdx);
-		double ordPrice = legOrd.limitprice();
-		if(ordPrice > 0)
-		{
-			if(legOrd.direction() == trade::BUY)
-			{
-				profit -= ordPrice;
-			}
-			else
-			{
-				profit += ordPrice;
-			}
-		}
-	}
-	return profit;
 }
 
 entity::PosiDirectionType CScalperStrategy::GetTradeDirection()

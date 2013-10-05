@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "HistSlopeStrategy.h"
 #include "HistSlopeTrigger.h"
+#include "TrailingStopTrigger.h"
 #include "AvatarClient.h"
 #include "OHLCRecordSet.h"
 #include "PriceBarDataProxy.h"
@@ -166,7 +167,7 @@ void CHistSlopeStrategy::CreateTriggers( const entity::StrategyItem& strategyIte
 		}
 		else if(triggerItem.name() == HistSlopeTrailingStopTriggerName)
 		{
-			m_pTrailingStopTrigger = new CHistSlopeTrailingStop(triggerItem);
+			m_pTrailingStopTrigger = new CTrailingStopTrigger(triggerItem);
 			TriggerPtr trigger(m_pTrailingStopTrigger);
 			m_triggers.push_back(trigger);
 		}
@@ -294,14 +295,14 @@ void CHistSlopeStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 
 int CHistSlopeStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
 {
-	m_positionOpened = true;
-	return 0;
-}
+	int qty = openOrder.quantity();
 
-int CHistSlopeStrategy::OnPortfolioRemovePosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder )
-{
-	m_positionOpened = false;
-	return 0;
+	double ord_profit = CStrategy::CalcOrderProfit(openOrder);
+	AddProfit(pPortfolio, ord_profit);
+	int totalOpenTimes = IncrementOpenTimes(pPortfolio, qty);
+	IncrementCloseTimes(pPortfolio, qty);
+
+	return totalOpenTimes;
 }
 
 double CHistSlopeStrategy::CalculateAngle(double stdHistDiff, double currentHistDiff)

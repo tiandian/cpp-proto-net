@@ -2179,6 +2179,20 @@ class StrategyItem : public ::google::protobuf::Message {
   inline double hs_slowsignalemaseed() const;
   inline void set_hs_slowsignalemaseed(double value);
   
+  // optional int32 DX_BollM = 521;
+  inline bool has_dx_bollm() const;
+  inline void clear_dx_bollm();
+  static const int kDXBollMFieldNumber = 521;
+  inline ::google::protobuf::int32 dx_bollm() const;
+  inline void set_dx_bollm(::google::protobuf::int32 value);
+  
+  // optional int32 DX_BollP = 522;
+  inline bool has_dx_bollp() const;
+  inline void clear_dx_bollp();
+  static const int kDXBollPFieldNumber = 522;
+  inline ::google::protobuf::int32 dx_bollp() const;
+  inline void set_dx_bollp(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:entity.StrategyItem)
  private:
   inline void set_has_type();
@@ -2231,14 +2245,18 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_hs_slowlongemaseed();
   inline void set_has_hs_slowsignalemaseed();
   inline void clear_has_hs_slowsignalemaseed();
+  inline void set_has_dx_bollm();
+  inline void clear_has_dx_bollm();
+  inline void set_has_dx_bollp();
+  inline void clear_has_dx_bollp();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
   int type_;
   ::google::protobuf::int32 retrytimes_;
-  ::google::protobuf::RepeatedPtrField< ::entity::TriggerItem > triggers_;
   ::google::protobuf::int32 opentimeout_;
   int ar_side_;
+  ::google::protobuf::RepeatedPtrField< ::entity::TriggerItem > triggers_;
   ::std::string* cp_closeleg_;
   double sc_pricetick_;
   int cp_closelegside_;
@@ -2257,13 +2275,15 @@ class StrategyItem : public ::google::protobuf::Message {
   double hs_fastshortemaseed_;
   double hs_fastlongemaseed_;
   double hs_fastsignalemaseed_;
+  ::google::protobuf::int32 hs_slowperiod_;
+  ::google::protobuf::int32 dx_bollm_;
   double hs_slowshortemaseed_;
   double hs_slowlongemaseed_;
   double hs_slowsignalemaseed_;
-  ::google::protobuf::int32 hs_slowperiod_;
+  ::google::protobuf::int32 dx_bollp_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(27 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(29 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3000,6 +3020,20 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline entity::SlopeDirection hs_slowslopedirection() const;
   inline void set_hs_slowslopedirection(entity::SlopeDirection value);
   
+  // optional double DX_BollTop = 311;
+  inline bool has_dx_bolltop() const;
+  inline void clear_dx_bolltop();
+  static const int kDXBollTopFieldNumber = 311;
+  inline double dx_bolltop() const;
+  inline void set_dx_bolltop(double value);
+  
+  // optional double DX_BollBottom = 312;
+  inline bool has_dx_bollbottom() const;
+  inline void clear_dx_bollbottom();
+  static const int kDXBollBottomFieldNumber = 312;
+  inline double dx_bollbottom() const;
+  inline void set_dx_bollbottom(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioUpdateItem)
  private:
   inline void set_has_id();
@@ -3048,6 +3082,10 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_hs_fastslopedirection();
   inline void set_has_hs_slowslopedirection();
   inline void clear_has_hs_slowslopedirection();
+  inline void set_has_dx_bolltop();
+  inline void clear_has_dx_bolltop();
+  inline void set_has_dx_bollbottom();
+  inline void clear_has_dx_bollbottom();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -3076,9 +3114,11 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   double hs_slowmacdhistdiff_;
   int hs_fastslopedirection_;
   int hs_slowslopedirection_;
+  double dx_bolltop_;
+  double dx_bollbottom_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(25 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(27 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -8000,6 +8040,50 @@ inline void StrategyItem::set_hs_slowsignalemaseed(double value) {
   hs_slowsignalemaseed_ = value;
 }
 
+// optional int32 DX_BollM = 521;
+inline bool StrategyItem::has_dx_bollm() const {
+  return (_has_bits_[0] & 0x08000000u) != 0;
+}
+inline void StrategyItem::set_has_dx_bollm() {
+  _has_bits_[0] |= 0x08000000u;
+}
+inline void StrategyItem::clear_has_dx_bollm() {
+  _has_bits_[0] &= ~0x08000000u;
+}
+inline void StrategyItem::clear_dx_bollm() {
+  dx_bollm_ = 0;
+  clear_has_dx_bollm();
+}
+inline ::google::protobuf::int32 StrategyItem::dx_bollm() const {
+  return dx_bollm_;
+}
+inline void StrategyItem::set_dx_bollm(::google::protobuf::int32 value) {
+  set_has_dx_bollm();
+  dx_bollm_ = value;
+}
+
+// optional int32 DX_BollP = 522;
+inline bool StrategyItem::has_dx_bollp() const {
+  return (_has_bits_[0] & 0x10000000u) != 0;
+}
+inline void StrategyItem::set_has_dx_bollp() {
+  _has_bits_[0] |= 0x10000000u;
+}
+inline void StrategyItem::clear_has_dx_bollp() {
+  _has_bits_[0] &= ~0x10000000u;
+}
+inline void StrategyItem::clear_dx_bollp() {
+  dx_bollp_ = 0;
+  clear_has_dx_bollp();
+}
+inline ::google::protobuf::int32 StrategyItem::dx_bollp() const {
+  return dx_bollp_;
+}
+inline void StrategyItem::set_dx_bollp(::google::protobuf::int32 value) {
+  set_has_dx_bollp();
+  dx_bollp_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // TriggerItem
@@ -9319,6 +9403,50 @@ inline void PortfolioUpdateItem::set_hs_slowslopedirection(entity::SlopeDirectio
   GOOGLE_DCHECK(entity::SlopeDirection_IsValid(value));
   set_has_hs_slowslopedirection();
   hs_slowslopedirection_ = value;
+}
+
+// optional double DX_BollTop = 311;
+inline bool PortfolioUpdateItem::has_dx_bolltop() const {
+  return (_has_bits_[0] & 0x02000000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_dx_bolltop() {
+  _has_bits_[0] |= 0x02000000u;
+}
+inline void PortfolioUpdateItem::clear_has_dx_bolltop() {
+  _has_bits_[0] &= ~0x02000000u;
+}
+inline void PortfolioUpdateItem::clear_dx_bolltop() {
+  dx_bolltop_ = 0;
+  clear_has_dx_bolltop();
+}
+inline double PortfolioUpdateItem::dx_bolltop() const {
+  return dx_bolltop_;
+}
+inline void PortfolioUpdateItem::set_dx_bolltop(double value) {
+  set_has_dx_bolltop();
+  dx_bolltop_ = value;
+}
+
+// optional double DX_BollBottom = 312;
+inline bool PortfolioUpdateItem::has_dx_bollbottom() const {
+  return (_has_bits_[0] & 0x04000000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_dx_bollbottom() {
+  _has_bits_[0] |= 0x04000000u;
+}
+inline void PortfolioUpdateItem::clear_has_dx_bollbottom() {
+  _has_bits_[0] &= ~0x04000000u;
+}
+inline void PortfolioUpdateItem::clear_dx_bollbottom() {
+  dx_bollbottom_ = 0;
+  clear_has_dx_bollbottom();
+}
+inline double PortfolioUpdateItem::dx_bollbottom() const {
+  return dx_bollbottom_;
+}
+inline void PortfolioUpdateItem::set_dx_bollbottom(double value) {
+  set_has_dx_bollbottom();
+  dx_bollbottom_ = value;
 }
 
 // -------------------------------------------------------------------
