@@ -408,12 +408,119 @@
                         </Border>
                     </StackPanel>
                 </DataTemplate>
-                
+
+                <DataTemplate x:Key="macdCrossSettingTemplate">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="2"/>
+                                <Setter Property="BorderBrush" Value="Green" />
+                                <Setter Property="CornerRadius" Value="2"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">快线参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">周期(秒)</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding FastPeriod, FallbackValue=60, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">EMA12种子</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding FastShortSeed, FallbackValue=0.1, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">EMA26种子</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding FastLongSeed, FallbackValue=0.1, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">DEA种子</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding FastSignalSeed, FallbackValue=0.1, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">慢线参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">周期(秒)</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding SlowPeriod, FallbackValue=300, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">EMA12种子</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding SlowShortSeed, FallbackValue=0.1, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">EMA26种子</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding SlowLongSeed, FallbackValue=0.1, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">DEA种子</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding SlowSignalSeed, FallbackValue=0.1, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">平仓参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">回头止损</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding TrailingStopValue, FallbackValue=0.6, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">MACD参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">Short</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding MACD_Short, FallbackValue=12, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">Long</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding MACD_Long, FallbackValue=26, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">M</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding MACD_M, FallbackValue=9, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">Boll参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">M</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding Boll_M, FallbackValue=26, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">P</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding Boll_P, FallbackValue=2, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+
                 <local:PortfSettingTemplateSelector x:Key="strategySettingSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageSettingTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionSettingTemplate}"
                                     ScalperTemplate="{StaticResource scalperSettingTemplate}"
-                                    MACDHistSlopeTemplate="{StaticResource macdHistSlopeSettingTemplate}"/>
+                                    MACDHistSlopeTemplate="{StaticResource macdHistSlopeSettingTemplate}"
+                                    MACDCrossTemplate="{StaticResource macdCrossSettingTemplate}"
+                                                    />
             </Grid.Resources>
 
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

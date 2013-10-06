@@ -60,7 +60,6 @@ void ScalperStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 	StrategyItem::To(pNativeStrategyItem);
 }
 
-
 void MACDSlopeStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 {
 	IntPtr symbolPtr;
@@ -83,6 +82,46 @@ void MACDSlopeStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 		pNativeStrategyItem->set_hs_slowperiod(_slowPeriod);
 		pNativeStrategyItem->set_hs_faststddiff(_fastStdDiff);
 		pNativeStrategyItem->set_hs_slowstddiff(_slowStdDiff);
+
+		pNativeStrategyItem->set_hs_fastshortemaseed(_fastShortSeed);
+		pNativeStrategyItem->set_hs_fastlongemaseed(_fastLongSeed);
+		pNativeStrategyItem->set_hs_fastsignalemaseed(_fastSignalSeed);
+
+		pNativeStrategyItem->set_hs_slowshortemaseed(_slowShortSeed);
+		pNativeStrategyItem->set_hs_slowlongemaseed(_slowLongSeed);
+		pNativeStrategyItem->set_hs_slowsignalemaseed(_slowSignalSeed);
+
+		StrategyItem::To(pNativeStrategyItem);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(symbolPtr);
+	}
+}
+
+void MACDCrossStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
+{
+	IntPtr symbolPtr;
+	try
+	{
+		symbolPtr = (IntPtr)Marshal::StringToHGlobalAnsi(_symbol);
+
+		entity::HistSourceCfg* fastSourceCfg = pNativeStrategyItem->add_histsources();
+		fastSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
+		fastSourceCfg->set_precision(_fastPeriod);
+
+		entity::HistSourceCfg* slowSourceCfg = pNativeStrategyItem->add_histsources();
+		slowSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
+		slowSourceCfg->set_precision(_slowPeriod);
+
+		pNativeStrategyItem->set_hs_short(_short);
+		pNativeStrategyItem->set_hs_long(_long);
+		pNativeStrategyItem->set_hs_m(_m);
+		pNativeStrategyItem->set_hs_fastperiod(_fastPeriod);
+		pNativeStrategyItem->set_hs_slowperiod(_slowPeriod);
+
+		pNativeStrategyItem->set_dx_bollm(_bollM);
+		pNativeStrategyItem->set_dx_bollp(_bollP);
 
 		pNativeStrategyItem->set_hs_fastshortemaseed(_fastShortSeed);
 		pNativeStrategyItem->set_hs_fastlongemaseed(_fastLongSeed);

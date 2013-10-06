@@ -116,6 +116,7 @@
     <Compile Include="Controls\PriceDiffWatchPanel.cs" />
     <Compile Include="Controls\RadioButtonExtended.cs" />
     <Compile Include="Converters\CompareConditionDisplayConverter.cs" />
+    <Compile Include="Converters\CrossDirectionConverter.cs" />
     <Compile Include="Converters\DirectionTypeConverter.cs" />
     <Compile Include="Converters\OrderPriceTypeConverter.cs" />
     <Compile Include="Converters\SlopeDirectionConverter.cs" />
@@ -184,6 +185,8 @@
     <Compile Include="Modules\Portfolio\Strategy\ArbitrageSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ChangePositionSetting.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ChangePositionSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\MACDCrossSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\MACDCrossStrategySettings.cs" />
     <Compile Include="Modules\Portfolio\Strategy\MACDHistSlopeSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\MACDHistSlopeStrategySetting.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ScalperSetting.cs" />

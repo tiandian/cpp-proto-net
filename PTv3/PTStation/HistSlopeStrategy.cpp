@@ -24,19 +24,6 @@ entity::SlopeDirection CheckDirection(double point1, double point2)
 		return entity::NO_DIRECTION;
 }
 
-const char* GetPosiDirectionText(entity::PosiDirectionType direction)
-{
-	switch(direction)
-	{
-	case entity::LONG:
-		return "LONG";
-	case entity::SHORT:
-		return "SHORT";
-	default:
-		return "";
-	}
-}
-
 CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
 	: CTechAnalyStrategy(strategyItem, pAvatar)
 	, m_macdShort(0)

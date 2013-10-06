@@ -195,30 +195,28 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
 
-	// 3.3 if is closing order, pass new quote to modify close order
 	if(pOrderPlacer->IsClosing())
 	{
-		LOG_DEBUG(logger, boost::str(boost::format("[%s] HistSlope - Check for modifying closing order") % pPortfolio->InvestorId()));
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Check for modifying closing order") % pPortfolio->InvestorId()));
 		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
 		return;
 	}
 
-	// 3.2.2 if already opened position, test close trigger
 	if (pOrderPlacer->IsOpened())
 	{
 		bool meetCloseCondition = m_pCloseTrigger->Test(m_macdHistArr, 2);
 		if(meetCloseCondition)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] HistSlope - Portfolio(%s) Closing position due to Angle mismaching condition")
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Portfolio(%s) Closing position due to fast MACD reverse cross")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pOrderPlacer, pQuote, "MACD快线角度反向并达到设定值");
+			ClosePosition(pOrderPlacer, pQuote, "MACD快线逆向叉");
 			return;
 		}
 
 		meetCloseCondition = m_pTrailingStopTrigger->Test(pQuote->last());
 		if(meetCloseCondition)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] HistSlope - Portfolio(%s) Closing position due to Trailing stop")
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Portfolio(%s) Closing position due to Trailing stop")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
 			ClosePosition(pOrderPlacer, pQuote, "回头触发止损(盈)");
 			return;
@@ -226,34 +224,102 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 		return;	// don't need to go to test open trigger any more
 	}
-/*
-	if(m_slowSlopeDirection > entity::NO_DIRECTION && m_fastSlopeDirection == m_slowSlopeDirection )
+	
+	entity::PosiDirectionType direction = GetDirection(m_slowHistVal, pQuote->last(), m_bollTop, m_bollBottom);
+	if(direction > entity::NET)
 	{
-		// 3.2 In scope of Trigger test
-		// 3.2.1 if not opened, test open trigger
 		if(!pOrderPlacer->IsWorking())
 		{
-			bool meetOpenCondition = m_pOpenTrigger->Test(m_angleArray, 2);
+			bool meetOpenCondition = m_pOpenTrigger->Test(m_macdHistArr, 2);
 			if(meetOpenCondition)
 			{
-				// 3.2.1.1 Do OPEN position
-				// 3.2.1.2 if open trigger is fired, be sure to enable trailing stop trigger with Enable(cost, direction)
-				LOG_DEBUG(logger, boost::str(boost::format("[%s] HistSlope - Portfolio(%s) Opening position")
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Portfolio(%s) Opening position")
 					% pPortfolio->InvestorId() % pPortfolio->ID()));
-				OpenPosition(m_fastSlopeDirection, pOrderPlacer, pQuote, timestamp);
+				OpenPosition(direction, pOrderPlacer, pQuote, timestamp);
 				return;
 			}
 		}
 	}
-	*/
+
 }
 
-void CMACDCrossStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp )
+void CMACDCrossStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp )
 {
+	if(direction > entity::NET)
+	{
+		double lmtPrice[2];
+		if(direction == entity::LONG)
+		{
+			lmtPrice[0] = pQuote->ask();
+		}
+		else if(direction == entity::SHORT)
+		{
+			lmtPrice[0] = pQuote->bid();
+		}
+		lmtPrice[1] = 0.0;
 
+		LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Open position @ %.2f (%s)")
+			% GetPosiDirectionText(direction) % lmtPrice[0] % pQuote->update_time()));
+		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("MACD快慢线同乡交叉 - %s 开仓 @ %.2f")
+			% GetPosiDirectionText(direction) % lmtPrice[0]));
+
+		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
+
+		if(m_pTrailingStopTrigger != NULL)
+		{
+			m_pTrailingStopTrigger->Enable(lmtPrice[0], direction);
+		}
+	}
 }
 
 void CMACDCrossStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText )
 {
+	if(pOrderPlacer != NULL)
+	{
+		entity::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
 
+		double closePx = 0.0;
+		if(posiDirection == entity::LONG)
+		{
+			closePx = pQuote->bid();
+		}
+		else if(posiDirection == entity::SHORT)
+		{
+			closePx = pQuote->ask();
+		}
+
+		LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Close position @ %.2f (%s)")
+			% GetPosiDirectionText(posiDirection) % closePx  % pQuote->update_time()));
+
+		pOrderPlacer->CloseOrder(closePx);
+
+		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f")
+			% noteText % GetPosiDirectionText(posiDirection) % closePx));
+
+	}
+}
+
+entity::PosiDirectionType CMACDCrossStrategy::GetDirection( double slowMacdHist, double lastPx, double bollTop, double bollBottom )
+{
+	// slow MACD golden cross and boll top broken
+	if(slowMacdHist > 0 && lastPx > bollTop)
+	{
+		return entity::LONG;
+	}
+	// slow MACD dead cross and boll bottom broken
+	if(slowMacdHist < 0 && lastPx < bollBottom)
+	{
+		return entity::SHORT;
+	}
+
+	return entity::NET;
+}
+
+void CMACDCrossStrategy::OnBeforeAddingHistSrcConfig( CHistSourceCfg* pHistSrcCfg )
+{
+	if(pHistSrcCfg != NULL)
+	{
+		if(pHistSrcCfg->Precision == m_fastPeriod)
+			pHistSrcCfg->HistData = true;
+	}
 }

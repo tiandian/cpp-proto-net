@@ -578,6 +578,44 @@ namespace PortfolioTrading.Modules.Account
         
 #endregion
 
+#region MACD Cross strategy updating fields
+
+        #region BollTop
+        private double _bollTop;
+
+        public double BollTop
+        {
+            get { return _bollTop; }
+            set
+            {
+                if (_bollTop != value)
+                {
+                    _bollTop = value;
+                    RaisePropertyChanged("BollTop");
+                }
+            }
+        }
+        #endregion
+
+        #region BollBottom
+        private double _bollBottom;
+
+        public double BollBottom
+        {
+            get { return _bollBottom; }
+            set
+            {
+                if (_bollBottom != value)
+                {
+                    _bollBottom = value;
+                    RaisePropertyChanged("BollBottom");
+                }
+            }
+        }
+        #endregion
+
+#endregion
+        
         public StrategySetting StrategySetting { get; set; }
 
         public string DisplayText
@@ -843,6 +881,10 @@ namespace PortfolioTrading.Modules.Account
                 SlowMacdHistDiff = ToDecimal(strategyUpdate.SlowMacdHistDiff);
                 FastSlopeDirection = strategyUpdate.FastMacdSlopeDirection;
                 SlowSlopeDirection = strategyUpdate.SlowMacdSlopeDirection;
+            }
+            else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.DOUBLE_CROSS)
+            {
+                // TODO
             }
 
             OpenTimes = item.TotalOpenTimes;

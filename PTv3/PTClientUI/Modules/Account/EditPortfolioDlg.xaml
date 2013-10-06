@@ -250,7 +250,47 @@
                     
                 </StackPanel>
             </igWindows:TabItemEx>
+            <igWindows:TabItemEx Header="Cross" Name="tabCross" Width="60" Tag="MACDCross">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <DataTemplate x:Key="sideItemTempl">
+                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                        </DataTemplate>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
 
+                    <StackPanel Margin="10, 4, 10, 8">
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="4"></TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">回头平仓</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding TrailingStop, Mode=TwoWay}" Increment="0.1" Margin="4"/>
+                        </DockPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Column="0" Grid.Row="0">
+                                <TextBlock Margin="2">快线</TextBlock>
+                                <xctk:DecimalUpDown Value="{Binding FastPeriod, Mode=TwoWay}" Increment="10" Margin="6, 4"/>
+                            </DockPanel>
+                            <Border Margin="0, 2" Grid.Row="1"/>
+                            <DockPanel Grid.Column="0" Grid.Row="2">
+                                <TextBlock Margin="2">慢线</TextBlock>
+                                <xctk:DecimalUpDown Value="{Binding SlowPeriod, Mode=TwoWay}" Increment="10" Margin="6, 4"/>
+                            </DockPanel>
+                        </Grid>
+                    </StackPanel>
+
+                </StackPanel>
+            </igWindows:TabItemEx>
             <igWindows:TabItemEx Header="高频" Name="tabScalper" Width="60" Tag="Scalper">
                 <StackPanel Margin="4">
                     <StackPanel.Resources>

@@ -271,5 +271,97 @@ private:
 	double _backValue;
 };
 
+public ref class CrossOpenTriggerItem : TriggerItem
+{
+public:
+	CrossOpenTriggerItem()
+	{
+		init();
+	}
+
+	virtual void To(entity::TriggerItem* pNativeTriggerItem) override 
+	{}
+
+	property PosiOffsetFlag Offset
+	{
+		PosiOffsetFlag get()
+		{
+			return PosiOffsetFlag::OPEN; 
+		}
+	}
+
+private:
+	void init()
+	{
+		_strategy = StrategyType::DOUBLE_CROSS;
+		_name = gcnew String("MACDCrossOpenTrigger");
+	}
+
+};
+
+public ref class CrossCloseTriggerItem : TriggerItem
+{
+public:
+	CrossCloseTriggerItem()
+	{
+		init();
+	}
+
+	virtual void To(entity::TriggerItem* pNativeTriggerItem) override 
+	{}
+
+	property PosiOffsetFlag Offset
+	{
+		PosiOffsetFlag get()
+		{
+			return PosiOffsetFlag::CLOSE; 
+		}
+	}
+
+private:
+	void init()
+	{
+		_strategy = StrategyType::DOUBLE_CROSS;
+		_name = gcnew String("MACDCrossCloseTrigger");
+	}
+
+};
+
+public ref class CrossTrailingStopTriggerItem : TriggerItem
+{
+public:
+	CrossTrailingStopTriggerItem()
+	{
+		init();
+	}
+	CrossTrailingStopTriggerItem(double backValue)
+	{
+		init();
+		_backValue = backValue;
+	}
+
+	virtual void To(entity::TriggerItem* pNativeTriggerItem) override;
+
+	property double BackValue
+	{
+		double get()
+		{
+			return _backValue; 
+		}
+		void set(double val)
+		{
+			_backValue = val;
+		}
+	}
+
+private:
+	void init()
+	{
+		_strategy = StrategyType::DOUBLE_CROSS;
+		_name = gcnew String("MACDCrossTrailingStopTrigger");
+	}
+
+	double _backValue;
+};
 
 }
