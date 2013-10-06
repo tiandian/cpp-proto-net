@@ -407,4 +407,214 @@ private:
 	String^ _symbol;
 };
 
+public ref class MACDCrossStrategyItem : StrategyItem
+{
+public:
+	MACDCrossStrategyItem()
+	{
+		_type = StrategyType::DOUBLE_CROSS;
+	}
+
+	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
+
+	property String^ Symbol
+	{
+		String^ get()
+		{
+			return _symbol; 
+		}
+		void set(String^ val)
+		{
+			_symbol = val;
+		}
+	}
+
+	property int Short
+	{
+		int get()
+		{
+			return _short; 
+		}
+		void set(int val)
+		{
+			_short = val;
+		}
+	}
+
+	property int Long
+	{
+		int get()
+		{
+			return _long; 
+		}
+		void set(int val)
+		{
+			_long = val;
+		}
+	}
+
+	property int M
+	{
+		int get()
+		{
+			return _m; 
+		}
+		void set(int val)
+		{
+			_m = val;
+		}
+	}
+
+	property int FastPeriod
+	{
+		int get()
+		{
+			return _fastPeriod; 
+		}
+		void set(int val)
+		{
+			_fastPeriod = val;
+		}
+	}
+
+	property int SlowPeriod
+	{
+		int get()
+		{
+			return _slowPeriod; 
+		}
+		void set(int val)
+		{
+			_slowPeriod = val;
+		}
+	}
+
+	property int BollM
+	{
+		int get()
+		{
+			return _bollM; 
+		}
+		void set(int val)
+		{
+			_bollM = val;
+		}
+	}
+
+	property int BollP
+	{
+		int get()
+		{
+			return _bollP; 
+		}
+		void set(int val)
+		{
+			_bollP = val;
+		}
+	}
+
+	property double TrailingStopValue
+	{
+		double get()
+		{
+			return _trailingStopValue; 
+		}
+		void set(double val)
+		{
+			_trailingStopValue = val;
+		}
+	}
+
+	property double FastShortSeed
+	{
+		double get()
+		{
+			return _fastShortSeed; 
+		}
+		void set(double val)
+		{
+			_fastShortSeed = val;
+		}
+	}
+
+	property double FastLongSeed
+	{
+		double get()
+		{
+			return _fastLongSeed; 
+		}
+		void set(double val)
+		{
+			_fastLongSeed = val;
+		}
+	}
+
+	property double FastSignalSeed
+	{
+		double get()
+		{
+			return _fastSignalSeed; 
+		}
+		void set(double val)
+		{
+			_fastSignalSeed = val;
+		}
+	}
+
+	property double SlowShortSeed
+	{
+		double get()
+		{
+			return _slowShortSeed; 
+		}
+		void set(double val)
+		{
+			_slowShortSeed = val;
+		}
+	}
+
+	property double SlowLongSeed
+	{
+		double get()
+		{
+			return _slowLongSeed; 
+		}
+		void set(double val)
+		{
+			_slowLongSeed = val;
+		}
+	}
+
+	property double SlowSignalSeed
+	{
+		double get()
+		{
+			return _slowSignalSeed; 
+		}
+		void set(double val)
+		{
+			_slowSignalSeed = val;
+		}
+	}
+
+private:
+	int _short;
+	int _long;
+	int _m;
+	int _bollM;
+	int _bollP;
+	int _fastPeriod;
+	int _slowPeriod;
+	double _trailingStopValue;
+
+	double _fastShortSeed;
+	double _fastLongSeed;
+	double _fastSignalSeed;
+	double _slowShortSeed;
+	double _slowLongSeed;
+	double _slowSignalSeed;
+
+	String^ _symbol;
+};
+
 }

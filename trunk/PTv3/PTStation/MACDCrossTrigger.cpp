@@ -10,7 +10,8 @@ CMACDCrossOpenTrigger::CMACDCrossOpenTrigger( const entity::TriggerItem& trigger
 
 bool CMACDCrossOpenTrigger::OnTest( const double vals[], int size )
 {
-	return false;
+	// in case fast and slow has same sign
+	return (vals[0] * vals[1]) > 0;
 }
 
 CMACDCrossCloseTrigger::CMACDCrossCloseTrigger( const entity::TriggerItem& triggerItem )
@@ -21,5 +22,6 @@ CMACDCrossCloseTrigger::CMACDCrossCloseTrigger( const entity::TriggerItem& trigg
 
 bool CMACDCrossCloseTrigger::OnTest( const double vals[], int size )
 {
-	return false;
+	// in case fast and slow has different sign
+	return (vals[0] * vals[1]) < 0;
 }

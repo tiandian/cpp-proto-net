@@ -126,7 +126,8 @@
     
     <conv:CompareConditionDisplayConverter x:Key="condDisplayConverter" />
     <conv:SlopeDirectionConverter x:Key="slopeDirectionConverter" />
-
+    <conv:CrossDirectionConverter x:Key="crossDircetionConverter" />
+    
     <DataTemplate x:Key="arbitrageTemplate">
         <Grid>
             <Grid.Resources>
@@ -318,12 +319,25 @@
             </Grid>
         </Grid>
     </DataTemplate>
-    
+
+    <DataTemplate x:Key="macdCrossTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            
+        </Grid>
+    </DataTemplate>
+
     <local:PortfMonTemplateSelector x:Key="portfMonSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionTemplate}"
                                     ScalperTemplate="{StaticResource scalperTemplate}"
-                                    MACDHistSlopeTemplate="{StaticResource macdHistSlopeTemplate}"/>
+                                    MACDHistSlopeTemplate="{StaticResource macdHistSlopeTemplate}"
+                                    MACDCrossTemplate="{StaticResource macdCrossTemplate}"/>
     
     <Style TargetType="{x:Type local:PortfMonitorPanel}">
         <Setter Property="Template">
@@ -452,9 +466,67 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="crossWatchTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                    <TextBlock Text="{Binding FastMacdHist, Converter={StaticResource crossDircetionConverter}}" 
+                               Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Text="{Binding SlowMacdHist, Converter={StaticResource crossDircetionConverter}}" 
+                               Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">MACD</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   Text="{Binding FastMacdHist}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">MACD</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   Text="{Binding SlowMacdHist}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 0, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">上轨</TextBlock>
+                        <TextBlock Text="{Binding BollTop}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="1" BorderBrush="Blue">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">下轨</TextBlock>
+                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                               Text="{Binding BollBottom}"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+    
     <local:PortfWatchTemplateSelector x:Key="portfWatchSelector"
                                       ArbitrageTemplate="{StaticResource arbitrageWatchTemplate}"
-                                      MACDHistSlopeTemplate="{StaticResource histSlopeWatchTemplate}"/>
+                                      MACDHistSlopeTemplate="{StaticResource histSlopeWatchTemplate}"
+                                      MACDCrossTemplate="{StaticResource crossWatchTemplate}"/>
 
     <Style TargetType="{x:Type local:PriceDiffWatchPanel}">
         <Setter Property="Template">

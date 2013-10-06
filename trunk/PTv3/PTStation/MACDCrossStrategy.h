@@ -25,10 +25,14 @@ public:
 
 protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
-	void OpenPosition(entity::SlopeDirection slopeDirection, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
+	void OpenPosition(entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 	void ClosePosition(CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText);
 
+	void OnBeforeAddingHistSrcConfig(CHistSourceCfg* pHistSrcCfg);
+
 private:
+
+	entity::PosiDirectionType GetDirection(double slowMacdHist, double lastPx, double bollTop, double bollBottom);
 
 	int m_macdShort;
 	int m_macdLong;

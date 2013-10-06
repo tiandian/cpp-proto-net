@@ -7,6 +7,19 @@
 
 CTechDataRepo g_dataRepo;
 
+const char* GetPosiDirectionText(entity::PosiDirectionType direction)
+{
+	switch(direction)
+	{
+	case entity::LONG:
+		return "LONG";
+	case entity::SHORT:
+		return "SHORT";
+	default:
+		return "";
+	}
+}
+
 CTechAnalyStrategy::CTechAnalyStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
 	: CStrategy(strategyItem)
 	, m_avatar(pAvatar)
@@ -40,6 +53,7 @@ void CTechAnalyStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 		{
 			const entity::HistSourceCfg entityCfg = strategyItem.histsources(i);
 			HistSrcCfgPtr histCfg(new CHistSourceCfg(entityCfg.symbol(), entityCfg.precision()));
+			OnBeforeAddingHistSrcConfig(histCfg.get());
 			m_histSrcConfigs.push_back(histCfg);
 		}
 
@@ -66,7 +80,8 @@ void CTechAnalyStrategy::RegHistDataSrc()
 	for (vector<HistSrcCfgPtr>::iterator iter = m_histSrcConfigs.begin();
 		iter != m_histSrcConfigs.end(); ++iter)
 	{
-		CPriceBarDataProxy* proxy = g_dataRepo.Register((*iter)->Symbol, (*iter)->Precision, m_avatar->TradingDay());
+		CPriceBarDataProxy* proxy = g_dataRepo.Register(
+			(*iter)->Symbol, (*iter)->Precision, (*iter)->HistData, m_avatar->TradingDay());
 		if(proxy != NULL)
 			m_pDataProxies.push_back(proxy);
 	}

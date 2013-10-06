@@ -16,7 +16,7 @@ CTechDataRepo::~CTechDataRepo(void)
 {
 }
 
-CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision, const boost::gregorian::date& tradingDay)
+CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision, bool histData, const boost::gregorian::date& tradingDay)
 {
 	boost::mutex::scoped_lock l(m_mutex);
 	string dsKey;
@@ -29,7 +29,9 @@ CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision
 	else
 	{
 		// new PriceBarDataSource
-		PriceBarDataSourcePtr ds(new CPriceBarDataSource(dsKey, tradingDay));
+		PriceBarDataSourcePtr ds(
+			histData ? new CHistoryPriceBarDataSource(dsKey, tradingDay)
+					 : new CPriceBarDataSource(dsKey, tradingDay));
 		ds->Init(symbol, precision);
 		m_priceBarDSMap.insert(make_pair(dsKey, ds));
 		return ds->AddProxy();

@@ -213,6 +213,22 @@ namespace PortfolioTrading.Modules.Account
                     setting.TrailingStopValue = this.TrailingStop;
                 }
             }
+            else if (StrategyName == StrategySetting.MACDCrossStrategyName)
+            {
+                if (!string.IsNullOrEmpty(Symbol1))
+                {
+                    MACDCrossStrategySettings setting = (MACDCrossStrategySettings)portf.StrategySetting;
+                    setting.Symbol = Symbol1;
+                    setting.MACD_Short = 12;
+                    setting.MACD_Long = 26;
+                    setting.MACD_M = 9;
+                    setting.FastPeriod = this.FastPeriod;
+                    setting.SlowPeriod = this.SlowPeriod;
+                    setting.Boll_M = 26;
+                    setting.Boll_P = 2;
+                    setting.TrailingStopValue = this.TrailingStop;
+                }
+            }
         }
 
         #region StrategyName

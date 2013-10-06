@@ -11,10 +11,12 @@ class CHistSourceCfg
 public:
 	CHistSourceCfg(const string& symb, int precision)
 		: Symbol(symb), Precision(precision)
+		, HistData(false)
 	{}
 
 	string Symbol;
 	int Precision;
+	bool HistData;
 };
 
 typedef boost::shared_ptr<CHistSourceCfg> HistSrcCfgPtr;
@@ -35,6 +37,8 @@ protected:
 	const vector<HistSrcCfgPtr>& HistSrcConfigs(){ return m_histSrcConfigs; }
 	const vector<CPriceBarDataProxy*>& DataProxies() { return m_pDataProxies; }
 
+	virtual void OnBeforeAddingHistSrcConfig(CHistSourceCfg* pHistSrcCfg){}
+
 	void RegHistDataSrc();
 	void UnregHistDataSrc();
 
@@ -45,4 +49,6 @@ private:
 
 	CAvatarClient* m_avatar;
 };
+
+const char* GetPosiDirectionText(entity::PosiDirectionType direction);
 
