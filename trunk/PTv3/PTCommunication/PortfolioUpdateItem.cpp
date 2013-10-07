@@ -48,6 +48,15 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				static_cast<SlopeDirection>(pEntity->hs_slowslopedirection())
 			);
 		break;
+	case StrategyType::DOUBLE_CROSS:
+		retStrategyUpdate = gcnew CrossStrategyUpdateItem
+			(
+				pEntity->hs_fastmacdhist(),
+				pEntity->hs_slowmacdhist(),
+				pEntity->dx_bolltop(),
+				pEntity->dx_bollbottom()
+			);
+		break;
 	default:
 		return nullptr;
 	}

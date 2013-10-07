@@ -1,6 +1,9 @@
 #include "StdAfx.h"
 #include "BollDataSet.h"
+#include "globalmembers.h"
+#include "OHLCRecordSet.h"
 
+#include <ta-lib/ta_libc.h>
 
 CBollDataSet::CBollDataSet(int size, int paramM, int paramP)
 	: CTaIndicatorSet(size)
@@ -20,5 +23,35 @@ CBollDataSet::~CBollDataSet(void)
 
 void CBollDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 {
+	int outBeg = -1;
+	int outNbElement = -1;
 
+	int lastIdx = ohlcRecordSet->GetEndIndex();
+	logger.Info(boost::str(boost::format("Calculating BOLL with OHLC RecordSet: lastIdx - %d, last price - %f")
+		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
+
+	double outSma = 0;
+	double outStdDev = 0;
+
+	TA_RetCode rc = TA_SMA(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), m_paramM, &outBeg, &outNbElement, &outSma);
+	if(outBeg == lastIdx)
+		m_arrMid[outBeg] = outSma;
+
+	rc = TA_STDDEV(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), m_paramM, (double)m_paramP,
+		&outBeg, &outNbElement, &outStdDev);
+	if(outBeg == lastIdx)
+	{
+		m_arrTop[outBeg] = outSma + outStdDev;
+		m_arrBottom[outBeg] = outSma - outStdDev;
+
+		logger.Info(boost::str(boost::format("Calculated BOLL values: mid - %.2f, top - %.2f, bottom - %.2f")
+			% m_arrMid[outBeg] % m_arrTop[outBeg] % m_arrBottom[outBeg] ));
+	}
+	else
+	{
+		logger.Warning(boost::str(boost::format("Cannot calculate STDDEV !!! lastIdx:%d, outBeg:%d")
+			% lastIdx % outBeg));
+	}
+
+	m_lastPosition = lastIdx;
 }

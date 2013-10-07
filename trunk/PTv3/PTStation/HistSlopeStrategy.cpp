@@ -165,6 +165,10 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 {
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
+	
+	pQuote->set_last(2407.8);
+	pQuote->set_update_time("09:15:00");
+	
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
 	if(!IsRunning())

@@ -36,29 +36,32 @@ namespace PortfolioTrading.Modules.Portfolio
             evtAgg.GetEvent<PortfolioSelectedEvent>().Subscribe(OnPortfolioSelected);
         }
 
-        private void OnPortfolioSelected(PortfolioVM porfVm)
+        private void OnPortfolioSelected(PortfolioVM portfVm)
         {
             StrategySettingVM viewModel = null;
-            if(porfVm.StrategySetting.Name == StrategySetting.ArbitrageStrategyName)
+            if(portfVm.StrategySetting.Name == StrategySetting.ArbitrageStrategyName)
             {
                 viewModel = ServiceLocator.Current.GetInstance<ArbitrageSettingsVM>();
             }
-            else if(porfVm.StrategySetting.Name == StrategySetting.ChangePositionStrategyName)
+            else if(portfVm.StrategySetting.Name == StrategySetting.ChangePositionStrategyName)
             {
                 viewModel = ServiceLocator.Current.GetInstance<ChangePositionSettingsVM>();
             }
-            else if (porfVm.StrategySetting.Name == StrategySetting.ScalperStrategyName)
+            else if (portfVm.StrategySetting.Name == StrategySetting.ScalperStrategyName)
             {
                 viewModel = ServiceLocator.Current.GetInstance<ScalperSettingVM>();
             }
-            else if (porfVm.StrategySetting.Name == StrategySetting.MACDHistSlopeStrategyName)
+            else if (portfVm.StrategySetting.Name == StrategySetting.MACDHistSlopeStrategyName)
             {
                 viewModel = ServiceLocator.Current.GetInstance<MACDHistSlopeSettingsVM>();
             }
-
+            else if (portfVm.StrategySetting.Name == StrategySetting.MACDCrossStrategyName)
+            {
+                viewModel = ServiceLocator.Current.GetInstance<MACDCrossSettingsVM>();
+            }
             if (viewModel != null)
             {
-                viewModel.SetPortfolio(porfVm);
+                viewModel.SetPortfolio(portfVm);
                 this.DataContext = viewModel;
             }
         }

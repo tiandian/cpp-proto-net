@@ -279,9 +279,6 @@ public:
 		init();
 	}
 
-	virtual void To(entity::TriggerItem* pNativeTriggerItem) override 
-	{}
-
 	property PosiOffsetFlag Offset
 	{
 		PosiOffsetFlag get()
@@ -306,9 +303,6 @@ public:
 	{
 		init();
 	}
-
-	virtual void To(entity::TriggerItem* pNativeTriggerItem) override 
-	{}
 
 	property PosiOffsetFlag Offset
 	{
