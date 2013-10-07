@@ -1288,15 +1288,16 @@ void protobuf_AddDesc_message_2eproto() {
     "\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n\nServerType\022"
     "\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRADE\020\001*>\n\023Portf"
     "olioSwitchType\022\023\n\017STRATEGY_SWITCH\020\000\022\022\n\016T"
-    "RIGGER_SWITCH\020\001*O\n\014StrategyType\022\r\n\tARBIT"
+    "RIGGER_SWITCH\020\001*a\n\014StrategyType\022\r\n\tARBIT"
     "RAGE\020\000\022\023\n\017CHANGE_POSITION\020\001\022\013\n\007SCALPER\020\002"
-    "\022\016\n\nHIST_SLOPE\020\003*@\n\016SlopeDirection\022\020\n\014NO"
-    "_DIRECTION\020\000\022\014\n\010GOING_UP\020\001\022\016\n\nGOING_DOWN"
-    "\020\002*o\n\020DirectionDepends\022\017\n\013IGNORE_THIS\020\000\022"
-    "\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017O"
-    "N_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024S"
-    "topLossCloseMethods\022\027\n\023BASED_ON_NEXT_QUO"
-    "TE\020\000\022\030\n\024BASED_ON_INPUT_LIMIT\020\001", 6630);
+    "\022\016\n\nHIST_SLOPE\020\003\022\020\n\014DOUBLE_CROSS\020\004*@\n\016Sl"
+    "opeDirection\022\020\n\014NO_DIRECTION\020\000\022\014\n\010GOING_"
+    "UP\020\001\022\016\n\nGOING_DOWN\020\002*o\n\020DirectionDepends"
+    "\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013"
+    "ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON"
+    "_BIG_CHANGE\020\004*I\n\024StopLossCloseMethods\022\027\n"
+    "\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED_ON_INPUT"
+    "_LIMIT\020\001", 6648);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -1429,6 +1430,7 @@ bool StrategyType_IsValid(int value) {
     case 1:
     case 2:
     case 3:
+    case 4:
       return true;
     default:
       return false;

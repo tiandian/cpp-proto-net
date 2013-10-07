@@ -6,12 +6,12 @@ using System.Windows.Data;
 
 namespace PortfolioTrading.Converters
 {
-    [ValueConversion(typeof(double), typeof(string))]
+    [ValueConversion(typeof(decimal), typeof(string))]
     public class CrossDirectionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            double val = (double)value;
+            decimal val = (decimal)value;
             if (val > 0)
                 return "金叉";
             if (val < 0)

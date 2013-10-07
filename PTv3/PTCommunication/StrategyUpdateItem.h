@@ -331,4 +331,81 @@ private:
 	SlopeDirection _slowSlopeDirection;
 };
 
+public ref class CrossStrategyUpdateItem : StrategyUpdateItem
+{
+public:
+	CrossStrategyUpdateItem(double fastHistVal, double slowHistVal, double bollTop, double bollBottom)
+	{
+		_fastHistVal = fastHistVal;
+		_slowHistVal = slowHistVal;
+
+		_bollTop = bollTop;
+		_bollBottom = bollBottom;
+
+	}
+
+	property StrategyType Kind
+	{
+		virtual StrategyType get() override
+		{
+			return StrategyType::DOUBLE_CROSS;
+		}
+	}
+
+	property double FastMacdHist
+	{
+		double get()
+		{
+			return _fastHistVal; 
+		}
+		void set(double val)
+		{
+			_fastHistVal = val;
+		}
+	}
+
+	property double SlowMacdHist
+	{
+		double get()
+		{
+			return _slowHistVal; 
+		}
+		void set(double val)
+		{
+			_slowHistVal = val;
+		}
+	}
+
+	property double BollTop
+	{
+		double get()
+		{
+			return _bollTop; 
+		}
+		void set(double val)
+		{
+			_bollTop = val;
+		}
+	}
+
+	property double BollBottom
+	{
+		double get()
+		{
+			return _bollBottom; 
+		}
+		void set(double val)
+		{
+			_bollBottom = val;
+		}
+	}
+
+private:
+	double _fastHistVal;
+	double _slowHistVal;
+
+	double _bollTop;
+	double _bollBottom;
+};
+
 }

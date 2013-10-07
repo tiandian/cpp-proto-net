@@ -130,6 +130,7 @@ enum StrategyType
 	CHANGE_POSITION = 1;
 	SCALPER = 2;
 	HIST_SLOPE = 3;
+	DOUBLE_CROSS = 4;
 }
 
 message HistSourceCfg
@@ -177,6 +178,10 @@ message StrategyItem
 	optional double HS_SlowShortEMASeed = 511;
 	optional double HS_SlowLongEMASeed = 512;
 	optional double HS_SlowSignalEMASeed = 513;
+
+	// Double Cross
+	optional int32 DX_BollM = 521;
+	optional int32 DX_BollP = 522;
 }
 
 message TriggerItem
@@ -266,6 +271,9 @@ message PortfolioUpdateItem
 	optional double HS_SlowMacdHistDiff = 306;
 	optional SlopeDirection HS_FastSlopeDirection = 307;
 	optional SlopeDirection HS_SlowSlopeDirection = 308;
+	// DoubleCross
+	optional double DX_BollTop = 311;
+	optional double DX_BollBottom = 312;
 }
 
 message ConnectParam

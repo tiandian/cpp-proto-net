@@ -306,7 +306,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BollDataSet.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\tech</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -521,7 +521,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BollDataSet.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

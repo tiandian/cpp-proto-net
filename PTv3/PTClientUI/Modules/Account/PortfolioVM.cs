@@ -581,9 +581,9 @@ namespace PortfolioTrading.Modules.Account
 #region MACD Cross strategy updating fields
 
         #region BollTop
-        private double _bollTop;
+        private decimal _bollTop;
 
-        public double BollTop
+        public decimal BollTop
         {
             get { return _bollTop; }
             set
@@ -598,9 +598,9 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region BollBottom
-        private double _bollBottom;
+        private decimal _bollBottom;
 
-        public double BollBottom
+        public decimal BollBottom
         {
             get { return _bollBottom; }
             set
@@ -885,6 +885,11 @@ namespace PortfolioTrading.Modules.Account
             else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.DOUBLE_CROSS)
             {
                 // TODO
+                PTEntity.CrossStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.CrossStrategyUpdateItem;
+                FastMacdHist = ToDecimal(strategyUpdate.FastMacdHist);
+                SlowMacdHist = ToDecimal(strategyUpdate.SlowMacdHist);
+                BollTop = ToDecimal(strategyUpdate.BollTop);
+                BollBottom = ToDecimal(strategyUpdate.BollBottom);
             }
 
             OpenTimes = item.TotalOpenTimes;
