@@ -302,11 +302,11 @@
     <ClInclude Include="MACDCrossTrigger.h">
       <Filter>Header Files\strategy</Filter>
     </ClInclude>
-    <ClInclude Include="TrailingStopTrigger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BollDataSet.h">
       <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="TrailingStopTrigger.h">
+      <Filter>Header Files\strategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -517,11 +517,11 @@
     <ClCompile Include="MACDCrossTrigger.cpp">
       <Filter>Source Files\strategy</Filter>
     </ClCompile>
-    <ClCompile Include="TrailingStopTrigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BollDataSet.cpp">
       <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="TrailingStopTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
