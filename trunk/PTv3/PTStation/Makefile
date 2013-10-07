@@ -14,18 +14,29 @@ ENTITY_FILES = $(patsubst %, $(ENTITY_DIR)/%.pb.cc, $(_ENTITY_FILES))
 ENTITY_OBJS = $(patsubst %, $(OBJ_DIR)/%.pb.o, $(_ENTITY_FILES))
 
 _FS_OBJS = stdafx \
-		ArbitrageStrategy ArbitrageTrigger AsyncOrderPendingTimer AvatarClient AvatarFactory \
-		ChangePositionStrategy ChangePositionTrigger charsetconvert ClientProtocol Configuration \
-	    DoubleCompare FakeDealer FileOperations HistDataReader HistDataWriter \
-		HistSlopeStrategy HistSlopeTrigger InputOrder Leg LegOrderPlacer \
-		LogManager MACDDataSet OHLCRecordSet orderhelper OrderProcessor \
-		Portfolio PortfolioManager PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer \
-		PortfolioTrendOrderPlacer PriceBarDataProxy PriceBarDataSource PriceBarGen ProtobufPacket \
-		ProtobufProtocol QuoteAgent QuoteFetcher QuoteRepositry QuoteStore \
-		RequestedServices RtnOrderWrapper ScalperStrategy ScalperTrigger SettingChangeTrace \
-		ShmQuoteFeed ShmQuoteSubscribe Strategy SymbolInfo SymbolInfoRepositry \
-		TaIndicatorSet TechAnalyStrategy TechDataRepo TradeAgent TradeStation \
-		TradingServer TradingServerProtocol TradingTimeSpan Trigger
+		\
+		AvatarClient AvatarFactory ClientProtocol ProtobufPacket ProtobufProtocol \
+		RequestedServices TradingServer TradingServerProtocol \
+		\
+		QuoteAgent QuoteFetcher QuoteRepositry QuoteStore ShmQuoteFeed \
+		ShmQuoteSubscribe \
+		\
+		ArbitrageStrategy ArbitrageTrigger ChangePositionStrategy ChangePositionTrigger \
+		HistSlopeStrategy HistSlopeTrigger MACDCrossStrategy MACDCrossTrigger \
+		ScalperStrategy ScalperTrigger TrailingStopTrigger \
+		\
+		BollDataSet HistDataReader HistDataWriter MACDDataSet OHLCRecordSet \
+		PriceBarDataProxy PriceBarDataSource PriceBarGen TaIndicatorSet TechAnalyStrategy \
+		TechDataRepo \
+		\
+		InputOrder LegOrderPlacer OrderProcessor PortfolioOrderHelper PortfolioOrderPlacer \
+		PortfolioScalperOrderPlacer PortfolioTrendOrderPlacer RtnOrderWrapper TradeAgent \
+		\
+		AsyncOrderPendingTimer charsetconvert Configuration DoubleCompare FakeDealer \
+		FileOperations LogManager orderhelper SettingChangeTrace SymbolInfo \
+		SymbolInfoRepositry SymbolTimeUtil TradingTimeSpan \
+		\
+		Leg Portfolio PortfolioManager Strategy TradeStation Trigger
 
 FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
 
