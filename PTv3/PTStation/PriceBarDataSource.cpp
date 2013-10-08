@@ -9,7 +9,7 @@ void CPriceBarDataSource::Init( const string& symbol, int precision)
 {
 	m_symbol = symbol;
 	m_precision = precision;
-	m_recordSet = OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision));
+	m_recordSet = OnCreateOHLCRecordSet(symbol, precision);
 
 	m_priceBarGen.Init(symbol, precision);
 	m_priceBarGen.SetBarChangedHandler(boost::bind(&CPriceBarDataSource::OnBarChanged, this, _1, _2, _3, _4, _5, _6));
@@ -79,6 +79,12 @@ void CPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, 
 {
 }
 
+OHLCRecordSetPtr CPriceBarDataSource::OnCreateOHLCRecordSet( const string& symbol, int precision )
+{
+	return OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision));
+}
+
+
 void CHistoryPriceBarDataSource::OnInit()
 {
 	CHistDataReader dataReader(m_symbol, m_precision, m_tradingDay);
@@ -94,4 +100,9 @@ void CHistoryPriceBarDataSource::OnInit()
 void CHistoryPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
 	m_histDataWriter.Write(timestamp, open, high, low, close);
+}
+
+OHLCRecordSetPtr CHistoryPriceBarDataSource::OnCreateOHLCRecordSet( const string& symbol, int precision )
+{
+	return OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision, ONE_DAY));
 }

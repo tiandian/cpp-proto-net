@@ -34,6 +34,7 @@ public:
 	int GetRecordSetSize(){ return m_recordSet.get() != NULL ? m_recordSet->GetSize() : 0; }
 
 protected:
+	virtual OHLCRecordSetPtr OnCreateOHLCRecordSet(const string& symbol, int precision);
 	virtual void OnInit(){}
 	virtual void OnBarChanged(int barIdx, double open, double high, double low, double close, const string& timestamp);
 	virtual void OnBarFinalized(int barIdx, double open, double high, double low, double close, const string& timestamp);
@@ -69,6 +70,7 @@ public:
 	~CHistoryPriceBarDataSource(){}
 
 protected:
+	virtual OHLCRecordSetPtr OnCreateOHLCRecordSet(const string& symbol, int precision);
 	virtual void OnInit();
 	virtual void OnBarFinalized(int barIdx, double open, double high, double low, double close, const string& timestamp);
 
