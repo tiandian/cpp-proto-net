@@ -44,23 +44,6 @@ void CTechAnalyStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	}
 }
 
-void CTechAnalyStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
-{
-	CStrategy::Apply(strategyItem, withTriggers);
-	if(!withTriggers) // don't touch hist data source when editing strategy
-	{
-		for(int i = 0; i < strategyItem.histsources_size(); ++i)
-		{
-			const entity::HistSourceCfg entityCfg = strategyItem.histsources(i);
-			HistSrcCfgPtr histCfg(new CHistSourceCfg(entityCfg.symbol(), entityCfg.precision()));
-			OnBeforeAddingHistSrcConfig(histCfg.get());
-			m_histSrcConfigs.push_back(histCfg);
-		}
-
-		RegHistDataSrc();
-	}
-}
-
 COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, int precision, boost::chrono::steady_clock::time_point& timestamp)
 {
   for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
@@ -71,6 +54,19 @@ COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, int preci
          return (*iter)->GetOHLCRecordSet (timestamp);
    }
    return NULL;
+}
+
+void CTechAnalyStrategy::PrepareHistDataSrc(const entity::StrategyItem& strategyItem)
+{
+	for(int i = 0; i < strategyItem.histsources_size(); ++i)
+	{
+		const entity::HistSourceCfg entityCfg = strategyItem.histsources(i);
+		HistSrcCfgPtr histCfg(new CHistSourceCfg(entityCfg.symbol(), entityCfg.precision()));
+		OnBeforeAddingHistSrcConfig(histCfg.get());
+		m_histSrcConfigs.push_back(histCfg);
+	}
+
+	RegHistDataSrc();
 }
 
 void CTechAnalyStrategy::RegHistDataSrc()

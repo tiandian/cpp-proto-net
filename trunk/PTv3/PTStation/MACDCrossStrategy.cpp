@@ -87,6 +87,9 @@ void CMACDCrossStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	}
 	else
 	{
+		// don't touch hist data source when editing strategy
+		PrepareHistDataSrc(strategyItem);
+
 		// Initialize Indicator set
 		const vector<CPriceBarDataProxy*>& dataProxies = DataProxies();
 		for(vector<CPriceBarDataProxy*>::const_iterator iter = dataProxies.begin(); iter != dataProxies.end(); ++iter)
@@ -155,8 +158,8 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
 
-	pQuote->set_last(2407.8);
-	pQuote->set_update_time("09:15:00");
+	//pQuote->set_last(2407.4);
+	//pQuote->set_update_time("09:15:00");
 
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 

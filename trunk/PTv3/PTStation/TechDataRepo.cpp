@@ -20,7 +20,7 @@ CPriceBarDataProxy* CTechDataRepo::Register( const string& symbol, int precision
 {
 	boost::mutex::scoped_lock l(m_mutex);
 	string dsKey;
-	BuildKey(symbol, precision, &dsKey);
+	BuildKey(symbol, precision, histData, &dsKey);
 	PriceBarDSMapIter iterDS = m_priceBarDSMap.find(dsKey);
 	if(iterDS != m_priceBarDSMap.end())
 	{
@@ -56,7 +56,7 @@ bool CTechDataRepo::Unregister( CPriceBarDataProxy* proxy )
 	return false;
 }
 
-void CTechDataRepo::BuildKey( const string& symbol, int precision, string* outKey )
+void CTechDataRepo::BuildKey( const string& symbol, int precision, bool histData, string* outKey )
 {
-	*outKey = boost::str(boost::format("%s-%d") % symbol % precision);
+	*outKey = boost::str(boost::format("%s-%d-%d") % symbol % precision % histData);
 }

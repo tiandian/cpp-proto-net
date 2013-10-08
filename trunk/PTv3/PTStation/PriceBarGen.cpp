@@ -23,6 +23,9 @@ CPriceBarGen::~CPriceBarGen(void)
 
 void CPriceBarGen::Init(const string& symbol, int precision)
 {
+	m_symbol = symbol;
+	m_precision = precision;
+
     bool isIF = isSymbolIF(symbol);
     if(isIF)
     {

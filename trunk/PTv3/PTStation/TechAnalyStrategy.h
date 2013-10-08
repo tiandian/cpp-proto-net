@@ -27,7 +27,6 @@ public:
 	CTechAnalyStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar);
 	virtual ~CTechAnalyStrategy(void);
 
-	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	virtual void Cleanup();
    
@@ -39,6 +38,7 @@ protected:
 
 	virtual void OnBeforeAddingHistSrcConfig(CHistSourceCfg* pHistSrcCfg){}
 
+	void PrepareHistDataSrc(const entity::StrategyItem& strategyItem);
 	void RegHistDataSrc();
 	void UnregHistDataSrc();
 
