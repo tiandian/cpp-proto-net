@@ -157,6 +157,9 @@
     <Compile Include="Modules\Portfolio\ChangeSpecifiedQtyDlg.xaml.cs">
       <DependentUpon>ChangeSpecifiedQtyDlg.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Portfolio\EditStdDiffDlg.xaml.cs">
+      <DependentUpon>EditStdDiffDlg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Portfolio\ModifyMaxQtyDlg.xaml.cs">
       <DependentUpon>ModifyMaxQtyDlg.xaml</DependentUpon>
     </Compile>
@@ -262,6 +265,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Portfolio\ChangeSpecifiedQtyDlg.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Portfolio\EditStdDiffDlg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

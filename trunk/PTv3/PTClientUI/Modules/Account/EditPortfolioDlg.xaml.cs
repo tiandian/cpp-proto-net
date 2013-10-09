@@ -574,7 +574,7 @@ namespace PortfolioTrading.Modules.Account
         #region MACD Hist slope
 
         #region FastPeriod
-        private int _fastPeriod;
+        private int _fastPeriod = 60;
 
         public int FastPeriod
         {
@@ -591,7 +591,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region SlowPeriod
-        private int _slowPeriod;
+        private int _slowPeriod = 300;
 
         public int SlowPeriod
         {
@@ -608,7 +608,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region FastStdDiff
-        private double _fastStdDiff;
+        private double _fastStdDiff = 0.35;
 
         public double FastStdDiff
         {
@@ -625,7 +625,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region SlowStdDiff
-        private double _slowStdDiff;
+        private double _slowStdDiff = 0.68;
 
         public double SlowStdDiff
         {
@@ -642,7 +642,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region TrailingStop
-        private double _trailingStop;
+        private double _trailingStop = 5;
 
         public double TrailingStop
         {
