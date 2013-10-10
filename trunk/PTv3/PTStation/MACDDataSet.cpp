@@ -13,6 +13,7 @@ CMACDDataSet::CMACDDataSet(int size, int paramShort, int paramLong, int paramM)
 	, m_seedShort(0)
 	, m_seedLong(0)
 	, m_seedSignal(0)
+	, m_resettingSeedPosition(false)
 {
 	SetShort(paramShort);
 	SetLong(paramLong);
@@ -94,32 +95,34 @@ void CMACDDataSet::CalculateBaseOnSeed( COHLCRecordSet* ohlcRecordSet )
 	logger.Info(boost::str(boost::format("[%d] Before CalculateBaseOnSeed, beginIdx: %d, endIdx: %d, m_lastPosition: %d")
 		% m_size % beginIdx % endIdx % m_lastPosition));
 #endif
-	// only we have all today history data, the seed is regarded as last point of yesterday
-	if(beginIdx == 1 && m_lastPosition < 1) 
+
+	if(m_lastPosition < 1)
 	{
-		ResetSeed(0);
-		CalculateMACD(beginIdx, endIdx, ohlcRecordSet);
-	}
-	else
-	{
-		if(m_lastPosition < 1)
+		if(!m_resettingSeedPosition)
 		{
+			ResetSeed(beginIdx - 1);
+			CalculateMACD(beginIdx, endIdx, ohlcRecordSet);
+		}
+		else
+		{
+			// if it's resetting seed position, reset the one before endIdx
 			ResetSeed(endIdx - 1);
 			CalculateMACD(endIdx, endIdx, ohlcRecordSet);
+			m_resettingSeedPosition = false;
 		}
-		else // only calculate value of the last point
-		{
-			// Calculate EMA(Close, 12)
-			CalculateEMA(endIdx, endIdx, m_ShortEmaFactor, ohlcRecordSet->CloseSeries.get(), m_arrEmaShort.get());
-			// Calculate EMA(Close, 26)
-			CalculateEMA(endIdx, endIdx, m_LongEmaFactor, ohlcRecordSet->CloseSeries.get(), m_arrEmaLong.get());
-			// Calculate MACD (DIFF)
-			m_arrMacd[endIdx] = m_arrEmaShort[endIdx] - m_arrEmaLong[endIdx];
-			// Calculate MACD Signal (DEA)
-			CalculateEMA(endIdx, endIdx, m_SignalEmaFactor, m_arrMacd, m_arrMacdSignal);
-			// Calculate MACD Hist
-			m_arrMacdHist[endIdx] = (double)2.0 * (m_arrMacd[endIdx] - m_arrMacdSignal[endIdx]);
-		}
+	}
+	else // only calculate value of the last point
+	{
+		// Calculate EMA(Close, 12)
+		CalculateEMA(endIdx, endIdx, m_ShortEmaFactor, ohlcRecordSet->CloseSeries.get(), m_arrEmaShort.get());
+		// Calculate EMA(Close, 26)
+		CalculateEMA(endIdx, endIdx, m_LongEmaFactor, ohlcRecordSet->CloseSeries.get(), m_arrEmaLong.get());
+		// Calculate MACD (DIFF)
+		m_arrMacd[endIdx] = m_arrEmaShort[endIdx] - m_arrEmaLong[endIdx];
+		// Calculate MACD Signal (DEA)
+		CalculateEMA(endIdx, endIdx, m_SignalEmaFactor, m_arrMacd, m_arrMacdSignal);
+		// Calculate MACD Hist
+		m_arrMacdHist[endIdx] = (double)2.0 * (m_arrMacd[endIdx] - m_arrMacdSignal[endIdx]);
 	}
 
 	m_lastPosition = endIdx;
@@ -188,6 +191,7 @@ void CMACDDataSet::SetM( int val )
 void CMACDDataSet::ResetSeedPosition()
 {
 	m_lastPosition = 0;
+	m_resettingSeedPosition = true;
 }
 
 void CMACDDataSet::ResetSeed( int seedPosition )

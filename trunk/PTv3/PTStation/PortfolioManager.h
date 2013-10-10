@@ -14,6 +14,7 @@ public:
 	void SetQuoteRepository(CQuoteRepositry* pQuoteRepository){ m_pQuoteRepositry = pQuoteRepository; }
 	void AddPortfolio(CAvatarClient* client, const entity::PortfolioItem& portfItem);
 	CPortfolio* Get(const string& portfolioId);
+	void Clear(){  m_portfolios.clear(); }
 private:
 	std::vector<PortfolioPtr> m_portfolios;
 	CQuoteRepositry* m_pQuoteRepositry;

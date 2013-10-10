@@ -20,6 +20,7 @@ CAvatarClient::CAvatarClient(const string& sessionId)
 
 CAvatarClient::~CAvatarClient(void)
 {
+	m_portfolioMgr.Clear();
 	m_destroyed = true;
 }
 

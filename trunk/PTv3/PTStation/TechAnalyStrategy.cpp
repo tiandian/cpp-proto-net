@@ -1,11 +1,8 @@
 #include "StdAfx.h"
 #include "TechAnalyStrategy.h"
 #include "PriceBarDataSource.h"
-#include "TechDataRepo.h"
 #include "AvatarClient.h"
 #include <assert.h>
-
-CTechDataRepo g_dataRepo;
 
 const char* GetPosiDirectionText(entity::PosiDirectionType direction)
 {
@@ -76,7 +73,7 @@ void CTechAnalyStrategy::RegHistDataSrc()
 	for (vector<HistSrcCfgPtr>::iterator iter = m_histSrcConfigs.begin();
 		iter != m_histSrcConfigs.end(); ++iter)
 	{
-		CPriceBarDataProxy* proxy = g_dataRepo.Register(
+		CPriceBarDataProxy* proxy = m_avatar->TechDataRepo().Register(
 			(*iter)->Symbol, (*iter)->Precision, (*iter)->HistData, m_avatar->TradingDay());
 		if(proxy != NULL)
 			m_pDataProxies.push_back(proxy);
@@ -90,7 +87,7 @@ void CTechAnalyStrategy::UnregHistDataSrc()
 	for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
 		iter != m_pDataProxies.end(); ++iter)
 	{
-		g_dataRepo.Unregister(*iter);
+		m_avatar->TechDataRepo().Unregister(*iter);
 	}
 	m_pDataProxies.clear();
 }
