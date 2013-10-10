@@ -69,6 +69,8 @@ private:
 	double m_seedShort;
 	double m_seedLong;
 	double m_seedSignal;
+
+	bool m_resettingSeedPosition;
 };
 
 typedef boost::shared_ptr<CMACDDataSet> MACDDataSetPtr;

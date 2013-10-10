@@ -5,6 +5,7 @@
 #include "PortfolioManager.h"
 #include "QuoteRepositry.h"
 #include "OrderProcessor.h"
+#include "TechDataRepo.h"
 #include "entity/message.pb.h"
 
 #include <boost/date_time.hpp>
@@ -27,6 +28,7 @@ public:
 
 	CPortfolioManager& PortfolioManager(){ return m_portfolioMgr; }
 	COrderProcessor& OrderProcessor(){ return m_orderProcessor; }
+	CTechDataRepo& TechDataRepo(){ return m_dataRepo; }
 
 	void PublishPortfolioUpdate(const entity::PortfolioUpdateItem& portfolioUpdate);
 	void PublishMultiLegOrderUpdate(trade::MultiLegOrder* pOrder);
@@ -49,7 +51,7 @@ private:
 	string				m_sessionId;
 	string				m_investorId;
 
-
+	CTechDataRepo		m_dataRepo;
 	CTradeAgent			m_tradeAgent;
 	CQuoteAgent			m_quoteAgent;
 	CQuoteRepositry		m_quoteRepositry;
