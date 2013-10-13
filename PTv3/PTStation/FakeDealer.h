@@ -116,7 +116,7 @@ private:
 	int m_pendingOrdSysId;
 
 	std::ostringstream m_timeStream;
-	//boost::mutex m_mutTimeFormat;
+	boost::mutex m_mutTimeFormat;
 
 	int m_partiallyFilledAmount;
 	bool m_testPartiallyFill;

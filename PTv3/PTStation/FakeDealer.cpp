@@ -295,7 +295,7 @@ void CFakeDealer::SetDateField( CThostFtdcOrderField* pRtnOrder )
 	strcpy_s(pRtnOrder->TradingDay, m_tradingDay.c_str());
 
 	{
-		//boost::lock_guard<boost::mutex> lock(m_mutTimeFormat);
+		boost::lock_guard<boost::mutex> lock(m_mutTimeFormat);
 		const boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
 		m_timeStream << now;
 		string timeText = m_timeStream.str();
