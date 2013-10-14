@@ -4,7 +4,8 @@
 #include "MACDDataSet.h"
 
 class CAvatarClient;
-class CHistSlopeTrigger;
+class CHistSlopeOpenTrigger;
+class CHistSlopeCloseTrigger;
 class CTrailingStopTrigger;
 class CPortfolioTrendOrderPlacer;
 /*
@@ -55,8 +56,8 @@ private:
 	MACDDataSetPtr m_slowPeriodIndicatorSet;
 	MACDDataSetPtr m_fastPeriodIndicatorSet;
 
-	CHistSlopeTrigger* m_pOpenTrigger;
-	CHistSlopeTrigger* m_pCloseTrigger;
+	CHistSlopeOpenTrigger* m_pOpenTrigger;
+	CHistSlopeCloseTrigger* m_pCloseTrigger;
 	CTrailingStopTrigger* m_pTrailingStopTrigger;
 
 	boost::mutex m_mut;

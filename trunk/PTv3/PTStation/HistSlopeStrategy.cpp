@@ -142,18 +142,24 @@ void CHistSlopeStrategy::CreateTriggers( const entity::StrategyItem& strategyIte
 		const entity::TriggerItem& triggerItem = strategyItem.triggers(i);
 		if(triggerItem.name() == HistSlopeTriggerName)
 		{
-			CHistSlopeTrigger* pT = new CHistSlopeTrigger(triggerItem);
-			if(pT->Offset() == entity::OPEN)
+			entity::PosiOffsetFlag posiOffset = triggerItem.hs_offset();
+			CHistSlopeTrigger* pT = NULL;
+			if(posiOffset == entity::OPEN)
 			{
-				m_pOpenTrigger = pT;
+				m_pOpenTrigger = new CHistSlopeOpenTrigger(triggerItem);
+				pT = m_pOpenTrigger;
 			}
-			else if(pT->Offset() == entity::CLOSE)
+			else if(posiOffset == entity::CLOSE)
 			{
-				m_pCloseTrigger = pT;
+				m_pCloseTrigger = new CHistSlopeCloseTrigger(triggerItem);
+				pT = m_pCloseTrigger;
 			}
 
-			TriggerPtr trigger(pT);
-			m_triggers.push_back(trigger);
+			if(pT != NULL)
+			{
+				TriggerPtr trigger(pT);
+				m_triggers.push_back(trigger);
+			}
 		}
 		else if(triggerItem.name() == HistSlopeTrailingStopTriggerName)
 		{
@@ -197,7 +203,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	string symbol = pQuote->symbol();
 
 	COHLCRecordSet* slowOHLC = GetRecordSet(symbol, m_slowPeriod, timestamp);
-	m_slowPeriodIndicatorSet->Calculate(slowOHLC);
+	if(slowOHLC != NULL)
+		m_slowPeriodIndicatorSet->Calculate(slowOHLC);
 	
 	double slowLast0 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
 	double slowLast1 = m_slowPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
@@ -207,7 +214,8 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	// 3. Calculate value of 1 min angle
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
-	m_fastPeriodIndicatorSet->Calculate(fastOHLC);
+	if(fastOHLC != NULL)
+		m_fastPeriodIndicatorSet->Calculate(fastOHLC);
 	// 3.1 if sign of 1 min is same as 5 min, Goes to Trigger test
 	double fastLast0 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
 	double fastLast1 = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 1);
@@ -332,6 +340,10 @@ void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CP
 
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 
+		if(m_pCloseTrigger != NULL)
+		{
+			m_pCloseTrigger->SetDirection(direction);
+		}
 		if(m_pTrailingStopTrigger != NULL)
 		{
 			m_pTrailingStopTrigger->Enable(lmtPrice[0], direction);
@@ -359,6 +371,12 @@ void CHistSlopeStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer
 			% GetPosiDirectionText(posiDirection) % closePx ));
 		
 		pOrderPlacer->CloseOrder(closePx);
+
+		if(m_pCloseTrigger != NULL)
+		{
+			// reset direction of close trigger
+			m_pCloseTrigger->SetDirection(entity::NET);
+		}
 
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s Æ½²Ö @ %.2f")
 			% noteText % GetPosiDirectionText(posiDirection) % closePx));

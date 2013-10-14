@@ -10,7 +10,6 @@ CHistSlopeTrigger::CHistSlopeTrigger(const entity::TriggerItem& triggerItem)
 	Apply(triggerItem);
 }
 
-
 CHistSlopeTrigger::~CHistSlopeTrigger(void)
 {
 }
@@ -22,7 +21,7 @@ void CHistSlopeTrigger::Apply( const entity::TriggerItem& triggerItem )
 	m_slowAngleThreshold = triggerItem.hs_slowanglethreshold();
 }
 
-bool CHistSlopeTrigger::OnTest( const double vals[], int size )
+bool CHistSlopeOpenTrigger::OnTest( const double vals[], int size )
 {
 	if(size == 2)
 	{
@@ -39,7 +38,18 @@ bool CHistSlopeTrigger::OnTest( const double vals[], int size )
 				return true;
 			}
 		}
-		else if(m_offset == entity::CLOSE)
+	}
+	return false;
+}
+
+bool CHistSlopeCloseTrigger::OnTest( const double vals[], int size )
+{
+	if(size == 2 && m_direction > entity::NET)
+	{
+		double fastAngle = fabs(vals[0]);
+		double slowAngle = fabs(vals[1]);
+
+		if(m_offset == entity::CLOSE)
 		{
 			double fa = vals[0];
 			double sa = vals[1];
@@ -47,15 +57,24 @@ bool CHistSlopeTrigger::OnTest( const double vals[], int size )
 			LOG_DEBUG(logger, boost::str(boost::format("HistSlope Testing for CLOSE: slowAngle: %.2f, fastAngle: %.2f")
 				% sa % fa));
 
-			if(fa * sa < 0 &&	// fast and slow have different slope direction
-				DoubleGreaterEqual(fastAngle, m_fastAngleThreshold))// fast Angle different than slow Angle, AND > 45
+			bool isSlowAngleGood = m_direction == entity::LONG ? sa > 0 : sa < 0;
+
+			if(isSlowAngleGood)
 			{
-				LOG_DEBUG(logger, boost::str(boost::format("Fast Angle has become against Slow Angle and greater than %.2f") % m_fastAngleThreshold));
+				if(fa * sa < 0 &&	// fast and slow have different slope direction
+					DoubleGreaterEqual(fastAngle, m_fastAngleThreshold))// fast Angle different than slow Angle, AND > 45
+				{
+					LOG_DEBUG(logger, boost::str(boost::format("Fast Angle has become against Slow Angle and greater than %.2f") % m_fastAngleThreshold));
+					return true;
+				}
+			}
+			else
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("Slow Angle has reversed. (sa:%.2f)") % sa));
 				return true;
 			}
+			
 		}
 	}
 	return false;
 }
-
-
