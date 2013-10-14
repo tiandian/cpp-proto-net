@@ -2,6 +2,10 @@
 #include "QuoteStore.h"
 #include "QuoteFetcher.h"
 #include "globalmembers.h"
+#ifdef _DEBUG
+#include "SymbolTimeUtil.h"
+#endif // _DEBUG
+
 
 CQuoteStore::CQuoteStore(const string& symbol)
 	: m_symbol(symbol)
@@ -102,7 +106,17 @@ void CQuoteStore::GetQuote( entity::Quote* outQuote )
 	outQuote->set_lower_limit_price(m_cachedQuoteData.LowerLimitPrice);
 	outQuote->set_prev_delta(m_cachedQuoteData.PreDelta);
 	outQuote->set_curr_delta(m_cachedQuoteData.CurrDelta);
+
 	outQuote->set_update_time(m_cachedQuoteData.UpdateTime);
+#ifdef _DEBUG
+	/*
+	boost::chrono::seconds tp = ParseTimeString(m_cachedQuoteData.UpdateTime);
+	tp -= boost::chrono::hours(12);
+	const string updateTime = GetISOTimeString(tp);
+	outQuote->set_update_time(updateTime);
+	*/
+#endif // _DEBUG
+	
 	outQuote->set_update_millisec(m_cachedQuoteData.UpdateMillisec);
 
 	outQuote->set_bid(m_cachedQuoteData.BidPrice1);
