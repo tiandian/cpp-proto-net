@@ -62,6 +62,11 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 	if(settingIdx > m_endIndex)
 	{
 		m_endIndex = settingIdx;
+#ifdef TEST_TODAY_HIST
+		if(m_nbElements < 0)
+			m_nbElements = barIdx;
+		else
+#endif // TEST_TODAY_HIST
 		++m_nbElements;
 	}
 

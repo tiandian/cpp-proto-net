@@ -28,6 +28,15 @@ public:
 	int GetBeginIndex() { return m_endIndex - m_nbElements + 1; }
 	int NbElements(){ return m_nbElements; }
 
+#ifdef TEST_TODAY_HIST
+	// only for debug
+	void InitEndIndex() 
+	{ 
+		m_endIndex = m_historyDataSize - 1; 
+		m_nbElements = -1;
+	}
+#endif // TEST_TODAY_HIST
+
 private:
 	static void ResetArray(double arr[], int length);
 

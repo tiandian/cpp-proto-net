@@ -50,6 +50,9 @@ void CHistDataReader::Read(COHLCRecordSet* pRecordSet, CPriceBarGen* pPriceBarGe
         if(exists(today))
         {
             ReadFromFile(todayFilePath, pRecordSet, pPriceBarGen, false);
+#ifdef TEST_TODAY_HIST
+			pRecordSet->InitEndIndex();
+#endif // TEST_TODAY_HIST
         }
 }
 

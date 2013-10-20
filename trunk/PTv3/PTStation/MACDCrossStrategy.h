@@ -8,7 +8,16 @@ class CAvatarClient;
 class CPortfolioTrendOrderPlacer;
 class CMACDCrossOpenTrigger;
 class CMACDCrossCloseTrigger;
-class CTrailingStopTrigger; 
+class CTrailingStopTrigger;
+
+enum BollingerPosition
+{
+	UNKOWN_BOLL_POSITION,
+	BELOW_LOWER,
+	BELOW_MIDDLE,
+	ABOVE_MIDDLE,
+	ABOVE_UPPER
+};
 
 class CMACDCrossStrategy : public CTechAnalyStrategy
 {
@@ -32,7 +41,7 @@ protected:
 
 private:
 
-	entity::PosiDirectionType GetDirection(double slowMacdHist, double lastPx, double bollTop, double bollBottom);
+	entity::PosiDirectionType GetDirection(double slowMacdHist, double lastPx, double bollTop, double bollMid, double bollBottom);
 
 	int m_macdShort;
 	int m_macdLong;
@@ -47,9 +56,10 @@ private:
 	double m_slowHistVal;
 	double m_bollTop;
 	double m_bollBottom;
+	double m_bollMid;
 
 	double m_macdHistArr[2];
-
+	BollingerPosition m_lastBollPosition;
 	bool m_marketOpen;
 
 

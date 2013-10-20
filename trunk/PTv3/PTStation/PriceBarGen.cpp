@@ -122,7 +122,7 @@ int CPriceBarGen::GetIndex(const string& quoteTime)
 
 void CPriceBarGen::RaiseBarFinalizedEvent()
 {
-	if(m_currentIdx > 0 && !m_onBarFinalized.empty())
+	if(m_currentIdx >= 0 && !m_onBarFinalized.empty())
 	{
 		m_onBarFinalized(m_currentIdx, m_open, m_high, m_low, m_close, m_currentTimestamp);
 	}

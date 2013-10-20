@@ -32,5 +32,11 @@ public:
 	bool OnTest(const double vals[], int size);
 
 	entity::PosiOffsetFlag Offset(){ return entity::CLOSE; }
+
+	void SetDirection(entity::PosiDirectionType direction){ m_direction = direction; }
+	entity::PosiDirectionType GetDirection(){ return m_direction; }
+
+private:
+	entity::PosiDirectionType m_direction;
 };
 
