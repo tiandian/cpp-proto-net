@@ -108,14 +108,13 @@ void CQuoteStore::GetQuote( entity::Quote* outQuote )
 	outQuote->set_curr_delta(m_cachedQuoteData.CurrDelta);
 
 	outQuote->set_update_time(m_cachedQuoteData.UpdateTime);
-#ifdef _DEBUG
-	/*
+#ifdef TEST_TODAY_HIST
 	boost::chrono::seconds tp = ParseTimeString(m_cachedQuoteData.UpdateTime);
-	tp -= boost::chrono::hours(12);
+	tp -= boost::chrono::hours(7);
 	const string updateTime = GetISOTimeString(tp);
 	outQuote->set_update_time(updateTime);
-	*/
-#endif // _DEBUG
+	
+#endif // TEST_TODAY_HIST
 	
 	outQuote->set_update_millisec(m_cachedQuoteData.UpdateMillisec);
 

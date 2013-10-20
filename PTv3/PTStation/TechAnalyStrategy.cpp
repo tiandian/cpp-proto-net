@@ -57,7 +57,7 @@ void CTechAnalyStrategy::PrepareHistDataSrc(const entity::StrategyItem& strategy
 {
 	for(int i = 0; i < strategyItem.histsources_size(); ++i)
 	{
-		const entity::HistSourceCfg entityCfg = strategyItem.histsources(i);
+		const entity::HistSourceCfg& entityCfg = strategyItem.histsources(i);
 		HistSrcCfgPtr histCfg(new CHistSourceCfg(entityCfg.symbol(), entityCfg.precision()));
 		OnBeforeAddingHistSrcConfig(histCfg.get());
 		m_histSrcConfigs.push_back(histCfg);

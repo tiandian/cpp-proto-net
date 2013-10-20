@@ -394,8 +394,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             crossStrategy.SlowLongSeed = this.SlowLongSeed;
             crossStrategy.SlowSignalSeed = this.SlowSignalSeed;
 
-            crossStrategy.Triggers.Add(new PTEntity.CrossOpenTriggerItem());
-            crossStrategy.Triggers.Add(new PTEntity.CrossCloseTriggerItem());
+            crossStrategy.Triggers.Add(new PTEntity.CrossOpenTriggerItem() { Enabled = true });
+            crossStrategy.Triggers.Add(new PTEntity.CrossCloseTriggerItem() { Enabled = true });
             crossStrategy.Triggers.Add(new PTEntity.CrossTrailingStopTriggerItem(this.TrailingStopValue));
 
             return crossStrategy;

@@ -23,10 +23,12 @@ CMACDCrossStrategy::CMACDCrossStrategy(const entity::StrategyItem& strategyItem,
 	, m_slowHistVal(0.0)
 	, m_bollTop(0.0)
 	, m_bollBottom(0.0)
+	, m_bollMid(0.0)
 	, m_pOpenTrigger(NULL)
 	, m_pCloseTrigger(NULL)
 	, m_pTrailingStopTrigger(NULL)
 	, m_marketOpen(false)
+	, m_lastBollPosition(UNKOWN_BOLL_POSITION)
 {
 	m_macdHistArr[0] = 0.0;
 	m_macdHistArr[1] = 0.0;
@@ -158,7 +160,7 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
 
-	//pQuote->set_last(2407.4);
+	//pQuote->set_last(2428.4);
 	//pQuote->set_update_time("09:15:00");
 
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
@@ -199,6 +201,7 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	m_fastBollIndicatorSet->Calculate(fastOHLC);
 	m_bollTop = m_fastBollIndicatorSet->GetRef(IND_TOP, 0);
 	m_bollBottom = m_fastBollIndicatorSet->GetRef(IND_BOTTOM, 0);
+	m_bollMid = m_fastBollIndicatorSet->GetRef(IND_MID, 0);
 
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
 
@@ -232,7 +235,9 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		return;	// don't need to go to test open trigger any more
 	}
 	
-	entity::PosiDirectionType direction = GetDirection(m_slowHistVal, pQuote->last(), m_bollTop, m_bollBottom);
+	entity::PosiDirectionType direction = GetDirection(m_slowHistVal, pQuote->last(), m_bollTop, m_bollMid, m_bollBottom);
+	LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Portfolio(%s) Testing open direction - slow hist:%.2f, last:%.2f, top:%.2f, mid:%.2f, bottom:%.2f -->> %s")
+		% pPortfolio->InvestorId() % pPortfolio->ID() % m_slowHistVal % pQuote->last() % m_bollTop % m_bollMid % m_bollBottom % GetPosiDirectionText(direction)));
 	if(direction > entity::NET)
 	{
 		if(!pOrderPlacer->IsWorking())
@@ -267,11 +272,15 @@ void CMACDCrossStrategy::OpenPosition( entity::PosiDirectionType direction, CPor
 
 		LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Open position @ %.2f (%s)")
 			% GetPosiDirectionText(direction) % lmtPrice[0] % pQuote->update_time()));
-		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("MACD快慢线同乡交叉 - %s 开仓 @ %.2f")
+		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("MACD快慢线同向交叉 - %s 开仓 @ %.2f")
 			% GetPosiDirectionText(direction) % lmtPrice[0]));
 
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 
+		if(m_pCloseTrigger != NULL)
+		{
+			m_pCloseTrigger->SetDirection(direction);
+		}
 		if(m_pTrailingStopTrigger != NULL)
 		{
 			m_pTrailingStopTrigger->Enable(lmtPrice[0], direction);
@@ -300,26 +309,48 @@ void CMACDCrossStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer
 
 		pOrderPlacer->CloseOrder(closePx);
 
+		if(m_pCloseTrigger != NULL)
+		{
+			// reset direction of close trigger
+			m_pCloseTrigger->SetDirection(entity::NET);
+		}
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f")
 			% noteText % GetPosiDirectionText(posiDirection) % closePx));
 
 	}
 }
 
-entity::PosiDirectionType CMACDCrossStrategy::GetDirection( double slowMacdHist, double lastPx, double bollTop, double bollBottom )
+entity::PosiDirectionType CMACDCrossStrategy::GetDirection( double slowMacdHist, double lastPx, double bollTop, double bollMid, double bollBottom )
 {
-	// slow MACD golden cross and boll top broken
-	if(slowMacdHist > 0 && lastPx > bollTop)
+	entity::PosiDirectionType retDirection = entity::NET;
+
+	// slow MACD golden cross
+	if(slowMacdHist > 0)
 	{
-		return entity::LONG;
+		if(lastPx > bollTop		// boll top broken
+			|| (lastPx > bollMid && m_lastBollPosition < ABOVE_MIDDLE))	// break up boll mid
+		retDirection = entity::LONG;
 	}
-	// slow MACD dead cross and boll bottom broken
-	if(slowMacdHist < 0 && lastPx < bollBottom)
+	// slow MACD dead cross 
+	else if(slowMacdHist < 0)
 	{
-		return entity::SHORT;
+		if(lastPx < bollBottom	// boll bottom broken
+			|| (lastPx < bollMid && m_lastBollPosition > BELOW_MIDDLE)) // break down boll mid
+		retDirection = entity::SHORT;
 	}
 
-	return entity::NET;
+	if(lastPx > bollTop)
+		m_lastBollPosition = ABOVE_UPPER;
+	else if(lastPx >= bollMid)
+		m_lastBollPosition = ABOVE_MIDDLE;
+	else if(lastPx >= bollBottom)
+		m_lastBollPosition = BELOW_MIDDLE;
+	else if(lastPx > 0 && lastPx < bollBottom)
+		m_lastBollPosition = BELOW_LOWER;
+	else
+		m_lastBollPosition = UNKOWN_BOLL_POSITION;
+
+	return retDirection;
 }
 
 void CMACDCrossStrategy::OnBeforeAddingHistSrcConfig( CHistSourceCfg* pHistSrcCfg )

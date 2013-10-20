@@ -328,7 +328,27 @@
                 </Style>
             </Grid.Resources>
             <Border BorderThickness="0, 1, 1, 1"/>
-            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="38"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="36"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" BorderThickness="0, 0, 1, 1">
+                    <TextBlock Margin="4" VerticalAlignment="Center">快线</TextBlock>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Margin="4" VerticalAlignment="Center">慢线</TextBlock>
+                </Border>
+                <Border Grid.Column="1">
+                   
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1">
+                </Border>
+            </Grid>
         </Grid>
     </DataTemplate>
 
