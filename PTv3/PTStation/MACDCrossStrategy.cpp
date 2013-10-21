@@ -9,6 +9,7 @@
 #include "globalmembers.h"
 #include "SymbolTimeUtil.h"
 #include "TechStrategyDefs.h"
+#include "OHLCRecordSet.h"
 
 CMACDCrossStrategy::CMACDCrossStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
 	: CTechAnalyStrategy(strategyItem, pAvatar)
@@ -29,6 +30,7 @@ CMACDCrossStrategy::CMACDCrossStrategy(const entity::StrategyItem& strategyItem,
 	, m_pTrailingStopTrigger(NULL)
 	, m_marketOpen(false)
 	, m_lastBollPosition(UNKOWN_BOLL_POSITION)
+	, m_openAtBarIdx(0)
 {
 	m_macdHistArr[0] = 0.0;
 	m_macdHistArr[1] = 0.0;
@@ -194,6 +196,7 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
 	m_fastPeriodIndicatorSet->Calculate(fastOHLC);
+	int currentBarIdx = fastOHLC->GetEndIndex();
 
 	m_fastHistVal = m_fastPeriodIndicatorSet->GetRef(IND_MACD_HIST, 0);
 	m_macdHistArr[1] = m_fastHistVal;
@@ -214,15 +217,19 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	if (pOrderPlacer->IsOpened())
 	{
-		bool meetCloseCondition = m_pCloseTrigger->Test(m_macdHistArr, 2);
-		if(meetCloseCondition)
+		bool meetCloseCondition = false;
+		if(currentBarIdx > m_openAtBarIdx) // This close condition check is only effective on the bar after open
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Portfolio(%s) Closing position due to fast MACD reverse cross")
-				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pOrderPlacer, pQuote, "MACD快线逆向叉");
-			return;
+			meetCloseCondition = m_pCloseTrigger->Test(m_macdHistArr, 2);
+			if(meetCloseCondition)
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Portfolio(%s) Closing position due to fast MACD reverse cross")
+					% pPortfolio->InvestorId() % pPortfolio->ID()));
+				ClosePosition(pOrderPlacer, pQuote, "MACD快线逆向叉");
+				return;
+			}
 		}
-
+		
 		meetCloseCondition = m_pTrailingStopTrigger->Test(pQuote->last());
 		if(meetCloseCondition)
 		{
@@ -245,9 +252,10 @@ void CMACDCrossStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 			bool meetOpenCondition = m_pOpenTrigger->Test(m_macdHistArr, 2);
 			if(meetOpenCondition)
 			{
-				LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Portfolio(%s) Opening position")
-					% pPortfolio->InvestorId() % pPortfolio->ID()));
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Double Cross - Portfolio(%s) Opening position at bar %d")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
 				OpenPosition(direction, pOrderPlacer, pQuote, timestamp);
+				m_openAtBarIdx = currentBarIdx;
 				return;
 			}
 		}
@@ -270,7 +278,7 @@ void CMACDCrossStrategy::OpenPosition( entity::PosiDirectionType direction, CPor
 		}
 		lmtPrice[1] = 0.0;
 
-		LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Open position @ %.2f (%s)")
+		LOG_DEBUG(logger, boost::str(boost::format("Double Cross - %s Open position @ %.2f (%s)")
 			% GetPosiDirectionText(direction) % lmtPrice[0] % pQuote->update_time()));
 		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("MACD快慢线同向交叉 - %s 开仓 @ %.2f")
 			% GetPosiDirectionText(direction) % lmtPrice[0]));
@@ -304,7 +312,7 @@ void CMACDCrossStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer
 			closePx = pQuote->ask();
 		}
 
-		LOG_DEBUG(logger, boost::str(boost::format("HistSlope - %s Close position @ %.2f (%s)")
+		LOG_DEBUG(logger, boost::str(boost::format("Double Cross - %s Close position @ %.2f (%s)")
 			% GetPosiDirectionText(posiDirection) % closePx  % pQuote->update_time()));
 
 		pOrderPlacer->CloseOrder(closePx);
@@ -314,6 +322,7 @@ void CMACDCrossStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer
 			// reset direction of close trigger
 			m_pCloseTrigger->SetDirection(entity::NET);
 		}
+		m_openAtBarIdx = 0; // reset open bar position
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f")
 			% noteText % GetPosiDirectionText(posiDirection) % closePx));
 

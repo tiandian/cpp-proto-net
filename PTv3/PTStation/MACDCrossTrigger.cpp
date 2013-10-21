@@ -33,7 +33,7 @@ bool CMACDCrossCloseTrigger::OnTest( const double vals[], int size )
 		if(isSlowAngleGood)
 		{
 			// fast MACD has different direction than slow
-			LOG_DEBUG(logger, boost::str(boost::format("Fast MACD has become against Slow MACD. (fast:%.2f, slow:%.2f)") 
+			LOG_DEBUG(logger, boost::str(boost::format("IF Fast MACD has become against Slow MACD? (fast:%.2f, slow:%.2f)") 
 				% fast % slow));
 			return slow * fast < 0;
 		}
