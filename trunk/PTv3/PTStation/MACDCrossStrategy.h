@@ -61,7 +61,7 @@ private:
 	double m_macdHistArr[2];
 	BollingerPosition m_lastBollPosition;
 	bool m_marketOpen;
-
+	int m_openAtBarIdx;
 
 	MACDDataSetPtr m_slowPeriodIndicatorSet;
 	MACDDataSetPtr m_fastPeriodIndicatorSet;
