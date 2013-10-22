@@ -27,6 +27,7 @@ public:
 	int GetEndIndex(){ return m_endIndex; }
 	int GetBeginIndex() { return m_endIndex - m_nbElements + 1; }
 	int NbElements(){ return m_nbElements; }
+	int HistoryDataSize() { return m_historyDataSize; }
 
 #ifdef TEST_TODAY_HIST
 	// only for debug
