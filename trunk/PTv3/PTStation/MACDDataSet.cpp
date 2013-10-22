@@ -13,7 +13,6 @@ CMACDDataSet::CMACDDataSet(int size, int paramShort, int paramLong, int paramM)
 	, m_seedShort(0)
 	, m_seedLong(0)
 	, m_seedSignal(0)
-	, m_resettingSeedPosition(false)
 {
 	SetShort(paramShort);
 	SetLong(paramLong);
@@ -98,7 +97,7 @@ void CMACDDataSet::CalculateBaseOnSeed( COHLCRecordSet* ohlcRecordSet )
 
 	if(m_lastPosition < 1)
 	{
-		if(!m_resettingSeedPosition)
+		if(beginIdx == ohlcRecordSet->HistoryDataSize())
 		{
 			ResetSeed(beginIdx - 1);
 			CalculateMACD(beginIdx, endIdx, ohlcRecordSet);
@@ -108,7 +107,6 @@ void CMACDDataSet::CalculateBaseOnSeed( COHLCRecordSet* ohlcRecordSet )
 			// if it's resetting seed position, reset the one before endIdx
 			ResetSeed(endIdx - 1);
 			CalculateMACD(endIdx, endIdx, ohlcRecordSet);
-			m_resettingSeedPosition = false;
 		}
 	}
 	else // only calculate value of the last point
@@ -191,7 +189,6 @@ void CMACDDataSet::SetM( int val )
 void CMACDDataSet::ResetSeedPosition()
 {
 	m_lastPosition = 0;
-	m_resettingSeedPosition = true;
 }
 
 void CMACDDataSet::ResetSeed( int seedPosition )
