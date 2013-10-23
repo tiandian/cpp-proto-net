@@ -21,6 +21,10 @@ public:
 	void Calculate(COHLCRecordSet* ohlcRecordSet);
 
 private:
+
+	void CalculateRaw(COHLCRecordSet* ohlcRecordSet, int lastIdx);
+	void CalculateTA(COHLCRecordSet* ohlcRecordSet, int lastIdx);
+
 	int m_paramM;
 	int m_paramP;
 
