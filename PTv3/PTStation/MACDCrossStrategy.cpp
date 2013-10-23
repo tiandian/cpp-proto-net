@@ -370,3 +370,15 @@ void CMACDCrossStrategy::OnBeforeAddingHistSrcConfig( CHistSourceCfg* pHistSrcCf
 			pHistSrcCfg->HistData = true;
 	}
 }
+
+int CMACDCrossStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+{
+	int qty = openOrder.quantity();
+
+	double ord_profit = CStrategy::CalcOrderProfit(openOrder);
+	AddProfit(pPortfolio, ord_profit);
+	int totalOpenTimes = IncrementOpenTimes(pPortfolio, qty);
+	IncrementCloseTimes(pPortfolio, qty);
+
+	return totalOpenTimes;
+}

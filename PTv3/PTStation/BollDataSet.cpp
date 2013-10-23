@@ -23,13 +23,20 @@ CBollDataSet::~CBollDataSet(void)
 
 void CBollDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 {
-	int outBeg = -1;
-	int outNbElement = -1;
-
 	int lastIdx = ohlcRecordSet->GetEndIndex();
 	logger.Info(boost::str(boost::format("Calculating BOLL with OHLC RecordSet: lastIdx - %d, last price - %f")
 		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 
+	//CalculateTA(ohlcRecordSet, lastIdx);
+	CalculateRaw(ohlcRecordSet, lastIdx);
+
+	m_lastPosition = lastIdx;
+}
+
+void CBollDataSet::CalculateRaw( COHLCRecordSet* ohlcRecordSet, int lastIdx )
+{
+	int outBeg = -1;
+	int outNbElement = -1;
 	double outSma = 0;
 	double outStdDev = 0;
 
@@ -52,6 +59,26 @@ void CBollDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 		logger.Warning(boost::str(boost::format("Cannot calculate STDDEV !!! lastIdx:%d, outBeg:%d")
 			% lastIdx % outBeg));
 	}
+}
 
-	m_lastPosition = lastIdx;
+void CBollDataSet::CalculateTA( COHLCRecordSet* ohlcRecordSet, int lastIdx )
+{
+	int outBeg = -1;
+	int outNbElement = -1;
+	double outMid = 0;
+	double outTop = 0;
+	double outBottom = 0;
+
+	TA_RetCode rc = TA_BBANDS(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), 
+		m_paramM, 2.0, 2.0, TA_MAType_SMA, &outBeg, &outNbElement, &outTop, &outMid, &outBottom);
+
+	if(outBeg == lastIdx)
+	{
+		m_arrTop[outBeg] = outTop;
+		m_arrBottom[outBeg] = outBottom;
+		m_arrMid[outBeg] = outMid;
+
+		logger.Info(boost::str(boost::format("Calculated BOLL values: mid - %.2f, top - %.2f, bottom - %.2f")
+			% m_arrMid[outBeg] % m_arrTop[outBeg] % m_arrBottom[outBeg] ));
+	}
 }
