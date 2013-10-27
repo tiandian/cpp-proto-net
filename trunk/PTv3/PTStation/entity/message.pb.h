@@ -2194,6 +2194,34 @@ class StrategyItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 dx_bollp() const;
   inline void set_dx_bollp(::google::protobuf::int32 value);
   
+  // optional int32 LR_Period = 531;
+  inline bool has_lr_period() const;
+  inline void clear_lr_period();
+  static const int kLRPeriodFieldNumber = 531;
+  inline ::google::protobuf::int32 lr_period() const;
+  inline void set_lr_period(::google::protobuf::int32 value);
+  
+  // optional int32 LR_Number = 532;
+  inline bool has_lr_number() const;
+  inline void clear_lr_number();
+  static const int kLRNumberFieldNumber = 532;
+  inline ::google::protobuf::int32 lr_number() const;
+  inline void set_lr_number(::google::protobuf::int32 value);
+  
+  // optional double LR_OpenThreshold = 533;
+  inline bool has_lr_openthreshold() const;
+  inline void clear_lr_openthreshold();
+  static const int kLROpenThresholdFieldNumber = 533;
+  inline double lr_openthreshold() const;
+  inline void set_lr_openthreshold(double value);
+  
+  // optional double LR_CloseThreshold = 534;
+  inline bool has_lr_closethreshold() const;
+  inline void clear_lr_closethreshold();
+  static const int kLRCloseThresholdFieldNumber = 534;
+  inline double lr_closethreshold() const;
+  inline void set_lr_closethreshold(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.StrategyItem)
  private:
   inline void set_has_type();
@@ -2250,6 +2278,14 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_dx_bollm();
   inline void set_has_dx_bollp();
   inline void clear_has_dx_bollp();
+  inline void set_has_lr_period();
+  inline void clear_has_lr_period();
+  inline void set_has_lr_number();
+  inline void clear_has_lr_number();
+  inline void set_has_lr_openthreshold();
+  inline void clear_has_lr_openthreshold();
+  inline void set_has_lr_closethreshold();
+  inline void clear_has_lr_closethreshold();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2282,9 +2318,13 @@ class StrategyItem : public ::google::protobuf::Message {
   double hs_slowlongemaseed_;
   double hs_slowsignalemaseed_;
   ::google::protobuf::int32 dx_bollp_;
+  ::google::protobuf::int32 lr_period_;
+  double lr_openthreshold_;
+  double lr_closethreshold_;
+  ::google::protobuf::int32 lr_number_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(29 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(33 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3035,6 +3075,20 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline double dx_bollbottom() const;
   inline void set_dx_bollbottom(double value);
   
+  // optional double LR_WeightMidPoint = 321;
+  inline bool has_lr_weightmidpoint() const;
+  inline void clear_lr_weightmidpoint();
+  static const int kLRWeightMidPointFieldNumber = 321;
+  inline double lr_weightmidpoint() const;
+  inline void set_lr_weightmidpoint(double value);
+  
+  // optional double LR_LinerRegAngle = 323;
+  inline bool has_lr_linerregangle() const;
+  inline void clear_lr_linerregangle();
+  static const int kLRLinerRegAngleFieldNumber = 323;
+  inline double lr_linerregangle() const;
+  inline void set_lr_linerregangle(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioUpdateItem)
  private:
   inline void set_has_id();
@@ -3087,6 +3141,10 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_dx_bolltop();
   inline void set_has_dx_bollbottom();
   inline void clear_has_dx_bollbottom();
+  inline void set_has_lr_weightmidpoint();
+  inline void clear_has_lr_weightmidpoint();
+  inline void set_has_lr_linerregangle();
+  inline void clear_has_lr_linerregangle();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -3117,9 +3175,11 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   int hs_slowslopedirection_;
   double dx_bolltop_;
   double dx_bollbottom_;
+  double lr_weightmidpoint_;
+  double lr_linerregangle_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(27 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(29 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -8085,6 +8145,94 @@ inline void StrategyItem::set_dx_bollp(::google::protobuf::int32 value) {
   dx_bollp_ = value;
 }
 
+// optional int32 LR_Period = 531;
+inline bool StrategyItem::has_lr_period() const {
+  return (_has_bits_[0] & 0x20000000u) != 0;
+}
+inline void StrategyItem::set_has_lr_period() {
+  _has_bits_[0] |= 0x20000000u;
+}
+inline void StrategyItem::clear_has_lr_period() {
+  _has_bits_[0] &= ~0x20000000u;
+}
+inline void StrategyItem::clear_lr_period() {
+  lr_period_ = 0;
+  clear_has_lr_period();
+}
+inline ::google::protobuf::int32 StrategyItem::lr_period() const {
+  return lr_period_;
+}
+inline void StrategyItem::set_lr_period(::google::protobuf::int32 value) {
+  set_has_lr_period();
+  lr_period_ = value;
+}
+
+// optional int32 LR_Number = 532;
+inline bool StrategyItem::has_lr_number() const {
+  return (_has_bits_[0] & 0x40000000u) != 0;
+}
+inline void StrategyItem::set_has_lr_number() {
+  _has_bits_[0] |= 0x40000000u;
+}
+inline void StrategyItem::clear_has_lr_number() {
+  _has_bits_[0] &= ~0x40000000u;
+}
+inline void StrategyItem::clear_lr_number() {
+  lr_number_ = 0;
+  clear_has_lr_number();
+}
+inline ::google::protobuf::int32 StrategyItem::lr_number() const {
+  return lr_number_;
+}
+inline void StrategyItem::set_lr_number(::google::protobuf::int32 value) {
+  set_has_lr_number();
+  lr_number_ = value;
+}
+
+// optional double LR_OpenThreshold = 533;
+inline bool StrategyItem::has_lr_openthreshold() const {
+  return (_has_bits_[0] & 0x80000000u) != 0;
+}
+inline void StrategyItem::set_has_lr_openthreshold() {
+  _has_bits_[0] |= 0x80000000u;
+}
+inline void StrategyItem::clear_has_lr_openthreshold() {
+  _has_bits_[0] &= ~0x80000000u;
+}
+inline void StrategyItem::clear_lr_openthreshold() {
+  lr_openthreshold_ = 0;
+  clear_has_lr_openthreshold();
+}
+inline double StrategyItem::lr_openthreshold() const {
+  return lr_openthreshold_;
+}
+inline void StrategyItem::set_lr_openthreshold(double value) {
+  set_has_lr_openthreshold();
+  lr_openthreshold_ = value;
+}
+
+// optional double LR_CloseThreshold = 534;
+inline bool StrategyItem::has_lr_closethreshold() const {
+  return (_has_bits_[1] & 0x00000001u) != 0;
+}
+inline void StrategyItem::set_has_lr_closethreshold() {
+  _has_bits_[1] |= 0x00000001u;
+}
+inline void StrategyItem::clear_has_lr_closethreshold() {
+  _has_bits_[1] &= ~0x00000001u;
+}
+inline void StrategyItem::clear_lr_closethreshold() {
+  lr_closethreshold_ = 0;
+  clear_has_lr_closethreshold();
+}
+inline double StrategyItem::lr_closethreshold() const {
+  return lr_closethreshold_;
+}
+inline void StrategyItem::set_lr_closethreshold(double value) {
+  set_has_lr_closethreshold();
+  lr_closethreshold_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // TriggerItem
@@ -9448,6 +9596,50 @@ inline double PortfolioUpdateItem::dx_bollbottom() const {
 inline void PortfolioUpdateItem::set_dx_bollbottom(double value) {
   set_has_dx_bollbottom();
   dx_bollbottom_ = value;
+}
+
+// optional double LR_WeightMidPoint = 321;
+inline bool PortfolioUpdateItem::has_lr_weightmidpoint() const {
+  return (_has_bits_[0] & 0x08000000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_lr_weightmidpoint() {
+  _has_bits_[0] |= 0x08000000u;
+}
+inline void PortfolioUpdateItem::clear_has_lr_weightmidpoint() {
+  _has_bits_[0] &= ~0x08000000u;
+}
+inline void PortfolioUpdateItem::clear_lr_weightmidpoint() {
+  lr_weightmidpoint_ = 0;
+  clear_has_lr_weightmidpoint();
+}
+inline double PortfolioUpdateItem::lr_weightmidpoint() const {
+  return lr_weightmidpoint_;
+}
+inline void PortfolioUpdateItem::set_lr_weightmidpoint(double value) {
+  set_has_lr_weightmidpoint();
+  lr_weightmidpoint_ = value;
+}
+
+// optional double LR_LinerRegAngle = 323;
+inline bool PortfolioUpdateItem::has_lr_linerregangle() const {
+  return (_has_bits_[0] & 0x10000000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_lr_linerregangle() {
+  _has_bits_[0] |= 0x10000000u;
+}
+inline void PortfolioUpdateItem::clear_has_lr_linerregangle() {
+  _has_bits_[0] &= ~0x10000000u;
+}
+inline void PortfolioUpdateItem::clear_lr_linerregangle() {
+  lr_linerregangle_ = 0;
+  clear_has_lr_linerregangle();
+}
+inline double PortfolioUpdateItem::lr_linerregangle() const {
+  return lr_linerregangle_;
+}
+inline void PortfolioUpdateItem::set_lr_linerregangle(double value) {
+  set_has_lr_linerregangle();
+  lr_linerregangle_ = value;
 }
 
 // -------------------------------------------------------------------

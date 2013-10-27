@@ -114,6 +114,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\packet.pb.h" />
     <ClInclude Include="entity\quote.pb.h" />
     <ClInclude Include="entity\trade.pb.h" />
+    <ClInclude Include="LinerRegressionDataSet.h" />
+    <ClInclude Include="LinerRegressionStrategy.h" />
     <ClInclude Include="MACDCrossStrategy.h" />
     <ClInclude Include="MACDCrossTrigger.h" />
     <ClInclude Include="MACDDataSet.h" />
@@ -211,6 +213,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="LinerRegressionDataSet.cpp" />
+    <ClCompile Include="LinerRegressionStrategy.cpp" />
     <ClCompile Include="MACDCrossStrategy.cpp" />
     <ClCompile Include="MACDCrossTrigger.cpp" />
     <ClCompile Include="MACDDataSet.cpp" />

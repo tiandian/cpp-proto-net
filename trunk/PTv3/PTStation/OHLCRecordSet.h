@@ -12,7 +12,7 @@ enum HISTORY_DATA_MODE
 class COHLCRecordSet
 {
 public:
-	COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA_MODE histDataMode = ONE_BAR );
+	COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA_MODE histDataMode = ONE_BAR, bool weightAvg = true );
 	~COHLCRecordSet(void);
 
 	void SetToday(int barIdx, double open, double high, double low, double close);
@@ -22,6 +22,7 @@ public:
 	boost::shared_array<double> HighSeries;
 	boost::shared_array<double> LowSeries;
 	boost::shared_array<double> CloseSeries;
+	boost::shared_array<double> WeightAvgSeries;
 
 	int GetSize(){ return m_totalCount; }
 	int GetEndIndex(){ return m_endIndex; }
@@ -48,7 +49,11 @@ private:
 	int m_endIndex;
 	int m_nbElements;
 
+	int m_countInBar;
+	double m_totalInBar;
+
 	HISTORY_DATA_MODE m_histDataMode;
+	bool m_weightAvg;
 };
 
 typedef boost::shared_ptr<COHLCRecordSet> OHLCRecordSetPtr;

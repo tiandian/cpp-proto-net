@@ -12,11 +12,13 @@ public:
 	CHistSourceCfg(const string& symb, int precision)
 		: Symbol(symb), Precision(precision)
 		, HistData(false)
+		, WeightAvg(false)
 	{}
 
 	string Symbol;
 	int Precision;
 	bool HistData;
+	bool WeightAvg;
 };
 
 typedef boost::shared_ptr<CHistSourceCfg> HistSrcCfgPtr;
