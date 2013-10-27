@@ -13,11 +13,14 @@ void COHLCRecordSet::ResetArray(double arr[], int length)
 	}
 }
 
-COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA_MODE histDataMode)
+COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA_MODE histDataMode, bool weightAvg)
 	: m_symbol(symbol)
 	, m_precision(precision)
 	, m_histDataMode(histDataMode)
+	, m_weightAvg(weightAvg)
 	, m_nbElements(0)
+	, m_countInBar(0)
+	, m_totalInBar(0.0)
 {
 	bool isIF = boost::starts_with(symbol, "IF");
 	int tradingTime = isIF ? IF_TOTAL_TRADING_SECONDS : NON_IF_TOTAL_TRADING_SECONDS ;
@@ -47,6 +50,12 @@ COHLCRecordSet::COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA
 	CloseSeries = boost::shared_array<double>(new double[m_totalCount]);
 	ResetArray(CloseSeries.get(), m_totalCount);
 
+	if(m_weightAvg)
+	{
+		WeightAvgSeries = boost::shared_array<double>(new double[m_totalCount]);
+		ResetArray(WeightAvgSeries.get(), m_totalCount);
+	}
+
 	m_endIndex = m_historyDataSize - 1;
 }
 
@@ -68,6 +77,12 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 		else
 #endif // TEST_TODAY_HIST
 		++m_nbElements;
+
+		if(m_weightAvg)
+		{
+			m_totalCount = 0;
+			m_totalInBar = 0.0;
+		}
 	}
 
 	// protect from out of array boundary
@@ -77,6 +92,12 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 		HighSeries[settingIdx] = high;
 		LowSeries[settingIdx] = low;
 		CloseSeries[settingIdx] = close;
+
+		if(m_weightAvg)
+		{
+			m_totalInBar += close;
+			WeightAvgSeries[settingIdx] = m_totalInBar / ++m_totalCount;
+		}
 	}
 
 #ifdef LOG_FOR_TECH_CALC

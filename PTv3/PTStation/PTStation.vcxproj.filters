@@ -308,6 +308,12 @@
     <ClInclude Include="TrailingStopTrigger.h">
       <Filter>Header Files\strategy</Filter>
     </ClInclude>
+    <ClInclude Include="LinerRegressionStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="LinerRegressionDataSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -522,6 +528,12 @@
     </ClCompile>
     <ClCompile Include="TrailingStopTrigger.cpp">
       <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="LinerRegressionStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="LinerRegressionDataSet.cpp">
+      <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
