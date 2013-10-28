@@ -139,4 +139,29 @@ void MACDCrossStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 	}
 }
 
+
+void LinerRegressionStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
+{
+	IntPtr symbolPtr;
+	try
+	{
+		symbolPtr = (IntPtr)Marshal::StringToHGlobalAnsi(_symbol);
+
+		entity::HistSourceCfg* fastSourceCfg = pNativeStrategyItem->add_histsources();
+		fastSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
+		fastSourceCfg->set_precision(_period);
+
+		pNativeStrategyItem->set_lr_period(_period);
+		pNativeStrategyItem->set_lr_number(_number);
+		pNativeStrategyItem->set_lr_openthreshold(_openThreshold);
+		pNativeStrategyItem->set_lr_closethreshold(_closeThreshold);
+
+		StrategyItem::To(pNativeStrategyItem);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(symbolPtr);
+	}
+}
+
 }

@@ -617,4 +617,83 @@ private:
 	String^ _symbol;
 };
 
+public ref class LinerRegressionStrategyItem : StrategyItem
+{
+public:
+	LinerRegressionStrategyItem()
+	{
+		_type = StrategyType::LINER_REGRESSION;
+	}
+
+	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
+
+	property String^ Symbol
+	{
+		String^ get()
+		{
+			return _symbol; 
+		}
+		void set(String^ val)
+		{
+			_symbol = val;
+		}
+	}
+
+	property int Period
+	{
+		int get()
+		{
+			return _period; 
+		}
+		void set(int val)
+		{
+			_period = val;
+		}
+	}
+
+	property int Number
+	{
+		int get()
+		{
+			return _number; 
+		}
+		void set(int val)
+		{
+			_number = val;
+		}
+	}
+
+	property double OpenThreshold
+	{
+		double get()
+		{
+			return _openThreshold; 
+		}
+		void set(double val)
+		{
+			_openThreshold = val;
+		}
+	}
+
+	property double CloseThreshold
+	{
+		double get()
+		{
+			return _closeThreshold; 
+		}
+		void set(double val)
+		{
+			_closeThreshold = val;
+		}
+	}
+
+private:
+	int _period;
+	int _number;
+	double _openThreshold;
+	double _closeThreshold;
+
+	String^ _symbol;
+};
+
 }

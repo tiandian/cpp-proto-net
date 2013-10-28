@@ -188,6 +188,8 @@
     <Compile Include="Modules\Portfolio\Strategy\ArbitrageSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ChangePositionSetting.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ChangePositionSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\LinerRegSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\LinerRegStrategySettings.cs" />
     <Compile Include="Modules\Portfolio\Strategy\MACDCrossSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\MACDCrossStrategySettings.cs" />
     <Compile Include="Modules\Portfolio\Strategy\MACDHistSlopeSettingsVM.cs" />

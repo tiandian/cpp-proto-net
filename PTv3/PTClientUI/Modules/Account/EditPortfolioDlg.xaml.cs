@@ -229,6 +229,18 @@ namespace PortfolioTrading.Modules.Account
                     setting.TrailingStopValue = this.TrailingStop;
                 }
             }
+            else if (StrategyName == StrategySetting.LinerRegressionStrategyName)
+            {
+                if (!string.IsNullOrEmpty(Symbol1))
+                {
+                    LinerRegStrategySettings setting = (LinerRegStrategySettings)portf.StrategySetting;
+                    setting.Symbol = Symbol1;
+                    setting.Period = LR_Period;
+                    setting.Number = LR_Number;
+                    setting.OpenThreshold = LR_OpenThreshold;
+                    setting.CloseThreshold = LR_CloseThreshold;
+                }
+            }
         }
 
         #region StrategyName
@@ -653,6 +665,78 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _trailingStop = value;
                     RaisePropertyChanged("TrailingStop");
+                }
+            }
+        }
+        #endregion
+        
+        #endregion
+
+        #region Liner Regression
+        
+        #region LR_Period
+        private int _lr_period;
+
+        public int LR_Period
+        {
+            get { return _lr_period; }
+            set
+            {
+                if (_lr_period != value)
+                {
+                    _lr_period = value;
+                    RaisePropertyChanged("LR_Period");
+                }
+            }
+        }
+        #endregion
+
+        #region LR_Number
+        private int _lr_number;
+
+        public int LR_Number
+        {
+            get { return _lr_number; }
+            set
+            {
+                if (_lr_number != value)
+                {
+                    _lr_number = value;
+                    RaisePropertyChanged("LR_Number");
+                }
+            }
+        }
+        #endregion
+
+        #region LR_OpenThreshold
+        private double _lr_openThreshold;
+
+        public double LR_OpenThreshold
+        {
+            get { return _lr_openThreshold; }
+            set
+            {
+                if (_lr_openThreshold != value)
+                {
+                    _lr_openThreshold = value;
+                    RaisePropertyChanged("LR_OpenThreshold");
+                }
+            }
+        }
+        #endregion
+
+        #region LR_CloseThreshold
+        private double _lr_closeThreshold;
+
+        public double LR_CloseThreshold
+        {
+            get { return _lr_closeThreshold; }
+            set
+            {
+                if (_lr_closeThreshold != value)
+                {
+                    _lr_closeThreshold = value;
+                    RaisePropertyChanged("LR_CloseThreshold");
                 }
             }
         }

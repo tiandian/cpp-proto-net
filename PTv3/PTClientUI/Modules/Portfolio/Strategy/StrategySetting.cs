@@ -14,6 +14,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public const string ScalperStrategyName = "Scalper";
         public const string MACDHistSlopeStrategyName = "MACDHistSlope";
         public const string MACDCrossStrategyName = "MACDCross";
+        public const string LinerRegressionStrategyName = "LinerRegression";
 
         public abstract string Name { get; }
 
@@ -39,6 +40,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     return "MACD角度";
                 case MACDCrossStrategyName:
                     return "MACD金叉";
+                case LinerRegressionStrategyName:
+                    return "线性回归";
             }
             return "未知";
         }
@@ -69,6 +72,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     break;
                 case MACDCrossStrategyName:
                     setting = new MACDCrossStrategySettings();
+                    break;
+                case LinerRegressionStrategyName:
+                    setting = new LinerRegStrategySettings();
                     break;
                 default:
                     throw new ArgumentException(string.Format("Unexpected strategy setting ({0})", name));
