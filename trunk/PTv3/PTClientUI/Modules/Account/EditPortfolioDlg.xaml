@@ -321,6 +321,54 @@
 
                 </StackPanel>
             </igWindows:TabItemEx>
+            <igWindows:TabItemEx Header="Liner" Name="tabLiner" Width="60" Tag="LinerRegression">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel Margin="10, 4, 10, 8">
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="4"></TextBox>
+                        </DockPanel>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <DockPanel Grid.Column="0" Grid.Row="0">
+                                <TextBlock Margin="2">周期</TextBlock>
+                                <xctk:DecimalUpDown Value="{Binding LR_Period, Mode=TwoWay}" Increment="10" Margin="6, 4"/>
+                            </DockPanel>
+                            <Border Margin="0, 2" Grid.Row="1"/>
+                            <DockPanel Grid.Column="0" Grid.Row="2">
+                                <TextBlock Margin="2">K线</TextBlock>
+                                <xctk:DecimalUpDown Value="{Binding LR_Number, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                            </DockPanel>
+                            <Border Margin="0, 2" Grid.Row="3"/>
+                            <DockPanel Grid.Column="0" Grid.Row="4">
+                                <TextBlock Margin="2">开仓</TextBlock>
+                                <xctk:DecimalUpDown Value="{Binding LR_OpenThreshold, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                            </DockPanel>
+                            <Border Margin="0, 2" Grid.Row="5"/>
+                            <DockPanel Grid.Column="0" Grid.Row="6">
+                                <TextBlock Margin="2">平仓</TextBlock>
+                                <xctk:DecimalUpDown Value="{Binding LR_CloseThreshold, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                            </DockPanel>
+                        </Grid>
+                    </StackPanel>
+
+                </StackPanel>
+            </igWindows:TabItemEx>
         </igWindows:XamTabControl>
         
     </DockPanel>
