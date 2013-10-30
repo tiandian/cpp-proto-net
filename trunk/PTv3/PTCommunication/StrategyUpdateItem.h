@@ -408,4 +408,50 @@ private:
 	double _bollBottom;
 };
 
+public ref class LinerRegStrategyUpdateItem : StrategyUpdateItem
+{
+public:
+	LinerRegStrategyUpdateItem(double weightMidPoint, double linerRegAngle)
+	{
+		_weightMidPoint = weightMidPoint;
+		_linerRegAngle = linerRegAngle;
+	}
+
+	property StrategyType Kind
+	{
+		virtual StrategyType get() override
+		{
+			return StrategyType::LINER_REGRESSION;
+		}
+	}
+
+	property double WeightMidPoint
+	{
+		double get()
+		{
+			return _weightMidPoint; 
+		}
+		void set(double val)
+		{
+			_weightMidPoint = val;
+		}
+	}
+
+	property double LinerRegAngle
+	{
+		double get()
+		{
+			return _linerRegAngle; 
+		}
+		void set(double val)
+		{
+			_linerRegAngle = val;
+		}
+	}
+
+private:
+	double _weightMidPoint;
+	double _linerRegAngle;
+};
+
 }

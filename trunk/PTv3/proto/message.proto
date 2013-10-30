@@ -131,6 +131,7 @@ enum StrategyType
 	SCALPER = 2;
 	HIST_SLOPE = 3;
 	DOUBLE_CROSS = 4;
+	LINER_REGRESSION = 5;
 }
 
 message HistSourceCfg
@@ -182,6 +183,12 @@ message StrategyItem
 	// Double Cross
 	optional int32 DX_BollM = 521;
 	optional int32 DX_BollP = 522;
+
+	// Liner Regression
+	optional int32 LR_Period = 531;
+	optional int32 LR_Number = 532;
+	optional double LR_OpenThreshold = 533;
+	optional double LR_CloseThreshold = 534;
 }
 
 message TriggerItem
@@ -274,6 +281,9 @@ message PortfolioUpdateItem
 	// DoubleCross
 	optional double DX_BollTop = 311;
 	optional double DX_BollBottom = 312;
+	// LinerRegression
+	optional double LR_WeightMidPoint = 321;
+	optional double LR_LinerRegAngle = 323;
 }
 
 message ConnectParam

@@ -521,13 +521,66 @@
                     </StackPanel>
                 </DataTemplate>
 
+                <DataTemplate x:Key="linerRegAngleSettingTemplate">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="2"/>
+                                <Setter Property="BorderBrush" Value="Green" />
+                                <Setter Property="CornerRadius" Value="2"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">基本参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">周期(秒)</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding FastPeriod, FallbackValue=60, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">K柱(根)</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding FastPeriod, FallbackValue=3, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">开仓参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">角度大于</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding OpenThreshold, FallbackValue=25, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">平仓参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">角度小于</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding CloseThreshold, FallbackValue=0, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                        
+                    </StackPanel>
+                </DataTemplate>
+                
                 <local:PortfSettingTemplateSelector x:Key="strategySettingSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageSettingTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionSettingTemplate}"
                                     ScalperTemplate="{StaticResource scalperSettingTemplate}"
                                     MACDHistSlopeTemplate="{StaticResource macdHistSlopeSettingTemplate}"
                                     MACDCrossTemplate="{StaticResource macdCrossSettingTemplate}"
-                                                    />
+                                    LinerRegressionTemplate="{StaticResource linerRegAngleSettingTemplate}"
+                                    />
             </Grid.Resources>
 
             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">

@@ -57,6 +57,12 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				pEntity->dx_bollbottom()
 			);
 		break;
+	case StrategyType::LINER_REGRESSION:
+		retStrategyUpdate = gcnew LinerRegStrategyUpdateItem
+		(
+			pEntity->lr_weightmidpoint(),
+			pEntity->lr_linerregangle()
+		);
 	default:
 		return nullptr;
 	}
