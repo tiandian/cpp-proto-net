@@ -352,12 +352,52 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="linerRegTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="38"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="36"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" BorderThickness="0, 0, 1, 1">
+                    <TextBlock Margin="4" VerticalAlignment="Center">开仓</TextBlock>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Margin="4" VerticalAlignment="Center">平仓</TextBlock>
+                </Border>
+                <Border Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Width="60" Text="大于等于" VerticalAlignment="Center"/>
+                        <TextBlock Width="60" Text="{Binding StrategySetting.OpenThreshold}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Width="60" Text="小于等于" VerticalAlignment="Center"/>
+                        <TextBlock Width="60" Text="{Binding StrategySetting.CloseThreshold}" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
     <local:PortfMonTemplateSelector x:Key="portfMonSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionTemplate}"
                                     ScalperTemplate="{StaticResource scalperTemplate}"
                                     MACDHistSlopeTemplate="{StaticResource macdHistSlopeTemplate}"
-                                    MACDCrossTemplate="{StaticResource macdCrossTemplate}"/>
+                                    MACDCrossTemplate="{StaticResource macdCrossTemplate}"
+                                    LinerRegressionTemplate="{StaticResource linerRegTemplate}"/>
     
     <Style TargetType="{x:Type local:PortfMonitorPanel}">
         <Setter Property="Template">
@@ -542,11 +582,43 @@
             </Grid>
         </Grid>
     </DataTemplate>
-    
+
+    <DataTemplate x:Key="linerRegWatchTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">线性回归角度</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   Text="{Binding LinerRegressionAngle}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">加权重心</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                                   Text="{Binding WeightMidPoint}"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
     <local:PortfWatchTemplateSelector x:Key="portfWatchSelector"
                                       ArbitrageTemplate="{StaticResource arbitrageWatchTemplate}"
                                       MACDHistSlopeTemplate="{StaticResource histSlopeWatchTemplate}"
-                                      MACDCrossTemplate="{StaticResource crossWatchTemplate}"/>
+                                      MACDCrossTemplate="{StaticResource crossWatchTemplate}"
+                                      LinerRegressionTemplate="{StaticResource linerRegWatchTemplate}"/>
 
     <Style TargetType="{x:Type local:PriceDiffWatchPanel}">
         <Setter Property="Template">

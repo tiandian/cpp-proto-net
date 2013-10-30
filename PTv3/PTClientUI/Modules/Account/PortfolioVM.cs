@@ -615,6 +615,44 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
 #endregion
+
+#region Liner Regression strategy updating fields
+
+        #region WeightMidPoint
+        private decimal _weightMidPoint;
+
+        public decimal WeightMidPoint
+        {
+            get { return _weightMidPoint; }
+            set
+            {
+                if (_weightMidPoint != value)
+                {
+                    _weightMidPoint = value;
+                    RaisePropertyChanged("WeightMidPoint");
+                }
+            }
+        }
+        #endregion
+
+        #region LinerRegressionAngle
+        private decimal _linerRegAngle;
+
+        public decimal LinerRegressionAngle
+        {
+            get { return _linerRegAngle; }
+            set
+            {
+                if (_linerRegAngle != value)
+                {
+                    _linerRegAngle = value;
+                    RaisePropertyChanged("LinerRegressionAngle");
+                }
+            }
+        }
+        #endregion
+
+#endregion
         
         public StrategySetting StrategySetting { get; set; }
 
@@ -884,12 +922,17 @@ namespace PortfolioTrading.Modules.Account
             }
             else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.DOUBLE_CROSS)
             {
-                // TODO
                 PTEntity.CrossStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.CrossStrategyUpdateItem;
                 FastMacdHist = ToDecimal(strategyUpdate.FastMacdHist);
                 SlowMacdHist = ToDecimal(strategyUpdate.SlowMacdHist);
                 BollTop = ToDecimal(strategyUpdate.BollTop);
                 BollBottom = ToDecimal(strategyUpdate.BollBottom);
+            }
+            else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.LINER_REGRESSION)
+            {
+                PTEntity.LinerRegStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.LinerRegStrategyUpdateItem;
+                WeightMidPoint = ToDecimal(strategyUpdate.WeightMidPoint);
+                LinerRegressionAngle = ToDecimal(strategyUpdate.LinerRegAngle);
             }
 
             OpenTimes = item.TotalOpenTimes;
