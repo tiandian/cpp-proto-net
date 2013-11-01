@@ -63,6 +63,7 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 			pEntity->lr_weightmidpoint(),
 			pEntity->lr_linerregangle()
 		);
+		break;
 	default:
 		return nullptr;
 	}

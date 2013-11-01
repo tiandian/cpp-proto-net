@@ -80,7 +80,7 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 
 		if(m_weightAvg)
 		{
-			m_totalCount = 0;
+			m_countInBar = 0;
 			m_totalInBar = 0.0;
 		}
 	}
@@ -96,7 +96,7 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 		if(m_weightAvg)
 		{
 			m_totalInBar += close;
-			WeightAvgSeries[settingIdx] = m_totalInBar / ++m_totalCount;
+			WeightAvgSeries[settingIdx] = m_totalInBar / ++m_countInBar;
 		}
 	}
 

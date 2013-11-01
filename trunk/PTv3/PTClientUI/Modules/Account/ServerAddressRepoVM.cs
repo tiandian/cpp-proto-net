@@ -106,9 +106,9 @@ namespace PortfolioTrading.Modules.Account
                 }
             }
 
-            _trade_stations.Add(new ServerAddress { Name = "交易服务42", Address = ConfigurationHelper.GetAppSettingValue("42", "116.228.246.94:62248") });
-            _trade_stations.Add(new ServerAddress { Name = "交易服务47", Address = ConfigurationHelper.GetAppSettingValue("47", "116.228.246.94:62249") });
-            _trade_stations.Add(new ServerAddress { Name = "交易服务61(万兆)", Address = ConfigurationHelper.GetAppSettingValue("61", "116.228.246.94:62263") });
+            _trade_stations.Add(new ServerAddress { Name = "交易服务42", Address = ConfigurationHelper.GetAppSettingValue("42", "180.166.182.12:62248") });
+            _trade_stations.Add(new ServerAddress { Name = "交易服务47", Address = ConfigurationHelper.GetAppSettingValue("47", "180.166.182.12:62249") });
+            _trade_stations.Add(new ServerAddress { Name = "交易服务61(万兆)", Address = ConfigurationHelper.GetAppSettingValue("61", "180.166.182.12:62263") });
 
             string localHostIP = NativeHost.GetLocalIP();
             string localPort = "16181";

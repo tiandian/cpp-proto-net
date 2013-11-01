@@ -5,6 +5,7 @@
 #include "ScalperStrategy.h"
 #include "HistSlopeStrategy.h"
 #include "MACDCrossStrategy.h"
+#include "LinerRegressionStrategy.h"
 #include "globalmembers.h"
 #include "QuoteFetcher.h"
 #include "QuoteRepositry.h"
@@ -143,6 +144,10 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 		break;
 	case entity::DOUBLE_CROSS:
 		created = StrategyPtr(new CMACDCrossStrategy(strategyItem, m_avatar));
+		m_orderPlacer = OrderPlacerPtr(new CPortfolioTrendOrderPlacer);
+		break;
+	case entity::LINER_REGRESSION:
+		created = StrategyPtr(new CLinerRegressionStrategy(strategyItem, m_avatar));
 		m_orderPlacer = OrderPlacerPtr(new CPortfolioTrendOrderPlacer);
 		break;
   }

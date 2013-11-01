@@ -36,4 +36,6 @@ void CLinerRegressionDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 		logger.Info(boost::str(boost::format("Calculated Liner Regression Angle: %.2f")
 			% m_arrAngle[outBeg]));
 	}
+
+	m_lastPosition = lastIdx;
 }
