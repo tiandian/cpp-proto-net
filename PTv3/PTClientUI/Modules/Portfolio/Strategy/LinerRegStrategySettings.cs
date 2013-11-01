@@ -43,7 +43,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         #endregion
 
         #region Number
-        private int _number;
+        private int _number = 3;
 
         public int Number
         {

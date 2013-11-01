@@ -18,6 +18,7 @@ CLinerRegressionStrategy::CLinerRegressionStrategy(const entity::StrategyItem& s
 	, m_direction(entity::NET)
 	, m_openAtBarIdx(0)
 {
+	Apply(strategyItem, false);
 }
 
 
@@ -96,6 +97,8 @@ void CLinerRegressionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfol
 	}
 
 	COHLCRecordSet* pOHLC = GetRecordSet(symbol, m_period, timestamp);
+	if(pOHLC == NULL)
+		return;
 	assert(pOHLC != NULL);
 
 	int currentBarIdx = pOHLC->GetEndIndex();

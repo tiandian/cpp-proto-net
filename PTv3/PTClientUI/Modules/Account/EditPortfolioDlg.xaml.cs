@@ -675,7 +675,7 @@ namespace PortfolioTrading.Modules.Account
         #region Liner Regression
         
         #region LR_Period
-        private int _lr_period;
+        private int _lr_period = 60;
 
         public int LR_Period
         {
@@ -692,7 +692,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region LR_Number
-        private int _lr_number;
+        private int _lr_number = 3;
 
         public int LR_Number
         {
@@ -709,7 +709,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region LR_OpenThreshold
-        private double _lr_openThreshold;
+        private double _lr_openThreshold = 25;
 
         public double LR_OpenThreshold
         {
@@ -726,7 +726,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region LR_CloseThreshold
-        private double _lr_closeThreshold;
+        private double _lr_closeThreshold = 0;
 
         public double LR_CloseThreshold
         {
