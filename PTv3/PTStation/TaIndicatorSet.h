@@ -26,9 +26,9 @@ public:
 
 protected:
 
-	static void ResetArray(double arr[], int length);
+	static void ResetArray(double arr[], int length, double defaultVal = 0.0);
 
-	double* AddIndicator(const string& seriesName);
+	double* AddIndicator(const string& seriesName, double defaultVal = 0.0);
 	double* FindDataSeries(const string& indicator);
 
 	DataSeriesMap m_dataSeriesMap;

@@ -5,11 +5,11 @@
 
 #include <boost/algorithm/string.hpp>
 
-void CTaIndicatorSet::ResetArray(double arr[], int length)
+void CTaIndicatorSet::ResetArray(double arr[], int length, double defaultVal)
 {
 	for(int i = 0; i < length; ++i)
 	{
-		arr[i] = 0;
+		arr[i] = defaultVal;
 	}
 }
 
@@ -23,11 +23,11 @@ CTaIndicatorSet::~CTaIndicatorSet(void)
 {
 }
 
-double* CTaIndicatorSet::AddIndicator( const string& seriesName )
+double* CTaIndicatorSet::AddIndicator( const string& seriesName, double defaultVal )
 {
 	DataSeries dataSeries(new double[m_size]);
 	m_dataSeriesMap.insert(make_pair(seriesName, dataSeries));
-	ResetArray(dataSeries.get(), m_size);
+	ResetArray(dataSeries.get(), m_size, defaultVal);
 	return dataSeries.get();
 }
 
