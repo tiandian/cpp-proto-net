@@ -116,6 +116,9 @@ void CLinerRegressionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfol
 		return;
 	}
 
+	if(!CLinerRegressionDataSet::IsAngleValid(m_linerRegAngle))
+		return;
+
 	if (pOrderPlacer->IsOpened())
 	{
 		if(currentBarIdx > m_openAtBarIdx) // This close condition check is only effective on the bar after open

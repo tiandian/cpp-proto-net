@@ -9,7 +9,7 @@ CLinerRegressionDataSet::CLinerRegressionDataSet(int size, int period)
 	: CTaIndicatorSet(size)
 	, m_paramPeriod(period)
 {
-	m_arrAngle = AddIndicator(IND_LREG);
+	m_arrAngle = AddIndicator(IND_LREG, INVALID_LREG_ANGLE);
 }
 
 
@@ -23,13 +23,14 @@ void CLinerRegressionDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	int outNbElement = -1;
 	double outAngle = 0;
 
+	int nonBlankCount = ohlcRecordSet->NbElements();
 	int lastIdx = ohlcRecordSet->GetEndIndex();
-	logger.Info(boost::str(boost::format("Calculating Liner Regression Angle with OHLC RecordSet: lastIdx - %d, weight avg - %f")
-		% lastIdx % (ohlcRecordSet->WeightAvgSeries)[lastIdx]));
+	logger.Info(boost::str(boost::format("Calculating Liner Regression Angle with OHLC RecordSet: lastIdx - %d, weight avg - %f, nbElements - %d")
+		% lastIdx % (ohlcRecordSet->WeightAvgSeries)[lastIdx] % nonBlankCount));
 
 	TA_RetCode rc = TA_LINEARREG_ANGLE(lastIdx, lastIdx, (ohlcRecordSet->WeightAvgSeries).get(), m_paramPeriod, &outBeg, &outNbElement, &outAngle);
 
-	if(outBeg == lastIdx)
+	if(outBeg == lastIdx && nonBlankCount > 2)
 	{
 		m_arrAngle[outBeg] = outAngle;
 
@@ -38,4 +39,12 @@ void CLinerRegressionDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	}
 
 	m_lastPosition = lastIdx;
+}
+
+bool CLinerRegressionDataSet::IsAngleValid( double angle )
+{
+	if(angle > LREG_ANGLE_BOUNDERY || angle < -LREG_ANGLE_BOUNDERY)
+		return false;
+
+	return true;
 }
