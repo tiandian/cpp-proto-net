@@ -25,6 +25,7 @@ private:
 	static entity::PosiDirectionType GetDirection(double angle);
 	void OpenPosition(entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 	void ClosePosition(CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote);
+	double CalcGain(double currentPx);
 
 	boost::mutex m_mut;
 	bool m_marketOpen;
@@ -38,6 +39,8 @@ private:
 	double m_linerRegAngle;
 	entity::PosiDirectionType m_direction;
 	int m_openAtBarIdx;
+	double m_cost;
+	double m_maxGain;
 
 	LinerRegSetPtr m_linerRegDataSet;
 };

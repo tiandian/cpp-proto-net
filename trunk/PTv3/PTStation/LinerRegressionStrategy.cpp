@@ -7,6 +7,9 @@
 #include "OHLCRecordSet.h"
 #include "PortfolioTrendOrderPlacer.h"
 #include "Portfolio.h"
+#include "DoubleCompare.h"
+
+#define DEFAULT_MAX_GAIN (-10000.0)
 
 CLinerRegressionStrategy::CLinerRegressionStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
 	: CTechAnalyStrategy(strategyItem, pAvatar)
@@ -17,6 +20,8 @@ CLinerRegressionStrategy::CLinerRegressionStrategy(const entity::StrategyItem& s
 	, m_marketOpen(false)
 	, m_direction(entity::NET)
 	, m_openAtBarIdx(0)
+	, m_cost(0.0)
+	, m_maxGain(DEFAULT_MAX_GAIN)
 {
 	Apply(strategyItem, false);
 }
@@ -36,6 +41,11 @@ void CLinerRegressionStrategy::Apply( const entity::StrategyItem& strategyItem, 
 	m_number = strategyItem.lr_number();
 	m_openThreshold = strategyItem.lr_openthreshold();
 	m_closeThreshold = strategyItem.lr_closethreshold();
+
+	if(m_openTimeout == 0)
+		m_openTimeout = 350;
+	if(m_retryTimes == 0)
+		m_retryTimes = 8;
 
 	if(withTriggers)
 	{
@@ -129,6 +139,40 @@ void CLinerRegressionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfol
 			bool meetCloseCondition = m_direction == entity::SHORT ? 
 				m_linerRegAngle > -m_closeThreshold : m_linerRegAngle < m_closeThreshold;
 
+			if(!meetCloseCondition)
+			{
+				double gain = CalcGain(pQuote->last());
+				if(gain > m_maxGain)
+				{
+					m_maxGain = gain;
+				}
+				else
+				{
+					if(DoubleLessEqual(m_maxGain, 1.0))
+					{
+						meetCloseCondition = DoubleLessEqual(gain, -0.8);
+					}
+					else if(m_maxGain > 1.0 && DoubleLessEqual(m_maxGain, 2.0))
+					{
+						meetCloseCondition = DoubleLessEqual(gain, 0.4);
+					}
+					else if(m_maxGain > 2.0 && DoubleLessEqual(m_maxGain, 3.0))
+					{
+						meetCloseCondition = DoubleLessEqual(gain, 0.6);
+					}
+					else
+					{
+						meetCloseCondition = DoubleLessEqual(gain, 1.0);
+					}
+				}
+
+				if(meetCloseCondition)
+				{
+					LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Dynamic trailing stop - Gain(%.2f) vs MaxGain(%.2f)")
+						% pPortfolio->InvestorId() % pPortfolio->ID() % gain % m_maxGain));
+				}
+			}
+
 			if(meetCloseCondition)
 			{
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Closing position due to Regression Angle less then close threshold")
@@ -205,6 +249,7 @@ void CLinerRegressionStrategy::OpenPosition( entity::PosiDirectionType direction
 		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("线性回归角度大于%.1f - %s 开仓 @ %.2f")
 			% m_openThreshold % GetPosiDirectionText(direction) % lmtPrice[0]));
 
+		m_cost = lmtPrice[0];
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 	}
 }
@@ -232,9 +277,21 @@ void CLinerRegressionStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrder
 
 		m_openAtBarIdx = 0; // reset open bar position
 		m_direction = entity::NET;
+		m_cost = 0.0;
+		m_maxGain = DEFAULT_MAX_GAIN;
 
 		pOrderPlacer->OutputStatus(boost::str(boost::format("线性回归角度小于%.2f - %s 平仓 @ %.2f")
 			% m_closeThreshold % GetPosiDirectionText(posiDirection) % closePx));
 
 	}
+}
+
+double CLinerRegressionStrategy::CalcGain( double currentPx )
+{
+	if(m_direction == entity::LONG)
+		return currentPx - m_cost;
+	else if(m_direction == entity::SHORT)
+		return m_cost - currentPx;
+	else
+		return 0.0;
 }

@@ -30,7 +30,7 @@ void CLinerRegressionDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 
 	TA_RetCode rc = TA_LINEARREG_ANGLE(lastIdx, lastIdx, (ohlcRecordSet->WeightAvgSeries).get(), m_paramPeriod, &outBeg, &outNbElement, &outAngle);
 
-	if(outBeg == lastIdx && nonBlankCount > 2)
+	if(outBeg == lastIdx && nonBlankCount >= m_paramPeriod)
 	{
 		m_arrAngle[outBeg] = outAngle;
 
