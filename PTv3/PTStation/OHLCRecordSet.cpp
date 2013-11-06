@@ -80,8 +80,16 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 
 		if(m_weightAvg)
 		{
-			m_countInBar = 0;
-			m_totalInBar = 0.0;
+			if(m_nbElements > 1)
+			{
+				m_countInBar = 1;
+				m_totalInBar = WeightAvgSeries[settingIdx - 1];
+			}
+			else
+			{
+				m_countInBar = 0;
+				m_totalInBar = 0.0;
+			}
 		}
 	}
 

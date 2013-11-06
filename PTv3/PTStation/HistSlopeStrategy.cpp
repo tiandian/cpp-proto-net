@@ -77,6 +77,11 @@ void CHistSlopeStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	m_fastPeriod = strategyItem.hs_fastperiod();
 	m_slowPeriod = strategyItem.hs_slowperiod();
 
+	if(m_openTimeout == 0)
+		m_openTimeout = 350;
+	if(m_retryTimes == 0)
+		m_retryTimes = 8;
+
 	if(withTriggers)
 	{
 		// Editing parameters of strategy, including seed of MACDDataSet
