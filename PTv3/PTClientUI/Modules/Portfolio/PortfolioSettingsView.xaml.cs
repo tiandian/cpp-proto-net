@@ -55,9 +55,9 @@ namespace PortfolioTrading.Modules.Portfolio
             {
                 viewModel = ServiceLocator.Current.GetInstance<MACDHistSlopeSettingsVM>();
             }
-            else if (portfVm.StrategySetting.Name == StrategySetting.MACDCrossStrategyName)
+            else if (portfVm.StrategySetting.Name == StrategySetting.WMATrendStrategyName)
             {
-                viewModel = ServiceLocator.Current.GetInstance<MACDCrossSettingsVM>();
+                viewModel = ServiceLocator.Current.GetInstance<WMATrendSettingsVM>();
             }
             else if (portfVm.StrategySetting.Name == StrategySetting.LinerRegressionStrategyName)
             {

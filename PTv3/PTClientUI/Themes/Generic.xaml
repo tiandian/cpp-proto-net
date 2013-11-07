@@ -320,7 +320,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="macdCrossTemplate">
+    <DataTemplate x:Key="wmaTrendTemplate">
         <Grid VerticalAlignment="Stretch">
             <Grid.Resources>
                 <Style TargetType="Border">
@@ -338,15 +338,16 @@
                     <RowDefinition Height="36"/>
                 </Grid.RowDefinitions>
                 <Border Grid.Column="0" BorderThickness="0, 0, 1, 1">
-                    <TextBlock Margin="4" VerticalAlignment="Center">快线</TextBlock>
+                    <TextBlock Margin="4" VerticalAlignment="Center">WMA P</TextBlock>
                 </Border>
                 <Border Grid.Column="0" Grid.Row="1" BorderThickness="0, 0, 1, 0">
-                    <TextBlock Margin="4" VerticalAlignment="Center">慢线</TextBlock>
+                    <TextBlock Margin="4" VerticalAlignment="Center">MA N</TextBlock>
                 </Border>
                 <Border Grid.Column="1">
-                   
+                    <TextBlock Width="60" Text="{Binding StrategySetting.WMA_Param}" VerticalAlignment="Center"/>
                 </Border>
                 <Border Grid.Column="1" Grid.Row="1">
+                    <TextBlock Width="60" Text="{Binding StrategySetting.MA_N}" VerticalAlignment="Center"/>
                 </Border>
             </Grid>
         </Grid>
@@ -396,7 +397,7 @@
                                     ChangePositionTemplate="{StaticResource changePositionTemplate}"
                                     ScalperTemplate="{StaticResource scalperTemplate}"
                                     MACDHistSlopeTemplate="{StaticResource macdHistSlopeTemplate}"
-                                    MACDCrossTemplate="{StaticResource macdCrossTemplate}"
+                                    WMATrendTemplate="{StaticResource wmaTrendTemplate}"
                                     LinerRegressionTemplate="{StaticResource linerRegTemplate}"/>
     
     <Style TargetType="{x:Type local:PortfMonitorPanel}">
@@ -526,7 +527,7 @@
         </Grid>
     </DataTemplate>
 
-    <DataTemplate x:Key="crossWatchTemplate">
+    <DataTemplate x:Key="wmaTrendWatchTemplate">
         <Grid VerticalAlignment="Stretch">
             <Grid.Resources>
                 <Style TargetType="Border">
@@ -538,45 +539,19 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
-                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
-                    <TextBlock Text="{Binding FastMacdHist, Converter={StaticResource crossDircetionConverter}}" 
-                               Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-                <Border Grid.Column="0" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
-                    <TextBlock Text="{Binding SlowMacdHist, Converter={StaticResource crossDircetionConverter}}" 
-                               Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </Border>
-                <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
                     <DockPanel>
-                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">MACD</TextBlock>
-                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                   Text="{Binding FastMacdHist}"/>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">快线</TextBlock>
+                        <TextBlock Margin="2, 0, 16, 2" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                   Text="{Binding FastLine}"  FontSize="20"/>
                     </DockPanel>
                 </Border>
-                <Border Grid.Column="1" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
                     <DockPanel>
-                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">MACD</TextBlock>
-                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                   Text="{Binding SlowMacdHist}"/>
-                    </DockPanel>
-                </Border>
-                <Border Grid.Column="2" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 0, 1">
-                    <DockPanel>
-                        <TextBlock Margin="4, 2">上轨</TextBlock>
-                        <TextBlock Text="{Binding BollTop}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-                    </DockPanel>
-                </Border>
-                <Border Grid.Column="2" Grid.Row="1" BorderBrush="Blue">
-                    <DockPanel>
-                        <TextBlock Margin="4, 2">下轨</TextBlock>
-                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                                               Text="{Binding BollBottom}"/>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">慢线</TextBlock>
+                        <TextBlock Margin="2, 0, 16, 2" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                   Text="{Binding SlowLine}" FontSize="16"/>
                     </DockPanel>
                 </Border>
             </Grid>
@@ -617,7 +592,7 @@
     <local:PortfWatchTemplateSelector x:Key="portfWatchSelector"
                                       ArbitrageTemplate="{StaticResource arbitrageWatchTemplate}"
                                       MACDHistSlopeTemplate="{StaticResource histSlopeWatchTemplate}"
-                                      MACDCrossTemplate="{StaticResource crossWatchTemplate}"
+                                      WMATrendTemplate="{StaticResource wmaTrendWatchTemplate}"
                                       LinerRegressionTemplate="{StaticResource linerRegWatchTemplate}"/>
 
     <Style TargetType="{x:Type local:PriceDiffWatchPanel}">

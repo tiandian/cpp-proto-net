@@ -69,7 +69,7 @@ void HistSlopeTrailingStopTriggerItem::To( entity::TriggerItem* pNativeTriggerIt
 	TriggerItem::To(pNativeTriggerItem);
 }
 
-void CrossTrailingStopTriggerItem::To( entity::TriggerItem* pNativeTriggerItem )
+void WMATrendTrailingStopTriggerItem::To( entity::TriggerItem* pNativeTriggerItem )
 {
 	pNativeTriggerItem->set_ts_backvalue(_backValue);
 

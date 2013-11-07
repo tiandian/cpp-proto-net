@@ -15,7 +15,7 @@ namespace PortfolioTrading.Controls
         public DataTemplate ScalperTemplate { get; set; }
         public DataTemplate ChangePositionTemplate { get; set; }
         public DataTemplate MACDHistSlopeTemplate { get; set; }
-        public DataTemplate MACDCrossTemplate { get; set; }
+        public DataTemplate WMATrendTemplate { get; set; }
         public DataTemplate LinerRegressionTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
@@ -31,8 +31,8 @@ namespace PortfolioTrading.Controls
                     return ScalperTemplate;
                 else if (portfVm.StrategySetting.Name == StrategySetting.MACDHistSlopeStrategyName)
                     return MACDHistSlopeTemplate;
-                else if (portfVm.StrategySetting.Name == StrategySetting.MACDCrossStrategyName)
-                    return MACDCrossTemplate;
+                else if (portfVm.StrategySetting.Name == StrategySetting.WMATrendStrategyName)
+                    return WMATrendTemplate;
                 else if (portfVm.StrategySetting.Name == StrategySetting.LinerRegressionStrategyName)
                     return LinerRegressionTemplate;
             }

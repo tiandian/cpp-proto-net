@@ -331,81 +331,51 @@ private:
 	SlopeDirection _slowSlopeDirection;
 };
 
-public ref class CrossStrategyUpdateItem : StrategyUpdateItem
+public ref class WMATrendStrategyUpdateItem : StrategyUpdateItem
 {
 public:
-	CrossStrategyUpdateItem(double fastHistVal, double slowHistVal, double bollTop, double bollBottom)
+	WMATrendStrategyUpdateItem(double fastLine, double slowLine)
 	{
-		_fastHistVal = fastHistVal;
-		_slowHistVal = slowHistVal;
-
-		_bollTop = bollTop;
-		_bollBottom = bollBottom;
-
+		_fastLine = fastLine;
+		_slowLine = slowLine;
 	}
 
 	property StrategyType Kind
 	{
 		virtual StrategyType get() override
 		{
-			return StrategyType::DOUBLE_CROSS;
+			return StrategyType::WMA_TREND;
 		}
 	}
 
-	property double FastMacdHist
+	property double FastLine
 	{
 		double get()
 		{
-			return _fastHistVal; 
+			return _fastLine; 
 		}
 		void set(double val)
 		{
-			_fastHistVal = val;
+			_fastLine = val;
 		}
 	}
 
-	property double SlowMacdHist
+	property double SlowLine
 	{
 		double get()
 		{
-			return _slowHistVal; 
+			return _slowLine; 
 		}
 		void set(double val)
 		{
-			_slowHistVal = val;
-		}
-	}
-
-	property double BollTop
-	{
-		double get()
-		{
-			return _bollTop; 
-		}
-		void set(double val)
-		{
-			_bollTop = val;
-		}
-	}
-
-	property double BollBottom
-	{
-		double get()
-		{
-			return _bollBottom; 
-		}
-		void set(double val)
-		{
-			_bollBottom = val;
+			_slowLine = val;
 		}
 	}
 
 private:
-	double _fastHistVal;
-	double _slowHistVal;
+	double _fastLine;
+	double _slowLine;
 
-	double _bollTop;
-	double _bollBottom;
 };
 
 public ref class LinerRegStrategyUpdateItem : StrategyUpdateItem

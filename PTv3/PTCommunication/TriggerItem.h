@@ -271,64 +271,14 @@ private:
 	double _backValue;
 };
 
-public ref class CrossOpenTriggerItem : TriggerItem
+public ref class WMATrendTrailingStopTriggerItem : TriggerItem
 {
 public:
-	CrossOpenTriggerItem()
+	WMATrendTrailingStopTriggerItem()
 	{
 		init();
 	}
-
-	property PosiOffsetFlag Offset
-	{
-		PosiOffsetFlag get()
-		{
-			return PosiOffsetFlag::OPEN; 
-		}
-	}
-
-private:
-	void init()
-	{
-		_strategy = StrategyType::DOUBLE_CROSS;
-		_name = gcnew String("MACDCrossOpenTrigger");
-	}
-
-};
-
-public ref class CrossCloseTriggerItem : TriggerItem
-{
-public:
-	CrossCloseTriggerItem()
-	{
-		init();
-	}
-
-	property PosiOffsetFlag Offset
-	{
-		PosiOffsetFlag get()
-		{
-			return PosiOffsetFlag::CLOSE; 
-		}
-	}
-
-private:
-	void init()
-	{
-		_strategy = StrategyType::DOUBLE_CROSS;
-		_name = gcnew String("MACDCrossCloseTrigger");
-	}
-
-};
-
-public ref class CrossTrailingStopTriggerItem : TriggerItem
-{
-public:
-	CrossTrailingStopTriggerItem()
-	{
-		init();
-	}
-	CrossTrailingStopTriggerItem(double backValue)
+	WMATrendTrailingStopTriggerItem(double backValue)
 	{
 		init();
 		_backValue = backValue;
@@ -351,8 +301,8 @@ public:
 private:
 	void init()
 	{
-		_strategy = StrategyType::DOUBLE_CROSS;
-		_name = gcnew String("MACDCrossTrailingStopTrigger");
+		_strategy = StrategyType::WMA_TREND;
+		_name = gcnew String("WMATrendTrailingStopTrigger");
 	}
 
 	double _backValue;

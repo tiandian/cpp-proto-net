@@ -48,13 +48,11 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				static_cast<SlopeDirection>(pEntity->hs_slowslopedirection())
 			);
 		break;
-	case StrategyType::DOUBLE_CROSS:
-		retStrategyUpdate = gcnew CrossStrategyUpdateItem
+	case StrategyType::WMA_TREND:
+		retStrategyUpdate = gcnew WMATrendStrategyUpdateItem
 			(
-				pEntity->hs_fastmacdhist(),
-				pEntity->hs_slowmacdhist(),
-				pEntity->dx_bolltop(),
-				pEntity->dx_bollbottom()
+				pEntity->wt_fastline(),
+				pEntity->wt_slowline()
 			);
 		break;
 	case StrategyType::LINER_REGRESSION:
