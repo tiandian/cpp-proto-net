@@ -213,20 +213,16 @@ namespace PortfolioTrading.Modules.Account
                     setting.TrailingStopValue = this.TrailingStop;
                 }
             }
-            else if (StrategyName == StrategySetting.MACDCrossStrategyName)
+            else if (StrategyName == StrategySetting.WMATrendStrategyName)
             {
                 if (!string.IsNullOrEmpty(Symbol1))
                 {
-                    MACDCrossStrategySettings setting = (MACDCrossStrategySettings)portf.StrategySetting;
+                    WMATrendStrategySettings setting = (WMATrendStrategySettings)portf.StrategySetting;
                     setting.Symbol = Symbol1;
-                    setting.MACD_Short = 12;
-                    setting.MACD_Long = 26;
-                    setting.MACD_M = 9;
-                    setting.FastPeriod = this.FastPeriod;
-                    setting.SlowPeriod = this.SlowPeriod;
-                    setting.Boll_M = 26;
-                    setting.Boll_P = 2;
-                    setting.TrailingStopValue = this.TrailingStop;
+                    setting.Period = WT_Period;
+                    setting.WMA_Param = WMA_Param;
+                    setting.MA_N = MA_N;
+                    //setting.TrailingStopValue = this.TrailingStop;
                 }
             }
             else if (StrategyName == StrategySetting.LinerRegressionStrategyName)
@@ -743,6 +739,61 @@ namespace PortfolioTrading.Modules.Account
         #endregion
         
         #endregion
+
+        #region WMA Trend
+        
+        #region WT_Period
+        private int _wtPeriod = 60;
+
+        public int WT_Period
+        {
+            get { return _wtPeriod; }
+            set
+            {
+                if (_wtPeriod != value)
+                {
+                    _wtPeriod = value;
+                    RaisePropertyChanged("WT_Period");
+                }
+            }
+        }
+        #endregion
+
+        #region WMA_Param
+        private int _wmaParam = 23;
+
+        public int WMA_Param
+        {
+            get { return _wmaParam; }
+            set
+            {
+                if (_wmaParam != value)
+                {
+                    _wmaParam = value;
+                    RaisePropertyChanged("WMA_Param");
+                }
+            }
+        }
+        #endregion
+
+        #region MA_N
+        private int _maN = 10;
+
+        public int MA_N
+        {
+            get { return _maN; }
+            set
+            {
+                if (_maN != value)
+                {
+                    _maN = value;
+                    RaisePropertyChanged("MA_N");
+                }
+            }
+        }
+        #endregion
+
+#endregion
     }
 
     public class StrategyItem

@@ -578,37 +578,37 @@ namespace PortfolioTrading.Modules.Account
         
 #endregion
 
-#region MACD Cross strategy updating fields
+#region WMA Trend strategy updating fields
 
-        #region BollTop
-        private decimal _bollTop;
+        #region FastLine
+        private decimal _fastLine;
 
-        public decimal BollTop
+        public decimal FastLine
         {
-            get { return _bollTop; }
+            get { return _fastLine; }
             set
             {
-                if (_bollTop != value)
+                if (_fastLine != value)
                 {
-                    _bollTop = value;
-                    RaisePropertyChanged("BollTop");
+                    _fastLine = value;
+                    RaisePropertyChanged("FastLine");
                 }
             }
         }
         #endregion
 
-        #region BollBottom
-        private decimal _bollBottom;
+        #region SlowLine
+        private decimal _slowLine;
 
-        public decimal BollBottom
+        public decimal SlowLine
         {
-            get { return _bollBottom; }
+            get { return _slowLine; }
             set
             {
-                if (_bollBottom != value)
+                if (_slowLine != value)
                 {
-                    _bollBottom = value;
-                    RaisePropertyChanged("BollBottom");
+                    _slowLine = value;
+                    RaisePropertyChanged("SlowLine");
                 }
             }
         }
@@ -920,13 +920,11 @@ namespace PortfolioTrading.Modules.Account
                 FastSlopeDirection = strategyUpdate.FastMacdSlopeDirection;
                 SlowSlopeDirection = strategyUpdate.SlowMacdSlopeDirection;
             }
-            else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.DOUBLE_CROSS)
+            else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.WMA_TREND)
             {
-                PTEntity.CrossStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.CrossStrategyUpdateItem;
-                FastMacdHist = ToDecimal(strategyUpdate.FastMacdHist);
-                SlowMacdHist = ToDecimal(strategyUpdate.SlowMacdHist);
-                BollTop = ToDecimal(strategyUpdate.BollTop);
-                BollBottom = ToDecimal(strategyUpdate.BollBottom);
+                PTEntity.WMATrendStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.WMATrendStrategyUpdateItem;
+                FastLine = ToDecimal(strategyUpdate.FastLine);
+                SlowLine = ToDecimal(strategyUpdate.SlowLine);
             }
             else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.LINER_REGRESSION)
             {

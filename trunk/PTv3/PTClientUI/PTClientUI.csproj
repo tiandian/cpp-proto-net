@@ -190,8 +190,8 @@
     <Compile Include="Modules\Portfolio\Strategy\ChangePositionSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\LinerRegSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\LinerRegStrategySettings.cs" />
-    <Compile Include="Modules\Portfolio\Strategy\MACDCrossSettingsVM.cs" />
-    <Compile Include="Modules\Portfolio\Strategy\MACDCrossStrategySettings.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\WMATrendSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\WMATrendStrategySettings.cs" />
     <Compile Include="Modules\Portfolio\Strategy\MACDHistSlopeSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\MACDHistSlopeStrategySetting.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ScalperSetting.cs" />

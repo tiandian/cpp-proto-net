@@ -99,7 +99,7 @@ void MACDSlopeStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 	}
 }
 
-void MACDCrossStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
+void WMATrendStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 {
 	IntPtr symbolPtr;
 	try
@@ -108,28 +108,11 @@ void MACDCrossStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 
 		entity::HistSourceCfg* fastSourceCfg = pNativeStrategyItem->add_histsources();
 		fastSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
-		fastSourceCfg->set_precision(_fastPeriod);
+		fastSourceCfg->set_precision(_period);
 
-		entity::HistSourceCfg* slowSourceCfg = pNativeStrategyItem->add_histsources();
-		slowSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
-		slowSourceCfg->set_precision(_slowPeriod);
-
-		pNativeStrategyItem->set_hs_short(_short);
-		pNativeStrategyItem->set_hs_long(_long);
-		pNativeStrategyItem->set_hs_m(_m);
-		pNativeStrategyItem->set_hs_fastperiod(_fastPeriod);
-		pNativeStrategyItem->set_hs_slowperiod(_slowPeriod);
-
-		pNativeStrategyItem->set_dx_bollm(_bollM);
-		pNativeStrategyItem->set_dx_bollp(_bollP);
-
-		pNativeStrategyItem->set_hs_fastshortemaseed(_fastShortSeed);
-		pNativeStrategyItem->set_hs_fastlongemaseed(_fastLongSeed);
-		pNativeStrategyItem->set_hs_fastsignalemaseed(_fastSignalSeed);
-
-		pNativeStrategyItem->set_hs_slowshortemaseed(_slowShortSeed);
-		pNativeStrategyItem->set_hs_slowlongemaseed(_slowLongSeed);
-		pNativeStrategyItem->set_hs_slowsignalemaseed(_slowSignalSeed);
+		pNativeStrategyItem->set_wt_wmaparam(_wmaP);
+		pNativeStrategyItem->set_wt_man(_maN);
+		pNativeStrategyItem->set_wt_period(_period);
 
 		StrategyItem::To(pNativeStrategyItem);
 	}
@@ -138,7 +121,6 @@ void MACDCrossStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 		Marshal::FreeHGlobal(symbolPtr);
 	}
 }
-
 
 void LinerRegressionStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 {

@@ -119,7 +119,7 @@ enum StrategyType {
   CHANGE_POSITION = 1,
   SCALPER = 2,
   HIST_SLOPE = 3,
-  DOUBLE_CROSS = 4,
+  WMA_TREND = 4,
   LINER_REGRESSION = 5
 };
 bool StrategyType_IsValid(int value);
@@ -2181,19 +2181,26 @@ class StrategyItem : public ::google::protobuf::Message {
   inline double hs_slowsignalemaseed() const;
   inline void set_hs_slowsignalemaseed(double value);
   
-  // optional int32 DX_BollM = 521;
-  inline bool has_dx_bollm() const;
-  inline void clear_dx_bollm();
-  static const int kDXBollMFieldNumber = 521;
-  inline ::google::protobuf::int32 dx_bollm() const;
-  inline void set_dx_bollm(::google::protobuf::int32 value);
+  // optional int32 WT_WmaParam = 521;
+  inline bool has_wt_wmaparam() const;
+  inline void clear_wt_wmaparam();
+  static const int kWTWmaParamFieldNumber = 521;
+  inline ::google::protobuf::int32 wt_wmaparam() const;
+  inline void set_wt_wmaparam(::google::protobuf::int32 value);
   
-  // optional int32 DX_BollP = 522;
-  inline bool has_dx_bollp() const;
-  inline void clear_dx_bollp();
-  static const int kDXBollPFieldNumber = 522;
-  inline ::google::protobuf::int32 dx_bollp() const;
-  inline void set_dx_bollp(::google::protobuf::int32 value);
+  // optional int32 WT_MaN = 522;
+  inline bool has_wt_man() const;
+  inline void clear_wt_man();
+  static const int kWTMaNFieldNumber = 522;
+  inline ::google::protobuf::int32 wt_man() const;
+  inline void set_wt_man(::google::protobuf::int32 value);
+  
+  // optional int32 WT_Period = 523;
+  inline bool has_wt_period() const;
+  inline void clear_wt_period();
+  static const int kWTPeriodFieldNumber = 523;
+  inline ::google::protobuf::int32 wt_period() const;
+  inline void set_wt_period(::google::protobuf::int32 value);
   
   // optional int32 LR_Period = 531;
   inline bool has_lr_period() const;
@@ -2275,10 +2282,12 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_hs_slowlongemaseed();
   inline void set_has_hs_slowsignalemaseed();
   inline void clear_has_hs_slowsignalemaseed();
-  inline void set_has_dx_bollm();
-  inline void clear_has_dx_bollm();
-  inline void set_has_dx_bollp();
-  inline void clear_has_dx_bollp();
+  inline void set_has_wt_wmaparam();
+  inline void clear_has_wt_wmaparam();
+  inline void set_has_wt_man();
+  inline void clear_has_wt_man();
+  inline void set_has_wt_period();
+  inline void clear_has_wt_period();
   inline void set_has_lr_period();
   inline void clear_has_lr_period();
   inline void set_has_lr_number();
@@ -2314,18 +2323,19 @@ class StrategyItem : public ::google::protobuf::Message {
   double hs_fastlongemaseed_;
   double hs_fastsignalemaseed_;
   ::google::protobuf::int32 hs_slowperiod_;
-  ::google::protobuf::int32 dx_bollm_;
+  ::google::protobuf::int32 wt_wmaparam_;
   double hs_slowshortemaseed_;
   double hs_slowlongemaseed_;
   double hs_slowsignalemaseed_;
-  ::google::protobuf::int32 dx_bollp_;
+  ::google::protobuf::int32 wt_man_;
+  ::google::protobuf::int32 wt_period_;
   ::google::protobuf::int32 lr_period_;
+  ::google::protobuf::int32 lr_number_;
   double lr_openthreshold_;
   double lr_closethreshold_;
-  ::google::protobuf::int32 lr_number_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(33 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(34 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3062,19 +3072,19 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline entity::SlopeDirection hs_slowslopedirection() const;
   inline void set_hs_slowslopedirection(entity::SlopeDirection value);
   
-  // optional double DX_BollTop = 311;
-  inline bool has_dx_bolltop() const;
-  inline void clear_dx_bolltop();
-  static const int kDXBollTopFieldNumber = 311;
-  inline double dx_bolltop() const;
-  inline void set_dx_bolltop(double value);
+  // optional double WT_FastLine = 311;
+  inline bool has_wt_fastline() const;
+  inline void clear_wt_fastline();
+  static const int kWTFastLineFieldNumber = 311;
+  inline double wt_fastline() const;
+  inline void set_wt_fastline(double value);
   
-  // optional double DX_BollBottom = 312;
-  inline bool has_dx_bollbottom() const;
-  inline void clear_dx_bollbottom();
-  static const int kDXBollBottomFieldNumber = 312;
-  inline double dx_bollbottom() const;
-  inline void set_dx_bollbottom(double value);
+  // optional double WT_SlowLine = 312;
+  inline bool has_wt_slowline() const;
+  inline void clear_wt_slowline();
+  static const int kWTSlowLineFieldNumber = 312;
+  inline double wt_slowline() const;
+  inline void set_wt_slowline(double value);
   
   // optional double LR_WeightMidPoint = 321;
   inline bool has_lr_weightmidpoint() const;
@@ -3138,10 +3148,10 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_hs_fastslopedirection();
   inline void set_has_hs_slowslopedirection();
   inline void clear_has_hs_slowslopedirection();
-  inline void set_has_dx_bolltop();
-  inline void clear_has_dx_bolltop();
-  inline void set_has_dx_bollbottom();
-  inline void clear_has_dx_bollbottom();
+  inline void set_has_wt_fastline();
+  inline void clear_has_wt_fastline();
+  inline void set_has_wt_slowline();
+  inline void clear_has_wt_slowline();
   inline void set_has_lr_weightmidpoint();
   inline void clear_has_lr_weightmidpoint();
   inline void set_has_lr_linerregangle();
@@ -3174,8 +3184,8 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   double hs_slowmacdhistdiff_;
   int hs_fastslopedirection_;
   int hs_slowslopedirection_;
-  double dx_bolltop_;
-  double dx_bollbottom_;
+  double wt_fastline_;
+  double wt_slowline_;
   double lr_weightmidpoint_;
   double lr_linerregangle_;
   
@@ -8102,59 +8112,81 @@ inline void StrategyItem::set_hs_slowsignalemaseed(double value) {
   hs_slowsignalemaseed_ = value;
 }
 
-// optional int32 DX_BollM = 521;
-inline bool StrategyItem::has_dx_bollm() const {
+// optional int32 WT_WmaParam = 521;
+inline bool StrategyItem::has_wt_wmaparam() const {
   return (_has_bits_[0] & 0x08000000u) != 0;
 }
-inline void StrategyItem::set_has_dx_bollm() {
+inline void StrategyItem::set_has_wt_wmaparam() {
   _has_bits_[0] |= 0x08000000u;
 }
-inline void StrategyItem::clear_has_dx_bollm() {
+inline void StrategyItem::clear_has_wt_wmaparam() {
   _has_bits_[0] &= ~0x08000000u;
 }
-inline void StrategyItem::clear_dx_bollm() {
-  dx_bollm_ = 0;
-  clear_has_dx_bollm();
+inline void StrategyItem::clear_wt_wmaparam() {
+  wt_wmaparam_ = 0;
+  clear_has_wt_wmaparam();
 }
-inline ::google::protobuf::int32 StrategyItem::dx_bollm() const {
-  return dx_bollm_;
+inline ::google::protobuf::int32 StrategyItem::wt_wmaparam() const {
+  return wt_wmaparam_;
 }
-inline void StrategyItem::set_dx_bollm(::google::protobuf::int32 value) {
-  set_has_dx_bollm();
-  dx_bollm_ = value;
+inline void StrategyItem::set_wt_wmaparam(::google::protobuf::int32 value) {
+  set_has_wt_wmaparam();
+  wt_wmaparam_ = value;
 }
 
-// optional int32 DX_BollP = 522;
-inline bool StrategyItem::has_dx_bollp() const {
+// optional int32 WT_MaN = 522;
+inline bool StrategyItem::has_wt_man() const {
   return (_has_bits_[0] & 0x10000000u) != 0;
 }
-inline void StrategyItem::set_has_dx_bollp() {
+inline void StrategyItem::set_has_wt_man() {
   _has_bits_[0] |= 0x10000000u;
 }
-inline void StrategyItem::clear_has_dx_bollp() {
+inline void StrategyItem::clear_has_wt_man() {
   _has_bits_[0] &= ~0x10000000u;
 }
-inline void StrategyItem::clear_dx_bollp() {
-  dx_bollp_ = 0;
-  clear_has_dx_bollp();
+inline void StrategyItem::clear_wt_man() {
+  wt_man_ = 0;
+  clear_has_wt_man();
 }
-inline ::google::protobuf::int32 StrategyItem::dx_bollp() const {
-  return dx_bollp_;
+inline ::google::protobuf::int32 StrategyItem::wt_man() const {
+  return wt_man_;
 }
-inline void StrategyItem::set_dx_bollp(::google::protobuf::int32 value) {
-  set_has_dx_bollp();
-  dx_bollp_ = value;
+inline void StrategyItem::set_wt_man(::google::protobuf::int32 value) {
+  set_has_wt_man();
+  wt_man_ = value;
+}
+
+// optional int32 WT_Period = 523;
+inline bool StrategyItem::has_wt_period() const {
+  return (_has_bits_[0] & 0x20000000u) != 0;
+}
+inline void StrategyItem::set_has_wt_period() {
+  _has_bits_[0] |= 0x20000000u;
+}
+inline void StrategyItem::clear_has_wt_period() {
+  _has_bits_[0] &= ~0x20000000u;
+}
+inline void StrategyItem::clear_wt_period() {
+  wt_period_ = 0;
+  clear_has_wt_period();
+}
+inline ::google::protobuf::int32 StrategyItem::wt_period() const {
+  return wt_period_;
+}
+inline void StrategyItem::set_wt_period(::google::protobuf::int32 value) {
+  set_has_wt_period();
+  wt_period_ = value;
 }
 
 // optional int32 LR_Period = 531;
 inline bool StrategyItem::has_lr_period() const {
-  return (_has_bits_[0] & 0x20000000u) != 0;
+  return (_has_bits_[0] & 0x40000000u) != 0;
 }
 inline void StrategyItem::set_has_lr_period() {
-  _has_bits_[0] |= 0x20000000u;
+  _has_bits_[0] |= 0x40000000u;
 }
 inline void StrategyItem::clear_has_lr_period() {
-  _has_bits_[0] &= ~0x20000000u;
+  _has_bits_[0] &= ~0x40000000u;
 }
 inline void StrategyItem::clear_lr_period() {
   lr_period_ = 0;
@@ -8170,13 +8202,13 @@ inline void StrategyItem::set_lr_period(::google::protobuf::int32 value) {
 
 // optional int32 LR_Number = 532;
 inline bool StrategyItem::has_lr_number() const {
-  return (_has_bits_[0] & 0x40000000u) != 0;
+  return (_has_bits_[0] & 0x80000000u) != 0;
 }
 inline void StrategyItem::set_has_lr_number() {
-  _has_bits_[0] |= 0x40000000u;
+  _has_bits_[0] |= 0x80000000u;
 }
 inline void StrategyItem::clear_has_lr_number() {
-  _has_bits_[0] &= ~0x40000000u;
+  _has_bits_[0] &= ~0x80000000u;
 }
 inline void StrategyItem::clear_lr_number() {
   lr_number_ = 0;
@@ -8192,13 +8224,13 @@ inline void StrategyItem::set_lr_number(::google::protobuf::int32 value) {
 
 // optional double LR_OpenThreshold = 533;
 inline bool StrategyItem::has_lr_openthreshold() const {
-  return (_has_bits_[0] & 0x80000000u) != 0;
+  return (_has_bits_[1] & 0x00000001u) != 0;
 }
 inline void StrategyItem::set_has_lr_openthreshold() {
-  _has_bits_[0] |= 0x80000000u;
+  _has_bits_[1] |= 0x00000001u;
 }
 inline void StrategyItem::clear_has_lr_openthreshold() {
-  _has_bits_[0] &= ~0x80000000u;
+  _has_bits_[1] &= ~0x00000001u;
 }
 inline void StrategyItem::clear_lr_openthreshold() {
   lr_openthreshold_ = 0;
@@ -8214,13 +8246,13 @@ inline void StrategyItem::set_lr_openthreshold(double value) {
 
 // optional double LR_CloseThreshold = 534;
 inline bool StrategyItem::has_lr_closethreshold() const {
-  return (_has_bits_[1] & 0x00000001u) != 0;
+  return (_has_bits_[1] & 0x00000002u) != 0;
 }
 inline void StrategyItem::set_has_lr_closethreshold() {
-  _has_bits_[1] |= 0x00000001u;
+  _has_bits_[1] |= 0x00000002u;
 }
 inline void StrategyItem::clear_has_lr_closethreshold() {
-  _has_bits_[1] &= ~0x00000001u;
+  _has_bits_[1] &= ~0x00000002u;
 }
 inline void StrategyItem::clear_lr_closethreshold() {
   lr_closethreshold_ = 0;
@@ -9555,48 +9587,48 @@ inline void PortfolioUpdateItem::set_hs_slowslopedirection(entity::SlopeDirectio
   hs_slowslopedirection_ = value;
 }
 
-// optional double DX_BollTop = 311;
-inline bool PortfolioUpdateItem::has_dx_bolltop() const {
+// optional double WT_FastLine = 311;
+inline bool PortfolioUpdateItem::has_wt_fastline() const {
   return (_has_bits_[0] & 0x02000000u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_dx_bolltop() {
+inline void PortfolioUpdateItem::set_has_wt_fastline() {
   _has_bits_[0] |= 0x02000000u;
 }
-inline void PortfolioUpdateItem::clear_has_dx_bolltop() {
+inline void PortfolioUpdateItem::clear_has_wt_fastline() {
   _has_bits_[0] &= ~0x02000000u;
 }
-inline void PortfolioUpdateItem::clear_dx_bolltop() {
-  dx_bolltop_ = 0;
-  clear_has_dx_bolltop();
+inline void PortfolioUpdateItem::clear_wt_fastline() {
+  wt_fastline_ = 0;
+  clear_has_wt_fastline();
 }
-inline double PortfolioUpdateItem::dx_bolltop() const {
-  return dx_bolltop_;
+inline double PortfolioUpdateItem::wt_fastline() const {
+  return wt_fastline_;
 }
-inline void PortfolioUpdateItem::set_dx_bolltop(double value) {
-  set_has_dx_bolltop();
-  dx_bolltop_ = value;
+inline void PortfolioUpdateItem::set_wt_fastline(double value) {
+  set_has_wt_fastline();
+  wt_fastline_ = value;
 }
 
-// optional double DX_BollBottom = 312;
-inline bool PortfolioUpdateItem::has_dx_bollbottom() const {
+// optional double WT_SlowLine = 312;
+inline bool PortfolioUpdateItem::has_wt_slowline() const {
   return (_has_bits_[0] & 0x04000000u) != 0;
 }
-inline void PortfolioUpdateItem::set_has_dx_bollbottom() {
+inline void PortfolioUpdateItem::set_has_wt_slowline() {
   _has_bits_[0] |= 0x04000000u;
 }
-inline void PortfolioUpdateItem::clear_has_dx_bollbottom() {
+inline void PortfolioUpdateItem::clear_has_wt_slowline() {
   _has_bits_[0] &= ~0x04000000u;
 }
-inline void PortfolioUpdateItem::clear_dx_bollbottom() {
-  dx_bollbottom_ = 0;
-  clear_has_dx_bollbottom();
+inline void PortfolioUpdateItem::clear_wt_slowline() {
+  wt_slowline_ = 0;
+  clear_has_wt_slowline();
 }
-inline double PortfolioUpdateItem::dx_bollbottom() const {
-  return dx_bollbottom_;
+inline double PortfolioUpdateItem::wt_slowline() const {
+  return wt_slowline_;
 }
-inline void PortfolioUpdateItem::set_dx_bollbottom(double value) {
-  set_has_dx_bollbottom();
-  dx_bollbottom_ = value;
+inline void PortfolioUpdateItem::set_wt_slowline(double value) {
+  set_has_wt_slowline();
+  wt_slowline_ = value;
 }
 
 // optional double LR_WeightMidPoint = 321;

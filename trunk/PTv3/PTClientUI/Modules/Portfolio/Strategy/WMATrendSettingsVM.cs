@@ -7,11 +7,11 @@ using System.ComponentModel.Composition;
 namespace PortfolioTrading.Modules.Portfolio.Strategy
 {
     [Export]
-    public class MACDCrossSettingsVM : StrategySettingVM
+    public class WMATrendSettingsVM : StrategySettingVM
     {
         protected override StrategySetting CreateSettings()
         {
-            return new MACDCrossStrategySettings();
+            return new WMATrendStrategySettings();
         }
     }
 }
