@@ -130,7 +130,7 @@ enum StrategyType
 	CHANGE_POSITION = 1;
 	SCALPER = 2;
 	HIST_SLOPE = 3;
-	DOUBLE_CROSS = 4;
+	WMA_TREND = 4;
 	LINER_REGRESSION = 5;
 }
 
@@ -180,9 +180,10 @@ message StrategyItem
 	optional double HS_SlowLongEMASeed = 512;
 	optional double HS_SlowSignalEMASeed = 513;
 
-	// Double Cross
-	optional int32 DX_BollM = 521;
-	optional int32 DX_BollP = 522;
+	// WMA Trend
+	optional int32 WT_WmaParam = 521;
+	optional int32 WT_MaN = 522;
+	optional int32 WT_Period = 523;
 
 	// Liner Regression
 	optional int32 LR_Period = 531;
@@ -279,8 +280,8 @@ message PortfolioUpdateItem
 	optional SlopeDirection HS_FastSlopeDirection = 307;
 	optional SlopeDirection HS_SlowSlopeDirection = 308;
 	// DoubleCross
-	optional double DX_BollTop = 311;
-	optional double DX_BollBottom = 312;
+	optional double WT_FastLine = 311;
+	optional double WT_SlowLine = 312;
 	// LinerRegression
 	optional double LR_WeightMidPoint = 321;
 	optional double LR_LinerRegAngle = 323;
