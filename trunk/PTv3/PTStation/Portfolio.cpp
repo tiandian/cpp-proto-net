@@ -4,7 +4,7 @@
 #include "ChangePositionStrategy.h"
 #include "ScalperStrategy.h"
 #include "HistSlopeStrategy.h"
-#include "MACDCrossStrategy.h"
+#include "WMATrendStrategy.h"
 #include "LinerRegressionStrategy.h"
 #include "globalmembers.h"
 #include "QuoteFetcher.h"
@@ -142,8 +142,8 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 		created = StrategyPtr(new CHistSlopeStrategy(strategyItem, m_avatar));
 		m_orderPlacer = OrderPlacerPtr(new CPortfolioTrendOrderPlacer);
 		break;
-	case entity::DOUBLE_CROSS:
-		created = StrategyPtr(new CMACDCrossStrategy(strategyItem, m_avatar));
+	case entity::WMA_TREND:
+		created = StrategyPtr(new CWMATrendStrategy(strategyItem, m_avatar));
 		m_orderPlacer = OrderPlacerPtr(new CPortfolioTrendOrderPlacer);
 		break;
 	case entity::LINER_REGRESSION:

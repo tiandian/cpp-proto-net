@@ -116,8 +116,9 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\trade.pb.h" />
     <ClInclude Include="LinerRegressionDataSet.h" />
     <ClInclude Include="LinerRegressionStrategy.h" />
-    <ClInclude Include="MACDCrossStrategy.h" />
-    <ClInclude Include="MACDCrossTrigger.h" />
+    <ClInclude Include="WMATrendDataSet.h" />
+    <ClInclude Include="WMATrendStrategy.h" />
+    <ClInclude Include="WMATrendTrigger.h" />
     <ClInclude Include="MACDDataSet.h" />
     <ClInclude Include="PortfolioTrendOrderPlacer.h" />
     <ClInclude Include="SymbolTimeUtil.h" />
@@ -215,8 +216,9 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="LinerRegressionDataSet.cpp" />
     <ClCompile Include="LinerRegressionStrategy.cpp" />
-    <ClCompile Include="MACDCrossStrategy.cpp" />
-    <ClCompile Include="MACDCrossTrigger.cpp" />
+    <ClCompile Include="WMATrendDataSet.cpp" />
+    <ClCompile Include="WMATrendStrategy.cpp" />
+    <ClCompile Include="WMATrendTrigger.cpp" />
     <ClCompile Include="MACDDataSet.cpp" />
     <ClCompile Include="PortfolioTrendOrderPlacer.cpp" />
     <ClCompile Include="SymbolTimeUtil.cpp" />

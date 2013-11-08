@@ -296,12 +296,6 @@
     <ClInclude Include="SymbolTimeUtil.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="MACDCrossStrategy.h">
-      <Filter>Header Files\strategy</Filter>
-    </ClInclude>
-    <ClInclude Include="MACDCrossTrigger.h">
-      <Filter>Header Files\strategy</Filter>
-    </ClInclude>
     <ClInclude Include="BollDataSet.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
@@ -312,6 +306,15 @@
       <Filter>Header Files\strategy</Filter>
     </ClInclude>
     <ClInclude Include="LinerRegressionDataSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="WMATrendStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="WMATrendTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="WMATrendDataSet.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
   </ItemGroup>
@@ -517,12 +520,6 @@
     <ClCompile Include="SymbolTimeUtil.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="MACDCrossStrategy.cpp">
-      <Filter>Source Files\strategy</Filter>
-    </ClCompile>
-    <ClCompile Include="MACDCrossTrigger.cpp">
-      <Filter>Source Files\strategy</Filter>
-    </ClCompile>
     <ClCompile Include="BollDataSet.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
@@ -533,6 +530,15 @@
       <Filter>Source Files\strategy</Filter>
     </ClCompile>
     <ClCompile Include="LinerRegressionDataSet.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="WMATrendStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="WMATrendTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="WMATrendDataSet.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>
