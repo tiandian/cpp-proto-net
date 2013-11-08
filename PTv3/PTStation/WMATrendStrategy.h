@@ -1,29 +1,17 @@
 #pragma once
 
 #include "TechAnalyStrategy.h"
-#include "MACDDataSet.h"
-#include "BollDataSet.h"
+#include "WMATrendDataSet.h"
 
 class CAvatarClient;
 class CPortfolioTrendOrderPlacer;
-class CMACDCrossOpenTrigger;
-class CMACDCrossCloseTrigger;
 class CTrailingStopTrigger;
 
-enum BollingerPosition
-{
-	UNKOWN_BOLL_POSITION,
-	BELOW_LOWER,
-	BELOW_MIDDLE,
-	ABOVE_MIDDLE,
-	ABOVE_UPPER
-};
-
-class CMACDCrossStrategy : public CTechAnalyStrategy
+class CWMATrendStrategy : public CTechAnalyStrategy
 {
 public:
-	CMACDCrossStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar);
-	~CMACDCrossStrategy(void);
+	CWMATrendStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar);
+	~CWMATrendStrategy(void);
 
 	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
@@ -40,34 +28,18 @@ protected:
 
 private:
 
-	entity::PosiDirectionType GetDirection(double slowMacdHist, double lastPx, double bollTop, double bollMid, double bollBottom);
+	entity::PosiDirectionType GetDirection(double fastVal, double slowVal);
 
-	int m_macdShort;
-	int m_macdLong;
-	int m_macdM;
-	int m_bollM;
-	int m_bollP;
-
-	int m_fastPeriod;
-	int m_slowPeriod;
-
-	double m_fastHistVal;
-	double m_slowHistVal;
-	double m_bollTop;
-	double m_bollBottom;
-	double m_bollMid;
-
-	double m_macdHistArr[2];
-	BollingerPosition m_lastBollPosition;
+	int m_wmaParam;
+	int m_maN;
+	int m_period;
+	
+	double m_arrLine[2];
 	bool m_marketOpen;
 	int m_openAtBarIdx;
+	entity::PosiDirectionType m_DirectionOpened;
 
-	MACDDataSetPtr m_slowPeriodIndicatorSet;
-	MACDDataSetPtr m_fastPeriodIndicatorSet;
-	BollDataSetPtr m_fastBollIndicatorSet;
-
-	CMACDCrossOpenTrigger* m_pOpenTrigger;
-	CMACDCrossCloseTrigger* m_pCloseTrigger;
+	WMATrendSetPtr m_trendIndicatorSet;
 	CTrailingStopTrigger* m_pTrailingStopTrigger; 
 
 	boost::mutex m_mut;

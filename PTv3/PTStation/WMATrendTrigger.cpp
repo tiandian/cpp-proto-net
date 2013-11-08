@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "MACDCrossTrigger.h"
+#include "WMATrendTrigger.h"
 #include "globalmembers.h"
 
 
