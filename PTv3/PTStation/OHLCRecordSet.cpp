@@ -109,7 +109,7 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 	}
 
 #ifdef LOG_FOR_TECH_CALC
-	logger.Info(boost::str(boost::format("Setting Today: last Index - %d, last close - %f")
+	logger.Info(boost::str(boost::format("Setting Today: last Index - %d, last close - %.2f")
 		% m_endIndex % close));
 #endif
 }

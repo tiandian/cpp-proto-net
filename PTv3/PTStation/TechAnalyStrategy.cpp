@@ -4,14 +4,14 @@
 #include "AvatarClient.h"
 #include <assert.h>
 
-const char* GetPosiDirectionText(entity::PosiDirectionType direction)
+const char* GetPosiDirectionText(entity::PosiDirectionType direction, bool chs)
 {
 	switch(direction)
 	{
 	case entity::LONG:
-		return "LONG";
+		return chs ? "∂‡Õ∑" : "LONG";
 	case entity::SHORT:
-		return "SHORT";
+		return chs ? "ø’Õ∑" : "SHORT";
 	default:
 		return "";
 	}

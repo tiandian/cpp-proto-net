@@ -301,22 +301,14 @@
                             <TextBlock Width="60">精度</TextBlock>
                             <xctk:DecimalUpDown Value="{Binding WT_Period, Mode=TwoWay}" Increment="10" Margin="4"/>
                         </DockPanel>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <DockPanel Grid.Column="0" Grid.Row="0">
-                                <TextBlock Margin="2">WMA_P</TextBlock>
-                                <xctk:DecimalUpDown Value="{Binding WMA_Param, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
-                            </DockPanel>
-                            <Border Margin="0, 2" Grid.Row="1"/>
-                            <DockPanel Grid.Column="0" Grid.Row="2">
-                                <TextBlock Margin="2">MA_N</TextBlock>
-                                <xctk:DecimalUpDown Value="{Binding MA_N, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
-                            </DockPanel>
-                        </Grid>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">WMA_P</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding WMA_Param, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">MA_N</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding MA_N, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                        </DockPanel>
                     </StackPanel>
                 </StackPanel>
             </igWindows:TabItemEx>
