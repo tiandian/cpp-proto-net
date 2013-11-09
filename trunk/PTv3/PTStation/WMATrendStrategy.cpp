@@ -95,7 +95,7 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
 
-	//pQuote->set_last(2428.4);
+	//pQuote->set_last(2343.2);
 	//pQuote->set_update_time("09:15:00");
 
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
@@ -129,9 +129,9 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 
 	m_trendIndicatorSet->Calculate(slowOHLC);
 
-	int fastVal = m_trendIndicatorSet->GetRef(IND_FAST_LINE, 0);
+	double fastVal = m_trendIndicatorSet->GetRef(IND_FAST_LINE, 0);
 	m_arrLine[0] = fastVal;
-	int slowVal = m_trendIndicatorSet->GetRef(IND_SLOW_LINE, 1);
+	double slowVal = m_trendIndicatorSet->GetRef(IND_SLOW_LINE, 0);
 	m_arrLine[1] = slowVal;
 
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
@@ -155,7 +155,8 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			{
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] WMA Trend - Portfolio(%s) Closing position due to fast dead cross")
 					% pPortfolio->InvestorId() % pPortfolio->ID()));
-				ClosePosition(pOrderPlacer, pQuote, "WMA快慢线逆向叉");
+				ClosePosition(pOrderPlacer, pQuote, boost::str(boost::format("WMA快线%s叉慢线") 
+					% (direction == entity::LONG ? "金" : "死")).c_str());
 				return;
 			}
 		}
@@ -170,7 +171,7 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 				ClosePosition(pOrderPlacer, pQuote, "回头触发止损(盈)");
 				return;
 			}
-		}
+		}		
 
 		return;	// don't need to go to test open trigger any more
 	}
@@ -208,8 +209,8 @@ void CWMATrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPort
 
 		LOG_DEBUG(logger, boost::str(boost::format("WMA Trend - %s Open position @ %.2f (%s)")
 			% GetPosiDirectionText(direction) % lmtPrice[0] % pQuote->update_time()));
-		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("WMA快慢线交叉 - %s 开仓 @ %.2f")
-			% GetPosiDirectionText(direction) % lmtPrice[0]));
+		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("WMA快线%s叉慢线 - %s 开仓 @ %.2f")
+			% (direction == entity::LONG ? "金" : "死") % GetPosiDirectionText(direction) % lmtPrice[0]));
 
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 
@@ -244,7 +245,7 @@ void CWMATrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 
 		m_openAtBarIdx = 0; // reset open bar position
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f")
-			% noteText % GetPosiDirectionText(posiDirection) % closePx));
+			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
 
 	}
 }

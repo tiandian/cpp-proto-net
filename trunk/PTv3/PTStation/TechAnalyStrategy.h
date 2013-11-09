@@ -52,5 +52,5 @@ private:
 	CAvatarClient* m_avatar;
 };
 
-const char* GetPosiDirectionText(entity::PosiDirectionType direction);
+const char* GetPosiDirectionText(entity::PosiDirectionType direction, bool chs = false);
 
