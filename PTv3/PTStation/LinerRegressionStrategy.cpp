@@ -19,7 +19,7 @@ CLinerRegressionStrategy::CLinerRegressionStrategy(const entity::StrategyItem& s
 	, m_closeThreshold(90.0)
 	, m_marketOpen(false)
 	, m_direction(entity::NET)
-	, m_openAtBarIdx(0)
+	, m_lastCloseBarIdx(0)
 	, m_cost(0.0)
 	, m_maxGain(DEFAULT_MAX_GAIN)
 {
@@ -131,55 +131,58 @@ void CLinerRegressionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfol
 
 	if (pOrderPlacer->IsOpened())
 	{
-		if(currentBarIdx > m_openAtBarIdx) // This close condition check is only effective on the bar after open
+		
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Testing close direction - %.2f ?< %.2f")
+			% pPortfolio->InvestorId() % pPortfolio->ID() % m_linerRegAngle % m_closeThreshold));
+
+		bool meetCloseCondition = m_direction == entity::SHORT ? 
+			m_linerRegAngle > -m_closeThreshold : m_linerRegAngle < m_closeThreshold;
+
+		if(!meetCloseCondition)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Testing close direction - %.2f ?< %.2f")
-				% pPortfolio->InvestorId() % pPortfolio->ID() % m_linerRegAngle % m_closeThreshold));
-
-			bool meetCloseCondition = m_direction == entity::SHORT ? 
-				m_linerRegAngle > -m_closeThreshold : m_linerRegAngle < m_closeThreshold;
-
-			if(!meetCloseCondition)
+			double gain = CalcGain(pQuote->last());
+			if(gain > m_maxGain)
 			{
-				double gain = CalcGain(pQuote->last());
-				if(gain > m_maxGain)
+				m_maxGain = gain;
+			}
+			else
+			{
+				if(DoubleLessEqual(m_maxGain, 0))
 				{
-					m_maxGain = gain;
+					meetCloseCondition = DoubleLessEqual(gain, -0.6);
+				}
+				else if(m_maxGain > 0 && DoubleLessEqual(m_maxGain, 1.0))
+				{
+					meetCloseCondition = DoubleLessEqual(gain, 0.4);
+				}
+				else if(m_maxGain > 1.0 && DoubleLessEqual(m_maxGain, 2.0))
+				{
+					meetCloseCondition = DoubleLessEqual(gain, 1.0);
+				}
+				else if(m_maxGain > 2.0 && DoubleLessEqual(m_maxGain, 3.0))
+				{
+					meetCloseCondition = DoubleLessEqual(gain, 1.6);
 				}
 				else
 				{
-					if(DoubleLessEqual(m_maxGain, 1.0))
-					{
-						meetCloseCondition = DoubleLessEqual(gain, -0.8);
-					}
-					else if(m_maxGain > 1.0 && DoubleLessEqual(m_maxGain, 2.0))
-					{
-						meetCloseCondition = DoubleLessEqual(gain, 0.4);
-					}
-					else if(m_maxGain > 2.0 && DoubleLessEqual(m_maxGain, 3.0))
-					{
-						meetCloseCondition = DoubleLessEqual(gain, 0.6);
-					}
-					else
-					{
-						meetCloseCondition = DoubleLessEqual(gain, 1.0);
-					}
-				}
-
-				if(meetCloseCondition)
-				{
-					LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Dynamic trailing stop - Gain(%.2f) vs MaxGain(%.2f)")
-						% pPortfolio->InvestorId() % pPortfolio->ID() % gain % m_maxGain));
+					meetCloseCondition = DoubleLessEqual(gain, m_maxGain - 2.0);
 				}
 			}
 
 			if(meetCloseCondition)
 			{
-				LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Closing position due to Regression Angle less then close threshold")
-					% pPortfolio->InvestorId() % pPortfolio->ID()));
-				ClosePosition(pOrderPlacer, pQuote);
-				return;
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Dynamic trailing stop - Gain(%.2f) vs MaxGain(%.2f)")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % gain % m_maxGain));
 			}
+		}
+
+		if(meetCloseCondition)
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Closing position due to Regression Angle less then close threshold")
+				% pPortfolio->InvestorId() % pPortfolio->ID()));
+			ClosePosition(pOrderPlacer, pQuote);
+
+			m_lastCloseBarIdx = currentBarIdx;
 		}
 
 		return;	// don't need to go to test open trigger any more
@@ -188,7 +191,7 @@ void CLinerRegressionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfol
 	LOG_DEBUG(logger, boost::str(boost::format("[%s] Liner Regression - Portfolio(%s) Testing open direction - %.2f ?> %.2f")
 		% pPortfolio->InvestorId() % pPortfolio->ID() % m_linerRegAngle % m_openThreshold));
 
-	if(!pOrderPlacer->IsWorking())
+	if(!pOrderPlacer->IsWorking() && currentBarIdx > m_lastCloseBarIdx)
 	{
 		bool meetOpenCondition = fabs(m_linerRegAngle)  > m_openThreshold;
 		if(meetOpenCondition)
@@ -197,7 +200,7 @@ void CLinerRegressionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfol
 				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
 			m_direction = GetDirection(m_linerRegAngle);
 			OpenPosition(m_direction, pOrderPlacer, pQuote, timestamp);
-			m_openAtBarIdx = currentBarIdx;
+			
 			return;
 		}
 	}
@@ -275,7 +278,6 @@ void CLinerRegressionStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrder
 
 		pOrderPlacer->CloseOrder(closePx);
 
-		m_openAtBarIdx = 0; // reset open bar position
 		m_direction = entity::NET;
 		m_cost = 0.0;
 		m_maxGain = DEFAULT_MAX_GAIN;

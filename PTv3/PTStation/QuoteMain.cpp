@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 		qsLogger.Init();
 	}
 
-	cout << "Startup QuoteStation v3.0.1" << endl;
+	cout << "Startup QuoteStation v3.0.4" << endl;
 	cout << "Connection string: " << qsConfig.ConnectionString() << endl;
 	cout << "BrokerId: " << qsConfig.BrokerId() << endl;
 	cout << "Username: " << qsConfig.Username() << endl;
@@ -95,8 +95,8 @@ int main(int argc, char* argv[])
 	mktDataSources.insert("tcp://172.21.5.12:41213");
 	mktDataSources.insert("udp://192.168.163.61:18213");
 	mktDataSources.insert("udp://192.168.205.3:18213");
-	//mktDataSources.insert("tcp://192.168.217.4:41213");
-	//mktDataSources.insert("tcp://192.168.217.5:41213");
+	mktDataSources.insert("tcp://192.168.217.4:41213");
+	mktDataSources.insert("tcp://192.168.217.5:41213");
 
 	mktDataSources.insert(qsConfig.ConnectionString());
 

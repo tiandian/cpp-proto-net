@@ -111,7 +111,7 @@ void CQuoteStore::GetQuote( entity::Quote* outQuote )
 #ifdef TEST_TODAY_HIST
 
 	boost::chrono::seconds tp = ParseTimeString(m_cachedQuoteData.UpdateTime);
-	tp -= boost::chrono::hours(10);
+	tp -= boost::chrono::hours(12);
 	string updateTime = GetISOTimeString(tp);
 	outQuote->set_update_time(updateTime);
 	
