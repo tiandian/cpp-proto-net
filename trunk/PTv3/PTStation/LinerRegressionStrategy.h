@@ -38,7 +38,7 @@ private:
 	double m_weightMidPoint;
 	double m_linerRegAngle;
 	entity::PosiDirectionType m_direction;
-	int m_openAtBarIdx;
+	int m_lastCloseBarIdx;
 	double m_cost;
 	double m_maxGain;
 

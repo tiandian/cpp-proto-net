@@ -22,12 +22,12 @@ _FS_OBJS = stdafx \
 		ShmQuoteSubscribe \
 		\
 		ArbitrageStrategy ArbitrageTrigger ChangePositionStrategy ChangePositionTrigger \
-		HistSlopeStrategy HistSlopeTrigger LinerRegressionStrategy MACDCrossStrategy MACDCrossTrigger \
-		ScalperStrategy ScalperTrigger TrailingStopTrigger \
+		HistSlopeStrategy HistSlopeTrigger LinerRegressionStrategy ScalperStrategy ScalperTrigger \
+		TrailingStopTrigger WMATrendStrategy WMATrendTrigger \
 		\
 		BollDataSet HistDataReader HistDataWriter LinerRegressionDataSet MACDDataSet OHLCRecordSet \
 		PriceBarDataProxy PriceBarDataSource PriceBarGen TaIndicatorSet TechAnalyStrategy \
-		TechDataRepo \
+		TechDataRepo WMATrendDataSet \
 		\
 		InputOrder LegOrderPlacer OrderProcessor PortfolioOrderHelper PortfolioOrderPlacer \
 		PortfolioScalperOrderPlacer PortfolioTrendOrderPlacer RtnOrderWrapper TradeAgent \
