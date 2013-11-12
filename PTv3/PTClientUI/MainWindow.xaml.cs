@@ -185,7 +185,7 @@ namespace PortfolioTrading
 
         private void btnOpenPosi_Click(object sender, RoutedEventArgs e)
         {
-            _client.PorfOpenPosition(portfolioItem.ID, 1, false);
+            _client.PortfOpenPosition(portfolioItem.ID, 1, false);
         }
 
         private void btnRemovePortf_Click(object sender, RoutedEventArgs e)

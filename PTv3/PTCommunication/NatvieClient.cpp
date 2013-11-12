@@ -195,6 +195,21 @@ void CNatvieClient::PortfModifyQuantity(const char* portfId, int perOpenQty, int
 	sendRequest(&request);
 }
 
+void CNatvieClient::PortfOpenPosition(const char* portfId)
+{
+	ProtobufPacket<entity::PortfOpenPosiParam> request(PortfolioOpenPositionRequestID);
+	request.getData().set_portfid(portfId);
+
+	sendRequest(&request);
+}
+void CNatvieClient::PortfClosePosition(const char* portfId)
+{
+	ProtobufPacket<entity::ClosePositionParam> request(PortfolioClosePositionRequestID);
+	request.getData().set_portfid(portfId);
+
+	sendRequest(&request);
+}
+
 void CNatvieClient::OnPortfolioUpdateResponse( entity::PortfolioUpdateItem& resp )
 {
 	msclr::auto_gcroot<PortfolioUpdateItem^> updateItem = gcnew PortfolioUpdateItem(&resp);

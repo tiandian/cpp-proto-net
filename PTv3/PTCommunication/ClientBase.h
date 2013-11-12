@@ -70,20 +70,14 @@ namespace PTCommunication {
 
 		}
 
-		void PortfOpenPosition(String ^pid, int quantity, bool isVirtual)
-		{
-
-		}
+		void PortfOpenPosition(String ^pid, int quantity, bool isVirtual);
 
 		void SwitchPosition(String ^pid, int quantity)
 		{
 
 		}
 
-		String^ PortfClosePosition(MultiLegOrder ^mlOrder, String ^legRef)
-		{
-			return gcnew String("");
-		}
+		void PortfClosePosition(String ^pid, String ^mlOrder, String ^legRef);
 
 		void CancelOrder(Order ^legOrder)
 		{

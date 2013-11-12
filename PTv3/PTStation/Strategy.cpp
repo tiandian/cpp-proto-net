@@ -5,6 +5,8 @@
 
 CStrategy::CStrategy(const entity::StrategyItem& strategyItem)
 	: m_running(false)
+	, m_forceOpening(false)
+	, m_forceClosing(false)
 	, m_retryTimes(0)
 	, m_openTimeout(0)
 {

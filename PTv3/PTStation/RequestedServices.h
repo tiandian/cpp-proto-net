@@ -57,3 +57,15 @@ class PortfModifyQtyService : public Service
 protected:
 	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
 };
+
+class PortfOpenPosiService : public Service
+{
+protected:
+	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
+};
+
+class PortfClosePosiService : public Service
+{
+protected:
+	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
+};

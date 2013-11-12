@@ -155,7 +155,7 @@ namespace PortfolioTrading.Modules.Account
         {
             AccountVM acct = _accounts.FirstOrDefault(a => a.Id == closeArgs.AccountId);
             if(acct != null)
-                acct.Host.PortfClosePosition(closeArgs.MlOrder, closeArgs.LegOrderRef);
+                acct.Host.PortfClosePosition(closeArgs.MlOrder.PortfolioId, closeArgs.MlOrder.OrderId, closeArgs.LegOrderRef);
             EventLogger.Write("组合委托{0} 平仓", closeArgs.MlOrder.OrderId);
         }
 

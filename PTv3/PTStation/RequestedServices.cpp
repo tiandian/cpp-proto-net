@@ -156,3 +156,29 @@ void PortfModifyQtyService::handle( LogicalConnection* pClient, IncomingPacket* 
 	}
 	pPortf->SetEndTimePoints(timepointVec);
 }
+
+void PortfOpenPosiService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
+{
+	ProtobufPacket<entity::PortfOpenPosiParam>* pReqPacket = (ProtobufPacket<entity::PortfOpenPosiParam>*)pRequest;
+	entity::PortfOpenPosiParam& openPosiParam = pReqPacket->getData();
+
+	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
+	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(openPosiParam.portfid());
+	if(pPortf != NULL)
+	{
+		pPortf->StrategyForceOpen();
+	}
+}
+
+void PortfClosePosiService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
+{
+	ProtobufPacket<entity::ClosePositionParam>* pReqPacket = (ProtobufPacket<entity::ClosePositionParam>*)pRequest;
+	entity::ClosePositionParam& closePosiParam = pReqPacket->getData();
+
+	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
+	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(closePosiParam.portfid());
+	if(pPortf != NULL)
+	{
+		pPortf->StrategyForceClose();
+	}
+}

@@ -38,6 +38,10 @@ public:
 	void PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty,
 		vector<string>& endTimePointsVec);
 
+	void PortfOpenPosition(const char* portfId);
+	void PortfClosePosition(const char* portfId);
+
+
 	bool logged();
 	void Logout();
 	void setPseudo(const char* pseudo){ m_pseudo = pseudo; }
