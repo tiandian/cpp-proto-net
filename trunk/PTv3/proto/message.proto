@@ -323,17 +323,18 @@ message AddPortfolioParam
 	repeated PortfolioItem PortfolioItems = 1;
 }
 
-message PorfOpenPosiParam
+message PortfOpenPosiParam
 {
 	required string PortfId = 1;
-	required int32 Quantity = 2;
-	required bool IsVirtual = 3;
+	optional int32 Quantity = 2;
+	optional bool IsVirtual = 3;
 }
 
 message ClosePositionParam
 {
-	required trade.MultiLegOrder MultiLegOrder = 1;
-	optional string LegOrdRef = 2;
+	required string PortfId = 1;
+	optional string MLOrderId = 2;
+	optional string LegOrdRef = 3;
 }
 
 message LegOrderUpdateParam

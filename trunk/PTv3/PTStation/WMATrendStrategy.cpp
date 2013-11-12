@@ -145,7 +145,12 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 
 	entity::PosiDirectionType direction = GetDirection(fastVal, slowVal);
 
-	if (pOrderPlacer->IsOpened())
+	double prevFastVal = m_trendIndicatorSet->GetRef(IND_FAST_LINE, 1);
+	double prevFlowVal = m_trendIndicatorSet->GetRef(IND_SLOW_LINE, 1);
+	entity::PosiDirectionType prevDirection = GetDirection(prevFastVal, prevFlowVal);
+
+	bool forceClosing = IsForceClosing();
+	if (pOrderPlacer->IsOpened() || forceClosing)
 	{
 		bool meetCloseCondition = false;
 		if(currentBarIdx > m_openAtBarIdx) // This close condition check is only effective on the bar after open
@@ -153,9 +158,10 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			meetCloseCondition = m_DirectionOpened != direction;
 			if(meetCloseCondition)
 			{
-				LOG_DEBUG(logger, boost::str(boost::format("[%s] WMA Trend - Portfolio(%s) Closing position due to fast dead cross")
-					% pPortfolio->InvestorId() % pPortfolio->ID()));
-				ClosePosition(pOrderPlacer, pQuote, boost::str(boost::format("WMA快线%s叉慢线") 
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] WMA Trend - Portfolio(%s) Closing position due to %s")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % (forceClosing ? "Force close" : "fast dead cross")));
+				ClosePosition(pOrderPlacer, pQuote, 
+					forceClosing ? "手动平仓" : boost::str(boost::format("WMA快线%s叉慢线") 
 					% (direction == entity::LONG ? "金" : "死")).c_str());
 				return;
 			}
@@ -178,13 +184,15 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	
 	LOG_DEBUG(logger, boost::str(boost::format("[%s] WMA Trend - Portfolio(%s) Testing open direction - fast line:%.2f vs slow line:%.2f -->> %s")
 		% pPortfolio->InvestorId() % pPortfolio->ID() % fastVal % slowVal % GetPosiDirectionText(direction)));
-	if(direction > entity::NET)
+	bool forceOpening = IsForceOpening();
+	if(direction > entity::NET && 
+		(forceOpening || direction != prevDirection))
 	{
 		if(!pOrderPlacer->IsWorking())
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] WMA Trend - Portfolio(%s) Opening position at bar %d")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
-			OpenPosition(direction, pOrderPlacer, pQuote, timestamp);
+			OpenPosition(direction, pOrderPlacer, pQuote, timestamp, forceOpening);
 			m_openAtBarIdx = currentBarIdx;
 			return;
 		}
@@ -192,7 +200,7 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 
 }
 
-void CWMATrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp )
+void CWMATrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening )
 {
 	if(direction > entity::NET)
 	{
@@ -209,12 +217,19 @@ void CWMATrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPort
 
 		LOG_DEBUG(logger, boost::str(boost::format("WMA Trend - %s Open position @ %.2f (%s)")
 			% GetPosiDirectionText(direction) % lmtPrice[0] % pQuote->update_time()));
-		pOrderPlacer->SetMlOrderStatus(boost::str(boost::format("WMA快线%s叉慢线 - %s 开仓 @ %.2f")
-			% (direction == entity::LONG ? "金" : "死") % GetPosiDirectionText(direction) % lmtPrice[0]));
+
+		string openComment = forceOpening ? 
+			boost::str(boost::format("手动 %s 开仓 @ %.2f") % GetPosiDirectionText(direction) % lmtPrice[0])
+			: 
+			boost::str(boost::format("WMA快线%s叉慢线 - %s 开仓 @ %.2f")
+			% (direction == entity::LONG ? "金" : "死") % GetPosiDirectionText(direction) % lmtPrice[0]);
+
+		pOrderPlacer->SetMlOrderStatus(openComment);
 
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 
 		m_DirectionOpened = direction;
+		ResetForceOpen();
 		if(m_pTrailingStopTrigger != NULL)
 		{
 			m_pTrailingStopTrigger->Enable(lmtPrice[0], direction);
@@ -244,6 +259,7 @@ void CWMATrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 		pOrderPlacer->CloseOrder(closePx);
 
 		m_openAtBarIdx = 0; // reset open bar position
+		ResetForceClose();
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f")
 			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
 

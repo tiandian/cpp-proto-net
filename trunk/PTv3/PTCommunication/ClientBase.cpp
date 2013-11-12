@@ -200,4 +200,38 @@ void ClientBase::PortfModifyQuantity( String ^portfId, int perOpenQty, int perSt
 	}
 }
 
+void ClientBase::PortfClosePosition( String ^pid, String ^mlOrder, String ^legRef )
+{
+	if(!this->IsConnected)
+		return;
+
+	IntPtr pPortfIdAddress;
+	try
+	{
+		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(pid);
+		_nativeClient->PortfClosePosition((char*)pPortfIdAddress.ToPointer());
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pPortfIdAddress);
+	}
+}
+
+void ClientBase::PortfOpenPosition( String ^pid, int quantity, bool isVirtual )
+{
+	if(!this->IsConnected)
+		return;
+
+	IntPtr pPortfIdAddress;
+	try
+	{
+		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(pid);
+		_nativeClient->PortfOpenPosition((char*)pPortfIdAddress.ToPointer());
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pPortfIdAddress);
+	}
+}
+
 }

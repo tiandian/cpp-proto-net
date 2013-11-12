@@ -31,10 +31,22 @@ public:
 	virtual int OnPortfolioRemovePosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder);
 
 	bool IsRunning(){ return m_running.load(boost::memory_order_acquire); }
-	virtual void Start(){ m_running.store(true, boost::memory_order_release); }
+	virtual void Start(){ 
+		m_running.store(true, boost::memory_order_release); 
+		ResetForceOpen();
+		ResetForceClose();
+	}
 	virtual void Stop(){ m_running.store(false, boost::memory_order_release); }
 
 	static double CalcOrderProfit(const trade::MultiLegOrder& openOrder);
+
+	void SetForceOpen(){ m_forceOpening.store(true, boost::memory_order_release); }
+	void ResetForceOpen(){ m_forceOpening.store(false, boost::memory_order_release); }
+	bool IsForceOpening(){ return m_forceOpening.load(boost::memory_order_acquire); }
+
+	void SetForceClose(){ m_forceClosing.store(true, boost::memory_order_release); };
+	void ResetForceClose(){ m_forceClosing.store(false, boost::memory_order_release);};
+	bool IsForceClosing(){ return m_forceClosing.load(boost::memory_order_acquire); };
 
 protected:
 
@@ -50,6 +62,9 @@ protected:
 	boost::atomic<bool> m_running;
 	int m_retryTimes;
 	int m_openTimeout;
+
+	boost::atomic<bool> m_forceOpening;
+	boost::atomic<bool> m_forceClosing;
 };
 
 typedef boost::shared_ptr<CStrategy> StrategyPtr;

@@ -77,17 +77,6 @@ namespace PortfolioTrading.Infrastructure
             //byte[] ret_data = Request("RemovePortf", param_data);
         }
 
-        public void PorfOpenPosition(string pid, int quantity, bool isVirtual)
-        {
-            PorfOpenPosiParam opParam = new PorfOpenPosiParam();
-            opParam.PortfId = pid;
-            opParam.Quantity = quantity;
-            opParam.IsVirtual = isVirtual;
-
-            byte[] param_data = DataTranslater.Serialize(opParam);
-            //byte[] ret_data = Request("PorfOpenPosition", param_data);
-        }
-
         public void SwitchPosition(string pid, int quantity)
         {
             PorfOpenPosiParam opParam = new PorfOpenPosiParam();
@@ -108,30 +97,6 @@ namespace PortfolioTrading.Infrastructure
 
             byte[] param_data = DataTranslater.Serialize(opParam);
             //byte[] ret_data = Request("ScalperOpenPosition", param_data);
-        }
-
-        public void PorfClosePosition(string pid, int quantity, bool isVirtual)
-        {
-            PorfOpenPosiParam opParam = new PorfOpenPosiParam();
-            opParam.PortfId = pid;
-            opParam.Quantity = quantity;
-            opParam.IsVirtual = isVirtual;
-
-            byte[] param_data = DataTranslater.Serialize(opParam);
-            //byte[] ret_data = Request("PorfClosePosition", param_data);
-        }
-
-        public string PortfClosePosition(trade.MultiLegOrder mlOrder, string legRef)
-        {
-            ClosePositionParam cpParam = new ClosePositionParam();
-            cpParam.MultiLegOrder = mlOrder;
-            cpParam.LegOrdRef = legRef;
-
-            byte[] param_data = DataTranslater.Serialize(cpParam);
-            byte[] ret_data = null;// Request("ClosePosition", param_data);
-
-            StringParam strReturn = DataTranslater.Deserialize<StringParam>(ret_data);
-            return strReturn.Data;
         }
 
         public void CancelOrder(trade.Order legOrder)

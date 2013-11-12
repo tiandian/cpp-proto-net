@@ -41,6 +41,8 @@ public:
 	void EnableTrigger(int triggerIdx, bool enabled);
 	void SetQuantity(int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty);
 	void SetEndTimePoints(vector<string>& timepoints);
+	void StrategyForceOpen();
+	void StrategyForceClose();
 
 	// legs
 	vector<LegPtr>& Legs(){ return m_legs;}

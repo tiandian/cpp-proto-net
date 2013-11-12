@@ -98,9 +98,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* AddPortfolioParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   AddPortfolioParam_reflection_ = NULL;
-const ::google::protobuf::Descriptor* PorfOpenPosiParam_descriptor_ = NULL;
+const ::google::protobuf::Descriptor* PortfOpenPosiParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
-  PorfOpenPosiParam_reflection_ = NULL;
+  PortfOpenPosiParam_reflection_ = NULL;
 const ::google::protobuf::Descriptor* ClosePositionParam_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ClosePositionParam_reflection_ = NULL;
@@ -681,26 +681,27 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(AddPortfolioParam));
-  PorfOpenPosiParam_descriptor_ = file->message_type(27);
-  static const int PorfOpenPosiParam_offsets_[3] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, portfid_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, quantity_),
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, isvirtual_),
+  PortfOpenPosiParam_descriptor_ = file->message_type(27);
+  static const int PortfOpenPosiParam_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfOpenPosiParam, portfid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfOpenPosiParam, quantity_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfOpenPosiParam, isvirtual_),
   };
-  PorfOpenPosiParam_reflection_ =
+  PortfOpenPosiParam_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
-      PorfOpenPosiParam_descriptor_,
-      PorfOpenPosiParam::default_instance_,
-      PorfOpenPosiParam_offsets_,
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, _has_bits_[0]),
-      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PorfOpenPosiParam, _unknown_fields_),
+      PortfOpenPosiParam_descriptor_,
+      PortfOpenPosiParam::default_instance_,
+      PortfOpenPosiParam_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfOpenPosiParam, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(PortfOpenPosiParam, _unknown_fields_),
       -1,
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
-      sizeof(PorfOpenPosiParam));
+      sizeof(PortfOpenPosiParam));
   ClosePositionParam_descriptor_ = file->message_type(28);
-  static const int ClosePositionParam_offsets_[2] = {
-    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, multilegorder_),
+  static const int ClosePositionParam_offsets_[3] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, portfid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, mlorderid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ClosePositionParam, legordref_),
   };
   ClosePositionParam_reflection_ =
@@ -1013,7 +1014,7 @@ void protobuf_RegisterTypes(const ::std::string&) {
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     AddPortfolioParam_descriptor_, &AddPortfolioParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
-    PorfOpenPosiParam_descriptor_, &PorfOpenPosiParam::default_instance());
+    PortfOpenPosiParam_descriptor_, &PortfOpenPosiParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     ClosePositionParam_descriptor_, &ClosePositionParam::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
@@ -1099,8 +1100,8 @@ void protobuf_ShutdownFile_message_2eproto() {
   delete RegQuoteParam_reflection_;
   delete AddPortfolioParam::default_instance_;
   delete AddPortfolioParam_reflection_;
-  delete PorfOpenPosiParam::default_instance_;
-  delete PorfOpenPosiParam_reflection_;
+  delete PortfOpenPosiParam::default_instance_;
+  delete PortfOpenPosiParam_reflection_;
   delete ClosePositionParam::default_instance_;
   delete ClosePositionParam_reflection_;
   delete LegOrderUpdateParam::default_instance_;
@@ -1246,69 +1247,69 @@ void protobuf_AddDesc_message_2eproto() {
     "rd\030\003 \002(\t\022-\n\014AcctSettings\030\004 \001(\0132\027.entity."
     "AccountSettings\" \n\rRegQuoteParam\022\017\n\007Symb"
     "ols\030\001 \003(\t\"B\n\021AddPortfolioParam\022-\n\016Portfo"
-    "lioItems\030\001 \003(\0132\025.entity.PortfolioItem\"I\n"
-    "\021PorfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010Q"
-    "uantity\030\002 \002(\005\022\021\n\tIsVirtual\030\003 \002(\010\"T\n\022Clos"
-    "ePositionParam\022+\n\rMultiLegOrder\030\001 \002(\0132\024."
-    "trade.MultiLegOrder\022\021\n\tLegOrdRef\030\002 \001(\t\"t"
-    "\n\023LegOrderUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027"
-    "\n\017MultiLegOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003"
-    " \002(\t\022\036\n\010LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002\n"
-    "\031ArbitrageStrategySettings\022\'\n\004Side\030\001 \002(\016"
-    "2\031.entity.PosiDirectionType\022/\n\rOpenCondi"
-    "tion\030\002 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "OpenPosiThreshold\030\003 \002(\001\0223\n\021StopGainCondi"
-    "tion\030\004 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "StopGainThreshold\030\005 \002(\001\0223\n\021StopLossCondi"
-    "tion\030\006 \002(\0162\030.entity.CompareCondition\022\031\n\021"
-    "StopLossThreshold\030\007 \002(\001\"\246\001\n\032ChangePosiSt"
-    "rategySettings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014Clos"
-    "eLegSide\030\002 \002(\0162\031.entity.PosiDirectionTyp"
-    "e\0222\n\020TriggerCondition\030\003 \002(\0162\030.entity.Com"
-    "pareCondition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017Sca"
-    "lperSettings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPrice"
-    "Tick\030\002 \002(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.entity"
-    ".DirectionDepends\022-\n\013CaseLE3Tick\030\004 \002(\0162\030"
-    ".entity.DirectionDepends\022-\n\013CaseGE4Tick\030"
-    "\005 \002(\0162\030.entity.DirectionDepends\022.\n\014CaseN"
-    "oChange\030\006 \002(\0162\030.entity.DirectionDepends\022"
-    "6\n\020StopLossStrategy\030\007 \002(\0162\034.entity.StopL"
-    "ossCloseMethods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n\013O"
-    "penTimeout\030\t \001(\005\"R\n\023ModifyStrategyParam\022"
-    "\017\n\007PortfId\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024"
-    "\n\014StrategyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolio"
-    "SwitchParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen"
-    "\030\002 \002(\010\022\024\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStop"
-    "Loss\030\004 \002(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014Enab"
-    "lePrefer\030\006 \002(\010\"\230\001\n\027ModifyPortfolioQtyPar"
-    "am\022\017\n\007PortfId\030\001 \002(\t\022\022\n\nPerOpenQty\030\002 \002(\005\022"
-    "\023\n\013PerStartQty\030\003 \002(\005\022\026\n\016TotalOpenLimit\030\004"
-    " \002(\005\022\024\n\014MaxCancelQty\030\005 \002(\005\022\025\n\rEndTimePoi"
-    "nts\030\006 \003(\t\"<\n\030ModifyRunningStatusParam\022\017\n"
-    "\007PortfId\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n Modif"
-    "yPortfolioPreferredLegParam\022\017\n\007PortfId\030\001"
-    " \002(\t\022\021\n\tLegSymbol\030\002 \002(\t\"j\n\020CancelOrderPa"
-    "ram\022\020\n\010OrderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002("
-    "\t\022\020\n\010OrdSysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006S"
-    "ymbol\030\005 \002(\t\"y\n\025ManualCloseOrderParam\022\016\n\006"
-    "Symbol\030\001 \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trade."
-    "TradeDirectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020\n\010"
-    "Quantity\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstrum"
-    "ent\030\001 \002(\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016Exchang"
-    "eInstID\030\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016Volu"
-    "meMultiple\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n\nS"
-    "erverType\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRADE\020"
-    "\001*>\n\023PortfolioSwitchType\022\023\n\017STRATEGY_SWI"
-    "TCH\020\000\022\022\n\016TRIGGER_SWITCH\020\001*t\n\014StrategyTyp"
-    "e\022\r\n\tARBITRAGE\020\000\022\023\n\017CHANGE_POSITION\020\001\022\013\n"
-    "\007SCALPER\020\002\022\016\n\nHIST_SLOPE\020\003\022\r\n\tWMA_TREND\020"
-    "\004\022\024\n\020LINER_REGRESSION\020\005*@\n\016SlopeDirectio"
-    "n\022\020\n\014NO_DIRECTION\020\000\022\014\n\010GOING_UP\020\001\022\016\n\nGOI"
-    "NG_DOWN\020\002*o\n\020DirectionDepends\022\017\n\013IGNORE_"
-    "THIS\020\000\022\021\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_SIZE"
-    "\020\002\022\023\n\017ON_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CHANGE"
-    "\020\004*I\n\024StopLossCloseMethods\022\027\n\023BASED_ON_N"
-    "EXT_QUOTE\020\000\022\030\n\024BASED_ON_INPUT_LIMIT\020\001", 6837);
+    "lioItems\030\001 \003(\0132\025.entity.PortfolioItem\"J\n"
+    "\022PortfOpenPosiParam\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010"
+    "Quantity\030\002 \001(\005\022\021\n\tIsVirtual\030\003 \001(\010\"K\n\022Clo"
+    "sePositionParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\tMLOr"
+    "derId\030\002 \001(\t\022\021\n\tLegOrdRef\030\003 \001(\t\"t\n\023LegOrd"
+    "erUpdateParam\022\017\n\007PortfId\030\001 \002(\t\022\027\n\017MultiL"
+    "egOrderId\030\002 \002(\t\022\023\n\013LegOrderRef\030\003 \002(\t\022\036\n\010"
+    "LegOrder\030\004 \002(\0132\014.trade.Order\"\260\002\n\031Arbitra"
+    "geStrategySettings\022\'\n\004Side\030\001 \002(\0162\031.entit"
+    "y.PosiDirectionType\022/\n\rOpenCondition\030\002 \002"
+    "(\0162\030.entity.CompareCondition\022\031\n\021OpenPosi"
+    "Threshold\030\003 \002(\001\0223\n\021StopGainCondition\030\004 \002"
+    "(\0162\030.entity.CompareCondition\022\031\n\021StopGain"
+    "Threshold\030\005 \002(\001\0223\n\021StopLossCondition\030\006 \002"
+    "(\0162\030.entity.CompareCondition\022\031\n\021StopLoss"
+    "Threshold\030\007 \002(\001\"\246\001\n\032ChangePosiStrategySe"
+    "ttings\022\020\n\010CloseLeg\030\001 \002(\t\022/\n\014CloseLegSide"
+    "\030\002 \002(\0162\031.entity.PosiDirectionType\0222\n\020Tri"
+    "ggerCondition\030\003 \002(\0162\030.entity.CompareCond"
+    "ition\022\021\n\tThreshold\030\004 \002(\001\"\325\002\n\017ScalperSett"
+    "ings\022\021\n\tThreshold\030\001 \002(\001\022\021\n\tPriceTick\030\002 \002"
+    "(\001\022-\n\013CaseLE2Tick\030\003 \002(\0162\030.entity.Directi"
+    "onDepends\022-\n\013CaseLE3Tick\030\004 \002(\0162\030.entity."
+    "DirectionDepends\022-\n\013CaseGE4Tick\030\005 \002(\0162\030."
+    "entity.DirectionDepends\022.\n\014CaseNoChange\030"
+    "\006 \002(\0162\030.entity.DirectionDepends\0226\n\020StopL"
+    "ossStrategy\030\007 \002(\0162\034.entity.StopLossClose"
+    "Methods\022\022\n\nRetryTimes\030\010 \002(\005\022\023\n\013OpenTimeo"
+    "ut\030\t \001(\005\"R\n\023ModifyStrategyParam\022\017\n\007Portf"
+    "Id\030\001 \002(\t\022\024\n\014StrategyName\030\002 \002(\t\022\024\n\014Strate"
+    "gyData\030\003 \002(\014\"\227\001\n\032ModifyPortfolioSwitchPa"
+    "ram\022\017\n\007PortfId\030\001 \002(\t\022\020\n\010AutoOpen\030\002 \002(\010\022\024"
+    "\n\014AutoStopGain\030\003 \002(\010\022\024\n\014AutoStopLoss\030\004 \002"
+    "(\010\022\024\n\014AutoTracking\030\005 \002(\010\022\024\n\014EnablePrefer"
+    "\030\006 \002(\010\"\230\001\n\027ModifyPortfolioQtyParam\022\017\n\007Po"
+    "rtfId\030\001 \002(\t\022\022\n\nPerOpenQty\030\002 \002(\005\022\023\n\013PerSt"
+    "artQty\030\003 \002(\005\022\026\n\016TotalOpenLimit\030\004 \002(\005\022\024\n\014"
+    "MaxCancelQty\030\005 \002(\005\022\025\n\rEndTimePoints\030\006 \003("
+    "\t\"<\n\030ModifyRunningStatusParam\022\017\n\007PortfId"
+    "\030\001 \002(\t\022\017\n\007Enabled\030\002 \002(\010\"F\n ModifyPortfol"
+    "ioPreferredLegParam\022\017\n\007PortfId\030\001 \002(\t\022\021\n\t"
+    "LegSymbol\030\002 \002(\t\"j\n\020CancelOrderParam\022\020\n\010O"
+    "rderRef\030\001 \002(\t\022\022\n\nExchangeId\030\002 \002(\t\022\020\n\010Ord"
+    "SysId\030\003 \002(\t\022\016\n\006UserId\030\004 \002(\t\022\016\n\006Symbol\030\005 "
+    "\002(\t\"y\n\025ManualCloseOrderParam\022\016\n\006Symbol\030\001"
+    " \002(\t\022,\n\tDirection\030\002 \002(\0162\031.trade.TradeDir"
+    "ectionType\022\020\n\010OpenDate\030\003 \002(\t\022\020\n\010Quantity"
+    "\030\004 \002(\005\"\212\001\n\nSymbolInfo\022\022\n\nInstrument\030\001 \002("
+    "\t\022\022\n\nExchangeID\030\002 \002(\t\022\026\n\016ExchangeInstID\030"
+    "\003 \002(\t\022\021\n\tProductID\030\004 \002(\t\022\026\n\016VolumeMultip"
+    "le\030\005 \002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n\nServerTyp"
+    "e\022\016\n\nSERV_QUOTE\020\000\022\016\n\nSERV_TRADE\020\001*>\n\023Por"
+    "tfolioSwitchType\022\023\n\017STRATEGY_SWITCH\020\000\022\022\n"
+    "\016TRIGGER_SWITCH\020\001*t\n\014StrategyType\022\r\n\tARB"
+    "ITRAGE\020\000\022\023\n\017CHANGE_POSITION\020\001\022\013\n\007SCALPER"
+    "\020\002\022\016\n\nHIST_SLOPE\020\003\022\r\n\tWMA_TREND\020\004\022\024\n\020LIN"
+    "ER_REGRESSION\020\005*@\n\016SlopeDirection\022\020\n\014NO_"
+    "DIRECTION\020\000\022\014\n\010GOING_UP\020\001\022\016\n\nGOING_DOWN\020"
+    "\002*o\n\020DirectionDepends\022\017\n\013IGNORE_THIS\020\000\022\021"
+    "\n\rON_SMALL_SIZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON"
+    "_SMALL_CHANGE\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024St"
+    "opLossCloseMethods\022\027\n\023BASED_ON_NEXT_QUOT"
+    "E\020\000\022\030\n\024BASED_ON_INPUT_LIMIT\020\001", 6829);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -1338,7 +1339,7 @@ void protobuf_AddDesc_message_2eproto() {
   LoginParam::default_instance_ = new LoginParam();
   RegQuoteParam::default_instance_ = new RegQuoteParam();
   AddPortfolioParam::default_instance_ = new AddPortfolioParam();
-  PorfOpenPosiParam::default_instance_ = new PorfOpenPosiParam();
+  PortfOpenPosiParam::default_instance_ = new PortfOpenPosiParam();
   ClosePositionParam::default_instance_ = new ClosePositionParam();
   LegOrderUpdateParam::default_instance_ = new LegOrderUpdateParam();
   ArbitrageStrategySettings::default_instance_ = new ArbitrageStrategySettings();
@@ -1379,7 +1380,7 @@ void protobuf_AddDesc_message_2eproto() {
   LoginParam::default_instance_->InitAsDefaultInstance();
   RegQuoteParam::default_instance_->InitAsDefaultInstance();
   AddPortfolioParam::default_instance_->InitAsDefaultInstance();
-  PorfOpenPosiParam::default_instance_->InitAsDefaultInstance();
+  PortfOpenPosiParam::default_instance_->InitAsDefaultInstance();
   ClosePositionParam::default_instance_->InitAsDefaultInstance();
   LegOrderUpdateParam::default_instance_->InitAsDefaultInstance();
   ArbitrageStrategySettings::default_instance_->InitAsDefaultInstance();
@@ -12629,26 +12630,26 @@ void AddPortfolioParam::Swap(AddPortfolioParam* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int PorfOpenPosiParam::kPortfIdFieldNumber;
-const int PorfOpenPosiParam::kQuantityFieldNumber;
-const int PorfOpenPosiParam::kIsVirtualFieldNumber;
+const int PortfOpenPosiParam::kPortfIdFieldNumber;
+const int PortfOpenPosiParam::kQuantityFieldNumber;
+const int PortfOpenPosiParam::kIsVirtualFieldNumber;
 #endif  // !_MSC_VER
 
-PorfOpenPosiParam::PorfOpenPosiParam()
+PortfOpenPosiParam::PortfOpenPosiParam()
   : ::google::protobuf::Message() {
   SharedCtor();
 }
 
-void PorfOpenPosiParam::InitAsDefaultInstance() {
+void PortfOpenPosiParam::InitAsDefaultInstance() {
 }
 
-PorfOpenPosiParam::PorfOpenPosiParam(const PorfOpenPosiParam& from)
+PortfOpenPosiParam::PortfOpenPosiParam(const PortfOpenPosiParam& from)
   : ::google::protobuf::Message() {
   SharedCtor();
   MergeFrom(from);
 }
 
-void PorfOpenPosiParam::SharedCtor() {
+void PortfOpenPosiParam::SharedCtor() {
   _cached_size_ = 0;
   portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   quantity_ = 0;
@@ -12656,11 +12657,11 @@ void PorfOpenPosiParam::SharedCtor() {
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
-PorfOpenPosiParam::~PorfOpenPosiParam() {
+PortfOpenPosiParam::~PortfOpenPosiParam() {
   SharedDtor();
 }
 
-void PorfOpenPosiParam::SharedDtor() {
+void PortfOpenPosiParam::SharedDtor() {
   if (portfid_ != &::google::protobuf::internal::kEmptyString) {
     delete portfid_;
   }
@@ -12668,27 +12669,27 @@ void PorfOpenPosiParam::SharedDtor() {
   }
 }
 
-void PorfOpenPosiParam::SetCachedSize(int size) const {
+void PortfOpenPosiParam::SetCachedSize(int size) const {
   GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
   _cached_size_ = size;
   GOOGLE_SAFE_CONCURRENT_WRITES_END();
 }
-const ::google::protobuf::Descriptor* PorfOpenPosiParam::descriptor() {
+const ::google::protobuf::Descriptor* PortfOpenPosiParam::descriptor() {
   protobuf_AssignDescriptorsOnce();
-  return PorfOpenPosiParam_descriptor_;
+  return PortfOpenPosiParam_descriptor_;
 }
 
-const PorfOpenPosiParam& PorfOpenPosiParam::default_instance() {
+const PortfOpenPosiParam& PortfOpenPosiParam::default_instance() {
   if (default_instance_ == NULL) protobuf_AddDesc_message_2eproto();  return *default_instance_;
 }
 
-PorfOpenPosiParam* PorfOpenPosiParam::default_instance_ = NULL;
+PortfOpenPosiParam* PortfOpenPosiParam::default_instance_ = NULL;
 
-PorfOpenPosiParam* PorfOpenPosiParam::New() const {
-  return new PorfOpenPosiParam;
+PortfOpenPosiParam* PortfOpenPosiParam::New() const {
+  return new PortfOpenPosiParam;
 }
 
-void PorfOpenPosiParam::Clear() {
+void PortfOpenPosiParam::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_portfid()) {
       if (portfid_ != &::google::protobuf::internal::kEmptyString) {
@@ -12702,7 +12703,7 @@ void PorfOpenPosiParam::Clear() {
   mutable_unknown_fields()->Clear();
 }
 
-bool PorfOpenPosiParam::MergePartialFromCodedStream(
+bool PortfOpenPosiParam::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!(EXPRESSION)) return false
   ::google::protobuf::uint32 tag;
@@ -12724,7 +12725,7 @@ bool PorfOpenPosiParam::MergePartialFromCodedStream(
         break;
       }
       
-      // required int32 Quantity = 2;
+      // optional int32 Quantity = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -12740,7 +12741,7 @@ bool PorfOpenPosiParam::MergePartialFromCodedStream(
         break;
       }
       
-      // required bool IsVirtual = 3;
+      // optional bool IsVirtual = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
@@ -12772,7 +12773,7 @@ bool PorfOpenPosiParam::MergePartialFromCodedStream(
 #undef DO_
 }
 
-void PorfOpenPosiParam::SerializeWithCachedSizes(
+void PortfOpenPosiParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
   // required string PortfId = 1;
   if (has_portfid()) {
@@ -12783,12 +12784,12 @@ void PorfOpenPosiParam::SerializeWithCachedSizes(
       1, this->portfid(), output);
   }
   
-  // required int32 Quantity = 2;
+  // optional int32 Quantity = 2;
   if (has_quantity()) {
     ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->quantity(), output);
   }
   
-  // required bool IsVirtual = 3;
+  // optional bool IsVirtual = 3;
   if (has_isvirtual()) {
     ::google::protobuf::internal::WireFormatLite::WriteBool(3, this->isvirtual(), output);
   }
@@ -12799,7 +12800,7 @@ void PorfOpenPosiParam::SerializeWithCachedSizes(
   }
 }
 
-::google::protobuf::uint8* PorfOpenPosiParam::SerializeWithCachedSizesToArray(
+::google::protobuf::uint8* PortfOpenPosiParam::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
   // required string PortfId = 1;
   if (has_portfid()) {
@@ -12811,12 +12812,12 @@ void PorfOpenPosiParam::SerializeWithCachedSizes(
         1, this->portfid(), target);
   }
   
-  // required int32 Quantity = 2;
+  // optional int32 Quantity = 2;
   if (has_quantity()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->quantity(), target);
   }
   
-  // required bool IsVirtual = 3;
+  // optional bool IsVirtual = 3;
   if (has_isvirtual()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(3, this->isvirtual(), target);
   }
@@ -12828,7 +12829,7 @@ void PorfOpenPosiParam::SerializeWithCachedSizes(
   return target;
 }
 
-int PorfOpenPosiParam::ByteSize() const {
+int PortfOpenPosiParam::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
@@ -12839,14 +12840,14 @@ int PorfOpenPosiParam::ByteSize() const {
           this->portfid());
     }
     
-    // required int32 Quantity = 2;
+    // optional int32 Quantity = 2;
     if (has_quantity()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->quantity());
     }
     
-    // required bool IsVirtual = 3;
+    // optional bool IsVirtual = 3;
     if (has_isvirtual()) {
       total_size += 1 + 1;
     }
@@ -12863,10 +12864,10 @@ int PorfOpenPosiParam::ByteSize() const {
   return total_size;
 }
 
-void PorfOpenPosiParam::MergeFrom(const ::google::protobuf::Message& from) {
+void PortfOpenPosiParam::MergeFrom(const ::google::protobuf::Message& from) {
   GOOGLE_CHECK_NE(&from, this);
-  const PorfOpenPosiParam* source =
-    ::google::protobuf::internal::dynamic_cast_if_available<const PorfOpenPosiParam*>(
+  const PortfOpenPosiParam* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const PortfOpenPosiParam*>(
       &from);
   if (source == NULL) {
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
@@ -12875,7 +12876,7 @@ void PorfOpenPosiParam::MergeFrom(const ::google::protobuf::Message& from) {
   }
 }
 
-void PorfOpenPosiParam::MergeFrom(const PorfOpenPosiParam& from) {
+void PortfOpenPosiParam::MergeFrom(const PortfOpenPosiParam& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_portfid()) {
@@ -12891,25 +12892,25 @@ void PorfOpenPosiParam::MergeFrom(const PorfOpenPosiParam& from) {
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
 
-void PorfOpenPosiParam::CopyFrom(const ::google::protobuf::Message& from) {
+void PortfOpenPosiParam::CopyFrom(const ::google::protobuf::Message& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void PorfOpenPosiParam::CopyFrom(const PorfOpenPosiParam& from) {
+void PortfOpenPosiParam::CopyFrom(const PortfOpenPosiParam& from) {
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool PorfOpenPosiParam::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+bool PortfOpenPosiParam::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
   return true;
 }
 
-void PorfOpenPosiParam::Swap(PorfOpenPosiParam* other) {
+void PortfOpenPosiParam::Swap(PortfOpenPosiParam* other) {
   if (other != this) {
     std::swap(portfid_, other->portfid_);
     std::swap(quantity_, other->quantity_);
@@ -12920,11 +12921,11 @@ void PorfOpenPosiParam::Swap(PorfOpenPosiParam* other) {
   }
 }
 
-::google::protobuf::Metadata PorfOpenPosiParam::GetMetadata() const {
+::google::protobuf::Metadata PortfOpenPosiParam::GetMetadata() const {
   protobuf_AssignDescriptorsOnce();
   ::google::protobuf::Metadata metadata;
-  metadata.descriptor = PorfOpenPosiParam_descriptor_;
-  metadata.reflection = PorfOpenPosiParam_reflection_;
+  metadata.descriptor = PortfOpenPosiParam_descriptor_;
+  metadata.reflection = PortfOpenPosiParam_reflection_;
   return metadata;
 }
 
@@ -12932,7 +12933,8 @@ void PorfOpenPosiParam::Swap(PorfOpenPosiParam* other) {
 // ===================================================================
 
 #ifndef _MSC_VER
-const int ClosePositionParam::kMultiLegOrderFieldNumber;
+const int ClosePositionParam::kPortfIdFieldNumber;
+const int ClosePositionParam::kMLOrderIdFieldNumber;
 const int ClosePositionParam::kLegOrdRefFieldNumber;
 #endif  // !_MSC_VER
 
@@ -12942,7 +12944,6 @@ ClosePositionParam::ClosePositionParam()
 }
 
 void ClosePositionParam::InitAsDefaultInstance() {
-  multilegorder_ = const_cast< ::trade::MultiLegOrder*>(&::trade::MultiLegOrder::default_instance());
 }
 
 ClosePositionParam::ClosePositionParam(const ClosePositionParam& from)
@@ -12953,7 +12954,8 @@ ClosePositionParam::ClosePositionParam(const ClosePositionParam& from)
 
 void ClosePositionParam::SharedCtor() {
   _cached_size_ = 0;
-  multilegorder_ = NULL;
+  portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  mlorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   legordref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -12963,11 +12965,16 @@ ClosePositionParam::~ClosePositionParam() {
 }
 
 void ClosePositionParam::SharedDtor() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    delete portfid_;
+  }
+  if (mlorderid_ != &::google::protobuf::internal::kEmptyString) {
+    delete mlorderid_;
+  }
   if (legordref_ != &::google::protobuf::internal::kEmptyString) {
     delete legordref_;
   }
   if (this != default_instance_) {
-    delete multilegorder_;
   }
 }
 
@@ -12993,8 +13000,15 @@ ClosePositionParam* ClosePositionParam::New() const {
 
 void ClosePositionParam::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (has_multilegorder()) {
-      if (multilegorder_ != NULL) multilegorder_->::trade::MultiLegOrder::Clear();
+    if (has_portfid()) {
+      if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+        portfid_->clear();
+      }
+    }
+    if (has_mlorderid()) {
+      if (mlorderid_ != &::google::protobuf::internal::kEmptyString) {
+        mlorderid_->clear();
+      }
     }
     if (has_legordref()) {
       if (legordref_ != &::google::protobuf::internal::kEmptyString) {
@@ -13012,21 +13026,41 @@ bool ClosePositionParam::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // required .trade.MultiLegOrder MultiLegOrder = 1;
+      // required string PortfId = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
-               input, mutable_multilegorder()));
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_portfid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->portfid().data(), this->portfid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(18)) goto parse_LegOrdRef;
+        if (input->ExpectTag(18)) goto parse_MLOrderId;
         break;
       }
       
-      // optional string LegOrdRef = 2;
+      // optional string MLOrderId = 2;
       case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_MLOrderId:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_mlorderid()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->mlorderid().data(), this->mlorderid().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(26)) goto parse_LegOrdRef;
+        break;
+      }
+      
+      // optional string LegOrdRef = 3;
+      case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_LegOrdRef:
@@ -13060,19 +13094,31 @@ bool ClosePositionParam::MergePartialFromCodedStream(
 
 void ClosePositionParam::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // required .trade.MultiLegOrder MultiLegOrder = 1;
-  if (has_multilegorder()) {
-    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
-      1, this->multilegorder(), output);
+  // required string PortfId = 1;
+  if (has_portfid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->portfid().data(), this->portfid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      1, this->portfid(), output);
   }
   
-  // optional string LegOrdRef = 2;
+  // optional string MLOrderId = 2;
+  if (has_mlorderid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->mlorderid().data(), this->mlorderid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      2, this->mlorderid(), output);
+  }
+  
+  // optional string LegOrdRef = 3;
   if (has_legordref()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->legordref().data(), this->legordref().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     ::google::protobuf::internal::WireFormatLite::WriteString(
-      2, this->legordref(), output);
+      3, this->legordref(), output);
   }
   
   if (!unknown_fields().empty()) {
@@ -13083,21 +13129,34 @@ void ClosePositionParam::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* ClosePositionParam::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // required .trade.MultiLegOrder MultiLegOrder = 1;
-  if (has_multilegorder()) {
-    target = ::google::protobuf::internal::WireFormatLite::
-      WriteMessageNoVirtualToArray(
-        1, this->multilegorder(), target);
+  // required string PortfId = 1;
+  if (has_portfid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->portfid().data(), this->portfid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->portfid(), target);
   }
   
-  // optional string LegOrdRef = 2;
+  // optional string MLOrderId = 2;
+  if (has_mlorderid()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->mlorderid().data(), this->mlorderid().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        2, this->mlorderid(), target);
+  }
+  
+  // optional string LegOrdRef = 3;
   if (has_legordref()) {
     ::google::protobuf::internal::WireFormat::VerifyUTF8String(
       this->legordref().data(), this->legordref().length(),
       ::google::protobuf::internal::WireFormat::SERIALIZE);
     target =
       ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
-        2, this->legordref(), target);
+        3, this->legordref(), target);
   }
   
   if (!unknown_fields().empty()) {
@@ -13111,14 +13170,21 @@ int ClosePositionParam::ByteSize() const {
   int total_size = 0;
   
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // required .trade.MultiLegOrder MultiLegOrder = 1;
-    if (has_multilegorder()) {
+    // required string PortfId = 1;
+    if (has_portfid()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
-          this->multilegorder());
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->portfid());
     }
     
-    // optional string LegOrdRef = 2;
+    // optional string MLOrderId = 2;
+    if (has_mlorderid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->mlorderid());
+    }
+    
+    // optional string LegOrdRef = 3;
     if (has_legordref()) {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::StringSize(
@@ -13152,8 +13218,11 @@ void ClosePositionParam::MergeFrom(const ::google::protobuf::Message& from) {
 void ClosePositionParam::MergeFrom(const ClosePositionParam& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    if (from.has_multilegorder()) {
-      mutable_multilegorder()->::trade::MultiLegOrder::MergeFrom(from.multilegorder());
+    if (from.has_portfid()) {
+      set_portfid(from.portfid());
+    }
+    if (from.has_mlorderid()) {
+      set_mlorderid(from.mlorderid());
     }
     if (from.has_legordref()) {
       set_legordref(from.legordref());
@@ -13177,15 +13246,13 @@ void ClosePositionParam::CopyFrom(const ClosePositionParam& from) {
 bool ClosePositionParam::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   
-  if (has_multilegorder()) {
-    if (!this->multilegorder().IsInitialized()) return false;
-  }
   return true;
 }
 
 void ClosePositionParam::Swap(ClosePositionParam* other) {
   if (other != this) {
-    std::swap(multilegorder_, other->multilegorder_);
+    std::swap(portfid_, other->portfid_);
+    std::swap(mlorderid_, other->mlorderid_);
     std::swap(legordref_, other->legordref_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);

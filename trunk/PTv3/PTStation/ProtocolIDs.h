@@ -12,6 +12,8 @@ enum
 	ApplyStrategySetttingRequestID,
 	HeartbeatRequestID,
 	PortfolioModifyQtyRequestID,
+	PortfolioOpenPositionRequestID,
+	PortfolioClosePositionRequestID,
 };
 
 enum

@@ -399,3 +399,13 @@ void CPortfolio::StopStrategyDueTo( const string& stopReason )
 		m_portfolioUpdate.clear_message();
 	}
 }
+
+void CPortfolio::StrategyForceOpen()
+{
+	m_strategy->SetForceOpen();
+}
+
+void CPortfolio::StrategyForceClose()
+{
+	m_strategy->SetForceClose();
+}

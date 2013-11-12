@@ -61,7 +61,7 @@ class AccountSettings;
 class LoginParam;
 class RegQuoteParam;
 class AddPortfolioParam;
-class PorfOpenPosiParam;
+class PortfOpenPosiParam;
 class ClosePositionParam;
 class LegOrderUpdateParam;
 class ArbitrageStrategySettings;
@@ -3788,14 +3788,14 @@ class AddPortfolioParam : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class PorfOpenPosiParam : public ::google::protobuf::Message {
+class PortfOpenPosiParam : public ::google::protobuf::Message {
  public:
-  PorfOpenPosiParam();
-  virtual ~PorfOpenPosiParam();
+  PortfOpenPosiParam();
+  virtual ~PortfOpenPosiParam();
   
-  PorfOpenPosiParam(const PorfOpenPosiParam& from);
+  PortfOpenPosiParam(const PortfOpenPosiParam& from);
   
-  inline PorfOpenPosiParam& operator=(const PorfOpenPosiParam& from) {
+  inline PortfOpenPosiParam& operator=(const PortfOpenPosiParam& from) {
     CopyFrom(from);
     return *this;
   }
@@ -3809,17 +3809,17 @@ class PorfOpenPosiParam : public ::google::protobuf::Message {
   }
   
   static const ::google::protobuf::Descriptor* descriptor();
-  static const PorfOpenPosiParam& default_instance();
+  static const PortfOpenPosiParam& default_instance();
   
-  void Swap(PorfOpenPosiParam* other);
+  void Swap(PortfOpenPosiParam* other);
   
   // implements Message ----------------------------------------------
   
-  PorfOpenPosiParam* New() const;
+  PortfOpenPosiParam* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const PorfOpenPosiParam& from);
-  void MergeFrom(const PorfOpenPosiParam& from);
+  void CopyFrom(const PortfOpenPosiParam& from);
+  void MergeFrom(const PortfOpenPosiParam& from);
   void Clear();
   bool IsInitialized() const;
   
@@ -3853,21 +3853,21 @@ class PorfOpenPosiParam : public ::google::protobuf::Message {
   inline ::std::string* mutable_portfid();
   inline ::std::string* release_portfid();
   
-  // required int32 Quantity = 2;
+  // optional int32 Quantity = 2;
   inline bool has_quantity() const;
   inline void clear_quantity();
   static const int kQuantityFieldNumber = 2;
   inline ::google::protobuf::int32 quantity() const;
   inline void set_quantity(::google::protobuf::int32 value);
   
-  // required bool IsVirtual = 3;
+  // optional bool IsVirtual = 3;
   inline bool has_isvirtual() const;
   inline void clear_isvirtual();
   static const int kIsVirtualFieldNumber = 3;
   inline bool isvirtual() const;
   inline void set_isvirtual(bool value);
   
-  // @@protoc_insertion_point(class_scope:entity.PorfOpenPosiParam)
+  // @@protoc_insertion_point(class_scope:entity.PortfOpenPosiParam)
  private:
   inline void set_has_portfid();
   inline void clear_has_portfid();
@@ -3890,7 +3890,7 @@ class PorfOpenPosiParam : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_message_2eproto();
   
   void InitAsDefaultInstance();
-  static PorfOpenPosiParam* default_instance_;
+  static PortfOpenPosiParam* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -3948,18 +3948,32 @@ class ClosePositionParam : public ::google::protobuf::Message {
   
   // accessors -------------------------------------------------------
   
-  // required .trade.MultiLegOrder MultiLegOrder = 1;
-  inline bool has_multilegorder() const;
-  inline void clear_multilegorder();
-  static const int kMultiLegOrderFieldNumber = 1;
-  inline const ::trade::MultiLegOrder& multilegorder() const;
-  inline ::trade::MultiLegOrder* mutable_multilegorder();
-  inline ::trade::MultiLegOrder* release_multilegorder();
+  // required string PortfId = 1;
+  inline bool has_portfid() const;
+  inline void clear_portfid();
+  static const int kPortfIdFieldNumber = 1;
+  inline const ::std::string& portfid() const;
+  inline void set_portfid(const ::std::string& value);
+  inline void set_portfid(const char* value);
+  inline void set_portfid(const char* value, size_t size);
+  inline ::std::string* mutable_portfid();
+  inline ::std::string* release_portfid();
   
-  // optional string LegOrdRef = 2;
+  // optional string MLOrderId = 2;
+  inline bool has_mlorderid() const;
+  inline void clear_mlorderid();
+  static const int kMLOrderIdFieldNumber = 2;
+  inline const ::std::string& mlorderid() const;
+  inline void set_mlorderid(const ::std::string& value);
+  inline void set_mlorderid(const char* value);
+  inline void set_mlorderid(const char* value, size_t size);
+  inline ::std::string* mutable_mlorderid();
+  inline ::std::string* release_mlorderid();
+  
+  // optional string LegOrdRef = 3;
   inline bool has_legordref() const;
   inline void clear_legordref();
-  static const int kLegOrdRefFieldNumber = 2;
+  static const int kLegOrdRefFieldNumber = 3;
   inline const ::std::string& legordref() const;
   inline void set_legordref(const ::std::string& value);
   inline void set_legordref(const char* value);
@@ -3969,18 +3983,21 @@ class ClosePositionParam : public ::google::protobuf::Message {
   
   // @@protoc_insertion_point(class_scope:entity.ClosePositionParam)
  private:
-  inline void set_has_multilegorder();
-  inline void clear_has_multilegorder();
+  inline void set_has_portfid();
+  inline void clear_has_portfid();
+  inline void set_has_mlorderid();
+  inline void clear_has_mlorderid();
   inline void set_has_legordref();
   inline void clear_has_legordref();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
-  ::trade::MultiLegOrder* multilegorder_;
+  ::std::string* portfid_;
+  ::std::string* mlorderid_;
   ::std::string* legordref_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -10213,56 +10230,56 @@ AddPortfolioParam::mutable_portfolioitems() {
 
 // -------------------------------------------------------------------
 
-// PorfOpenPosiParam
+// PortfOpenPosiParam
 
 // required string PortfId = 1;
-inline bool PorfOpenPosiParam::has_portfid() const {
+inline bool PortfOpenPosiParam::has_portfid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void PorfOpenPosiParam::set_has_portfid() {
+inline void PortfOpenPosiParam::set_has_portfid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void PorfOpenPosiParam::clear_has_portfid() {
+inline void PortfOpenPosiParam::clear_has_portfid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void PorfOpenPosiParam::clear_portfid() {
+inline void PortfOpenPosiParam::clear_portfid() {
   if (portfid_ != &::google::protobuf::internal::kEmptyString) {
     portfid_->clear();
   }
   clear_has_portfid();
 }
-inline const ::std::string& PorfOpenPosiParam::portfid() const {
+inline const ::std::string& PortfOpenPosiParam::portfid() const {
   return *portfid_;
 }
-inline void PorfOpenPosiParam::set_portfid(const ::std::string& value) {
+inline void PortfOpenPosiParam::set_portfid(const ::std::string& value) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(value);
 }
-inline void PorfOpenPosiParam::set_portfid(const char* value) {
+inline void PortfOpenPosiParam::set_portfid(const char* value) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(value);
 }
-inline void PorfOpenPosiParam::set_portfid(const char* value, size_t size) {
+inline void PortfOpenPosiParam::set_portfid(const char* value, size_t size) {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   portfid_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* PorfOpenPosiParam::mutable_portfid() {
+inline ::std::string* PortfOpenPosiParam::mutable_portfid() {
   set_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     portfid_ = new ::std::string;
   }
   return portfid_;
 }
-inline ::std::string* PorfOpenPosiParam::release_portfid() {
+inline ::std::string* PortfOpenPosiParam::release_portfid() {
   clear_has_portfid();
   if (portfid_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -10273,46 +10290,46 @@ inline ::std::string* PorfOpenPosiParam::release_portfid() {
   }
 }
 
-// required int32 Quantity = 2;
-inline bool PorfOpenPosiParam::has_quantity() const {
+// optional int32 Quantity = 2;
+inline bool PortfOpenPosiParam::has_quantity() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void PorfOpenPosiParam::set_has_quantity() {
+inline void PortfOpenPosiParam::set_has_quantity() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void PorfOpenPosiParam::clear_has_quantity() {
+inline void PortfOpenPosiParam::clear_has_quantity() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void PorfOpenPosiParam::clear_quantity() {
+inline void PortfOpenPosiParam::clear_quantity() {
   quantity_ = 0;
   clear_has_quantity();
 }
-inline ::google::protobuf::int32 PorfOpenPosiParam::quantity() const {
+inline ::google::protobuf::int32 PortfOpenPosiParam::quantity() const {
   return quantity_;
 }
-inline void PorfOpenPosiParam::set_quantity(::google::protobuf::int32 value) {
+inline void PortfOpenPosiParam::set_quantity(::google::protobuf::int32 value) {
   set_has_quantity();
   quantity_ = value;
 }
 
-// required bool IsVirtual = 3;
-inline bool PorfOpenPosiParam::has_isvirtual() const {
+// optional bool IsVirtual = 3;
+inline bool PortfOpenPosiParam::has_isvirtual() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void PorfOpenPosiParam::set_has_isvirtual() {
+inline void PortfOpenPosiParam::set_has_isvirtual() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void PorfOpenPosiParam::clear_has_isvirtual() {
+inline void PortfOpenPosiParam::clear_has_isvirtual() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void PorfOpenPosiParam::clear_isvirtual() {
+inline void PortfOpenPosiParam::clear_isvirtual() {
   isvirtual_ = false;
   clear_has_isvirtual();
 }
-inline bool PorfOpenPosiParam::isvirtual() const {
+inline bool PortfOpenPosiParam::isvirtual() const {
   return isvirtual_;
 }
-inline void PorfOpenPosiParam::set_isvirtual(bool value) {
+inline void PortfOpenPosiParam::set_isvirtual(bool value) {
   set_has_isvirtual();
   isvirtual_ = value;
 }
@@ -10321,44 +10338,131 @@ inline void PorfOpenPosiParam::set_isvirtual(bool value) {
 
 // ClosePositionParam
 
-// required .trade.MultiLegOrder MultiLegOrder = 1;
-inline bool ClosePositionParam::has_multilegorder() const {
+// required string PortfId = 1;
+inline bool ClosePositionParam::has_portfid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void ClosePositionParam::set_has_multilegorder() {
+inline void ClosePositionParam::set_has_portfid() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void ClosePositionParam::clear_has_multilegorder() {
+inline void ClosePositionParam::clear_has_portfid() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void ClosePositionParam::clear_multilegorder() {
-  if (multilegorder_ != NULL) multilegorder_->::trade::MultiLegOrder::Clear();
-  clear_has_multilegorder();
+inline void ClosePositionParam::clear_portfid() {
+  if (portfid_ != &::google::protobuf::internal::kEmptyString) {
+    portfid_->clear();
+  }
+  clear_has_portfid();
 }
-inline const ::trade::MultiLegOrder& ClosePositionParam::multilegorder() const {
-  return multilegorder_ != NULL ? *multilegorder_ : *default_instance_->multilegorder_;
+inline const ::std::string& ClosePositionParam::portfid() const {
+  return *portfid_;
 }
-inline ::trade::MultiLegOrder* ClosePositionParam::mutable_multilegorder() {
-  set_has_multilegorder();
-  if (multilegorder_ == NULL) multilegorder_ = new ::trade::MultiLegOrder;
-  return multilegorder_;
+inline void ClosePositionParam::set_portfid(const ::std::string& value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
 }
-inline ::trade::MultiLegOrder* ClosePositionParam::release_multilegorder() {
-  clear_has_multilegorder();
-  ::trade::MultiLegOrder* temp = multilegorder_;
-  multilegorder_ = NULL;
-  return temp;
+inline void ClosePositionParam::set_portfid(const char* value) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(value);
+}
+inline void ClosePositionParam::set_portfid(const char* value, size_t size) {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  portfid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ClosePositionParam::mutable_portfid() {
+  set_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    portfid_ = new ::std::string;
+  }
+  return portfid_;
+}
+inline ::std::string* ClosePositionParam::release_portfid() {
+  clear_has_portfid();
+  if (portfid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = portfid_;
+    portfid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
 }
 
-// optional string LegOrdRef = 2;
-inline bool ClosePositionParam::has_legordref() const {
+// optional string MLOrderId = 2;
+inline bool ClosePositionParam::has_mlorderid() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void ClosePositionParam::set_has_legordref() {
+inline void ClosePositionParam::set_has_mlorderid() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void ClosePositionParam::clear_has_legordref() {
+inline void ClosePositionParam::clear_has_mlorderid() {
   _has_bits_[0] &= ~0x00000002u;
+}
+inline void ClosePositionParam::clear_mlorderid() {
+  if (mlorderid_ != &::google::protobuf::internal::kEmptyString) {
+    mlorderid_->clear();
+  }
+  clear_has_mlorderid();
+}
+inline const ::std::string& ClosePositionParam::mlorderid() const {
+  return *mlorderid_;
+}
+inline void ClosePositionParam::set_mlorderid(const ::std::string& value) {
+  set_has_mlorderid();
+  if (mlorderid_ == &::google::protobuf::internal::kEmptyString) {
+    mlorderid_ = new ::std::string;
+  }
+  mlorderid_->assign(value);
+}
+inline void ClosePositionParam::set_mlorderid(const char* value) {
+  set_has_mlorderid();
+  if (mlorderid_ == &::google::protobuf::internal::kEmptyString) {
+    mlorderid_ = new ::std::string;
+  }
+  mlorderid_->assign(value);
+}
+inline void ClosePositionParam::set_mlorderid(const char* value, size_t size) {
+  set_has_mlorderid();
+  if (mlorderid_ == &::google::protobuf::internal::kEmptyString) {
+    mlorderid_ = new ::std::string;
+  }
+  mlorderid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ClosePositionParam::mutable_mlorderid() {
+  set_has_mlorderid();
+  if (mlorderid_ == &::google::protobuf::internal::kEmptyString) {
+    mlorderid_ = new ::std::string;
+  }
+  return mlorderid_;
+}
+inline ::std::string* ClosePositionParam::release_mlorderid() {
+  clear_has_mlorderid();
+  if (mlorderid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = mlorderid_;
+    mlorderid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+
+// optional string LegOrdRef = 3;
+inline bool ClosePositionParam::has_legordref() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void ClosePositionParam::set_has_legordref() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void ClosePositionParam::clear_has_legordref() {
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline void ClosePositionParam::clear_legordref() {
   if (legordref_ != &::google::protobuf::internal::kEmptyString) {
