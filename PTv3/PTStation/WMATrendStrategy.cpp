@@ -149,14 +149,14 @@ void CWMATrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	double prevFlowVal = m_trendIndicatorSet->GetRef(IND_SLOW_LINE, 1);
 	entity::PosiDirectionType prevDirection = GetDirection(prevFastVal, prevFlowVal);
 
-	bool forceClosing = IsForceClosing();
-	if (pOrderPlacer->IsOpened() || forceClosing)
+	if (pOrderPlacer->IsOpened())
 	{
 		bool meetCloseCondition = false;
-		if(currentBarIdx > m_openAtBarIdx) // This close condition check is only effective on the bar after open
+		bool forceClosing = IsForceClosing();
+		if(currentBarIdx > m_openAtBarIdx || forceClosing) // This close condition check is only effective on the bar after open
 		{
 			meetCloseCondition = m_DirectionOpened != direction;
-			if(meetCloseCondition)
+			if(meetCloseCondition || forceClosing)
 			{
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] WMA Trend - Portfolio(%s) Closing position due to %s")
 					% pPortfolio->InvestorId() % pPortfolio->ID() % (forceClosing ? "Force close" : "fast dead cross")));
