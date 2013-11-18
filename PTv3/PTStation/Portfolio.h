@@ -70,7 +70,9 @@ private:
 	void InitOpenCancelLimit( const entity::PortfolioItem &srcPortfolioItem );
 	void InitEndTimePoints( const entity::PortfolioItem& srcPortfolioItem);
 	void CheckForStop(const string& quoteUpdateTime);
+	void CheckForStart(const string& quoteUpdateTime);
 	void StopStrategyDueTo(const string& stopReason);
+	void StartStrategyDueTo(const string& stopReason);
 	
 	void OnQuoteRecevied(boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote);
 	
@@ -102,6 +104,7 @@ private:
 
 	// end time points
 	vector<string> m_endTimePoints;
+	vector<string> m_beginTimePoints;
 	string m_targetEnd;
 	boost::mutex m_endTimeMutex;
 

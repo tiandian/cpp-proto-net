@@ -13,9 +13,10 @@
 #include "PortfolioScalperOrderPlacer.h"
 #include "PortfolioTrendOrderPlacer.h"
 #include "charsetconvert.h"
+#include "SymbolTimeUtil.h"
 
 #include <algorithm>
-
+#include <boost/algorithm/string.hpp>
 
 CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPortfolioItem)
 	: m_avatar(client)
@@ -38,7 +39,7 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 
 	InitOpenCancelLimit(srcPortfolioItem);
 	InitEndTimePoints(srcPortfolioItem);
-
+	
 	// Initialize portfolio update item
 	m_portfolioUpdate.set_id(m_portfolioItem.id());
 	m_portfolioUpdate.set_totalopentimes(0);
@@ -186,6 +187,8 @@ void CPortfolio::OnQuoteRecevied( boost::chrono::steady_clock::time_point& times
 #ifdef _DEBUG
 	cout << "Quote incoming: " << pQuote->symbol() << ", " << pQuote->last() << ", " << pQuote->update_time() << endl; 
 #endif
+	CheckForStart(pQuote->update_time());
+
 	// Update leg's last with income quote in CStrategy::Test
 	m_strategy->Test(pQuote, this, timestamp);
 
@@ -252,7 +255,8 @@ void CPortfolio::StartStrategy(int lastOrderId)
 	}
 	m_openTimes = 0;
 	m_targetEnd.clear();
-	m_serialOrderId = lastOrderId;
+	if(lastOrderId >= m_serialOrderId)
+		m_serialOrderId = lastOrderId;
 	m_orderPlacer->Prepare();
 	m_strategy->Start();
 }
@@ -337,10 +341,22 @@ void CPortfolio::InitEndTimePoints( const entity::PortfolioItem& srcPortfolioIte
 	{
 		for(int i = 0; i < count; ++i)
 		{
-			m_endTimePoints.push_back(srcPortfolioItem.endtimepoints(i));
+			const string& timeScope = srcPortfolioItem.endtimepoints(i);
+			vector<string> SplitVec;
+			boost::split( SplitVec, timeScope, boost::is_any_of("-"));
+			if(SplitVec.size() > 1)
+			{
+				m_beginTimePoints.push_back(SplitVec[0]);
+				m_endTimePoints.push_back(SplitVec[1]);
+			}
+			else if(SplitVec.size() == 1)
+			{
+				m_endTimePoints.push_back(SplitVec[0]);
+			}
 		}
 
 		sort(m_endTimePoints.begin(), m_endTimePoints.end(), compareTimePoint);
+		sort(m_beginTimePoints.begin(), m_beginTimePoints.end(), compareTimePoint);
 	}
 }
 
@@ -348,9 +364,49 @@ void CPortfolio::SetEndTimePoints(vector<string>& timepoints)
 {
 	boost::mutex::scoped_lock l(m_endTimeMutex);
 
-	m_endTimePoints.swap(timepoints);
 	m_targetEnd.clear();
+	m_beginTimePoints.clear();
+	m_endTimePoints.clear();
+
+	for(int i = 0; i < timepoints.size(); ++i)
+	{
+		const string& timeScope = timepoints[i];
+		vector<string> SplitVec;
+		boost::split( SplitVec, timeScope, boost::is_any_of("-"));
+		if(SplitVec.size() > 1)
+		{
+			m_beginTimePoints.push_back(SplitVec[0]);
+			m_endTimePoints.push_back(SplitVec[1]);
+		}
+		else if(SplitVec.size() == 1)
+		{
+			m_endTimePoints.push_back(SplitVec[0]);
+		}
+	}
+	
 	sort(m_endTimePoints.begin(), m_endTimePoints.end(), compareTimePoint);
+	sort(m_beginTimePoints.begin(), m_beginTimePoints.end(), compareTimePoint);
+}
+
+void CPortfolio::CheckForStart( const string& quoteUpdateTime )
+{
+	boost::mutex::scoped_lock l(m_endTimeMutex);
+
+	if(m_strategy->IsRunning() || m_beginTimePoints.size() == 0)
+		return;
+
+	for(vector<string>::iterator iter = m_beginTimePoints.begin(); iter !=m_beginTimePoints.end(); ++iter)
+	{
+		boost::chrono::seconds tpTarget = ParseTimeString(*iter);
+		boost::chrono::seconds tpQuote = ParseTimeString(quoteUpdateTime);
+		if(tpQuote >= tpTarget && tpQuote - tpTarget <= boost::chrono::seconds(2))
+		{
+			string msg = boost::str(boost::format("策略从%s起启动") % quoteUpdateTime);
+			StartStrategyDueTo(msg);
+			logger.Info(boost::str(boost::format("[%s] Portfolio (%s) Auto Start at %s") 
+				% InvestorId() % ID() % quoteUpdateTime));
+		}
+	}
 }
 
 void CPortfolio::CheckForStop(const string& quoteUpdateTime)
@@ -385,10 +441,27 @@ void CPortfolio::CheckForStop(const string& quoteUpdateTime)
 	}
 }
 
+
+
 void CPortfolio::StopStrategyDueTo( const string& stopReason )
 {
 	StopStrategy();
 	m_portfolioUpdate.set_running(false);
+
+	if(stopReason.length() > 0)
+	{
+		string utf8Msg;
+		GB2312ToUTF_8(utf8Msg, stopReason.c_str());
+		m_portfolioUpdate.set_message(utf8Msg);
+		PushUpdate();
+		m_portfolioUpdate.clear_message();
+	}
+}
+
+void CPortfolio::StartStrategyDueTo( const string& stopReason )
+{
+	StartStrategy(0);
+	m_portfolioUpdate.set_running(true);
 
 	if(stopReason.length() > 0)
 	{
@@ -409,3 +482,5 @@ void CPortfolio::StrategyForceClose()
 {
 	m_strategy->SetForceClose();
 }
+
+
