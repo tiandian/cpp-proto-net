@@ -1,0 +1,192 @@
+//------------------------------------------------------------------------
+// 简称: ASCTrading2
+// 名称: ASCTrading2
+// 类别: 公式应用
+// 类型: 用户应用
+//------------------------------------------------------------------------
+
+Params
+    Numeric Risk(5);
+	Numeric AveragePeriod(10);
+	Numeric boLength(20); 
+Vars
+	// Signal variables
+	NumericSeries WR;
+	NumericSeries Range;
+	Numeric AvgRange;
+	Bool MRO1(False);
+	Bool MRO2(False);
+	Numeric DefWRPeriod;
+	Numeric ActualWRPeriod;
+	Numeric x1;
+	Numeric x2;
+	Numeric Counter(0);
+	Numeric i1(1);
+	Numeric i2(1);
+	NumericSeries BuySellSignal(0);
+	
+	// Stop variables
+	NumericSeries Price(0);
+	Numeric dK(0);
+	Numeric AvgRangeS(0);
+	Numeric WATR(0);
+	Numeric i;
+	NumericSeries trend(1);
+	Numeric StopVal(0);
+	Numeric StopPx(0);
+	
+	// 唐奇安通道
+	NumericSeries DonchianHi;
+    NumericSeries DonchianLo;
+	Numeric MinPoint;
+Begin
+	MinPoint = MinMove*PriceScale;
+	DonchianHi = HighestFC(High[1],boLength);
+    DonchianLo = LowestFC(Low[1],boLength);
+
+	// Signal Calculation Begin
+	x1 = 67 + Risk;
+	x2 = 33 - Risk;
+	DefWRPeriod = 3 + Risk * 2;
+	ActualWRPeriod = DefWRPeriod;
+	
+	Range = High - Low;
+	AvgRange = Average(Range, 10);
+	
+	while (Counter < 9 && !MRO1)
+	{
+		if ( Abs(Open[Counter] - Close[Counter+1]) >= AvgRange * 2.0 ) 
+		{
+			MRO1 = True;
+		}
+		 
+		Counter = Counter+1;
+	}
+    
+	Counter = 0;
+    while (Counter < 6 && !MRO2)
+	{
+		if ( Abs(Close[Counter + 3] - Close[Counter]) >= AvgRange * 4.6) 
+		{
+			MRO2 = True;
+		}
+		
+		Counter=Counter+1;
+	}
+    
+	If(MRO1)
+	{
+		ActualWRPeriod = 3;
+	}
+	
+	If(MRO2)
+	{
+		ActualWRPeriod = 4;
+	}
+		
+	WR = PercentR(ActualWRPeriod);
+	// Signal Calculation End
+	
+	// Stop Value Calculation Begin
+	if( BarCount >  AveragePeriod)
+	{
+		for i = 1 to AveragePeriod
+		{
+			dK = 1 + (AveragePeriod - i)/AveragePeriod;
+			AvgRangeS = AvgRangeS + dK * Abs(High[i] - Low[i]);
+		}
+		WATR = AvgRangeS/AveragePeriod;
+	}
+
+	If( BarStatus == 0)
+	{
+		trend = trend[1];
+		Price = Price[1];
+	}
+	
+	if (trend == 1)
+    {
+		If(Close > Price) Price = Close;
+		StopVal = Price - WATR;
+		if (Close < StopVal) 
+        {
+			StopPx = StopVal;
+			Price = Close;
+			StopVal = Price + WATR;
+			trend = -1;
+        }
+    }
+    else if (trend == -1) 
+    {
+		if (Close < Price) Price = Close;
+		StopVal = Price + WATR;
+		if (Close > StopVal)
+        {
+			StopPx = StopVal;
+			Price = Close;
+			StopVal = Price - WATR;
+			trend = 1;
+        }
+    }
+	// Stop Value Calculation End
+	
+	// Open & Close
+	If(MarketPosition == 0)
+	{
+		If(High > DonchianHi && WR > x1)
+		{
+			Buy(1, DonchianHi + MinPoint);
+		}
+		If(Low < DonchianLo && WR < x2)
+		{
+			SellShort(1, DonchianLo - MinPoint);
+		}
+	}
+	else If(MarketPosition == 1)
+	{
+		If(trend < 0 && StopPx > 0)
+		{
+			Sell(1, StopPx);
+		}
+		/*
+		Else If(WR < x1)
+		{
+			Sell(1, Close);
+		}
+		*/
+	}
+	else If(MarketPosition == -1)
+	{
+		If(trend > 0 && StopPx > 0)
+		{
+			BuyToCover(1, StopPx);
+		}
+		/*
+		If(WR > x2)
+		{
+			BuyToCover(1, Close);
+		}
+		*/
+	}
+	
+	If(Time > 0.1510)
+	{
+        if(marketposition==-1)
+        {
+			BuyToCover(1,Open);
+        }
+        if(marketposition==1)
+        {
+			Sell(1,Open);
+        }
+	}
+	
+End
+
+//------------------------------------------------------------------------
+// 编译版本	GS2010.12.08
+// 用户版本	2013/12/02 21:05
+// 版权所有	xiaoyong_zh
+// 更改声明	TradeBlazer Software保留对TradeBlazer平台
+//			每一版本的TrabeBlazer公式修改和重写的权利
+//------------------------------------------------------------------------
