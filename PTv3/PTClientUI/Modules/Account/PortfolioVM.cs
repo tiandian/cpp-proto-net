@@ -653,7 +653,79 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
 #endregion
-        
+
+#region ASC Trend updating fields
+
+        #region AS_WilliamsR
+        private decimal _asWilliamsR;
+
+        public decimal AS_WilliamsR
+        {
+            get { return _asWilliamsR; }
+            set
+            {
+                if (_asWilliamsR != value)
+                {
+                    _asWilliamsR = value;
+                    RaisePropertyChanged("AS_WilliamsR");
+                }
+            }
+        }
+        #endregion
+
+        #region AS_StopPx
+        private decimal _asStopPx;
+
+        public decimal AS_StopPx
+        {
+            get { return _asStopPx; }
+            set
+            {
+                if (_asStopPx != value)
+                {
+                    _asStopPx = value;
+                    RaisePropertyChanged("AS_StopPx");
+                }
+            }
+        }
+        #endregion
+
+        #region AS_DonchianHi
+        private decimal _asDonchianHi;
+
+        public decimal AS_DonchianHi
+        {
+            get { return _asDonchianHi; }
+            set
+            {
+                if (_asDonchianHi != value)
+                {
+                    _asDonchianHi = value;
+                    RaisePropertyChanged("AS_DonchianHi");
+                }
+            }
+        }
+        #endregion
+
+        #region AS_DonchianLo
+        private decimal _asDonchianLo;
+
+        public decimal AS_DonchianLo
+        {
+            get { return _asDonchianLo; }
+            set
+            {
+                if (_asDonchianLo != value)
+                {
+                    _asDonchianLo = value;
+                    RaisePropertyChanged("AS_DonchianLo");
+                }
+            }
+        }
+        #endregion
+
+#endregion
+
         public StrategySetting StrategySetting { get; set; }
 
         public string DisplayText
@@ -931,6 +1003,10 @@ namespace PortfolioTrading.Modules.Account
                 PTEntity.LinerRegStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.LinerRegStrategyUpdateItem;
                 WeightMidPoint = ToDecimal(strategyUpdate.WeightMidPoint);
                 LinerRegressionAngle = ToDecimal(strategyUpdate.LinerRegAngle);
+            }
+            else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.ASC_TREND)
+            {
+
             }
 
             OpenTimes = item.TotalOpenTimes;

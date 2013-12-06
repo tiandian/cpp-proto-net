@@ -317,6 +317,15 @@
     <ClInclude Include="WMATrendDataSet.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
+    <ClInclude Include="ASCTrendTrigger.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="ASCTrendStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="WillRDataSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -539,6 +548,15 @@
       <Filter>Source Files\strategy</Filter>
     </ClCompile>
     <ClCompile Include="WMATrendDataSet.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="ASCTrendTrigger.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ASCTrendStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="WillRDataSet.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>

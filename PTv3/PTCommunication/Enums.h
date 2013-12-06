@@ -38,7 +38,8 @@ namespace PTEntity {
 		SCALPER = 2,
 		HIST_SLOPE = 3,
 		WMA_TREND = 4,
-		LINER_REGRESSION = 5
+		LINER_REGRESSION = 5,
+		ASC_TREND = 6
 	};
 
 	public enum class DirectionDepends : int

@@ -424,4 +424,78 @@ private:
 	double _linerRegAngle;
 };
 
+public ref class ASCTrendStrategyUpdateItem : StrategyUpdateItem
+{
+public:
+	ASCTrendStrategyUpdateItem(double williamsR, double stopPx, double donchianHi, double donchianLo)
+	{
+		_williamsR = williamsR;
+		_stopPx = stopPx;
+		_donchianHi = donchianHi;
+		_donchianLo = donchianLo;
+	}
+
+	property StrategyType Kind
+	{
+		virtual StrategyType get() override
+		{
+			return StrategyType::ASC_TREND;
+		}
+	}
+
+	property double WilliamsR
+	{
+		double get()
+		{
+			return _williamsR; 
+		}
+		void set(double val)
+		{
+			_williamsR = val;
+		}
+	}
+
+	property double StopPx
+	{
+		double get()
+		{
+			return _stopPx; 
+		}
+		void set(double val)
+		{
+			_stopPx = val;
+		}
+	}
+
+	property double DonchianHi
+	{
+		double get()
+		{
+			return _donchianHi; 
+		}
+		void set(double val)
+		{
+			_donchianHi = val;
+		}
+	}
+
+	property double DonchianLo
+	{
+		double get()
+		{
+			return _donchianLo; 
+		}
+		void set(double val)
+		{
+			_donchianLo = val;
+		}
+	}
+
+private:
+	double _williamsR;
+	double _stopPx;
+	double _donchianHi;
+	double _donchianLo;
+};
+
 }

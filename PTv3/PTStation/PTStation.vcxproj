@@ -97,6 +97,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
   <ItemGroup>
     <ClInclude Include="ArbitrageStrategy.h" />
     <ClInclude Include="ArbitrageTrigger.h" />
+    <ClInclude Include="ASCTrendStrategy.h" />
+    <ClInclude Include="ASCTrendTrigger.h" />
     <ClInclude Include="AsyncOrderPendingTimer.h" />
     <ClInclude Include="AvatarClient.h" />
     <ClInclude Include="AvatarFactory.h" />
@@ -116,6 +118,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\trade.pb.h" />
     <ClInclude Include="LinerRegressionDataSet.h" />
     <ClInclude Include="LinerRegressionStrategy.h" />
+    <ClInclude Include="WillRDataSet.h" />
     <ClInclude Include="WMATrendDataSet.h" />
     <ClInclude Include="WMATrendStrategy.h" />
     <ClInclude Include="WMATrendTrigger.h" />
@@ -184,6 +187,8 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
   <ItemGroup>
     <ClCompile Include="ArbitrageStrategy.cpp" />
     <ClCompile Include="ArbitrageTrigger.cpp" />
+    <ClCompile Include="ASCTrendStrategy.cpp" />
+    <ClCompile Include="ASCTrendTrigger.cpp" />
     <ClCompile Include="AsyncOrderPendingTimer.cpp" />
     <ClCompile Include="AvatarClient.cpp" />
     <ClCompile Include="AvatarFactory.cpp" />
@@ -216,6 +221,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="LinerRegressionDataSet.cpp" />
     <ClCompile Include="LinerRegressionStrategy.cpp" />
+    <ClCompile Include="WillRDataSet.cpp" />
     <ClCompile Include="WMATrendDataSet.cpp" />
     <ClCompile Include="WMATrendStrategy.cpp" />
     <ClCompile Include="WMATrendTrigger.cpp" />

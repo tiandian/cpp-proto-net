@@ -15,6 +15,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public const string MACDHistSlopeStrategyName = "MACDHistSlope";
         public const string WMATrendStrategyName = "WMATrend";
         public const string LinerRegressionStrategyName = "LinerRegression";
+        public const string ASCTrendStrategyName = "ASCTrend";
 
         public abstract string Name { get; }
 
@@ -42,6 +43,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     return "MACD金叉";
                 case LinerRegressionStrategyName:
                     return "线性回归";
+                case ASCTrendStrategyName:
+                    return "ASCTrend";
             }
             return "未知";
         }
@@ -75,6 +78,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     break;
                 case LinerRegressionStrategyName:
                     setting = new LinerRegStrategySettings();
+                    break;
+                case ASCTrendStrategyName:
+                    setting = new ASCTrendStrategySettings();
                     break;
                 default:
                     throw new ArgumentException(string.Format("Unexpected strategy setting ({0})", name));

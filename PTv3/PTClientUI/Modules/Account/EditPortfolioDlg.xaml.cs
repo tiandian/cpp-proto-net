@@ -237,6 +237,18 @@ namespace PortfolioTrading.Modules.Account
                     setting.CloseThreshold = LR_CloseThreshold;
                 }
             }
+            else if (StrategyName == StrategySetting.ASCTrendStrategyName)
+            {
+                if (!string.IsNullOrEmpty(Symbol1))
+                {
+                    ASCTrendStrategySettings setting = (ASCTrendStrategySettings)portf.StrategySetting;
+                    setting.Symbol = Symbol1;
+                    setting.Period = AS_Period;
+                    setting.Risk = AS_Risk;
+                    setting.AvergatePeriod = AS_AveragePeriod;
+                    setting.BreakoutLength = AS_BreakoutLength;
+                }
+            }
         }
 
         #region StrategyName
@@ -793,7 +805,79 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
-#endregion
+        #endregion
+
+        #region ASC Trend
+
+        #region AS_Period
+        private int _as_period;
+
+        public int AS_Period
+        {
+            get { return _as_period; }
+            set
+            {
+                if (_as_period != value)
+                {
+                    _as_period = value;
+                    RaisePropertyChanged("AS_Period");
+                }
+            }
+        }
+        #endregion
+
+        #region AS_Risk
+        private int _as_risk = 5;
+
+        public int AS_Risk
+        {
+            get { return _as_risk; }
+            set
+            {
+                if (_as_risk != value)
+                {
+                    _as_risk = value;
+                    RaisePropertyChanged("AS_Risk");
+                }
+            }
+        }
+        #endregion
+
+        #region AS_AveragePeriod
+        private int _as_averagePeriod = 10;
+
+        public int AS_AveragePeriod
+        {
+            get { return _as_averagePeriod; }
+            set
+            {
+                if (_as_averagePeriod != value)
+                {
+                    _as_averagePeriod = value;
+                    RaisePropertyChanged("AS_AveragePeriod");
+                }
+            }
+        }
+        #endregion
+
+        #region AS_BreakoutLength
+        private int _as_breakoutLength = 2;
+
+        public int AS_BreakoutLength
+        {
+            get { return _as_breakoutLength; }
+            set
+            {
+                if (_as_breakoutLength != value)
+                {
+                    _as_breakoutLength = value;
+                    RaisePropertyChanged("AS_BreakoutLength");
+                }
+            }
+        }
+        #endregion
+
+        #endregion
     }
 
     public class StrategyItem

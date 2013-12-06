@@ -120,11 +120,12 @@ enum StrategyType {
   SCALPER = 2,
   HIST_SLOPE = 3,
   WMA_TREND = 4,
-  LINER_REGRESSION = 5
+  LINER_REGRESSION = 5,
+  ASC_TREND = 6
 };
 bool StrategyType_IsValid(int value);
 const StrategyType StrategyType_MIN = ARBITRAGE;
-const StrategyType StrategyType_MAX = LINER_REGRESSION;
+const StrategyType StrategyType_MAX = ASC_TREND;
 const int StrategyType_ARRAYSIZE = StrategyType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* StrategyType_descriptor();
@@ -2230,6 +2231,34 @@ class StrategyItem : public ::google::protobuf::Message {
   inline double lr_closethreshold() const;
   inline void set_lr_closethreshold(double value);
   
+  // optional int32 AS_Risk = 541;
+  inline bool has_as_risk() const;
+  inline void clear_as_risk();
+  static const int kASRiskFieldNumber = 541;
+  inline ::google::protobuf::int32 as_risk() const;
+  inline void set_as_risk(::google::protobuf::int32 value);
+  
+  // optional int32 AS_AvergatePeriod = 542;
+  inline bool has_as_avergateperiod() const;
+  inline void clear_as_avergateperiod();
+  static const int kASAvergatePeriodFieldNumber = 542;
+  inline ::google::protobuf::int32 as_avergateperiod() const;
+  inline void set_as_avergateperiod(::google::protobuf::int32 value);
+  
+  // optional int32 AS_BreakOutLength = 543;
+  inline bool has_as_breakoutlength() const;
+  inline void clear_as_breakoutlength();
+  static const int kASBreakOutLengthFieldNumber = 543;
+  inline ::google::protobuf::int32 as_breakoutlength() const;
+  inline void set_as_breakoutlength(::google::protobuf::int32 value);
+  
+  // optional int32 AS_Period = 544;
+  inline bool has_as_period() const;
+  inline void clear_as_period();
+  static const int kASPeriodFieldNumber = 544;
+  inline ::google::protobuf::int32 as_period() const;
+  inline void set_as_period(::google::protobuf::int32 value);
+  
   // @@protoc_insertion_point(class_scope:entity.StrategyItem)
  private:
   inline void set_has_type();
@@ -2296,6 +2325,14 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_lr_openthreshold();
   inline void set_has_lr_closethreshold();
   inline void clear_has_lr_closethreshold();
+  inline void set_has_as_risk();
+  inline void clear_has_as_risk();
+  inline void set_has_as_avergateperiod();
+  inline void clear_has_as_avergateperiod();
+  inline void set_has_as_breakoutlength();
+  inline void clear_has_as_breakoutlength();
+  inline void set_has_as_period();
+  inline void clear_has_as_period();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2333,9 +2370,13 @@ class StrategyItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 lr_number_;
   double lr_openthreshold_;
   double lr_closethreshold_;
+  ::google::protobuf::int32 as_risk_;
+  ::google::protobuf::int32 as_avergateperiod_;
+  ::google::protobuf::int32 as_breakoutlength_;
+  ::google::protobuf::int32 as_period_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(34 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(38 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3100,6 +3141,34 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline double lr_linerregangle() const;
   inline void set_lr_linerregangle(double value);
   
+  // optional double AS_WilliamsR = 331;
+  inline bool has_as_williamsr() const;
+  inline void clear_as_williamsr();
+  static const int kASWilliamsRFieldNumber = 331;
+  inline double as_williamsr() const;
+  inline void set_as_williamsr(double value);
+  
+  // optional double AS_StopPx = 332;
+  inline bool has_as_stoppx() const;
+  inline void clear_as_stoppx();
+  static const int kASStopPxFieldNumber = 332;
+  inline double as_stoppx() const;
+  inline void set_as_stoppx(double value);
+  
+  // optional double AS_DonchianHi = 333;
+  inline bool has_as_donchianhi() const;
+  inline void clear_as_donchianhi();
+  static const int kASDonchianHiFieldNumber = 333;
+  inline double as_donchianhi() const;
+  inline void set_as_donchianhi(double value);
+  
+  // optional double AS_DonchianLo = 334;
+  inline bool has_as_donchianlo() const;
+  inline void clear_as_donchianlo();
+  static const int kASDonchianLoFieldNumber = 334;
+  inline double as_donchianlo() const;
+  inline void set_as_donchianlo(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioUpdateItem)
  private:
   inline void set_has_id();
@@ -3156,6 +3225,14 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_lr_weightmidpoint();
   inline void set_has_lr_linerregangle();
   inline void clear_has_lr_linerregangle();
+  inline void set_has_as_williamsr();
+  inline void clear_has_as_williamsr();
+  inline void set_has_as_stoppx();
+  inline void clear_has_as_stoppx();
+  inline void set_has_as_donchianhi();
+  inline void clear_has_as_donchianhi();
+  inline void set_has_as_donchianlo();
+  inline void clear_has_as_donchianlo();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -3188,9 +3265,13 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   double wt_slowline_;
   double lr_weightmidpoint_;
   double lr_linerregangle_;
+  double as_williamsr_;
+  double as_stoppx_;
+  double as_donchianhi_;
+  double as_donchianlo_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(29 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(33 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -8283,6 +8364,94 @@ inline void StrategyItem::set_lr_closethreshold(double value) {
   lr_closethreshold_ = value;
 }
 
+// optional int32 AS_Risk = 541;
+inline bool StrategyItem::has_as_risk() const {
+  return (_has_bits_[1] & 0x00000004u) != 0;
+}
+inline void StrategyItem::set_has_as_risk() {
+  _has_bits_[1] |= 0x00000004u;
+}
+inline void StrategyItem::clear_has_as_risk() {
+  _has_bits_[1] &= ~0x00000004u;
+}
+inline void StrategyItem::clear_as_risk() {
+  as_risk_ = 0;
+  clear_has_as_risk();
+}
+inline ::google::protobuf::int32 StrategyItem::as_risk() const {
+  return as_risk_;
+}
+inline void StrategyItem::set_as_risk(::google::protobuf::int32 value) {
+  set_has_as_risk();
+  as_risk_ = value;
+}
+
+// optional int32 AS_AvergatePeriod = 542;
+inline bool StrategyItem::has_as_avergateperiod() const {
+  return (_has_bits_[1] & 0x00000008u) != 0;
+}
+inline void StrategyItem::set_has_as_avergateperiod() {
+  _has_bits_[1] |= 0x00000008u;
+}
+inline void StrategyItem::clear_has_as_avergateperiod() {
+  _has_bits_[1] &= ~0x00000008u;
+}
+inline void StrategyItem::clear_as_avergateperiod() {
+  as_avergateperiod_ = 0;
+  clear_has_as_avergateperiod();
+}
+inline ::google::protobuf::int32 StrategyItem::as_avergateperiod() const {
+  return as_avergateperiod_;
+}
+inline void StrategyItem::set_as_avergateperiod(::google::protobuf::int32 value) {
+  set_has_as_avergateperiod();
+  as_avergateperiod_ = value;
+}
+
+// optional int32 AS_BreakOutLength = 543;
+inline bool StrategyItem::has_as_breakoutlength() const {
+  return (_has_bits_[1] & 0x00000010u) != 0;
+}
+inline void StrategyItem::set_has_as_breakoutlength() {
+  _has_bits_[1] |= 0x00000010u;
+}
+inline void StrategyItem::clear_has_as_breakoutlength() {
+  _has_bits_[1] &= ~0x00000010u;
+}
+inline void StrategyItem::clear_as_breakoutlength() {
+  as_breakoutlength_ = 0;
+  clear_has_as_breakoutlength();
+}
+inline ::google::protobuf::int32 StrategyItem::as_breakoutlength() const {
+  return as_breakoutlength_;
+}
+inline void StrategyItem::set_as_breakoutlength(::google::protobuf::int32 value) {
+  set_has_as_breakoutlength();
+  as_breakoutlength_ = value;
+}
+
+// optional int32 AS_Period = 544;
+inline bool StrategyItem::has_as_period() const {
+  return (_has_bits_[1] & 0x00000020u) != 0;
+}
+inline void StrategyItem::set_has_as_period() {
+  _has_bits_[1] |= 0x00000020u;
+}
+inline void StrategyItem::clear_has_as_period() {
+  _has_bits_[1] &= ~0x00000020u;
+}
+inline void StrategyItem::clear_as_period() {
+  as_period_ = 0;
+  clear_has_as_period();
+}
+inline ::google::protobuf::int32 StrategyItem::as_period() const {
+  return as_period_;
+}
+inline void StrategyItem::set_as_period(::google::protobuf::int32 value) {
+  set_has_as_period();
+  as_period_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // TriggerItem
@@ -9690,6 +9859,94 @@ inline double PortfolioUpdateItem::lr_linerregangle() const {
 inline void PortfolioUpdateItem::set_lr_linerregangle(double value) {
   set_has_lr_linerregangle();
   lr_linerregangle_ = value;
+}
+
+// optional double AS_WilliamsR = 331;
+inline bool PortfolioUpdateItem::has_as_williamsr() const {
+  return (_has_bits_[0] & 0x20000000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_as_williamsr() {
+  _has_bits_[0] |= 0x20000000u;
+}
+inline void PortfolioUpdateItem::clear_has_as_williamsr() {
+  _has_bits_[0] &= ~0x20000000u;
+}
+inline void PortfolioUpdateItem::clear_as_williamsr() {
+  as_williamsr_ = 0;
+  clear_has_as_williamsr();
+}
+inline double PortfolioUpdateItem::as_williamsr() const {
+  return as_williamsr_;
+}
+inline void PortfolioUpdateItem::set_as_williamsr(double value) {
+  set_has_as_williamsr();
+  as_williamsr_ = value;
+}
+
+// optional double AS_StopPx = 332;
+inline bool PortfolioUpdateItem::has_as_stoppx() const {
+  return (_has_bits_[0] & 0x40000000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_as_stoppx() {
+  _has_bits_[0] |= 0x40000000u;
+}
+inline void PortfolioUpdateItem::clear_has_as_stoppx() {
+  _has_bits_[0] &= ~0x40000000u;
+}
+inline void PortfolioUpdateItem::clear_as_stoppx() {
+  as_stoppx_ = 0;
+  clear_has_as_stoppx();
+}
+inline double PortfolioUpdateItem::as_stoppx() const {
+  return as_stoppx_;
+}
+inline void PortfolioUpdateItem::set_as_stoppx(double value) {
+  set_has_as_stoppx();
+  as_stoppx_ = value;
+}
+
+// optional double AS_DonchianHi = 333;
+inline bool PortfolioUpdateItem::has_as_donchianhi() const {
+  return (_has_bits_[0] & 0x80000000u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_as_donchianhi() {
+  _has_bits_[0] |= 0x80000000u;
+}
+inline void PortfolioUpdateItem::clear_has_as_donchianhi() {
+  _has_bits_[0] &= ~0x80000000u;
+}
+inline void PortfolioUpdateItem::clear_as_donchianhi() {
+  as_donchianhi_ = 0;
+  clear_has_as_donchianhi();
+}
+inline double PortfolioUpdateItem::as_donchianhi() const {
+  return as_donchianhi_;
+}
+inline void PortfolioUpdateItem::set_as_donchianhi(double value) {
+  set_has_as_donchianhi();
+  as_donchianhi_ = value;
+}
+
+// optional double AS_DonchianLo = 334;
+inline bool PortfolioUpdateItem::has_as_donchianlo() const {
+  return (_has_bits_[1] & 0x00000001u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_as_donchianlo() {
+  _has_bits_[1] |= 0x00000001u;
+}
+inline void PortfolioUpdateItem::clear_has_as_donchianlo() {
+  _has_bits_[1] &= ~0x00000001u;
+}
+inline void PortfolioUpdateItem::clear_as_donchianlo() {
+  as_donchianlo_ = 0;
+  clear_has_as_donchianlo();
+}
+inline double PortfolioUpdateItem::as_donchianlo() const {
+  return as_donchianlo_;
+}
+inline void PortfolioUpdateItem::set_as_donchianlo(double value) {
+  set_has_as_donchianlo();
+  as_donchianlo_ = value;
 }
 
 // -------------------------------------------------------------------

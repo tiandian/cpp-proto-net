@@ -16,6 +16,7 @@ namespace PortfolioTrading.Controls
         public DataTemplate MACDHistSlopeTemplate { get; set; }
         public DataTemplate WMATrendTemplate { get; set; }
         public DataTemplate LinerRegressionTemplate { get; set; }
+        public DataTemplate ASCTrendTremplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -31,6 +32,8 @@ namespace PortfolioTrading.Controls
                 return WMATrendTemplate;
             else if (item is LinerRegSettingsVM)
                 return LinerRegressionTemplate;
+            else if (item is ASCTrendSettingsVM)
+                return ASCTrendTremplate;
             return null;
         }
     }

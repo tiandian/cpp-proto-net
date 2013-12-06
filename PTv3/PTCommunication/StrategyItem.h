@@ -565,4 +565,84 @@ private:
 	String^ _symbol;
 };
 
+public ref class ASCTrendStrategyItem : StrategyItem
+{
+public:
+	ASCTrendStrategyItem()
+	{
+		_type = StrategyType::ASC_TREND;
+	}
+
+	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
+
+	property String^ Symbol
+	{
+		String^ get()
+		{
+			return _symbol; 
+		}
+		void set(String^ val)
+		{
+			_symbol = val;
+		}
+	}
+
+	property int Period
+	{
+		int get()
+		{
+			return _period; 
+		}
+		void set(int val)
+		{
+			_period = val;
+		}
+	}
+
+	property int Risk
+	{
+		int get()
+		{
+			return _risk; 
+		}
+		void set(int val)
+		{
+			_risk = val;
+		}
+	}
+
+	property int AveragePeriod
+	{
+		int get()
+		{
+			return _avgPeriod; 
+		}
+		void set(int val)
+		{
+			_avgPeriod = val;
+		}
+	}
+
+	property int BreakoutLength
+	{
+		int get()
+		{
+			return _breakoutLength; 
+		}
+		void set(int val)
+		{
+			_breakoutLength = val;
+		}
+	}
+
+private:
+	int _risk;
+	int _avgPeriod;
+	int _period;
+	int _breakoutLength;
+
+	String^ _symbol;
+};
+
+
 }

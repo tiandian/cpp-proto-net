@@ -63,6 +63,10 @@ namespace PortfolioTrading.Modules.Portfolio
             {
                 viewModel = ServiceLocator.Current.GetInstance<LinerRegSettingsVM>();
             }
+            else if (portfVm.StrategySetting.Name == StrategySetting.ASCTrendStrategyName)
+            {
+                viewModel = ServiceLocator.Current.GetInstance<ASCTrendSettingsVM>();
+            }
 
             if (viewModel != null)
             {

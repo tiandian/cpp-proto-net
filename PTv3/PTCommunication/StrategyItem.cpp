@@ -146,4 +146,29 @@ void LinerRegressionStrategyItem::To( entity::StrategyItem* pNativeStrategyItem 
 	}
 }
 
+
+void ASCTrendStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
+{
+	IntPtr symbolPtr;
+	try
+	{
+		symbolPtr = (IntPtr)Marshal::StringToHGlobalAnsi(_symbol);
+
+		entity::HistSourceCfg* fastSourceCfg = pNativeStrategyItem->add_histsources();
+		fastSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
+		fastSourceCfg->set_precision(_period);
+
+		pNativeStrategyItem->set_as_risk(_risk);
+		pNativeStrategyItem->set_as_avergateperiod(_avgPeriod);
+		pNativeStrategyItem->set_as_breakoutlength(_breakoutLength);
+		pNativeStrategyItem->set_as_period(_period);
+
+		StrategyItem::To(pNativeStrategyItem);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(symbolPtr);
+	}
+}
+
 }
