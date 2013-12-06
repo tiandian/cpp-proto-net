@@ -360,6 +360,42 @@
 
                 </StackPanel>
             </igWindows:TabItemEx>
+            <igWindows:TabItemEx Header="WMA" Name="tabAscTrend" Width="60" Tag="ASCTrend">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <DataTemplate x:Key="sideItemTempl">
+                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                        </DataTemplate>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel Margin="10, 4, 10, 8">
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="4"></TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">精度</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding AS_Period, Mode=TwoWay}" Increment="10" Margin="4"/>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">Risk</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding AS_Risk, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">AvergatePeriod</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding AS_AveragePeriod, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">Breakout</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding AS_BreakoutLength, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                        </DockPanel>
+                    </StackPanel>
+                </StackPanel>
+            </igWindows:TabItemEx>
         </igWindows:XamTabControl>
         
     </DockPanel>

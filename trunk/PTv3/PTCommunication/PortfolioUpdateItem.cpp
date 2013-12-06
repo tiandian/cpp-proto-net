@@ -62,6 +62,14 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 			pEntity->lr_linerregangle()
 		);
 		break;
+	case StrategyType::ASC_TREND:
+		retStrategyUpdate = gcnew ASCTrendStrategyUpdateItem
+		(
+			pEntity->as_williamsr(),
+			pEntity->as_stoppx(),
+			pEntity->as_donchianhi(),
+			pEntity->as_donchianlo()
+		);
 	default:
 		return nullptr;
 	}

@@ -186,6 +186,8 @@
       <DependentUpon>PortfoliosView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Portfolio\Strategy\ArbitrageSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ASCTrendSettingsVM.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ASCTrendStrategySettings.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ChangePositionSetting.cs" />
     <Compile Include="Modules\Portfolio\Strategy\ChangePositionSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\LinerRegSettingsVM.cs" />

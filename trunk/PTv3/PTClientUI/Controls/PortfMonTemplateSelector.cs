@@ -17,6 +17,7 @@ namespace PortfolioTrading.Controls
         public DataTemplate MACDHistSlopeTemplate { get; set; }
         public DataTemplate WMATrendTemplate { get; set; }
         public DataTemplate LinerRegressionTemplate { get; set; }
+        public DataTemplate ASCTrendTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -35,6 +36,8 @@ namespace PortfolioTrading.Controls
                     return WMATrendTemplate;
                 else if (portfVm.StrategySetting.Name == StrategySetting.LinerRegressionStrategyName)
                     return LinerRegressionTemplate;
+                else if (portfVm.StrategySetting.Name == StrategySetting.ASCTrendStrategyName)
+                    return ASCTrendTemplate;
             }
 
             return null;
