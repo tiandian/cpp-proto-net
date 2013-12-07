@@ -6,6 +6,7 @@
 #include "TechStrategyDefs.h"
 #include "Portfolio.h"
 #include "PortfolioTrendOrderPlacer.h"
+#include "OHLCRecordSet.h"
 
 CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
 	: CTechAnalyStrategy(strategyItem, pAvatar)
@@ -14,11 +15,13 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_avgPeriodParam(0)
 	, m_boLengthParam(0)
 	, m_DirectionOpened(entity::NET)
+	, m_pAscStopTrigger(NULL)
 	, m_marketOpen(false)
 	, m_openAtBarIdx(0)
-	, m_ascTrendSignal(0)
+	, m_williamsR(0)
 	, m_watrStopVal(0)
-	, m_rsiVal(0)
+	, m_donchianHi(0)
+	, m_donchianLo(0)
 {
 
 	Apply(strategyItem, false);
@@ -58,7 +61,7 @@ void CASCTrendStrategy::Apply( const entity::StrategyItem& strategyItem, bool wi
 		{
 			if((*iter)->Precision() == m_period)
 			{
-				m_willRIndicatorSet = WillRDataSetPtr(new CWillRDataSet((*iter)->GetRecordSetSize(), m_riskParam));
+				m_willRIndicatorSet = WillRDataSetPtr(new CWillRDataSet((*iter)->GetRecordSetSize(), m_riskParam, m_avgPeriodParam, m_boLengthParam));
 			}
 		}
 	}
@@ -98,15 +101,86 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			return;
 		}
 	}
+
+	string symbol = pQuote->symbol();
+
+	COHLCRecordSet* ohlc = GetRecordSet(symbol, m_period, timestamp);
+	if(ohlc == NULL)
+		return;
+
+	m_willRIndicatorSet->Calculate(ohlc);
+	double wr = m_willRIndicatorSet->GetRef(IND_WR, 0);
+	double donchianHi = m_willRIndicatorSet->GetRef(IND_Donchian_Hi, 0);
+	double donchianLo = m_willRIndicatorSet->GetRef(IND_Donchian_Lo, 0);
+	double watr = m_willRIndicatorSet->GetRef(IND_WATR, 0);
+
+	int currentBarIdx = ohlc->GetEndIndex();
+	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
+
+	if(pOrderPlacer->IsClosing())
+	{
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Check for modifying closing order") % pPortfolio->InvestorId()));
+		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
+		return;
+	}
+
+	if (pOrderPlacer->IsOpened())
+	{
+		bool meetCloseCondition = false;
+		bool forceClosing = IsForceClosing();
+		if(forceClosing) // This close condition check is only effective on the bar after open
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to Force close")
+				% pPortfolio->InvestorId() % pPortfolio->ID()));
+			ClosePosition(pOrderPlacer, pQuote, "手动平仓");
+			return;
+		}
+
+		if(m_pAscStopTrigger != NULL)
+		{
+			double arrArgs[2] = { pQuote->last(), watr };
+			meetCloseCondition = m_pAscStopTrigger->Test(arrArgs, 2);
+			if(meetCloseCondition)
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to WATR stop")
+					% pPortfolio->InvestorId() % pPortfolio->ID()));
+				ClosePosition(pOrderPlacer, pQuote, "触发WATR止损(盈)");
+				return;
+			}
+		}		
+
+		return;	// don't need to go to test open trigger any more
+	}
+	
+	// Testing for Open position
+	double last = pQuote->last();
+	LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, WR: %.2f, Hi: %.2f, Lo: %.2f")
+		% pPortfolio->InvestorId() % pPortfolio->ID() 
+		% last % wr % donchianHi % donchianLo));
+
+	entity::PosiDirectionType direction = TestForOpen(last, wr, donchianHi, donchianLo);
+	if(direction > entity::NET)
+	{
+		if(!pOrderPlacer->IsWorking())
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Opening position at bar %d")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
+			OpenPosition(direction, pOrderPlacer, pQuote, timestamp, false, 
+				boost::str(boost::format("WR(%.2f)满足条件")).c_str());
+			m_openAtBarIdx = currentBarIdx;
+			return;
+		}
+	}
 }
 
 void CASCTrendStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
 {
 	CStrategy::GetStrategyUpdate(pPortfUpdateItem);
 
-	//pPortfUpdateItem->set_as_trendsignal(m_ascTrendSignal);
-	//pPortfUpdateItem->set_as_watrstopval(m_watrStopVal);
-	//pPortfUpdateItem->set_as_rsival(m_rsiVal);
+	pPortfUpdateItem->set_as_williamsr(m_williamsR);
+	pPortfUpdateItem->set_as_stoppx(m_watrStopVal);
+	pPortfUpdateItem->set_as_donchianhi(m_donchianHi);
+	pPortfUpdateItem->set_as_donchianlo(m_donchianLo);
 }
 
 int CASCTrendStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
@@ -123,7 +197,14 @@ int CASCTrendStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const tra
 
 void CASCTrendStrategy::CreateTriggers( const entity::StrategyItem& strategyItem )
 {
-	// don't need do anything so far
+	entity::TriggerItem triggerItem;
+	triggerItem.set_strategy(entity::ASC_TREND);
+	triggerItem.set_name("WATR Stop trigger");
+	triggerItem.set_enabled(false);
+
+	m_pAscStopTrigger = new CASCTrendTrigger(triggerItem);
+	TriggerPtr trigger(m_pAscStopTrigger);
+	m_triggers.push_back(trigger);
 }
 
 void CASCTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening, const char* noteText )
@@ -156,12 +237,11 @@ void CASCTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPort
 
 		m_DirectionOpened = direction;
 		ResetForceOpen();
-		/*
-		if(m_pTrailingStopTrigger != NULL)
+		
+		if(m_pAscStopTrigger != NULL)
 		{
-			m_pTrailingStopTrigger->Enable(lmtPrice[0], direction);
+			m_pAscStopTrigger->Enable(lmtPrice[0], direction);
 		}
-		*/
 	}
 }
 
@@ -192,5 +272,16 @@ void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
 
 	}
+}
+
+entity::PosiDirectionType CASCTrendStrategy::TestForOpen( double last, double wr, double hi, double lo )
+{
+	if(last > hi && wr > ASC_X1)
+		return entity::LONG;
+
+	if(last < lo && wr < ASC_X2)
+		return entity::SHORT;
+
+	return entity::NET;
 }
 

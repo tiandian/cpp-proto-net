@@ -2,6 +2,7 @@
 
 #include "TechAnalyStrategy.h"
 #include "WillRDataSet.h"
+#include "ASCTrendTrigger.h"
 
 class CAvatarClient;
 class CPortfolioTrendOrderPlacer;
@@ -27,6 +28,8 @@ protected:
 
 private:
 
+	static entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo);
+
 	int m_period;
 	int m_riskParam;
 	int m_avgPeriodParam;
@@ -36,11 +39,13 @@ private:
 	int m_openAtBarIdx;
 	entity::PosiDirectionType m_DirectionOpened;
 
-	int m_ascTrendSignal;
+	double m_williamsR;
 	double m_watrStopVal;
-	double m_rsiVal;
+	double m_donchianHi;
+	double m_donchianLo;
 
 	WillRDataSetPtr m_willRIndicatorSet;
+	CASCTrendTrigger* m_pAscStopTrigger;
 
 	boost::mutex m_mut;
 };
