@@ -108,20 +108,20 @@ void CWillRDataSet::CalcWilliamsR( COHLCRecordSet* ohlcRecordSet, int nbElements
 		if(mro2)
 			actualWRPeriod = 4;
 
-		double williamsR = 50;
+		double williamsR = -50;
 		TA_RetCode rc = TA_WILLR(lastIdx, lastIdx,
 			(ohlcRecordSet->HighSeries).get(), (ohlcRecordSet->LowSeries).get(), (ohlcRecordSet->CloseSeries).get(),
 			actualWRPeriod, &outBeg, &outNbElement, &williamsR);  
-
+		williamsR = 100 - fabs(williamsR);
 		if(outBeg == lastIdx)
 		{
 			m_arrWR[outBeg] = williamsR;
 
-			logger.Info(boost::str(boost::format("Calculated Williams %R: %.2f") % m_arrWR[outBeg]));
+			logger.Info(boost::str(boost::format("Calculated Williams %%R: %.2f") % m_arrWR[outBeg]));
 		}
 		else
 		{
-			logger.Warning(boost::str(boost::format("Cannot calculate Williams %R !!! lastIdx:%d, outBeg:%d")
+			logger.Warning(boost::str(boost::format("Cannot calculate Williams %%R !!! lastIdx:%d, outBeg:%d")
 				% lastIdx % outBeg));
 		}
 	}
@@ -136,8 +136,8 @@ void CWillRDataSet::CalcDonchianChannel( COHLCRecordSet* ohlcRecordSet, int nbEl
 		double topBound = 0, bottomBound = -1;
 		for(int idx = startIdx; idx >= endIdx; --idx)
 		{
-			int high = ohlcRecordSet->HighSeries[idx];
-			int low = ohlcRecordSet->LowSeries[idx];
+			double high = ohlcRecordSet->HighSeries[idx];
+			double low = ohlcRecordSet->LowSeries[idx];
 			if(high > topBound)
 				topBound = high;
 			if(low < bottomBound || bottomBound < 0)

@@ -40,7 +40,8 @@ private:
 	entity::PosiDirectionType m_DirectionOpened;
 
 	double m_williamsR;
-	double m_watrStopVal;
+	double m_watr;
+	double m_stopPx;
 	double m_donchianHi;
 	double m_donchianLo;
 

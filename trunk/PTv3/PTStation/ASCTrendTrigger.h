@@ -16,9 +16,12 @@ public:
 
 	bool OnTest(const double vals[], int size);
 
+	double GetStopPx(){ return m_stopVal; }
+
 private:
 
 	double m_priceSummit;
 	entity::PosiDirectionType m_direction;
+	double m_stopVal;
 };
 

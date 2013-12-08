@@ -1,6 +1,7 @@
 CC = g++
 INC_DIR=-I../dev/pushframework-2.2/include
 CFLAGS=$(INC_DIR) -DUSE_NET_LIBS -O3
+# -DFAKE_DEAL -DLOG_FOR_TECH_CALC
 PROTO_DIR = ./proto
 SRC = ./src
 ENTITY_DIR = ./src/entity
@@ -21,13 +22,13 @@ _FS_OBJS = stdafx \
 		QuoteAgent QuoteFetcher QuoteRepositry QuoteStore ShmQuoteFeed \
 		ShmQuoteSubscribe \
 		\
-		ArbitrageStrategy ArbitrageTrigger ChangePositionStrategy ChangePositionTrigger \
-		HistSlopeStrategy HistSlopeTrigger LinerRegressionStrategy ScalperStrategy ScalperTrigger \
-		TrailingStopTrigger WMATrendStrategy WMATrendTrigger \
+		ArbitrageStrategy ArbitrageTrigger ASCTrendStrategy ASCTrendTrigger ChangePositionStrategy \
+		ChangePositionTrigger HistSlopeStrategy HistSlopeTrigger LinerRegressionStrategy ScalperStrategy \
+		ScalperTrigger TrailingStopTrigger WMATrendStrategy WMATrendTrigger \
 		\
 		BollDataSet HistDataReader HistDataWriter LinerRegressionDataSet MACDDataSet OHLCRecordSet \
 		PriceBarDataProxy PriceBarDataSource PriceBarGen TaIndicatorSet TechAnalyStrategy \
-		TechDataRepo WMATrendDataSet \
+		TechDataRepo WillRDataSet WMATrendDataSet \
 		\
 		InputOrder LegOrderPlacer OrderProcessor PortfolioOrderHelper PortfolioOrderPlacer \
 		PortfolioScalperOrderPlacer PortfolioTrendOrderPlacer RtnOrderWrapper TradeAgent \
