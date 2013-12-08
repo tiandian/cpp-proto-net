@@ -28,7 +28,7 @@ void CWillRDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	int nbElements = ohlcRecordSet->NbElements();
 	int lastIdx = ohlcRecordSet->GetEndIndex();
 
-	logger.Debug(boost::str(boost::format("Calculating Williams %R: lastIdx - %d, last price - %.2f")
+	logger.Debug(boost::str(boost::format("Calculating Williams %%R: lastIdx - %d, last price - %.2f")
 		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 	
 	CalcWilliamsR(ohlcRecordSet, nbElements, lastIdx);

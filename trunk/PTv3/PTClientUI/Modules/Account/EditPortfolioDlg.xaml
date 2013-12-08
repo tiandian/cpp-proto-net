@@ -360,7 +360,7 @@
 
                 </StackPanel>
             </igWindows:TabItemEx>
-            <igWindows:TabItemEx Header="WMA" Name="tabAscTrend" Width="60" Tag="ASCTrend">
+            <igWindows:TabItemEx Header="ASC" Name="tabAscTrend" Width="60" Tag="ASCTrend">
                 <StackPanel Margin="4">
                     <StackPanel.Resources>
                         <DataTemplate x:Key="sideItemTempl">

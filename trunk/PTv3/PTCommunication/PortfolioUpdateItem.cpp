@@ -70,6 +70,7 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 			pEntity->as_donchianhi(),
 			pEntity->as_donchianlo()
 		);
+		break;
 	default:
 		return nullptr;
 	}

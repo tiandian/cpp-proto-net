@@ -166,7 +166,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Opening position at bar %d")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
 			OpenPosition(direction, pOrderPlacer, pQuote, timestamp, false, 
-				boost::str(boost::format("WR(%.2f)满足条件")).c_str());
+				boost::str(boost::format("WR(%.2f)满足条件") % wr).c_str());
 			m_openAtBarIdx = currentBarIdx;
 			return;
 		}
@@ -279,7 +279,7 @@ entity::PosiDirectionType CASCTrendStrategy::TestForOpen( double last, double wr
 	if(last > hi && wr > ASC_X1)
 		return entity::LONG;
 
-	if(last < lo && wr < ASC_X2)
+	if(last < lo && wr < ASC_X2 && wr > 0)
 		return entity::SHORT;
 
 	return entity::NET;

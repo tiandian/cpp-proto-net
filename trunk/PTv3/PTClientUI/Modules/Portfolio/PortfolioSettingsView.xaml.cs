@@ -38,6 +38,12 @@ namespace PortfolioTrading.Modules.Portfolio
 
         private void OnPortfolioSelected(PortfolioVM portfVm)
         {
+            if (portfVm == null)
+            {
+                this.DataContext = null;
+                return;
+            }
+
             StrategySettingVM viewModel = null;
             if(portfVm.StrategySetting.Name == StrategySetting.ArbitrageStrategyName)
             {
