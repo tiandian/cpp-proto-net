@@ -12,7 +12,7 @@ enum HISTORY_DATA_MODE
 class COHLCRecordSet
 {
 public:
-	COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA_MODE histDataMode = ONE_BAR, bool weightAvg = true );
+	COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA_MODE histDataMode = ONE_BAR, bool weightAvg = false );
 	~COHLCRecordSet(void);
 
 	void SetToday(int barIdx, double open, double high, double low, double close);

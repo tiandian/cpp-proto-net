@@ -19,7 +19,8 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_marketOpen(false)
 	, m_openAtBarIdx(0)
 	, m_williamsR(0)
-	, m_watrStopVal(0)
+	, m_watr(0)
+	, m_stopPx(0)
 	, m_donchianHi(0)
 	, m_donchianLo(0)
 {
@@ -109,10 +110,10 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 		return;
 
 	m_willRIndicatorSet->Calculate(ohlc);
-	double wr = m_willRIndicatorSet->GetRef(IND_WR, 0);
-	double donchianHi = m_willRIndicatorSet->GetRef(IND_Donchian_Hi, 0);
-	double donchianLo = m_willRIndicatorSet->GetRef(IND_Donchian_Lo, 0);
-	double watr = m_willRIndicatorSet->GetRef(IND_WATR, 0);
+	m_williamsR = m_willRIndicatorSet->GetRef(IND_WR, 0);
+	m_donchianHi = m_willRIndicatorSet->GetRef(IND_Donchian_Hi, 0);
+	m_donchianLo = m_willRIndicatorSet->GetRef(IND_Donchian_Lo, 0);
+	m_watr = m_willRIndicatorSet->GetRef(IND_WATR, 0);
 
 	int currentBarIdx = ohlc->GetEndIndex();
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
@@ -138,8 +139,9 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 
 		if(m_pAscStopTrigger != NULL)
 		{
-			double arrArgs[2] = { pQuote->last(), watr };
+			double arrArgs[2] = { pQuote->last(), m_watr };
 			meetCloseCondition = m_pAscStopTrigger->Test(arrArgs, 2);
+			m_stopPx = m_pAscStopTrigger->GetStopPx();
 			if(meetCloseCondition)
 			{
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to WATR stop")
@@ -156,9 +158,9 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	double last = pQuote->last();
 	LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, WR: %.2f, Hi: %.2f, Lo: %.2f")
 		% pPortfolio->InvestorId() % pPortfolio->ID() 
-		% last % wr % donchianHi % donchianLo));
+		% last % m_williamsR % m_donchianHi % m_donchianLo));
 
-	entity::PosiDirectionType direction = TestForOpen(last, wr, donchianHi, donchianLo);
+	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo);
 	if(direction > entity::NET)
 	{
 		if(!pOrderPlacer->IsWorking())
@@ -166,7 +168,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Opening position at bar %d")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
 			OpenPosition(direction, pOrderPlacer, pQuote, timestamp, false, 
-				boost::str(boost::format("WR(%.2f)满足条件") % wr).c_str());
+				boost::str(boost::format("WR(%.2f)满足条件") % m_williamsR).c_str());
 			m_openAtBarIdx = currentBarIdx;
 			return;
 		}
@@ -178,7 +180,7 @@ void CASCTrendStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUp
 	CStrategy::GetStrategyUpdate(pPortfUpdateItem);
 
 	pPortfUpdateItem->set_as_williamsr(m_williamsR);
-	pPortfUpdateItem->set_as_stoppx(m_watrStopVal);
+	pPortfUpdateItem->set_as_stoppx(m_stopPx);
 	pPortfUpdateItem->set_as_donchianhi(m_donchianHi);
 	pPortfUpdateItem->set_as_donchianlo(m_donchianLo);
 }

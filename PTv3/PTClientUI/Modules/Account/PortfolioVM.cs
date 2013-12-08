@@ -1006,7 +1006,12 @@ namespace PortfolioTrading.Modules.Account
             }
             else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.ASC_TREND)
             {
-
+                PTEntity.ASCTrendStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.ASCTrendStrategyUpdateItem;
+                
+                AS_WilliamsR = ToDecimal(strategyUpdate.WilliamsR);
+                AS_StopPx = ToDecimal(strategyUpdate.StopPx);
+                AS_DonchianHi = ToDecimal(strategyUpdate.DonchianHi);
+                AS_DonchianLo = ToDecimal(strategyUpdate.DonchianLo);
             }
 
             OpenTimes = item.TotalOpenTimes;

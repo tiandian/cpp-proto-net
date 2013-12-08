@@ -132,6 +132,7 @@ enum StrategyType
 	HIST_SLOPE = 3;
 	WMA_TREND = 4;
 	LINER_REGRESSION = 5;
+	ASC_TREND = 6;
 }
 
 message HistSourceCfg
@@ -190,6 +191,12 @@ message StrategyItem
 	optional int32 LR_Number = 532;
 	optional double LR_OpenThreshold = 533;
 	optional double LR_CloseThreshold = 534;
+
+	// ASC Trend
+	optional int32 AS_Risk = 541;
+	optional int32 AS_AvergatePeriod = 542;
+	optional int32 AS_BreakOutLength = 543;
+	optional int32 AS_Period = 544;
 }
 
 message TriggerItem
@@ -285,6 +292,12 @@ message PortfolioUpdateItem
 	// LinerRegression
 	optional double LR_WeightMidPoint = 321;
 	optional double LR_LinerRegAngle = 323;
+	// ASCTrend
+	optional double AS_WilliamsR = 331;
+	optional double AS_StopPx = 332;
+	optional double AS_DonchianHi = 333;
+	optional double AS_DonchianLo = 334;
+	
 }
 
 message ConnectParam
