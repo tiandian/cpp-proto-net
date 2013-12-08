@@ -240,8 +240,12 @@ namespace PortfolioTrading.Modules.Account
             lock (_acctPortfolios)
             {
                 int idx = _acctPortfolios.IndexOf(portfVm);
-                if(idx >= 0 && idx < _acctPortfolios.Count)
+                if (idx >= 0 && idx < _acctPortfolios.Count)
+                {
                     _acctPortfolios.RemoveAt(idx);
+
+                    EventAggregator.GetEvent<PortfolioSelectedEvent>().Publish(null);
+                }
             }
         }
 

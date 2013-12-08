@@ -810,7 +810,7 @@ namespace PortfolioTrading.Modules.Account
         #region ASC Trend
 
         #region AS_Period
-        private int _as_period;
+        private int _as_period = 60;
 
         public int AS_Period
         {

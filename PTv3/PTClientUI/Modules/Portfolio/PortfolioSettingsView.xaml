@@ -500,7 +500,44 @@
                         
                     </StackPanel>
                 </DataTemplate>
-                
+
+                <DataTemplate x:Key="ascTrendSettingTemplate">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="2"/>
+                                <Setter Property="BorderBrush" Value="Green" />
+                                <Setter Property="CornerRadius" Value="2"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">周期(秒)</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding Period, FallbackValue=60, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">Risk</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding Risk, FallbackValue=5, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">ATR周期</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding AvergatePeriod, FallbackValue=10, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">突破周期</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding AvergatePeriod, FallbackValue=2, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+
                 <local:PortfSettingTemplateSelector x:Key="strategySettingSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageSettingTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionSettingTemplate}"
@@ -508,6 +545,7 @@
                                     MACDHistSlopeTemplate="{StaticResource macdHistSlopeSettingTemplate}"
                                     WMATrendTemplate="{StaticResource wmaTrendSettingTemplate}"
                                     LinerRegressionTemplate="{StaticResource linerRegAngleSettingTemplate}"
+                                    ASCTrendTremplate="{StaticResource ascTrendSettingTemplate}"
                                     />
             </Grid.Resources>
 
