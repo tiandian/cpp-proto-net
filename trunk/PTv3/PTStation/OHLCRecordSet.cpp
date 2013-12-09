@@ -70,6 +70,10 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 	int settingIdx = m_historyDataSize + barIdx;
 	if(settingIdx > m_endIndex)
 	{
+		// if input bar index is NOT continuous, reset nbElements to 0 
+		if(settingIdx != m_endIndex + 1)
+			m_nbElements = 0;
+
 		m_endIndex = settingIdx;
 #ifdef TEST_TODAY_HIST
 		if(m_nbElements < 0)

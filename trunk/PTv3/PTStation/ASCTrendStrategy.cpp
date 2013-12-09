@@ -137,7 +137,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			return;
 		}
 
-		if(m_pAscStopTrigger != NULL)
+		if(m_pAscStopTrigger != NULL && currentBarIdx > m_openAtBarIdx)
 		{
 			double arrArgs[2] = { pQuote->last(), m_watr };
 			meetCloseCondition = m_pAscStopTrigger->Test(arrArgs, 2);

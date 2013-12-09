@@ -223,7 +223,7 @@ void CWillRDataSet::CalcWATR( COHLCRecordSet* ohlcRecordSet, int nbElements, int
 		double totalRange = 0.0;
 		for(int i = 1; i <= m_atrPeriod; ++i)
 		{
-			double dk = 1.0 + double(m_atrPeriod - i)/m_atrPeriod;
+			double dk = 1.0 + (double(m_atrPeriod - i)/m_atrPeriod);
 			int pos = lastIdx - i;
 			double range = ohlcRecordSet->HighSeries[pos] - ohlcRecordSet->LowSeries[pos];
 			totalRange += dk * fabs(range);
