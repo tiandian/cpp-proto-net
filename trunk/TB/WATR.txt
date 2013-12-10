@@ -1,0 +1,74 @@
+//------------------------------------------------------------------------
+// 简称: WATR
+// 名称: NRTR WATR
+// 类别: 公式应用
+// 类型: 用户应用
+//------------------------------------------------------------------------
+
+Params
+	Numeric AveragePeriod(10);
+Vars
+	NumericSeries Price(0);
+	Numeric dK(0);
+	Numeric AvgRange(0);
+	Numeric WATR(0);
+	Numeric i;
+	NumericSeries trend(1);
+	Numeric StopVal(0);
+Begin
+	if( BarCount >  AveragePeriod)
+	{
+		for i = 1 to AveragePeriod
+		{
+			dK = 1 + (AveragePeriod - i)/AveragePeriod;
+			AvgRange = AvgRange + dK * Abs(High[i] - Low[i]);
+		}
+		WATR = AvgRange/AveragePeriod;
+	}
+
+	If( BarStatus == 0)
+	{
+		trend = trend[1];
+		Price = Price[1];
+	}
+	
+	if (trend == 1)
+    {
+		If(Close > Price) Price = Close;
+		StopVal = Price - WATR;
+		if (Close < StopVal) 
+        {
+			Price = Close;
+			StopVal = Price + WATR;
+			trend = -1;
+        }
+    }
+    else if (trend == -1) 
+    {
+		if (Close < Price) Price = Close;
+		StopVal = Price + WATR;
+		if (Close > StopVal)
+        {
+			Price = Close;
+			StopVal = Price - WATR;
+			trend = 1;
+        }
+    }
+    
+	If(StopVal > 0)
+	{
+		Commentary("WATR: " + Text(WATR) + ", Price: " + Text(Price));
+		If(trend == 1)
+			PlotNumeric("LongStop", StopVal);
+		If(trend == -1)
+			PlotNumeric("ShortStop", StopVal);
+	}
+End
+
+//------------------------------------------------------------------------
+// 编译版本	GS2010.12.08
+// 用户版本	2013/11/27 21:48
+// 版权所有	xiaoyong_zh
+// 更改声明	TradeBlazer Software保留对TradeBlazer平台
+//			每一版本的TrabeBlazer公式修改和重写的权利
+//------------------------------------------------------------------------
