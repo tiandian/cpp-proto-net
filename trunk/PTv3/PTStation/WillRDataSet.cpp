@@ -175,7 +175,7 @@ bool CWillRDataSet::TestMRO1( COHLCRecordSet* ohlcRecordSet, int period, double 
 	int currentBar = lastIdx;
 	while(currentBar > beginIdx && currentBar > lastIdx - period)
 	{
-		double diff = ohlcRecordSet->CloseSeries[currentBar] - ohlcRecordSet->OpenSeries[currentBar - 1];
+		double diff = ohlcRecordSet->OpenSeries[currentBar] - ohlcRecordSet->CloseSeries[currentBar - 1];
 		if(fabs(diff) >= avgRange * 2.0)
 			return true;
 

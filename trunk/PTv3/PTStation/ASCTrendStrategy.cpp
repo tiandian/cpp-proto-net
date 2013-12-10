@@ -82,6 +82,9 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
 
+	//pQuote->set_last(2466);
+	//pQuote->set_update_time("09:15:12");
+
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
 	if(!IsRunning())
