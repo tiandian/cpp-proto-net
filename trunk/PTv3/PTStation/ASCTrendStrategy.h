@@ -28,16 +28,20 @@ protected:
 
 private:
 
-	static entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo);
+	entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo);
+	void SetRisk(int risk);
 
 	int m_period;
 	int m_riskParam;
 	int m_avgPeriodParam;
 	int m_boLengthParam;
+	double m_X1;
+	double m_X2;
 
 	bool m_marketOpen;
-	int m_openAtBarIdx;
-	entity::PosiDirectionType m_DirectionOpened;
+	int m_lastOpenBarIdx;
+	int m_lastCloseBarIdx;
+	entity::PosiDirectionType m_lastPositionOffset;
 
 	double m_williamsR;
 	double m_watr;

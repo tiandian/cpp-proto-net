@@ -14,15 +14,18 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_riskParam(0)
 	, m_avgPeriodParam(0)
 	, m_boLengthParam(0)
-	, m_DirectionOpened(entity::NET)
 	, m_pAscStopTrigger(NULL)
 	, m_marketOpen(false)
-	, m_openAtBarIdx(0)
+	, m_lastPositionOffset(entity::NET)
+	, m_lastOpenBarIdx(0)
+	, m_lastCloseBarIdx(-1)
 	, m_williamsR(0)
 	, m_watr(0)
 	, m_stopPx(0)
 	, m_donchianHi(0)
 	, m_donchianLo(0)
+	, m_X1(100)
+	, m_X2(0)
 {
 
 	Apply(strategyItem, false);
@@ -41,7 +44,7 @@ void CASCTrendStrategy::Apply( const entity::StrategyItem& strategyItem, bool wi
 	CTechAnalyStrategy::Apply(strategyItem, withTriggers);
 
 	m_period = strategyItem.as_period();
-	m_riskParam = strategyItem.as_risk();
+	SetRisk(strategyItem.as_risk());
 	m_avgPeriodParam = strategyItem.as_avergateperiod();
 	m_boLengthParam = strategyItem.as_breakoutlength();
 
@@ -140,7 +143,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			return;
 		}
 
-		if(m_pAscStopTrigger != NULL && currentBarIdx > m_openAtBarIdx)
+		if(m_pAscStopTrigger != NULL && currentBarIdx > m_lastOpenBarIdx)
 		{
 			double arrArgs[2] = { pQuote->last(), m_watr };
 			meetCloseCondition = m_pAscStopTrigger->Test(arrArgs, 2);
@@ -150,6 +153,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to WATR stop")
 					% pPortfolio->InvestorId() % pPortfolio->ID()));
 				ClosePosition(pOrderPlacer, pQuote, "´¥·¢WATRÖ¹Ëð(Ó¯)");
+				m_lastCloseBarIdx = currentBarIdx;
 				return;
 			}
 		}		
@@ -164,7 +168,9 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 		% last % m_williamsR % m_donchianHi % m_donchianLo));
 
 	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo);
-	if(direction > entity::NET)
+	if(direction > entity::NET && 
+		(currentBarIdx > m_lastCloseBarIdx		// In general, don't open position at the bar just closing position
+		|| direction != m_lastPositionOffset))	// unless the direction is different
 	{
 		if(!pOrderPlacer->IsWorking())
 		{
@@ -172,7 +178,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
 			OpenPosition(direction, pOrderPlacer, pQuote, timestamp, false, 
 				boost::str(boost::format("WR(%.2f)Âú×ãÌõ¼þ") % m_williamsR).c_str());
-			m_openAtBarIdx = currentBarIdx;
+			m_lastOpenBarIdx = currentBarIdx;
 			return;
 		}
 	}
@@ -240,7 +246,7 @@ void CASCTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPort
 
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 
-		m_DirectionOpened = direction;
+		m_lastPositionOffset = direction;
 		ResetForceOpen();
 		
 		if(m_pAscStopTrigger != NULL)
@@ -271,7 +277,6 @@ void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 
 		pOrderPlacer->CloseOrder(closePx);
 
-		m_openAtBarIdx = 0; // reset open bar position
 		ResetForceClose();
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s Æ½²Ö @ %.2f")
 			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
@@ -281,12 +286,19 @@ void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 
 entity::PosiDirectionType CASCTrendStrategy::TestForOpen( double last, double wr, double hi, double lo )
 {
-	if(last > hi && wr > ASC_X1)
+	if(last > hi && wr > m_X1)
 		return entity::LONG;
 
-	if(last < lo && wr < ASC_X2 && wr > 0)
+	if(last < lo && wr < m_X2)
 		return entity::SHORT;
 
 	return entity::NET;
+}
+
+void CASCTrendStrategy::SetRisk( int risk )
+{
+	m_riskParam = risk;
+	m_X1 = ASC_X1 + risk;
+	m_X2 = ASC_X2 - risk;
 }
 
