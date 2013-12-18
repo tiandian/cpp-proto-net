@@ -17,6 +17,7 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_pAscStopTrigger(NULL)
 	, m_marketOpen(false)
 	, m_lastPositionOffset(entity::NET)
+	, m_isRealSignal(false)
 	, m_lastOpenBarIdx(0)
 	, m_lastCloseBarIdx(-1)
 	, m_williamsR(0)
@@ -26,6 +27,7 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_donchianLo(0)
 	, m_X1(100)
 	, m_X2(0)
+	, m_forceCloseOffset(5)
 {
 
 	Apply(strategyItem, false);
@@ -115,6 +117,8 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	if(ohlc == NULL)
 		return;
 
+	int forceCloseBar = ohlc->GetSize() - m_forceCloseOffset;
+
 	m_willRIndicatorSet->Calculate(ohlc);
 	m_williamsR = m_willRIndicatorSet->GetRef(IND_WR, 0);
 	m_donchianHi = m_willRIndicatorSet->GetRef(IND_Donchian_Hi, 0);
@@ -135,7 +139,8 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	{
 		bool meetCloseCondition = false;
 		bool forceClosing = IsForceClosing();
-		if(forceClosing) // This close condition check is only effective on the bar after open
+		if(forceClosing // This close condition check is only effective on the bar after open
+			|| currentBarIdx >= forceCloseBar)
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to Force close")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
@@ -143,18 +148,34 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			return;
 		}
 
-		if(m_pAscStopTrigger != NULL && currentBarIdx > m_lastOpenBarIdx)
+		// check if the open bar is fake signal on next bar
+		if(currentBarIdx == m_lastOpenBarIdx + 1 && !m_isRealSignal)
 		{
-			double arrArgs[2] = { pQuote->last(), m_watr };
-			meetCloseCondition = m_pAscStopTrigger->Test(arrArgs, 2);
-			m_stopPx = m_pAscStopTrigger->GetStopPx();
-			if(meetCloseCondition)
+			double preWR = m_willRIndicatorSet->GetRef(IND_WR, 1);
+			m_isRealSignal = IsPreBarOpenCorrect(m_lastPositionOffset, preWR);
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Check if pre bar open at fake signal - preWR: %.2f (%s)")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % preWR % GetPosiDirectionText(m_lastPositionOffset)));
+			if(!m_isRealSignal)
+				ClosePosition(pOrderPlacer, pQuote, "¼ÙÐÅºÅ¿ª²ÖÁ¢¼´Æ½²Ö");
+		}
+
+		unsigned int hour = 0, min = 0, sec = -1;
+		if(m_pAscStopTrigger != NULL && ParseTimeString(pQuote->update_time(), &hour, &min, &sec))
+			//&& currentBarIdx > m_lastOpenBarIdx)
+		{
+			if(currentBarIdx == m_lastOpenBarIdx || sec >=58 )	// close price ensure for closing position
 			{
-				LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to WATR stop")
-					% pPortfolio->InvestorId() % pPortfolio->ID()));
-				ClosePosition(pOrderPlacer, pQuote, "´¥·¢WATRÖ¹Ëð(Ó¯)");
-				m_lastCloseBarIdx = currentBarIdx;
-				return;
+				double arrArgs[2] = { pQuote->last(), m_watr };
+				meetCloseCondition = m_pAscStopTrigger->Test(arrArgs, 2);
+				m_stopPx = m_pAscStopTrigger->GetStopPx();
+				if(meetCloseCondition)
+				{
+					LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to WATR stop")
+						% pPortfolio->InvestorId() % pPortfolio->ID()));
+					ClosePosition(pOrderPlacer, pQuote, "´¥·¢WATRÖ¹Ëð(Ó¯)");
+					m_lastCloseBarIdx = currentBarIdx;
+					return;
+				}
 			}
 		}		
 
@@ -168,7 +189,8 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 		% last % m_williamsR % m_donchianHi % m_donchianLo));
 
 	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo);
-	if(direction > entity::NET && 
+	if(currentBarIdx < forceCloseBar &&
+		direction > entity::NET && 
 		(currentBarIdx > m_lastCloseBarIdx		// In general, don't open position at the bar just closing position
 		|| direction != m_lastPositionOffset))	// unless the direction is different
 	{
@@ -247,6 +269,7 @@ void CASCTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPort
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 
 		m_lastPositionOffset = direction;
+		m_isRealSignal = false; // When opening position, not sure current bar is real signal or not
 		ResetForceOpen();
 		
 		if(m_pAscStopTrigger != NULL)
@@ -300,5 +323,21 @@ void CASCTrendStrategy::SetRisk( int risk )
 	m_riskParam = risk;
 	m_X1 = ASC_X1 + risk;
 	m_X2 = ASC_X2 - risk;
+}
+
+bool CASCTrendStrategy::IsPreBarOpenCorrect( entity::PosiDirectionType direction, double preWR )
+{
+	if(direction == entity::LONG)
+	{
+		return preWR > m_X1;
+	}
+
+	if(direction == entity::SHORT)
+	{
+		return preWR < m_X2;
+	}
+
+	// something wrong, ignore
+	return true;
 }
 
