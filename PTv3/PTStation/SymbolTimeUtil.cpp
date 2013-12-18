@@ -21,9 +21,28 @@ boost::chrono::seconds ParseTimeString(const char* time)
 	return finalVal;
 }
 
+bool ParseTimeString(const char* time, unsigned int* hour, unsigned int* min, unsigned int* sec)
+{
+	*hour = 0;
+	*min = 0;
+	*sec = 0;
+	int got = sscanf(time, "%u:%u:%u", hour, min, sec);
+	if(got == 3)
+	{
+		return true;
+	}
+	// else must be something wrong
+	return false;
+}
+
 boost::chrono::seconds ParseTimeString(const string& time)
 {
 	return ParseTimeString(time.c_str());
+}
+
+bool ParseTimeString(const string& time, unsigned int* hour, unsigned int* min, unsigned int* sec)
+{
+	return ParseTimeString(time.c_str(), hour, min, sec);
 }
 
 bool isSymbolIF(const string& symbol)

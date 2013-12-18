@@ -29,6 +29,7 @@ protected:
 private:
 
 	entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo);
+	bool IsPreBarOpenCorrect(entity::PosiDirectionType direction, double preWR);
 	void SetRisk(int risk);
 
 	int m_period;
@@ -37,10 +38,12 @@ private:
 	int m_boLengthParam;
 	double m_X1;
 	double m_X2;
+	int m_forceCloseOffset;
 
 	bool m_marketOpen;
 	int m_lastOpenBarIdx;
 	int m_lastCloseBarIdx;
+	bool m_isRealSignal;
 	entity::PosiDirectionType m_lastPositionOffset;
 
 	double m_williamsR;
