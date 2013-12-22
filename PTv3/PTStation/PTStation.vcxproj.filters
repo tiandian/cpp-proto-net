@@ -326,6 +326,9 @@
     <ClInclude Include="WillRDataSet.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
+    <ClInclude Include="WATRStopDataSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -557,6 +560,9 @@
       <Filter>Source Files\strategy</Filter>
     </ClCompile>
     <ClCompile Include="WillRDataSet.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="WATRStopDataSet.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>

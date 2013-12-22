@@ -15,7 +15,6 @@ CWillRDataSet::CWillRDataSet(int size, int risk, int atrPeriod, int breakoutLeng
 	m_arrWR = AddIndicator(IND_WR);
 	m_arrHi = AddIndicator(IND_Donchian_Hi);
 	m_arrLo = AddIndicator(IND_Donchian_Lo);
-	m_arrWatr = AddIndicator(IND_WATR);
 }
 
 
@@ -33,7 +32,6 @@ void CWillRDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	
 	CalcWilliamsR(ohlcRecordSet, nbElements, lastIdx);
 	CalcDonchianChannel(ohlcRecordSet, nbElements, lastIdx);
-	CalcWATR(ohlcRecordSet, nbElements, lastIdx);
 
 	m_lastPosition = lastIdx;
 }
@@ -201,37 +199,5 @@ bool CWillRDataSet::TestMRO2( COHLCRecordSet* ohlcRecordSet, int period, double 
 	}
 
 	return false;
-}
-
-void CWillRDataSet::CalcWATR( COHLCRecordSet* ohlcRecordSet, int nbElements, int lastIdx )
-{
-	/*
-	// Stop Value Calculation Begin
-	if( BarCount >  AveragePeriod)
-	{
-	for i = 1 to AveragePeriod
-	{
-	dK = 1 + (AveragePeriod - i)/AveragePeriod;
-	AvgRangeS = AvgRangeS + dK * Abs(High[i] - Low[i]);
-	}
-	WATR = AvgRangeS/AveragePeriod;
-	}
-	*/
-
-	if(nbElements > m_atrPeriod)
-	{
-		double totalRange = 0.0;
-		for(int i = 1; i <= m_atrPeriod; ++i)
-		{
-			double dk = 1.0 + (double(m_atrPeriod - i)/m_atrPeriod);
-			int pos = lastIdx - i;
-			double range = ohlcRecordSet->HighSeries[pos] - ohlcRecordSet->LowSeries[pos];
-			totalRange += dk * fabs(range);
-		}
-
-		double watr = totalRange / m_atrPeriod;
-		
-		m_arrWatr[lastIdx] = watr;
-	}
 }
 

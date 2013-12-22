@@ -28,7 +28,7 @@ _FS_OBJS = stdafx \
 		\
 		BollDataSet HistDataReader HistDataWriter LinerRegressionDataSet MACDDataSet OHLCRecordSet \
 		PriceBarDataProxy PriceBarDataSource PriceBarGen TaIndicatorSet TechAnalyStrategy \
-		TechDataRepo WillRDataSet WMATrendDataSet \
+		TechDataRepo WATRStopDataSet WillRDataSet WMATrendDataSet \
 		\
 		InputOrder LegOrderPlacer OrderProcessor PortfolioOrderHelper PortfolioOrderPlacer \
 		PortfolioScalperOrderPlacer PortfolioTrendOrderPlacer RtnOrderWrapper TradeAgent \

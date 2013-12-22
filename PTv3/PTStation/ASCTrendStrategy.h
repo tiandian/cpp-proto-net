@@ -2,7 +2,7 @@
 
 #include "TechAnalyStrategy.h"
 #include "WillRDataSet.h"
-#include "ASCTrendTrigger.h"
+#include "WATRStopDataSet.h"
 
 class CAvatarClient;
 class CPortfolioTrendOrderPlacer;
@@ -29,6 +29,7 @@ protected:
 private:
 
 	entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo);
+	bool TestForClose(entity::PosiDirectionType direction, double price, double stopPx, double extraWatr = 0.0);
 	bool IsPreBarOpenCorrect(entity::PosiDirectionType direction, double preWR);
 	void SetRisk(int risk);
 
@@ -53,7 +54,7 @@ private:
 	double m_donchianLo;
 
 	WillRDataSetPtr m_willRIndicatorSet;
-	CASCTrendTrigger* m_pAscStopTrigger;
+	WATRStopDataSetPtr m_watrStopIndSet;
 
 	boost::mutex m_mut;
 };
