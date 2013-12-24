@@ -20,7 +20,7 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_isRealSignal(false)
 	, m_lastOpenBarIdx(0)
 	, m_lastCloseBarIdx(-1)
-	, m_williamsR(0)
+	, m_williamsR(-1.0)
 	, m_watr(0)
 	, m_stopPx(0)
 	, m_donchianHi(0)
@@ -124,6 +124,9 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	m_williamsR = m_willRIndicatorSet->GetRef(IND_WR, 0);
 	m_donchianHi = m_willRIndicatorSet->GetRef(IND_Donchian_Hi, 0);
 	m_donchianLo = m_willRIndicatorSet->GetRef(IND_Donchian_Lo, 0);
+
+	m_watrStopIndSet->Calculate(ohlc);
+	double trend = m_watrStopIndSet->GetRef(IND_WATR_TREND, 0);
 	
 	int currentBarIdx = ohlc->GetEndIndex();
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
@@ -206,7 +209,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 		% pPortfolio->InvestorId() % pPortfolio->ID() 
 		% last % m_williamsR % m_donchianHi % m_donchianLo));
 
-	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo);
+	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo, trend);
 	if(currentBarIdx < forceCloseBar &&
 		direction > entity::NET && 
 		(currentBarIdx > m_lastCloseBarIdx		// In general, don't open position at the bar just closing position
@@ -328,12 +331,12 @@ void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 	}
 }
 
-entity::PosiDirectionType CASCTrendStrategy::TestForOpen( double last, double wr, double hi, double lo )
+entity::PosiDirectionType CASCTrendStrategy::TestForOpen( double last, double wr, double hi, double lo, double trend )
 {
-	if(last > hi && wr > m_X1)
+	if(last > hi && wr > m_X1 && trend > 0)
 		return entity::LONG;
 
-	if(last < lo && wr < m_X2)
+	if(last < lo && wr < m_X2 && wr > -0.1 && trend < 0)
 		return entity::SHORT;
 
 	return entity::NET;

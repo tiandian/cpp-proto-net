@@ -12,7 +12,7 @@ CWillRDataSet::CWillRDataSet(int size, int risk, int atrPeriod, int breakoutLeng
 	SetAtrPeriod(atrPeriod);
 	SetBreakoutLength(breakoutLength);
 
-	m_arrWR = AddIndicator(IND_WR);
+	m_arrWR = AddIndicator(IND_WR, -1.0);
 	m_arrHi = AddIndicator(IND_Donchian_Hi);
 	m_arrLo = AddIndicator(IND_Donchian_Lo);
 }
