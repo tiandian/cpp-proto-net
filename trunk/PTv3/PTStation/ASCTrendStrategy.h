@@ -28,7 +28,7 @@ protected:
 
 private:
 
-	entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo);
+	entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo, double trend);
 	bool TestForClose(entity::PosiDirectionType direction, double price, double stopPx, double extraWatr = 0.0);
 	bool IsPreBarOpenCorrect(entity::PosiDirectionType direction, double preWR);
 	void SetRisk(int risk);
