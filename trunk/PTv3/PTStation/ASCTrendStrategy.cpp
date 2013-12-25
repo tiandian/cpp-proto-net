@@ -187,7 +187,16 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			}
 			else // still the bar opening the position
 			{
-				meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx, 0.0);
+				double initStopPx = m_stopPx;
+				double lastTrend = m_watrStopIndSet->GetRef(IND_WATR_TREND, 1);
+				// in case opened position is different than trend of last bar use current bar's stopPx
+				if((m_lastPositionOffset == entity::LONG && lastTrend < 0) 
+					|| (m_lastPositionOffset == entity::SHORT && lastTrend > 0))
+				{
+					initStopPx = m_watrStopIndSet->GetRef(IND_WATR_STOP, 0);
+				}
+				
+				meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), initStopPx, 0.0);
 			}
 
 			if(meetCloseCondition)
