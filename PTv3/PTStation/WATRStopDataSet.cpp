@@ -28,26 +28,24 @@ void CWATRStopDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	//logger.Debug(boost::str(boost::format("Calculating WATR Stop: lastIdx - %d, last price - %.2f")
 	//	% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 
-	if(lastIdx > m_lastPosition)
+	if(m_lastPosition > 0)
 	{
-		if(m_lastPosition > 0)
-		{
-			CalcWATRStopLast(ohlcRecordSet);
-		}
-		else // the first time, calculate and fill all 
-		{
-			int outBegin = -1;
-			int outNbElements = 0;
-			CalcWATRStop(0, lastIdx, ohlcRecordSet, &outBegin, &outNbElements);
-			logger.Debug(boost::str(boost::format("The first time calculating WATR Stop: outBegin - %d, outNbElements - %d")
-				% outBegin % outNbElements));
-		}
-
-		logger.Debug(boost::str(boost::format("Calculated WATR Stop: trend - %.0f, SummitPx - %.3f, StopPx - %.3f, watr - %.3f")
-			% m_arrTrend[lastIdx] % m_arrSummitPx[lastIdx] % m_arrStopPx[lastIdx] % m_arrWatr[lastIdx]));
-		
-		m_lastPosition = lastIdx;
+		CalcWATRStopLast(ohlcRecordSet);
 	}
+	else // the first time, calculate and fill all 
+	{
+		int outBegin = -1;
+		int outNbElements = 0;
+		CalcWATRStop(0, lastIdx, ohlcRecordSet, &outBegin, &outNbElements);
+		logger.Debug(boost::str(boost::format("The first time calculating WATR Stop: outBegin - %d, outNbElements - %d")
+			% outBegin % outNbElements));
+	}
+
+	logger.Debug(boost::str(boost::format("Calculated WATR Stop: trend - %.0f, SummitPx - %.3f, StopPx - %.3f, watr - %.3f")
+		% m_arrTrend[lastIdx] % m_arrSummitPx[lastIdx] % m_arrStopPx[lastIdx] % m_arrWatr[lastIdx]));
+		
+	m_lastPosition = lastIdx;
+	
 }
 
 void CWATRStopDataSet::CalcWATR( COHLCRecordSet* ohlcRecordSet, int idx )
