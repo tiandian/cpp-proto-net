@@ -21,6 +21,7 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_lastOpenBarIdx(0)
 	, m_lastCloseBarIdx(-1)
 	, m_williamsR(-1.0)
+	, m_initStopPx(-1.0)
 	, m_watr(0)
 	, m_stopPx(0)
 	, m_donchianHi(0)
@@ -193,7 +194,12 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 				if((m_lastPositionOffset == entity::LONG && lastTrend < 0) 
 					|| (m_lastPositionOffset == entity::SHORT && lastTrend > 0))
 				{
-					initStopPx = m_watrStopIndSet->GetRef(IND_WATR_STOP, 0);
+					if(m_initStopPx > 0)	// when m_initStopPx was given proper value
+					{
+						LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Using init stopPx : %.3f")
+							% pPortfolio->InvestorId() % pPortfolio->ID() % m_initStopPx));						
+						initStopPx = m_initStopPx;
+					}
 				}
 				
 				meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), initStopPx, 0.0);
@@ -221,8 +227,8 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo, trend);
 	if(currentBarIdx < forceCloseBar &&
 		direction > entity::NET && 
-		(currentBarIdx > m_lastCloseBarIdx		// In general, don't open position at the bar just closing position
-		|| direction != m_lastPositionOffset))	// unless the direction is different
+		(currentBarIdx > m_lastCloseBarIdx))		// In general, don't open position at the bar just closing position
+		//|| direction != m_lastPositionOffset))	// unless the direction is different
 	{
 		if(!pOrderPlacer->IsWorking())
 		{
@@ -231,6 +237,10 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			OpenPosition(direction, pOrderPlacer, pQuote, timestamp, false, 
 				boost::str(boost::format("WR(%.2f)Âú×ãÌõ¼þ") % m_williamsR).c_str());
 			m_lastOpenBarIdx = currentBarIdx;
+			
+			// The stopPx at the current bar in this moment will be initial stop price as backup stop price.
+			// in case the preceding trend is different than this one, this initial stop price will be effective.
+			m_initStopPx = m_watrStopIndSet->GetRef(IND_WATR_STOP, 0);
 			return;
 		}
 	}
@@ -303,12 +313,7 @@ void CASCTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPort
 		m_lastPositionOffset = direction;
 		m_isRealSignal = false; // When opening position, not sure current bar is real signal or not
 		ResetForceOpen();
-/*		
-		if(m_pAscStopTrigger != NULL)
-		{
-			m_pAscStopTrigger->Enable(lmtPrice[0], direction);
-		}
-		*/
+
 	}
 }
 
@@ -337,6 +342,8 @@ void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s Æ½²Ö @ %.2f")
 			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
 
+		// reset initStopPx
+		m_initStopPx = -1.0;
 	}
 }
 
