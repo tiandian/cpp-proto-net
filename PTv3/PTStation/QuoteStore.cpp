@@ -109,11 +109,12 @@ void CQuoteStore::GetQuote( entity::Quote* outQuote )
 
 	outQuote->set_update_time(m_cachedQuoteData.UpdateTime);
 #ifdef QUOTE_TIME_EMU
-
+	/*
 	boost::chrono::seconds tp = ParseTimeString(m_cachedQuoteData.UpdateTime);
 	tp -= boost::chrono::hours(12);
 	string updateTime = GetISOTimeString(tp);
 	outQuote->set_update_time(updateTime);
+	*/
 	//outQuote->set_update_time("09:15:58");
 	//outQuote->set_open(2308.6);
 	//outQuote->set_high(2309.8);

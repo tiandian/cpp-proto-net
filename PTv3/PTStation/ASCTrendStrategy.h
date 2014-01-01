@@ -46,6 +46,7 @@ private:
 	int m_lastCloseBarIdx;
 	bool m_isRealSignal;
 	entity::PosiDirectionType m_lastPositionOffset;
+	double m_initStopPx;
 
 	double m_williamsR;
 	double m_watr;
