@@ -98,7 +98,16 @@ void CWillRDataSet::CalcWilliamsR( COHLCRecordSet* ohlcRecordSet, int nbElements
 		double avgRange = GetATR(ohlcRecordSet, m_atrPeriod);
 
 		// Test for MRO1 and MRO2
-		bool mro1 = TestMRO1(ohlcRecordSet, 9, avgRange);
+		int mro1pos = TestMRO1(ohlcRecordSet, 9, avgRange);
+		
+		// In case there is a bar which open price is far away the last open, give an invalid WR value to stop open position
+		if(mro1pos < 3)
+		{
+			m_arrWR[outBeg] = -1;
+			return;
+		}
+		
+		bool mro1 = mro1pos <= 9;
 		bool mro2 = TestMRO2(ohlcRecordSet, 6, avgRange);
 
 		if(mro1)
@@ -165,22 +174,24 @@ double CWillRDataSet::GetATR( COHLCRecordSet* ohlcRecordSet, int period )
 	return avgRange;
 }
 
-bool CWillRDataSet::TestMRO1( COHLCRecordSet* ohlcRecordSet, int period, double avgRange )
+int CWillRDataSet::TestMRO1( COHLCRecordSet* ohlcRecordSet, int period, double avgRange )
 {
 	int lastIdx = ohlcRecordSet->GetEndIndex();
 	int beginIdx = ohlcRecordSet->GetBeginIndex();
 
 	int currentBar = lastIdx;
+	int mroPos = 0;
 	while(currentBar > beginIdx && currentBar > lastIdx - period)
 	{
 		double diff = ohlcRecordSet->OpenSeries[currentBar] - ohlcRecordSet->CloseSeries[currentBar - 1];
 		if(fabs(diff) >= avgRange * 2.0)
-			return true;
+			return mroPos;
 
+		++mroPos;
 		--currentBar;
 	}
 
-	return false;
+	return period + 1;
 }
 
 bool CWillRDataSet::TestMRO2( COHLCRecordSet* ohlcRecordSet, int period, double avgRange )
