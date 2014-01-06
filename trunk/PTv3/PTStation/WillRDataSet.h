@@ -35,7 +35,7 @@ private:
 	
 	double GetATR(COHLCRecordSet* ohlcRecordSet, int period);
 	// See if there is a bar whose open is 2 times atr greater/less than previous close 
-	bool TestMRO1(COHLCRecordSet* ohlcRecordSet, int period, double avgRange);
+	int TestMRO1(COHLCRecordSet* ohlcRecordSet, int period, double avgRange);
 	// See if there is a bar whose close is 4.6 times atr greater/less than the last 3 bar
 	bool TestMRO2(COHLCRecordSet* ohlcRecordSet, int period, double avgRange);
 

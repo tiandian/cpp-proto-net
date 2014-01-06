@@ -8,7 +8,7 @@ ENTITY_DIR = ./src/entity
 OBJ_DIR = ./obj
 QS_OBJ_DIR = $(OBJ_DIR)/qs
 LIBS = -lPushFramework -lboost_thread -lboost_program_options -lboost_filesystem -lboost_chrono \
- -lboost_date_time -lprotobuf -llog4cpp -lta_lib -lthostmduserapi_13 -lthosttraderapi_13
+ -lboost_date_time -lprotobuf -llog4cpp -lta_lib -lthostmduserapi -lthosttraderapi
 
 _ENTITY_FILES = packet enum quote trade message  
 ENTITY_FILES = $(patsubst %, $(ENTITY_DIR)/%.pb.cc, $(_ENTITY_FILES))
