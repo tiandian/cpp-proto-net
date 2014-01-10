@@ -115,11 +115,11 @@ void CQuoteStore::GetQuote( entity::Quote* outQuote )
 	string updateTime = GetISOTimeString(tp);
 	outQuote->set_update_time(updateTime);
 	*/
-	//outQuote->set_update_time("09:15:58");
-	//outQuote->set_open(2308.6);
-	//outQuote->set_high(2309.8);
-	//outQuote->set_low(2305.4);
-	//outQuote->set_last(2306.6);
+	outQuote->set_update_time("09:15:58");
+	outQuote->set_open(2308.6);
+	outQuote->set_high(2309.8);
+	outQuote->set_low(2305.4);
+	outQuote->set_last(2306.6);
 
 #endif // QUOTE_TIME_EMU
 	
