@@ -7,6 +7,7 @@
 
 CWillRDataSet::CWillRDataSet(int size, int risk, int atrPeriod, int breakoutLength)
 	: CTaIndicatorSet(size)
+	, m_dmiPeriod(14)
 {
 	SetRisk(risk);
 	SetAtrPeriod(atrPeriod);
@@ -15,6 +16,8 @@ CWillRDataSet::CWillRDataSet(int size, int risk, int atrPeriod, int breakoutLeng
 	m_arrWR = AddIndicator(IND_WR, -1.0);
 	m_arrHi = AddIndicator(IND_Donchian_Hi);
 	m_arrLo = AddIndicator(IND_Donchian_Lo);
+	m_arrPdi = AddIndicator(IND_PDI);
+	m_arrMdi = AddIndicator(IND_MDI);
 }
 
 
@@ -31,6 +34,7 @@ void CWillRDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 	
 	CalcWilliamsR(ohlcRecordSet, nbElements, lastIdx);
+	CalcDMI(ohlcRecordSet, nbElements, lastIdx);
 	CalcDonchianChannel(ohlcRecordSet, nbElements, lastIdx);
 
 	m_lastPosition = lastIdx;
@@ -103,7 +107,8 @@ void CWillRDataSet::CalcWilliamsR( COHLCRecordSet* ohlcRecordSet, int nbElements
 		// In case there is a bar which open price is far away the last open, give an invalid WR value to stop open position
 		if(mro1pos < 3)
 		{
-			m_arrWR[outBeg] = -1;
+			// Don't need to set value because default value is -1
+			//m_arrWR[lastIdx] = -1; 
 			return;
 		}
 		
@@ -155,6 +160,68 @@ void CWillRDataSet::CalcDonchianChannel( COHLCRecordSet* ohlcRecordSet, int nbEl
 		m_arrLo[lastIdx] = bottomBound;
 
 		logger.Info(boost::str(boost::format("Calculated Donchian Channel: High - %.2f, Low - %.2f") % m_arrHi[lastIdx] % m_arrLo[lastIdx]));
+	}
+}
+
+void CWillRDataSet::CalcDMI( COHLCRecordSet* ohlcRecordSet, int nbElements, int lastIdx )
+{
+	int outBeg = -1;
+	int outNbElement = -1;
+
+	if(m_lastPosition > 0)
+	{
+		double outPDI = 0;
+		double outMDI = 0;
+
+		TA_RetCode rc = TA_PLUS_DI(lastIdx, lastIdx, 
+			(ohlcRecordSet->HighSeries).get(),
+			(ohlcRecordSet->LowSeries).get(),
+			(ohlcRecordSet->CloseSeries).get(), 
+			m_dmiPeriod, &outBeg, &outNbElement, &outPDI);
+
+		if(outBeg == lastIdx)
+			m_arrPdi[outBeg] = outPDI;
+
+		rc = TA_MINUS_DI(lastIdx, lastIdx, 
+			(ohlcRecordSet->HighSeries).get(),
+			(ohlcRecordSet->LowSeries).get(),
+			(ohlcRecordSet->CloseSeries).get(), 
+			m_dmiPeriod, &outBeg, &outNbElement, &outMDI);
+
+		if(outBeg == lastIdx)
+			m_arrMdi[outBeg] = outMDI;
+
+		logger.Info(boost::str(boost::format("Calculated DMI: PDI - %.2f, MDI - %.2f")
+			% m_arrPdi[outBeg] % m_arrMdi[outBeg]));
+	}
+	else // the first time, calculate and fill all 
+	{
+		int dmi_lookback = TA_PLUS_DI_Lookback(m_dmiPeriod);
+		TA_RetCode rc = TA_PLUS_DI(0, lastIdx, 
+			(ohlcRecordSet->HighSeries).get(),
+			(ohlcRecordSet->LowSeries).get(),
+			(ohlcRecordSet->CloseSeries).get(), 
+			m_dmiPeriod, &outBeg, &outNbElement,
+			m_arrPdi + dmi_lookback);
+		if(outBeg == dmi_lookback)
+		{
+			dmi_lookback = TA_MINUS_DI_Lookback(m_dmiPeriod);
+			rc = TA_MINUS_DI(0, lastIdx,
+				(ohlcRecordSet->HighSeries).get(),
+				(ohlcRecordSet->LowSeries).get(),
+				(ohlcRecordSet->CloseSeries).get(), 
+				m_dmiPeriod, &outBeg, &outNbElement,
+				m_arrMdi + dmi_lookback);
+
+			if(outBeg != dmi_lookback)
+			{
+				logger.Warning(boost::str(boost::format("[DMI] Calculated Minus DI may NOT be correct!!!")));
+			}
+		}
+		else
+		{
+			logger.Warning(boost::str(boost::format("[DMI] Calculated Plus DI may NOT be correct!!!")));
+		}
 	}
 }
 
@@ -211,4 +278,5 @@ bool CWillRDataSet::TestMRO2( COHLCRecordSet* ohlcRecordSet, int period, double 
 
 	return false;
 }
+
 

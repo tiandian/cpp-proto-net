@@ -5,6 +5,8 @@
 #define IND_WR "WR"
 #define IND_Donchian_Hi "DonchianHi"
 #define IND_Donchian_Lo "DonchianLo"
+#define IND_PDI "PDI"
+#define IND_MDI "MDI"
 
 enum { 
 	ASC_X1 = 67,
@@ -32,6 +34,7 @@ private:
 
 	void CalcWilliamsR(COHLCRecordSet* ohlcRecordSet, int nbElements, int lastIdx);
 	void CalcDonchianChannel(COHLCRecordSet* ohlcRecordSet, int nbElements, int lastIdx);
+	void CalcDMI(COHLCRecordSet* ohlcRecordSet, int nbElements, int lastIdx);
 	
 	double GetATR(COHLCRecordSet* ohlcRecordSet, int period);
 	// See if there is a bar whose open is 2 times atr greater/less than previous close 
@@ -42,11 +45,13 @@ private:
 	int m_risk;
 	int m_atrPeriod;
 	int m_breakoutLength;
+	int m_dmiPeriod;
 	
 	double* m_arrWR;
 	double* m_arrHi;
 	double* m_arrLo;
-
+	double* m_arrPdi;
+	double* m_arrMdi;
 };
 
 typedef boost::shared_ptr<CWillRDataSet> WillRDataSetPtr;

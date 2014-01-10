@@ -26,6 +26,9 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_stopPx(0)
 	, m_donchianHi(0)
 	, m_donchianLo(0)
+	, m_PDI(0)
+	, m_MDI(0)
+	, m_DI_Threshold(25)
 	, m_X1(100)
 	, m_X2(0)
 	, m_forceCloseOffset(5)
@@ -125,6 +128,8 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	m_williamsR = m_willRIndicatorSet->GetRef(IND_WR, 0);
 	m_donchianHi = m_willRIndicatorSet->GetRef(IND_Donchian_Hi, 0);
 	m_donchianLo = m_willRIndicatorSet->GetRef(IND_Donchian_Lo, 0);
+	m_PDI = m_willRIndicatorSet->GetRef(IND_PDI, 0);
+	m_MDI = m_willRIndicatorSet->GetRef(IND_MDI, 0);
 
 	m_watrStopIndSet->Calculate(ohlc);
 	double trend = m_watrStopIndSet->GetRef(IND_WATR_TREND, 0);
@@ -220,11 +225,11 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	
 	// Testing for Open position
 	double last = pQuote->last();
-	LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, WR: %.2f, Hi: %.2f, Lo: %.2f")
+	LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, WR: %.2f, Hi: %.2f, Lo: %.2f, PDI: %.2f, MDI: %.2f")
 		% pPortfolio->InvestorId() % pPortfolio->ID() 
-		% last % m_williamsR % m_donchianHi % m_donchianLo));
+		% last % m_williamsR % m_donchianHi % m_donchianLo % m_PDI % m_MDI));
 
-	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo, trend);
+	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo, trend, m_PDI, m_MDI);
 	if(currentBarIdx < forceCloseBar &&
 		direction > entity::NET && 
 		(currentBarIdx > m_lastCloseBarIdx))		// In general, don't open position at the bar just closing position
@@ -347,12 +352,14 @@ void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 	}
 }
 
-entity::PosiDirectionType CASCTrendStrategy::TestForOpen( double last, double wr, double hi, double lo, double trend )
+entity::PosiDirectionType CASCTrendStrategy::TestForOpen( double last, double wr, double hi, double lo, double trend, double PDI, double MDI )
 {
-	if(last > hi && wr > m_X1 && trend > 0)
+	if(last > hi && wr > m_X1 && trend > 0
+		&& PDI > MDI && PDI > m_DI_Threshold)
 		return entity::LONG;
 
-	if(last < lo && wr < m_X2 && wr > -0.1 && trend < 0)
+	if(last < lo && wr < m_X2 && wr > -0.1 && trend < 0
+		&& MDI > PDI && MDI > m_DI_Threshold)
 		return entity::SHORT;
 
 	return entity::NET;
