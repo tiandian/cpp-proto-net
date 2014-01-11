@@ -28,10 +28,11 @@ protected:
 
 private:
 
-	entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo, double trend, double PDI, double MDI);
+	entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo, double trend);
 	bool TestForClose(entity::PosiDirectionType direction, double price, double stopPx, double extraWatr = 0.0);
 	bool IsPreBarOpenCorrect(entity::PosiDirectionType direction, double preWR);
 	void SetRisk(int risk);
+	bool OscillatorStopLoss(entity::PosiDirectionType direction, double cost, double stopPx);
 
 	int m_period;
 	int m_riskParam;
@@ -47,6 +48,8 @@ private:
 	bool m_isRealSignal;
 	entity::PosiDirectionType m_lastPositionOffset;
 	double m_initStopPx;
+	double m_costPx;
+	bool m_waitTrendEnd;
 
 	double m_williamsR;
 	double m_watr;
