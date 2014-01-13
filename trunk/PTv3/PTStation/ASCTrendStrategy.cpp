@@ -153,9 +153,14 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 		if(forceClosing // This close condition check is only effective on the bar after open
 			|| currentBarIdx >= forceCloseBar)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to Force close")
-				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pOrderPlacer, pQuote, "手动平仓");
+			if(m_waitTrendEnd)
+				m_waitTrendEnd = false;
+			else
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to Force close")
+					% pPortfolio->InvestorId() % pPortfolio->ID()));
+				ClosePosition(pOrderPlacer, pQuote, "手动平仓");
+			}
 			return;
 		}
 
