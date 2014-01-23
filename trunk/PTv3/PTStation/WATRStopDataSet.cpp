@@ -123,11 +123,13 @@ void CWATRStopDataSet::CalcWATRStopAt( COHLCRecordSet* ohlcRecordSet, int currId
 	double watr = m_arrWatr[currIdx];
 	double trend = m_arrTrend[currIdx - 1];
 	double price = m_arrSummitPx[currIdx - 1];
+	double prevStopPx = m_arrStopPx[currIdx - 1];
 	double stopPx = 0;
 	if(trend > 0) // long
 	{
 		if ( close > price) price = close;
 		stopPx = price - watr;
+		if ( prevStopPx > stopPx) stopPx = prevStopPx;	// current stop price isn't less than previous
 
 		if ((open < stopPx || close <= open)
 				&& close < stopPx) 
@@ -140,6 +142,7 @@ void CWATRStopDataSet::CalcWATRStopAt( COHLCRecordSet* ohlcRecordSet, int currId
 	{
 		if ( close < price) price = close;
 		stopPx = price + watr;
+		if (prevStopPx < stopPx) stopPx = prevStopPx;	// current stop price isn't greater than previous
 		
 		if ((open > stopPx || close >= open) 
 				&& close > stopPx) 

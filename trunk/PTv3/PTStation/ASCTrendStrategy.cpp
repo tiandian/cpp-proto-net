@@ -123,13 +123,23 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 
 	m_willRIndicatorSet->Calculate(ohlc);
 	m_williamsR = m_willRIndicatorSet->GetRef(IND_WR, 0);
-	m_donchianHi = m_willRIndicatorSet->GetRef(IND_Donchian_Hi, 0);
-	m_donchianLo = m_willRIndicatorSet->GetRef(IND_Donchian_Lo, 0);
 
 	m_watrStopIndSet->Calculate(ohlc);
 	double trend = m_watrStopIndSet->GetRef(IND_WATR_TREND, 0);
 	
 	int currentBarIdx = ohlc->GetEndIndex();
+	if(ohlc->NbElements() > 1)
+	{
+		m_donchianHi = ohlc->HighSeries[currentBarIdx - 1];
+		m_donchianLo = ohlc->LowSeries[currentBarIdx - 1];
+	}
+	else
+	{
+		m_donchianHi = 999999999;
+		m_donchianLo = 0;
+	}
+	
+
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
 
 	if(pOrderPlacer->IsClosing())
@@ -176,14 +186,26 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			bool meetCloseCondition = false;
 			if(currentBarIdx > m_lastOpenBarIdx)
 			{
-				// Test Open or Close price of the bar
-				if(sec <= 1 || sec >= 58)
+				int barsSinceEntry = currentBarIdx - m_lastOpenBarIdx;
+				if(barsSinceEntry == 1 && sec >= 58)	// test when next 2 bars closing
 				{
-					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx, 0.0);
+					m_stopPx = GetNearStopLoss(m_lastPositionOffset, ohlc, currentBarIdx - 1);
+					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx);
 				}
-				else // within bar 
+				else if(barsSinceEntry == 2 && sec >= 58)
 				{
-					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx, m_watr);
+					m_stopPx = GetNearStopLoss(m_lastPositionOffset, ohlc, currentBarIdx - 2);
+					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx);
+					
+					if(!meetCloseCondition)
+					{
+						// if the 2nd bar after entry doesn't ever make new high/low, close it
+						meetCloseCondition = IfNotBreakoutPreceding(m_lastPositionOffset, ohlc, currentBarIdx);
+					}
+				}
+				else
+				{
+					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx);
 				}
 			}
 			else // still the bar opening the position
@@ -393,5 +415,42 @@ bool CASCTrendStrategy::TestForClose( entity::PosiDirectionType direction, doubl
 	}
 
 	return false;
+}
+
+double CASCTrendStrategy::GetNearStopLoss(entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int pos)
+{
+	assert(ohlcSet != NULL);
+	assert(pos > -1);
+
+	double nearStopPx = -1;
+	if(direction == entity::LONG)
+	{
+		nearStopPx = ohlcSet->OpenSeries[pos] < ohlcSet->CloseSeries[pos] ? ohlcSet->OpenSeries[pos] : ohlcSet->CloseSeries[pos];
+	}
+	else if(direction == entity::SHORT)
+	{
+		nearStopPx = ohlcSet->OpenSeries[pos] > ohlcSet->CloseSeries[pos] ? ohlcSet->OpenSeries[pos] : ohlcSet->CloseSeries[pos];
+	}
+
+	return nearStopPx;
+}
+
+bool CASCTrendStrategy::IfNotBreakoutPreceding( entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int currentPos )
+{
+	assert(ohlcSet != NULL);
+
+	double summit = -1;
+	if(direction == entity::LONG)
+	{
+		summit = ohlcSet->HighSeries[currentPos - 1] > ohlcSet->HighSeries[currentPos - 2] ? ohlcSet->HighSeries[currentPos - 1] : ohlcSet->HighSeries[currentPos - 2];
+		return (summit < ohlcSet->HighSeries[currentPos]);
+	}
+	else if(direction == entity::SHORT)
+	{
+		summit = ohlcSet->LowSeries[currentPos - 1] < ohlcSet->LowSeries[currentPos - 2] ? ohlcSet->LowSeries[currentPos - 1] : ohlcSet->LowSeries[currentPos - 2];
+		return (summit > ohlcSet->LowSeries[currentPos]);
+	}
+
+	return true;
 }
 

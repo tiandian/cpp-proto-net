@@ -6,6 +6,7 @@
 
 class CAvatarClient;
 class CPortfolioTrendOrderPlacer;
+class COHLCRecordSet;
 
 class CASCTrendStrategy : public CTechAnalyStrategy
 {
@@ -31,6 +32,8 @@ private:
 	entity::PosiDirectionType TestForOpen(double last, double wr, double hi, double lo, double trend);
 	bool TestForClose(entity::PosiDirectionType direction, double price, double stopPx, double extraWatr = 0.0);
 	bool IsPreBarOpenCorrect(entity::PosiDirectionType direction, double preWR);
+	double GetNearStopLoss(entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int pos);
+	bool IfNotBreakoutPreceding(entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int currentPos);
 	void SetRisk(int risk);
 
 	int m_period;
