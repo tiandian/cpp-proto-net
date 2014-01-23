@@ -35,7 +35,7 @@ void CWillRDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	
 	CalcWilliamsR(ohlcRecordSet, nbElements, lastIdx);
 	//CalcDMI(ohlcRecordSet, nbElements, lastIdx);
-	CalcDonchianChannel(ohlcRecordSet, nbElements, lastIdx);
+	//CalcDonchianChannel(ohlcRecordSet, nbElements, lastIdx);
 
 	m_lastPosition = lastIdx;
 }
