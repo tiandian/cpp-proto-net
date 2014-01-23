@@ -32,7 +32,6 @@ private:
 	bool TestForClose(entity::PosiDirectionType direction, double price, double stopPx, double extraWatr = 0.0);
 	bool IsPreBarOpenCorrect(entity::PosiDirectionType direction, double preWR);
 	void SetRisk(int risk);
-	bool OscillatorStopLoss(entity::PosiDirectionType direction, double cost, double stopPx);
 
 	int m_period;
 	int m_riskParam;
@@ -48,17 +47,12 @@ private:
 	bool m_isRealSignal;
 	entity::PosiDirectionType m_lastPositionOffset;
 	double m_initStopPx;
-	double m_costPx;
-	bool m_waitTrendEnd;
 
 	double m_williamsR;
 	double m_watr;
 	double m_stopPx;
 	double m_donchianHi;
 	double m_donchianLo;
-	double m_PDI;
-	double m_MDI;
-	double m_DI_Threshold;
 
 	WillRDataSetPtr m_willRIndicatorSet;
 	WATRStopDataSetPtr m_watrStopIndSet;
