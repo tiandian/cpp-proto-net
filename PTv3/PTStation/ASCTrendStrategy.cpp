@@ -7,6 +7,11 @@
 #include "Portfolio.h"
 #include "PortfolioTrendOrderPlacer.h"
 #include "OHLCRecordSet.h"
+#include "DoubleCompare.h"
+
+#define IF_PRICE_TICK (0.2)
+#define DOUBLE_MAX_PRICE (999999999.0)
+#define DOUBLE_MIN_PRICE (0.0)
 
 CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
 	: CTechAnalyStrategy(strategyItem, pAvatar)
@@ -135,8 +140,8 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 	}
 	else
 	{
-		m_donchianHi = 999999999;
-		m_donchianLo = 0;
+		m_donchianHi = DOUBLE_MAX_PRICE;
+		m_donchianLo = DOUBLE_MIN_PRICE;
 	}
 	
 
@@ -190,12 +195,12 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 				if(barsSinceEntry == 1 && sec >= 58)	// test when next 2 bars closing
 				{
 					m_stopPx = GetNearStopLoss(m_lastPositionOffset, ohlc, currentBarIdx - 1);
-					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx);
+					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote, m_stopPx);
 				}
 				else if(barsSinceEntry == 2 && sec >= 58)
 				{
 					m_stopPx = GetNearStopLoss(m_lastPositionOffset, ohlc, currentBarIdx - 2);
-					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx);
+					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote, m_stopPx);
 					
 					if(!meetCloseCondition)
 					{
@@ -205,7 +210,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 				}
 				else
 				{
-					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), m_stopPx);
+					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote, m_stopPx);
 				}
 			}
 			else // still the bar opening the position
@@ -224,7 +229,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 					}
 				}
 				
-				meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote->last(), initStopPx, 0.0);
+				meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote, initStopPx, 0.0);
 			}
 
 			if(meetCloseCondition)
@@ -246,7 +251,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 		% pPortfolio->InvestorId() % pPortfolio->ID() 
 		% last % m_williamsR % m_donchianHi % m_donchianLo));
 
-	entity::PosiDirectionType direction = TestForOpen(last, m_williamsR, m_donchianHi, m_donchianLo, trend);
+	entity::PosiDirectionType direction = TestForOpen(pQuote, m_williamsR, m_donchianHi, m_donchianLo, trend);
 	if(currentBarIdx < forceCloseBar &&
 		direction > entity::NET && 
 		(currentBarIdx > m_lastCloseBarIdx))		// In general, don't open position at the bar just closing position
@@ -369,12 +374,18 @@ void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 	}
 }
 
-entity::PosiDirectionType CASCTrendStrategy::TestForOpen( double last, double wr, double hi, double lo, double trend )
+entity::PosiDirectionType CASCTrendStrategy::TestForOpen( entity::Quote* pQuote, double wr, double hi, double lo, double trend )
 {
-	if(last > hi && wr > m_X1 && trend > 0)
+	double last = pQuote->last();
+	double ask = pQuote->ask();
+	double bid = pQuote->bid();
+
+	if(ask > hi && DoubleLessEqual(ask - last, IF_PRICE_TICK)
+		&& wr > m_X1 && trend > 0)
 		return entity::LONG;
 
-	if(last < lo && wr < m_X2 && wr > -0.1 && trend < 0)
+	if(bid < lo && DoubleLessEqual(last - bid, IF_PRICE_TICK)
+		&& wr < m_X2 && wr > -0.1 && trend < 0)
 		return entity::SHORT;
 
 	return entity::NET;
@@ -403,15 +414,29 @@ bool CASCTrendStrategy::IsPreBarOpenCorrect( entity::PosiDirectionType direction
 	return true;
 }
 
-bool CASCTrendStrategy::TestForClose( entity::PosiDirectionType direction, double price, double stopPx, double extraWatr )
+bool CASCTrendStrategy::TestForClose( entity::PosiDirectionType direction, entity::Quote* pQuote, double stopPx, double extraWatr )
 {
+	double last = pQuote->last();
+	double ask = pQuote->ask();
+	double bid = pQuote->bid();
+
 	if(direction == entity::LONG)
 	{
-		return price < stopPx - extraWatr;
+		if(DoubleLessEqual(last - bid, IF_PRICE_TICK))
+		{
+			return DoubleLessEqual(bid, stopPx - extraWatr);
+		}
+		else
+			return false;
 	}
 	else if(direction == entity::SHORT)
 	{
-		return price > stopPx + extraWatr;
+		if(DoubleLessEqual(ask - last, IF_PRICE_TICK))
+		{
+			return DoubleGreaterEqual(ask,  stopPx + extraWatr);
+		}
+		else
+			return false;
 	}
 
 	return false;
