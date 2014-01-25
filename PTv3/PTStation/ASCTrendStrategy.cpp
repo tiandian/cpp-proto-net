@@ -163,7 +163,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to Force close")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pOrderPlacer, pQuote, "手动平仓");
+			ClosePosition(pPortfolio, pOrderPlacer, pQuote, "手动平仓");
 			return;
 		}
 
@@ -175,7 +175,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Check if pre bar open at fake signal - preWR: %.2f (%s)")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % preWR % GetPosiDirectionText(m_lastPositionOffset)));
 			if(!m_isRealSignal)
-				ClosePosition(pOrderPlacer, pQuote, "假信号开仓立即平仓");
+				ClosePosition(pPortfolio, pOrderPlacer, pQuote, "假信号开仓立即平仓");
 		}
 
 		unsigned int hour = 0, min = 0, sec = -1;
@@ -185,9 +185,11 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 			m_watr = m_watrStopIndSet->GetRef(IND_WATR_VAL, 0);
 			m_stopPx = m_watrStopIndSet->GetRef(IND_WATR_STOP, 1);
 
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Test for closing %s position - WATR: %.2f, StopPx: %.2f, Last: %.2f")
-				% pPortfolio->InvestorId() % pPortfolio->ID() % GetPosiDirectionText(m_lastPositionOffset) % m_watr % m_stopPx % pQuote->last()));
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Test for closing %s position - StopPx: %.2f, Last: %.2f, Ask: %.2f, Bid: %.2f")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % GetPosiDirectionText(m_lastPositionOffset) 
+				% m_stopPx % pQuote->last() % pQuote->ask() % pQuote->bid()));
 
+			string chnCloseReason = "触发WATR止损(盈)";
 			bool meetCloseCondition = false;
 			if(currentBarIdx > m_lastOpenBarIdx)
 			{
@@ -196,16 +198,28 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 				{
 					m_stopPx = GetNearStopLoss(m_lastPositionOffset, ohlc, currentBarIdx - 1);
 					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote, m_stopPx);
+					if(meetCloseCondition)
+					{
+						LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position at next 1st bar. StopPx: %.2f")
+						% pPortfolio->InvestorId() % pPortfolio->ID() % m_stopPx));
+						chnCloseReason = "开仓后第1根K线突破失败";
+					}
 				}
 				else if(barsSinceEntry == 2 && sec >= 58)
 				{
 					m_stopPx = GetNearStopLoss(m_lastPositionOffset, ohlc, currentBarIdx - 2);
 					meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote, m_stopPx);
-					
+					if(meetCloseCondition)
+					{
+						LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position at next 2nd bar. StopPx: %.2f")
+							% pPortfolio->InvestorId() % pPortfolio->ID() % m_stopPx));
+						chnCloseReason = "开仓后第2根K线突破失败";
+					}
 					if(!meetCloseCondition)
 					{
 						// if the 2nd bar after entry doesn't ever make new high/low, close it
 						meetCloseCondition = IfNotBreakoutPreceding(m_lastPositionOffset, ohlc, currentBarIdx);
+						chnCloseReason = "开仓后第2根K线未创新高(低)";
 					}
 				}
 				else
@@ -229,14 +243,14 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 					}
 				}
 				
-				meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote, initStopPx, 0.0);
+				meetCloseCondition = TestForClose(m_lastPositionOffset, pQuote, initStopPx);
 			}
 
 			if(meetCloseCondition)
 			{
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Closing position due to WATR stop")
 					% pPortfolio->InvestorId() % pPortfolio->ID()));
-				ClosePosition(pOrderPlacer, pQuote, "触发WATR止损(盈)");
+				ClosePosition(pPortfolio, pOrderPlacer, pQuote, chnCloseReason.c_str());
 				m_lastCloseBarIdx = currentBarIdx;
 				return;
 			}
@@ -344,7 +358,7 @@ void CASCTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPort
 	}
 }
 
-void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText )
+void CASCTrendStrategy::ClosePosition( CPortfolio* pPortfolio, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText )
 {
 	if(pOrderPlacer != NULL)
 	{
@@ -366,11 +380,11 @@ void CASCTrendStrategy::ClosePosition( CPortfolioTrendOrderPlacer* pOrderPlacer,
 		pOrderPlacer->CloseOrder(closePx);
 
 		ResetForceClose();
-		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f")
-			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
-
 		// reset initStopPx
 		m_initStopPx = -1.0;
+
+		pPortfolio->PushMessage(boost::str(boost::format("%s - %s 平仓 @ %.2f")
+			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
 	}
 }
 

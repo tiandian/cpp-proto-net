@@ -23,7 +23,7 @@ public:
 protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
 	void OpenPosition(entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening, const char* noteText);
-	void ClosePosition(CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText);
+	void ClosePosition(CPortfolio* pPortfolio, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText);
 
 	void OnBeforeAddingHistSrcConfig(CHistSourceCfg* pHistSrcCfg);
 

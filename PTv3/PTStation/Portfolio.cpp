@@ -455,26 +455,18 @@ void CPortfolio::StopStrategyDueTo( const string& stopReason )
 
 	if(stopReason.length() > 0)
 	{
-		string utf8Msg;
-		GB2312ToUTF_8(utf8Msg, stopReason.c_str());
-		m_portfolioUpdate.set_message(utf8Msg);
-		PushUpdate();
-		m_portfolioUpdate.clear_message();
+		PushMessage(stopReason);
 	}
 }
 
-void CPortfolio::StartStrategyDueTo( const string& stopReason )
+void CPortfolio::StartStrategyDueTo( const string& startReason )
 {
 	StartStrategy(0);
 	m_portfolioUpdate.set_running(true);
 
-	if(stopReason.length() > 0)
+	if(startReason.length() > 0)
 	{
-		string utf8Msg;
-		GB2312ToUTF_8(utf8Msg, stopReason.c_str());
-		m_portfolioUpdate.set_message(utf8Msg);
-		PushUpdate();
-		m_portfolioUpdate.clear_message();
+		PushMessage(startReason);
 	}
 }
 
@@ -486,6 +478,16 @@ void CPortfolio::StrategyForceOpen()
 void CPortfolio::StrategyForceClose()
 {
 	m_strategy->SetForceClose();
+}
+
+void CPortfolio::PushMessage( const string& msg )
+{
+	boost::mutex::scoped_lock l(m_mutPushingMsg);
+	string utf8Msg;
+	GB2312ToUTF_8(utf8Msg, msg.c_str());
+	m_portfolioUpdate.set_message(utf8Msg);
+	PushUpdate();
+	m_portfolioUpdate.clear_message();
 }
 
 

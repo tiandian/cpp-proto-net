@@ -43,6 +43,7 @@ public:
 	void SetEndTimePoints(vector<string>& timepoints);
 	void StrategyForceOpen();
 	void StrategyForceClose();
+	void PushMessage(const string& msg);
 
 	// legs
 	vector<LegPtr>& Legs(){ return m_legs;}
@@ -72,7 +73,7 @@ private:
 	void CheckForStop(const string& quoteUpdateTime);
 	void CheckForStart(const string& quoteUpdateTime);
 	void StopStrategyDueTo(const string& stopReason);
-	void StartStrategyDueTo(const string& stopReason);
+	void StartStrategyDueTo(const string& startReason);
 	
 	void OnQuoteRecevied(boost::chrono::steady_clock::time_point& timestamp, entity::Quote* pQuote);
 	
@@ -118,6 +119,7 @@ private:
 	double m_profit;
 	double m_avgCost;
 	boost::mutex m_mutStat;
+	boost::mutex m_mutPushingMsg;
 
 	CAvatarClient* m_avatar;
 
