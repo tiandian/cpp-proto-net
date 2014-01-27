@@ -483,7 +483,7 @@ bool CASCTrendStrategy::IfNotBreakoutPreceding( CPortfolio* pPortfolio, entity::
 		double prevHighest = ohlcSet->HighSeries[currentPos - 1] > ohlcSet->HighSeries[currentPos - 2] ? ohlcSet->HighSeries[currentPos - 1] : ohlcSet->HighSeries[currentPos - 2];
 		notBreakout = (ohlcSet->HighSeries[currentPos] < prevHighest);
 
-		LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Whether the next 2nd bar made breakout (%s), prevHigh:%.2f, currentHigh:%.2f")
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Whether the next 2nd bar made breakout (%s), prevHigh:%.2f, currentHigh:%.2f")
 			% pPortfolio->InvestorId() % pPortfolio->ID() % (notBreakout ? "No" : "Yes")
 			% prevHighest % ohlcSet->HighSeries[currentPos]));
 	}
@@ -492,7 +492,7 @@ bool CASCTrendStrategy::IfNotBreakoutPreceding( CPortfolio* pPortfolio, entity::
 		double prevLowest = ohlcSet->LowSeries[currentPos - 1] < ohlcSet->LowSeries[currentPos - 2] ? ohlcSet->LowSeries[currentPos - 1] : ohlcSet->LowSeries[currentPos - 2];
 		notBreakout = (ohlcSet->LowSeries[currentPos] > prevLowest);
 
-		LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Whether the next 2nd bar made breakout (%s), prevLow:%.2f, currentLow:%.2f")
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Whether the next 2nd bar made breakout (%s), prevLow:%.2f, currentLow:%.2f")
 			% pPortfolio->InvestorId() % pPortfolio->ID() % (notBreakout ? "No" : "Yes")
 			% prevLowest % ohlcSet->LowSeries[currentPos]));
 	}
