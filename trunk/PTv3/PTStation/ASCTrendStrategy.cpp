@@ -218,7 +218,7 @@ void CASCTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boo
 					if(!meetCloseCondition)
 					{
 						// if the 2nd bar after entry doesn't ever make new high/low, close it
-						meetCloseCondition = IfNotBreakoutPreceding(m_lastPositionOffset, ohlc, currentBarIdx);
+						meetCloseCondition = IfNotBreakoutPreceding(pPortfolio, m_lastPositionOffset, ohlc, currentBarIdx);
 						chnCloseReason = "开仓后第2根K线未创新高(低)";
 					}
 				}
@@ -474,22 +474,29 @@ double CASCTrendStrategy::GetNearStopLoss(entity::PosiDirectionType direction, C
 	return nearStopPx;
 }
 
-bool CASCTrendStrategy::IfNotBreakoutPreceding( entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int currentPos )
+bool CASCTrendStrategy::IfNotBreakoutPreceding( CPortfolio* pPortfolio, entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int currentPos )
 {
 	assert(ohlcSet != NULL);
-
-	double summit = -1;
+	bool notBreakout = false;
 	if(direction == entity::LONG)
 	{
-		summit = ohlcSet->HighSeries[currentPos - 1] > ohlcSet->HighSeries[currentPos - 2] ? ohlcSet->HighSeries[currentPos - 1] : ohlcSet->HighSeries[currentPos - 2];
-		return (summit < ohlcSet->HighSeries[currentPos]);
+		double prevHighest = ohlcSet->HighSeries[currentPos - 1] > ohlcSet->HighSeries[currentPos - 2] ? ohlcSet->HighSeries[currentPos - 1] : ohlcSet->HighSeries[currentPos - 2];
+		notBreakout = (ohlcSet->HighSeries[currentPos] < prevHighest);
+
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Whether the next 2nd bar made breakout (%s), prevHigh:%.2f, currentHigh:%.2f")
+			% pPortfolio->InvestorId() % pPortfolio->ID() % (notBreakout ? "No" : "Yes")
+			% prevHighest % ohlcSet->HighSeries[currentPos]));
 	}
 	else if(direction == entity::SHORT)
 	{
-		summit = ohlcSet->LowSeries[currentPos - 1] < ohlcSet->LowSeries[currentPos - 2] ? ohlcSet->LowSeries[currentPos - 1] : ohlcSet->LowSeries[currentPos - 2];
-		return (summit > ohlcSet->LowSeries[currentPos]);
+		double prevLowest = ohlcSet->LowSeries[currentPos - 1] < ohlcSet->LowSeries[currentPos - 2] ? ohlcSet->LowSeries[currentPos - 1] : ohlcSet->LowSeries[currentPos - 2];
+		notBreakout = (ohlcSet->LowSeries[currentPos] > prevLowest);
+
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Whether the next 2nd bar made breakout (%s), prevLow:%.2f, currentLow:%.2f")
+			% pPortfolio->InvestorId() % pPortfolio->ID() % (notBreakout ? "No" : "Yes")
+			% prevLowest % ohlcSet->LowSeries[currentPos]));
 	}
 
-	return true;
+	return notBreakout;
 }
 

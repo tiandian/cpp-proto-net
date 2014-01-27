@@ -33,7 +33,7 @@ private:
 	bool TestForClose(entity::PosiDirectionType direction, entity::Quote* pQuote, double stopPx, double extraWatr = 0.0);
 	bool IsPreBarOpenCorrect(entity::PosiDirectionType direction, double preWR);
 	double GetNearStopLoss(entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int pos);
-	bool IfNotBreakoutPreceding(entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int currentPos);
+	bool IfNotBreakoutPreceding(CPortfolio* pPortfolio, entity::PosiDirectionType direction, COHLCRecordSet* ohlcSet, int currentPos);
 	void SetRisk(int risk);
 
 	int m_period;
