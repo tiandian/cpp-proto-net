@@ -1,0 +1,55 @@
+Inputs:
+K1(0.5), K2(0.5), Mday(1), Nday(1);
+Vars:
+BuyRange(0), SellRange(0);
+BuyTrig(0),SellTrig(0);
+HH(0),LL(0),HC(0),LC(0);
+
+If CurrentBar > 1 Then
+	Begin
+		HH = Highest(High, Mday);
+		HC = Highest(Close, Mday);
+		LL = Lowest(Low, Mday);
+		LC = Lowest(Close, Mday);
+		
+		If(HH - LC) >= (HC - LL) Then
+			Begin
+				SellRange = HH - LC;
+			End;
+		Else
+			Begin
+				SellRange = HC - LL;
+			End;
+			
+		HH = Highest(High, Nday);
+		HC = Highest(Close, Nday);
+		LL = Lowest(Low, Nday);
+		LC = Lowest(Close, Nday);
+		
+		If(HH - LC) >= (HC - LL) Then
+			Begin
+				BuyRange = HH - LC;
+			End;
+		Else
+			Begin
+				BuyRange = HC - LL;
+			End;
+			
+		BuyTrig = K1 * BuyRange;
+		SellTrig = K2 * SellRange;
+		
+		If MarketPosition = 0 Then
+		Begin
+			Buy at Open of next bar + BuyTrig Stop;
+			Sell at Open of next bar - SellTrig Stop;
+		End;
+		
+		If MarketPosition = -1 Then
+		Begin
+			Buy at Open of next bar + BuyTrig Stop;
+		End;
+		
+		If MarketPosition = 1 Then
+			Sell at Open of next bar - SellTrig Stop;
+		End;
+	End;
