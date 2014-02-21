@@ -1,0 +1,36 @@
+Params
+
+Vars
+	NumericSeries pivot;
+	NumericSeries r1;
+	NumericSeries s1;
+	NumericSeries r2;
+	NumericSeries s2;
+	NumericSeries r3;
+	NumericSeries s3;
+	NumericSeries sm1;
+	NumericSeries rm1;
+	NumericSeries sm2;
+	NumericSeries rm2;
+	NumericSeries sm3;
+	NumericSeries rm3;
+Begin
+
+	If(CurrentTime < 0.1510)
+	{
+		pivot = (HighD[1] + LowD[1] + CloseD[1]) / 3;
+		r1 = 2 * pivot - LowD[1];
+		s1 = 2 * pivot - HighD[1];
+		r2 = pivot + (r1 - s1);
+		s2 = pivot - (r1 - s1);
+		r3 = HighD[1] - 2 * (LowD[1] - pivot);
+		s3 = LowD[1] - 2 * (HighD[1] - pivot);
+
+		sm1 = (pivot + s1) / 2;
+		sm2 = (s1 + s2) / 2;
+		sm3 = (s2 + s3) / 2;
+		rm1 = (pivot + r1) / 2;
+		rm2 = (r1 + r2) / 2;
+		rm3 = (r2 + r3) / 2;
+	}
+End
