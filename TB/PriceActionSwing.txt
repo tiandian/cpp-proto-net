@@ -1,0 +1,201 @@
+Params
+	Numeric SwingSize(7);
+	Numeric DtbStrength(15);
+Vars
+	// 1: Up, -1: Down, 0: NoTrend
+	NumericSeries SwingTrend(0);
+	// 1: Higher, -1: Lower, 0: Double
+	NumericSeries SwingRelation(0);
+	Bool ignoreSwings(True);
+	
+	// Swing calculation
+	Numeric bar(0);
+    Numeric price(0);
+    //private int newSwing = 0;
+    Bool newHigh(False);
+    Bool newLow(False);
+    Bool updateHigh(False);
+    Bool updateLow(False);
+    NumericSeries swingCounterDn(0);
+    NumericSeries swingCounterUp(0);
+    NumericSeries trendChangeBar(0);
+    NumericSeries swingSlope(0);
+    // Swing values
+    NumericSeries curHigh(0);
+    NumericSeries curHighBar(0);
+    NumericSeries curHighRelation(1); // Relation.Higher
+    NumericSeries curLow(0);
+    NumericSeries curLowBar(0);
+    NumericSeries curLowRelation(1); // Relation.Higher
+    NumericSeries lastHigh(0);
+    NumericSeries lastHighBar(0);
+    NumericSeries lastHighRelation(1); // Relation.Higher;
+    NumericSeries lastLow(0);
+    NumericSeries lastLowBar(0);
+    NumericSeries lastLowRelation(1); // Relation.Higher;
+	
+	// Loop Variables
+	Numeric loopHigh;
+	Numeric loopLow;
+	
+	NumericSeries ATR14;
+	Numeric dtbOffset;
+Begin
+
+	If(CurrentBar == 1)
+	{
+		curHighBar = CurrentBar;
+		curHigh = High[1];
+		curLowBar = CurrentBar;
+		curLow = Low[1];
+	}
+
+	If(CurrentBar < SwingSize)
+		Return;
+		
+	// Swing calculation
+	If (swingSlop == 1 && High <= curHigh)
+		newHigh = False;
+	Else
+		newHigh = True;
+		
+	If (swingSlope == -1 && Low >= curLow)
+		newLow = False;
+	Else
+		newLow = True;
+	
+	If (newHigh)
+	{
+		For loopHigh = 1 to SwingSize
+		{
+			If(High[0] <= High[loopHigh])
+			{
+				newHigh = False;
+				Break;
+			}
+		}
+	}
+	If (newLow)
+	{
+		For loopLow = 1 to SwingSize
+		{
+			If(Low[0] >= Low[loopLow])
+			{
+				newLow = False;
+				Break;
+			}
+		}
+	}
+	If (newHigh && newLow)
+	{
+		If(swingSlop = -1)
+			newHigh = false;
+		Else
+			newLow = false;
+	}
+	
+	ATR14 = AvgTrueRange(14);
+	
+	// Set new high or low
+	if (newHigh)
+	{
+		if (swingSlope != 1)
+		{
+			bar = CurrentBar - HighestBar(High, CurrentBar - curLowBar);
+			price = High[HighestBar(High, CurrentBar - curLowBar)];
+			updateHigh = false;
+		}
+		else
+		{
+			bar = CurrentBar;
+			price = High[0];
+			updateHigh = true;
+		}
+		
+		//CalcUpSwing(bar, price, updateHigh);
+		if (!updateHigh)
+		{
+			lastHigh = curHigh;
+			lastHighBar = curHighBar;
+			lastHighRelation = curHighRelation;
+			swingCounterUp = swingCounterUp + 1;
+			swingSlope = 1;
+			trendChangeBar = bar;
+		}
+		curHighBar = bar;
+		curHigh = price;
+		dtbOffset = ATR14[CurrentBar - curHighBar] * dtbStrength / 100;
+		if (curHigh > lastHigh - dtbOffset && curHigh < lastHigh + dtbOffset)
+			curHighRelation = 0; // Relation.Double
+		else if (curHigh < lastHigh)
+			curHighRelation = -1; // Relation.Lower
+		else
+			curHighRelation = 1; // Relation.Higher
+	}
+	else if (newLow)
+	{
+		if (swingSlope != -1)
+		{
+			bar = CurrentBar - LowestBar(Low, CurrentBar - curHighBar);
+			price = Low[LowestBar(Low, CurrentBar - curHighBar)];
+			updateLow = false;
+		}
+		else
+		{
+			bar = CurrentBar;
+			price = Low[0];
+			updateLow = true;
+		}
+		//CalcDnSwing(bar, price, updateLow);
+		if (!updateLow)
+		{
+			lastLow = curLow;
+			lastLowBar = curLowBar;
+			lastLowRelation = curLowRelation;
+			swingCounterDn = swingCounterDn + 1;
+			swingSlope = -1;
+			trendChangeBar = bar;
+		}
+		curLowBar = bar;
+		curLow = price;
+
+		dtbOffset = ATR14[CurrentBar - curLowBar] * dtbStrength / 100;
+		if (curLow > lastLow - dtbOffset && curLow < lastLow + dtbOffset)
+			curLowRelation = 0; // Relation.Double
+		else if (curLow < lastLow)
+			curLowRelation = -1; // Relation.Lower
+		else
+			curLowRelation = 1; // Relation.Higher
+	}
+	
+	// Swing trend
+	if ((curHighRelation == 1 // Relation.Higher 
+			&& curLowRelation == 1 //Relation.Higher
+		) || (swingTrend[1] == 1 && swingSlope == 1)
+			|| (ignoreSwings && swingTrend[1] == 1 && curLowRelation == 1)
+			|| (((swingTrend[1] == 1) || (swingSlope == 1 && curHighRelation == 1))
+				&& curLowRelation == 0))
+		swingTrend = 1;
+	else if ((curHighRelation == -1 && curLowRelation == -1)
+			|| (swingTrend[1] == -1 && swingSlope == -1)
+			|| (ignoreSwings && swingTrend[1] == -1 && curHighRelation == -1)
+			|| (((swingTrend[1] == -1) || (swingSlope == -1 && curLowRelation == -1))
+				&& curHighRelation == 0))
+		swingTrend = -1;
+	else
+		swingTrend = 0;
+
+
+    // Swing relation
+	if (curLowRelation == 0)
+		swingRelation = 2;
+	else if (curHighRelation == 0)
+		swingRelation = -2;
+	else if (curHighRelation == 1 && curLowRelation == 1)
+		swingRelation = 1;
+	else if (curHighRelation == -1 && curLowRelation -1)
+		swingRelation = -1;
+	else
+		swingRelation = 0;
+
+End
