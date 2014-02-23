@@ -1,3 +1,10 @@
+//------------------------------------------------------------------------
+// 简称: PriceActionSwing
+// 名称: PriceActionSwing
+// 类别: 公式应用
+// 类型: 用户应用
+//------------------------------------------------------------------------
+
 Params
 	Numeric SwingSize(7);
 	Numeric DtbStrength(15);
@@ -54,7 +61,7 @@ Begin
 		Return;
 		
 	// Swing calculation
-	If (swingSlop == 1 && High <= curHigh)
+	If (swingSlope == 1 && High <= curHigh)
 		newHigh = False;
 	Else
 		newHigh = True;
@@ -88,7 +95,7 @@ Begin
 	}
 	If (newHigh && newLow)
 	{
-		If(swingSlop = -1)
+		If(swingSlope == -1)
 			newHigh = false;
 		Else
 			newLow = false;
@@ -193,9 +200,29 @@ Begin
 		swingRelation = -2;
 	else if (curHighRelation == 1 && curLowRelation == 1)
 		swingRelation = 1;
-	else if (curHighRelation == -1 && curLowRelation -1)
+	else if (curHighRelation == -1 && curLowRelation == -1)
 		swingRelation = -1;
 	else
 		swingRelation = 0;
+	
+	Commentary("Trend: " + Text(swingTrend) + ", Relation: " + Text(swingRelation));
+ 	
+	If(swingTrend > 0)
+	{
+		PlotNumeric("SwingTrend", Low, High, Rgb(255, 174, 201)); 
+	}
+	
+	If(swingTrend < 0)
+	{
+		PlotNumeric("SwingTrend", High, Low, Blue); 
+	}	
 
 End
+
+//------------------------------------------------------------------------
+// 编译版本	GS2010.12.08
+// 用户版本	2014/02/23 21:28
+// 版权所有	xiaoyong_zh
+// 更改声明	TradeBlazer Software保留对TradeBlazer平台
+//			每一版本的TrabeBlazer公式修改和重写的权利
+//------------------------------------------------------------------------
