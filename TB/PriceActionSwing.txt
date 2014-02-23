@@ -8,6 +8,8 @@
 Params
 	Numeric SwingSize(7);
 	Numeric DtbStrength(15);
+	Numeric breakoutLength(10);
+	Numeric ROCLength(12);
 Vars
 	// 1: Up, -1: Down, 0: NoTrend
 	NumericSeries SwingTrend(0);
@@ -47,6 +49,14 @@ Vars
 	
 	NumericSeries ATR14;
 	Numeric dtbOffset;
+	
+	// Donchian Channel
+	NumericSeries donchianHigh;
+	NumericSeries donchianLow;
+	
+	// ROC
+	NumericSeries ROC_Filter;
+	NumericSeries ROCValue;
 Begin
 
 	If(CurrentBar == 1)
@@ -215,7 +225,56 @@ Begin
 	If(swingTrend < 0)
 	{
 		PlotNumeric("SwingTrend", High, Low, Blue); 
-	}	
+	}
+	
+	donchianHigh = Highest(High[1], breakoutLength);
+	donchianLow = Lowest(Low[1], breakoutLength);
+	
+	ROCValue = (Close - Close[ROCLength])/Close[ROCLength]*100;
+	ROC_Filter = (ROCValue + ROCValue[1] * 2 + ROCValue[2] * 2 + ROCValue[3]) / 6;
+	
+	If(MarketPosition == 0 && Time < 0.1510)
+	{
+		If(swingTrend > 0 && Close[1] > donchianHigh[1]
+			&& ROC_Filter > 0
+		)
+		{
+			Buy(1, Open);
+		}
+		
+		If(swingTrend < 0 && Close[1] < donchianLow[1]
+			&& ROC_Filter < 0
+		)
+		{
+			SellShort(1, Open);
+		}
+	}
+	else If(MarketPosition > 0)
+	{
+		If(swingTrend != 1)
+		{
+			Sell(1, Close);
+		}
+	}
+	else If(MarketPosition < 0)
+	{
+		If(swingTrend != -1)
+		{
+			BuyToCover(1, Close);
+		}
+	}
+	
+	If(Time > 0.1510)
+	{
+        if(marketposition==-1)
+        {
+			BuyToCover(1,Open);
+        }
+        if(marketposition==1)
+        {
+			Sell(1,Open);
+        }
+	}
 
 End
 
