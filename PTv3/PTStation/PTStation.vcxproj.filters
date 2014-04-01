@@ -329,6 +329,15 @@
     <ClInclude Include="WATRStopDataSet.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
+    <ClInclude Include="RangeTrendStrategy.h">
+      <Filter>Header Files\strategy</Filter>
+    </ClInclude>
+    <ClInclude Include="DonchianDataSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
+    <ClInclude Include="ATRDataSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -563,6 +572,15 @@
       <Filter>Source Files\tech</Filter>
     </ClCompile>
     <ClCompile Include="WATRStopDataSet.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="RangeTrendStrategy.cpp">
+      <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="DonchianDataSet.cpp">
+      <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="ATRDataSet.cpp">
       <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>

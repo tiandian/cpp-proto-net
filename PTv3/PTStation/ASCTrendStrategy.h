@@ -48,6 +48,7 @@ private:
 	int m_lastOpenBarIdx;
 	int m_lastCloseBarIdx;
 	bool m_isRealSignal;
+	bool m_allowFakeSignal;
 	entity::PosiDirectionType m_lastPositionOffset;
 	double m_initStopPx;
 

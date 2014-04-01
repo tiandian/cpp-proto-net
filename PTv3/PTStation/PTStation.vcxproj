@@ -100,6 +100,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="ASCTrendStrategy.h" />
     <ClInclude Include="ASCTrendTrigger.h" />
     <ClInclude Include="AsyncOrderPendingTimer.h" />
+    <ClInclude Include="ATRDataSet.h" />
     <ClInclude Include="AvatarClient.h" />
     <ClInclude Include="AvatarFactory.h" />
     <ClInclude Include="BollDataSet.h" />
@@ -110,6 +111,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientProtocol.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="DonchianDataSet.h" />
     <ClInclude Include="DoubleCompare.h" />
     <ClInclude Include="entity\enum.pb.h" />
     <ClInclude Include="entity\message.pb.h" />
@@ -118,6 +120,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\trade.pb.h" />
     <ClInclude Include="LinerRegressionDataSet.h" />
     <ClInclude Include="LinerRegressionStrategy.h" />
+    <ClInclude Include="RangeTrendStrategy.h" />
     <ClInclude Include="WATRStopDataSet.h" />
     <ClInclude Include="WillRDataSet.h" />
     <ClInclude Include="WMATrendDataSet.h" />
@@ -191,6 +194,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="ASCTrendStrategy.cpp" />
     <ClCompile Include="ASCTrendTrigger.cpp" />
     <ClCompile Include="AsyncOrderPendingTimer.cpp" />
+    <ClCompile Include="ATRDataSet.cpp" />
     <ClCompile Include="AvatarClient.cpp" />
     <ClCompile Include="AvatarFactory.cpp" />
     <ClCompile Include="BollDataSet.cpp" />
@@ -199,6 +203,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientProtocol.cpp" />
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="DonchianDataSet.cpp" />
     <ClCompile Include="DoubleCompare.cpp" />
     <ClCompile Include="entity\enum.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -222,6 +227,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="LinerRegressionDataSet.cpp" />
     <ClCompile Include="LinerRegressionStrategy.cpp" />
+    <ClCompile Include="RangeTrendStrategy.cpp" />
     <ClCompile Include="WATRStopDataSet.cpp" />
     <ClCompile Include="WillRDataSet.cpp" />
     <ClCompile Include="WMATrendDataSet.cpp" />

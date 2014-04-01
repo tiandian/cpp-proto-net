@@ -18,3 +18,7 @@
 #define IF_PREFIX "IF"
 
 #define HIST_DATA_FOLDER "HistData"
+
+#define IF_PRICE_TICK (0.2)
+#define DOUBLE_MAX_PRICE (999999999.0)
+#define DOUBLE_MIN_PRICE (0.0)
