@@ -9,10 +9,6 @@
 #include "OHLCRecordSet.h"
 #include "DoubleCompare.h"
 
-#define IF_PRICE_TICK (0.2)
-#define DOUBLE_MAX_PRICE (999999999.0)
-#define DOUBLE_MIN_PRICE (0.0)
-
 CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
 	: CTechAnalyStrategy(strategyItem, pAvatar)
 	, m_period(0)
@@ -23,6 +19,7 @@ CASCTrendStrategy::CASCTrendStrategy(const entity::StrategyItem& strategyItem, C
 	, m_marketOpen(false)
 	, m_lastPositionOffset(entity::NET)
 	, m_isRealSignal(false)
+	, m_allowFakeSignal(true)
 	, m_lastOpenBarIdx(0)
 	, m_lastCloseBarIdx(-1)
 	, m_williamsR(-1.0)
@@ -352,7 +349,7 @@ void CASCTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPort
 		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 
 		m_lastPositionOffset = direction;
-		m_isRealSignal = false; // When opening position, not sure current bar is real signal or not
+		m_isRealSignal = m_allowFakeSignal ? true : false; // When opening position, not sure current bar is real signal or not
 		ResetForceOpen();
 
 	}
