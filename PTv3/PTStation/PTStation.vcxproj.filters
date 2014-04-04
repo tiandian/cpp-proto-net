@@ -338,6 +338,9 @@
     <ClInclude Include="ATRDataSet.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
+    <ClInclude Include="StrategyOrderCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -582,6 +585,9 @@
     </ClCompile>
     <ClCompile Include="ATRDataSet.cpp">
       <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="StrategyOrderCommand.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
