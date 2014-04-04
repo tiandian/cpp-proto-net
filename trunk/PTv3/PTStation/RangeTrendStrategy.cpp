@@ -27,6 +27,8 @@ CRangeTrendStrategy::CRangeTrendStrategy(const entity::StrategyItem& strategyIte
 	, m_currentLow(0.0)
 	, m_NATR(0.0)
 	, m_StopLoss(0.0)
+	, m_fireAtNextBar(false)
+	, m_lastBarIdx(-1)
 {
 }
 
@@ -110,6 +112,7 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 	//int forceCloseBar = ohlc->GetSize() - m_forceCloseOffset;
 
 	int currentBarIdx = ohlc->GetEndIndex();
+
 	if(currentBarIdx <= m_openPeriod)
 		return;	// too few bars to test
 
@@ -123,6 +126,17 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 
 	m_atrDataSet->Calculate(ohlc);
 	m_NATR = m_atrDataSet->GetRef(IND_ATR, 1);
+
+	if(currentBarIdx > m_lastBarIdx)
+	{
+		m_lastBarIdx = currentBarIdx;
+		if(m_fireAtNextBar)
+		{
+			// Fire trigger
+			m_fireAtNextBar = false;
+			return;
+		}
+	}
 
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
 
@@ -147,12 +161,13 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 			return;
 		}
 	}
+	
 	/*
 	// Testing for Open position
 	double last = pQuote->last();
-	LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, WR: %.2f, Hi: %.2f, Lo: %.2f")
+	LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, Hi: %.2f, Lo: %.2f")
 		% pPortfolio->InvestorId() % pPortfolio->ID() 
-		% last % m_williamsR % m_donchianHi % m_donchianLo));
+		% last % m_upperBoundOpen % m_lowerBoundOpen));
 
 	entity::PosiDirectionType direction = TestForOpen(pQuote, m_williamsR, m_donchianHi, m_donchianLo, trend);
 	if(currentBarIdx < forceCloseBar &&
@@ -194,12 +209,70 @@ void CRangeTrendStrategy::CreateTriggers( const entity::StrategyItem& strategyIt
 
 void CRangeTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening, const char* noteText )
 {
+	/*
+	if(direction > entity::NET)
+	{
+		double lmtPrice[2];
+		if(direction == entity::LONG)
+		{
+			lmtPrice[0] = pQuote->ask();
+		}
+		else if(direction == entity::SHORT)
+		{
+			lmtPrice[0] = pQuote->bid();
+		}
+		lmtPrice[1] = 0.0;
 
+		LOG_DEBUG(logger, boost::str(boost::format("Range Trend - %s Open position @ %.2f (%s)")
+			% GetPosiDirectionText(direction) % lmtPrice[0] % pQuote->update_time()));
+
+		string openComment = forceOpening ? 
+			boost::str(boost::format("手动 %s 开仓 @ %.2f") % GetPosiDirectionText(direction) % lmtPrice[0])
+			: 
+		boost::str(boost::format("%s - %s 开仓 @ %.2f")
+			% noteText % GetPosiDirectionText(direction) % lmtPrice[0]);
+
+		pOrderPlacer->SetMlOrderStatus(openComment);
+
+		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
+
+		//m_lastPositionOffset = direction;
+		//m_isRealSignal = m_allowFakeSignal ? true : false; // When opening position, not sure current bar is real signal or not
+		ResetForceOpen();
+	}
+	*/
 }
 
 void CRangeTrendStrategy::ClosePosition( CPortfolio* pPortfolio, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText )
 {
+	/*
+	if(pOrderPlacer != NULL)
+	{
+		entity::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
 
+		double closePx = 0.0;
+		if(posiDirection == entity::LONG)
+		{
+			closePx = pQuote->bid();
+		}
+		else if(posiDirection == entity::SHORT)
+		{
+			closePx = pQuote->ask();
+		}
+
+		LOG_DEBUG(logger, boost::str(boost::format("Range Trend - %s Close position @ %.2f (%s)")
+			% GetPosiDirectionText(posiDirection) % closePx  % pQuote->update_time()));
+
+		pOrderPlacer->CloseOrder(closePx);
+
+		ResetForceClose();
+		// reset initStopPx
+		//m_initStopPx = -1.0;
+
+		pPortfolio->PushMessage(boost::str(boost::format("%s - %s 平仓 @ %.2f")
+			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
+	}
+	*/
 }
 
 void CRangeTrendStrategy::OnBeforeAddingHistSrcConfig( CHistSourceCfg* pHistSrcCfg )

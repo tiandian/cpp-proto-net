@@ -30,7 +30,7 @@ private:
 
 	int m_timeFrame;
 	bool m_marketOpen;
-
+	
 	// Strategy parameters
 	int m_openPeriod;
 	int m_closePeriod;
@@ -51,5 +51,9 @@ private:
 	double m_currentLow;
 	double m_NATR;
 	double m_StopLoss;
+
+	int m_lastBarIdx;
+	bool m_fireAtNextBar;
+
 };
 
