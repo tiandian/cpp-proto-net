@@ -249,6 +249,19 @@ namespace PortfolioTrading.Modules.Account
                     setting.BreakoutLength = AS_BreakoutLength;
                 }
             }
+            else if (StrategyName == StrategySetting.RangeTrendStrategyName)
+            {
+                if (!string.IsNullOrEmpty(Symbol1))
+                {
+                    RangeTrendStrategySettings setting = (RangeTrendStrategySettings)portf.StrategySetting;
+                    setting.Symbol = Symbol1;
+                    setting.Period = RT_TimeFrame;
+                    setting.OpenPeriod = RT_OpenPeriod;
+                    setting.ClosePeriod = RT_ClosePeriod;
+                    setting.StopLossFactor = RT_StopLossFactor;
+                    setting.TrendFactor = RT_TrendFactor;
+                }
+            }
         }
 
         #region StrategyName
@@ -877,6 +890,95 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #endregion
+
+        #region Range Trend
+
+        #region RT_TimeFrame
+        private int _rt_timeframe = 300;
+
+        public int RT_TimeFrame
+        {
+            get { return _rt_timeframe; }
+            set
+            {
+                if (_rt_timeframe != value)
+                {
+                    _rt_timeframe = value;
+                    RaisePropertyChanged("RT_TimeFrame");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_OpenPeriod
+        private int _rt_openPeriod;
+
+        public int RT_OpenPeriod
+        {
+            get { return _rt_openPeriod; }
+            set
+            {
+                if (_rt_openPeriod != value)
+                {
+                    _rt_openPeriod = value;
+                    RaisePropertyChanged("RT_OpenPeriod");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_ClosePeriod
+        private int _rt_closePeriod;
+
+        public int RT_ClosePeriod
+        {
+            get { return _rt_closePeriod; }
+            set
+            {
+                if (_rt_closePeriod != value)
+                {
+                    _rt_closePeriod = value;
+                    RaisePropertyChanged("RT_ClosePeriod");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_StopLossFactor
+        private double _rt_stopLossFactor;
+
+        public double RT_StopLossFactor
+        {
+            get { return _rt_stopLossFactor; }
+            set
+            {
+                if (_rt_stopLossFactor != value)
+                {
+                    _rt_stopLossFactor = value;
+                    RaisePropertyChanged("RT_StopLossFactor");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_TrendFactor
+        private double _rt_trendFactor;
+
+        public double RT_TrendFactor
+        {
+            get { return _rt_trendFactor; }
+            set
+            {
+                if (_rt_trendFactor != value)
+                {
+                    _rt_trendFactor = value;
+                    RaisePropertyChanged("RT_TrendFactor");
+                }
+            }
+        }
+        #endregion
+        
         #endregion
     }
 

@@ -7,6 +7,7 @@
 #include "WMATrendStrategy.h"
 #include "LinerRegressionStrategy.h"
 #include "ASCTrendStrategy.h"
+#include "RangeTrendStrategy.h"
 #include "globalmembers.h"
 #include "QuoteFetcher.h"
 #include "QuoteRepositry.h"
@@ -154,6 +155,10 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 		break;
 	case entity::ASC_TREND:
 		created = StrategyPtr(new CASCTrendStrategy(strategyItem, m_avatar));
+		m_orderPlacer = OrderPlacerPtr(new CPortfolioTrendOrderPlacer);
+		break;
+	case entity::RANGE_TREND:
+		created = StrategyPtr(new CRangeTrendStrategy(strategyItem, m_avatar));
 		m_orderPlacer = OrderPlacerPtr(new CPortfolioTrendOrderPlacer);
 		break;
   }

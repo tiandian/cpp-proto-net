@@ -498,4 +498,106 @@ private:
 	double _donchianLo;
 };
 
+public ref class RangeTrendStrategyUpdateItem : StrategyUpdateItem
+{
+public:
+	RangeTrendStrategyUpdateItem(double upperBoundOpen, double lowerBoundOpen, double upperBoundClose, double lowerBoundClose, double lastCostPx, double recentStopLossPx)
+	{
+		_upperBoundOpen = upperBoundOpen;
+		_lowerBoundOpen = lowerBoundOpen;
+		_upperBoundClose = upperBoundClose;
+		_lowerBoundClose = lowerBoundClose;
+		_lastCostPx = lastCostPx;
+		_recentStopLossPx = recentStopLossPx;
+	}
+
+	property StrategyType Kind
+	{
+		virtual StrategyType get() override
+		{
+			return StrategyType::RANGE_TREND;
+		}
+	}
+
+	property double UpperBoundOpen
+	{
+		double get()
+		{
+			return _upperBoundOpen; 
+		}
+		void set(double val)
+		{
+			_upperBoundOpen = val;
+		}
+	}
+
+	property double LowerBoundOpen
+	{
+		double get()
+		{
+			return _lowerBoundOpen; 
+		}
+		void set(double val)
+		{
+			_lowerBoundOpen = val;
+		}
+	}
+
+	property double UpperBoundClose
+	{
+		double get()
+		{
+			return _upperBoundClose; 
+		}
+		void set(double val)
+		{
+			_upperBoundClose = val;
+		}
+	}
+
+	property double LowerBoundClose
+	{
+		double get()
+		{
+			return _lowerBoundClose; 
+		}
+		void set(double val)
+		{
+			_lowerBoundClose = val;
+		}
+	}
+
+	property double LastCostPx
+	{
+		double get()
+		{
+			return _lastCostPx; 
+		}
+		void set(double val)
+		{
+			_lastCostPx = val;
+		}
+	}
+
+	property double RecentStopLossPx
+	{
+		double get()
+		{
+			return _recentStopLossPx; 
+		}
+		void set(double val)
+		{
+			_recentStopLossPx = val;
+		}
+	}
+
+private:
+	double _upperBoundOpen;
+	double _lowerBoundOpen;
+	double _upperBoundClose;
+	double _lowerBoundClose;
+	double _lastCostPx;
+	double _recentStopLossPx;
+};
+
 }

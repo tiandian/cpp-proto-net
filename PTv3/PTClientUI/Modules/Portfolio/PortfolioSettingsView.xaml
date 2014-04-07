@@ -538,6 +538,47 @@
                     </StackPanel>
                 </DataTemplate>
 
+                <DataTemplate x:Key="rangeTrendSettingTemplate">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="2"/>
+                                <Setter Property="BorderBrush" Value="Green" />
+                                <Setter Property="CornerRadius" Value="2"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Border>
+                            <DockPanel DataContext="{Binding Settings}">
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">参数</TextBlock>
+                                <StackPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">周期(秒)</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding Period, FallbackValue=60, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">开仓周期</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding OpenPeriod, FallbackValue=20, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">平仓周期</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding ClosePeriod, FallbackValue=10, Mode=TwoWay}" ValueType="{x:Type sys:Int32}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">止损因子</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding StopLossFactor, FallbackValue=2, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                    <DockPanel Margin="12, 0, 6, 1">
+                                        <TextBlock Margin="4, 0" VerticalAlignment="Center" Width="80">趋势因子</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding TrendFactor, FallbackValue=2, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+                
                 <local:PortfSettingTemplateSelector x:Key="strategySettingSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageSettingTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionSettingTemplate}"
@@ -546,6 +587,7 @@
                                     WMATrendTemplate="{StaticResource wmaTrendSettingTemplate}"
                                     LinerRegressionTemplate="{StaticResource linerRegAngleSettingTemplate}"
                                     ASCTrendTremplate="{StaticResource ascTrendSettingTemplate}"
+                                    RangeTrendTemplate="{StaticResource rangeTrendSettingTemplate}"
                                     />
             </Grid.Resources>
 

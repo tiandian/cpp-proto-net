@@ -396,6 +396,46 @@
                     </StackPanel>
                 </StackPanel>
             </igWindows:TabItemEx>
+            <igWindows:TabItemEx Header="Range" Name="tabRangeTrend" Width="60" Tag="RangeTrend">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <DataTemplate x:Key="sideItemTempl">
+                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                        </DataTemplate>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <StackPanel Margin="10, 4, 10, 8">
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="4"></TextBox>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">K线周期</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding RT_TimeFrame, Mode=TwoWay}" Increment="10" Margin="4"/>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">开仓周期</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding RT_OpenPeriod, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">平仓周期</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding RT_ClosePeriod, Mode=TwoWay}" Increment="1" Margin="6, 4"/>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">止损因子</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding RT_StopLossFactor, Mode=TwoWay}" Increment="0.1" Margin="6, 4"/>
+                        </DockPanel>
+                        <DockPanel Margin="0, 2">
+                            <TextBlock Width="60">趋势因子</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding RT_TrendFactor, Mode=TwoWay}" Increment="0.1" Margin="6, 4"/>
+                        </DockPanel>
+                    </StackPanel>
+                </StackPanel>
+            </igWindows:TabItemEx>
         </igWindows:XamTabControl>
         
     </DockPanel>

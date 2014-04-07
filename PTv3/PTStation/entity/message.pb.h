@@ -121,11 +121,12 @@ enum StrategyType {
   HIST_SLOPE = 3,
   WMA_TREND = 4,
   LINER_REGRESSION = 5,
-  ASC_TREND = 6
+  ASC_TREND = 6,
+  RANGE_TREND = 7
 };
 bool StrategyType_IsValid(int value);
 const StrategyType StrategyType_MIN = ARBITRAGE;
-const StrategyType StrategyType_MAX = ASC_TREND;
+const StrategyType StrategyType_MAX = RANGE_TREND;
 const int StrategyType_ARRAYSIZE = StrategyType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* StrategyType_descriptor();
@@ -2259,6 +2260,41 @@ class StrategyItem : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 as_period() const;
   inline void set_as_period(::google::protobuf::int32 value);
   
+  // optional int32 RT_TimeFrame = 551;
+  inline bool has_rt_timeframe() const;
+  inline void clear_rt_timeframe();
+  static const int kRTTimeFrameFieldNumber = 551;
+  inline ::google::protobuf::int32 rt_timeframe() const;
+  inline void set_rt_timeframe(::google::protobuf::int32 value);
+  
+  // optional int32 RT_OpenPeriod = 552;
+  inline bool has_rt_openperiod() const;
+  inline void clear_rt_openperiod();
+  static const int kRTOpenPeriodFieldNumber = 552;
+  inline ::google::protobuf::int32 rt_openperiod() const;
+  inline void set_rt_openperiod(::google::protobuf::int32 value);
+  
+  // optional int32 RT_ClosePeriod = 553;
+  inline bool has_rt_closeperiod() const;
+  inline void clear_rt_closeperiod();
+  static const int kRTClosePeriodFieldNumber = 553;
+  inline ::google::protobuf::int32 rt_closeperiod() const;
+  inline void set_rt_closeperiod(::google::protobuf::int32 value);
+  
+  // optional double RT_StopLossFactor = 554;
+  inline bool has_rt_stoplossfactor() const;
+  inline void clear_rt_stoplossfactor();
+  static const int kRTStopLossFactorFieldNumber = 554;
+  inline double rt_stoplossfactor() const;
+  inline void set_rt_stoplossfactor(double value);
+  
+  // optional double RT_TrendFactor = 555;
+  inline bool has_rt_trendfactor() const;
+  inline void clear_rt_trendfactor();
+  static const int kRTTrendFactorFieldNumber = 555;
+  inline double rt_trendfactor() const;
+  inline void set_rt_trendfactor(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.StrategyItem)
  private:
   inline void set_has_type();
@@ -2333,6 +2369,16 @@ class StrategyItem : public ::google::protobuf::Message {
   inline void clear_has_as_breakoutlength();
   inline void set_has_as_period();
   inline void clear_has_as_period();
+  inline void set_has_rt_timeframe();
+  inline void clear_has_rt_timeframe();
+  inline void set_has_rt_openperiod();
+  inline void clear_has_rt_openperiod();
+  inline void set_has_rt_closeperiod();
+  inline void clear_has_rt_closeperiod();
+  inline void set_has_rt_stoplossfactor();
+  inline void clear_has_rt_stoplossfactor();
+  inline void set_has_rt_trendfactor();
+  inline void clear_has_rt_trendfactor();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -2342,9 +2388,9 @@ class StrategyItem : public ::google::protobuf::Message {
   int ar_side_;
   ::google::protobuf::RepeatedPtrField< ::entity::TriggerItem > triggers_;
   ::std::string* cp_closeleg_;
-  double sc_pricetick_;
   int cp_closelegside_;
   int sc_casele2tick_;
+  double sc_pricetick_;
   int sc_casele3tick_;
   int sc_casege4tick_;
   int sc_casenochange_;
@@ -2374,9 +2420,14 @@ class StrategyItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 as_avergateperiod_;
   ::google::protobuf::int32 as_breakoutlength_;
   ::google::protobuf::int32 as_period_;
+  ::google::protobuf::int32 rt_timeframe_;
+  ::google::protobuf::int32 rt_openperiod_;
+  double rt_stoplossfactor_;
+  double rt_trendfactor_;
+  ::google::protobuf::int32 rt_closeperiod_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(38 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(43 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -3169,6 +3220,48 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline double as_donchianlo() const;
   inline void set_as_donchianlo(double value);
   
+  // optional double RT_UpperBoundOpen = 341;
+  inline bool has_rt_upperboundopen() const;
+  inline void clear_rt_upperboundopen();
+  static const int kRTUpperBoundOpenFieldNumber = 341;
+  inline double rt_upperboundopen() const;
+  inline void set_rt_upperboundopen(double value);
+  
+  // optional double RT_LowerBoundOpen = 342;
+  inline bool has_rt_lowerboundopen() const;
+  inline void clear_rt_lowerboundopen();
+  static const int kRTLowerBoundOpenFieldNumber = 342;
+  inline double rt_lowerboundopen() const;
+  inline void set_rt_lowerboundopen(double value);
+  
+  // optional double RT_UpperBoundClose = 343;
+  inline bool has_rt_upperboundclose() const;
+  inline void clear_rt_upperboundclose();
+  static const int kRTUpperBoundCloseFieldNumber = 343;
+  inline double rt_upperboundclose() const;
+  inline void set_rt_upperboundclose(double value);
+  
+  // optional double RT_LowerBoundClose = 344;
+  inline bool has_rt_lowerboundclose() const;
+  inline void clear_rt_lowerboundclose();
+  static const int kRTLowerBoundCloseFieldNumber = 344;
+  inline double rt_lowerboundclose() const;
+  inline void set_rt_lowerboundclose(double value);
+  
+  // optional double RT_LastCostPx = 345;
+  inline bool has_rt_lastcostpx() const;
+  inline void clear_rt_lastcostpx();
+  static const int kRTLastCostPxFieldNumber = 345;
+  inline double rt_lastcostpx() const;
+  inline void set_rt_lastcostpx(double value);
+  
+  // optional double RT_RecentStopLossPx = 346;
+  inline bool has_rt_recentstoplosspx() const;
+  inline void clear_rt_recentstoplosspx();
+  static const int kRTRecentStopLossPxFieldNumber = 346;
+  inline double rt_recentstoplosspx() const;
+  inline void set_rt_recentstoplosspx(double value);
+  
   // @@protoc_insertion_point(class_scope:entity.PortfolioUpdateItem)
  private:
   inline void set_has_id();
@@ -3233,6 +3326,18 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   inline void clear_has_as_donchianhi();
   inline void set_has_as_donchianlo();
   inline void clear_has_as_donchianlo();
+  inline void set_has_rt_upperboundopen();
+  inline void clear_has_rt_upperboundopen();
+  inline void set_has_rt_lowerboundopen();
+  inline void clear_has_rt_lowerboundopen();
+  inline void set_has_rt_upperboundclose();
+  inline void clear_has_rt_upperboundclose();
+  inline void set_has_rt_lowerboundclose();
+  inline void clear_has_rt_lowerboundclose();
+  inline void set_has_rt_lastcostpx();
+  inline void clear_has_rt_lastcostpx();
+  inline void set_has_rt_recentstoplosspx();
+  inline void clear_has_rt_recentstoplosspx();
   
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
   
@@ -3269,9 +3374,15 @@ class PortfolioUpdateItem : public ::google::protobuf::Message {
   double as_stoppx_;
   double as_donchianhi_;
   double as_donchianlo_;
+  double rt_upperboundopen_;
+  double rt_lowerboundopen_;
+  double rt_upperboundclose_;
+  double rt_lowerboundclose_;
+  double rt_lastcostpx_;
+  double rt_recentstoplosspx_;
   
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(33 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(39 + 31) / 32];
   
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -8452,6 +8563,116 @@ inline void StrategyItem::set_as_period(::google::protobuf::int32 value) {
   as_period_ = value;
 }
 
+// optional int32 RT_TimeFrame = 551;
+inline bool StrategyItem::has_rt_timeframe() const {
+  return (_has_bits_[1] & 0x00000040u) != 0;
+}
+inline void StrategyItem::set_has_rt_timeframe() {
+  _has_bits_[1] |= 0x00000040u;
+}
+inline void StrategyItem::clear_has_rt_timeframe() {
+  _has_bits_[1] &= ~0x00000040u;
+}
+inline void StrategyItem::clear_rt_timeframe() {
+  rt_timeframe_ = 0;
+  clear_has_rt_timeframe();
+}
+inline ::google::protobuf::int32 StrategyItem::rt_timeframe() const {
+  return rt_timeframe_;
+}
+inline void StrategyItem::set_rt_timeframe(::google::protobuf::int32 value) {
+  set_has_rt_timeframe();
+  rt_timeframe_ = value;
+}
+
+// optional int32 RT_OpenPeriod = 552;
+inline bool StrategyItem::has_rt_openperiod() const {
+  return (_has_bits_[1] & 0x00000080u) != 0;
+}
+inline void StrategyItem::set_has_rt_openperiod() {
+  _has_bits_[1] |= 0x00000080u;
+}
+inline void StrategyItem::clear_has_rt_openperiod() {
+  _has_bits_[1] &= ~0x00000080u;
+}
+inline void StrategyItem::clear_rt_openperiod() {
+  rt_openperiod_ = 0;
+  clear_has_rt_openperiod();
+}
+inline ::google::protobuf::int32 StrategyItem::rt_openperiod() const {
+  return rt_openperiod_;
+}
+inline void StrategyItem::set_rt_openperiod(::google::protobuf::int32 value) {
+  set_has_rt_openperiod();
+  rt_openperiod_ = value;
+}
+
+// optional int32 RT_ClosePeriod = 553;
+inline bool StrategyItem::has_rt_closeperiod() const {
+  return (_has_bits_[1] & 0x00000100u) != 0;
+}
+inline void StrategyItem::set_has_rt_closeperiod() {
+  _has_bits_[1] |= 0x00000100u;
+}
+inline void StrategyItem::clear_has_rt_closeperiod() {
+  _has_bits_[1] &= ~0x00000100u;
+}
+inline void StrategyItem::clear_rt_closeperiod() {
+  rt_closeperiod_ = 0;
+  clear_has_rt_closeperiod();
+}
+inline ::google::protobuf::int32 StrategyItem::rt_closeperiod() const {
+  return rt_closeperiod_;
+}
+inline void StrategyItem::set_rt_closeperiod(::google::protobuf::int32 value) {
+  set_has_rt_closeperiod();
+  rt_closeperiod_ = value;
+}
+
+// optional double RT_StopLossFactor = 554;
+inline bool StrategyItem::has_rt_stoplossfactor() const {
+  return (_has_bits_[1] & 0x00000200u) != 0;
+}
+inline void StrategyItem::set_has_rt_stoplossfactor() {
+  _has_bits_[1] |= 0x00000200u;
+}
+inline void StrategyItem::clear_has_rt_stoplossfactor() {
+  _has_bits_[1] &= ~0x00000200u;
+}
+inline void StrategyItem::clear_rt_stoplossfactor() {
+  rt_stoplossfactor_ = 0;
+  clear_has_rt_stoplossfactor();
+}
+inline double StrategyItem::rt_stoplossfactor() const {
+  return rt_stoplossfactor_;
+}
+inline void StrategyItem::set_rt_stoplossfactor(double value) {
+  set_has_rt_stoplossfactor();
+  rt_stoplossfactor_ = value;
+}
+
+// optional double RT_TrendFactor = 555;
+inline bool StrategyItem::has_rt_trendfactor() const {
+  return (_has_bits_[1] & 0x00000400u) != 0;
+}
+inline void StrategyItem::set_has_rt_trendfactor() {
+  _has_bits_[1] |= 0x00000400u;
+}
+inline void StrategyItem::clear_has_rt_trendfactor() {
+  _has_bits_[1] &= ~0x00000400u;
+}
+inline void StrategyItem::clear_rt_trendfactor() {
+  rt_trendfactor_ = 0;
+  clear_has_rt_trendfactor();
+}
+inline double StrategyItem::rt_trendfactor() const {
+  return rt_trendfactor_;
+}
+inline void StrategyItem::set_rt_trendfactor(double value) {
+  set_has_rt_trendfactor();
+  rt_trendfactor_ = value;
+}
+
 // -------------------------------------------------------------------
 
 // TriggerItem
@@ -9947,6 +10168,138 @@ inline double PortfolioUpdateItem::as_donchianlo() const {
 inline void PortfolioUpdateItem::set_as_donchianlo(double value) {
   set_has_as_donchianlo();
   as_donchianlo_ = value;
+}
+
+// optional double RT_UpperBoundOpen = 341;
+inline bool PortfolioUpdateItem::has_rt_upperboundopen() const {
+  return (_has_bits_[1] & 0x00000002u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_rt_upperboundopen() {
+  _has_bits_[1] |= 0x00000002u;
+}
+inline void PortfolioUpdateItem::clear_has_rt_upperboundopen() {
+  _has_bits_[1] &= ~0x00000002u;
+}
+inline void PortfolioUpdateItem::clear_rt_upperboundopen() {
+  rt_upperboundopen_ = 0;
+  clear_has_rt_upperboundopen();
+}
+inline double PortfolioUpdateItem::rt_upperboundopen() const {
+  return rt_upperboundopen_;
+}
+inline void PortfolioUpdateItem::set_rt_upperboundopen(double value) {
+  set_has_rt_upperboundopen();
+  rt_upperboundopen_ = value;
+}
+
+// optional double RT_LowerBoundOpen = 342;
+inline bool PortfolioUpdateItem::has_rt_lowerboundopen() const {
+  return (_has_bits_[1] & 0x00000004u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_rt_lowerboundopen() {
+  _has_bits_[1] |= 0x00000004u;
+}
+inline void PortfolioUpdateItem::clear_has_rt_lowerboundopen() {
+  _has_bits_[1] &= ~0x00000004u;
+}
+inline void PortfolioUpdateItem::clear_rt_lowerboundopen() {
+  rt_lowerboundopen_ = 0;
+  clear_has_rt_lowerboundopen();
+}
+inline double PortfolioUpdateItem::rt_lowerboundopen() const {
+  return rt_lowerboundopen_;
+}
+inline void PortfolioUpdateItem::set_rt_lowerboundopen(double value) {
+  set_has_rt_lowerboundopen();
+  rt_lowerboundopen_ = value;
+}
+
+// optional double RT_UpperBoundClose = 343;
+inline bool PortfolioUpdateItem::has_rt_upperboundclose() const {
+  return (_has_bits_[1] & 0x00000008u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_rt_upperboundclose() {
+  _has_bits_[1] |= 0x00000008u;
+}
+inline void PortfolioUpdateItem::clear_has_rt_upperboundclose() {
+  _has_bits_[1] &= ~0x00000008u;
+}
+inline void PortfolioUpdateItem::clear_rt_upperboundclose() {
+  rt_upperboundclose_ = 0;
+  clear_has_rt_upperboundclose();
+}
+inline double PortfolioUpdateItem::rt_upperboundclose() const {
+  return rt_upperboundclose_;
+}
+inline void PortfolioUpdateItem::set_rt_upperboundclose(double value) {
+  set_has_rt_upperboundclose();
+  rt_upperboundclose_ = value;
+}
+
+// optional double RT_LowerBoundClose = 344;
+inline bool PortfolioUpdateItem::has_rt_lowerboundclose() const {
+  return (_has_bits_[1] & 0x00000010u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_rt_lowerboundclose() {
+  _has_bits_[1] |= 0x00000010u;
+}
+inline void PortfolioUpdateItem::clear_has_rt_lowerboundclose() {
+  _has_bits_[1] &= ~0x00000010u;
+}
+inline void PortfolioUpdateItem::clear_rt_lowerboundclose() {
+  rt_lowerboundclose_ = 0;
+  clear_has_rt_lowerboundclose();
+}
+inline double PortfolioUpdateItem::rt_lowerboundclose() const {
+  return rt_lowerboundclose_;
+}
+inline void PortfolioUpdateItem::set_rt_lowerboundclose(double value) {
+  set_has_rt_lowerboundclose();
+  rt_lowerboundclose_ = value;
+}
+
+// optional double RT_LastCostPx = 345;
+inline bool PortfolioUpdateItem::has_rt_lastcostpx() const {
+  return (_has_bits_[1] & 0x00000020u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_rt_lastcostpx() {
+  _has_bits_[1] |= 0x00000020u;
+}
+inline void PortfolioUpdateItem::clear_has_rt_lastcostpx() {
+  _has_bits_[1] &= ~0x00000020u;
+}
+inline void PortfolioUpdateItem::clear_rt_lastcostpx() {
+  rt_lastcostpx_ = 0;
+  clear_has_rt_lastcostpx();
+}
+inline double PortfolioUpdateItem::rt_lastcostpx() const {
+  return rt_lastcostpx_;
+}
+inline void PortfolioUpdateItem::set_rt_lastcostpx(double value) {
+  set_has_rt_lastcostpx();
+  rt_lastcostpx_ = value;
+}
+
+// optional double RT_RecentStopLossPx = 346;
+inline bool PortfolioUpdateItem::has_rt_recentstoplosspx() const {
+  return (_has_bits_[1] & 0x00000040u) != 0;
+}
+inline void PortfolioUpdateItem::set_has_rt_recentstoplosspx() {
+  _has_bits_[1] |= 0x00000040u;
+}
+inline void PortfolioUpdateItem::clear_has_rt_recentstoplosspx() {
+  _has_bits_[1] &= ~0x00000040u;
+}
+inline void PortfolioUpdateItem::clear_rt_recentstoplosspx() {
+  rt_recentstoplosspx_ = 0;
+  clear_has_rt_recentstoplosspx();
+}
+inline double PortfolioUpdateItem::rt_recentstoplosspx() const {
+  return rt_recentstoplosspx_;
+}
+inline void PortfolioUpdateItem::set_rt_recentstoplosspx(double value) {
+  set_has_rt_recentstoplosspx();
+  rt_recentstoplosspx_ = value;
 }
 
 // -------------------------------------------------------------------

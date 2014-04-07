@@ -644,5 +644,97 @@ private:
 	String^ _symbol;
 };
 
+public ref class RangeTrendStrategyItem : StrategyItem
+{
+public:
+	RangeTrendStrategyItem()
+	{
+		_type = StrategyType::RANGE_TREND;
+	}
+
+	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
+
+	property String^ Symbol
+	{
+		String^ get()
+		{
+			return _symbol; 
+		}
+		void set(String^ val)
+		{
+			_symbol = val;
+		}
+	}
+
+	property int Period
+	{
+		int get()
+		{
+			return _period; 
+		}
+		void set(int val)
+		{
+			_period = val;
+		}
+	}
+
+	property int OpenPeriod
+	{
+		int get()
+		{
+			return _openPeriod; 
+		}
+		void set(int val)
+		{
+			_openPeriod = val;
+		}
+	}
+
+	property int ClosePeriod
+	{
+		int get()
+		{
+			return _closePeriod; 
+		}
+		void set(int val)
+		{
+			_closePeriod = val;
+		}
+	}
+
+	property double StopLossFactor
+	{
+		double get()
+		{
+			return _stopLossFactor; 
+		}
+		void set(double val)
+		{
+			_stopLossFactor = val;
+		}
+	}
+
+	property double TrendFactor
+	{
+		double get()
+		{
+			return _trendFactor; 
+		}
+		void set(double val)
+		{
+			_trendFactor = val;
+		}
+	}
+
+private:
+
+	int _openPeriod;
+	int _closePeriod;
+	double _stopLossFactor;
+	double _trendFactor;
+
+	int _period;
+	String^ _symbol;
+};
 
 }

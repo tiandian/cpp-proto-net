@@ -10,7 +10,8 @@ CStrategyOrderCommand::CStrategyOrderCommand(entity::PosiOffsetFlag offset, CPor
 	: m_offset(offset)
 	, m_pOrderPlacer(pOrderPlacer)
 	, m_parentStrategy(parentStrategy)
-	, m_forceFire(false)
+	, m_active(false)
+	, m_revertOnClose(false)
 {
 }
 
@@ -19,36 +20,49 @@ CStrategyOrderCommand::~CStrategyOrderCommand(void)
 {
 }
 
-void CStrategyOrderCommand::Fire( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
+double CStrategyOrderCommand::Fire( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
+	m_active = false;
+
 	if(m_offset)
-		OpenPosition(pQuote, pPortfolio, timestamp);
+		return OpenPosition(pQuote, pPortfolio, timestamp);
 	else
-		ClosePosition(pQuote, pPortfolio, timestamp);
+	{
+		double px = ClosePosition(pQuote, pPortfolio, timestamp);
+		if(m_revertOnClose)
+			Revert(m_direction);
+		return px;
+	}
 }
 
-void CStrategyOrderCommand::OpenPosition( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
+double CStrategyOrderCommand::OpenPosition( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
+	double px = -1.0;
+	if(m_pOrderPlacer->IsWorking())
+	{
+		logger.Error(boost::str(boost::format("[%s] Range Trend - Portfolio(%s) OPEN position failed due to Order Placer has not done last job") 
+			% pPortfolio->InvestorId() % pPortfolio->ID()));
+		return px;
+	}
+
 	if(m_direction > entity::NET)
 	{
 		double lmtPrice[2];
 		if(m_direction == entity::LONG)
 		{
-			lmtPrice[0] = pQuote->ask();
+			px = lmtPrice[0] = pQuote->ask();
 		}
 		else if(m_direction == entity::SHORT)
 		{
-			lmtPrice[0] = pQuote->bid();
+			px = lmtPrice[0] = pQuote->bid();
 		}
 		lmtPrice[1] = 0.0;
 
-		LOG_DEBUG(logger, boost::str(boost::format("Range Trend - %s Open position @ %.2f (%s)")
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) %s Open position @ %.2f (%s)")
+			% pPortfolio->InvestorId() % pPortfolio->ID()
 			% GetPosiDirectionText(m_direction) % lmtPrice[0] % pQuote->update_time()));
 
-		string openComment = m_forceFire ? 
-			boost::str(boost::format("手动 %s 开仓 @ %.2f") % GetPosiDirectionText(m_direction) % lmtPrice[0])
-			: 
-		boost::str(boost::format("%s - %s 开仓 @ %.2f")
+		string openComment = boost::str(boost::format("%s - %s 开仓 @ %.2f")
 			% m_strNote % GetPosiDirectionText(m_direction) % lmtPrice[0]);
 
 		m_pOrderPlacer->SetMlOrderStatus(openComment);
@@ -60,13 +74,18 @@ void CStrategyOrderCommand::OpenPosition( entity::Quote* pQuote, CPortfolio* pPo
 		m_parentStrategy->ResetForceOpen();
 
 	}
+
+	return px;
 }
 
-void CStrategyOrderCommand::ClosePosition( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
+double CStrategyOrderCommand::ClosePosition( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
+	double px = -1.0;
+
 	if(m_pOrderPlacer != NULL)
 	{
 		entity::PosiDirectionType posiDirection = m_pOrderPlacer->PosiDirection();
+		SetDirection(posiDirection);
 
 		double closePx = 0.0;
 		if(posiDirection == entity::LONG)
@@ -82,10 +101,22 @@ void CStrategyOrderCommand::ClosePosition( entity::Quote* pQuote, CPortfolio* pP
 			% GetPosiDirectionText(posiDirection) % closePx  % pQuote->update_time()));
 
 		m_pOrderPlacer->CloseOrder(closePx);
+		px = closePx;
 
 		m_parentStrategy->ResetForceClose();
 		
 		pPortfolio->PushMessage(boost::str(boost::format("%s - %s 平仓 @ %.2f")
 			% m_strNote % GetPosiDirectionText(posiDirection, true) % closePx));
+	}
+
+	return px;
+}
+
+void CStrategyOrderCommand::Revert( entity::PosiDirectionType direction )
+{
+	if(m_offset == entity::CLOSE && direction > entity::NET)
+	{
+		m_offset = entity::OPEN;
+		SetDirection( direction == entity::LONG ? entity::SHORT : entity::LONG );
 	}
 }

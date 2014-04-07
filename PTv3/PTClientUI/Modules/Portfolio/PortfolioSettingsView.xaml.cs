@@ -73,6 +73,10 @@ namespace PortfolioTrading.Modules.Portfolio
             {
                 viewModel = ServiceLocator.Current.GetInstance<ASCTrendSettingsVM>();
             }
+            else if (portfVm.StrategySetting.Name == StrategySetting.RangeTrendStrategyName)
+            {
+                viewModel = ServiceLocator.Current.GetInstance<RangeTrendSettingsVM>();
+            }
 
             if (viewModel != null)
             {
