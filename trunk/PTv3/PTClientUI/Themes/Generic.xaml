@@ -425,6 +425,39 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="rangeTrendTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="38"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="36"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" BorderThickness="0, 0, 1, 1">
+                    <TextBlock Margin="4" VerticalAlignment="Center">Open</TextBlock>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Margin="4" VerticalAlignment="Center">Close</TextBlock>
+                </Border>
+                <Border Grid.Column="1">
+                    <TextBlock Width="60" Text="{Binding StrategySetting.OpenPeriod}" VerticalAlignment="Center"/>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1">
+                    <TextBlock Width="60" Text="{Binding StrategySetting.ClosePeriod}" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
     <local:PortfMonTemplateSelector x:Key="portfMonSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionTemplate}"
@@ -432,7 +465,8 @@
                                     MACDHistSlopeTemplate="{StaticResource macdHistSlopeTemplate}"
                                     WMATrendTemplate="{StaticResource wmaTrendTemplate}"
                                     LinerRegressionTemplate="{StaticResource linerRegTemplate}"
-                                    ASCTrendTemplate="{StaticResource ascTrendTemplate}"/>
+                                    ASCTrendTemplate="{StaticResource ascTrendTemplate}"
+                                    RangeTrendTemplate="{StaticResource rangeTrendTemplate}"/>
     
     <Style TargetType="{x:Type local:PortfMonitorPanel}">
         <Setter Property="Template">
@@ -671,12 +705,77 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="rangeTrendWatchTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">Open Hi</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   Text="{Binding RT_UpperBoundOpen}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">Open Lo</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   Text="{Binding RT_LowerBoundOpen}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">Close Hi</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   Text="{Binding RT_UpperBoundClose}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">Close Lo</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   Text="{Binding RT_LowerBoundClose}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 0, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">成本</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   Text="{Binding RT_LastCostPx}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="1" BorderBrush="Blue">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2, 4, 0" VerticalAlignment="Top" DockPanel.Dock="Top">止损</TextBlock>
+                        <TextBlock Margin="2, 0, 2, 2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                   Text="{Binding RT_RecentStopLossPx}"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
     <local:PortfWatchTemplateSelector x:Key="portfWatchSelector"
                                       ArbitrageTemplate="{StaticResource arbitrageWatchTemplate}"
                                       MACDHistSlopeTemplate="{StaticResource histSlopeWatchTemplate}"
                                       WMATrendTemplate="{StaticResource wmaTrendWatchTemplate}"
                                       LinerRegressionTemplate="{StaticResource linerRegWatchTemplate}"
-                                      ASCTrendTremplate="{StaticResource ascTrendWatchTemplate}"/>
+                                      ASCTrendTremplate="{StaticResource ascTrendWatchTemplate}"
+                                      RangeTrendTemplate="{StaticResource rangeTrendWatchTemplate}"/>
 
     <Style TargetType="{x:Type local:PriceDiffWatchPanel}">
         <Setter Property="Template">

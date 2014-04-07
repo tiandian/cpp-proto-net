@@ -71,6 +71,17 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 			pEntity->as_donchianlo()
 		);
 		break;
+	case StrategyType::RANGE_TREND:
+		retStrategyUpdate = gcnew RangeTrendStrategyUpdateItem
+		(
+			pEntity->rt_upperboundopen(),
+			pEntity->rt_lowerboundopen(),
+			pEntity->rt_upperboundclose(),
+			pEntity->rt_lowerboundclose(),
+			pEntity->rt_lastcostpx(),
+			pEntity->rt_recentstoplosspx()
+		);
+		break;
 	default:
 		return nullptr;
 	}

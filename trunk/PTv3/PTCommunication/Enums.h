@@ -39,7 +39,8 @@ namespace PTEntity {
 		HIST_SLOPE = 3,
 		WMA_TREND = 4,
 		LINER_REGRESSION = 5,
-		ASC_TREND = 6
+		ASC_TREND = 6,
+		RANGE_TREND = 7
 	};
 
 	public enum class DirectionDepends : int

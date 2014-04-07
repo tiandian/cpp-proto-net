@@ -3,6 +3,7 @@
 #include "TechAnalyStrategy.h"
 #include "DonchianDataSet.h"
 #include "ATRDataSet.h"
+#include "StrategyOrderCommand.h"
 
 class CAvatarClient;
 class CPortfolioTrendOrderPlacer;
@@ -28,6 +29,9 @@ protected:
 
 private:
 
+	entity::PosiDirectionType TestForOpen(CPortfolio* pPortfolio, entity::Quote* pQuote, double upperBound, double lowerBound, string* pOutComment );
+	bool TestForClose(CPortfolio* pPortfolio, entity::Quote* pQuote, double upperBound, double lowerBound, string* pOutComment, bool* outRevertOffset);
+
 	int m_timeFrame;
 	bool m_marketOpen;
 	
@@ -51,9 +55,12 @@ private:
 	double m_currentLow;
 	double m_NATR;
 	double m_StopLoss;
+	bool m_trending;
 
 	int m_lastBarIdx;
-	bool m_fireAtNextBar;
-
+	OrderCommandPtr m_pendingOrdCmd;
+	double m_lastCostPx;
+	double m_recentStopLossPx;	// only for display
+	entity::PosiDirectionType m_lastPosiDirection;
 };
 

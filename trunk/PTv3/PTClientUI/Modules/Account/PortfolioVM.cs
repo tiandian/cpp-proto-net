@@ -726,6 +726,112 @@ namespace PortfolioTrading.Modules.Account
 
 #endregion
 
+#region Range Trend updating fields
+
+        #region RT_UpperBoundOpen
+        private decimal _rtUpperBoundOpen;
+
+        public decimal RT_UpperBoundOpen
+        {
+            get { return _rtUpperBoundOpen; }
+            set
+            {
+                if (_rtUpperBoundOpen != value)
+                {
+                    _rtUpperBoundOpen = value;
+                    RaisePropertyChanged("RT_UpperBoundOpen");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_LowerBoundOpen
+        private decimal _rtLowerBoundOpen;
+
+        public decimal RT_LowerBoundOpen
+        {
+            get { return _rtLowerBoundOpen; }
+            set
+            {
+                if (_rtLowerBoundOpen != value)
+                {
+                    _rtLowerBoundOpen = value;
+                    RaisePropertyChanged("RT_LowerBoundOpen");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_UpperBoundClose
+        private decimal _rtUpperBoundClose;
+
+        public decimal RT_UpperBoundClose
+        {
+            get { return _rtUpperBoundClose; }
+            set
+            {
+                if (_rtUpperBoundClose != value)
+                {
+                    _rtUpperBoundClose = value;
+                    RaisePropertyChanged("RT_UpperBoundClose");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_LowerBoundClose
+        private decimal _rtLowerBoundClose;
+
+        public decimal RT_LowerBoundClose
+        {
+            get { return _rtLowerBoundClose; }
+            set
+            {
+                if (_rtLowerBoundClose != value)
+                {
+                    _rtLowerBoundClose = value;
+                    RaisePropertyChanged("RT_LowerBoundClose");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_LastCostPx
+        private decimal _rtLastCostPx;
+
+        public decimal RT_LastCostPx
+        {
+            get { return _rtLastCostPx; }
+            set
+            {
+                if (_rtLastCostPx != value)
+                {
+                    _rtLastCostPx = value;
+                    RaisePropertyChanged("RT_LastCostPx");
+                }
+            }
+        }
+        #endregion
+
+        #region RT_RecentStopLossPx
+        private decimal _rtRecentStopLossPx;
+
+        public decimal RT_RecentStopLossPx
+        {
+            get { return _rtRecentStopLossPx; }
+            set
+            {
+                if (_rtRecentStopLossPx != value)
+                {
+                    _rtRecentStopLossPx = value;
+                    RaisePropertyChanged("RT_RecentStopLossPx");
+                }
+            }
+        }
+        #endregion
+
+#endregion
+
         public StrategySetting StrategySetting { get; set; }
 
         public string DisplayText
@@ -1012,6 +1118,17 @@ namespace PortfolioTrading.Modules.Account
                 AS_StopPx = ToDecimal(strategyUpdate.StopPx);
                 AS_DonchianHi = ToDecimal(strategyUpdate.DonchianHi);
                 AS_DonchianLo = ToDecimal(strategyUpdate.DonchianLo);
+            }
+            else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.RANGE_TREND)
+            {
+                PTEntity.RangeTrendStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.RangeTrendStrategyUpdateItem;
+
+                RT_UpperBoundOpen = ToDecimal(strategyUpdate.UpperBoundOpen);
+                RT_LowerBoundOpen = ToDecimal(strategyUpdate.LowerBoundOpen);
+                RT_UpperBoundClose = ToDecimal(strategyUpdate.UpperBoundClose);
+                RT_LowerBoundClose = ToDecimal(strategyUpdate.LowerBoundClose);
+                RT_LastCostPx = ToDecimal(strategyUpdate.LastCostPx);
+                RT_RecentStopLossPx = ToDecimal(strategyUpdate.RecentStopLossPx);
             }
 
             OpenTimes = item.TotalOpenTimes;

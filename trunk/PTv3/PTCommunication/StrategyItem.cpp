@@ -171,4 +171,29 @@ void ASCTrendStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 	}
 }
 
+void RangeTrendStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
+{
+	IntPtr symbolPtr;
+	try
+	{
+		symbolPtr = (IntPtr)Marshal::StringToHGlobalAnsi(_symbol);
+
+		entity::HistSourceCfg* fastSourceCfg = pNativeStrategyItem->add_histsources();
+		fastSourceCfg->set_symbol((char*)symbolPtr.ToPointer());
+		fastSourceCfg->set_precision(_period);
+
+		pNativeStrategyItem->set_rt_timeframe(_period);
+		pNativeStrategyItem->set_rt_openperiod(_openPeriod);
+		pNativeStrategyItem->set_rt_closeperiod(_closePeriod);
+		pNativeStrategyItem->set_rt_stoplossfactor(_stopLossFactor);
+		pNativeStrategyItem->set_rt_trendfactor(_trendFactor);
+
+		StrategyItem::To(pNativeStrategyItem);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(symbolPtr);
+	}
+}
+
 }

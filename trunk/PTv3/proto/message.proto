@@ -133,6 +133,7 @@ enum StrategyType
 	WMA_TREND = 4;
 	LINER_REGRESSION = 5;
 	ASC_TREND = 6;
+	RANGE_TREND = 7;
 }
 
 message HistSourceCfg
@@ -197,6 +198,13 @@ message StrategyItem
 	optional int32 AS_AvergatePeriod = 542;
 	optional int32 AS_BreakOutLength = 543;
 	optional int32 AS_Period = 544;
+
+	// Range Trend
+	optional int32 RT_TimeFrame = 551;
+	optional int32 RT_OpenPeriod = 552;
+	optional int32 RT_ClosePeriod = 553;
+	optional double RT_StopLossFactor = 554;
+	optional double RT_TrendFactor = 555;
 }
 
 message TriggerItem
@@ -297,7 +305,13 @@ message PortfolioUpdateItem
 	optional double AS_StopPx = 332;
 	optional double AS_DonchianHi = 333;
 	optional double AS_DonchianLo = 334;
-	
+	// Range Trend
+	optional double RT_UpperBoundOpen = 341;
+	optional double RT_LowerBoundOpen = 342;
+	optional double RT_UpperBoundClose = 343;
+	optional double RT_LowerBoundClose = 344;
+	optional double RT_LastCostPx = 345;
+	optional double RT_RecentStopLossPx = 346;
 }
 
 message ConnectParam

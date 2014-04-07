@@ -27,8 +27,11 @@ CRangeTrendStrategy::CRangeTrendStrategy(const entity::StrategyItem& strategyIte
 	, m_currentLow(0.0)
 	, m_NATR(0.0)
 	, m_StopLoss(0.0)
-	, m_fireAtNextBar(false)
 	, m_lastBarIdx(-1)
+	, m_lastPosiDirection(entity::NET)
+	, m_lastCostPx(-1.0)
+	, m_recentStopLossPx(0)
+	, m_trending(false)
 {
 }
 
@@ -43,11 +46,11 @@ void CRangeTrendStrategy::Apply( const entity::StrategyItem& strategyItem, bool 
 
 	CTechAnalyStrategy::Apply(strategyItem, withTriggers);
 
-	//m_timeFrame = strategyItem.rt_timeframe();
-	//m_openPeriod = strategyItem.rt_openperiod();
-	//m_closePeriod = strategyItem.rt_closeperiod();
-	//m_stopLossFactor = strategyItem.rt_stoplossfactor();
-	//m_trendFactor = strategyItem.rt_trendfactor();
+	m_timeFrame = strategyItem.rt_timeframe();
+	m_openPeriod = strategyItem.rt_openperiod();
+	m_closePeriod = strategyItem.rt_closeperiod();
+	m_stopLossFactor = strategyItem.rt_stoplossfactor();
+	m_trendFactor = strategyItem.rt_trendfactor();
 	
 	// make sure following parameters having values
 	if(m_openTimeout == 0)
@@ -130,11 +133,39 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 	if(currentBarIdx > m_lastBarIdx)
 	{
 		m_lastBarIdx = currentBarIdx;
-		if(m_fireAtNextBar)
+		if(m_pendingOrdCmd.get() != NULL)	// has pending command
 		{
-			// Fire trigger
-			m_fireAtNextBar = false;
-			return;
+			if(m_pendingOrdCmd->IsActive())
+			{
+				// Fire command
+				if(m_pendingOrdCmd->GetOffset() == entity::OPEN)		// For Open position command
+				{
+					m_lastPosiDirection = m_pendingOrdCmd->GetDirection();
+					m_lastCostPx = m_pendingOrdCmd->Fire(pQuote, pPortfolio, timestamp);
+					m_StopLoss = m_stopLossFactor * m_NATR;
+					LOG_DEBUG(logger, boost::str(boost::format("Fired StrategyOrderCommand(OPEN). LastCost: %.2f, StopLoss: %.2f")
+						% m_lastCostPx % m_StopLoss));
+				}
+				else	// for close position command
+				{
+					// reset flags
+					double closePx = m_pendingOrdCmd->Fire(pQuote, pPortfolio, timestamp);
+
+					m_lastPosiDirection = entity::NET;
+					m_lastCostPx = -1.0;
+					m_StopLoss = 0;
+				}
+
+				if(!m_pendingOrdCmd->IsActive())		// command reverted will not be reset
+					m_pendingOrdCmd.reset();
+				
+				return;
+			}
+			else
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("StrategyOrderCommand is inactive, and removed.")));
+				m_pendingOrdCmd.reset();
+			}
 		}
 	}
 
@@ -147,6 +178,7 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 		return;
 	}
 
+	// Testing for Close Position
 	if (pOrderPlacer->IsOpened())
 	{
 		bool meetCloseCondition = false;
@@ -157,49 +189,96 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Closing position due to Force close")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pPortfolio, pOrderPlacer, pQuote, "手动平仓");
+
+			CStrategyOrderCommand forceCloseCommand(entity::CLOSE, pOrderPlacer, this);
+			forceCloseCommand.SetNote("手动平仓");
+			double px = forceCloseCommand.Fire(pQuote, pPortfolio, timestamp);
 			return;
 		}
-	}
-	
-	/*
-	// Testing for Open position
-	double last = pQuote->last();
-	LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, Hi: %.2f, Lo: %.2f")
-		% pPortfolio->InvestorId() % pPortfolio->ID() 
-		% last % m_upperBoundOpen % m_lowerBoundOpen));
 
-	entity::PosiDirectionType direction = TestForOpen(pQuote, m_williamsR, m_donchianHi, m_donchianLo, trend);
-	if(currentBarIdx < forceCloseBar &&
-		direction > entity::NET && 
-		(currentBarIdx > m_lastCloseBarIdx))		// In general, don't open position at the bar just closing position
-		//|| direction != m_lastPositionOffset))	// unless the direction is different
-	{
-		if(!pOrderPlacer->IsWorking())
+		// Stop Gain & Stop Loss
+		string closeComment;
+		bool revertOffset = false;
+		bool closePosition = TestForClose(pPortfolio, pQuote, m_upperBoundClose, m_lowerBoundClose, &closeComment, &revertOffset);
+		if(closePosition)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] ASC Trend - Portfolio(%s) Opening position at bar %d")
-				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
-			OpenPosition(direction, pOrderPlacer, pQuote, timestamp, false, 
-				boost::str(boost::format("WR(%.2f)满足条件") % m_williamsR).c_str());
-			m_lastOpenBarIdx = currentBarIdx;
-
-			// The stopPx at the current bar in this moment will be initial stop price as backup stop price.
-			// in case the preceding trend is different than this one, this initial stop price will be effective.
-			m_initStopPx = m_watrStopIndSet->GetRef(IND_WATR_STOP, 0);
-			return;
+			if(m_pendingOrdCmd.get() == NULL)
+			{
+				m_pendingOrdCmd = OrderCommandPtr(new CStrategyOrderCommand(entity::CLOSE, pOrderPlacer, this));
+				m_pendingOrdCmd->SetNote(closeComment);
+				m_pendingOrdCmd->SetRevertOnClose(revertOffset);
+				m_pendingOrdCmd->Activate();
+			}
+			else
+			{
+				if(!m_pendingOrdCmd->IsActive())
+				{
+					m_pendingOrdCmd->SetNote(closeComment);
+					m_pendingOrdCmd->SetRevertOnClose(revertOffset);
+					m_pendingOrdCmd->Activate();
+				}
+			}
+		}
+		else
+		{
+			if(m_pendingOrdCmd.get() != NULL)
+				m_pendingOrdCmd->Deactivate();
 		}
 	}
-	*/
+	// Testing for Open position
+	else
+	{
+		string openComment;
+		entity::PosiDirectionType direction = TestForOpen(pPortfolio, pQuote, m_upperBoundOpen, m_lowerBoundOpen, &openComment);
+
+		if(direction > entity::NET)
+		{
+			if(m_pendingOrdCmd.get() == NULL)
+			{
+				m_pendingOrdCmd = OrderCommandPtr(new CStrategyOrderCommand(entity::OPEN, pOrderPlacer, this));
+				m_pendingOrdCmd->SetDirection(direction);
+				m_pendingOrdCmd->SetNote(openComment);
+				m_pendingOrdCmd->Activate();
+			}
+			else{
+				if(!m_pendingOrdCmd->IsActive())
+				{
+					m_pendingOrdCmd->SetDirection(direction);
+					m_pendingOrdCmd->SetNote(openComment);
+					m_pendingOrdCmd->Activate();
+				}
+			}
+		}
+		else
+		{
+			if(m_pendingOrdCmd.get() != NULL)
+				m_pendingOrdCmd->Deactivate();
+		}
+	}
 }
 
 void CRangeTrendStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
 {
+	CStrategy::GetStrategyUpdate(pPortfUpdateItem);
 
+	pPortfUpdateItem->set_rt_upperboundopen(m_upperBoundOpen);
+	pPortfUpdateItem->set_rt_lowerboundopen(m_lowerBoundOpen);
+	pPortfUpdateItem->set_rt_upperboundclose(m_upperBoundClose);
+	pPortfUpdateItem->set_rt_lowerboundclose(m_lowerBoundClose);
+	pPortfUpdateItem->set_rt_lastcostpx(m_lastCostPx);
+	pPortfUpdateItem->set_rt_recentstoplosspx(m_recentStopLossPx);
 }
 
 int CRangeTrendStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
 {
-	return 0;
+	int qty = openOrder.quantity();
+
+	double ord_profit = CStrategy::CalcOrderProfit(openOrder);
+	AddProfit(pPortfolio, ord_profit);
+	int totalOpenTimes = IncrementOpenTimes(pPortfolio, qty);
+	IncrementCloseTimes(pPortfolio, qty);
+
+	return totalOpenTimes;
 }
 
 void CRangeTrendStrategy::CreateTriggers( const entity::StrategyItem& strategyItem )
@@ -282,4 +361,105 @@ void CRangeTrendStrategy::OnBeforeAddingHistSrcConfig( CHistSourceCfg* pHistSrcC
 		if(pHistSrcCfg->Precision == m_timeFrame)
 			pHistSrcCfg->HistData = true;
 	}
+}
+
+entity::PosiDirectionType CRangeTrendStrategy::TestForOpen( CPortfolio* pPortfolio, entity::Quote* pQuote, double upperBound, double lowerBound, string* pOutComment  )
+{
+	entity::PosiDirectionType direction = entity::NET;
+	double last = pQuote->last();
+	if(last > upperBound )
+		direction = entity::SHORT;
+	else if(last < upperBound)
+		direction = entity::LONG;
+
+	LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, UpperBound: %.2f, LowerBound: %.2f --->>> %s")
+		% pPortfolio->InvestorId() % pPortfolio->ID() % last % m_upperBoundOpen % m_lowerBoundOpen % GetPosiDirectionText(direction)));
+	if(direction == entity::SHORT)
+	{
+		*pOutComment = boost::str(boost::format("价格(%.2f)突破上轨(%.2f)空头开仓") % last % upperBound );
+	}
+	else if(direction == entity::LONG)
+	{
+		*pOutComment = boost::str(boost::format("价格(%.2f)突破下轨(%.2f)多头开仓") % last % lowerBound );
+	}
+	return direction;
+}
+
+bool CRangeTrendStrategy::TestForClose( CPortfolio* pPortfolio, entity::Quote* pQuote, double upperBound, double lowerBound, string* pOutComment, bool* outRevertOffset )
+{
+	double last = pQuote->last();
+	bool ret = false;
+	if(m_trending)
+	{
+		if(m_lastPosiDirection == entity::LONG)
+		{
+			double stopLossPt = m_lastCostPx - m_StopLoss;
+			m_recentStopLossPx = stopLossPt;
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for CLOSE (TREND-LONG) - Last: %.2f, upperBound: %.2f, stopLossPt: %.2f")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % last % lowerBound % stopLossPt));
+			
+			if(last < lowerBound || last < stopLossPt)
+			{
+				ret = true;
+				*pOutComment = boost::str(boost::format("价格(%.2f)小于止损点(%.2f, %.2f)") % last % lowerBound % stopLossPt );
+			}
+		}
+		else if(m_lastPosiDirection == entity::SHORT)
+		{
+			double stopLossPt = m_lastCostPx + m_StopLoss;
+			m_recentStopLossPx = stopLossPt;
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for CLOSE (TREND-SHORT) - Last: %.2f, upperBound: %.2f, stopLossPt: %.2f")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % last % upperBound % stopLossPt));
+
+			if(last > upperBound || last > stopLossPt)
+			{
+				ret = true;
+				*pOutComment = boost::str(boost::format("价格(%.2f)大于止损点(%.2f, %.2f)") % last % upperBound % stopLossPt );
+			}
+		}
+	}
+	else
+	{
+		if(m_lastPosiDirection == entity::LONG)
+		{
+			double stopGain = m_lastCostPx + m_StopLoss;
+			double stopLoss = m_lastCostPx - (m_trendFactor * m_StopLoss);
+			m_recentStopLossPx = stopLoss;
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for CLOSE (RANGE-LONG) - Last: %.2f, StopLoss: %.2f, StopGain: %.2f")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % last % stopLoss % stopGain));
+
+			if(last > stopGain)
+			{
+				ret = true;
+				*pOutComment = boost::str(boost::format("价格(%.2f)大于止盈点(%.2f)") % last % stopGain );
+			}
+			else if(last < stopLoss)
+			{
+				ret = true;
+				*outRevertOffset = true;
+				*pOutComment = boost::str(boost::format("价格(%.2f)小于止损点(%.2f)") % last % stopLoss );
+			}
+		}
+		else if(m_lastPosiDirection == entity::SHORT)
+		{
+			double stopGain = m_lastCostPx - m_StopLoss;
+			double stopLoss = m_lastCostPx + (m_trendFactor * m_StopLoss);
+			m_recentStopLossPx = stopLoss;
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for CLOSE (RANGE-SHORT) - Last: %.2f, StopLoss: %.2f, StopGain: %.2f")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % last % stopLoss % stopGain));
+
+			if(last < stopGain)
+			{
+				ret = true;
+				*pOutComment = boost::str(boost::format("价格(%.2f)小于止盈点(%.2f)") % last % stopGain );
+			}
+			else if(last > stopLoss)
+			{
+				ret = true;
+				*outRevertOffset = true;
+				*pOutComment = boost::str(boost::format("价格(%.2f)大于止损点(%.2f)") % last % stopLoss );
+			}
+		}
+	}
+	return ret;
 }
