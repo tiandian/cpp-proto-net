@@ -17,7 +17,7 @@ public:
 	void Calculate(COHLCRecordSet* ohlcRecordSet);
 
 private:
-	void CalcDonchianChannel(COHLCRecordSet* ohlcRecordSet, int nbElements, int lastIdx);
+	void CalcDonchianChannel(COHLCRecordSet* ohlcRecordSet, int nbElements, int beginIdx, int endIdx);
 
 	int m_period;
 

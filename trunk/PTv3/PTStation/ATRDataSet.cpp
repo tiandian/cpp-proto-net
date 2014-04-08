@@ -24,15 +24,28 @@ void CATRDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 	logger.Info(boost::str(boost::format("Calculating ATR with OHLC RecordSet: lastIdx - %d, last price - %f")
 		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 
-	CalcTrueRange(ohlcRecordSet, nbElements, lastIdx);
-	CalcATR(ohlcRecordSet, nbElements, lastIdx);
+	if(m_lastPosition > 0)
+	{
+		CalcTrueRange(ohlcRecordSet, nbElements, lastIdx);
+		CalcATR(ohlcRecordSet, nbElements, lastIdx);
+	}
+	else
+	{
+		for(int i = 0; i <= lastIdx; ++i)
+		{
+			CalcTrueRange(ohlcRecordSet, nbElements, i);
+			CalcATR(ohlcRecordSet, nbElements, i);
+		}
+	}
+
+	logger.Info(boost::str(boost::format("Calculated ATR: %.2f") % m_arrATR[lastIdx]));
 
 	m_lastPosition = lastIdx;
 }
 
 void CATRDataSet::CalcATR( COHLCRecordSet* ohlcRecordSet, int nbElements, int lastIdx )
 {
-	if(nbElements >= m_period)
+	if(nbElements >= m_period && lastIdx >= (m_period - 1))
 	{
 		int startIdx = lastIdx;
 		int endIdx = lastIdx - m_period + 1;
@@ -43,8 +56,6 @@ void CATRDataSet::CalcATR( COHLCRecordSet* ohlcRecordSet, int nbElements, int la
 		}
 
 		m_arrATR[lastIdx] = tmpTotal / (double)m_period;
-		
-		logger.Info(boost::str(boost::format("Calculated ATR: %.2f") % m_arrATR[lastIdx]));
 	}
 }
 

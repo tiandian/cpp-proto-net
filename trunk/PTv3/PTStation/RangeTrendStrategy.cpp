@@ -33,6 +33,8 @@ CRangeTrendStrategy::CRangeTrendStrategy(const entity::StrategyItem& strategyIte
 	, m_recentStopLossPx(0)
 	, m_trending(false)
 {
+	Apply(strategyItem, false);
+	CreateTriggers(strategyItem);
 }
 
 
