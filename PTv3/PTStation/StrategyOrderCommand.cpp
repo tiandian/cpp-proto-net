@@ -24,7 +24,7 @@ double CStrategyOrderCommand::Fire( entity::Quote* pQuote, CPortfolio* pPortfoli
 {
 	m_active = false;
 
-	if(m_offset)
+	if(m_offset == entity::OPEN)
 		return OpenPosition(pQuote, pPortfolio, timestamp);
 	else
 	{

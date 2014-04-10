@@ -83,8 +83,8 @@ void CHistDataReader::ReadFromFile(const string& dataFilePath, COHLCRecordSet* p
 					if(histData)
 						pRecordSet->SetHistory(idx, open, high, low, close);
 					// Ignore today's data because it's always incomplete
-					//else
-					//	pRecordSet->SetToday(idx, open, high, low, close);
+					else
+						pRecordSet->SetToday(idx, open, high, low, close);
 				}
             }
         }

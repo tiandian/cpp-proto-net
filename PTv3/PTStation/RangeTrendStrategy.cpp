@@ -122,12 +122,18 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 		return;	// too few bars to test
 
 	m_openDonchianDataSet->Calculate(ohlc);
-	m_upperBoundOpen = m_openDonchianDataSet->GetRef(IND_DONCHIAN_Hi, 1);
-	m_lowerBoundOpen = m_openDonchianDataSet->GetRef(IND_DONCHIAN_Lo, 1);
+	if(m_openDonchianDataSet->AvailableElems() > 1)
+	{
+		m_upperBoundOpen = m_openDonchianDataSet->GetRef(IND_DONCHIAN_Hi, 1);
+		m_lowerBoundOpen = m_openDonchianDataSet->GetRef(IND_DONCHIAN_Lo, 1);
+	}
 
 	m_closeDonchianDataSet->Calculate(ohlc);
-	m_upperBoundClose = m_closeDonchianDataSet->GetRef(IND_DONCHIAN_Hi, 1);
-	m_lowerBoundClose = m_closeDonchianDataSet->GetRef(IND_DONCHIAN_Lo, 1);
+	if(m_closeDonchianDataSet->AvailableElems() > 1)
+	{
+		m_upperBoundClose = m_closeDonchianDataSet->GetRef(IND_DONCHIAN_Hi, 1);
+		m_lowerBoundClose = m_closeDonchianDataSet->GetRef(IND_DONCHIAN_Lo, 1);
+	}
 
 	m_atrDataSet->Calculate(ohlc);
 	m_NATR = m_atrDataSet->GetRef(IND_ATR, 1);
@@ -243,10 +249,11 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 				m_pendingOrdCmd->Activate();
 			}
 			else{
+				m_pendingOrdCmd->SetDirection(direction);
+				m_pendingOrdCmd->SetNote(openComment);
+
 				if(!m_pendingOrdCmd->IsActive())
 				{
-					m_pendingOrdCmd->SetDirection(direction);
-					m_pendingOrdCmd->SetNote(openComment);
 					m_pendingOrdCmd->Activate();
 				}
 			}
@@ -371,7 +378,7 @@ entity::PosiDirectionType CRangeTrendStrategy::TestForOpen( CPortfolio* pPortfol
 	double last = pQuote->last();
 	if(last > upperBound )
 		direction = entity::SHORT;
-	else if(last < upperBound)
+	else if(last < lowerBound)
 		direction = entity::LONG;
 
 	LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Testing for OPEN - Last: %.2f, UpperBound: %.2f, LowerBound: %.2f --->>> %s")
