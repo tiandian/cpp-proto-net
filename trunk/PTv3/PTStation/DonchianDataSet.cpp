@@ -5,6 +5,7 @@
 
 CDonchianDataSet::CDonchianDataSet(int size, int period)
 	: CTaIndicatorSet(size)
+	, m_availElems(0)
 {
 	SetPeriod(period);
 
@@ -58,7 +59,7 @@ void CDonchianDataSet::CalcDonchianChannel( COHLCRecordSet* ohlcRecordSet, int n
 			m_arrHighest[loop] = topBound;
 			m_arrLowest[loop] = bottomBound;
 		}
-
+		m_availElems = nbElements - m_period + 1;
 		logger.Info(boost::str(boost::format("Calculated Donchian Channel: High - %.2f, Low - %.2f")
 			% m_arrHighest[endIdx] % m_arrLowest[endIdx]));
 	}
