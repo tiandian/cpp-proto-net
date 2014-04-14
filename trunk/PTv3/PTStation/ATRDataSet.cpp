@@ -21,7 +21,7 @@ void CATRDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 {
 	int nbElements = ohlcRecordSet->NbElements();
 	int lastIdx = ohlcRecordSet->GetEndIndex();
-	logger.Info(boost::str(boost::format("Calculating ATR with OHLC RecordSet: lastIdx - %d, last price - %f")
+	logger.Info(boost::str(boost::format("Calculating ATR with OHLC RecordSet: lastIdx - %d, last price - %.2f")
 		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 
 	if(m_lastPosition > 0)

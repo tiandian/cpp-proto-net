@@ -18,6 +18,7 @@ CStrategyOrderCommand::CStrategyOrderCommand(entity::PosiOffsetFlag offset, CPor
 
 CStrategyOrderCommand::~CStrategyOrderCommand(void)
 {
+	LOG_DEBUG(logger, "StrategyOrderCommand has been removed");
 }
 
 double CStrategyOrderCommand::Fire( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
@@ -118,5 +119,6 @@ void CStrategyOrderCommand::Revert( entity::PosiDirectionType direction )
 	{
 		m_offset = entity::OPEN;
 		SetDirection( direction == entity::LONG ? entity::SHORT : entity::LONG );
+		m_active = true;	// this stops command being removed after firing
 	}
 }

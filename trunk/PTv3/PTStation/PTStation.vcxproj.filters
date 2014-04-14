@@ -339,7 +339,7 @@
       <Filter>Header Files\tech</Filter>
     </ClInclude>
     <ClInclude Include="StrategyOrderCommand.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\strategy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -587,7 +587,7 @@
       <Filter>Source Files\tech</Filter>
     </ClCompile>
     <ClCompile Include="StrategyOrderCommand.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\strategy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
