@@ -63,8 +63,8 @@ double CStrategyOrderCommand::OpenPosition( entity::Quote* pQuote, CPortfolio* p
 			% pPortfolio->InvestorId() % pPortfolio->ID()
 			% GetPosiDirectionText(m_direction) % lmtPrice[0] % pQuote->update_time()));
 
-		string openComment = boost::str(boost::format("%s - %s 开仓 @ %.2f")
-			% m_strNote % GetPosiDirectionText(m_direction) % lmtPrice[0]);
+		string openComment = boost::str(boost::format("%s - %s 开仓 @ %.2f [%s]")
+			% m_strNote % GetPosiDirectionText(m_direction) % lmtPrice[0] % pQuote->update_time());
 
 		m_pOrderPlacer->SetMlOrderStatus(openComment);
 
@@ -106,8 +106,8 @@ double CStrategyOrderCommand::ClosePosition( entity::Quote* pQuote, CPortfolio* 
 
 		m_parentStrategy->ResetForceClose();
 		
-		pPortfolio->PushMessage(boost::str(boost::format("%s - %s 平仓 @ %.2f")
-			% m_strNote % GetPosiDirectionText(posiDirection, true) % closePx));
+		pPortfolio->PushMessage(boost::str(boost::format("%s - %s 平仓 @ %.2f [%s]")
+			% m_strNote % GetPosiDirectionText(posiDirection, true) % closePx % pQuote->update_time()));
 	}
 
 	return px;
