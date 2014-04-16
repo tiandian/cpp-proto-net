@@ -1,6 +1,6 @@
 #pragma once
 
-#define APP_VERSION "3.4.0"
+#define APP_VERSION "3.4.1"
 
 class CConfiguration
 {

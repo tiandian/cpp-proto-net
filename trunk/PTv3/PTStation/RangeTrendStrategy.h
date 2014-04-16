@@ -21,9 +21,7 @@ public:
 	virtual int OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder);
 
 protected:
-	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
-	void OpenPosition(entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening, const char* noteText);
-	void ClosePosition(CPortfolio* pPortfolio, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText);
+	virtual void CreateTriggers(const entity::StrategyItem& strategyItem){}
 
 	void OnBeforeAddingHistSrcConfig(CHistSourceCfg* pHistSrcCfg);
 
@@ -34,6 +32,7 @@ private:
 
 	int m_timeFrame;
 	bool m_marketOpen;
+	int m_forceCloseOffset;
 	
 	// Strategy parameters
 	int m_openPeriod;

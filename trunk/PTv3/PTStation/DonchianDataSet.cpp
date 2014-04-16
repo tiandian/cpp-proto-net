@@ -22,8 +22,8 @@ void CDonchianDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 {
 	int nbElements = ohlcRecordSet->NbElements();
 	int lastIdx = ohlcRecordSet->GetEndIndex();
-	logger.Info(boost::str(boost::format("Calculating Donchian with OHLC RecordSet: lastIdx - %d, last price - %.2f")
-		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
+	//logger.Info(boost::str(boost::format("Calculating Donchian with OHLC RecordSet: lastIdx - %d, last price - %.2f")
+	//	% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 	if(m_lastPosition > 0)
 	{
 		CalcDonchianChannel(ohlcRecordSet, nbElements, lastIdx, lastIdx);
@@ -60,7 +60,7 @@ void CDonchianDataSet::CalcDonchianChannel( COHLCRecordSet* ohlcRecordSet, int n
 			m_arrLowest[loop] = bottomBound;
 		}
 		m_availElems = nbElements - m_period + 1;
-		logger.Info(boost::str(boost::format("Calculated Donchian Channel: High - %.2f, Low - %.2f")
-			% m_arrHighest[endIdx] % m_arrLowest[endIdx]));
+		//logger.Info(boost::str(boost::format("Calculated Donchian Channel: High - %.2f, Low - %.2f")
+		//	% m_arrHighest[endIdx] % m_arrLowest[endIdx]));
 	}
 }

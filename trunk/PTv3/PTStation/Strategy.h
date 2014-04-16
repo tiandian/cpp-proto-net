@@ -39,6 +39,7 @@ public:
 	virtual void Stop(){ m_running.store(false, boost::memory_order_release); }
 
 	static double CalcOrderProfit(const trade::MultiLegOrder& openOrder);
+	static int CalcOffsetBarsBeforeMktCls(int minutesBeforeMktCls, int timeFrame);
 
 	void SetForceOpen(){ m_forceOpening.store(true, boost::memory_order_release); }
 	void ResetForceOpen(){ m_forceOpening.store(false, boost::memory_order_release); }

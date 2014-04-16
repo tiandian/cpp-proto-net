@@ -132,3 +132,13 @@ double CStrategy::CalcOrderProfit( const trade::MultiLegOrder& openOrder )
 	}
 	return profit;
 }
+
+int CStrategy::CalcOffsetBarsBeforeMktCls( int minutesBeforeMktCls, int timeFrame )
+{
+	int timeInSeconds = minutesBeforeMktCls * 60;
+	int bars = timeInSeconds / timeFrame;
+	if(timeInSeconds % timeFrame > 0)
+		bars += 1;
+
+	return bars;
+}
