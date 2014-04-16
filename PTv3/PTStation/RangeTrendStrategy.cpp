@@ -15,6 +15,7 @@ CRangeTrendStrategy::CRangeTrendStrategy(const entity::StrategyItem& strategyIte
 	: CTechAnalyStrategy(strategyItem, pAvatar)
 	, m_timeFrame(300)
 	, m_marketOpen(false)
+	, m_forceCloseOffset(1)
 	, m_openPeriod(20)
 	, m_closePeriod(10)
 	, m_stopLossFactor(2.0)
@@ -59,6 +60,9 @@ void CRangeTrendStrategy::Apply( const entity::StrategyItem& strategyItem, bool 
 		m_openTimeout = 350;
 	if(m_retryTimes == 0)
 		m_retryTimes = 8;
+
+	// Strategy will work before 5 minutes prior to market close
+	m_forceCloseOffset = CStrategy::CalcOffsetBarsBeforeMktCls(5, m_timeFrame);
 
 	if(!withTriggers)
 	{
@@ -114,7 +118,7 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 	if(ohlc == NULL)
 		return;
 
-	//int forceCloseBar = ohlc->GetSize() - m_forceCloseOffset;
+	int forceCloseBar = ohlc->GetSize() - m_forceCloseOffset;
 
 	int currentBarIdx = ohlc->GetEndIndex();
 
@@ -138,16 +142,12 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 	m_atrDataSet->Calculate(ohlc);
 	m_NATR = m_atrDataSet->GetRef(IND_ATR, 1);
 
-	if(m_lastBarIdx < 0)
+	if(currentBarIdx > m_lastBarIdx)	// Get into next bar
 	{
-		m_lastBarIdx = currentBarIdx;	// initialize m_lastBarIdx
-	}
+		m_lastBarIdx = currentBarIdx;
 
-	if(m_pendingOrdCmd.get() != NULL) // has pending command
-	{
-		if(currentBarIdx > m_lastBarIdx)
+		if(m_pendingOrdCmd.get() != NULL)
 		{
-			m_lastBarIdx = currentBarIdx;
 			if(m_pendingOrdCmd->IsActive())
 			{
 				// Fire command
@@ -174,28 +174,34 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 
 				if(!m_pendingOrdCmd->IsActive())		// command reverted will not be reset
 				{
-					LOG_DEBUG(logger, boost::str(boost::format("StrategyOrderCommand is inactive, and removed.")));
+					LOG_DEBUG(logger, boost::str(boost::format("StrategyOrderCommand gets inactive, and removed.")));
 					m_pendingOrdCmd.reset();
 				}
 				return;
 			}
 			else
 			{
-				LOG_DEBUG(logger, boost::str(boost::format("StrategyOrderCommand is inactive, and removed.")));
+				LOG_DEBUG(logger, boost::str(boost::format("StrategyOrderCommand is inactive, and gets removed.")));
 				m_pendingOrdCmd.reset();
 			}
 		}
-		// ONLY for revert Open position after close
-		else if(m_pendingOrdCmd->GetRevertOnClose()
-			&& m_pendingOrdCmd->GetOffset() == entity::OPEN)
+	}
+	else	// Still the current bar
+	{
+		if(m_pendingOrdCmd.get() != NULL)
 		{
-			m_trending = true;
-			m_lastPosiDirection = m_pendingOrdCmd->GetDirection();
-			m_lastCostPx = m_pendingOrdCmd->Fire(pQuote, pPortfolio, timestamp);
-			m_StopLoss = m_stopLossFactor * m_NATR;
-			LOG_DEBUG(logger, boost::str(boost::format("Fired StrategyOrderCommand(Revert-OPEN). LastCost: %.2f, StopLoss: %.2f at %s")
-				% m_lastCostPx % m_StopLoss % pQuote->update_time()));
-			m_pendingOrdCmd.reset();
+			if(m_pendingOrdCmd->GetRevertOnClose()
+				&& m_pendingOrdCmd->GetOffset() == entity::OPEN)
+			{
+				// ONLY for revert Open position after close
+				m_trending = true;
+				m_lastPosiDirection = m_pendingOrdCmd->GetDirection();
+				m_lastCostPx = m_pendingOrdCmd->Fire(pQuote, pPortfolio, timestamp);
+				m_StopLoss = m_stopLossFactor * m_NATR;
+				LOG_DEBUG(logger, boost::str(boost::format("Fired StrategyOrderCommand(Revert-OPEN). LastCost: %.2f, StopLoss: %.2f at %s")
+					% m_lastCostPx % m_StopLoss % pQuote->update_time()));
+				m_pendingOrdCmd.reset();
+			}
 		}
 	}
 
@@ -223,14 +229,13 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 		bool meetCloseCondition = false;
 		bool forceClosing = IsForceClosing();
 		if(forceClosing // This close condition check is only effective on the bar after open
-			//|| currentBarIdx >= forceCloseBar
-			)
+			|| currentBarIdx >= forceCloseBar)
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Range Trend - Portfolio(%s) Closing position due to Force close")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
 
 			CStrategyOrderCommand forceCloseCommand(entity::CLOSE, pOrderPlacer, this);
-			forceCloseCommand.SetNote("手动平仓");
+			forceCloseCommand.SetNote( forceClosing ? "手动平仓" : "收市前平仓");
 			double px = forceCloseCommand.Fire(pQuote, pPortfolio, timestamp);
 			return;
 		}
@@ -265,7 +270,7 @@ void CRangeTrendStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, b
 		}
 	}
 	// Testing for Open position
-	else
+	else if (currentBarIdx < forceCloseBar)
 	{
 		string openComment;
 		entity::PosiDirectionType direction = TestForOpen(pPortfolio, pQuote, m_upperBoundOpen, m_lowerBoundOpen, &openComment);
@@ -319,79 +324,6 @@ int CRangeTrendStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const t
 	IncrementCloseTimes(pPortfolio, qty);
 
 	return totalOpenTimes;
-}
-
-void CRangeTrendStrategy::CreateTriggers( const entity::StrategyItem& strategyItem )
-{
-
-}
-
-void CRangeTrendStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening, const char* noteText )
-{
-	/*
-	if(direction > entity::NET)
-	{
-		double lmtPrice[2];
-		if(direction == entity::LONG)
-		{
-			lmtPrice[0] = pQuote->ask();
-		}
-		else if(direction == entity::SHORT)
-		{
-			lmtPrice[0] = pQuote->bid();
-		}
-		lmtPrice[1] = 0.0;
-
-		LOG_DEBUG(logger, boost::str(boost::format("Range Trend - %s Open position @ %.2f (%s)")
-			% GetPosiDirectionText(direction) % lmtPrice[0] % pQuote->update_time()));
-
-		string openComment = forceOpening ? 
-			boost::str(boost::format("手动 %s 开仓 @ %.2f") % GetPosiDirectionText(direction) % lmtPrice[0])
-			: 
-		boost::str(boost::format("%s - %s 开仓 @ %.2f")
-			% noteText % GetPosiDirectionText(direction) % lmtPrice[0]);
-
-		pOrderPlacer->SetMlOrderStatus(openComment);
-
-		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
-
-		//m_lastPositionOffset = direction;
-		//m_isRealSignal = m_allowFakeSignal ? true : false; // When opening position, not sure current bar is real signal or not
-		ResetForceOpen();
-	}
-	*/
-}
-
-void CRangeTrendStrategy::ClosePosition( CPortfolio* pPortfolio, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText )
-{
-	/*
-	if(pOrderPlacer != NULL)
-	{
-		entity::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
-
-		double closePx = 0.0;
-		if(posiDirection == entity::LONG)
-		{
-			closePx = pQuote->bid();
-		}
-		else if(posiDirection == entity::SHORT)
-		{
-			closePx = pQuote->ask();
-		}
-
-		LOG_DEBUG(logger, boost::str(boost::format("Range Trend - %s Close position @ %.2f (%s)")
-			% GetPosiDirectionText(posiDirection) % closePx  % pQuote->update_time()));
-
-		pOrderPlacer->CloseOrder(closePx);
-
-		ResetForceClose();
-		// reset initStopPx
-		//m_initStopPx = -1.0;
-
-		pPortfolio->PushMessage(boost::str(boost::format("%s - %s 平仓 @ %.2f")
-			% noteText % GetPosiDirectionText(posiDirection, true) % closePx));
-	}
-	*/
 }
 
 void CRangeTrendStrategy::OnBeforeAddingHistSrcConfig( CHistSourceCfg* pHistSrcCfg )
