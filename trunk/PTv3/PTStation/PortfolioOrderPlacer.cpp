@@ -9,6 +9,8 @@
 #include "charsetconvert.h"
 #include "BuildOrderException.h"
 
+#include <boost/date_time.hpp>
+
 // back-end
 #include <boost/msm/back/state_machine.hpp>
 //front-end
@@ -535,7 +537,7 @@ void CPortfolioOrderPlacer::Send()
 		ResetTemplate();
 		m_isFirstLeg = false;
 		FillSendingOrderNote();
-		m_pOrderProcessor->PublishMultiLegOrderUpdate(m_multiLegOrderTemplate.get());
+		PushWholeMultiLegOrder(m_multiLegOrderTemplate.get());
 		ResetSendingOrderNote();
 	}
 	else
@@ -779,8 +781,8 @@ void CPortfolioOrderPlacer::UpdateMultiLegOrder()
 		if(legPlacer->IsOrderReady())
 			pOrd->CopyFrom(legPlacer->Order());
 	}
-
-	m_pOrderProcessor->PublishMultiLegOrderUpdate(m_multiLegOrderTemplate.get());
+	
+	PushWholeMultiLegOrder(m_multiLegOrderTemplate.get());
 }
 
 void CPortfolioOrderPlacer::OutputStatus( const string& statusMsg )
@@ -845,7 +847,7 @@ void CPortfolioOrderPlacer::UpdateLegOrder(const RtnOrderWrapperPtr& pRtnOrder )
 		m_activeOrdPlacer->UpdateOrder(pRtnOrder);
 		trade::Order& legOrder = m_activeOrdPlacer->OrderEntity();
 
-		m_pOrderProcessor->PublishOrderUpdate(m_multiLegOrderTemplate->portfolioid(), 
+		PushIndividualLegOrder(m_multiLegOrderTemplate->portfolioid(), 
 			m_multiLegOrderTemplate->orderid(), &legOrder);
 	}
 }
@@ -856,7 +858,7 @@ void CPortfolioOrderPlacer::UpdateLastDoneOrder()
 	{
 		trade::Order& legOrder = m_lastDoneOrdPlacer->OrderEntity();
 
-		m_pOrderProcessor->PublishOrderUpdate(m_multiLegOrderTemplate->portfolioid(), 
+		PushIndividualLegOrder(m_multiLegOrderTemplate->portfolioid(), 
 			m_multiLegOrderTemplate->orderid(), &legOrder);
 
 		m_lastDoneOrdPlacer = NULL;
@@ -1026,6 +1028,31 @@ void CPortfolioOrderPlacer::ResetOrderPlacerStatus()
 	{
 		legPlacer->ResetOrderEntityStatus();
 	}
+}
+
+void CPortfolioOrderPlacer::PushWholeMultiLegOrder( trade::MultiLegOrder* pOrder )
+{
+	boost::unique_lock<boost::mutex> l(m_mutPushMlOrd);
+	m_pOrderProcessor->PublishMultiLegOrderUpdate(pOrder);
+	m_pushingMlOrdId = pOrder->orderid();
+	m_condMlOrdPushed.notify_one();
+}
+
+void CPortfolioOrderPlacer::PushIndividualLegOrder( const string& portfId, const string& mlOrderId, trade::Order* legOrd )
+{
+	boost::unique_lock<boost::mutex> l(m_mutPushMlOrd);
+	while(m_pushingMlOrdId.compare(mlOrderId) != 0)
+	{
+		bool got = m_condMlOrdPushed.timed_wait(l, boost::posix_time::seconds(1));
+		if(!got)
+		{
+			logger.Error(boost::str(boost::format("Portfolio(%s) MLOrder(%s) Leg Order(%s) didn't get pushed due to Parent MLOrder not sent??")
+				% portfId % mlOrderId % legOrd->orderref()));
+			return;
+		}
+	}
+
+	m_pOrderProcessor->PublishOrderUpdate(portfId, mlOrderId, legOrd);
 }
 
 
