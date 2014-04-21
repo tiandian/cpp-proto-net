@@ -105,6 +105,9 @@ protected:
 	void UpdateLastDoneOrder();
 	void UpdateMultiLegOrder();
 	
+	void PushWholeMultiLegOrder(trade::MultiLegOrder* pOrder);
+	void PushIndividualLegOrder(const string& portfId, const string& mlOrderId, trade::Order* legOrd);
+
 	void CleanupProc();
 	bool IsReadyForPrepare(){ return !m_isReady; }
 
@@ -140,6 +143,10 @@ protected:
 
 	boost::shared_ptr<void> m_fsm;
 	boost::mutex m_mutOuterAccessFsm;
+
+	string m_pushingMlOrdId;
+	boost::mutex m_mutPushMlOrd;
+	boost::condition_variable m_condMlOrdPushed;
 };
 
 typedef boost::shared_ptr<CPortfolioOrderPlacer> OrderPlacerPtr;
