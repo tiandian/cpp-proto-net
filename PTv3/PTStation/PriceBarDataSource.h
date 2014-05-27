@@ -9,12 +9,6 @@
 #include <boost/unordered_map.hpp>
 #include <boost/date_time.hpp>
 
-enum TA_INDICATOR
-{
-	TA_OHLC,
-	TA_MACD
-};
-
 class CPriceBarDataSource
 {
 public:

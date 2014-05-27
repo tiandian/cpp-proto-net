@@ -32,6 +32,7 @@ protected:
 	void ClosePosition(CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText);
 private:
 	double CalculateAngle(double stdHistDiff, double currentHistDiff);
+	static double CalculateAngle(const double points[], int ptNum);
 
 	int m_macdShort;
 	int m_macdLong;
@@ -50,6 +51,8 @@ private:
 	entity::SlopeDirection m_slowSlopeDirection;
 
 	double m_angleArray[2];
+	double m_fastHistArray[2];
+	double m_slowHistArray[2];
 	bool m_positionOpened;
 	bool m_marketOpen;
 
