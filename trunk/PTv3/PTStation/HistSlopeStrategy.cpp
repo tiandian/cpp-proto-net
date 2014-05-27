@@ -12,6 +12,8 @@
 #include "SymbolTimeUtil.h"
 #include "TechStrategyDefs.h"
 
+#include <ta-lib/ta_libc.h>
+
 #define PI 3.1415926
 
 entity::SlopeDirection CheckDirection(double point1, double point2)
@@ -47,6 +49,10 @@ CHistSlopeStrategy::CHistSlopeStrategy(const entity::StrategyItem& strategyItem,
 {
 	m_angleArray[0] = 0;
 	m_angleArray[1] = 0;
+	m_fastHistArray[0] = 0;
+	m_fastHistArray[1] = 0;
+	m_slowHistArray[0] = 0;
+	m_slowHistArray[1] = 0;
 
 	Apply(strategyItem, false);
 
@@ -217,6 +223,9 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	// 2. Test 5 min angle, see if Up or Down.
 	m_slowSlopeDirection = CheckDirection(slowLast1, slowLast0);
 
+	m_slowHistArray[0] = slowLast1; // Preceding one
+	m_slowHistArray[1] = slowLast0; // Latter one
+
 	// 3. Calculate value of 1 min angle
 	COHLCRecordSet* fastOHLC = GetRecordSet(symbol, m_fastPeriod, timestamp);
 	if(fastOHLC != NULL)
@@ -227,10 +236,11 @@ void CHistSlopeStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	m_fastHistVal = fastLast0;
 	m_fastSlopeDirection = CheckDirection(fastLast1, fastLast0);
 
-	m_fastHistDiff = fastLast0 - fastLast1;
-	m_angleArray[0] = CalculateAngle(m_fastStdDiff, m_fastHistDiff);
-	m_slowHistDiff = slowLast0 - slowLast1;
-	m_angleArray[1] = CalculateAngle(m_slowStdDiff, m_slowHistDiff);
+	m_fastHistArray[0] = fastLast1; // Preceding one
+	m_fastHistArray[1] = fastLast0; // Latter one
+
+	m_angleArray[0] = CalculateAngle(m_fastHistArray, 2);
+	m_angleArray[1] = CalculateAngle(m_slowHistArray, 2);
 
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
 
@@ -319,6 +329,18 @@ double CHistSlopeStrategy::CalculateAngle(double stdHistDiff, double currentHist
 	double angle = arcTan * 180 / PI;
 	return angle;
 }
+
+double CHistSlopeStrategy::CalculateAngle(const double points[], int ptNum )
+{
+	int outBeg = -1;
+	int outNbElement = -1;
+	double outAngle = 0;
+
+	TA_RetCode rc = TA_LINEARREG_ANGLE(1, 1, points, ptNum, &outBeg, &outNbElement, &outAngle);
+	
+	return outAngle;
+}
+
 
 void CHistSlopeStrategy::OpenPosition( entity::SlopeDirection slopeDirection, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp )
 {
