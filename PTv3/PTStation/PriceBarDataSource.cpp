@@ -70,6 +70,12 @@ COHLCRecordSet* CPriceBarDataSource::GetRecordSet(boost::chrono::steady_clock::t
 	return NULL;
 }
 
+COHLCRecordSet* CPriceBarDataSource::GetRecordSet()
+{
+	return m_recordSet.get();
+}
+
+
 void CPriceBarDataSource::OnBarChanged( int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
 	m_recordSet->SetToday(barIdx, open, high, low, close);

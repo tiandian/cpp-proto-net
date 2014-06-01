@@ -341,6 +341,9 @@
     <ClInclude Include="StrategyOrderCommand.h">
       <Filter>Header Files\strategy</Filter>
     </ClInclude>
+    <ClInclude Include="DiffRecordSet.h">
+      <Filter>Header Files\tech</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -588,6 +591,9 @@
     </ClCompile>
     <ClCompile Include="StrategyOrderCommand.cpp">
       <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="DiffRecordSet.cpp">
+      <Filter>Source Files\tech</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

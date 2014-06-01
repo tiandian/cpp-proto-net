@@ -6,6 +6,8 @@
 #define IND_TOP "TOP"
 #define IND_BOTTOM "BOTTOM"
 
+class CDiffRecordSet;
+
 class CBollDataSet : public CTaIndicatorSet
 {
 public:
@@ -19,11 +21,11 @@ public:
 	int GetP(){ return m_paramP; }
 
 	void Calculate(COHLCRecordSet* ohlcRecordSet);
-
+	void Calculate(CDiffRecordSet* diffRecordSet);
 private:
 
-	void CalculateRaw(COHLCRecordSet* ohlcRecordSet, int lastIdx);
-	void CalculateTA(COHLCRecordSet* ohlcRecordSet, int lastIdx);
+	void CalculateRaw(double* pxArray, int lastIdx);
+	void CalculateTA(double* pxArray, int lastIdx);
 
 	int m_paramM;
 	int m_paramP;

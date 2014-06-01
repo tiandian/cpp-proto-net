@@ -2,6 +2,7 @@
 #include "BollDataSet.h"
 #include "globalmembers.h"
 #include "OHLCRecordSet.h"
+#include "DiffRecordSet.h"
 
 #include <ta-lib/ta_libc.h>
 
@@ -28,23 +29,34 @@ void CBollDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 
 	//CalculateTA(ohlcRecordSet, lastIdx);
-	CalculateRaw(ohlcRecordSet, lastIdx);
+	CalculateRaw((ohlcRecordSet->CloseSeries).get(), lastIdx);
 
 	m_lastPosition = lastIdx;
 }
 
-void CBollDataSet::CalculateRaw( COHLCRecordSet* ohlcRecordSet, int lastIdx )
+void CBollDataSet::Calculate( CDiffRecordSet* diffRecordSet )
+{
+	int lastIdx = diffRecordSet->GetEndIndex();
+	logger.Info(boost::str(boost::format("Calculating BOLL with DiffRecordSet: lastIdx - %d, last price - %f")
+		% lastIdx % (diffRecordSet->DiffSeries)[lastIdx]));
+
+	CalculateRaw((diffRecordSet->DiffSeries).get(), lastIdx);
+
+	m_lastPosition = lastIdx;
+}
+
+void CBollDataSet::CalculateRaw( double* pxArray, int lastIdx )
 {
 	int outBeg = -1;
 	int outNbElement = -1;
 	double outSma = 0;
 	double outStdDev = 0;
 
-	TA_RetCode rc = TA_SMA(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), m_paramM, &outBeg, &outNbElement, &outSma);
+	TA_RetCode rc = TA_SMA(lastIdx, lastIdx, pxArray, m_paramM, &outBeg, &outNbElement, &outSma);
 	if(outBeg == lastIdx)
 		m_arrMid[outBeg] = outSma;
 
-	rc = TA_STDDEV(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), m_paramM, (double)m_paramP,
+	rc = TA_STDDEV(lastIdx, lastIdx, pxArray, m_paramM, (double)m_paramP,
 		&outBeg, &outNbElement, &outStdDev);
 	if(outBeg == lastIdx)
 	{
@@ -61,7 +73,7 @@ void CBollDataSet::CalculateRaw( COHLCRecordSet* ohlcRecordSet, int lastIdx )
 	}
 }
 
-void CBollDataSet::CalculateTA( COHLCRecordSet* ohlcRecordSet, int lastIdx )
+void CBollDataSet::CalculateTA( double* pxArray, int lastIdx )
 {
 	int outBeg = -1;
 	int outNbElement = -1;
@@ -69,7 +81,7 @@ void CBollDataSet::CalculateTA( COHLCRecordSet* ohlcRecordSet, int lastIdx )
 	double outTop = 0;
 	double outBottom = 0;
 
-	TA_RetCode rc = TA_BBANDS(lastIdx, lastIdx, (ohlcRecordSet->CloseSeries).get(), 
+	TA_RetCode rc = TA_BBANDS(lastIdx, lastIdx, pxArray, 
 		m_paramM, 2.0, 2.0, TA_MAType_SMA, &outBeg, &outNbElement, &outTop, &outMid, &outBottom);
 
 	if(outBeg == lastIdx)

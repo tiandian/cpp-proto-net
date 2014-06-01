@@ -33,6 +33,11 @@ COHLCRecordSet* CPriceBarDataProxy::GetOHLCRecordSet( boost::chrono::steady_cloc
 	return m_dataSource->GetRecordSet(timestamp);
 }
 
+COHLCRecordSet* CPriceBarDataProxy::GetOHLCRecordSet()
+{
+	return m_dataSource->GetRecordSet();
+}
+
 int CPriceBarDataProxy::GetRecordSetSize()
 {
 	return m_dataSource->GetRecordSetSize();

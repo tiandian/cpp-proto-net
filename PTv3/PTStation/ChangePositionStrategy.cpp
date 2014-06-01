@@ -2,8 +2,8 @@
 #include "ChangePositionStrategy.h"
 #include "ChangePositionTrigger.h"
 
-CChangePositionStrategy::CChangePositionStrategy(const entity::StrategyItem& strategyItem)
-	: CArbitrageStrategy(strategyItem)
+CChangePositionStrategy::CChangePositionStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
+	: CArbitrageStrategy(strategyItem, pAvatar)
 {
 	Apply(strategyItem, false);
 

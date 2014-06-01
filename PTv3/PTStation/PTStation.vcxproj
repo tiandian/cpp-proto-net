@@ -111,6 +111,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="charsetconvert.h" />
     <ClInclude Include="ClientProtocol.h" />
     <ClInclude Include="Configuration.h" />
+    <ClInclude Include="DiffRecordSet.h" />
     <ClInclude Include="DonchianDataSet.h" />
     <ClInclude Include="DoubleCompare.h" />
     <ClInclude Include="entity\enum.pb.h" />
@@ -204,6 +205,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="charsetconvert.cpp" />
     <ClCompile Include="ClientProtocol.cpp" />
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="DiffRecordSet.cpp" />
     <ClCompile Include="DonchianDataSet.cpp" />
     <ClCompile Include="DoubleCompare.cpp" />
     <ClCompile Include="entity\enum.pb.cc">
