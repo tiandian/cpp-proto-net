@@ -4,7 +4,7 @@
 class CChangePositionStrategy : public CArbitrageStrategy
 {
 public:
-	CChangePositionStrategy(const entity::StrategyItem& strategyItem);
+	CChangePositionStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar);
 	~CChangePositionStrategy(void);
 
 	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);

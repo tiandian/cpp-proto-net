@@ -53,6 +53,18 @@ COHLCRecordSet* CTechAnalyStrategy::GetRecordSet(const string& symbol, int preci
    return NULL;
 }
 
+COHLCRecordSet* CTechAnalyStrategy::GetRecordSet( const string& symbol, int precision )
+{
+	for (vector<CPriceBarDataProxy*>::iterator iter = m_pDataProxies.begin();
+		iter != m_pDataProxies.end(); ++iter)
+	{
+		if((*iter)->Symbol() == symbol &&
+			(*iter)->Precision() == precision)
+			return (*iter)->GetOHLCRecordSet();
+	}
+	return NULL;
+}
+
 void CTechAnalyStrategy::PrepareHistDataSrc(const entity::StrategyItem& strategyItem)
 {
 	for(int i = 0; i < strategyItem.histsources_size(); ++i)

@@ -29,6 +29,7 @@ public:
 	int GetBeginIndex() { return m_endIndex - m_nbElements + 1; }
 	int NbElements(){ return m_nbElements; }
 	int HistoryDataSize() { return m_historyDataSize; }
+	const string& Symbol() { return m_symbol; }
 
 #ifdef TEST_TODAY_HIST
 	// only for debug
@@ -39,8 +40,10 @@ public:
 	}
 #endif // TEST_TODAY_HIST
 
-private:
 	static void ResetArray(double arr[], int length);
+
+private:
+	
 
 	string m_symbol;
 	int m_precision;

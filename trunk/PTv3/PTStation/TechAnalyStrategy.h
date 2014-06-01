@@ -33,7 +33,7 @@ public:
 	virtual void Cleanup();
    
 	COHLCRecordSet* GetRecordSet(const string& symbol, int precision, boost::chrono::steady_clock::time_point& timestamp);  
-
+	COHLCRecordSet* GetRecordSet(const string& symbol, int precision);
 protected:
 	const vector<HistSrcCfgPtr>& HistSrcConfigs(){ return m_histSrcConfigs; }
 	const vector<CPriceBarDataProxy*>& DataProxies() { return m_pDataProxies; }

@@ -25,6 +25,7 @@ public:
 	void InQuote(entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 
 	COHLCRecordSet* GetRecordSet(boost::chrono::steady_clock::time_point& timestamp);
+	COHLCRecordSet* GetRecordSet();
 	int GetRecordSetSize(){ return m_recordSet.get() != NULL ? m_recordSet->GetSize() : 0; }
 
 protected:

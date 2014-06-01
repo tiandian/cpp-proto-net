@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "ArbitrageStrategy.h"
 #include "ArbitrageTrigger.h"
-#include "Portfolio.h"
+#include "PriceBarDataProxy.h"
 
 enum DIFF_TYPE 
 {
@@ -52,8 +52,11 @@ int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType)
 	return diffSize;
 }
 
-CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem)
-	: CStrategy(strategyItem)
+CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
+	: CTechAnalyStrategy(strategyItem, pAvatar)
+	, m_timeFrame(60)
+	, m_bollPeriod(26)
+	, m_stdDevTimes(2)
 	, m_lastDiff(0)
 	, m_longDiff(0)
 	, m_longDiffSize(0)
@@ -81,14 +84,47 @@ void CArbitrageStrategy::CreateTriggers( const entity::StrategyItem& strategyIte
 
 void CArbitrageStrategy::Apply( const entity::StrategyItem& strategyItem, bool withTriggers )
 {
-	CStrategy::Apply(strategyItem, withTriggers);
+	boost::mutex::scoped_lock l(m_mut);
+
+	CTechAnalyStrategy::Apply(strategyItem, withTriggers);
 
 	m_side = strategyItem.ar_side();
+	// TODO
+	//m_bollPeriod = strategyItem.ar_bollperiod();
+	//m_stdDevTimes = strategyItem.ar_stddevtimes();
+
+	// make sure following parameters having values
+	if(m_openTimeout == 0)
+		m_openTimeout = 350;
+	if(m_retryTimes == 0)
+		m_retryTimes = 8;
+
+	if(!withTriggers)
+	{
+		// don't touch hist data source when editing strategy
+		PrepareHistDataSrc(strategyItem);
+
+		// Initialize Indicator set
+		const vector<CPriceBarDataProxy*>& dataProxies = DataProxies();
+		if(dataProxies.size() > 1)
+		{
+			m_diffRecordSet = DiffRecordSetPtr(
+				new CDiffRecordSet(
+				dataProxies[0]->GetOHLCRecordSet(),
+				dataProxies[1]->GetOHLCRecordSet()
+			));
+
+			m_bollDataSet = BollDataSetPtr(new CBollDataSet(dataProxies[0]->GetRecordSetSize(), 26, 2));
+		}
+	}
 }
 
 void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp )
 {
-	CStrategy::Test(pQuote, pPortfolio, timestamp);
+	// a mutex to protect from unexpected applying strategy settings concurrently
+	boost::mutex::scoped_lock l(m_mut);
+
+	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 	vector<LegPtr>& vecLegs = pPortfolio->Legs();
 
 	m_lastDiff = CalcDiff(vecLegs, LAST_DIFF);
@@ -96,6 +132,18 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	m_longDiffSize = CalcSize(vecLegs, LONG_DIFF);
 	m_shortDiff = CalcDiff(vecLegs, SHORT_DIFF);
 	m_shortDiffSize = CalcSize(vecLegs, SHORT_DIFF);
+
+	if(!IsRunning())
+		return;
+
+	string symbol = pQuote->symbol();
+	COHLCRecordSet* ohlc = GetRecordSet(symbol, m_timeFrame, timestamp);
+	if(ohlc == NULL)
+		return;
+
+	m_diffRecordSet->Calculate(ohlc);
+
+	m_bollDataSet->Calculate(m_diffRecordSet.get());
 
 	if(IsRunning())
 	{
@@ -182,6 +230,16 @@ double CArbitrageStrategy::CalcMlOrderCost( const trade::MultiLegOrder& openOrde
 	}
 
 	return cost;
+}
+
+const string& CArbitrageStrategy::GetAnotherLegSymbol( const string& symb, const vector<LegPtr>& legs )
+{
+	BOOST_FOREACH(const LegPtr& l, legs)
+	{
+		if(l->Symbol() != symb)
+			return l->Symbol();
+	}
+	return "";
 }
 
 
