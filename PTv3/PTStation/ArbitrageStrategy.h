@@ -4,6 +4,8 @@
 #include "DiffRecordSet.h"
 #include "BollDataSet.h"
 
+class CPortfolioArbitrageOrderPlacer;
+
 class CArbitrageStrategy : public CTechAnalyStrategy
 {
 public:
@@ -25,6 +27,10 @@ protected:
 private:
 	static const string& GetAnotherLegSymbol(const string& symb, const vector<LegPtr>& legs);
 
+	entity::PosiDirectionType GetTradeDirection();
+	void OpenPosition(entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening);
+	void ClosePosition(CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, const string& comment);
+
 	entity::PosiDirectionType m_side;
 
 	int m_timeFrame;
@@ -36,6 +42,8 @@ private:
 	int m_longDiffSize;
 	double m_shortDiff;
 	int m_shortDiffSize;
+	double m_bollTop;
+	double m_bollBottom;
 
 	DiffRecordSetPtr m_diffRecordSet;
 	BollDataSetPtr m_bollDataSet;

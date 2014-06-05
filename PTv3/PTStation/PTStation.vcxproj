@@ -121,6 +121,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="entity\trade.pb.h" />
     <ClInclude Include="LinerRegressionDataSet.h" />
     <ClInclude Include="LinerRegressionStrategy.h" />
+    <ClInclude Include="PortfolioArbitrageOrderPlacer.h" />
     <ClInclude Include="RangeTrendStrategy.h" />
     <ClInclude Include="StrategyOrderCommand.h" />
     <ClInclude Include="WATRStopDataSet.h" />
@@ -230,6 +231,7 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </ClCompile>
     <ClCompile Include="LinerRegressionDataSet.cpp" />
     <ClCompile Include="LinerRegressionStrategy.cpp" />
+    <ClCompile Include="PortfolioArbitrageOrderPlacer.cpp" />
     <ClCompile Include="RangeTrendStrategy.cpp" />
     <ClCompile Include="StrategyOrderCommand.cpp" />
     <ClCompile Include="WATRStopDataSet.cpp" />
