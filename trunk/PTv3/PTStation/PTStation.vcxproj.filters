@@ -344,6 +344,9 @@
     <ClInclude Include="DiffRecordSet.h">
       <Filter>Header Files\tech</Filter>
     </ClInclude>
+    <ClInclude Include="PortfolioArbitrageOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -594,6 +597,9 @@
     </ClCompile>
     <ClCompile Include="DiffRecordSet.cpp">
       <Filter>Source Files\tech</Filter>
+    </ClCompile>
+    <ClCompile Include="PortfolioArbitrageOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

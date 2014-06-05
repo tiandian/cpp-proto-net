@@ -2,6 +2,8 @@
 #include "ArbitrageStrategy.h"
 #include "ArbitrageTrigger.h"
 #include "PriceBarDataProxy.h"
+#include "globalmembers.h"
+#include "PortfolioArbitrageOrderPlacer.h"
 
 enum DIFF_TYPE 
 {
@@ -62,6 +64,8 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem,
 	, m_longDiffSize(0)
 	, m_shortDiff(0)
 	, m_shortDiffSize(0)
+	, m_bollTop(0)
+	, m_bollBottom(0)
 {
 	Apply(strategyItem, false);
 
@@ -88,7 +92,6 @@ void CArbitrageStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 
 	CTechAnalyStrategy::Apply(strategyItem, withTriggers);
 
-	m_side = strategyItem.ar_side();
 	// TODO
 	//m_bollPeriod = strategyItem.ar_bollperiod();
 	//m_stdDevTimes = strategyItem.ar_stddevtimes();
@@ -144,7 +147,66 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	m_diffRecordSet->Calculate(ohlc);
 
 	m_bollDataSet->Calculate(m_diffRecordSet.get());
+	int currentBarIdx = m_diffRecordSet->GetEndIndex();
 
+	m_bollTop = m_bollDataSet->GetRef(IND_TOP, 0);
+	m_bollBottom = m_bollDataSet->GetRef(IND_BOTTOM, 0);
+
+	CPortfolioArbitrageOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioArbitrageOrderPlacer*>(pPortfolio->OrderPlacer());
+
+	if(pOrderPlacer->IsWorking())
+	{
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Strategy - Check and likely retry submit order") % pPortfolio->InvestorId()));
+		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
+		return;
+	}
+
+	entity::PosiDirectionType direction = GetTradeDirection();
+
+	if (pOrderPlacer->IsOpened())
+	{
+		bool meetCloseCondition = false;
+		bool forceClosing = IsForceClosing();
+		if(forceClosing) // This close condition check is only effective on the bar after open
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Forcibly Closing position")
+				% pPortfolio->InvestorId() % pPortfolio->ID()));
+			ClosePosition(pOrderPlacer, pPortfolio, "手动平仓"); 
+			return;
+		}
+		
+		// Stop gain
+		if(direction != entity::NET)
+		{
+			if(pOrderPlacer->PosiDirection() != direction)
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Closing position due to stop gain")
+					% pPortfolio->InvestorId() % pPortfolio->ID()));
+				ClosePosition(pOrderPlacer, pPortfolio, "回头触发止损(盈)");
+				return;
+			}
+		}
+
+		// Stop Loss
+
+		return;
+	}
+
+	LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing open direction - longDiff:%.2f vs bottom:%.2f, shortDiff:%.2f vs top:%.2f -->> %s")
+		% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(m_side)));
+
+	bool forceOpening = IsForceOpening();
+	if(direction > entity::NET || forceOpening )
+	{
+		if(!pOrderPlacer->IsWorking())
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Opening position at bar %d")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
+			OpenPosition(direction, pOrderPlacer, pPortfolio, timestamp, forceOpening);
+			return;
+		}
+	}
+	/*
 	if(IsRunning())
 	{
 
@@ -164,7 +226,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 			}
 		}
 	}
-	
+	*/
 }
 
 void CArbitrageStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
@@ -234,12 +296,34 @@ double CArbitrageStrategy::CalcMlOrderCost( const trade::MultiLegOrder& openOrde
 
 const string& CArbitrageStrategy::GetAnotherLegSymbol( const string& symb, const vector<LegPtr>& legs )
 {
+	static string emptySymb;
 	BOOST_FOREACH(const LegPtr& l, legs)
 	{
 		if(l->Symbol() != symb)
 			return l->Symbol();
 	}
-	return "";
+	return emptySymb;
+}
+
+entity::PosiDirectionType CArbitrageStrategy::GetTradeDirection()
+{
+	if(m_longDiff < m_bollBottom)
+		return entity::LONG;
+	
+	if(m_shortDiff > m_bollTop)
+		return entity::SHORT;
+
+	return entity::NET;
+}
+
+void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening )
+{
+	m_side = direction;
+}
+
+void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, const string& comment )
+{
+
 }
 
 

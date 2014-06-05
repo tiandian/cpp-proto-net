@@ -719,6 +719,9 @@ void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_p
 	if(m_activeOrdPlacer == NULL)
 		return;	// in case already cleaned up
 
+	if(m_activeOrdPlacer->Symbol() != pQuote->symbol())
+		return; // in case other symbol's quote coming
+
 	// if order placer is closing order and retry times available
 	if(!(m_activeOrdPlacer->IsOpen()) && m_activeOrdPlacer->CanRetry())
 	{
