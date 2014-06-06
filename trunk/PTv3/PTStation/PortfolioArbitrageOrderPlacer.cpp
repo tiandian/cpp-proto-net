@@ -66,23 +66,91 @@ void CPortfolioArbitrageOrderPlacer::BuildTemplateOrder()
     m_multiLegOrderTemplate = pMultiLegOrder;
 }
 
-void CPortfolioArbitrageOrderPlacer::SetOffset(trade::OffsetFlagType offset)
+void CPortfolioArbitrageOrderPlacer::OpenPosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
 {
+	Run(posiDirection, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp):
+}
+
+void CPortfolioArbitrageOrderPlacer::ClosePosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
+{
+	Run(posiDirection, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp):
+}
+
+void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, trade::OffsetFlagType offset, trade::OF double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
+{
+	m_isWorking.store(true, boost::memory_order_release);
+
+	m_posiDirection = posiDirection;
+	entity::PosiDirectionType effectivePosiDirection = posiDirection;
+	if(offset != trade::OF_OPEN)	// Closing position, revert
+	{
+		effectivePosiDirection = posiDirection == entity::LONG ? entity::SHORT : entity::LONG;
+	}
+	
+    static trade::TradeDirectionType LONG_TRADE_SEQ[2] = {trade::BUY, trade::SELL};
+    static trade::TradeDirectionType SHORT_TRADE_SEQ[2] = {trade::SELL, trade::BUY};
+
 	int legCount = m_multiLegOrderTemplate->legs_size();
+	assert(legCount == iPxSize);
 	for(int i = 0; i < legCount; ++i)
     {
-        trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
+		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
 		
+		// Set Offset
 		char CombOffset[1];
 		CombOffset[0] = offset;
 
 		pOrd->set_comboffsetflag(std::string(CombOffset));
-    }
+		
+		// Set Direction
+		if(effectivePosiDirection == entity::LONG)
+		{
+			// open long position
+			pOrd->set_direction(LONG_TRADE_SEQ[i]);
+		}
+		else if(effectivePosiDirection == entity::SHORT)
+		{
+			pOrd->set_direction(SHORT_TRADE_SEQ[i]);
+		}
+		else
+		{
+			throw CUnexpectedPositionDirectionException();
+		}
+		
+		// Set Limit Price
+		pOrd->set_limitprice(pLmtPxArr[i]);
+		
+		// Change corresponding LegOrderPlacer
+		CLegOrderPlacer* legOrdPlacer = GetLegOrderPlacer(pOrder->Symbol())
+		if(legOrderPlacer != NULL)
+		{
+			legOrderPlacer->InputOrder().set_comboffsetflag(pOrd->comboffsetflag());
+			legOrderPlacer->InputOrder().set_direction(pOrd->direction());
+			legOrderPlacer->InputOrder().set_limitprice(pOrd->limitprice());
+		}
+	}
+	
+    m_triggingTimestamp = trigQuoteTimestamp;
+
+    // Start fsm, fsm goes into Sending status
+    boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->start();
+
+    // And Sending the first leg
+    Send();
 }
 
-void CPortfolioArbitrageOrderPlacer::ClosePosition()
+CLegOrderPlacer* CPortfolioArbitrageOrderPlacer::GetLegOrderPlacer(const string& symbol)
 {
-
+	for(vector<LegOrderPlacerPtr>::iterator iter = m_legPlacers.begin();
+                iter != m_legPlacers.end(); ++iter, ++seq)
+    {
+		if((*iter)->Symbol() == symbol)
+		{
+			return (*iter).get();
+		}
+    }
+	
+	return NULL;
 }
 
 bool CPortfolioArbitrageOrderPlacer::IsOpened()
@@ -90,11 +158,7 @@ bool CPortfolioArbitrageOrderPlacer::IsOpened()
 	return false;
 }
 
-void CPortfolioArbitrageOrderPlacer::OpenPosition()
-{
-
-}
-
+//*****  To be added to ArbitrageStrategy
 void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening )
 {
 	if(direction > entity::NET)
@@ -125,8 +189,7 @@ void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPor
 						
 		// TODO feed commment
 		//pOrderPlacer->SetMlOrderStatus(openComment);
-		pOrderPlacer->SetOffset(trade::OF_OPEN);
-		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
+		pOrderPlacer->OpenPosition(direction, lmtPrice, 2, timestamp);
 		m_side = direction;
 		m_costDiff = lmtPrice[0] - lmtPrice[1];
 		ResetForceOpen();
@@ -135,9 +198,9 @@ void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPor
 
 void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, const string& comment )
 {
-	if(pOrderPlacer != NULL)0
+	if(pOrderPlacer != NULL)
     {
-        entity::PosiDirectionType posiDirection = pOrderPlacer->PosiDirection();
+        entity::PosiDirectionType direction = pOrderPlacer->PosiDirection();
 
 		double lmtPrice[2];
 		assert(pPortfolio->Count() > 1);
@@ -163,8 +226,7 @@ void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPl
         LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - %s Close position @ %.2f - %.2f (%s)")
                         % GetPosiDirectionText(posiDirection) % lmtPrice[0] % lmtPrice[1]  % pQuote->update_time()));
 						
-		pOrderPlacer->SetOffset(trade::OF_CLOSE_TODAY);
-		pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
+		pOrderPlacer->ClosePosition(direction, lmtPrice, 2, timestamp);
 
         m_openAtBarIdx = 0; // reset open bar position
         ResetForceClose();
