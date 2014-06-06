@@ -14,6 +14,7 @@ public:
 	void ClosePosition();
 	bool IsOpened();
 
+  void SetOffset(trade::trade::OffsetFlagType offset);
 private:
 
 };
