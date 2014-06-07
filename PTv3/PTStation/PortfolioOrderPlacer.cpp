@@ -487,6 +487,12 @@ void CPortfolioOrderPlacer::Run(entity::PosiDirectionType posiDirection, double*
 	Send();
 }
 
+void CPortfolioOrderPlacer::GoStart()
+{
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->start();
+	Send();
+}
+
 void CPortfolioOrderPlacer::Run( entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize )
 {
 	Run(posiDirection, pLmtPxArr, iPxSize, boost::chrono::steady_clock::now());

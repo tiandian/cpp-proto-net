@@ -88,7 +88,6 @@ protected:
 	virtual void OnLegOrderSent(int orderPlacerIdx){}
 	virtual void OnPortfolioDone(){}
 	
-	
 	void SetNewOrderId(const string& mlOrdId);
 	void ResetTemplate();
 	void FillSendingOrderNote();
@@ -113,6 +112,7 @@ protected:
 
 	bool SendNextOnFilled(){ return m_sendNextOnFilled; }
 	void SendNextOnFilled(bool val){ m_sendNextOnFilled = val; }
+	void GoStart(); // Just start FSM for PortfolioArbitrageOrderPlacer
 
 	struct NextQuote
 	{

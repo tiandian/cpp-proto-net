@@ -1,4 +1,4 @@
-#include "StdAfx.h"
+ï»¿#include "StdAfx.h"
 #include "ArbitrageStrategy.h"
 #include "ArbitrageTrigger.h"
 #include "PriceBarDataProxy.h"
@@ -171,7 +171,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Forcibly Closing position")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
-			ClosePosition(pOrderPlacer, pPortfolio, "ÊÖ¶¯Æ½²Ö"); 
+			ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, "æ‰‹åŠ¨å¹³ä»“"); 
 			return;
 		}
 		
@@ -182,7 +182,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 			{
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Closing position due to stop gain")
 					% pPortfolio->InvestorId() % pPortfolio->ID()));
-				ClosePosition(pOrderPlacer, pPortfolio, "»ØÍ·´¥·¢Ö¹Ëð(Ó¯)");
+				ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, "å›žå¤´è§¦å‘æ­¢æŸ(ç›ˆ)");
 				return;
 			}
 		}
@@ -202,7 +202,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Opening position at bar %d")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
-			OpenPosition(direction, pOrderPlacer, pPortfolio, timestamp, forceOpening);
+			OpenPosition(direction, pOrderPlacer, pPortfolio, pQuote, timestamp, forceOpening);
 			return;
 		}
 	}
@@ -316,14 +316,81 @@ entity::PosiDirectionType CArbitrageStrategy::GetTradeDirection()
 	return entity::NET;
 }
 
-void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening )
+void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening )
 {
-	m_side = direction;
+	if(direction > entity::NET)
+	{
+		double lmtPrice[2];
+		assert(pPortfolio->Count() > 1);
+		if(direction == entity::LONG)
+		{
+			CLeg* leg1 = pPortfolio->GetLeg(1);
+			if(leg1 != NULL)
+				lmtPrice[0] = leg1->Ask();
+			CLeg* leg2 = pPortfolio->GetLeg(2);
+			if(leg2 != NULL)
+				lmtPrice[1] = leg2->Bid();
+		}
+		else if(direction == entity::SHORT)
+		{
+			CLeg* leg1 = pPortfolio->GetLeg(1);
+			if(leg1 != NULL)
+				lmtPrice[0] = leg1->Bid();
+			CLeg* leg2 = pPortfolio->GetLeg(2);
+			if(leg2 != NULL)
+				lmtPrice[1] = leg2->Ask();
+		}
+
+		LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - %s Open position @ %.2f - %.2f (%s)")
+			% GetPosiDirectionText(direction) % lmtPrice[0] % lmtPrice[1] % pQuote->update_time()));
+
+		// TODO feed comment
+		//pOrderPlacer->SetMlOrderStatus(openComment);
+		pOrderPlacer->OpenPosition(direction, lmtPrice, 2, timestamp);
+		m_side = direction;
+		//m_costDiff = lmtPrice[0] - lmtPrice[1];
+		ResetForceOpen();
+	}
 }
 
-void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, const string& comment )
+void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, const string& comment )
 {
+	if(pOrderPlacer != NULL)
+	{
+		entity::PosiDirectionType direction = pOrderPlacer->PosiDirection();
 
+		double lmtPrice[2];
+		assert(pPortfolio->Count() > 1);
+		if(direction == entity::LONG)
+		{
+			CLeg* leg1 = pPortfolio->GetLeg(1);
+			if(leg1 != NULL)
+				lmtPrice[0] = leg1->Bid();
+			CLeg* leg2 = pPortfolio->GetLeg(2);
+			if(leg2 != NULL)
+				lmtPrice[1] = leg2->Ask();
+		}
+		else if(direction == entity::SHORT)
+		{
+			CLeg* leg1 = pPortfolio->GetLeg(1);
+			if(leg1 != NULL)
+				lmtPrice[0] = leg1->Ask();
+			CLeg* leg2 = pPortfolio->GetLeg(2);
+			if(leg2 != NULL)
+				lmtPrice[1] = leg2->Bid();
+		}
+
+		LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - %s Close position @ %.2f - %.2f (%s)")
+			% GetPosiDirectionText(direction) % lmtPrice[0] % lmtPrice[1]  % pQuote->update_time()));
+
+		pOrderPlacer->ClosePosition(direction, lmtPrice, 2, timestamp);
+
+		//m_openAtBarIdx = 0; // reset open bar position
+		//ResetForceClose();
+		//pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s @ %.2f - %.2f")
+		//	% comment % GetPosiDirectionText(direction, true) % lmtPrice[0] % lmtPrice[1]));
+
+	}
 }
 
 

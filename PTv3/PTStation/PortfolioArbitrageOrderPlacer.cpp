@@ -1,6 +1,10 @@
 #include "StdAfx.h"
 #include "PortfolioArbitrageOrderPlacer.h"
+#include "Portfolio.h"
+#include "BuildOrderException.h"
+#include "OrderProcessor.h"
 
+#include <boost/date_time.hpp>
 
 CPortfolioArbitrageOrderPlacer::CPortfolioArbitrageOrderPlacer(void)
 {
@@ -68,15 +72,15 @@ void CPortfolioArbitrageOrderPlacer::BuildTemplateOrder()
 
 void CPortfolioArbitrageOrderPlacer::OpenPosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
 {
-	Run(posiDirection, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp):
+	Run(posiDirection, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp);
 }
 
 void CPortfolioArbitrageOrderPlacer::ClosePosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
 {
-	Run(posiDirection, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp):
+	Run(posiDirection, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp);
 }
 
-void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, trade::OffsetFlagType offset, trade::OF double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
+void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, trade::OffsetFlagType offset, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
 {
 	m_isWorking.store(true, boost::memory_order_release);
 
@@ -121,28 +125,23 @@ void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection
 		pOrd->set_limitprice(pLmtPxArr[i]);
 		
 		// Change corresponding LegOrderPlacer
-		CLegOrderPlacer* legOrdPlacer = GetLegOrderPlacer(pOrder->Symbol())
-		if(legOrderPlacer != NULL)
+		CLegOrderPlacer* legOrdPlacer = GetLegOrderPlacer(pOrd->instrumentid());
+		if(legOrdPlacer != NULL)
 		{
-			legOrderPlacer->InputOrder().set_comboffsetflag(pOrd->comboffsetflag());
-			legOrderPlacer->InputOrder().set_direction(pOrd->direction());
-			legOrderPlacer->InputOrder().set_limitprice(pOrd->limitprice());
+			legOrdPlacer->InputOrder().set_comboffsetflag(pOrd->comboffsetflag());
+			legOrdPlacer->InputOrder().set_direction(pOrd->direction());
+			legOrdPlacer->InputOrder().set_limitprice(pOrd->limitprice());
 		}
 	}
 	
     m_triggingTimestamp = trigQuoteTimestamp;
 
-    // Start fsm, fsm goes into Sending status
-    boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->start();
-
-    // And Sending the first leg
-    Send();
+    GoStart();
 }
 
 CLegOrderPlacer* CPortfolioArbitrageOrderPlacer::GetLegOrderPlacer(const string& symbol)
 {
-	for(vector<LegOrderPlacerPtr>::iterator iter = m_legPlacers.begin();
-                iter != m_legPlacers.end(); ++iter, ++seq)
+	for(vector<LegOrderPlacerPtr>::iterator iter = m_legPlacers.begin(); iter != m_legPlacers.end(); ++iter)
     {
 		if((*iter)->Symbol() == symbol)
 		{
@@ -156,82 +155,4 @@ CLegOrderPlacer* CPortfolioArbitrageOrderPlacer::GetLegOrderPlacer(const string&
 bool CPortfolioArbitrageOrderPlacer::IsOpened()
 {
 	return false;
-}
-
-//*****  To be added to ArbitrageStrategy
-void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening )
-{
-	if(direction > entity::NET)
-	{
-		double lmtPrice[2];
-		assert(pPortfolio->Count() > 1);
-		if(direction == entity::LONG)
-		{
-			CLeg* leg1 = pPortfolio->GetLeg(1);
-			if(leg1 != NULL)
-				lmtPrice[0] = leg1->Ask();
-			CLeg* leg2 = pPortfolio->GetLeg(2);
-			if(leg2 != NULL)
-				lmtPrice[1] = leg2->Bid();
-		}
-		else if(direction == entity::SHORT)
-		{
-			CLeg* leg1 = pPortfolio->GetLeg(1);
-			if(leg1 != NULL)
-				lmtPrice[0] = leg1->Bid();
-			CLeg* leg2 = pPortfolio->GetLeg(2);
-			if(leg2 != NULL)
-				lmtPrice[1] = leg2->Ask();
-		}
-		
-		LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - %s Open position @ %.2f - %.2f (%s)")
-                        % GetPosiDirectionText(direction) % lmtPrice[0] % lmtPrice[1] % pQuote->update_time()));
-						
-		// TODO feed commment
-		//pOrderPlacer->SetMlOrderStatus(openComment);
-		pOrderPlacer->OpenPosition(direction, lmtPrice, 2, timestamp);
-		m_side = direction;
-		m_costDiff = lmtPrice[0] - lmtPrice[1];
-		ResetForceOpen();
-	}
-}
-
-void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, const string& comment )
-{
-	if(pOrderPlacer != NULL)
-    {
-        entity::PosiDirectionType direction = pOrderPlacer->PosiDirection();
-
-		double lmtPrice[2];
-		assert(pPortfolio->Count() > 1);
-		if(direction == entity::LONG)
-		{
-			CLeg* leg1 = pPortfolio->GetLeg(1);
-			if(leg1 != NULL)
-				lmtPrice[0] = leg1->Bid();
-			CLeg* leg2 = pPortfolio->GetLeg(2);
-			if(leg2 != NULL)
-				lmtPrice[1] = leg2->Ask();
-		}
-		else if(direction == entity::SHORT)
-		{
-			CLeg* leg1 = pPortfolio->GetLeg(1);
-			if(leg1 != NULL)
-				lmtPrice[0] = leg1->Ask();
-			CLeg* leg2 = pPortfolio->GetLeg(2);
-			if(leg2 != NULL)
-				lmtPrice[1] = leg2->Bid();
-		}
-		
-        LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - %s Close position @ %.2f - %.2f (%s)")
-                        % GetPosiDirectionText(posiDirection) % lmtPrice[0] % lmtPrice[1]  % pQuote->update_time()));
-						
-		pOrderPlacer->ClosePosition(direction, lmtPrice, 2, timestamp);
-
-        m_openAtBarIdx = 0; // reset open bar position
-        ResetForceClose();
-        pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s Æ½²Ö @ %.2f - %.2f")
-                        % comment % GetPosiDirectionText(posiDirection, true) % lmtPrice[0] % lmtPrice[1]));
-
-    }
 }
