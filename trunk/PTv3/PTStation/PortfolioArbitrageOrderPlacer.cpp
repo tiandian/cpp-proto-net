@@ -73,11 +73,13 @@ void CPortfolioArbitrageOrderPlacer::BuildTemplateOrder()
 void CPortfolioArbitrageOrderPlacer::OpenPosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
 {
 	Run(posiDirection, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp);
+   m_openedPosition = true;
 }
 
 void CPortfolioArbitrageOrderPlacer::ClosePosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
 {
 	Run(posiDirection, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp);
+   m_openedPosition = false;
 }
 
 void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, trade::OffsetFlagType offset, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
@@ -154,5 +156,5 @@ CLegOrderPlacer* CPortfolioArbitrageOrderPlacer::GetLegOrderPlacer(const string&
 
 bool CPortfolioArbitrageOrderPlacer::IsOpened()
 {
-	return false;
+	return m_openedPosition;
 }
