@@ -158,3 +158,48 @@ bool CPortfolioArbitrageOrderPlacer::IsOpened()
 {
 	return m_openedPosition;
 }
+
+
+// Stop gain/loss logic in ArbitrageStrategy
+if(direction != entity::NET)
+{
+	if(m_side == entity::LONG)
+	{
+		if(m_bollTop <= m_costDiff)
+		{
+			// Stop Loss
+			string comment = boost::str(boost::format("bollTop(%.2f) <= costDiff(%.2f) -> Stop Loss") % m_bollTop % m_costDiff);
+			LOG_DEBUG(logger, comment);
+			ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment);
+			return;
+		}
+		else if(m_side != direction)
+		{
+			// Stop Gain
+			string comment = boost::str(boost::format("Long diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_longDiff % m_bollTop);
+			LOG_DEBUG(logger, comment);
+			ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment);
+			return;
+		}
+	}
+	else if(m_side == entity::SHORT)
+	{
+		if(m_bollBottom >= m_costDiff)
+		{
+			// Stop Loss
+			string comment = boost::str(boost::format("bollBottom(%.2f) >= costDiff(%.2f) -> Stop Loss") % m_bollBottom % m_costDiff);
+			LOG_DEBUG(logger, comment);
+			ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment);
+			return;
+		}
+		else if(m_side != direction)
+		{
+			// Stop Gain
+			string comment = boost::str(boost::format("Short diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_shortDiff % m_bollBottom);
+			LOG_DEBUG(logger, comment);
+			ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment);
+			return;
+		}
+	}
+}
+
