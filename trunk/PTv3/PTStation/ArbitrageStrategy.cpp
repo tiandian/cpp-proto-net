@@ -66,6 +66,8 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem,
 	, m_shortDiffSize(0)
 	, m_bollTop(0)
 	, m_bollBottom(0)
+	, m_costDiff(0)
+	, m_side(entity::NET)
 {
 	Apply(strategyItem, false);
 
@@ -175,19 +177,48 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 			return;
 		}
 		
-		// Stop gain
+		// Stop gain/loss logic in ArbitrageStrategy
 		if(direction != entity::NET)
 		{
-			if(pOrderPlacer->PosiDirection() != direction)
+			if(m_side == entity::LONG)
 			{
-				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Closing position due to stop gain")
-					% pPortfolio->InvestorId() % pPortfolio->ID()));
-				ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, "回头触发止损(盈)");
-				return;
+				if(m_bollTop <= m_costDiff)
+				{
+					// Stop Loss
+					string logTxt = boost::str(boost::format("bollTop(%.2f) <= costDiff(%.2f) -> Stop Loss") % m_bollTop % m_costDiff);
+					LOG_DEBUG(logger, logTxt);
+					string comment = boost::str(boost::format("上轨(%.2f)低于等于成本(%.2f) -> 止损平仓") % m_bollTop % m_costDiff);
+					ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment);
+				}
+				else if(m_side != direction)
+				{
+					// Stop Gain
+					string logTxt = boost::str(boost::format("Long diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_longDiff % m_bollTop);
+					LOG_DEBUG(logger, logTxt);
+					string comment = boost::str(boost::format("多价差(%.2f)大于上轨(%.2f) -> 止盈平仓") % m_longDiff % m_bollTop);
+					ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment);
+				}
+			}
+			else if(m_side == entity::SHORT)
+			{
+				if(m_bollBottom >= m_costDiff)
+				{
+					// Stop Loss
+					string logTxt = boost::str(boost::format("bollBottom(%.2f) >= costDiff(%.2f) -> Stop Loss") % m_bollBottom % m_costDiff);
+					LOG_DEBUG(logger, logTxt);
+					string comment = boost::str(boost::format("下轨(%.2f)大于等于成本(%.2f) -> 止损平仓") % m_bollBottom % m_costDiff);
+					ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment);
+				}
+				else if(m_side != direction)
+				{
+					// Stop Gain
+					string logTxt = boost::str(boost::format("Short diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_shortDiff % m_bollBottom);
+					LOG_DEBUG(logger, logTxt);
+					string comment = boost::str(boost::format("空价差(%.2f)小于下轨(%.2f) -> 止盈平仓") % m_shortDiff % m_bollBottom);
+					ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment);
+				}
 			}
 		}
-
-		// Stop Loss
 
 		return;
 	}
@@ -348,7 +379,7 @@ void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPor
 		//pOrderPlacer->SetMlOrderStatus(openComment);
 		pOrderPlacer->OpenPosition(direction, lmtPrice, 2, timestamp);
 		m_side = direction;
-		//m_costDiff = lmtPrice[0] - lmtPrice[1];
+		m_costDiff = lmtPrice[0] - lmtPrice[1];
 		ResetForceOpen();
 	}
 }
@@ -385,10 +416,11 @@ void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPl
 
 		pOrderPlacer->ClosePosition(direction, lmtPrice, 2, timestamp);
 
-		//m_openAtBarIdx = 0; // reset open bar position
-		//ResetForceClose();
-		//pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s @ %.2f - %.2f")
-		//	% comment % GetPosiDirectionText(direction, true) % lmtPrice[0] % lmtPrice[1]));
+		m_side = entity::NET;
+		m_costDiff = 0;
+		ResetForceClose();
+		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f - %.2f")
+			% comment % GetPosiDirectionText(direction, true) % lmtPrice[0] % lmtPrice[1]));
 
 	}
 }
