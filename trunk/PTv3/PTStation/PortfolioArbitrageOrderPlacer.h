@@ -18,5 +18,7 @@ public:
 private:
 
 	CLegOrderPlacer* GetLegOrderPlacer(const string& symbol);
+  
+  bool m_openedPosition;
 };
 
