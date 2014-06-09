@@ -32,6 +32,7 @@ private:
 	void ClosePosition(CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, const string& comment);
 
 	entity::PosiDirectionType m_side;
+	double m_costDiff;
 
 	int m_timeFrame;
 	int m_bollPeriod;
