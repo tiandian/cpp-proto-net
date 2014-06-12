@@ -58,7 +58,7 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem,
 	: CTechAnalyStrategy(strategyItem, pAvatar)
 	, m_timeFrame(60)
 	, m_bollPeriod(26)
-	, m_stdDevTimes(2)
+	, m_stdDevMultiplier(2)
 	, m_lastDiff(0)
 	, m_longDiff(0)
 	, m_longDiffSize(0)
@@ -95,8 +95,10 @@ void CArbitrageStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	CTechAnalyStrategy::Apply(strategyItem, withTriggers);
 
 	// TODO
-	//m_bollPeriod = strategyItem.ar_bollperiod();
-	//m_stdDevTimes = strategyItem.ar_stddevtimes();
+	m_bollPeriod = strategyItem.ar_bollperiod();
+	m_stdDevMultiplier = strategyItem.ar_stddevmultiplier();
+	m_openTimeout = strategyItem.opentimeout();
+	m_retryTimes = strategyItem.retrytimes();
 
 	// make sure following parameters having values
 	if(m_openTimeout == 0)
@@ -119,7 +121,7 @@ void CArbitrageStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 				dataProxies[1]->GetOHLCRecordSet()
 			));
 
-			m_bollDataSet = BollDataSetPtr(new CBollDataSet(dataProxies[0]->GetRecordSetSize(), 26, 2));
+			m_bollDataSet = BollDataSetPtr(new CBollDataSet(dataProxies[0]->GetRecordSetSize(), m_bollPeriod, m_stdDevMultiplier));
 		}
 	}
 }

@@ -36,7 +36,7 @@ private:
 
 	int m_timeFrame;
 	int m_bollPeriod;
-	int m_stdDevTimes;
+	int m_stdDevMultiplier;
 
 	double m_lastDiff;
 	double m_longDiff;

@@ -150,7 +150,8 @@ message StrategyItem
 	repeated TriggerItem Triggers = 4;
 
 	// Arbitrage
-	optional PosiDirectionType AR_Side = 101;
+	optional double AR_BollPeriod = 101;
+	optional double AR_StdDevMultiplier = 102;
 
 	// Change Position
 	optional string CP_CloseLeg = 201;
