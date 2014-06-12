@@ -24,9 +24,31 @@ void StrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 
 void ArbitrageStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 {
-	pNativeStrategyItem->set_ar_side(static_cast<entity::PosiDirectionType>(_side));
+	IntPtr firstLegPtr;
+	IntPtr secondLegPtr;
+	try
+	{
+		firstLegPtr = (IntPtr)Marshal::StringToHGlobalAnsi(_firstLegSymbol);
+		secondLegPtr = (IntPtr)Marshal::StringToHGlobalAnsi(_secondLegSymbol);
 
-	StrategyItem::To(pNativeStrategyItem);
+		pNativeStrategyItem->set_ar_bollperiod(_bollPeriod);
+		pNativeStrategyItem->set_ar_stddevmultiplier(_stdDevMultiplier);
+
+		entity::HistSourceCfg* firstLegSourceCfg = pNativeStrategyItem->add_histsources();
+		firstLegSourceCfg->set_symbol((char*)firstLegPtr.ToPointer());
+		firstLegSourceCfg->set_precision(_timeFrame);
+
+		entity::HistSourceCfg* secondLegSourceCfg = pNativeStrategyItem->add_histsources();
+		secondLegSourceCfg->set_symbol((char*)secondLegPtr.ToPointer());
+		secondLegSourceCfg->set_precision(_timeFrame);
+
+		StrategyItem::To(pNativeStrategyItem);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(firstLegPtr);
+		Marshal::FreeHGlobal(secondLegPtr);
+	}
 }
 
 

@@ -11,3 +11,4 @@ rem %protobuf-net%\protogen -i:%Src%\enum.proto -o:%C#_DEST%\Enums.cs
 rem %protobuf-net%\protogen -i:%Src%\message.proto -o:%C#_DEST%\Entity.cs
 rem %protobuf-net%\protogen -i:%Src%\quote.proto -o:%C#_DEST%\Quote.cs
 rem %protobuf-net%\protogen -i:%Src%\trade.proto -o:%C#_DEST%\Trade.cs
+pause

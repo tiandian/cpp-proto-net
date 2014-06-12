@@ -60,12 +60,83 @@ protected:
 public ref class ArbitrageStrategyItem : StrategyItem
 {
 public:
-	ArbitrageStrategyItem(){}
+	ArbitrageStrategyItem()
+	{
+		_type = StrategyType::ARBITRAGE;
+		_bollPeriod = 26;
+		_stdDevMultiplier = 2;
+	}
 
 	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
 
+	property double BollPeriod
+	{
+		double get()
+		{
+			return _bollPeriod; 
+		}
+		void set(double val)
+		{
+			_bollPeriod = val;
+		}
+	}
+
+	property double StdDevMultiplier
+	{
+		double get()
+		{
+			return _stdDevMultiplier; 
+		}
+		void set(double val)
+		{
+			_stdDevMultiplier = val;
+		}
+	}
+
+	property String^ FirstLegSymbol
+	{
+		String^ get()
+		{
+			return _firstLegSymbol; 
+		}
+		void set(String^ val)
+		{
+			_firstLegSymbol = val;
+		}
+	}
+
+	property String^ SecondLegSymbol
+	{
+		String^ get()
+		{
+			return _secondLegSymbol; 
+		}
+		void set(String^ val)
+		{
+			_secondLegSymbol = val;
+		}
+	}
+
+	property int TimeFrame
+	{
+		int get()
+		{
+			return _timeFrame; 
+		}
+		void set(int val)
+		{
+			_timeFrame = val;
+		}
+	}
+
 private:
-	PosiDirectionType _side;
+
+	String^ _firstLegSymbol;
+	String^ _secondLegSymbol;
+	int _timeFrame;
+
+	double _bollPeriod;
+	double _stdDevMultiplier;
 };
 
 public ref class ChangePositionStrategyItem : StrategyItem

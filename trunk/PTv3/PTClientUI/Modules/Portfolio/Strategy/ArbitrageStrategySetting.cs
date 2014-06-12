@@ -214,7 +214,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             PTEntity.ArbitrageStrategyItem strategyItem = new PTEntity.ArbitrageStrategyItem();
             strategyItem.OpenTimeout = 200;
             strategyItem.RetryTimes = 0;
-
+            strategyItem.BollPeriod = 26;
+            strategyItem.StdDevMultiplier = 2;
+            
             PTEntity.ArbitrageTriggerItem openTrigger = new PTEntity.ArbitrageTriggerItem()
             {
                 Condition = OpenCondition,
