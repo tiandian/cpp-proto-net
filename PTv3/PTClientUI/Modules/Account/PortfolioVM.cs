@@ -1,4 +1,4 @@
-﻿using System;
+ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -156,6 +156,40 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _shortSize = value;
                     RaisePropertyChanged("ShortSize");
+                }
+            }
+        }
+        #endregion
+        
+        #region AR_BollTop
+        private int _ar_bollTop;
+
+        public int AR_BollTop
+        {
+            get { return _ar_bollTop; }
+            set
+            {
+                if (_ar_bollTop!= value)
+                {
+                    _ar_bollTop= value;
+                    RaisePropertyChanged("AR_BollTop");
+                }
+            }
+        }
+        #endregion
+
+        #region AR_BollBottom
+        private int _ar_bollBottom;
+
+        public int AR_BollBottom
+        {
+            get { return _ar_bollBottom; }
+            set
+            {
+                if (_ar_bollBottom!= value)
+                {
+                    _ar_bollBottom= value;
+                    RaisePropertyChanged("AR_BollBottom");
                 }
             }
         }
@@ -1085,6 +1119,8 @@ namespace PortfolioTrading.Modules.Account
                 ShortDiff = ToDecimal(strategyUpdate.ShortDiff);
                 LongSize = strategyUpdate.LongSize;
                 ShortSize = strategyUpdate.ShortSize;
+                AR_BollTop = strategyUpdate.BollTop;
+                AR_BollBottom = strategyUpdate.BollBottom;
             }
             else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.HIST_SLOPE)
             {
