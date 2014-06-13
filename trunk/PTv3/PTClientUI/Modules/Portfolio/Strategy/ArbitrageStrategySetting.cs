@@ -1,4 +1,4 @@
-﻿using System;
+?using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -128,9 +128,98 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             }
         }
         #endregion
+		
+		#region BollPeriod
+        private int _bollPeriod;
+
+        public int BollPeriod
+        {
+            get { return _bollPeriod; }
+            set
+            {
+                if (_bollPeriod != value)
+                {
+                    _bollPeriod = value;
+                    RaisePropertyChanged("BollPeriod");
+                }
+            }
+        }
+        #endregion
+		
+		#region StdDevMultiplier
+        private int _stdDevMultiplier;
+
+        public int StdDevMultiplier
+        {
+            get { return _stdDevMultiplier; }
+            set
+            {
+                if (_stdDevMultiplier != value)
+                {
+                    _stdDevMultiplier = value;
+                    RaisePropertyChanged("StdDevMultiplier");
+                }
+            }
+        }
+        #endregion
+		
+		#region FirstLegSymbol
+        private string _firstLegSymbol;
+
+        public string FirstLegSymbol
+        {
+            get { return _firstLegSymbol; }
+            set
+            {
+                if (_firstLegSymbol != value)
+                {
+                    _firstLegSymbol = value;
+                    RaisePropertyChanged("FirstLegSymbol");
+                }
+            }
+        }
+        #endregion
+		
+		#region SecondLegSymbol
+        private string _secondLegSymbol;
+
+        public string SecondLegSymbol
+        {
+            get { return _secondLegSymbol; }
+            set
+            {
+                if (_secondLegSymbol != value)
+                {
+                    _secondLegSymbol = value;
+                    RaisePropertyChanged("SecondLegSymbol");
+                }
+            }
+        }
+        #endregion
+		
+		#region TimeFrame
+        private int _timeFrame;
+
+        public int TimeFrame
+        {
+            get { return _timeFrame; }
+            set
+            {
+                if (_timeFrame != value)
+                {
+                    _timeFrame = value;
+                    RaisePropertyChanged("TimeFrame");
+                }
+            }
+        }
+        #endregion
 
         public ArbitrageStrategySetting()
         {
+			BollPeriod = 26;
+			StdDevMultiplier = 2;
+			TimeFrame = 60;
+		
             Direction = PTEntity.PosiDirectionType.LONG;
             OpenCondition = PTEntity.CompareCondition.LESS_EQUAL_THAN;
             OpenThreshold = 0;
@@ -144,6 +233,17 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             XElement elem = new XElement("arbitrageStrategySetting");
             elem.Add(new XAttribute("direction", Direction.ToString()));
+			
+			XElement elemHistSource = new XElement("histSource",
+                new XAttribute("firstLeg", FirstLegSymbol),
+                new XAttribute("secondLeg", SecondLegSymbol),
+				new XAttribute("timeFrame", TimeFrame));
+            elem.Add(elemHistSource);
+			XElement elemBollBand = new XElement("bollBand",
+                new XAttribute("period", BollPeriod),
+                new XAttribute("stdDevMultiplier", StdDevMultiplier));
+            elem.Add(elemBollBand);
+			
             XElement elemOpen = new XElement("open",
                 new XAttribute("condition", OpenCondition),
                 new XAttribute("threshold", OpenThreshold));
@@ -166,6 +266,35 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             XAttribute attr = elem.Attribute("direction");
             if (attr != null)
                 Direction = (PTEntity.PosiDirectionType)Enum.Parse(typeof(PTEntity.PosiDirectionType), attr.Value);
+				
+			XElement elemHistSource = elem.Element("histSource");
+			attr = elemHistSource.Attribute("firstLeg");
+			if(attr != null)
+			{
+				FirstLegSymbol = attr.Value;
+			}
+			attr = elemHistSource.Attribute("secondLeg");
+			if(attr != null)
+			{
+				SecondLegSymbol = attr.Value;
+			}
+			attr = elemHistSource.Attribute("timeFrame");
+			if(attr != null)
+			{
+				TimeFrame = int.Parse(attr.Value);
+			}
+			
+			XElement elemBollBand = elem.Element("bollBand");
+			attr = elemBollBand.Attribute("period");
+			if(attr != null)
+			{
+				BollPeriod = int.Parse(attr.Value);
+			}
+			attr = elemBollBand.Attribute("stdDevMultiplier");
+			if(attr != null)
+			{
+				StdDevMultiplier = int.Parse(attr.Value);
+			}
 
             XElement elemOpen = elem.Element("open");
             attr = elemOpen.Attribute("condition");
@@ -214,9 +343,12 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             PTEntity.ArbitrageStrategyItem strategyItem = new PTEntity.ArbitrageStrategyItem();
             strategyItem.OpenTimeout = 200;
             strategyItem.RetryTimes = 0;
-            strategyItem.BollPeriod = 26;
-            strategyItem.StdDevMultiplier = 2;
-            
+            strategyItem.BollPeriod = BollPeriod;
+            strategyItem.StdDevMultiplier = StdDevMultiplier;
+			strategyItem.FirstLegSymbol = FirstLegSymbol;
+			strategyItem.SecondLegSymbol = SecondLegSymbol;
+			strategyItem.TimeFrame = TimeFrame;
+			
             PTEntity.ArbitrageTriggerItem openTrigger = new PTEntity.ArbitrageTriggerItem()
             {
                 Condition = OpenCondition,
@@ -231,6 +363,12 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public override void CopyFrom(StrategySetting settings)
         {
             ArbitrageStrategySetting strategySettings = (ArbitrageStrategySetting)settings;
+			this.BollPeriod = strategySettings.BollPeriod;
+            this.StdDevMultiplier = strategySettings.StdDevMultiplier;
+			this.FirstLegSymbol = strategySettings.FirstLegSymbol;
+			this.SecondLegSymbol = strategySettings.SecondLegSymbol;
+			this.TimeFrame = strategySettings.TimeFrame;
+			
             this.Direction = strategySettings.Direction;
             this.OpenCondition = strategySettings.OpenCondition;
             this.OpenThreshold = strategySettings.OpenThreshold;
