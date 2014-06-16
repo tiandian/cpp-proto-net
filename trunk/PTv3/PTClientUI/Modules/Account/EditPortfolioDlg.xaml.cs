@@ -175,7 +175,16 @@ namespace PortfolioTrading.Modules.Account
             }
 
             portf.StrategySetting = StrategySetting.Create(StrategyName);
-            if (StrategyName == StrategySetting.ChangePositionStrategyName)
+            if (StrategyName == StrategySetting.ArbitrageStrategyName)
+            {
+                ArbitrageStrategySetting setting = (ArbitrageStrategySetting)portf.StrategySetting;
+                setting.BollPeriod = AR_BollPeriod;
+                setting.StdDevMultiplier = AR_StdDevMultiplier;
+                setting.TimeFrame = 60;
+                setting.FirstLegSymbol = Symbol1;
+                setting.SecondLegSymbol = Symbol2;
+            }
+            else if (StrategyName == StrategySetting.ChangePositionStrategyName)
             {
                 portf.AutoOpen = true;
                 portf.AutoStopGain = false;
@@ -977,6 +986,45 @@ namespace PortfolioTrading.Modules.Account
                 }
             }
         }
+        #endregion
+        
+        #endregion
+
+        #region Arbitrage
+
+        #region AR_BollPeriod
+        private int _ar_BollPeriod = 26;
+
+        public int AR_BollPeriod
+        {
+            get { return _ar_BollPeriod; }
+            set
+            {
+                if (_ar_BollPeriod != value)
+                {
+                    _ar_BollPeriod = value;
+                    RaisePropertyChanged("AR_BollPeriod");
+                }
+            }
+        }
+        #endregion
+
+        #region AR_StdDevMultiplier
+        private int _ar_StdDevMultiplier = 2;
+
+        public int AR_StdDevMultiplier
+        {
+            get { return _ar_StdDevMultiplier; }
+            set
+            {
+                if (_ar_StdDevMultiplier != value)
+                {
+                    _ar_StdDevMultiplier = value;
+                    RaisePropertyChanged("AR_StdDevMultiplier");
+                }
+            }
+        }
+
         #endregion
         
         #endregion

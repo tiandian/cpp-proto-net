@@ -284,6 +284,8 @@ message PortfolioUpdateItem
 	optional double AR_ShortDiff = 103;
 	optional int32 AR_LongSize = 104;
 	optional int32 AR_ShortSize = 105;
+	optional double AR_BollTop = 106;
+	optional double AR_BollBottom = 107;
 	// Scalper
 	optional double SC_Diff = 201;
 	// HistSlope

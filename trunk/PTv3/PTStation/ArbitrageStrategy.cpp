@@ -271,6 +271,9 @@ void CArbitrageStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 	pPortfUpdateItem->set_ar_longsize(m_longDiffSize);
 	pPortfUpdateItem->set_ar_shortdiff(m_shortDiff);
 	pPortfUpdateItem->set_ar_shortsize(m_shortDiffSize);
+
+	pPortfUpdateItem->set_ar_bolltop(m_bollTop);
+	pPortfUpdateItem->set_ar_bollbottom(m_bollBottom);
 }
 
 int CArbitrageStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )

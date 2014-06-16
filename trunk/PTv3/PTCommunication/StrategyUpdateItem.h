@@ -82,13 +82,16 @@ protected:
 public ref class ArbitrageStrategyUpdateItem : StrategyUpdateItem
 {
 public:
-	ArbitrageStrategyUpdateItem(double diff, double longDiff, double shortDiff, int longSize, int shortSize)
+	ArbitrageStrategyUpdateItem(double diff, double longDiff, double shortDiff, int longSize, int shortSize, double bollTop, double bollBottom)
 	{
 		_diff = diff;
 		_longDiff = longDiff;
 		_shortDiff = shortDiff;
 		_longSize = longSize;
 		_shortSize = shortSize;
+
+		_bollTop = bollTop;
+		_bollBottom = bollBottom;
 	}
 
 	property StrategyType Kind
@@ -138,19 +141,46 @@ public:
 			return _shortSize; 
 		}
 	}
+
+	property double BollTop
+	{
+		double get()
+		{
+			return _bollTop; 
+		}
+		void set(double val)
+		{
+			_bollTop = val;
+		}
+	}
+
+	property double BollBottom
+	{
+		double get()
+		{
+			return _bollBottom; 
+		}
+		void set(double val)
+		{
+			_bollBottom = val;
+		}
+	}
 protected:
 	double _diff;
 	double _longDiff;
 	double _shortDiff;
 	int _longSize;
 	int _shortSize;
+
+	double _bollBottom;
+	double _bollTop;
 };
 
 public ref class ChangePosiStrategyUpdateItem : ArbitrageStrategyUpdateItem
 {
 public:
 	ChangePosiStrategyUpdateItem(double diff, double longDiff, double shortDiff, int longSize, int shortSize)
-		: ArbitrageStrategyUpdateItem(diff, longDiff, shortDiff, longSize, shortSize) 
+		: ArbitrageStrategyUpdateItem(diff, longDiff, shortDiff, longSize, shortSize, 0, 0) 
 	{}
 
 	property StrategyType Kind

@@ -16,7 +16,9 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 				pEntity->ar_longdiff(),
 				pEntity->ar_shortdiff(),
 				pEntity->ar_longsize(),
-				pEntity->ar_shortsize()
+				pEntity->ar_shortsize(),
+				pEntity->ar_bolltop(),
+				pEntity->ar_bollbottom()
 			);
 		break;
 	case StrategyType::CHANGE_POSITION:

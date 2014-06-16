@@ -162,9 +162,9 @@ namespace PortfolioTrading.Modules.Account
         #endregion
         
         #region AR_BollTop
-        private int _ar_bollTop;
+        private double _ar_bollTop;
 
-        public int AR_BollTop
+        public double AR_BollTop
         {
             get { return _ar_bollTop; }
             set
@@ -179,9 +179,9 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region AR_BollBottom
-        private int _ar_bollBottom;
+        private double _ar_bollBottom;
 
-        public int AR_BollBottom
+        public double AR_BollBottom
         {
             get { return _ar_bollBottom; }
             set
