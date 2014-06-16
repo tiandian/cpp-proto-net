@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:igEditor="http://infragistics.com/Editors"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:PortfolioTrading.Controls"
              mc:Ignorable="d" 
@@ -48,7 +49,19 @@
                                 <Setter Property="CornerRadius" Value="2"/>
                             </Style>
                         </StackPanel.Resources>
-
+                        <Border>
+                            <StackPanel>
+                                <TextBlock Margin="6, 2" FontWeight="Bold">布林带参数</TextBlock>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock VerticalAlignment="Center" Margin="4, 2" Width="60">周期</TextBlock>
+                                    <xctk:DecimalUpDown Value="{Binding BollPeriod, Mode=TwoWay}" />
+                                </DockPanel>
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <TextBlock VerticalAlignment="Center" Margin="4, 2" Width="60">标准差倍数</TextBlock>
+                                    <xctk:DecimalUpDown Value="{Binding StdDevMultiplier, Mode=TwoWay}" />
+                                </DockPanel>
+                            </StackPanel>
+                        </Border>
                         <Border>
                             <DockPanel>
                                 <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
