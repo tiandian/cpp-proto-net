@@ -104,7 +104,7 @@ int CDiffRecordSet::Calculate( COHLCRecordSet* pOHLCRecordSet )
 		{
 			legInfo->SetLastValue(pOHLCRecordSet->CloseSeries[endIdx]);
 			DiffRecLegInfoPtr theOtherLegInfo = GetTheOtherLeg(legInfo->Symbol());
-			if(theOtherLegInfo->GetBeginIndex() == endIdx)
+			if(theOtherLegInfo->GetEndIndex() == endIdx)
 			{
 				if(legInfo->Index() > 1)
 				{

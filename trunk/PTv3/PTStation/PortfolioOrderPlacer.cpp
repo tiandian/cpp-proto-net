@@ -366,10 +366,13 @@ CPortfolioOrderPlacer::~CPortfolioOrderPlacer(void)
 	m_thCleanup.join();
 }
 
-void CPortfolioOrderPlacer::SetNewOrderId(const string& mlOrdId)
+void CPortfolioOrderPlacer::SetNewOrderId(const string& mlOrdId, const char* openOrdId)
 {
 	m_multiLegOrderTemplate->set_orderid(mlOrdId);
-	m_multiLegOrderTemplate->set_openorderid(mlOrdId);
+	if(openOrdId == NULL)
+		m_multiLegOrderTemplate->set_openorderid(mlOrdId);
+	else
+		m_multiLegOrderTemplate->set_openorderid(openOrdId);
 }
 
 void CPortfolioOrderPlacer::ResetTemplate()
@@ -487,10 +490,10 @@ void CPortfolioOrderPlacer::Run(entity::PosiDirectionType posiDirection, double*
 	Send();
 }
 
-void CPortfolioOrderPlacer::GoStart()
+void CPortfolioOrderPlacer::GoStart(const char* openOrderId)
 {
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->start();
-	Send();
+	Send(openOrderId);
 }
 
 void CPortfolioOrderPlacer::Run( entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize )
@@ -498,7 +501,7 @@ void CPortfolioOrderPlacer::Run( entity::PosiDirectionType posiDirection, double
 	Run(posiDirection, pLmtPxArr, iPxSize, boost::chrono::steady_clock::now());
 }
 
-void CPortfolioOrderPlacer::Send()
+void CPortfolioOrderPlacer::Send(const char* openOrderId)
 {
 	assert(m_activeOrdPlacer != NULL);
 #ifdef LOG_FOR_TRADE
@@ -531,7 +534,7 @@ void CPortfolioOrderPlacer::Send()
 		// Generate order Id
 		string mlOrderId;
 		m_pPortf->NewOrderId(mlOrderId);
-		SetNewOrderId(mlOrderId);
+		SetNewOrderId(mlOrderId, openOrderId);
 
 		LOG_INFO(logger, boost::str(boost::format("%s [%s] Submit Order(%s - %s, OrderRef: %d, vol: %d) [No. %d time(s)] in %d us after the last QUOTE")
 			% m_pOrderProcessor->InvestorId()

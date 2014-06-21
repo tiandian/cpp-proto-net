@@ -7,6 +7,7 @@
 #include <boost/date_time.hpp>
 
 CPortfolioArbitrageOrderPlacer::CPortfolioArbitrageOrderPlacer(void)
+	: m_openedPosition(false)
 {
 }
 
@@ -21,13 +22,13 @@ void CPortfolioArbitrageOrderPlacer::BuildTemplateOrder()
 
 	pMultiLegOrder->set_quantity(m_pPortf->Quantity());
 	pMultiLegOrder->set_portfolioid(m_pPortf->ID());
-	pMultiLegOrder->set_offset(trade::ML_OF_OTHER);
+	//pMultiLegOrder->set_offset(trade::ML_OF_OTHER);
 	pMultiLegOrder->set_haswarn(false);
 	pMultiLegOrder->set_statusmsg("");
 
 	boost::gregorian::date d = boost::gregorian::day_clock::local_day();
 	pMultiLegOrder->set_opendate(boost::gregorian::to_iso_string(d));
-	pMultiLegOrder->set_reason(trade::SR_Trend);
+	pMultiLegOrder->set_reason(trade::SR_Manual);
 
     int legCount = m_pPortf->Count();
     assert( legCount > 1);
@@ -70,19 +71,24 @@ void CPortfolioArbitrageOrderPlacer::BuildTemplateOrder()
     m_multiLegOrderTemplate = pMultiLegOrder;
 }
 
-void CPortfolioArbitrageOrderPlacer::OpenPosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
+void CPortfolioArbitrageOrderPlacer::OpenPosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp, trade::SubmitReason reason)
 {
-	Run(posiDirection, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp);
-   m_openedPosition = true;
+	m_multiLegOrderTemplate->set_reason(reason);
+	m_multiLegOrderTemplate->set_offset(trade::ML_OF_OPEN);
+	Run(posiDirection, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp, NULL);
+	m_openedPosition = true;
+	m_lastOpenOrderId = m_multiLegOrderTemplate->orderid();
 }
 
-void CPortfolioArbitrageOrderPlacer::ClosePosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
+void CPortfolioArbitrageOrderPlacer::ClosePosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp, trade::SubmitReason reason)
 {
-	Run(posiDirection, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp);
-   m_openedPosition = false;
+	m_multiLegOrderTemplate->set_reason(reason);
+	m_multiLegOrderTemplate->set_offset(trade::ML_OF_CLOSE);
+	Run(posiDirection, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp, m_lastOpenOrderId.c_str());
+	m_openedPosition = false;
 }
 
-void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, trade::OffsetFlagType offset, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp)
+void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, trade::OffsetFlagType offset, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp, const char* openOrderId)
 {
 	m_isWorking.store(true, boost::memory_order_release);
 
@@ -138,7 +144,7 @@ void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection
 	
     m_triggingTimestamp = trigQuoteTimestamp;
 
-    GoStart();
+    GoStart(openOrderId);
 }
 
 CLegOrderPlacer* CPortfolioArbitrageOrderPlacer::GetLegOrderPlacer(const string& symbol)

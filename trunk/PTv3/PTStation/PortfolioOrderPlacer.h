@@ -47,7 +47,7 @@ public:
 	bool IsWorking(){ return m_isWorking.load(boost::memory_order_consume); }
 
 	// For Fsm to begin sending leg order
-	void Send();
+	void Send(const char* openOrderId = NULL);
 	// On leg order submit done
 	void OnAccept(const RtnOrderWrapperPtr& pRtnOrder);
 	
@@ -88,7 +88,7 @@ protected:
 	virtual void OnLegOrderSent(int orderPlacerIdx){}
 	virtual void OnPortfolioDone(){}
 	
-	void SetNewOrderId(const string& mlOrdId);
+	void SetNewOrderId(const string& mlOrdId, const char* openOrdId);
 	void ResetTemplate();
 	void FillSendingOrderNote();
 	void ResetSendingOrderNote();
@@ -112,7 +112,7 @@ protected:
 
 	bool SendNextOnFilled(){ return m_sendNextOnFilled; }
 	void SendNextOnFilled(bool val){ m_sendNextOnFilled = val; }
-	void GoStart(); // Just start FSM for PortfolioArbitrageOrderPlacer
+	void GoStart(const char* openOrderId); // Just start FSM for PortfolioArbitrageOrderPlacer
 
 	struct NextQuote
 	{

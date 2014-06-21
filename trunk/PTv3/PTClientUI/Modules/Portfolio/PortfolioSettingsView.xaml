@@ -49,15 +49,15 @@
                                 <Setter Property="CornerRadius" Value="2"/>
                             </Style>
                         </StackPanel.Resources>
-                        <Border>
+                        <Border DataContext="{Binding Settings}">
                             <StackPanel>
                                 <TextBlock Margin="6, 2" FontWeight="Bold">布林带参数</TextBlock>
                                 <DockPanel Margin="12, 0, 6, 2">
-                                    <TextBlock VerticalAlignment="Center" Margin="4, 2" Width="60">周期</TextBlock>
+                                    <TextBlock VerticalAlignment="Center" Margin="4, 2" Width="100">周期</TextBlock>
                                     <xctk:DecimalUpDown Value="{Binding BollPeriod, Mode=TwoWay}" />
                                 </DockPanel>
                                 <DockPanel Margin="12, 0, 6, 2">
-                                    <TextBlock VerticalAlignment="Center" Margin="4, 2" Width="60">标准差倍数</TextBlock>
+                                    <TextBlock VerticalAlignment="Center" Margin="4, 2" Width="100">标准差倍数</TextBlock>
                                     <xctk:DecimalUpDown Value="{Binding StdDevMultiplier, Mode=TwoWay}" />
                                 </DockPanel>
                             </StackPanel>

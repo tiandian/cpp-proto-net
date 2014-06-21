@@ -162,9 +162,9 @@ namespace PortfolioTrading.Modules.Account
         #endregion
         
         #region AR_BollTop
-        private double _ar_bollTop;
+        private decimal _ar_bollTop;
 
-        public double AR_BollTop
+        public decimal AR_BollTop
         {
             get { return _ar_bollTop; }
             set
@@ -179,9 +179,9 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region AR_BollBottom
-        private double _ar_bollBottom;
+        private decimal _ar_bollBottom;
 
-        public double AR_BollBottom
+        public decimal AR_BollBottom
         {
             get { return _ar_bollBottom; }
             set
@@ -1115,12 +1115,13 @@ namespace PortfolioTrading.Modules.Account
                 item.StrategyUpdate.Kind == PTEntity.StrategyType.CHANGE_POSITION)
             {
                 PTEntity.ArbitrageStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.ArbitrageStrategyUpdateItem;
+                Diff = ToDecimal(strategyUpdate.Diff);
                 LongDiff = ToDecimal(strategyUpdate.LongDiff);
                 ShortDiff = ToDecimal(strategyUpdate.ShortDiff);
                 LongSize = strategyUpdate.LongSize;
                 ShortSize = strategyUpdate.ShortSize;
-                AR_BollTop = strategyUpdate.BollTop;
-                AR_BollBottom = strategyUpdate.BollBottom;
+                AR_BollTop = ToDecimal(strategyUpdate.BollTop);
+                AR_BollBottom = ToDecimal(strategyUpdate.BollBottom);
             }
             else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.HIST_SLOPE)
             {
