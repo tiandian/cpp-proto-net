@@ -14,6 +14,7 @@
 #include "AvatarClient.h"
 #include "PortfolioScalperOrderPlacer.h"
 #include "PortfolioTrendOrderPlacer.h"
+#include "PortfolioArbitrageOrderPlacer.h"
 #include "charsetconvert.h"
 #include "SymbolTimeUtil.h"
 
@@ -131,7 +132,7 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 	{
 	case entity::ARBITRAGE:
 		created = StrategyPtr(new CArbitrageStrategy(strategyItem, m_avatar));
-		m_orderPlacer = OrderPlacerPtr(new CPortfolioOrderPlacer);
+		m_orderPlacer = OrderPlacerPtr(new CPortfolioArbitrageOrderPlacer);
 		break;
 	case entity::CHANGE_POSITION:
 		created = StrategyPtr(new CChangePositionStrategy(strategyItem, m_avatar));
