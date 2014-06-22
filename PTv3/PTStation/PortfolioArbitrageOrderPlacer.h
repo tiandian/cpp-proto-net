@@ -16,6 +16,7 @@ public:
 
 protected:
 	virtual void BuildTemplateOrder();
+	virtual void OnPortfolioDone();
 
 private:
 	CLegOrderPlacer* GetLegOrderPlacer(const string& symbol);

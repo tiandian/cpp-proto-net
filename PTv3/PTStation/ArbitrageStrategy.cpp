@@ -231,40 +231,19 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	}
 
 	LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing open direction - longDiff:%.2f vs bottom:%.2f, shortDiff:%.2f vs top:%.2f -->> %s")
-		% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(m_side)));
+		% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction)));
 
-	bool forceOpening = IsForceOpening();
-	if(direction > entity::NET || forceOpening )
+	//bool forceOpening = IsForceOpening();
+	if(direction > entity::NET)
 	{
 		if(!pOrderPlacer->IsWorking())
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Opening position at bar %d")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
-			OpenPosition(direction, pOrderPlacer, pPortfolio, pQuote, timestamp, forceOpening);
+			OpenPosition(direction, pOrderPlacer, pPortfolio, pQuote, timestamp);
 			return;
 		}
 	}
-	/*
-	if(IsRunning())
-	{
-
-		for( TriggerIter iter = m_triggers.begin(); iter != m_triggers.end(); ++iter)
-		{
-			if((*iter)->IsEnabled())
-			{
-				double diffToTest = m_side == entity::LONG ? m_longDiff : m_shortDiff;
-				if((*iter)->Test(diffToTest))
-				{
-					CPortfolioOrderPlacer* orderPlacer = pPortfolio->OrderPlacer();
-					// To do
-					// orderPlacer->Run();
-					// if one is triggered, don't test other triggers any more
-					break;
-				}
-			}
-		}
-	}
-	*/
 }
 
 void CArbitrageStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )
@@ -357,7 +336,7 @@ entity::PosiDirectionType CArbitrageStrategy::GetTradeDirection()
 	return entity::NET;
 }
 
-void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening )
+void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp)
 {
 	if(direction > entity::NET)
 	{
@@ -385,9 +364,18 @@ void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPor
 		LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - %s Open position @ %.2f - %.2f (%s)")
 			% GetPosiDirectionText(direction) % lmtPrice[0] % lmtPrice[1] % pQuote->update_time()));
 
+		string openComment;
+		if(direction == entity::LONG)
+		{
+			openComment = boost::str(boost::format("多价差 %.2f 低于下轨 %.2f 做多 (%s)") % m_longDiff % m_bollBottom % pQuote->update_time());
+		}
+		else if(direction == entity::SHORT)
+		{
+			openComment = boost::str(boost::format("空价差 %.2f 高于上轨 %.2f 做空 (%s)") % m_shortDiff % m_bollTop % pQuote->update_time());
+		}
 		// TODO feed comment
-		//pOrderPlacer->SetMlOrderStatus(openComment);
-		pOrderPlacer->OpenPosition(direction, lmtPrice, 2, timestamp, forceOpening ? trade::SR_Manual : trade::SR_AutoOpen);
+		pOrderPlacer->SetMlOrderStatus(openComment);
+		pOrderPlacer->OpenPosition(direction, lmtPrice, 2, timestamp, trade::SR_AutoOpen);
 		m_side = direction;
 		m_costDiff = lmtPrice[0] - lmtPrice[1];
 		ResetForceOpen();

@@ -189,8 +189,9 @@ namespace PortfolioTrading.Modules.Portfolio
             Reason = GetReasonDisplayText(mlOrder.Reason);
             PortfolioId = mlOrder.PortfolioId;
             Quantity = mlOrder.Quantity;
-            IsOpenOrder = mlOrder.OrderId == mlOrder.OpenOrderId;
-            IsPortfolio = string.IsNullOrEmpty(mlOrder.OpenOrderId);
+            
+            IsOpenOrder = mlOrder.Offset == PTEntity.MlOrderOffset.ML_OF_OPEN;
+            IsPortfolio = mlOrder.Offset < PTEntity.MlOrderOffset.ML_OF_OTHER;
 
             bool allFinished = false;
             for (int i = 0; i < mlOrder.Legs.Length; ++i )
