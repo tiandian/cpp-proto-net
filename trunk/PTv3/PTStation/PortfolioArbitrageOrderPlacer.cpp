@@ -165,4 +165,11 @@ bool CPortfolioArbitrageOrderPlacer::IsOpened()
 	return m_openedPosition;
 }
 
+void CPortfolioArbitrageOrderPlacer::OnPortfolioDone()
+{
+	if(!m_openedPosition)
+		PushWholeMultiLegOrder(m_multiLegOrderTemplate.get());
+}
+
+
 
