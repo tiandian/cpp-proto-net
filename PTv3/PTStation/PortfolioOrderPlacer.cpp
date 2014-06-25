@@ -886,12 +886,12 @@ void CPortfolioOrderPlacer::AfterLegDone()
 void CPortfolioOrderPlacer::AfterPortfolioDone()
 {
 	m_isWorking.store(false, boost::memory_order_release);
-	// set first leg for next start
-	SetFirstLeg();
-	// Give portfolio a chance to check whether open times, positon or cancel times reach limit
+	// Give portfolio a chance to check whether open times, position or cancel times reach limit
 	m_pPortf->CheckOpenCancelLimit();
 
 	OnPortfolioDone();
+	// set first leg for next start
+	SetFirstLeg();
 }
 
 void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )

@@ -42,7 +42,6 @@ void CPortfolioArbitrageOrderPlacer::BuildTemplateOrder()
 		order->set_investorid(m_pOrderProcessor->InvestorId());
 		order->set_instrumentid(leg->Symbol());
 		order->set_orderref("");
-
 		order->set_orderpricetype(trade::LIMIT_PRICE);
 
 		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
@@ -109,7 +108,7 @@ void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection
 		trade::Order* pOrd = m_multiLegOrderTemplate->mutable_legs(i);
 		
 		// Set Offset
-		char CombOffset[1];
+		char CombOffset[2] = { 0, 0 };
 		CombOffset[0] = offset;
 
 		pOrd->set_comboffsetflag(std::string(CombOffset));
@@ -168,7 +167,7 @@ bool CPortfolioArbitrageOrderPlacer::IsOpened()
 void CPortfolioArbitrageOrderPlacer::OnPortfolioDone()
 {
 	if(!m_openedPosition)
-		PushWholeMultiLegOrder(m_multiLegOrderTemplate.get());
+		UpdateMultiLegOrder();
 }
 
 

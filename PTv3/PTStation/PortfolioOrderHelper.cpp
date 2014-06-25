@@ -65,12 +65,12 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, entity::PosiDire
 		//order->set_direction(leg->GetSide() == protoc::LONG ? protoc::BUY : protoc::SELL);
 
 		//char CombOffset[] = { static_cast<char>(protoc::OF_OPEN) };
-		static char CombOffset[1];
+		char CombOffset[2] = { 0, 0 };
 		CombOffset[0] = trade::OF_OPEN;
 
-		order->set_comboffsetflag(std::string(CombOffset));
+		order->set_comboffsetflag(CombOffset);
 
-		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
+		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		// 	order->set_limitprice(0);
@@ -184,15 +184,15 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, entity::PosiDir
 		order->set_orderpricetype(placeOrderCtx->orderPriceType);
 		order->set_limitprice(limitPrice);
 
-		static char CombOffset[1];
+		char CombOffset[2] = { 0, 0 };
 		if(multilegOpenOrder != NULL)
 			CombOffset[0] = GetCloseFlag(order->instrumentid(), multilegOpenOrder->opendate());
 		else
 			CombOffset[0] = trade::OF_CLOSE_TODAY;
 
-		order->set_comboffsetflag(std::string(CombOffset));
+		order->set_comboffsetflag(CombOffset);
 
-		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
+		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		int qty = pMultiLegOrder->quantity() * leg->Ratio();
@@ -279,12 +279,12 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 		order->set_orderpricetype(placeOrderCtx->orderPriceType);
 		order->set_limitprice(limitPrice);
 
-		static char CombOffset[1];
+		char CombOffset[2] = { 0, 0 };
 		CombOffset[0] = isClosingLeg ? trade::OF_CLOSE_TODAY : trade::OF_OPEN;
 		
-		order->set_comboffsetflag(std::string(CombOffset));
+		order->set_comboffsetflag(CombOffset);
 
-		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
+		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		// 	order->set_limitprice(0);
@@ -373,14 +373,14 @@ trade::InputOrder* BuildSingleOrder(const string& symbol, double limitPrice,
 	order->set_orderref("");
 	order->set_direction(direction);
 
-	static char CombOffset[1];
+	char CombOffset[2] = {0, 0};
 	CombOffset[0] = offsetFlag;
-	order->set_comboffsetflag(std::string(CombOffset));
+	order->set_comboffsetflag(CombOffset);
 
 	order->set_limitprice(limitPrice);
 	order->set_orderpricetype(trade::LIMIT_PRICE);
 
-	static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
+	char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
 	order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 	order->set_volumetotaloriginal(placeOrderCtx->quantity);
@@ -448,12 +448,12 @@ trade::MultiLegOrder* BuildScalperOrder( CPortfolio* portfolio, trade::PosiDirec
 		order->set_orderpricetype(placeOrderCtx->orderPriceType);
 		order->set_limitprice(limitPrice);
 
-		static char CombOffset[1];
+		char CombOffset[2] = { 0, 0 };
 		CombOffset[0] = OFFSET_FLAGS[i];
 
-		order->set_comboffsetflag(std::string(CombOffset));
+		order->set_comboffsetflag(CombOffset);
 
-		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
+		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		// 	order->set_limitprice(0);
