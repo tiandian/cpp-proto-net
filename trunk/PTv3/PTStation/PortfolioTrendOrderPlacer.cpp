@@ -49,13 +49,13 @@ void CPortfolioTrendOrderPlacer::BuildTemplateOrder()
 
 		order->set_orderpricetype(trade::LIMIT_PRICE);
 
-		static char CombOffset[1];
+		char CombOffset[2] = {0, 0};
 		CombOffset[0] = OFFSET_FLAGS[i];
 
-		order->set_comboffsetflag(std::string(CombOffset));
+		order->set_comboffsetflag(CombOffset);
 
-		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
-		order->set_combhedgeflag(std::string(CombHedgeFlag));
+		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
+		order->set_combhedgeflag(CombHedgeFlag);
 
 		int qty = pMultiLegOrder->quantity() * leg->Ratio();
 		order->set_volumetotaloriginal(qty);
