@@ -25,6 +25,8 @@ CBollDataSet::~CBollDataSet(void)
 void CBollDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 {
 	int lastIdx = ohlcRecordSet->GetEndIndex();
+	if(lastIdx < 0) return;
+
 	logger.Info(boost::str(boost::format("Calculating BOLL with OHLC RecordSet: lastIdx - %d, last price - %f")
 		% lastIdx % (ohlcRecordSet->CloseSeries)[lastIdx]));
 
@@ -37,6 +39,8 @@ void CBollDataSet::Calculate( COHLCRecordSet* ohlcRecordSet )
 void CBollDataSet::Calculate( CDiffRecordSet* diffRecordSet )
 {
 	int lastIdx = diffRecordSet->GetEndIndex();
+	if(lastIdx < 0) return;
+
 	logger.Info(boost::str(boost::format("Calculating BOLL with DiffRecordSet: lastIdx - %d, last price - %f")
 		% lastIdx % (diffRecordSet->DiffSeries)[lastIdx]));
 
