@@ -31,7 +31,7 @@ int CDiffRecordSet::Calculate( COHLCRecordSet* pOHLCRecordSet )
 	if(legInfo->NbElements() < 1)
 	{
 		// In case this leg has not been fed any data
-		if(m_nbElements < 1)
+		if(!m_oneLegFed)
 		{
 			// The diff dataset has not been fed as well
 			int begin = pOHLCRecordSet->GetBeginIndex();
@@ -42,14 +42,14 @@ int CDiffRecordSet::Calculate( COHLCRecordSet* pOHLCRecordSet )
 			}
 			legInfo->SetEndIndex(end);
 			legInfo->NbElements(pOHLCRecordSet->NbElements());
-			m_endIndex = end;
-			m_nbElements = pOHLCRecordSet->NbElements();
+
+			m_oneLegFed = true;
 		}
 		else // the diff dataset has been fed data of first leg already
 		{
 			// calculate diff value based on existing data
-			int end = m_endIndex <= pOHLCRecordSet->GetEndIndex() ? m_endIndex : pOHLCRecordSet->GetEndIndex();
-			int count = m_nbElements <= pOHLCRecordSet->NbElements() ? m_nbElements : pOHLCRecordSet->NbElements();
+			int end = pOHLCRecordSet->GetEndIndex();
+			int count = pOHLCRecordSet->NbElements();
 			int begin = end - count + 1;
 			if(legInfo->Index() > 1)
 			{
@@ -69,6 +69,10 @@ int CDiffRecordSet::Calculate( COHLCRecordSet* pOHLCRecordSet )
 			}
 			legInfo->SetEndIndex(pOHLCRecordSet->GetEndIndex());
 			legInfo->NbElements(pOHLCRecordSet->NbElements());
+
+			m_endIndex = end;
+			m_nbElements = pOHLCRecordSet->NbElements();
+			m_oneLegFed = false; // reset flag for new bar
 		}
 	}
 	else
@@ -80,24 +84,27 @@ int CDiffRecordSet::Calculate( COHLCRecordSet* pOHLCRecordSet )
 			legInfo->NbElements(pOHLCRecordSet->NbElements());
 			legInfo->SetLastValue(pOHLCRecordSet->CloseSeries[endIdx]);
 
-			if(endIdx > m_endIndex)
+			if(!m_oneLegFed)
 			{
 				DiffSeries[endIdx] = legInfo->GetLastValue();
-				m_endIndex = endIdx;
-				m_nbElements = pOHLCRecordSet->NbElements();
+				m_oneLegFed = true;
 			}
 			else
 			{
 				if(legInfo->Index() > 1)
 				{
 					// In case the second leg
-					DiffSeries[m_endIndex] = DiffSeries[m_endIndex] - pOHLCRecordSet->CloseSeries[m_endIndex];
+					DiffSeries[endIdx] = DiffSeries[endIdx] - pOHLCRecordSet->CloseSeries[endIdx];
 				}
 				else
 				{
 					// The first leg
-					DiffSeries[m_endIndex] = pOHLCRecordSet->CloseSeries[m_endIndex] - DiffSeries[m_endIndex];
+					DiffSeries[endIdx] = pOHLCRecordSet->CloseSeries[endIdx] - DiffSeries[endIdx];
 				}
+
+				m_endIndex = endIdx;
+				m_nbElements = pOHLCRecordSet->NbElements();
+				m_oneLegFed = false; // reset flag for new bar
 			}
 		}
 		else if(endIdx == legInfo->GetEndIndex())// current bar
@@ -116,10 +123,6 @@ int CDiffRecordSet::Calculate( COHLCRecordSet* pOHLCRecordSet )
 					// The first leg
 					DiffSeries[endIdx] = legInfo->GetLastValue() - theOtherLegInfo->GetLastValue();
 				}
-			}
-			else
-			{
-				DiffSeries[endIdx] = legInfo->GetLastValue();
 			}
 		}
 	}

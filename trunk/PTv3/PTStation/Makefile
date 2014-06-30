@@ -26,11 +26,11 @@ _FS_OBJS = stdafx \
 		ChangePositionTrigger HistSlopeStrategy HistSlopeTrigger LinerRegressionStrategy RangeTrendStrategy \
 		ScalperStrategy ScalperTrigger StrategyOrderCommand TrailingStopTrigger WMATrendStrategy WMATrendTrigger \
 		\
-		ATRDataSet BollDataSet DonchianDataSet HistDataReader HistDataWriter LinerRegressionDataSet \
+		ATRDataSet BollDataSet DiffRecordSet DonchianDataSet HistDataReader HistDataWriter LinerRegressionDataSet \
 		MACDDataSet OHLCRecordSet PriceBarDataProxy PriceBarDataSource PriceBarGen TaIndicatorSet \
 		TechAnalyStrategy TechDataRepo WATRStopDataSet WillRDataSet WMATrendDataSet \
 		\
-		InputOrder LegOrderPlacer OrderProcessor PortfolioOrderHelper PortfolioOrderPlacer \
+		InputOrder LegOrderPlacer OrderProcessor PortfolioArbitrageOrderPlacer PortfolioOrderHelper PortfolioOrderPlacer \
 		PortfolioScalperOrderPlacer PortfolioTrendOrderPlacer RtnOrderWrapper TradeAgent \
 		\
 		AsyncOrderPendingTimer charsetconvert Configuration DoubleCompare FakeDealer \

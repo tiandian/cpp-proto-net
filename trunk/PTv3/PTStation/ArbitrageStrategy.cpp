@@ -153,10 +153,11 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	if(ohlc == NULL)
 		return;
 
-	m_diffRecordSet->Calculate(ohlc);
+	int currentBarIdx = m_diffRecordSet->Calculate(ohlc);
+	if(currentBarIdx < m_bollPeriod)
+		return;
 
 	m_bollDataSet->Calculate(m_diffRecordSet.get());
-	int currentBarIdx = m_diffRecordSet->GetEndIndex();
 
 	m_bollTop = m_bollDataSet->GetRef(IND_TOP, 0);
 	m_bollBottom = m_bollDataSet->GetRef(IND_BOTTOM, 0);
