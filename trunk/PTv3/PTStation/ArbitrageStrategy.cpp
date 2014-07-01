@@ -159,8 +159,8 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	m_bollDataSet->Calculate(m_diffRecordSet.get());
 
-	m_bollTop = m_bollDataSet->GetRef(IND_TOP, 0);
-	m_bollBottom = m_bollDataSet->GetRef(IND_BOTTOM, 0);
+	m_bollTop = m_bollDataSet->GetRef(IND_TOP, 1);
+	m_bollBottom = m_bollDataSet->GetRef(IND_BOTTOM, 1);
 
 	CPortfolioArbitrageOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioArbitrageOrderPlacer*>(pPortfolio->OrderPlacer());
 
@@ -328,13 +328,17 @@ const string& CArbitrageStrategy::GetAnotherLegSymbol( const string& symb, const
 
 entity::PosiDirectionType CArbitrageStrategy::GetTradeDirection()
 {
-	if(m_longDiff < m_bollBottom)
-		return entity::LONG;
-	
-	if(m_shortDiff > m_bollTop)
-		return entity::SHORT;
+	entity::PosiDirectionType direction = entity::NET;
 
-	return entity::NET;
+	if(m_longDiff < m_bollBottom)
+		direction = entity::LONG;
+	else if(m_shortDiff > m_bollTop)
+		direction = entity::SHORT;
+
+	LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - Portfolio Testing Direction longDiff:%.2f vs bollBottom:%.2f, shortDiff:%.2f vs bollTop:%.2f --> %s")
+		% m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction) ));
+
+	return direction;
 }
 
 void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp)
