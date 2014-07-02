@@ -2,6 +2,8 @@
 #include "Strategy.h"
 #include "Portfolio.h"
 #include "SettingChangeTrace.h"
+#include "SymbolTimeUtil.h"
+#include "TechStrategyDefs.h"
 
 CStrategy::CStrategy(const entity::StrategyItem& strategyItem)
 	: m_running(false)
@@ -9,6 +11,8 @@ CStrategy::CStrategy(const entity::StrategyItem& strategyItem)
 	, m_forceClosing(false)
 	, m_retryTimes(0)
 	, m_openTimeout(0)
+	, m_marketOpen(false)
+	, m_endTradingBar(9999999)
 {
 	m_type = strategyItem.type();
 }
@@ -141,4 +145,32 @@ int CStrategy::CalcOffsetBarsBeforeMktCls( int minutesBeforeMktCls, int timeFram
 		bars += 1;
 
 	return bars;
+}
+
+bool CStrategy::IsMarketOpen( entity::Quote* pQuote )
+{
+	if(!m_marketOpen)
+	{
+		string symbol = pQuote->symbol();
+		string quoteUpdateTime = pQuote->update_time();
+		bool isIF = isSymbolIF(symbol);
+		string targetBeginTime = isIF ? IF_START_1 : NON_IF_START_1;
+		if(quoteUpdateTime.compare(targetBeginTime) >= 0)
+		{
+			m_marketOpen = true;
+		}
+	}
+
+	return m_marketOpen;
+}
+
+bool CStrategy::OutOfTradingWindow( int currentBarIdx )
+{
+	return currentBarIdx >= m_endTradingBar;
+}
+
+void CStrategy::CalculateEndBar( int offset, int timeFrame, int histDataSize )
+{
+	int forceCloseOffset = CalcOffsetBarsBeforeMktCls(offset, timeFrame);
+	m_endTradingBar = histDataSize - forceCloseOffset;
 }
