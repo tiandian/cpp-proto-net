@@ -126,7 +126,10 @@ void CArbitrageStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 				dataProxies[1]->GetOHLCRecordSet()
 			));
 
-			m_bollDataSet = BollDataSetPtr(new CBollDataSet(dataProxies[0]->GetRecordSetSize(), m_bollPeriod, m_stdDevMultiplier));
+			int histDataSize = dataProxies[0]->GetRecordSetSize();
+			m_bollDataSet = BollDataSetPtr(new CBollDataSet(histDataSize, m_bollPeriod, m_stdDevMultiplier));
+
+			CalculateEndBar(15, m_timeFrame, histDataSize);
 		}
 	}
 }
@@ -146,6 +149,9 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	m_shortDiffSize = CalcSize(vecLegs, SHORT_DIFF);
 
 	if(!IsRunning())
+		return;
+
+	if(!IsMarketOpen(pQuote))
 		return;
 
 	string symbol = pQuote->symbol();
@@ -173,10 +179,13 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	entity::PosiDirectionType direction = GetTradeDirection();
 
+	LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing trade direction - longDiff:%.2f vs bottom:%.2f, shortDiff:%.2f vs top:%.2f -->> %s")
+		% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction)));
+
 	if (pOrderPlacer->IsOpened())
 	{
 		bool meetCloseCondition = false;
-		bool forceClosing = IsForceClosing();
+		bool forceClosing = IsForceClosing() || OutOfTradingWindow(currentBarIdx);
 		if(forceClosing) // This close condition check is only effective on the bar after open
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Forcibly Closing position")
@@ -201,9 +210,9 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				else if(m_side != direction)
 				{
 					// Stop Gain
-					string logTxt = boost::str(boost::format("Long diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_longDiff % m_bollTop);
+					string logTxt = boost::str(boost::format("Short diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_shortDiff % m_bollTop);
 					LOG_DEBUG(logger, logTxt);
-					string comment = boost::str(boost::format("多价差(%.2f)大于上轨(%.2f) -> 止盈平仓") % m_longDiff % m_bollTop);
+					string comment = boost::str(boost::format("空价差(%.2f)大于上轨(%.2f) -> 止盈平仓") % m_shortDiff % m_bollTop);
 					ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment, trade::SR_StopGain);
 				}
 			}
@@ -220,9 +229,9 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				else if(m_side != direction)
 				{
 					// Stop Gain
-					string logTxt = boost::str(boost::format("Short diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_shortDiff % m_bollBottom);
+					string logTxt = boost::str(boost::format("Long diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_longDiff % m_bollBottom);
 					LOG_DEBUG(logger, logTxt);
-					string comment = boost::str(boost::format("空价差(%.2f)小于下轨(%.2f) -> 止盈平仓") % m_shortDiff % m_bollBottom);
+					string comment = boost::str(boost::format("多价差(%.2f)小于下轨(%.2f) -> 止盈平仓") % m_longDiff % m_bollBottom);
 					ClosePosition(pOrderPlacer, pPortfolio, pQuote, timestamp, comment, trade::SR_StopGain);
 				}
 			}
@@ -230,9 +239,6 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 		return;
 	}
-
-	LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing open direction - longDiff:%.2f vs bottom:%.2f, shortDiff:%.2f vs top:%.2f -->> %s")
-		% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction)));
 
 	//bool forceOpening = IsForceOpening();
 	if(direction > entity::NET)
@@ -334,9 +340,6 @@ entity::PosiDirectionType CArbitrageStrategy::GetTradeDirection()
 		direction = entity::LONG;
 	else if(m_shortDiff > m_bollTop)
 		direction = entity::SHORT;
-
-	LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - Portfolio Testing Direction longDiff:%.2f vs bollBottom:%.2f, shortDiff:%.2f vs bollTop:%.2f --> %s")
-		% m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction) ));
 
 	return direction;
 }

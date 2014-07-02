@@ -49,6 +49,8 @@ public:
 	void ResetForceClose(){ m_forceClosing.store(false, boost::memory_order_release);};
 	bool IsForceClosing(){ return m_forceClosing.load(boost::memory_order_acquire); };
 
+	bool IsMarketOpen(entity::Quote* pQuote);
+
 protected:
 
 	void AddProfit(CPortfolio* pPortfolio, double profit);
@@ -58,6 +60,9 @@ protected:
 	int PositionQuantity(CPortfolio* pPortfolio);
 	double AvgCost(CPortfolio* pPortfolio);
 
+	void CalculateEndBar(int offset, int timeFrame, int histDataSize);
+	bool OutOfTradingWindow(int currentBarIdx);
+
 	vector<TriggerPtr> m_triggers;
 	entity::StrategyType m_type;
 	boost::atomic<bool> m_running;
@@ -66,6 +71,9 @@ protected:
 
 	boost::atomic<bool> m_forceOpening;
 	boost::atomic<bool> m_forceClosing;
+
+	bool m_marketOpen;
+	int m_endTradingBar;
 };
 
 typedef boost::shared_ptr<CStrategy> StrategyPtr;
