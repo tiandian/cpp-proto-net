@@ -138,7 +138,17 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 {
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
-
+	/*
+	pQuote->set_update_time("09:15:00");
+	if(pQuote->symbol() == "IF1407")
+	{
+		pQuote->set_last(2166);
+	}
+	else
+	{
+		pQuote->set_last(2173.6);
+	}
+	*/
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 	vector<LegPtr>& vecLegs = pPortfolio->Legs();
 
@@ -241,7 +251,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	}
 
 	//bool forceOpening = IsForceOpening();
-	if(direction > entity::NET)
+	if(direction > entity::NET && !OutOfTradingWindow(currentBarIdx))
 	{
 		if(!pOrderPlacer->IsWorking())
 		{
