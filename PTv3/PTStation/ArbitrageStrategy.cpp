@@ -4,6 +4,7 @@
 #include "PriceBarDataProxy.h"
 #include "globalmembers.h"
 #include "PortfolioArbitrageOrderPlacer.h"
+#include "DoubleCompare.h"
 
 enum DIFF_TYPE 
 {
@@ -73,6 +74,9 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem,
 	, m_bollBottom(0)
 	, m_costDiff(0)
 	, m_side(entity::NET)
+	, m_targetGain(0.8)
+	, m_minStep(0.2)
+	, m_useTargetGain(true)
 {
 	Apply(strategyItem, false);
 
@@ -175,8 +179,17 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	m_bollDataSet->Calculate(m_diffRecordSet.get());
 
-	m_bollTop = m_bollDataSet->GetRef(IND_TOP, 1);
-	m_bollBottom = m_bollDataSet->GetRef(IND_BOTTOM, 1);
+	double actualMid = 0;
+	if(m_useTargetGain)
+	{
+		double bollMid = m_bollDataSet->GetRef(IND_MID, 1);
+		actualMid = CalcBoundaryByTargetGain(bollMid, m_targetGain, m_minStep, &m_bollTop, &m_bollBottom);
+	}
+	else
+	{
+		m_bollTop = m_bollDataSet->GetRef(IND_TOP, 1);
+		m_bollBottom = m_bollDataSet->GetRef(IND_BOTTOM, 1);
+	}
 
 	CPortfolioArbitrageOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioArbitrageOrderPlacer*>(pPortfolio->OrderPlacer());
 
@@ -189,8 +202,16 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	entity::PosiDirectionType direction = GetTradeDirection();
 
-	LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing trade direction - longDiff:%.2f vs bottom:%.2f, shortDiff:%.2f vs top:%.2f -->> %s")
-		% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction)));
+	if(m_useTargetGain)
+	{
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing Direction - Mid:%.2f, longDiff:%.2f vs bottom:%.2f, shortDiff:%.2f vs top:%.2f -->> %s")
+			% pPortfolio->InvestorId() % pPortfolio->ID() % actualMid % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction)));
+	}
+	else
+	{
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing trade direction - longDiff:%.2f vs bottom:%.2f, shortDiff:%.2f vs top:%.2f -->> %s")
+			% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction)));
+	}
 
 	if (pOrderPlacer->IsOpened())
 	{
@@ -346,11 +367,16 @@ entity::PosiDirectionType CArbitrageStrategy::GetTradeDirection()
 {
 	entity::PosiDirectionType direction = entity::NET;
 
+	if(DoubleLessEqual(m_longDiff, m_bollBottom))
+		direction = entity::LONG;
+	else if(DoubleGreaterEqual(m_shortDiff, m_bollTop))
+		direction = entity::SHORT;
+	/*
 	if(m_longDiff < m_bollBottom)
 		direction = entity::LONG;
 	else if(m_shortDiff > m_bollTop)
 		direction = entity::SHORT;
-
+	*/
 	return direction;
 }
 
@@ -449,6 +475,26 @@ void CArbitrageStrategy::OnBeforeAddingHistSrcConfig( CHistSourceCfg* pHistSrcCf
 			pHistSrcCfg->HistData = true;
 	}
 }
+
+double GetLowerValue(double val, double offset)
+{
+	int iVal = (int)(val * 10);
+	int iOffset = (int)(offset * 10);
+	int factor = iVal / iOffset;
+	double ret = (double)(iOffset * factor) / 10.0;
+	return ret;
+}
+
+const double CArbitrageStrategy::CalcBoundaryByTargetGain( double mid, double targetGain, double step, double* outUpper, double* outLower )
+{
+	double halfGain = targetGain / 2;
+	double actualMid = GetLowerValue(mid, step);
+	*outUpper = actualMid + halfGain;
+	*outLower = actualMid - halfGain;
+
+	return actualMid;
+}
+
 
 
 

@@ -27,6 +27,7 @@ protected:
 
 private:
 	static const string& GetAnotherLegSymbol(const string& symb, const vector<LegPtr>& legs);
+	static const double CalcBoundaryByTargetGain(double mid, double targetGain, double step, double* outUpper, double* outLower);
 
 	entity::PosiDirectionType GetTradeDirection();
 	void OpenPosition(entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
@@ -38,6 +39,9 @@ private:
 	int m_timeFrame;
 	int m_bollPeriod;
 	int m_stdDevMultiplier;
+	double m_targetGain;
+	double m_minStep;
+	bool m_useTargetGain;
 
 	double m_lastDiff;
 	double m_longDiff;
