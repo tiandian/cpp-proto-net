@@ -801,7 +801,7 @@ void CPortfolioOrderPlacer::OutputStatus( const string& statusMsg )
 {
 	string ordStatusMsg;
 	GB2312ToUTF_8(ordStatusMsg, statusMsg.c_str());
-	LOG_INFO(logger, boost::str(boost::format("OutputStatus %s") % ordStatusMsg));
+	LOG_INFO(logger, boost::str(boost::format("OutputStatus %s -> %s") % statusMsg % ordStatusMsg));
 	m_multiLegOrderTemplate->set_statusmsg(ordStatusMsg);
 	UpdateMultiLegOrder();
 	// reset status msg after sending
@@ -1029,7 +1029,7 @@ void CPortfolioOrderPlacer::FillSendingOrderNote()
 	{
 		string ordStatusMsg;
 		GB2312ToUTF_8(ordStatusMsg, m_sendingOrderNote.c_str());
-		LOG_INFO(logger, boost::str(boost::format("FillSendingOrderNote %s") % ordStatusMsg));
+		LOG_INFO(logger, boost::str(boost::format("FillSendingOrderNote %s -> %s") % m_sendingOrderNote % ordStatusMsg));
 		m_multiLegOrderTemplate->set_statusmsg(ordStatusMsg);
 	}
 }

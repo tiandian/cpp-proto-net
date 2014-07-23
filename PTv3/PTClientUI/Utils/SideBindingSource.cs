@@ -15,17 +15,17 @@ namespace PortfolioTrading.Utils
 
         public SideBindingSource()
         {
-            _itemsSource.Add(new SideItem() { Side = entity.PosiDirectionType.LONG, DisplayText = "多头"});
-            _itemsSource.Add(new SideItem() { Side = entity.PosiDirectionType.SHORT, DisplayText = "空头" });
+            _itemsSource.Add(new SideItem() { Side = PTEntity.PosiDirectionType.LONG, DisplayText = "多头" });
+            _itemsSource.Add(new SideItem() { Side = PTEntity.PosiDirectionType.SHORT, DisplayText = "空头" });
         }
     }
 
     public class SideItem : NotificationObject
     {
         #region Side
-        private entity.PosiDirectionType _side;
+        private PTEntity.PosiDirectionType _side;
 
-        public entity.PosiDirectionType Side
+        public PTEntity.PosiDirectionType Side
         {
             get { return _side; }
             set

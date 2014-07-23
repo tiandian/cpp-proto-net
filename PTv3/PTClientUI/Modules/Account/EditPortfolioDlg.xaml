@@ -110,6 +110,13 @@
                                 <TextBlock>比率</TextBlock>
                                 <xctk:DecimalUpDown Value="{Binding Ratio1, Mode=TwoWay}" Width="40"/>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <TextBlock>方向</TextBlock>
+                                <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
+                              ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
+                              SelectedValuePath="Side" SelectedValue="{Binding Side1}">
+                                </ComboBox>
+                            </StackPanel>
                             <TextBlock>品种</TextBlock>
                             <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
                         </DockPanel>
@@ -125,6 +132,12 @@
                             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
                                 <TextBlock>比率</TextBlock>
                                 <xctk:DecimalUpDown Value="{Binding Ratio2, Mode=TwoWay}" Width="40"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                                <TextBlock>方向</TextBlock>
+                                <ComboBox Width="50" ItemsSource="{Binding Items, Source={StaticResource sideSource}}"
+                                    ItemTemplate="{StaticResource sideItemTempl}" Margin="0, 0, 4, 0"
+                                    SelectedValuePath="Side" SelectedValue="{Binding Side2}"></ComboBox>
                             </StackPanel>
                             <TextBlock>品种</TextBlock>
                             <TextBox Text="{Binding Symbol2}" Margin="0, 0, 4, 0"></TextBox>

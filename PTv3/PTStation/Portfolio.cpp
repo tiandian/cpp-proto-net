@@ -21,6 +21,55 @@
 #include <algorithm>
 #include <boost/algorithm/string.hpp>
 
+double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType)
+{
+	// calculate the diff
+	double diff = 0;
+	assert(legs.size() > 1);
+
+	if(diffType == LONG_DIFF)
+	{
+		double long_cost = legs[0]->Ask();
+		double short_cost = legs[1]->Bid();
+		diff = long_cost - short_cost;
+	}
+	else if(diffType == SHORT_DIFF)
+	{
+		double short_cost = legs[0]->Bid();
+		double long_cost = legs[1]->Ask();
+		diff = short_cost - long_cost;
+	}
+	else
+	{
+		diff = legs[0]->Last() - legs[1]->Last();
+	}
+
+
+	return diff;
+}
+
+int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType)
+{
+	// calculate the diff
+	int diffSize = 0;
+	assert(legs.size() > 1);
+
+	if(diffType == LONG_DIFF)
+	{
+		int long_size = legs[0]->AskSize();
+		int short_size = legs[1]->BidSize();
+		diffSize = long_size < short_size ? long_size : short_size;
+	}
+	else if(diffType == SHORT_DIFF)
+	{
+		int short_size = legs[0]->BidSize();
+		int long_size = legs[1]->AskSize();
+		diffSize = short_size < long_size ? short_size : long_size;
+	}
+
+	return diffSize;
+}
+
 CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPortfolioItem)
 	: m_avatar(client)
 	, m_pQuoteRepo(NULL)
@@ -494,6 +543,61 @@ void CPortfolio::PushMessage( const string& msg )
 	m_portfolioUpdate.set_message(utf8Msg);
 	PushUpdate();
 	m_portfolioUpdate.clear_message();
+}
+
+double CPortfolio::CalculateDiff( ARBI_DIFF_CALC* structArbiDiffCalc, CALC_DIFF_METHOD calcDiffMethod )
+{
+	// calculate the diff
+	double diff = 0;
+	assert(structArbiDiffCalc != NULL);
+	int legCount = Count();
+	DIFF_TYPE diffType = structArbiDiffCalc->DiffType;
+	for(int i = 0; i < legCount; ++i)
+	{
+		LegPtr& leg = m_legs[i];
+		entity::PosiDirectionType side = leg->Side();
+		if(diffType == LONG_DIFF)
+		{
+			if(side == entity::LONG)
+			{
+				structArbiDiffCalc->BuyPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Bid() + 0.2 : leg->Ask();
+				diff += structArbiDiffCalc->BuyPrice;
+			}
+			else if(side == entity::SHORT)
+			{
+				structArbiDiffCalc->SellPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Ask() - 0.2 : leg->Bid();
+				diff -= structArbiDiffCalc->SellPrice;
+			}
+		}
+		else if(diffType == SHORT_DIFF)
+		{
+			if(side == entity::LONG)
+			{
+				structArbiDiffCalc->BuyPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Ask() - 0.2 : leg->Bid();
+				diff += structArbiDiffCalc->BuyPrice;
+			}
+			else if(side == entity::SHORT)
+			{
+				structArbiDiffCalc->SellPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Bid() + 0.2 : leg->Ask();
+				diff -= structArbiDiffCalc->SellPrice;
+			}
+		}
+		else
+		{
+			if(side == entity::LONG)
+			{
+				structArbiDiffCalc->BuyPrice = leg->Last();
+				diff += structArbiDiffCalc->BuyPrice;
+			}
+			else if(side == entity::SHORT)
+			{
+				structArbiDiffCalc->SellPrice = leg->Last();
+				diff -= structArbiDiffCalc->SellPrice;
+			}
+		}
+	}
+	structArbiDiffCalc->Diff = diff;
+	return diff;
 }
 
 

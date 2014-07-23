@@ -6,58 +6,25 @@
 #include "PortfolioArbitrageOrderPlacer.h"
 #include "DoubleCompare.h"
 
-enum DIFF_TYPE 
-{
-	LAST_DIFF, LONG_DIFF, SHORT_DIFF
-};
 
-double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType)
+entity::PosiDirectionType GetMlOrderDirection(const trade::MultiLegOrder& mlOrder)
 {
-	// calculate the diff
-	double diff = 0;
-	assert(legs.size() > 1);
-
-	if(diffType == LONG_DIFF)
+	if(mlOrder.offset() == trade::ML_OF_OPEN)
 	{
-		double long_cost = legs[0]->Ask();
-		double short_cost = legs[1]->Bid();
-		diff = long_cost - short_cost;
+		if(mlOrder.legs(0).direction() == trade::BUY)
+			return entity::LONG;
+		else
+			return entity::SHORT;
 	}
-	else if(diffType == SHORT_DIFF)
+	else if(mlOrder.offset() == trade::ML_OF_CLOSE)
 	{
-		double short_cost = legs[0]->Bid();
-		double long_cost = legs[1]->Ask();
-		diff = short_cost - long_cost;
+		if(mlOrder.legs(0).direction() == trade::SELL)
+			return entity::LONG;
+		else
+			return entity::SHORT;
 	}
 	else
-	{
-		diff = legs[0]->Last() - legs[1]->Last();
-	}
-
-
-	return diff;
-}
-
-int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType)
-{
-	// calculate the diff
-	int diffSize = 0;
-	assert(legs.size() > 1);
-
-	if(diffType == LONG_DIFF)
-	{
-		int long_size = legs[0]->AskSize();
-		int short_size = legs[1]->BidSize();
-		diffSize = long_size < short_size ? long_size : short_size;
-	}
-	else if(diffType == SHORT_DIFF)
-	{
-		int short_size = legs[0]->BidSize();
-		int long_size = legs[1]->AskSize();
-		diffSize = short_size < long_size ? short_size : long_size;
-	}
-	
-	return diffSize;
+		return entity::NET;
 }
 
 CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
@@ -77,6 +44,11 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem,
 	, m_targetGain(0.8)
 	, m_minStep(0.2)
 	, m_useTargetGain(true)
+	, m_allowPending(true)
+	, m_longPosition(0)
+	, m_longAvgCost(0)
+	, m_shortPosition(0)
+	, m_shortAvgCost(0)
 {
 	Apply(strategyItem, false);
 
@@ -301,12 +273,24 @@ void CArbitrageStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 int CArbitrageStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
 {
 	int qty = openOrder.quantity();
-
 	double cost = CalcMlOrderCost(openOrder);
-	int origQty = PositionQuantity(pPortfolio);
 
-	double newAvgCost = (AvgCost(pPortfolio) * origQty + cost * qty) / (origQty + qty);
-	SetAvgCost(pPortfolio, newAvgCost);
+	entity::PosiDirectionType posiDirection = GetMlOrderDirection(openOrder);
+	if(posiDirection == entity::LONG)
+	{
+		int origQty = m_longPosition;
+		double newAvgCost = (m_longAvgCost * origQty + cost * qty) / (origQty + qty);
+		m_longAvgCost = newAvgCost;
+		m_longPosition += qty;
+	}
+	else if(posiDirection == entity::SHORT)
+	{
+		int origQty = m_shortPosition;
+		double newAvgCost = (m_shortAvgCost * origQty + cost * qty) / (origQty + qty);
+		m_shortAvgCost = newAvgCost;
+		m_shortPosition += qty;
+	}
+	
 	return IncrementOpenTimes(pPortfolio, qty);
 }
 
@@ -315,19 +299,42 @@ int CArbitrageStrategy::OnPortfolioRemovePosition( CPortfolio* pPortfolio, const
 	int qty = closeOrder.quantity();
 	double cost = CalcMlOrderCost(closeOrder);
 
-	double orderProfit = (cost - AvgCost(pPortfolio)) * qty;
-	AddProfit(pPortfolio, orderProfit);
+	entity::PosiDirectionType posiDirection = GetMlOrderDirection(closeOrder);
+	if(posiDirection == entity::LONG)
+	{
+		double orderProfit = (cost - m_longAvgCost) * qty;
+		AddProfit(pPortfolio, orderProfit);
 
-	int origQty = PositionQuantity(pPortfolio);
-	int remaing = origQty - qty;
-	if(remaing > 0)
-	{
-		double newAvgCost = (AvgCost(pPortfolio) * origQty - cost * qty) / remaing;
-		SetAvgCost(pPortfolio, newAvgCost);
+		int origQty = m_longPosition;
+		int remaing = origQty - qty;
+		if(remaing > 0)
+		{
+			double newAvgCost = (m_longAvgCost * origQty - cost * qty) / remaing;
+			m_longAvgCost = newAvgCost;
+		}
+		else
+		{
+			m_longAvgCost = 0;
+		}
+		m_longPosition = remaing;
 	}
-	else
+	else if(posiDirection == entity::SHORT)
 	{
-		SetAvgCost(pPortfolio, 0);
+		double orderProfit = (m_shortAvgCost - cost) * qty;
+		AddProfit(pPortfolio, orderProfit);
+
+		int origQty = m_shortPosition;
+		int remaing = origQty - qty;
+		if(remaing > 0)
+		{
+			double newAvgCost = (m_shortAvgCost * origQty - cost * qty) / remaing;
+			m_shortAvgCost = newAvgCost;
+		}
+		else
+		{
+			m_shortAvgCost = 0;
+		}
+		m_shortPosition = remaing;
 	}
 
 	return IncrementCloseTimes(pPortfolio, qty);
