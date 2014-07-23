@@ -7,6 +7,27 @@
 #include "entity/quote.pb.h"
 #include "entity/trade.pb.h"
 
+enum DIFF_TYPE 
+{
+	LAST_DIFF, LONG_DIFF, SHORT_DIFF
+};
+
+enum CALC_DIFF_METHOD
+{
+	FAST_DEAL, BETTER_PRICE
+};
+
+struct ARBI_DIFF_CALC
+{
+	DIFF_TYPE DiffType;
+	double Diff;
+	double BuyPrice;
+	double SellPrice;
+};
+
+double CalcDiff(vector<LegPtr>& legs, DIFF_TYPE diffType);
+int CalcSize(vector<LegPtr>& legs, DIFF_TYPE diffType);
+
 class CQuoteRepositry;
 class CQuoteFetcher;
 class CAvatarClient;
@@ -63,6 +84,8 @@ public:
 	int IncrementalCancelTimes(int amount){ m_cancelTimes += amount; return m_cancelTimes; }
 	void UpdatePosition();
 	void CheckOpenCancelLimit();
+
+	double CalculateDiff(ARBI_DIFF_CALC* structArbiDiffCalc, CALC_DIFF_METHOD calcDiffMethod);
 
 private:
 	void AddLeg(const entity::LegItem& legItem);

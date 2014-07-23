@@ -42,6 +42,7 @@ private:
 	double m_targetGain;
 	double m_minStep;
 	bool m_useTargetGain;
+	bool m_allowPending;
 
 	double m_lastDiff;
 	double m_longDiff;
@@ -50,6 +51,11 @@ private:
 	int m_shortDiffSize;
 	double m_bollTop;
 	double m_bollBottom;
+
+	int m_longPosition;
+	double m_longAvgCost;
+	int m_shortPosition;
+	double m_shortAvgCost;
 
 	DiffRecordSetPtr m_diffRecordSet;
 	BollDataSetPtr m_bollDataSet;
