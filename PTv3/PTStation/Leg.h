@@ -26,6 +26,7 @@ public:
 	int BidSize() { return m_bidSize; }
 	int Ratio() { return m_ratio; }
 	bool IsPreferred() { return m_isPreferred; }
+	double MinPriceChange() { return m_minPriceChange; }
 
 	void UpdateLast(double last){ m_last = SafeSetValue(last); }
 	void UpdateAsk(double ask){ m_ask = SafeSetValue(ask); }
@@ -44,6 +45,7 @@ private:
 	int m_ratio;
 	entity::PosiDirectionType m_side;
 	bool m_isPreferred;
+	double m_minPriceChange;
 
 	entity::LegStatus m_status;
 	double m_last;

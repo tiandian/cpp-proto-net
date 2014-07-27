@@ -16,6 +16,7 @@ CLeg::CLeg(int legId, const entity::LegItem& srcLegItem, entity::LegUpdateItem* 
 	m_ratio = srcLegItem.ratio();
 	m_side = srcLegItem.side();
 	m_isPreferred = srcLegItem.ispreferred();
+	m_minPriceChange = 0.2;
 }
 
 

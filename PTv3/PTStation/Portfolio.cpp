@@ -556,16 +556,17 @@ double CPortfolio::CalculateDiff( ARBI_DIFF_CALC* structArbiDiffCalc, CALC_DIFF_
 	{
 		LegPtr& leg = m_legs[i];
 		entity::PosiDirectionType side = leg->Side();
+		double minPxMv = leg->MinPriceChange();
 		if(diffType == LONG_DIFF)
 		{
 			if(side == entity::LONG)
 			{
-				structArbiDiffCalc->BuyPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Bid() + 0.2 : leg->Ask();
+				structArbiDiffCalc->BuyPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Bid() + minPxMv : leg->Ask();
 				diff += structArbiDiffCalc->BuyPrice;
 			}
 			else if(side == entity::SHORT)
 			{
-				structArbiDiffCalc->SellPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Ask() - 0.2 : leg->Bid();
+				structArbiDiffCalc->SellPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Ask() - minPxMv : leg->Bid();
 				diff -= structArbiDiffCalc->SellPrice;
 			}
 		}
@@ -573,13 +574,13 @@ double CPortfolio::CalculateDiff( ARBI_DIFF_CALC* structArbiDiffCalc, CALC_DIFF_
 		{
 			if(side == entity::LONG)
 			{
-				structArbiDiffCalc->BuyPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Ask() - 0.2 : leg->Bid();
-				diff += structArbiDiffCalc->BuyPrice;
+				structArbiDiffCalc->SellPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Ask() - minPxMv : leg->Bid();
+				diff += structArbiDiffCalc->SellPrice;
 			}
 			else if(side == entity::SHORT)
 			{
-				structArbiDiffCalc->SellPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Bid() + 0.2 : leg->Ask();
-				diff -= structArbiDiffCalc->SellPrice;
+				structArbiDiffCalc->BuyPrice = calcDiffMethod == BETTER_PRICE && leg->IsPreferred() ? leg->Bid() + minPxMv : leg->Ask();
+				diff -= structArbiDiffCalc->BuyPrice;
 			}
 		}
 		else
