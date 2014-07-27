@@ -30,10 +30,9 @@ private:
 	static const double CalcBoundaryByTargetGain(double mid, double targetGain, double step, double* outUpper, double* outLower);
 
 	entity::PosiDirectionType GetTradeDirection();
-	void OpenPosition(entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
-	void ClosePosition(CPortfolioArbitrageOrderPlacer* pOrderPlacer, CPortfolio* pPortfolio, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, const string& comment, trade::SubmitReason reason);
+	void OpenPosition(entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
+	void ClosePosition(CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, const string& comment, trade::SubmitReason reason);
 
-	entity::PosiDirectionType m_side;
 	double m_costDiff;
 
 	int m_timeFrame;
