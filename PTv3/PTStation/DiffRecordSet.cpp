@@ -42,7 +42,7 @@ int CDiffRecordSet::Calculate( COHLCRecordSet* pOHLCRecordSet )
 			}
 			legInfo->SetEndIndex(end);
 			legInfo->NbElements(pOHLCRecordSet->NbElements());
-
+			legInfo->SetLastValue(pOHLCRecordSet->CloseSeries[end]);
 			m_oneLegFed = true;
 		}
 		else // the diff dataset has been fed data of first leg already
@@ -69,6 +69,7 @@ int CDiffRecordSet::Calculate( COHLCRecordSet* pOHLCRecordSet )
 			}
 			legInfo->SetEndIndex(pOHLCRecordSet->GetEndIndex());
 			legInfo->NbElements(pOHLCRecordSet->NbElements());
+			legInfo->SetLastValue(pOHLCRecordSet->CloseSeries[end]);
 
 			m_endIndex = end;
 			m_nbElements = pOHLCRecordSet->NbElements();
