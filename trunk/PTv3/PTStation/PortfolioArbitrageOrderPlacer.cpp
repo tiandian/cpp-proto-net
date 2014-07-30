@@ -8,6 +8,7 @@
 
 CPortfolioArbitrageOrderPlacer::CPortfolioArbitrageOrderPlacer(void)
 	: m_openedPosition(false)
+	, m_openingPosition(false)
 {
 }
 
@@ -75,7 +76,7 @@ void CPortfolioArbitrageOrderPlacer::OpenPosition(entity::PosiDirectionType posi
 	m_multiLegOrderTemplate->set_reason(reason);
 	m_multiLegOrderTemplate->set_offset(trade::ML_OF_OPEN);
 	Run(posiDirection, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp, NULL);
-	m_openedPosition = true;
+	m_openingPosition = true;
 	m_lastOpenOrderId = m_multiLegOrderTemplate->orderid();
 }
 
@@ -84,7 +85,7 @@ void CPortfolioArbitrageOrderPlacer::ClosePosition(entity::PosiDirectionType pos
 	m_multiLegOrderTemplate->set_reason(reason);
 	m_multiLegOrderTemplate->set_offset(trade::ML_OF_CLOSE);
 	Run(posiDirection, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp, m_lastOpenOrderId.c_str());
-	m_openedPosition = false;
+	m_openingPosition = false;
 }
 
 void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, trade::OffsetFlagType offset, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp, const char* openOrderId)
@@ -164,11 +165,19 @@ bool CPortfolioArbitrageOrderPlacer::IsOpened()
 	return m_openedPosition;
 }
 
-void CPortfolioArbitrageOrderPlacer::OnPortfolioDone()
+void CPortfolioArbitrageOrderPlacer::OnPortfolioDone(PortfolioFinishState portfState)
 {
-	if(!m_openedPosition)
+	m_openedPosition = m_openingPosition && portfState == PortfolioFilled;
+
+	if(!m_openingPosition)
 		UpdateMultiLegOrder();
 }
+
+CLegOrderPlacer* CPortfolioArbitrageOrderPlacer::CreateLegOrderPlacer( int openTimeout, int maxRetryTimes )
+{
+	return new CArbitrageLegOrderPlacer(this, openTimeout, maxRetryTimes);
+}
+
 
 
 

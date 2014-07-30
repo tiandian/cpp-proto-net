@@ -18,7 +18,7 @@ class CLegOrderPlacer
 {
 public:
 	CLegOrderPlacer(CPortfolioOrderPlacer* portfOrdPlacer, int openTimeout, int maxRetry);
-	~CLegOrderPlacer(void);
+	virtual ~CLegOrderPlacer(void);
 
 	CInputOrder& InputOrder(){ return m_inputOrder; }
 	trade::Order& Order(){ return m_legOrder; }
@@ -49,7 +49,7 @@ public:
 
 	void StartPending(const RtnOrderWrapperPtr& pendingOrder);
 
-	bool IsOpen();
+	virtual bool IsOpen();
 	void Reset(bool afterCancel = false);
 	bool IsPending(){ return m_isPending; }
 	void CancelPending();
@@ -67,7 +67,7 @@ public:
 	// So do this after portfolio completely done for ensuring correct status
 	void ResetOrderEntityStatus(){ m_bOrderReady = false; }
 
-private:
+protected:
 
 	CInputOrder m_inputOrder;
 	CPortfolioOrderPlacer* m_portfOrderPlacer;
@@ -79,7 +79,7 @@ private:
 	string m_currentOrdRef;
 	int m_submitTimes;
 	int m_openTimeout;
-
+	
 	double m_priceTick;
 	MODIFY_PRICE_WAY m_modifyPriceWay;
 
@@ -98,5 +98,19 @@ private:
 	int m_volumeOriginial;
 };
 
+class CArbitrageLegOrderPlacer : public CLegOrderPlacer
+{
+public:
+	CArbitrageLegOrderPlacer(CPortfolioOrderPlacer* portfOrdPlacer, int openTimeout, int maxRetry)
+		: CLegOrderPlacer(portfOrdPlacer, openTimeout, maxRetry)
+	{
+	}
+	~CArbitrageLegOrderPlacer(void){}
+
+	bool IsOpen();
+};
+
 typedef boost::shared_ptr<CLegOrderPlacer> LegOrderPlacerPtr;
+
+
 
