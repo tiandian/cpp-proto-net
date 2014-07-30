@@ -13,6 +13,8 @@ class CInputOrder;
 
 using namespace std;
 
+enum PortfolioFinishState { PortfolioError, PortfolioCanceled, PortfolioFilled };
+
 class CPortfolioOrderPlacer
 {
 public:
@@ -86,7 +88,8 @@ protected:
 	virtual void SetLimitPrice(double* pLmtPxArr, int iPxSize);
 	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer){}
 	virtual void OnLegOrderSent(int orderPlacerIdx){}
-	virtual void OnPortfolioDone(){}
+	virtual void OnPortfolioDone(PortfolioFinishState portfState){}
+	virtual CLegOrderPlacer* CreateLegOrderPlacer(int openTimeout, int maxRetryTimes);
 	
 	void SetNewOrderId(const string& mlOrdId, const char* openOrdId);
 	void ResetTemplate();
@@ -97,7 +100,7 @@ protected:
 	void GotoRetry(const RtnOrderWrapperPtr& pRtnOrder);
 	void GotoNext();
 	void AfterLegDone();
-	void AfterPortfolioDone();
+	void AfterPortfolioDone(PortfolioFinishState portfState);
 	
 	void GenLegOrderPlacers();
 	void UpdateLegOrder(const RtnOrderWrapperPtr& pRtnOrder);

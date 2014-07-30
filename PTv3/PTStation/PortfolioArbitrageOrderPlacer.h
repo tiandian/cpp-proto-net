@@ -16,11 +16,13 @@ public:
 
 protected:
 	virtual void BuildTemplateOrder();
-	virtual void OnPortfolioDone();
+	virtual CLegOrderPlacer* CreateLegOrderPlacer(int openTimeout, int maxRetryTimes);
+	virtual void OnPortfolioDone(PortfolioFinishState portfState);
 
 private:
 	CLegOrderPlacer* GetLegOrderPlacer(const string& symbol);
 	
+	bool m_openingPosition;
 	bool m_openedPosition;
 	string m_lastOpenOrderId;
 };

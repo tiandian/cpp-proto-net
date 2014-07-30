@@ -224,3 +224,8 @@ trade::Order& CLegOrderPlacer::OrderEntity()
 	m_legOrderWrapper->ToEntity(&m_legOrder);
 	return m_legOrder;
 }
+
+bool CArbitrageLegOrderPlacer::IsOpen()
+{
+	return m_sequenceNo == 0;
+}

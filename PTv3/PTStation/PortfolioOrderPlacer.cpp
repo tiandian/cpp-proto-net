@@ -410,6 +410,11 @@ void CPortfolioOrderPlacer::Prepare()
 	m_isReady = true;
 }
 
+CLegOrderPlacer* CPortfolioOrderPlacer::CreateLegOrderPlacer( int openTimeout, int maxRetryTimes )
+{
+	return new CLegOrderPlacer(this, openTimeout, maxRetryTimes);
+}
+
 void CPortfolioOrderPlacer::GenLegOrderPlacers()
 {
 	int openTimeout = m_pPortf->Strategy()->OpenTimeout();
@@ -418,7 +423,7 @@ void CPortfolioOrderPlacer::GenLegOrderPlacers()
 	int legIdx = 0;
 	BOOST_FOREACH(const trade::Order& o, m_multiLegOrderTemplate->legs())
 	{
-		boost::shared_ptr<CLegOrderPlacer> legOrderPlacer(new CLegOrderPlacer(this, openTimeout, maxRetryTimes));
+		boost::shared_ptr<CLegOrderPlacer> legOrderPlacer(CreateLegOrderPlacer(openTimeout, maxRetryTimes));
 		
 		legOrderPlacer->InputOrder().set_brokerid(o.brokerid());
 		legOrderPlacer->InputOrder().set_investorid(o.investorid());
@@ -659,7 +664,7 @@ void CPortfolioOrderPlacer::OnCompleted()
 	
 	m_pPortf->UpdatePosition();
 
-	AfterPortfolioDone();
+	AfterPortfolioDone(PortfolioFilled);
 }
 
 void CPortfolioOrderPlacer::OnCanceling()
@@ -758,13 +763,13 @@ void CPortfolioOrderPlacer::OnLegRejected(const RtnOrderWrapperPtr& pRtnOrder )
 void CPortfolioOrderPlacer::OnPortfolioCanceled()
 {
 	AfterLegDone();
-	AfterPortfolioDone();
+	AfterPortfolioDone(PortfolioCanceled);
 }
 
 void CPortfolioOrderPlacer::OnError(const string& errMsg)
 {
 	AfterLegDone();
-	AfterPortfolioDone();
+	AfterPortfolioDone(PortfolioError);
 
 	string ordStatusMsg;
 	GB2312ToUTF_8(ordStatusMsg, errMsg.c_str());
@@ -883,13 +888,13 @@ void CPortfolioOrderPlacer::AfterLegDone()
 	m_pOrderProcessor->RemoveOrderPlacer(Id());
 }
 
-void CPortfolioOrderPlacer::AfterPortfolioDone()
+void CPortfolioOrderPlacer::AfterPortfolioDone(PortfolioFinishState portfState)
 {
 	m_isWorking.store(false, boost::memory_order_release);
 	// Give portfolio a chance to check whether open times, position or cancel times reach limit
 	m_pPortf->CheckOpenCancelLimit();
 
-	OnPortfolioDone();
+	OnPortfolioDone(portfState);
 	// set first leg for next start
 	SetFirstLeg();
 }
