@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -20,12 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -50,18 +52,18 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;LOG_FOR_TRADE;LOG_FOR_TECH_CALC;QUOTE_TIME_EMU;FAKE_DEAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;D:\Dev\ta-lib\ta-lib\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;LOG_FOR_TRADE;LOG_FOR_TECH_CALC;QUOTE_TIME_EMU;BOOST_ASIO_DISABLE_STD_CHRONO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Dev\boost_1_56_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.5.0\src;D:\Dev\PushFramework_2.2.1\include;D:\Dev\ta-lib\ta-lib\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Dev\boost_1_53_0\stage\lib;D:\Dev\log4cpp\lib\debug;D:\Dev\protobuf-2.4.1\lib\Debug;D:\Dev\PushFramework2.2\lib\debug;D:\Dev\ta-lib\ta-lib\c\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Dev\boost_1_56_0\stage\lib;D:\Dev\log4cpp\lib\vc120\debug;D:\Dev\protobuf-2.5.0\lib\debug;D:\Dev\PushFramework_2.2.1\lib\debug;D:\Dev\ta-lib\ta-lib\c\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libprotobuf.lib;log4cppD.lib;PushFramework.lib;ws2_32.lib;ta_libc_cdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /y log4cpp.property $(OutDir)
-copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)
+copy /y D:\Dev\PushFramework_2.2.1\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)
 copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -72,20 +74,20 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;USE_NET_LIBS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>D:\Dev\boost_1_53_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.4.1\include;D:\Dev\PushFramework2.2\include;D:\Dev\ta-lib\ta-lib\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;USE_NET_LIBS;BOOST_ASIO_DISABLE_STD_CHRONO;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Dev\boost_1_56_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.5.0\src;D:\Dev\PushFramework_2.2.1\include;D:\Dev\ta-lib\ta-lib\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\Dev\boost_1_53_0\stage\lib;D:\Dev\log4cpp\lib\release;D:\Dev\protobuf-2.4.1\lib\Release;D:\Dev\PushFramework2.2\lib\release;D:\Dev\ta-lib\ta-lib\c\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Dev\boost_1_56_0\stage\lib;D:\Dev\log4cpp\lib\vc120\release;D:\Dev\protobuf-2.5.0\lib\release;D:\Dev\PushFramework_2.2.1\lib\release;D:\Dev\ta-lib\ta-lib\c\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>libprotobuf.lib;log4cppLIB.lib;PushFramework.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy /y log4cpp.property $(OutDir)
-copy /y D:\Dev\PushFramework2.2\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)
+copy /y D:\Dev\PushFramework_2.2.1\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)
 copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
