@@ -339,18 +339,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PTCommunication\PTCommunication.vcxproj">
-      <Project>{155496B9-C70D-4731-B52D-4D6175559FBD}</Project>
-      <Name>PTCommunication</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <SplashScreen Include="splash.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="brokers.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PTCommunication\PTCommunication.vcxproj">
+      <Project>{155496b9-c70d-4731-b52d-4d6175559fbd}</Project>
+      <Name>PTCommunication</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
