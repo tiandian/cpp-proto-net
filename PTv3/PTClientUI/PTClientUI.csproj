@@ -38,24 +38,31 @@
   <ItemGroup>
     <Reference Include="InfragisticsWPF4.Controls.Menus.XamDataTree.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
       <Private>True</Private>
+      <HintPath>..\Lib\InfragisticsWPF4.Controls.Menus.XamDataTree.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DataManager.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
       <Private>True</Private>
+      <HintPath>..\Lib\InfragisticsWPF4.DataManager.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DataPresenter.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <Private>True</Private>
+      <HintPath>..\Lib\InfragisticsWPF4.DataPresenter.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DockManager.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <Private>True</Private>
+      <HintPath>..\Lib\InfragisticsWPF4.DockManager.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.DragDrop.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb">
       <Private>True</Private>
+      <HintPath>..\Lib\InfragisticsWPF4.DragDrop.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.Editors.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <Private>True</Private>
+      <HintPath>..\Lib\InfragisticsWPF4.Editors.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="InfragisticsWPF4.v11.2, Version=11.2.20112.2046, Culture=neutral, PublicKeyToken=7dd5c3163f2cd0cb, processorArchitecture=MSIL">
       <Private>True</Private>
+      <HintPath>..\Lib\InfragisticsWPF4.v11.2.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\Lib\log4net.dll</HintPath>
