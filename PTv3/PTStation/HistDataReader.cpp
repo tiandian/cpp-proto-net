@@ -88,6 +88,8 @@ void CHistDataReader::ReadFromFile(const string& dataFilePath, COHLCRecordSet* p
 				}
             }
         }
+
+		logger.Info(boost::str(boost::format("Done reading history data file - %s") % dataFilePath));
     }
     else
     {

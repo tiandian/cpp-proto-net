@@ -114,6 +114,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	// a mutex to protect from unexpected applying strategy settings concurrently
 	boost::mutex::scoped_lock l(m_mut);
 	
+	/*
 	pQuote->set_update_time("09:15:00");
 	if(pQuote->symbol() == "IF1408")
 	{
@@ -123,7 +124,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	{
 		pQuote->set_last(2246.6);
 	}
-	
+	*/
 
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
