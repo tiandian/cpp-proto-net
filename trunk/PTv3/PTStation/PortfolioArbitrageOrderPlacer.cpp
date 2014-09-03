@@ -167,10 +167,19 @@ bool CPortfolioArbitrageOrderPlacer::IsOpened()
 
 void CPortfolioArbitrageOrderPlacer::OnPortfolioDone(PortfolioFinishState portfState)
 {
-	m_openedPosition = m_openingPosition && portfState == PortfolioFilled;
+	if (portfState == PortfolioFilled)
+	{
+		if (m_openingPosition)	// opening position done
+		{
+			m_openedPosition = true;
+		}
+		else // closing position done
+		{
+			m_openedPosition = false;
+		}
 
-	if(!m_openingPosition)
 		UpdateMultiLegOrder();
+	}
 }
 
 CLegOrderPlacer* CPortfolioArbitrageOrderPlacer::CreateLegOrderPlacer( int openTimeout, int maxRetryTimes )
