@@ -312,7 +312,9 @@ int CArbitrageStrategy::OnPortfolioRemovePosition( CPortfolio* pPortfolio, const
 {
 	int qty = closeOrder.quantity();
 	double cost = CalcMlOrderCost(closeOrder);
-
+	LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Strategy - Portfolio(%s) Removed position and Reset CostDiff")
+		% pPortfolio->InvestorId() % pPortfolio->ID()));
+	m_costDiff = 0;
 	entity::PosiDirectionType posiDirection = GetMlOrderDirection(closeOrder);
 	if(posiDirection == entity::LONG)
 	{
@@ -460,7 +462,6 @@ void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPl
 
 		pOrderPlacer->ClosePosition(direction, lmtPrice, 2, timestamp, reason);
 
-		m_costDiff = 0;
 		ResetForceClose();
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s 平仓 @ %.2f - %.2f")
 			% comment % GetPosiDirectionText(direction, true) % lmtPrice[0] % lmtPrice[1]));
