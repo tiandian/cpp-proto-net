@@ -21,6 +21,8 @@ CAvatarClient::CAvatarClient(const string& sessionId)
 CAvatarClient::~CAvatarClient(void)
 {
 	m_portfolioMgr.Clear();
+	m_quoteRepositry.Init(NULL); // detach QuoteAgent
+	m_quoteAgent.SetCallbackHanlder(NULL);
 	m_destroyed = true;
 }
 

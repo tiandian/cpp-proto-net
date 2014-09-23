@@ -123,6 +123,24 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        #region IsCanceled
+        private string _isCanceled;
+
+        public string IsCanceled
+        {
+            get { return _isCanceled; }
+            set
+            {
+                if (_isCanceled != value)
+                {
+                    _isCanceled = value;
+                    RaisePropertyChanged("IsCanceled");
+                }
+            }
+        }
+        #endregion
+
+
         #region OpenOrderId
         private string _openOrderId;
 
@@ -206,10 +224,29 @@ namespace PortfolioTrading.Modules.Portfolio
 
             IsAllFinished = allFinished;
 
+            IsCanceled = CheckMlOrderCanceled(_orders);
+            
             if (!string.IsNullOrEmpty(mlOrder.StatusMsg))
             {
                 EventLogger.Write("组合下单({0}) - {1}", mlOrder.OrderId, mlOrder.StatusMsg);
             }
+        }
+
+        private const string MLORDER_CANCELED = "C";
+        // If the first leg order is canceled, the whole Multi leg order is regarded as Canceled
+        private static string CheckMlOrderCanceled(IList<OrderVM> orders)
+        {
+            if (orders.Count > 1)
+            {
+                if (!orders[0].IsFinished && orders[1].IsCanceled)
+                    return MLORDER_CANCELED;
+                if (orders[0].IsCanceled && !orders[1].IsFinished)
+                    return MLORDER_CANCELED;
+            }
+            else if (orders.Count > 0)
+                return orders[0].IsCanceled ? MLORDER_CANCELED : string.Empty;
+
+            return string.Empty;
         }
 
         public void From(string ordRef, PTEntity.Order order)
@@ -232,10 +269,13 @@ namespace PortfolioTrading.Modules.Portfolio
                 }
 
                 // updating the second leg order
-                if (idx > 0)
+                bool allFinished = false;
+                foreach(var oVm in _orders)
                 {
-                    IsAllFinished = _orders[idx].IsFinished;
+                    allFinished = oVm.IsFinished;
                 }
+                IsAllFinished = allFinished;
+                IsCanceled = CheckMlOrderCanceled(_orders);
             }
         }
 
