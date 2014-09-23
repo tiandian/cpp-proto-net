@@ -182,6 +182,22 @@ namespace PortfolioTrading.Modules.Portfolio
         }
         #endregion
 
+        #region IsCanceled
+        private bool _isCanceled;
+
+        public bool IsCanceled
+        {
+            get { return _isCanceled; }
+            set
+            {
+                if (_isCanceled != value)
+                {
+                    _isCanceled = value;
+                    RaisePropertyChanged("IsCanceled");
+                }
+            }
+        }
+        #endregion
 
         public void From(PTEntity.Order order, bool fromParent = false)
         {
@@ -192,6 +208,7 @@ namespace PortfolioTrading.Modules.Portfolio
             OCFlag = GetOCFlag(order.CombOffsetFlag);
             StatusMsg = GetStatus(order.OrderSubmitStatus, order.OrderStatus);
             IsFinished = CheckForFinish(order.OrderSubmitStatus, order.OrderStatus);
+            IsCanceled = CheckForCanceled(order.OrderSubmitStatus, order.OrderStatus);
             if (!string.IsNullOrEmpty(order.InsertTime))
                 InsertTime = DateTime.Parse(order.InsertTime);
             else
@@ -246,6 +263,27 @@ namespace PortfolioTrading.Modules.Portfolio
                         switch (statusType)
                         {
                             case OrderStatusType.ALL_TRADED:
+                            case OrderStatusType.ORDER_CANCELED:
+                                return true;
+                        }
+                    }
+                    break;
+                default:
+                    return false;
+            }
+            return false;
+        }
+
+        private static bool CheckForCanceled(OrderSubmitStatusType submitStatus,
+                                       OrderStatusType statusType)
+        {
+            switch (submitStatus)
+            {
+                case OrderSubmitStatusType.INSERT_SUBMITTED:
+                case OrderSubmitStatusType.ACCEPTED:
+                    {
+                        switch (statusType)
+                        {
                             case OrderStatusType.ORDER_CANCELED:
                                 return true;
                         }

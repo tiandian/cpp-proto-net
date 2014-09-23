@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:igDP="http://infragistics.com/DataPresenter"
+             xmlns:igWindows="http://infragistics.com/Windows"
              xmlns:conv="clr-namespace:PortfolioTrading.Converters"
              xmlns:local="clr-namespace:PortfolioTrading.Modules.Portfolio"
              mc:Ignorable="d" 
@@ -258,7 +259,8 @@
                     </igDP:Field>
                     <igDP:Field Name="Profit" Label="盈利" Row="0" Column="3"/>
                     <igDP:Field Name="AccountId" Label="帐户" Row="0" Column="4"/>
-                    <igDP:UnboundField Name="CloseOrder" Label="组合平仓" Row="0" Column="5" ColumnSpan="2">
+                    <igDP:Field Name="IsCanceled" Label="撤单" Row="0" Column="5"/>
+                    <igDP:UnboundField Name="CloseOrder" Label="组合平仓" Row="0" Column="6" ColumnSpan="1">
                         <igDP:UnboundField.Settings>
                             <igDP:FieldSettings CellValuePresenterStyle="{StaticResource closeOrdStyle}"/>
                         </igDP:UnboundField.Settings>
@@ -298,6 +300,11 @@
                             <igDP:FieldSettings  CellValuePresenterStyle="{StaticResource timeColStyle}"/>
                         </igDP:UnboundField.Settings>
                     </igDP:UnboundField>
+                    <igDP:FieldLayout.RecordFilters>
+                        <igDP:RecordFilter FieldName="IsCanceled">
+                            <igWindows:ComparisonCondition Operator="NotEquals" Value="C"/>
+                        </igDP:RecordFilter>
+                    </igDP:FieldLayout.RecordFilters>
                 </igDP:FieldLayout>
             </igDP:XamDataGrid.FieldLayouts>
             <igDP:XamDataGrid.FieldSettings>

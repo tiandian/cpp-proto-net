@@ -53,8 +53,8 @@ private:
 
 	CTechDataRepo		m_dataRepo;
 	CTradeAgent			m_tradeAgent;
-	CQuoteAgent			m_quoteAgent;
 	CQuoteRepositry		m_quoteRepositry;
+	CQuoteAgent			m_quoteAgent;
 	CPortfolioManager	m_portfolioMgr;
 	COrderProcessor		m_orderProcessor;
 	
