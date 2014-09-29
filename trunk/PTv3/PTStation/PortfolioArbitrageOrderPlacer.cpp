@@ -180,6 +180,11 @@ void CPortfolioArbitrageOrderPlacer::OnPortfolioDone(PortfolioFinishState portfS
 
 		UpdateMultiLegOrder();
 	}
+	else if (portfState == PortfolioError)
+	{
+		if (m_pPortf != NULL)
+			m_pPortf->StopStrategy();
+	}
 }
 
 CLegOrderPlacer* CPortfolioArbitrageOrderPlacer::CreateLegOrderPlacer( int openTimeout, int maxRetryTimes )
