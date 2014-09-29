@@ -894,9 +894,10 @@ void CPortfolioOrderPlacer::AfterPortfolioDone(PortfolioFinishState portfState)
 	// Give portfolio a chance to check whether open times, position or cancel times reach limit
 	m_pPortf->CheckOpenCancelLimit();
 
-	OnPortfolioDone(portfState);
 	// set first leg for next start
 	SetFirstLeg();
+
+	OnPortfolioDone(portfState);
 }
 
 void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )
