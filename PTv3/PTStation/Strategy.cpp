@@ -50,7 +50,7 @@ void CStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chro
 			(*iter)->UpdateAskSize(pQuote->ask_size());
 			(*iter)->UpdateBid(pQuote->bid());
 			(*iter)->UpdateBidSize(pQuote->bid_size());
-			(*iter)->UpdateTimestamp();
+			(*iter)->UpdateTimestamp(pQuote->update_time(), pQuote->update_millisec());
 			break;
 		}
 	}

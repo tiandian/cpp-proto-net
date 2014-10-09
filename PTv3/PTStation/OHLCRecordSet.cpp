@@ -65,7 +65,7 @@ COHLCRecordSet::~COHLCRecordSet(void)
 }
 
 // barIdx is 0 based
-void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low, double close )
+void COHLCRecordSet::SetToday(int barIdx, double open, double high, double low, double close, const string& timestamp)
 {
 	int settingIdx = m_historyDataSize + barIdx;
 	if(settingIdx > m_endIndex)
@@ -113,8 +113,8 @@ void COHLCRecordSet::SetToday( int barIdx, double open, double high, double low,
 	}
 
 #ifdef LOG_FOR_TECH_CALC
-	logger.Info(boost::str(boost::format("Setting Today: last Index - %d, last close - %.2f")
-		% m_endIndex % close));
+	logger.Info(boost::str(boost::format("Setting Today %s [%s]: last Index - %d, last close - %.2f")
+		% m_symbol % timestamp % m_endIndex % close));
 #endif
 }
 

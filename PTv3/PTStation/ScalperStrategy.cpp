@@ -107,7 +107,7 @@ void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boos
 	leg->UpdateAskSize(pQuote->ask_size());
 	leg->UpdateBid(pQuote->bid());
 	leg->UpdateBidSize(pQuote->bid_size());
-	leg->UpdateTimestamp();
+	leg->UpdateTimestamp(pQuote->update_time(), pQuote->update_millisec());
 }
 
 void CScalperStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem )

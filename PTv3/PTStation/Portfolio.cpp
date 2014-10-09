@@ -601,4 +601,19 @@ double CPortfolio::CalculateDiff( ARBI_DIFF_CALC* structArbiDiffCalc, CALC_DIFF_
 	return diff;
 }
 
+bool CPortfolio::LegsTimestampAligned()
+{
+	int legCount = Count();
+	if (legCount < 1)
+		return false;
+
+	for (int i = 1; i < legCount; ++i)
+	{
+		if (m_legs[0]->Timestamp() == m_legs[i]->Timestamp())
+			return false;
+	}
+
+	return true;
+}
+
 

@@ -128,9 +128,38 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
-	ARBI_DIFF_CALC structLastDiff = {LAST_DIFF, 0, 0, 0};
-	ARBI_DIFF_CALC structLongDiff = {LONG_DIFF, 0, 0, 0};
-	ARBI_DIFF_CALC structShortDiff = {SHORT_DIFF, 0, 0, 0};
+	if (!IsRunning())
+		return;
+
+	if (!IsMarketOpen(pQuote))
+		return;
+
+	string symbol = pQuote->symbol();
+	COHLCRecordSet* ohlc = GetRecordSet(symbol, m_timeFrame, timestamp);
+	if (ohlc == NULL)
+		return;
+
+	int currentBarIdx = m_diffRecordSet->Calculate(ohlc);
+	if (currentBarIdx < m_bollPeriod)
+		return;
+
+	CPortfolioArbitrageOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioArbitrageOrderPlacer*>(pPortfolio->OrderPlacer());
+
+	// if working with order, don't need to test strategy but check for retry
+	if(pOrderPlacer->IsWorking())
+	{
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Strategy - Check and likely retry submit order") % pPortfolio->InvestorId()));
+		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
+		return;
+	}
+
+	if (!pPortfolio->LegsTimestampAligned())
+		return;
+
+	//OTHERWISE, let's calculate necessary diff values and do real strategy test
+	ARBI_DIFF_CALC structLastDiff = { LAST_DIFF, 0, 0, 0 };
+	ARBI_DIFF_CALC structLongDiff = { LONG_DIFF, 0, 0, 0 };
+	ARBI_DIFF_CALC structShortDiff = { SHORT_DIFF, 0, 0, 0 };
 
 	CALC_DIFF_METHOD calcMethod = m_allowPending ? BETTER_PRICE : FAST_DEAL;
 
@@ -142,25 +171,10 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	m_longDiffSize = 0;
 	m_shortDiffSize = 0;
 
-	if(!IsRunning())
-		return;
-
-	if(!IsMarketOpen(pQuote))
-		return;
-
-	string symbol = pQuote->symbol();
-	COHLCRecordSet* ohlc = GetRecordSet(symbol, m_timeFrame, timestamp);
-	if(ohlc == NULL)
-		return;
-
-	int currentBarIdx = m_diffRecordSet->Calculate(ohlc);
-	if(currentBarIdx < m_bollPeriod)
-		return;
-
 	m_bollDataSet->Calculate(m_diffRecordSet.get());
 
 	double actualMid = 0;
-	if(m_useTargetGain)
+	if (m_useTargetGain)
 	{
 		double bollMid = m_bollDataSet->GetRef(IND_MID, 1);
 		actualMid = CalcBoundaryByTargetGain(bollMid, m_targetGain, m_minStep, &m_bollTop, &m_bollBottom);
@@ -169,15 +183,6 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	{
 		m_bollTop = m_bollDataSet->GetRef(IND_TOP, 1);
 		m_bollBottom = m_bollDataSet->GetRef(IND_BOTTOM, 1);
-	}
-
-	CPortfolioArbitrageOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioArbitrageOrderPlacer*>(pPortfolio->OrderPlacer());
-
-	if(pOrderPlacer->IsWorking())
-	{
-		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Strategy - Check and likely retry submit order") % pPortfolio->InvestorId()));
-		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
-		return;
 	}
 
 	entity::PosiDirectionType direction = GetTradeDirection();

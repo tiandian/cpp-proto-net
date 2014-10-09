@@ -15,7 +15,7 @@ public:
 	COHLCRecordSet(const string& symbol, int precision, HISTORY_DATA_MODE histDataMode = ONE_BAR, bool weightAvg = false );
 	~COHLCRecordSet(void);
 
-	void SetToday(int barIdx, double open, double high, double low, double close);
+	void SetToday(int barIdx, double open, double high, double low, double close, const string& timestamp);
 	void SetHistory(int barIdx, double open, double high, double low, double close);
 
 	boost::shared_array<double> OpenSeries;
