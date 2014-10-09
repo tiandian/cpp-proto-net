@@ -87,7 +87,7 @@ public:
 
 	double CalculateDiff(ARBI_DIFF_CALC* structArbiDiffCalc, CALC_DIFF_METHOD calcDiffMethod);
 	bool LegsTimestampAligned();
-
+	void PrintLegsQuote();
 private:
 	void AddLeg(const entity::LegItem& legItem);
 	void PrepareTriggerUpdate();
