@@ -78,7 +78,7 @@ COHLCRecordSet* CPriceBarDataSource::GetRecordSet()
 
 void CPriceBarDataSource::OnBarChanged( int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
-	m_recordSet->SetToday(barIdx, open, high, low, close);
+	m_recordSet->SetToday(barIdx, open, high, low, close, timestamp);
 }
 
 void CPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close, const string& timestamp )

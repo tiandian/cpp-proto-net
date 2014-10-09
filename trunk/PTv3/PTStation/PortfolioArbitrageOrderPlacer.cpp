@@ -177,8 +177,6 @@ void CPortfolioArbitrageOrderPlacer::OnPortfolioDone(PortfolioFinishState portfS
 		{
 			m_openedPosition = false;
 		}
-
-		UpdateMultiLegOrder();
 	}
 	else if (portfState == PortfolioError)
 	{

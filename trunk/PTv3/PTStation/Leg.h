@@ -24,6 +24,7 @@ public:
 	int AskSize() { return m_askSize; }
 	double Bid(){ return m_bid; }
 	int BidSize() { return m_bidSize; }
+	const string& Timestamp(){ return m_timestamp; }
 	int Ratio() { return m_ratio; }
 	bool IsPreferred() { return m_isPreferred; }
 	double MinPriceChange() { return m_minPriceChange; }
@@ -33,7 +34,10 @@ public:
 	void UpdateAskSize(int askSize){ m_askSize = SafeSetValue(askSize); }
 	void UpdateBid(double bid){ m_bid = SafeSetValue(bid); }
 	void UpdateBidSize(int bidSize){ m_bidSize = SafeSetValue(bidSize); }
-	void UpdateTimestamp(){}
+	void UpdateTimestamp(string time, int millisec)
+	{ 
+		m_timestamp = boost::str(boost::format("%s.%d") % time % millisec);
+	}
 
 	void GetUpdated();
 
@@ -53,7 +57,7 @@ private:
 	int m_askSize;
 	double m_bid;
 	int m_bidSize;
-
+	string m_timestamp;
 };
 
 typedef boost::shared_ptr<CLeg> LegPtr;
