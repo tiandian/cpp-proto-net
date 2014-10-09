@@ -613,7 +613,28 @@ bool CPortfolio::LegsTimestampAligned()
 			return false;
 	}
 
+	for (int i = 0; i < legCount; ++i)
+	{
+		const LegPtr& l = m_legs[i];
+		LOG_DEBUG(logger, boost::str(boost::format("Leg%d %s L:%.2f A:%.2f B:%.2f %s")
+			% (i + 1) % l->Symbol()
+			% l->Last() % l->Ask() % l->Bid() % l->Timestamp()));
+	}
 	return true;
+}
+
+void CPortfolio::PrintLegsQuote()
+{
+	LOG_DEBUG(logger, boost::str(boost::format("Print Portfolio %s Legs Quotes") % ID()));
+
+	int legCount = Count();
+	for (int i = 0; i < legCount; ++i)
+	{
+		const LegPtr& l = m_legs[i];
+		LOG_DEBUG(logger, boost::str(boost::format("Leg%d %s L:%.2f A:%.2f B:%.2f %s") 
+			% (i + 1) % l->Symbol()
+			% l->Last() % l->Ask() % l->Bid() % l->Timestamp()));
+	}
 }
 
 

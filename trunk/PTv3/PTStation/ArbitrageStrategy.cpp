@@ -210,7 +210,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
 			ARBI_DIFF_CALC forceClosePx = { side == entity::LONG ? SHORT_DIFF : LONG_DIFF, 0, 0, 0};
 			pPortfolio->CalculateDiff(&forceClosePx, FAST_DEAL);
-
+			pPortfolio->PrintLegsQuote();
 			ClosePosition(pOrderPlacer, forceClosePx, pQuote, timestamp, "手动平仓", trade::SR_Manual); 
 			return;
 		}
@@ -225,6 +225,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					// Stop Loss
 					string logTxt = boost::str(boost::format("bollTop(%.2f) <= costDiff(%.2f) -> Stop Loss") % m_bollTop % m_costDiff);
 					LOG_DEBUG(logger, logTxt);
+					pPortfolio->PrintLegsQuote();
 					string comment = boost::str(boost::format("上轨(%.2f)低于等于成本(%.2f) -> 止损平仓") % m_bollTop % m_costDiff);
 					ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopLoss);
 				}
@@ -233,6 +234,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					// Stop Gain
 					string logTxt = boost::str(boost::format("Short diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_shortDiff % m_bollTop);
 					LOG_DEBUG(logger, logTxt);
+					pPortfolio->PrintLegsQuote();
 					string comment = boost::str(boost::format("空价差(%.2f)大于上轨(%.2f) -> 止盈平仓") % m_shortDiff % m_bollTop);
 					ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopGain);
 				}
@@ -244,6 +246,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					// Stop Loss
 					string logTxt = boost::str(boost::format("bollBottom(%.2f) >= costDiff(%.2f) -> Stop Loss") % m_bollBottom % m_costDiff);
 					LOG_DEBUG(logger, logTxt);
+					pPortfolio->PrintLegsQuote();
 					string comment = boost::str(boost::format("下轨(%.2f)大于等于成本(%.2f) -> 止损平仓") % m_bollBottom % m_costDiff);
 					ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopLoss);
 				}
@@ -252,6 +255,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					// Stop Gain
 					string logTxt = boost::str(boost::format("Long diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_longDiff % m_bollBottom);
 					LOG_DEBUG(logger, logTxt);
+					pPortfolio->PrintLegsQuote();
 					string comment = boost::str(boost::format("多价差(%.2f)小于下轨(%.2f) -> 止盈平仓") % m_longDiff % m_bollBottom);
 					ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopGain);
 				}
@@ -268,6 +272,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Opening position at bar %d")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
+			pPortfolio->PrintLegsQuote();
 			OpenPosition(direction, pOrderPlacer, (direction == entity::LONG ? structLongDiff : structShortDiff),
 				pQuote, timestamp);
 			return;

@@ -501,6 +501,8 @@ void CTradeAgent::OnRtnTrade( CThostFtdcTradeField *pTrade )
 {
 	ostringstream oss;
 	oss << "--->>> " << m_investorId <<" OnRtnTrade (OrdRef:"  << pTrade->OrderRef << ") TradeId:" << pTrade->TradeID;
+	oss << " " << pTrade->InstrumentID;
+	oss << " @" << pTrade->Price;
 	oss << " " << pTrade->Volume << " traded.";
 	logger.Info(oss.str());
 
