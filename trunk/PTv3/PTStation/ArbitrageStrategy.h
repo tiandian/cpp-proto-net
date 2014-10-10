@@ -30,6 +30,7 @@ private:
 	static const double CalcBoundaryByTargetGain(double mid, double targetGain, double step, double* outUpper, double* outLower);
 
 	entity::PosiDirectionType GetTradeDirection();
+	entity::PosiDirectionType GetFastTradeDirection();
 	void OpenPosition(entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 	void ClosePosition(CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, const string& comment, trade::SubmitReason reason);
 
@@ -45,8 +46,10 @@ private:
 
 	double m_lastDiff;
 	double m_longDiff;
+	double m_longDiffFast;
 	int m_longDiffSize;
 	double m_shortDiff;
+	double m_shortDiffFast;
 	int m_shortDiffSize;
 	double m_bollTop;
 	double m_bollBottom;

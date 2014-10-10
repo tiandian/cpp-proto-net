@@ -609,17 +609,10 @@ bool CPortfolio::LegsTimestampAligned()
 
 	for (int i = 1; i < legCount; ++i)
 	{
-		if (m_legs[0]->Timestamp() == m_legs[i]->Timestamp())
+		if (m_legs[0]->Timestamp() != m_legs[i]->Timestamp())
 			return false;
 	}
 
-	for (int i = 0; i < legCount; ++i)
-	{
-		const LegPtr& l = m_legs[i];
-		LOG_DEBUG(logger, boost::str(boost::format("Leg%d %s L:%.2f A:%.2f B:%.2f %s")
-			% (i + 1) % l->Symbol()
-			% l->Last() % l->Ask() % l->Bid() % l->Timestamp()));
-	}
 	return true;
 }
 
