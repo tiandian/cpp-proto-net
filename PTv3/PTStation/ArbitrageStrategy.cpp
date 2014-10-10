@@ -34,8 +34,10 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem,
 	, m_stdDevMultiplier(2)
 	, m_lastDiff(0)
 	, m_longDiff(0)
+	, m_longDiffFast(0)
 	, m_longDiffSize(0)
 	, m_shortDiff(0)
+	, m_shortDiffFast(0)
 	, m_shortDiffSize(0)
 	, m_bollTop(0)
 	, m_bollBottom(0)
@@ -75,8 +77,8 @@ void CArbitrageStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 	CTechAnalyStrategy::Apply(strategyItem, withTriggers);
 
 	// TODO
-	m_bollPeriod = strategyItem.ar_bollperiod();
-	m_stdDevMultiplier = strategyItem.ar_stddevmultiplier();
+	m_bollPeriod = (int)strategyItem.ar_bollperiod();
+	m_stdDevMultiplier = (int)strategyItem.ar_stddevmultiplier();
 	m_openTimeout = strategyItem.opentimeout();
 	m_retryTimes = strategyItem.retrytimes();
 
@@ -128,9 +130,6 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 
 	CTechAnalyStrategy::Test(pQuote, pPortfolio, timestamp);
 
-	if (!IsRunning())
-		return;
-
 	if (!IsMarketOpen(pQuote))
 		return;
 
@@ -143,29 +142,20 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	if (currentBarIdx < m_bollPeriod)
 		return;
 
-	CPortfolioArbitrageOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioArbitrageOrderPlacer*>(pPortfolio->OrderPlacer());
-
-	// if working with order, don't need to test strategy but check for retry
-	if(pOrderPlacer->IsWorking())
-	{
-		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Strategy - Check and likely retry submit order") % pPortfolio->InvestorId()));
-		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
-		return;
-	}
-
-	if (!pPortfolio->LegsTimestampAligned())
-		return;
-
-	//OTHERWISE, let's calculate necessary diff values and do real strategy test
 	ARBI_DIFF_CALC structLastDiff = { LAST_DIFF, 0, 0, 0 };
 	ARBI_DIFF_CALC structLongDiff = { LONG_DIFF, 0, 0, 0 };
 	ARBI_DIFF_CALC structShortDiff = { SHORT_DIFF, 0, 0, 0 };
+	ARBI_DIFF_CALC structLongDiffFast = { LONG_DIFF, 0, 0, 0 };
+	ARBI_DIFF_CALC structShortDiffFast = { SHORT_DIFF, 0, 0, 0 };
 
 	CALC_DIFF_METHOD calcMethod = m_allowPending ? BETTER_PRICE : FAST_DEAL;
 
 	m_lastDiff = pPortfolio->CalculateDiff(&structLastDiff, calcMethod);
 	m_longDiff = pPortfolio->CalculateDiff(&structLongDiff, calcMethod);
 	m_shortDiff = pPortfolio->CalculateDiff(&structShortDiff, calcMethod);
+
+	m_longDiffFast = pPortfolio->CalculateDiff(&structLongDiffFast, FAST_DEAL);
+	m_shortDiffFast = pPortfolio->CalculateDiff(&structShortDiffFast, FAST_DEAL);
 
 	// TODO: will be figured out in the future
 	m_longDiffSize = 0;
@@ -185,7 +175,24 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		m_bollBottom = m_bollDataSet->GetRef(IND_BOTTOM, 1);
 	}
 
+	if (!IsRunning())
+		return;
+
+	CPortfolioArbitrageOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioArbitrageOrderPlacer*>(pPortfolio->OrderPlacer());
+
+	// if working with order, don't need to test strategy but check for retry
+	if (pOrderPlacer->IsWorking())
+	{
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Strategy - Check and likely retry submit order") % pPortfolio->InvestorId()));
+		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
+		return;
+	}
+
+	if (!pPortfolio->LegsTimestampAligned())
+		return;
+
 	entity::PosiDirectionType direction = GetTradeDirection();
+	entity::PosiDirectionType directionFast = GetFastTradeDirection();
 
 	if(m_useTargetGain)
 	{
@@ -196,6 +203,20 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	{
 		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing trade direction - longDiff:%.2f vs bottom:%.2f, shortDiff:%.2f vs top:%.2f -->> %s")
 			% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiff % m_bollBottom % m_shortDiff % m_bollTop % GetPosiDirectionText(direction)));
+	}
+
+	if (directionFast != entity::NET)
+	{
+		if (m_useTargetGain)
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing Fast Direction - Mid:%.2f, longDiffFast:%.2f vs bottom:%.2f, shortDiffFast:%.2f vs top:%.2f -->> %s")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % actualMid % m_longDiffFast % m_bollBottom % m_shortDiffFast % m_bollTop % GetPosiDirectionText(directionFast)));
+		}
+		else
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Testing Fast direction - longDiffFast:%.2f vs bottom:%.2f, shortDiffFast:%.2f vs top:%.2f -->> %s")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % m_longDiffFast % m_bollBottom % m_shortDiffFast % m_bollTop % GetPosiDirectionText(directionFast)));
+		}
 	}
 
 	if (pOrderPlacer->IsOpened())
@@ -216,7 +237,30 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		}
 		
 		// Stop gain/loss logic in ArbitrageStrategy
-		if(direction != entity::NET)
+		if (directionFast != entity::NET && side != directionFast)
+		{
+			diffPrices = side == entity::LONG ? structShortDiffFast : structLongDiffFast;
+			
+			if (side == entity::LONG)
+			{
+				// Fast Stop Gain
+				string logTxt = boost::str(boost::format("Fast StopGain: Fast Short diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_shortDiffFast % m_bollTop);
+				LOG_DEBUG(logger, logTxt);
+				pPortfolio->PrintLegsQuote();
+				string comment = boost::str(boost::format("对价空价差(%.2f)大于上轨(%.2f) -> 止盈平仓") % m_shortDiffFast % m_bollTop);
+				ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopGain);
+			}
+			else if (side == entity::SHORT)
+			{
+				// Fast Stop Gain
+				string logTxt = boost::str(boost::format("Fast StopGain: Fast Long diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_longDiffFast % m_bollBottom);
+				LOG_DEBUG(logger, logTxt);
+				pPortfolio->PrintLegsQuote();
+				string comment = boost::str(boost::format("对价多价差(%.2f)小于下轨(%.2f) -> 止盈平仓") % m_longDiffFast % m_bollBottom);
+				ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopGain);
+			}
+		}
+		else if(direction != entity::NET)
 		{
 			if(side == entity::LONG)
 			{
@@ -265,17 +309,33 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		return;
 	}
 
+	// Test for open position of portfolio
 	//bool forceOpening = IsForceOpening();
-	if(direction > entity::NET && !OutOfTradingWindow(currentBarIdx))
+	if(!OutOfTradingWindow(currentBarIdx))
 	{
-		if(!pOrderPlacer->IsWorking())
+		if (directionFast > entity::NET)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Opening position at bar %d")
-				% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx ));
-			pPortfolio->PrintLegsQuote();
-			OpenPosition(direction, pOrderPlacer, (direction == entity::LONG ? structLongDiff : structShortDiff),
-				pQuote, timestamp);
-			return;
+			if (!pOrderPlacer->IsWorking())
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) FAST DEAL Opening position at bar %d")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx));
+				pPortfolio->PrintLegsQuote();
+				OpenPosition(direction, pOrderPlacer, (direction == entity::LONG ? structLongDiffFast : structShortDiffFast),
+					pQuote, timestamp);
+				return;
+			}
+		}
+		else if (direction > entity::NET)
+		{
+			if (!pOrderPlacer->IsWorking())
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Opening position at bar %d")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx));
+				pPortfolio->PrintLegsQuote();
+				OpenPosition(direction, pOrderPlacer, (direction == entity::LONG ? structLongDiff : structShortDiff),
+					pQuote, timestamp);
+				return;
+			}
 		}
 	}
 }
@@ -413,6 +473,17 @@ entity::PosiDirectionType CArbitrageStrategy::GetTradeDirection()
 	return direction;
 }
 
+entity::PosiDirectionType CArbitrageStrategy::GetFastTradeDirection()
+{
+	entity::PosiDirectionType direction = entity::NET;
+
+	if (m_longDiffFast < m_bollBottom)
+		direction = entity::LONG;
+	else if (m_shortDiffFast > m_bollTop)
+		direction = entity::SHORT;
+	return direction;
+}
+
 void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp)
 {
 	if(direction > entity::NET)
@@ -435,11 +506,11 @@ void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPor
 		string openComment;
 		if(direction == entity::LONG)
 		{
-			openComment = boost::str(boost::format("多价差 %.2f 低于下轨 %.2f 做多 (%s)") % m_longDiff % m_bollBottom % pQuote->update_time());
+			openComment = boost::str(boost::format("多价差 %.2f 低于下轨 %.2f 做多 (%s)") % diffPrices.Diff % m_bollBottom % pQuote->update_time());
 		}
 		else if(direction == entity::SHORT)
 		{
-			openComment = boost::str(boost::format("空价差 %.2f 高于上轨 %.2f 做空 (%s)") % m_shortDiff % m_bollTop % pQuote->update_time());
+			openComment = boost::str(boost::format("空价差 %.2f 高于上轨 %.2f 做空 (%s)") % diffPrices.Diff % m_bollTop % pQuote->update_time());
 		}
 		// TODO feed comment
 		pOrderPlacer->SetMlOrderStatus(openComment);
