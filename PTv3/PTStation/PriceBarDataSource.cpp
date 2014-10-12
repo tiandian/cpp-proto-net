@@ -95,18 +95,18 @@ void CHistoryPriceBarDataSource::OnInit()
 {
 	CHistDataReader dataReader(m_symbol, m_precision, m_tradingDay);
 	dataReader.Read(m_recordSet.get(), &m_priceBarGen);
-	/*
+	
 	bool writerReady = m_histDataWriter.Open(m_symbol, m_precision, m_tradingDay);
 	if(!writerReady)
 	{
 		logger.Error(boost::str(boost::format("Cannot open HistDataWriter for %s-%u") % m_symbol % m_precision));
 	}
-	*/
+	
 }
 
 void CHistoryPriceBarDataSource::OnBarFinalized( int barIdx, double open, double high, double low, double close, const string& timestamp )
 {
-	//m_histDataWriter.Write(timestamp, open, high, low, close);
+	m_histDataWriter.Write(timestamp, open, high, low, close);
 }
 
 OHLCRecordSetPtr CHistoryPriceBarDataSource::OnCreateOHLCRecordSet( const string& symbol, int precision )
