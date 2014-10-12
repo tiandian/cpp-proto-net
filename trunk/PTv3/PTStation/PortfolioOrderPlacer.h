@@ -105,7 +105,7 @@ protected:
 	void GenLegOrderPlacers();
 	void UpdateLegOrder(const RtnOrderWrapperPtr& pRtnOrder);
 	void UpdateLastDoneOrder();
-	void UpdateMultiLegOrder();
+	void UpdateMultiLegOrder(bool pushToClient = true);
 	
 	void PushWholeMultiLegOrder(trade::MultiLegOrder* pOrder);
 	void PushIndividualLegOrder(const string& portfId, const string& mlOrderId, trade::Order* legOrd);

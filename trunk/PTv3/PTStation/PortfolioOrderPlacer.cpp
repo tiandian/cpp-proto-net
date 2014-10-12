@@ -662,6 +662,8 @@ void CPortfolioOrderPlacer::OnOrderCanceled(const RtnOrderWrapperPtr& pRtnOrder 
 
 void CPortfolioOrderPlacer::OnCompleted()
 {
+	UpdateMultiLegOrder(false);
+
 	trade::MlOrderOffset offset = m_multiLegOrderTemplate->offset();
 	if(offset == trade::ML_OF_OPEN || offset == trade::ML_OF_OTHER)
 		m_pPortf->AddPosition(*m_multiLegOrderTemplate);
@@ -792,7 +794,7 @@ void CPortfolioOrderPlacer::OnPendingTimeUp()
 	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtPendingTimeUp());
 }
 
-void CPortfolioOrderPlacer::UpdateMultiLegOrder()
+void CPortfolioOrderPlacer::UpdateMultiLegOrder(bool pushToClient)
 {
 	// Copy order info from legOrder Placer
 	BOOST_FOREACH(const LegOrderPlacerPtr& legPlacer, m_legPlacers)
@@ -805,7 +807,8 @@ void CPortfolioOrderPlacer::UpdateMultiLegOrder()
 			pOrd->CopyFrom(legPlacer->Order());
 	}
 	
-	PushWholeMultiLegOrder(m_multiLegOrderTemplate.get());
+	if (pushToClient)
+		PushWholeMultiLegOrder(m_multiLegOrderTemplate.get());
 }
 
 void CPortfolioOrderPlacer::OutputStatus( const string& statusMsg )

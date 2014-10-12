@@ -324,8 +324,11 @@ void CPortfolio::StartStrategy(int lastOrderId)
 void CPortfolio::StopStrategy()
 {
 	logger.Info(boost::str(boost::format("[%s] Portfolio (%s) STOP strategy <<<") % InvestorId() % ID()));
-	m_strategy->Stop();
-	m_orderPlacer->Cleanup();
+	if (m_strategy->IsRunning())
+	{
+		m_strategy->Stop();
+		m_orderPlacer->Cleanup();
+	}
 }
 
 void CPortfolio::EnableTrigger( int triggerIdx, bool enabled )
