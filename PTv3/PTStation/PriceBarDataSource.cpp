@@ -3,7 +3,9 @@
 #include "HistDataReader.h"
 #include "globalmembers.h"
 
+#include <set>
 #include <boost/date_time.hpp>
+
 
 void CPriceBarDataSource::Init( const string& symbol, int precision)
 {
@@ -90,13 +92,27 @@ OHLCRecordSetPtr CPriceBarDataSource::OnCreateOHLCRecordSet( const string& symbo
 	return OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision));
 }
 
+std::set<string> histDataWriterSet;
+boost::mutex mutHistDataSet;
 
 void CHistoryPriceBarDataSource::OnInit()
 {
+	boost::lock_guard<boost::mutex> l(mutHistDataSet);
+
 	CHistDataReader dataReader(m_symbol, m_precision, m_tradingDay);
 	dataReader.Read(m_recordSet.get(), &m_priceBarGen);
 	
-	bool writerReady = m_histDataWriter.Open(m_symbol, m_precision, m_tradingDay);
+	m_histDataWriter.Init(m_symbol, m_precision, m_tradingDay);
+	const string& histDataWriterName = m_histDataWriter.Name();
+	std::set<string>::iterator iter = histDataWriterSet.find(histDataWriterName);
+	if (iter != histDataWriterSet.end())
+	{
+		logger.Info(boost::str(boost::format("HistDataWriter for %s has already been there") % histDataWriterName));
+		return;
+	}
+
+	histDataWriterSet.insert(histDataWriterName);
+	bool writerReady = m_histDataWriter.Open();
 	if(!writerReady)
 	{
 		logger.Error(boost::str(boost::format("Cannot open HistDataWriter for %s-%u") % m_symbol % m_precision));

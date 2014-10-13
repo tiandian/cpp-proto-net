@@ -104,6 +104,7 @@ public:
 	CArbitrageLegOrderPlacer(CPortfolioOrderPlacer* portfOrdPlacer, int openTimeout, int maxRetry)
 		: CLegOrderPlacer(portfOrdPlacer, openTimeout, maxRetry)
 	{
+		m_modifyPriceWay = BASED_ON_OPPOSITE;
 	}
 	~CArbitrageLegOrderPlacer(void){}
 
