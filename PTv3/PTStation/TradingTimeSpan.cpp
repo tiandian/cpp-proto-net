@@ -35,5 +35,8 @@ int CTradingTimeSpan::GetIndex( const boost::chrono::seconds& timePoint, string*
 		return  idx + m_offset;
 	}
 	else
-		return EndIndex() - 1;
+	{
+		*outTimestamp = GetISOTimeString(m_End);
+		return EndIndex();
+	}
 }

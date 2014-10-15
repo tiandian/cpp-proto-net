@@ -1,4 +1,4 @@
-ï»¿#include "StdAfx.h"
+#include "StdAfx.h"
 #include "ArbitrageStrategy.h"
 #include "ArbitrageTrigger.h"
 #include "PriceBarDataProxy.h"
@@ -232,7 +232,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 			ARBI_DIFF_CALC forceClosePx = { side == entity::LONG ? SHORT_DIFF : LONG_DIFF, 0, 0, 0};
 			pPortfolio->CalculateDiff(&forceClosePx, FAST_DEAL);
 			pPortfolio->PrintLegsQuote();
-			ClosePosition(pOrderPlacer, forceClosePx, pQuote, timestamp, "æ‰‹åŠ¨å¹³ä»“", trade::SR_Manual); 
+			ClosePosition(pOrderPlacer, forceClosePx, pQuote, timestamp, "ÊÖ¶¯Æ½²Ö", trade::SR_Manual); 
 			return;
 		}
 		
@@ -247,7 +247,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				string logTxt = boost::str(boost::format("Fast StopGain: Fast Short diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_shortDiffFast % m_bollTop);
 				LOG_DEBUG(logger, logTxt);
 				pPortfolio->PrintLegsQuote();
-				string comment = boost::str(boost::format("å¯¹ä»·ç©ºä»·å·®(%.2f)å¤§äºŽä¸Šè½¨(%.2f) -> æ­¢ç›ˆå¹³ä»“") % m_shortDiffFast % m_bollTop);
+				string comment = boost::str(boost::format("¶Ô¼Û¿Õ¼Û²î(%.2f)´óÓÚÉÏ¹ì(%.2f) -> Ö¹Ó¯Æ½²Ö") % m_shortDiffFast % m_bollTop);
 				ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopGain);
 			}
 			else if (side == entity::SHORT)
@@ -256,7 +256,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				string logTxt = boost::str(boost::format("Fast StopGain: Fast Long diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_longDiffFast % m_bollBottom);
 				LOG_DEBUG(logger, logTxt);
 				pPortfolio->PrintLegsQuote();
-				string comment = boost::str(boost::format("å¯¹ä»·å¤šä»·å·®(%.2f)å°äºŽä¸‹è½¨(%.2f) -> æ­¢ç›ˆå¹³ä»“") % m_longDiffFast % m_bollBottom);
+				string comment = boost::str(boost::format("¶Ô¼Û¶à¼Û²î(%.2f)Ð¡ÓÚÏÂ¹ì(%.2f) -> Ö¹Ó¯Æ½²Ö") % m_longDiffFast % m_bollBottom);
 				ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopGain);
 			}
 		}
@@ -270,7 +270,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					string logTxt = boost::str(boost::format("bollTop(%.2f) <= costDiff(%.2f) -> Stop Loss") % m_bollTop % m_costDiff);
 					LOG_DEBUG(logger, logTxt);
 					pPortfolio->PrintLegsQuote();
-					string comment = boost::str(boost::format("ä¸Šè½¨(%.2f)ä½ŽäºŽç­‰äºŽæˆæœ¬(%.2f) -> æ­¢æŸå¹³ä»“") % m_bollTop % m_costDiff);
+					string comment = boost::str(boost::format("ÉÏ¹ì(%.2f)µÍÓÚµÈÓÚ³É±¾(%.2f) -> Ö¹ËðÆ½²Ö") % m_bollTop % m_costDiff);
 					ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopLoss);
 				}
 				else if(side != direction)
@@ -279,7 +279,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					string logTxt = boost::str(boost::format("Short diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_shortDiff % m_bollTop);
 					LOG_DEBUG(logger, logTxt);
 					pPortfolio->PrintLegsQuote();
-					string comment = boost::str(boost::format("ç©ºä»·å·®(%.2f)å¤§äºŽä¸Šè½¨(%.2f) -> æ­¢ç›ˆå¹³ä»“") % m_shortDiff % m_bollTop);
+					string comment = boost::str(boost::format("¿Õ¼Û²î(%.2f)´óÓÚÉÏ¹ì(%.2f) -> Ö¹Ó¯Æ½²Ö") % m_shortDiff % m_bollTop);
 					ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopGain);
 				}
 			}
@@ -291,7 +291,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					string logTxt = boost::str(boost::format("bollBottom(%.2f) >= costDiff(%.2f) -> Stop Loss") % m_bollBottom % m_costDiff);
 					LOG_DEBUG(logger, logTxt);
 					pPortfolio->PrintLegsQuote();
-					string comment = boost::str(boost::format("ä¸‹è½¨(%.2f)å¤§äºŽç­‰äºŽæˆæœ¬(%.2f) -> æ­¢æŸå¹³ä»“") % m_bollBottom % m_costDiff);
+					string comment = boost::str(boost::format("ÏÂ¹ì(%.2f)´óÓÚµÈÓÚ³É±¾(%.2f) -> Ö¹ËðÆ½²Ö") % m_bollBottom % m_costDiff);
 					ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopLoss);
 				}
 				else if(side != direction)
@@ -300,7 +300,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 					string logTxt = boost::str(boost::format("Long diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_longDiff % m_bollBottom);
 					LOG_DEBUG(logger, logTxt);
 					pPortfolio->PrintLegsQuote();
-					string comment = boost::str(boost::format("å¤šä»·å·®(%.2f)å°äºŽä¸‹è½¨(%.2f) -> æ­¢ç›ˆå¹³ä»“") % m_longDiff % m_bollBottom);
+					string comment = boost::str(boost::format("¶à¼Û²î(%.2f)Ð¡ÓÚÏÂ¹ì(%.2f) -> Ö¹Ó¯Æ½²Ö") % m_longDiff % m_bollBottom);
 					ClosePosition(pOrderPlacer, diffPrices, pQuote, timestamp, comment, trade::SR_StopGain);
 				}
 			}
@@ -506,11 +506,11 @@ void CArbitrageStrategy::OpenPosition( entity::PosiDirectionType direction, CPor
 		string openComment;
 		if(direction == entity::LONG)
 		{
-			openComment = boost::str(boost::format("å¤šä»·å·® %.2f ä½ŽäºŽä¸‹è½¨ %.2f åšå¤š (%s)") % diffPrices.Diff % m_bollBottom % pQuote->update_time());
+			openComment = boost::str(boost::format("¶à¼Û²î %.2f µÍÓÚÏÂ¹ì %.2f ×ö¶à (%s)") % diffPrices.Diff % m_bollBottom % pQuote->update_time());
 		}
 		else if(direction == entity::SHORT)
 		{
-			openComment = boost::str(boost::format("ç©ºä»·å·® %.2f é«˜äºŽä¸Šè½¨ %.2f åšç©º (%s)") % diffPrices.Diff % m_bollTop % pQuote->update_time());
+			openComment = boost::str(boost::format("¿Õ¼Û²î %.2f ¸ßÓÚÉÏ¹ì %.2f ×ö¿Õ (%s)") % diffPrices.Diff % m_bollTop % pQuote->update_time());
 		}
 		// TODO feed comment
 		pOrderPlacer->SetMlOrderStatus(openComment);
@@ -544,7 +544,7 @@ void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPl
 		pOrderPlacer->ClosePosition(direction, lmtPrice, 2, timestamp, reason);
 
 		ResetForceClose();
-		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s å¹³ä»“ @ %.2f - %.2f")
+		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s Æ½²Ö @ %.2f - %.2f")
 			% comment % GetPosiDirectionText(direction, true) % lmtPrice[0] % lmtPrice[1]));
 
 	}
