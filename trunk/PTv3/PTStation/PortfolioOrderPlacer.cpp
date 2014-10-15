@@ -777,8 +777,7 @@ void CPortfolioOrderPlacer::OnPortfolioCanceled()
 void CPortfolioOrderPlacer::OnError(const string& errMsg)
 {
 	AfterLegDone();
-	AfterPortfolioDone(PortfolioError);
-
+	
 	string ordStatusMsg;
 	GB2312ToUTF_8(ordStatusMsg, errMsg.c_str());
 
@@ -786,6 +785,8 @@ void CPortfolioOrderPlacer::OnError(const string& errMsg)
 	m_multiLegOrderTemplate->set_statusmsg(ordStatusMsg);
 
 	UpdateMultiLegOrder();
+
+	AfterPortfolioDone(PortfolioError);
 }
 
 void CPortfolioOrderPlacer::OnPendingTimeUp()
@@ -899,7 +900,6 @@ void CPortfolioOrderPlacer::AfterLegDone()
 
 void CPortfolioOrderPlacer::AfterPortfolioDone(PortfolioFinishState portfState)
 {
-	m_isWorking.store(false, boost::memory_order_release);
 	// Give portfolio a chance to check whether open times, position or cancel times reach limit
 	m_pPortf->CheckOpenCancelLimit();
 
@@ -907,6 +907,8 @@ void CPortfolioOrderPlacer::AfterPortfolioDone(PortfolioFinishState portfState)
 	SetFirstLeg();
 
 	OnPortfolioDone(portfState);
+
+	m_isWorking.store(false, boost::memory_order_release);
 }
 
 void CPortfolioOrderPlacer::OnOrderPlaceFailed( const string& errMsg )
