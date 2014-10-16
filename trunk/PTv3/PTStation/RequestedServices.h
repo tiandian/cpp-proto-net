@@ -58,6 +58,12 @@ protected:
 	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
 };
 
+class PortfModifyPreferredLegService : public Service
+{
+protected:
+	virtual void handle(LogicalConnection* pClient, IncomingPacket* pRequest);
+};
+
 class PortfOpenPosiService : public Service
 {
 protected:

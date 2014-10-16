@@ -178,6 +178,15 @@ void CNatvieClient::ApplyStrategySettings( const char* portfId, PTEntity::Strate
 	sendRequest(&request);
 }
 
+void CNatvieClient::PortfChangePreferredLeg(const char* portfId, const char* legName)
+{
+	ProtobufPacket<entity::ModifyPortfolioPreferredLegParam> request(PortfolioModifyPreferredLegRequestID);
+	request.getData().set_portfid(portfId);
+	request.getData().set_legsymbol(legName);
+
+	sendRequest(&request);
+}
+
 void CNatvieClient::PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty, vector<string>& endTimePointsVec)
 {
 	ProtobufPacket<entity::ModifyPortfolioQtyParam> request(PortfolioModifyQtyRequestID);

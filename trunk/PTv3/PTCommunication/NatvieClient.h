@@ -37,6 +37,7 @@ public:
 	void ApplyStrategySettings(const char* portfId, PTEntity::StrategyItem ^strategyItem);
 	void PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty,
 		vector<string>& endTimePointsVec);
+	void PortfChangePreferredLeg(const char* portfId, const char* legName);
 
 	void PortfOpenPosition(const char* portfId);
 	void PortfClosePosition(const char* portfId);

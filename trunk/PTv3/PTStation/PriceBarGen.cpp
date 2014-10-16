@@ -86,10 +86,13 @@ void CPriceBarGen::Calculate(entity::Quote* pQuote)
 	}
 	else if (barIdx >= m_barCount)
 	{
-		m_close = pQuote->last();
-		RaiseBarFinalizedEvent();
+		if (barIdx > m_currentIdx)
+		{
+			m_close = pQuote->last();
+			RaiseBarFinalizedEvent();
+			m_currentIdx = barIdx;
+		}
 	}
-
 }
 
 int CPriceBarGen::GetIndex(const string& quoteTime, string* timestamp)

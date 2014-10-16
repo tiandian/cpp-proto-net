@@ -157,6 +157,27 @@ void PortfModifyQtyService::handle( LogicalConnection* pClient, IncomingPacket* 
 	pPortf->SetEndTimePoints(timepointVec);
 }
 
+void PortfModifyPreferredLegService::handle(LogicalConnection* pClient, IncomingPacket* pRequest)
+{
+	ProtobufPacket<entity::ModifyPortfolioPreferredLegParam>* pReqPacket = (ProtobufPacket<entity::ModifyPortfolioPreferredLegParam>*)pRequest;
+	entity::ModifyPortfolioPreferredLegParam& chgPreferredLegParam = pReqPacket->getData();
+	const string& portfId = chgPreferredLegParam.portfid();
+	const string& legSymbol = chgPreferredLegParam.legsymbol();
+
+	CAvatarClient* avatarClient = (CAvatarClient*)pClient;
+	CPortfolio* pPortf = avatarClient->PortfolioManager().Get(portfId);
+	if (pPortf != NULL)
+	{
+		BOOST_FOREACH(const LegPtr& l, pPortf->Legs())
+		{
+			if (l->Symbol() == legSymbol)
+				l->UpdateIsPreferred(true);
+			else
+				l->UpdateIsPreferred(false);
+		}
+	}
+}
+
 void PortfOpenPosiService::handle( LogicalConnection* pClient, IncomingPacket* pRequest )
 {
 	ProtobufPacket<entity::PortfOpenPosiParam>* pReqPacket = (ProtobufPacket<entity::PortfOpenPosiParam>*)pRequest;

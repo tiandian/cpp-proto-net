@@ -34,6 +34,8 @@ public:
 	void UpdateAskSize(int askSize){ m_askSize = SafeSetValue(askSize); }
 	void UpdateBid(double bid){ m_bid = SafeSetValue(bid); }
 	void UpdateBidSize(int bidSize){ m_bidSize = SafeSetValue(bidSize); }
+	void UpdateIsPreferred(bool isPreferred){ m_isPreferred = isPreferred; }
+
 	void UpdateTimestamp(string time, int millisec)
 	{ 
 		m_timestamp = boost::str(boost::format("%s.%d") % time % millisec);
