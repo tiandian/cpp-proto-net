@@ -106,7 +106,7 @@ void CArbitrageStrategy::Apply( const entity::StrategyItem& strategyItem, bool w
 			int histDataSize = dataProxies[0]->GetRecordSetSize();
 			m_bollDataSet = BollDataSetPtr(new CBollDataSet(histDataSize, m_bollPeriod, m_stdDevMultiplier));
 
-			CalculateEndBar(15, m_timeFrame, histDataSize);
+			CalculateEndBar(1, m_timeFrame, histDataSize);
 		}
 	}
 }

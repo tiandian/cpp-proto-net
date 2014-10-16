@@ -234,4 +234,25 @@ void ClientBase::PortfOpenPosition( String ^pid, int quantity, bool isVirtual )
 	}
 }
 
+void ClientBase::PortfSetPreferredLeg(String ^portfId, String ^legName)
+{
+	if (!this->IsConnected)
+		return;
+
+	IntPtr pPortfIdAddress;
+	IntPtr pLegNameAddress;
+	try
+	{
+		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(portfId);
+		pLegNameAddress = (IntPtr)Marshal::StringToHGlobalAnsi(legName);
+		_nativeClient->PortfChangePreferredLeg(
+			(char*)pPortfIdAddress.ToPointer(), (char*)pLegNameAddress.ToPointer());
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pPortfIdAddress);
+		Marshal::FreeHGlobal(pLegNameAddress);
+	}
+}
+
 }

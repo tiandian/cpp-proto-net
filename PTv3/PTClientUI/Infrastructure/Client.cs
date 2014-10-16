@@ -123,7 +123,7 @@ namespace PortfolioTrading.Infrastructure
             byte[] param_data = DataTranslater.Serialize(qtyParam);
             //byte[] ret_data = Request("PortfChgQuantity", param_data);
         }
-        */
+        
         public void PortfSetPreferredLeg(string portfId, string legName)
         {
             entity.ModifyPortfolioPreferredLegParam modifyParam = new entity.ModifyPortfolioPreferredLegParam();
@@ -133,6 +133,7 @@ namespace PortfolioTrading.Infrastructure
             byte[] param_data = DataTranslater.Serialize(modifyParam);
             //byte[] ret_data = Request("PortfSetPreferredLeg", param_data);
         }
+        */
 
         public void PortfTurnSwitches(string portfId, bool autoOpen, bool autoStopGain, bool autoStopLoss,
             bool autoTracking, bool enablePrefer)
