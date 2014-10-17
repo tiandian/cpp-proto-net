@@ -155,6 +155,14 @@
                             <xctk:DecimalUpDown Value="{Binding AR_BollPeriod, Mode=TwoWay}" Margin="0, 0, 10, 0"/>
                         </DockPanel>
                     </DockPanel>
+                    <DockPanel Margin="2">
+                        <TextBlock DockPanel.Dock="Top" Margin="2">交易参数</TextBlock>
+                        <DockPanel Margin="10, 4, 10, 8">
+                            <TextBlock>最小价格变动</TextBlock>
+                            <xctk:DecimalUpDown Margin="10, 0, 10, 0"
+                                                Value="{Binding PriceTick, Mode=TwoWay}" ShowButtonSpinner="False"/>
+                        </DockPanel>
+                    </DockPanel>
                     <!--<StackPanel Orientation="Horizontal" Margin="4">
                 <TextBlock VerticalAlignment="Center">组合策略</TextBlock>
                 <ComboBox Width="80" SelectedIndex="0" ItemsSource="{Binding StrategyItemsSource}"

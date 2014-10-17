@@ -111,6 +111,7 @@ message LegItem
 	required int32 Ratio = 3;
 	required PosiDirectionType Side = 4;
 	required bool IsPreferred = 5;
+	required double MinPriceChange = 6;
 }
 
 message LegUpdateItem

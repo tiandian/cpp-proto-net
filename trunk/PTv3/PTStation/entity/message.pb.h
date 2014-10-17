@@ -1674,6 +1674,13 @@ class LegItem : public ::google::protobuf::Message {
   inline bool ispreferred() const;
   inline void set_ispreferred(bool value);
 
+  // required double MinPriceChange = 6;
+  inline bool has_minpricechange() const;
+  inline void clear_minpricechange();
+  static const int kMinPriceChangeFieldNumber = 6;
+  inline double minpricechange() const;
+  inline void set_minpricechange(double value);
+
   // @@protoc_insertion_point(class_scope:entity.LegItem)
  private:
   inline void set_has_legid();
@@ -1686,6 +1693,8 @@ class LegItem : public ::google::protobuf::Message {
   inline void clear_has_side();
   inline void set_has_ispreferred();
   inline void clear_has_ispreferred();
+  inline void set_has_minpricechange();
+  inline void clear_has_minpricechange();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -1694,9 +1703,10 @@ class LegItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 ratio_;
   int side_;
   bool ispreferred_;
+  double minpricechange_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
 
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -7738,6 +7748,28 @@ inline bool LegItem::ispreferred() const {
 inline void LegItem::set_ispreferred(bool value) {
   set_has_ispreferred();
   ispreferred_ = value;
+}
+
+// required double MinPriceChange = 6;
+inline bool LegItem::has_minpricechange() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void LegItem::set_has_minpricechange() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void LegItem::clear_has_minpricechange() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void LegItem::clear_minpricechange() {
+  minpricechange_ = 0;
+  clear_has_minpricechange();
+}
+inline double LegItem::minpricechange() const {
+  return minpricechange_;
+}
+inline void LegItem::set_minpricechange(double value) {
+  set_has_minpricechange();
+  minpricechange_ = value;
 }
 
 // -------------------------------------------------------------------

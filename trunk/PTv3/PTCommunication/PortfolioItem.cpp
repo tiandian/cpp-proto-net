@@ -52,6 +52,7 @@ void PTEntity::LegItem::To( entity::LegItem* pNativeLegItem )
 		entity::PosiDirectionType convertedSide = static_cast<entity::PosiDirectionType>(_side);
 		pNativeLegItem->set_side(convertedSide);
 		pNativeLegItem->set_ispreferred(_isPreferred);
+		pNativeLegItem->set_minpricechange(_minPriceChange);
 	}
 	finally
 	{

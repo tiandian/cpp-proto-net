@@ -183,6 +183,11 @@ namespace PortfolioTrading.Modules.Account
                 setting.TimeFrame = 60;
                 setting.FirstLegSymbol = Symbol1;
                 setting.SecondLegSymbol = Symbol2;
+
+                foreach(var l in portf.Legs)
+                {
+                    l.MinPriceChange = PriceTick;
+                }
             }
             else if (StrategyName == StrategySetting.ChangePositionStrategyName)
             {
@@ -580,7 +585,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region PriceTick
-        private double _tick;
+        private double _tick = 0.2;
 
         public double PriceTick
         {
