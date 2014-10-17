@@ -169,7 +169,6 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
-
         internal void SetIsPreferred(bool val)
         {
             _isPreferred = val;
@@ -194,6 +193,24 @@ namespace PortfolioTrading.Modules.Account
             }
         }
         #endregion
+
+        #region MinPriceChange
+        private double _minPriceChange;
+
+        public double MinPriceChange
+        {
+            get { return _minPriceChange; }
+            set
+            {
+                if (_minPriceChange != value)
+                {
+                    _minPriceChange = value;
+                    RaisePropertyChanged("MinPriceChange");
+                }
+            }
+        }
+        #endregion
+        
 
         public string PortfolioId { get; set; }
 
@@ -231,6 +248,12 @@ namespace PortfolioTrading.Modules.Account
                 leg.IsPreferred = bool.Parse(attr.Value);
             }
 
+            attr = xmlElement.Attribute("minPriceChange");
+            if(attr != null)
+            {
+                leg.MinPriceChange = double.Parse(attr.Value);
+            }
+
             return leg;
         }
 
@@ -241,6 +264,7 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("ratio", _ratio));
             elem.Add(new XAttribute("side", _side.ToString()));
             elem.Add(new XAttribute("isPreferred", _isPreferred.ToString()));
+            elem.Add(new XAttribute("minPriceChange", _minPriceChange.ToString()));
             return elem;
         }
 

@@ -75,6 +75,18 @@ public:
 		}
 	}
 
+	property double MinPriceChange
+	{
+		double get()
+		{
+			return _minPriceChange;
+		}
+		void set(double val)
+		{
+			_minPriceChange = val;
+		}
+	}
+
 	void To(entity::LegItem* pNativeLegItem);
 
 private:
@@ -84,6 +96,7 @@ private:
 	int _ratio;
 	PosiDirectionType _side;
 	bool _isPreferred;
+	double _minPriceChange;
 };
 
 public ref class PortfolioItem

@@ -1083,6 +1083,7 @@ namespace PortfolioTrading.Modules.Account
                 leg.Side = (PTEntity.PosiDirectionType)legVm.Side;
                 leg.Ratio = legVm.Ratio;
                 leg.IsPreferred = legVm.IsPreferred;
+                leg.MinPriceChange = legVm.MinPriceChange;
                 portfolioItem.Legs.Add(leg);
             }
 
