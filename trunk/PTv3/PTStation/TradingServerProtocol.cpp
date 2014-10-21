@@ -32,6 +32,8 @@ ProtobufPacketImpl* CTradingServerProtocol::createIncomingPacketFromServiceId( i
 		return new ProtobufPacket<entity::HeartbeatRequest>(serviceId);
 	case PortfolioModifyQtyRequestID:
 		return new ProtobufPacket<entity::ModifyPortfolioQtyParam>(serviceId);
+	case PortfolioModifyPreferredLegRequestID:
+		return new ProtobufPacket<entity::ModifyPortfolioPreferredLegParam>(serviceId);
 	case PortfolioOpenPositionRequestID:
 		return new ProtobufPacket<entity::PortfOpenPosiParam>(serviceId);
 	case PortfolioClosePositionRequestID:

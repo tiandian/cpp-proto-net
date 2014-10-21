@@ -180,11 +180,11 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 	switch(m_strategyType)
 	{
 	case entity::ARBITRAGE:
-		created = StrategyPtr(new CArbitrageStrategy(strategyItem, m_avatar));
+		created = StrategyPtr(new CArbitrageStrategy(strategyItem, m_avatar, this));
 		m_orderPlacer = OrderPlacerPtr(new CPortfolioArbitrageOrderPlacer);
 		break;
 	case entity::CHANGE_POSITION:
-		created = StrategyPtr(new CChangePositionStrategy(strategyItem, m_avatar));
+		created = StrategyPtr(new CChangePositionStrategy(strategyItem, m_avatar, this));
 		m_orderPlacer = OrderPlacerPtr(new CPortfolioOrderPlacer);
 		break;
 	case entity::SCALPER:
