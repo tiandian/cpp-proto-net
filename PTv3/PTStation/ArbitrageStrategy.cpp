@@ -6,6 +6,7 @@
 #include "PortfolioArbitrageOrderPlacer.h"
 #include "DoubleCompare.h"
 
+enum  { TIMES_OF_PRICE_TICK = 4 };
 
 entity::PosiDirectionType GetMlOrderDirection(const trade::MultiLegOrder& mlOrder)
 {
@@ -27,7 +28,7 @@ entity::PosiDirectionType GetMlOrderDirection(const trade::MultiLegOrder& mlOrde
 		return entity::NET;
 }
 
-CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar)
+CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar, CPortfolio* pPortfolio)
 	: CTechAnalyStrategy(strategyItem, pAvatar)
 	, m_timeFrame(60)
 	, m_bollPeriod(26)
@@ -51,6 +52,8 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem,
 	, m_shortPosition(0)
 	, m_shortAvgCost(0)
 {
+	InitForTargetGain(pPortfolio);
+
 	Apply(strategyItem, false);
 
 	CreateTriggers(strategyItem);
@@ -576,6 +579,16 @@ const double CArbitrageStrategy::CalcBoundaryByTargetGain( double mid, double ta
 	*outLower = actualMid - halfGain;
 
 	return actualMid;
+}
+
+void CArbitrageStrategy::InitForTargetGain(CPortfolio* pPortfolio)
+{
+	assert(pPortfolio != NULL);
+	if (pPortfolio->Count() > 1)
+	{
+		m_minStep = pPortfolio->GetLeg(1)->MinPriceChange();
+		m_targetGain = TIMES_OF_PRICE_TICK * m_minStep;
+	}
 }
 
 

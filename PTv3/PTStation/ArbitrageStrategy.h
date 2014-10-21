@@ -9,7 +9,7 @@ class CPortfolioArbitrageOrderPlacer;
 class CArbitrageStrategy : public CTechAnalyStrategy
 {
 public:
-	CArbitrageStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar);
+	CArbitrageStrategy(const entity::StrategyItem& strategyItem, CAvatarClient* pAvatar, CPortfolio* pPortfolio);
 	~CArbitrageStrategy(void);
 
 	virtual void Apply(const entity::StrategyItem& strategyItem, bool withTriggers);
@@ -33,6 +33,7 @@ private:
 	entity::PosiDirectionType GetFastTradeDirection();
 	void OpenPosition(entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 	void ClosePosition(CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, const string& comment, trade::SubmitReason reason);
+	void InitForTargetGain(CPortfolio* pPortfolio);
 
 	double m_costDiff;
 
