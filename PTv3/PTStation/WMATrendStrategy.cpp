@@ -287,7 +287,7 @@ void CWMATrendStrategy::OnBeforeAddingHistSrcConfig( CHistSourceCfg* pHistSrcCfg
 	}
 }
 
-int CWMATrendStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+int CWMATrendStrategy::OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
 	int qty = openOrder.quantity();
 

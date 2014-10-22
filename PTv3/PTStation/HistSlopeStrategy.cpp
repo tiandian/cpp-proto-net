@@ -310,7 +310,7 @@ void CHistSlopeStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 	pPortfUpdateItem->set_hs_slowslopedirection(m_slowSlopeDirection);
 }
 
-int CHistSlopeStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+int CHistSlopeStrategy::OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
 	int qty = openOrder.quantity();
 

@@ -75,20 +75,20 @@ void CPortfolioArbitrageOrderPlacer::OpenPosition(entity::PosiDirectionType posi
 {
 	m_multiLegOrderTemplate->set_reason(reason);
 	m_multiLegOrderTemplate->set_offset(trade::ML_OF_OPEN);
-	Run(posiDirection, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp, NULL);
+	Run(posiDirection, 0, trade::OF_OPEN, pLmtPxArr, iPxSize, trigQuoteTimestamp, NULL);
 	m_openingPosition = true;
 	m_lastOpenOrderId = m_multiLegOrderTemplate->orderid();
 }
 
-void CPortfolioArbitrageOrderPlacer::ClosePosition(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp, trade::SubmitReason reason)
+void CPortfolioArbitrageOrderPlacer::ClosePosition(int volumeToClose, entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp, trade::SubmitReason reason)
 {
 	m_multiLegOrderTemplate->set_reason(reason);
 	m_multiLegOrderTemplate->set_offset(trade::ML_OF_CLOSE);
-	Run(posiDirection, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp, m_lastOpenOrderId.c_str());
+	Run(posiDirection, volumeToClose, trade::OF_CLOSE_TODAY, pLmtPxArr, iPxSize, trigQuoteTimestamp, m_lastOpenOrderId.c_str());
 	m_openingPosition = false;
 }
 
-void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, trade::OffsetFlagType offset, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp, const char* openOrderId)
+void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection, int quantity, trade::OffsetFlagType offset, double* pLmtPxArr, int iPxSize, const boost::chrono::steady_clock::time_point& trigQuoteTimestamp, const char* openOrderId)
 {
 	m_isWorking.store(true, boost::memory_order_release);
 
@@ -131,6 +131,12 @@ void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection
 		
 		// Set Limit Price
 		pOrd->set_limitprice(pLmtPxArr[i]);
+
+		// Set quantity
+		int qty = quantity > 0 ? quantity 
+			: m_multiLegOrderTemplate->quantity() * (m_pPortf->GetLeg(i + 1)->Ratio());
+		pOrd->set_volumetotaloriginal(qty);
+		
 		
 		// Change corresponding LegOrderPlacer
 		CLegOrderPlacer* legOrdPlacer = GetLegOrderPlacer(pOrd->instrumentid());
@@ -139,6 +145,7 @@ void CPortfolioArbitrageOrderPlacer::Run(entity::PosiDirectionType posiDirection
 			legOrdPlacer->InputOrder().set_comboffsetflag(pOrd->comboffsetflag());
 			legOrdPlacer->InputOrder().set_direction(pOrd->direction());
 			legOrdPlacer->InputOrder().set_limitprice(pOrd->limitprice());
+			legOrdPlacer->InputOrder().set_volumetotaloriginal(pOrd->volumetotaloriginal());
 		}
 	}
 	

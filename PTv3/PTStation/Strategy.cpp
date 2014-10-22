@@ -66,12 +66,12 @@ void CStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpdateItem
 	}
 }
 
-int CStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+int CStrategy::OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
 	return pPortfolio->TotalOpenTimes();
 }
 
-int CStrategy::OnPortfolioRemovePosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder )
+int CStrategy::OnPortfolioRemovePosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder, int actualTradedVol)
 {
 	return pPortfolio->TotalCloseTimes();
 }

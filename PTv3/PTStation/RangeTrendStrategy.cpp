@@ -314,7 +314,7 @@ void CRangeTrendStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortf
 	pPortfUpdateItem->set_rt_recentstoplosspx(m_recentStopLossPx);
 }
 
-int CRangeTrendStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+int CRangeTrendStrategy::OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
 	int qty = openOrder.quantity();
 

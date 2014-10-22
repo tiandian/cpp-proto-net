@@ -664,11 +664,13 @@ void CPortfolioOrderPlacer::OnCompleted()
 {
 	UpdateMultiLegOrder(false);
 
+	int volumeTraded = m_activeOrdPlacer->Order().volumetraded();
+
 	trade::MlOrderOffset offset = m_multiLegOrderTemplate->offset();
 	if(offset == trade::ML_OF_OPEN || offset == trade::ML_OF_OTHER)
-		m_pPortf->AddPosition(*m_multiLegOrderTemplate);
+		m_pPortf->AddPosition(*m_multiLegOrderTemplate, volumeTraded);
 	else if(offset == trade::ML_OF_CLOSE)
-		m_pPortf->RemovePosition(*m_multiLegOrderTemplate);
+		m_pPortf->RemovePosition(*m_multiLegOrderTemplate, volumeTraded);
 	
 	m_pPortf->UpdatePosition();
 

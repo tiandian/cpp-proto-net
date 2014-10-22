@@ -116,7 +116,7 @@ void CScalperStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfUpd
 	pPortfUpdateItem->set_sc_diff(m_diff);
 }
 
-int CScalperStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+int CScalperStrategy::OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
 	int qty = openOrder.quantity();
 
