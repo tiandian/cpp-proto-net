@@ -206,7 +206,7 @@ void CLinerRegressionStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfol
 	}
 }
 
-int CLinerRegressionStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+int CLinerRegressionStrategy::OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
 	int qty = openOrder.quantity();
 

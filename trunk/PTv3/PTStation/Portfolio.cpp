@@ -290,14 +290,14 @@ void CPortfolio::GetStatisticsUpdate()
 	m_portfolioUpdate.set_profit(m_profit);
 }
 
-void CPortfolio::AddPosition( const trade::MultiLegOrder& openOrder )
+void CPortfolio::AddPosition(const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
-	int openTimes = m_strategy->OnPortfolioAddPosition(this, openOrder);
+	int openTimes = m_strategy->OnPortfolioAddPosition(this, openOrder, actualTradedVol);
 }
 
-void CPortfolio::RemovePosition( const trade::MultiLegOrder& closeOrder )
+void CPortfolio::RemovePosition(const trade::MultiLegOrder& closeOrder, int actualTradedVol)
 {
-	int closeTimes = m_strategy->OnPortfolioRemovePosition(this, closeOrder);
+	int closeTimes = m_strategy->OnPortfolioRemovePosition(this, closeOrder, actualTradedVol);
 }
 
 void CPortfolio::PushUpdate()

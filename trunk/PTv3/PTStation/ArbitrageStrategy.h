@@ -6,6 +6,14 @@
 
 class CPortfolioArbitrageOrderPlacer;
 
+enum CLOSE_POSITION_PURPOSE
+{
+	CLOSE_POSITION_UNKNOWN,
+	CLOSE_POSITION_FORCE,
+	CLOSE_POSITION_STOP_GAIN,
+	CLOSE_POSITION_STOP_LOSS
+};
+
 class CArbitrageStrategy : public CTechAnalyStrategy
 {
 public:
@@ -16,8 +24,8 @@ public:
 	virtual void Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp);
 	virtual void GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdateItem);
 
-	virtual int OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder);
-	virtual int OnPortfolioRemovePosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder);
+	virtual int OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol);
+	virtual int OnPortfolioRemovePosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder, int actualTradedVol);
 
 protected:
 	virtual void CreateTriggers(const entity::StrategyItem& strategyItem);
@@ -34,8 +42,10 @@ private:
 	void OpenPosition(entity::PosiDirectionType direction, CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp);
 	void ClosePosition(CPortfolioArbitrageOrderPlacer* pOrderPlacer, ARBI_DIFF_CALC diffPrices, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, const string& comment, trade::SubmitReason reason);
 	void InitForTargetGain(CPortfolio* pPortfolio);
+	bool IfStopLossClosePosition();
 
 	double m_costDiff;
+	int m_volumeToClose;
 
 	int m_timeFrame;
 	int m_bollPeriod;
@@ -44,6 +54,10 @@ private:
 	double m_minStep;
 	bool m_useTargetGain;
 	bool m_allowPending;
+
+	bool m_notOpenInStopLossDirection;
+	CLOSE_POSITION_PURPOSE m_closePositionPurpose;
+	entity::PosiDirectionType m_lastStopLossDirection;
 
 	double m_lastDiff;
 	double m_longDiff;

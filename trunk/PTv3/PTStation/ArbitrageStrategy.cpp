@@ -51,6 +51,10 @@ CArbitrageStrategy::CArbitrageStrategy(const entity::StrategyItem& strategyItem,
 	, m_longAvgCost(0)
 	, m_shortPosition(0)
 	, m_shortAvgCost(0)
+	, m_lastStopLossDirection(entity::NET)
+	, m_notOpenInStopLossDirection(true)
+	, m_closePositionPurpose(CLOSE_POSITION_UNKNOWN)
+	, m_volumeToClose(0)
 {
 	InitForTargetGain(pPortfolio);
 
@@ -230,6 +234,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		bool forceClosing = IsForceClosing() || OutOfTradingWindow(currentBarIdx);
 		if(forceClosing) // This close condition check is only effective on the bar after open
 		{
+			m_closePositionPurpose = CLOSE_POSITION_FORCE;
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Forcibly Closing position")
 				% pPortfolio->InvestorId() % pPortfolio->ID()));
 			ARBI_DIFF_CALC forceClosePx = { side == entity::LONG ? SHORT_DIFF : LONG_DIFF, 0, 0, 0};
@@ -247,6 +252,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 			if (side == entity::LONG)
 			{
 				// Fast Stop Gain
+				m_closePositionPurpose = CLOSE_POSITION_STOP_GAIN;
 				string logTxt = boost::str(boost::format("Fast StopGain: Fast Short diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_shortDiffFast % m_bollTop);
 				LOG_DEBUG(logger, logTxt);
 				pPortfolio->PrintLegsQuote();
@@ -256,6 +262,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 			else if (side == entity::SHORT)
 			{
 				// Fast Stop Gain
+				m_closePositionPurpose = CLOSE_POSITION_STOP_GAIN;
 				string logTxt = boost::str(boost::format("Fast StopGain: Fast Long diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_longDiffFast % m_bollBottom);
 				LOG_DEBUG(logger, logTxt);
 				pPortfolio->PrintLegsQuote();
@@ -270,6 +277,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				if(m_bollTop <= m_costDiff)
 				{
 					// Stop Loss
+					m_closePositionPurpose = CLOSE_POSITION_STOP_LOSS;
 					string logTxt = boost::str(boost::format("bollTop(%.2f) <= costDiff(%.2f) -> Stop Loss") % m_bollTop % m_costDiff);
 					LOG_DEBUG(logger, logTxt);
 					pPortfolio->PrintLegsQuote();
@@ -279,6 +287,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				else if(side != direction)
 				{
 					// Stop Gain
+					m_closePositionPurpose = CLOSE_POSITION_STOP_GAIN;
 					string logTxt = boost::str(boost::format("Short diff(%.2f) above bollTop(%.2f) -> Stop Gain") % m_shortDiff % m_bollTop);
 					LOG_DEBUG(logger, logTxt);
 					pPortfolio->PrintLegsQuote();
@@ -291,6 +300,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				if(m_bollBottom >= m_costDiff)
 				{
 					// Stop Loss
+					m_closePositionPurpose = CLOSE_POSITION_STOP_LOSS;
 					string logTxt = boost::str(boost::format("bollBottom(%.2f) >= costDiff(%.2f) -> Stop Loss") % m_bollBottom % m_costDiff);
 					LOG_DEBUG(logger, logTxt);
 					pPortfolio->PrintLegsQuote();
@@ -300,6 +310,7 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 				else if(side != direction)
 				{
 					// Stop Gain
+					m_closePositionPurpose = CLOSE_POSITION_STOP_GAIN;
 					string logTxt = boost::str(boost::format("Long diff(%.2f) below bollBottom(%.2f) -> Stop Gain") % m_longDiff % m_bollBottom);
 					LOG_DEBUG(logger, logTxt);
 					pPortfolio->PrintLegsQuote();
@@ -318,8 +329,16 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 	{
 		if (directionFast > entity::NET)
 		{
+			if (m_notOpenInStopLossDirection && directionFast == m_lastStopLossDirection)
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) does NOT open position same as last stop loss direction (%s)")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % GetPosiDirectionText(m_lastStopLossDirection)));
+				return;
+			}
+
 			if (!pOrderPlacer->IsWorking())
 			{
+				m_closePositionPurpose = CLOSE_POSITION_UNKNOWN;
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) FAST DEAL Opening position at bar %d")
 					% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx));
 				pPortfolio->PrintLegsQuote();
@@ -330,8 +349,16 @@ void CArbitrageStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, bo
 		}
 		else if (direction > entity::NET)
 		{
+			if (m_notOpenInStopLossDirection && direction == m_lastStopLossDirection)
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) does NOT open position same as last stop loss direction (%s)")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % GetPosiDirectionText(m_lastStopLossDirection)));
+				return;
+			}
+
 			if (!pOrderPlacer->IsWorking())
 			{
+				m_closePositionPurpose = CLOSE_POSITION_UNKNOWN;
 				LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) Opening position at bar %d")
 					% pPortfolio->InvestorId() % pPortfolio->ID() % currentBarIdx));
 				pPortfolio->PrintLegsQuote();
@@ -357,9 +384,11 @@ void CArbitrageStrategy::GetStrategyUpdate( entity::PortfolioUpdateItem* pPortfU
 	pPortfUpdateItem->set_ar_bollbottom(m_bollBottom);
 }
 
-int CArbitrageStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder )
+int CArbitrageStrategy::OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
-	int qty = openOrder.quantity();
+	int qty = actualTradedVol;
+	m_volumeToClose = actualTradedVol;
+	m_lastStopLossDirection = entity::NET;
 	double cost = CalcMlOrderCost(openOrder);
 
 	entity::PosiDirectionType posiDirection = GetMlOrderDirection(openOrder);
@@ -381,13 +410,15 @@ int CArbitrageStrategy::OnPortfolioAddPosition( CPortfolio* pPortfolio, const tr
 	return IncrementOpenTimes(pPortfolio, qty);
 }
 
-int CArbitrageStrategy::OnPortfolioRemovePosition( CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder )
+int CArbitrageStrategy::OnPortfolioRemovePosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& closeOrder, int actualTradedVol)
 {
-	int qty = closeOrder.quantity();
+	int qty = actualTradedVol;
+	m_volumeToClose = 0;
 	double cost = CalcMlOrderCost(closeOrder);
 	LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Strategy - Portfolio(%s) Removed position and Reset CostDiff")
 		% pPortfolio->InvestorId() % pPortfolio->ID()));
 	m_costDiff = 0;
+
 	entity::PosiDirectionType posiDirection = GetMlOrderDirection(closeOrder);
 	if(posiDirection == entity::LONG)
 	{
@@ -426,9 +457,20 @@ int CArbitrageStrategy::OnPortfolioRemovePosition( CPortfolio* pPortfolio, const
 		m_shortPosition = remaing;
 	}
 
+	if (IfStopLossClosePosition())
+	{
+		m_lastStopLossDirection = posiDirection;
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Arbitrage Trend - Portfolio(%s) SAVING last stop loss direction (%s)")
+			% pPortfolio->InvestorId() % pPortfolio->ID() % GetPosiDirectionText(m_lastStopLossDirection)));
+	}
+
 	return IncrementCloseTimes(pPortfolio, qty);
 }
 
+bool CArbitrageStrategy::IfStopLossClosePosition()
+{
+	return m_closePositionPurpose == CLOSE_POSITION_STOP_LOSS;
+}
 
 double CArbitrageStrategy::CalcMlOrderCost( const trade::MultiLegOrder& openOrder )
 {
@@ -544,7 +586,7 @@ void CArbitrageStrategy::ClosePosition( CPortfolioArbitrageOrderPlacer* pOrderPl
 		LOG_DEBUG(logger, boost::str(boost::format("Arbitrage Trend - %s Close position @ %.2f - %.2f (%s)")
 			% GetPosiDirectionText(direction) % lmtPrice[0] % lmtPrice[1]  % pQuote->update_time()));
 
-		pOrderPlacer->ClosePosition(direction, lmtPrice, 2, timestamp, reason);
+		pOrderPlacer->ClosePosition(m_volumeToClose, direction, lmtPrice, 2, timestamp, reason);
 
 		ResetForceClose();
 		pOrderPlacer->OutputStatus(boost::str(boost::format("%s - %s Æ½²Ö @ %.2f - %.2f")

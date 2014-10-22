@@ -78,8 +78,8 @@ public:
 
 	// for order placer
 	int NewOrderId(string& newId);
-	void AddPosition(const trade::MultiLegOrder& openOrder);
-	void RemovePosition(const trade::MultiLegOrder& closeOrder);
+	void AddPosition(const trade::MultiLegOrder& openOrder, int actualTradedVol);
+	void RemovePosition(const trade::MultiLegOrder& closeOrder, int actualTradedVol);
 	
 	int IncrementalCancelTimes(int amount){ m_cancelTimes += amount; return m_cancelTimes; }
 	void UpdatePosition();
