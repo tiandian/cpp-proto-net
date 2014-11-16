@@ -1,6 +1,6 @@
 CC = g++
-INC_DIR=-I../dev/pushframework-2.2/include
-CFLAGS=$(INC_DIR) -DUSE_NET_LIBS -O3
+INC_DIR=-I../dev/pushframework-2.2.1/include
+CFLAGS=$(INC_DIR) -DUSE_NET_LIBS -O3 -DLOG_FOR_TECH_CALC
 # -DFAKE_DEAL -DLOG_FOR_TECH_CALC
 PROTO_DIR = ./proto
 SRC = ./src
