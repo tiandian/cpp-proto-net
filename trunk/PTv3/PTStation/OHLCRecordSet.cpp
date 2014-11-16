@@ -124,7 +124,10 @@ void COHLCRecordSet::SetHistory( int barIdx, double open, double high, double lo
 	HighSeries[barIdx] = high;
 	LowSeries[barIdx] = low;
 	CloseSeries[barIdx] = close;
-	++m_nbElements;
+
+	// make sure m_nbElements not larger than m_historyDataSize
+	if (barIdx == m_nbElements)
+		++m_nbElements;
 
 #ifdef LOG_FOR_TECH_CALC
 	logger.Info(boost::str(boost::format("Setting History: bar Index - %d, close - %f")
