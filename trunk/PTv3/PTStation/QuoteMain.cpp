@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 		qsLogger.Init();
 	}
 
-	cout << "Startup QuoteStation v3.0.4" << endl;
+	cout << "Startup QuoteStation v4.0.0" << endl;
 	cout << "Connection string: " << qsConfig.ConnectionString() << endl;
 	cout << "BrokerId: " << qsConfig.BrokerId() << endl;
 	cout << "Username: " << qsConfig.Username() << endl;
