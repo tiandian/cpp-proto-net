@@ -1,9 +1,14 @@
 #pragma once
 
 #include "LegOrderPlacer.h"
-#include "RtnOrderWrapper.h"
 #include "entity/trade.pb.h"
 #include "entity/quote.pb.h"
+
+#ifndef USE_FEMAS_API
+#include "RtnOrderWrapper.h"
+#else
+#include "RtnOrderWrapper_FM.h"
+#endif // !USE_FEMAS_API
 
 #include <boost/atomic.hpp>
 

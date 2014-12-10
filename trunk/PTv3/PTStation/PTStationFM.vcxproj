@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{698611AC-6CA7-4C66-996F-CE4B41214060}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>PTStationFM</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Configuration)\Server\</OutDir>
+    <IntDir>$(Configuration)\Femas</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Bin\$(Configuration)\Server\</OutDir>
+    <IntDir>$(Configuration)\Femas</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;LOG_FOR_TRADE;LOG_FOR_TECH_CALC;QUOTE_TIME_EMU;BOOST_ASIO_DISABLE_STD_CHRONO;USE_FEMAS_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Dev\boost_1_56_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.5.0\src;D:\Dev\PushFramework_2.2.1\include;D:\Dev\ta-lib\ta-lib\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>D:\Dev\boost_1_56_0\stage\lib;D:\Dev\log4cpp\lib\vc120\debug;D:\Dev\protobuf-2.5.0\lib\debug;D:\Dev\PushFramework_2.2.1\lib\debug;D:\Dev\ta-lib\ta-lib\c\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib;log4cppD.lib;PushFramework.lib;ws2_32.lib;ta_libc_cdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /y log4cpp.property $(OutDir)
+copy /y D:\Dev\PushFramework_2.2.1\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)
+copy /y FemasAPI\*.dll $(OutDir)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;USE_NET_LIBS;BOOST_ASIO_DISABLE_STD_CHRONO;USE_FEMAS_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Dev\boost_1_56_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.5.0\src;D:\Dev\PushFramework_2.2.1\include;D:\Dev\ta-lib\ta-lib\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>D:\Dev\boost_1_56_0\stage\lib;D:\Dev\log4cpp\lib\vc120\release;D:\Dev\protobuf-2.5.0\lib\release;D:\Dev\PushFramework_2.2.1\lib\release;D:\Dev\ta-lib\ta-lib\c\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib;log4cppLIB.lib;PushFramework.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy /y log4cpp.property $(OutDir)
+copy /y D:\Dev\PushFramework_2.2.1\lib\$(ConfigurationName)\PushFramework.dll $(OutDir)
+copy /y FemasAPI\*.dll $(OutDir)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="log4cpp.property" />
+    <None Include="Makefile" />
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ArbitrageStrategy.h" />
+    <ClInclude Include="ArbitrageTrigger.h" />
+    <ClInclude Include="ASCTrendStrategy.h" />
+    <ClInclude Include="ASCTrendTrigger.h" />
+    <ClInclude Include="AsyncOrderPendingTimer.h" />
+    <ClInclude Include="ATRDataSet.h" />
+    <ClInclude Include="AvatarClient.h" />
+    <ClInclude Include="AvatarFactory.h" />
+    <ClInclude Include="BollDataSet.h" />
+    <ClInclude Include="BufferRunner.h" />
+    <ClInclude Include="BuildOrderException.h" />
+    <ClInclude Include="ChangePositionStrategy.h" />
+    <ClInclude Include="ChangePositionTrigger.h" />
+    <ClInclude Include="charsetconvert.h" />
+    <ClInclude Include="ClientProtocol.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="DiffRecordSet.h" />
+    <ClInclude Include="DonchianDataSet.h" />
+    <ClInclude Include="DoubleCompare.h" />
+    <ClInclude Include="entity\enum.pb.h" />
+    <ClInclude Include="entity\message.pb.h" />
+    <ClInclude Include="entity\packet.pb.h" />
+    <ClInclude Include="entity\quote.pb.h" />
+    <ClInclude Include="entity\trade.pb.h" />
+    <ClInclude Include="InputOrder_FM.h" />
+    <ClInclude Include="LinerRegressionDataSet.h" />
+    <ClInclude Include="LinerRegressionStrategy.h" />
+    <ClInclude Include="PortfolioArbitrageOrderPlacer.h" />
+    <ClInclude Include="RangeTrendStrategy.h" />
+    <ClInclude Include="RtnOrderWrapper_FM.h" />
+    <ClInclude Include="StrategyOrderCommand.h" />
+    <ClInclude Include="TradeAgent_FM.h" />
+    <ClInclude Include="WATRStopDataSet.h" />
+    <ClInclude Include="WillRDataSet.h" />
+    <ClInclude Include="WMATrendDataSet.h" />
+    <ClInclude Include="WMATrendStrategy.h" />
+    <ClInclude Include="WMATrendTrigger.h" />
+    <ClInclude Include="MACDDataSet.h" />
+    <ClInclude Include="PortfolioTrendOrderPlacer.h" />
+    <ClInclude Include="SymbolTimeUtil.h" />
+    <ClInclude Include="TechStrategyDefs.h" />
+    <ClInclude Include="TradingTimeSpan.h" />
+    <ClInclude Include="FakeDealer.h" />
+    <ClInclude Include="FileOperations.h" />
+    <ClInclude Include="globalmembers.h" />
+    <ClInclude Include="HistDataReader.h" />
+    <ClInclude Include="HistDataWriter.h" />
+    <ClInclude Include="HistSlopeStrategy.h" />
+    <ClInclude Include="HistSlopeTrigger.h" />
+    <ClInclude Include="Leg.h" />
+    <ClInclude Include="LegOrderPlacer.h" />
+    <ClInclude Include="LogManager.h" />
+    <ClInclude Include="OHLCRecordSet.h" />
+    <ClInclude Include="OrderEvent.h" />
+    <ClInclude Include="orderhelper.h" />
+    <ClInclude Include="OrderProcessor.h" />
+    <ClInclude Include="Portfolio.h" />
+    <ClInclude Include="PortfolioManager.h" />
+    <ClInclude Include="PortfolioOrderHelper.h" />
+    <ClInclude Include="PortfolioOrderPlacer.h" />
+    <ClInclude Include="PortfolioScalperOrderPlacer.h" />
+    <ClInclude Include="PriceBarDataProxy.h" />
+    <ClInclude Include="PriceBarDataSource.h" />
+    <ClInclude Include="PriceBarGen.h" />
+    <ClInclude Include="ProtobufPacket.h" />
+    <ClInclude Include="ProtobufProtocol.h" />
+    <ClInclude Include="ProtocolIDs.h" />
+    <ClInclude Include="QuoteAgent.h" />
+    <ClInclude Include="QuoteAgentCallback.h" />
+    <ClInclude Include="QuoteFetcher.h" />
+    <ClInclude Include="QuoteRepositry.h" />
+    <ClInclude Include="QuoteStore.h" />
+    <ClInclude Include="RequestedServices.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="ScalperStrategy.h" />
+    <ClInclude Include="ScalperTrigger.h" />
+    <ClInclude Include="SettingChangeTrace.h" />
+    <ClInclude Include="ShmQuoteFeed.h" />
+    <ClInclude Include="ShmQuoteSubscribe.h" />
+    <ClInclude Include="shm_remover.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Strategy.h" />
+    <ClInclude Include="SymbolInfo.h" />
+    <ClInclude Include="SymbolInfoRepositry.h" />
+    <ClInclude Include="SyncRequest.h" />
+    <ClInclude Include="TaCalculator.h" />
+    <ClInclude Include="TaIndicatorSet.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TechAnalyStrategy.h" />
+    <ClInclude Include="TechDataRepo.h" />
+    <ClInclude Include="TradeAgentCallback.h" />
+    <ClInclude Include="TradingServer.h" />
+    <ClInclude Include="TradingServerProtocol.h" />
+    <ClInclude Include="TrailingStopTrigger.h" />
+    <ClInclude Include="Trigger.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ArbitrageStrategy.cpp" />
+    <ClCompile Include="ArbitrageTrigger.cpp" />
+    <ClCompile Include="ASCTrendStrategy.cpp" />
+    <ClCompile Include="ASCTrendTrigger.cpp" />
+    <ClCompile Include="AsyncOrderPendingTimer.cpp" />
+    <ClCompile Include="ATRDataSet.cpp" />
+    <ClCompile Include="AvatarClient.cpp" />
+    <ClCompile Include="AvatarFactory.cpp" />
+    <ClCompile Include="BollDataSet.cpp" />
+    <ClCompile Include="ChangePositionStrategy.cpp" />
+    <ClCompile Include="ChangePositionTrigger.cpp" />
+    <ClCompile Include="charsetconvert.cpp" />
+    <ClCompile Include="ClientProtocol.cpp" />
+    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="DiffRecordSet.cpp" />
+    <ClCompile Include="DonchianDataSet.cpp" />
+    <ClCompile Include="DoubleCompare.cpp" />
+    <ClCompile Include="entity\enum.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="entity\message.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="entity\packet.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="entity\quote.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="entity\trade.pb.cc">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="InputOrder_FM.cpp" />
+    <ClCompile Include="LinerRegressionDataSet.cpp" />
+    <ClCompile Include="LinerRegressionStrategy.cpp" />
+    <ClCompile Include="PortfolioArbitrageOrderPlacer.cpp" />
+    <ClCompile Include="RangeTrendStrategy.cpp" />
+    <ClCompile Include="RtnOrderWrapper_FM.cpp" />
+    <ClCompile Include="StrategyOrderCommand.cpp" />
+    <ClCompile Include="TradeAgent_FM.cpp" />
+    <ClCompile Include="WATRStopDataSet.cpp" />
+    <ClCompile Include="WillRDataSet.cpp" />
+    <ClCompile Include="WMATrendDataSet.cpp" />
+    <ClCompile Include="WMATrendStrategy.cpp" />
+    <ClCompile Include="WMATrendTrigger.cpp" />
+    <ClCompile Include="MACDDataSet.cpp" />
+    <ClCompile Include="PortfolioTrendOrderPlacer.cpp" />
+    <ClCompile Include="SymbolTimeUtil.cpp" />
+    <ClCompile Include="TradingTimeSpan.cpp" />
+    <ClCompile Include="FakeDealer.cpp" />
+    <ClCompile Include="FileOperations.cpp" />
+    <ClCompile Include="HistDataReader.cpp" />
+    <ClCompile Include="HistDataWriter.cpp" />
+    <ClCompile Include="HistSlopeStrategy.cpp" />
+    <ClCompile Include="HistSlopeTrigger.cpp" />
+    <ClCompile Include="Leg.cpp" />
+    <ClCompile Include="LegOrderPlacer.cpp" />
+    <ClCompile Include="LogManager.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Use</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="OHLCRecordSet.cpp" />
+    <ClCompile Include="orderhelper.cpp" />
+    <ClCompile Include="OrderProcessor.cpp" />
+    <ClCompile Include="Portfolio.cpp" />
+    <ClCompile Include="PortfolioManager.cpp" />
+    <ClCompile Include="PortfolioOrderHelper.cpp" />
+    <ClCompile Include="PortfolioOrderPlacer.cpp" />
+    <ClCompile Include="PortfolioScalperOrderPlacer.cpp" />
+    <ClCompile Include="PriceBarDataProxy.cpp" />
+    <ClCompile Include="PriceBarDataSource.cpp" />
+    <ClCompile Include="PriceBarGen.cpp" />
+    <ClCompile Include="ProtobufPacket.cpp" />
+    <ClCompile Include="ProtobufProtocol.cpp" />
+    <ClCompile Include="QuoteAgent.cpp" />
+    <ClCompile Include="QuoteFetcher.cpp" />
+    <ClCompile Include="QuoteRepositry.cpp" />
+    <ClCompile Include="QuoteStore.cpp" />
+    <ClCompile Include="RequestedServices.cpp" />
+    <ClCompile Include="ScalperStrategy.cpp" />
+    <ClCompile Include="ScalperTrigger.cpp" />
+    <ClCompile Include="SettingChangeTrace.cpp" />
+    <ClCompile Include="ShmQuoteFeed.cpp" />
+    <ClCompile Include="ShmQuoteSubscribe.cpp" />
+    <ClCompile Include="Strategy.cpp" />
+    <ClCompile Include="SymbolInfo.cpp" />
+    <ClCompile Include="SymbolInfoRepositry.cpp" />
+    <ClCompile Include="TaCalculator.cpp" />
+    <ClCompile Include="TaIndicatorSet.cpp" />
+    <ClCompile Include="TechAnalyStrategy.cpp" />
+    <ClCompile Include="TechDataRepo.cpp" />
+    <ClCompile Include="TradeStation.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TradingServer.cpp" />
+    <ClCompile Include="TradingServerProtocol.cpp" />
+    <ClCompile Include="TrailingStopTrigger.cpp" />
+    <ClCompile Include="Trigger.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="appres.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

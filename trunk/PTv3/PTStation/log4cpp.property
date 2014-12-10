@@ -1,5 +1,6 @@
-log4cpp.rootCategory=DEBUG, rollingAppender
-log4cpp.category.logger=DEBUG, consoleAppender
+log4cpp.rootCategory=DEBUG, consoleAppender
+log4cpp.category.logger=DEBUG, rollingAppender
+log4cpp.category.logger_FM=DEBUG, rollingAppender2
 
 log4cpp.appender.consoleAppender=ConsoleAppender
 log4cpp.appender.consoleAppender.layout=PatternLayout
@@ -11,4 +12,11 @@ log4cpp.appender.rollingAppender.maxFileSize=10240000
 log4cpp.appender.rollingAppender.maxBackupIndex=10
 log4cpp.appender.rollingAppender.layout=PatternLayout
 log4cpp.appender.rollingAppender.layout.ConversionPattern=%d{%m-%d %H:%M:%S,%l} <%t> [%p] %m%n
+
+log4cpp.appender.rollingAppender2=RollingFileAppender
+log4cpp.appender.rollingAppender2.fileName=./log/pt_fm_log.txt
+log4cpp.appender.rollingAppender2.maxFileSize=10240000
+log4cpp.appender.rollingAppender2.maxBackupIndex=10
+log4cpp.appender.rollingAppender2.layout=PatternLayout
+log4cpp.appender.rollingAppender2.layout.ConversionPattern=%d{%m-%d %H:%M:%S,%l} <%t> [%p] %m%n
 

@@ -1,10 +1,17 @@
 #pragma once
 
-#include "InputOrder.h"
 #include "AsyncOrderPendingTimer.h"
-#include "RtnOrderWrapper.h"
+
 #include "entity/trade.pb.h"
 #include "entity/quote.pb.h"
+
+#ifndef USE_FEMAS_API
+#include "InputOrder.h"
+#include "RtnOrderWrapper.h"
+#else
+#include "InputOrder_FM.h"
+#include "RtnOrderWrapper_FM.h"
+#endif // !USE_FEMAS_API
 
 class CPortfolioOrderPlacer;
 

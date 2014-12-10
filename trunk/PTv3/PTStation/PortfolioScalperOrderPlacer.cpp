@@ -1,9 +1,14 @@
 #include "StdAfx.h"
 #include "PortfolioScalperOrderPlacer.h"
 #include "Portfolio.h"
-#include "InputOrder.h"
 #include "OrderProcessor.h"
 #include "ScalperStrategy.h"
+
+#ifndef USE_FEMAS_API
+#include "InputOrder.h"
+#else
+#include "InputOrder_FM.h"
+#endif // !USE_FEMAS_API
 
 #include <boost/date_time.hpp>
 

@@ -1,6 +1,10 @@
 #pragma once
 
+#ifndef USE_FEMAS_API
 #include "RtnOrderWrapper.h"
+#else
+#include "RtnOrderWrapper_FM.h"
+#endif // !USE_FEMAS_API
 
 struct evtOrder
 {

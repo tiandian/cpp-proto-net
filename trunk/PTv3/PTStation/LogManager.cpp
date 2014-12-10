@@ -6,6 +6,13 @@
 #include <log4cpp/Category.hh>
 #include <log4cpp/PropertyConfigurator.hh>
 
+#ifndef USE_FEMAS_API
+#define LOGGER_NAME "logger"
+#else
+#define LOGGER_NAME "logger_FM"
+#endif // !USE_FEMAS_API
+
+
 using namespace std;
 
 extern CConfiguration config;
@@ -15,7 +22,7 @@ log4cpp::Category& GetRootLogger()
 	return log4cpp::Category::getRoot();
 }
 
-std::string loggerName("logger");
+std::string loggerName(LOGGER_NAME);
 
 log4cpp::Category& GetLogger()
 {
