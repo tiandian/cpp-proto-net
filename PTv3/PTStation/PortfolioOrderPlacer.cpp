@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "PortfolioOrderPlacer.h"
-#include "InputOrder.h"
 #include "Portfolio.h"
 #include "OrderProcessor.h"
 #include "globalmembers.h"
@@ -8,6 +7,12 @@
 #include "OrderEvent.h"
 #include "charsetconvert.h"
 #include "BuildOrderException.h"
+
+#ifndef USE_FEMAS_API
+#include "InputOrder.h"
+#else
+#include "InputOrder_FM.h"
+#endif // !USE_FEMAS_API
 
 #include <boost/date_time.hpp>
 

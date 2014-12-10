@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PTClientUI", "PTClientUI\PTClientUI.csproj", "{CC74C292-75A2-49F9-85CB-AE721D8C1298}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PTStation", "PTStation\PTStation.vcxproj", "{4C3352A7-751A-4B1A-8735-C1647B83AED9}"
@@ -8,6 +10,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PTCommunication", "PTCommunication\PTCommunication.vcxproj", "{155496B9-C70D-4731-B52D-4D6175559FBD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QuoteStation", "PTStation\QuoteStation.vcxproj", "{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PTStationFM", "PTStation\PTStationFM.vcxproj", "{698611AC-6CA7-4C66-996F-CE4B41214060}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,20 @@ Global
 		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|Win32.ActiveCfg = Release|Win32
 		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|Win32.Build.0 = Release|Win32
 		{B3E16F1D-3B43-4CEB-9805-F4AF67D506E6}.Release|x86.ActiveCfg = Release|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Debug|Win32.ActiveCfg = Debug|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Debug|Win32.Build.0 = Debug|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Debug|x86.ActiveCfg = Debug|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Debug|x86.Build.0 = Debug|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Release|Any CPU.ActiveCfg = Release|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Release|Win32.ActiveCfg = Release|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Release|Win32.Build.0 = Release|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Release|x86.ActiveCfg = Release|Win32
+		{698611AC-6CA7-4C66-996F-CE4B41214060}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

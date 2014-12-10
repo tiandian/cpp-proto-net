@@ -1,12 +1,18 @@
 #pragma once
 
-#include "TradeAgent.h"
 #include "QuoteAgent.h"
 #include "PortfolioManager.h"
 #include "QuoteRepositry.h"
 #include "OrderProcessor.h"
 #include "TechDataRepo.h"
 #include "entity/message.pb.h"
+
+#ifndef USE_FEMAS_API
+#include "TradeAgent.h"
+#else
+#include "TradeAgent_FM.h"
+#endif // !USE_FEMAS_API
+
 
 #include <boost/date_time.hpp>
 

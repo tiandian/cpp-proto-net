@@ -2,12 +2,18 @@
 #include "OrderProcessor.h"
 #include "globalmembers.h"
 #include "orderhelper.h"
-#include "TradeAgent.h"
 #include "AvatarClient.h"
 #include "charsetconvert.h"
 #include "SymbolInfoRepositry.h"
 #include "PortfolioOrderPlacer.h"
+
+#ifndef USE_FEMAS_API
 #include "InputOrder.h"
+#include "TradeAgent.h"
+#else
+#include "InputOrder_FM.h"
+#include "TradeAgent_FM.h"
+#endif // !USE_FEMAS_API
 
 #include <boost/date_time.hpp>
 
@@ -257,7 +263,7 @@ trade::OffsetFlagType GetTradeOffset(const string& exchId, boost::gregorian::dat
 trade::InputOrder* COrderProcessor::BuildCloseOrder( const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx )
 {
 	entity::Quote* pQuote = NULL;
-	bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
+	/*bool succ = m_pTradeAgent->QuerySymbol(symbol, &pQuote);
 	if(succ)
 	{
 		logger.Info(boost::str(boost::format("Query Quote %s: %d") 
@@ -279,7 +285,7 @@ trade::InputOrder* COrderProcessor::BuildCloseOrder( const string& symbol, trade
 	else
 	{
 		logger.Warning(boost::str(boost::format("Cannot query quote %s") % symbol));
-	}
+	}*/
 	return NULL;
 }
 
