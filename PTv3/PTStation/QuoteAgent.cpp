@@ -128,7 +128,11 @@ bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 	return retVal;
 }
 
-void CQuoteAgent::OnQuotePush( CThostFtdcDepthMarketDataField* mktDataField, longlong timestamp )
+#ifndef USE_FEMAS_API
+void CQuoteAgent::OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField, longlong timestamp)
+#else
+void CQuoteAgent::OnQuotePush(CUstpFtdcDepthMarketDataField* mktDataField, longlong timestamp)
+#endif
 {
 	if(m_pCallback != NULL)
 	{

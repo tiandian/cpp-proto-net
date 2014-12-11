@@ -1,6 +1,10 @@
 #pragma once
 
+#ifndef USE_FEMAS_API
 #include "ThostTraderApi/ThostFtdcMdApi.h"
+#else
+#include "FemasAPI/USTPFtdcMduserApi.h"
+#endif
 #include "entity/quote.pb.h"
 
 #include <set>
@@ -18,7 +22,12 @@ public:
 	CQuoteFetcher* GetFetcher();
 	int ReclaimFetcher(CQuoteFetcher* pFetcher);
 
+#ifndef USE_FEMAS_API
 	void Set(CThostFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp);
+#else
+	void Set(CUstpFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp);
+#endif
+	
 	boost::chrono::steady_clock::time_point Get(
 		boost::chrono::steady_clock::time_point timestamp, entity::Quote* outQuote);
 
@@ -36,7 +45,12 @@ private:
 	boost::condition_variable m_cond;
 	boost::mutex m_quoteMutex;
 
+#ifndef USE_FEMAS_API
 	CThostFtdcDepthMarketDataField m_cachedQuoteData;
+#else
+	CUstpFtdcDepthMarketDataField m_cachedQuoteData;
+#endif
+	
 	boost::chrono::steady_clock::time_point m_quoteTimestamp;
 	bool m_isEnd;
 };

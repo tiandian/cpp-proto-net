@@ -20,7 +20,13 @@
 #include <boost/algorithm/string.hpp>
 
 #ifdef WIN32
+
+#ifndef USE_FEMAS_API
 #pragma comment(lib, "./ThostTraderApi/thostmduserapi.lib")
+#else
+#pragma comment(lib, "./FemasAPI/USTPmduserapi.lib")
+#endif
+
 #endif
 
 using namespace std;
@@ -40,7 +46,12 @@ vector<QuoteProxyPtr> quoteProxyVec;
 int launchChildTest(int argc, char* argv[]);
 void signalHandler( int signum );
 void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer);
+
+#ifndef USE_FEMAS_API
 void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField);
+#else
+void OnQuotePush(CUstpFtdcDepthMarketDataField* mktDataField);
+#endif
 
 void OnSubscribeMarketData(char** symbolArr, int symCount);
 void OnUnsubscribeMarketData(char** symbolArr, int symCount);
@@ -66,7 +77,13 @@ int main(int argc, char* argv[])
 		qsLogger.Init();
 	}
 
-	cout << "Startup QuoteStation v4.0.0" << endl;
+	cout << "Startup QuoteStation v4.0.0";
+#ifndef USE_FEMAS_API
+	cout << endl;
+#else
+	cout << " for Femas" << endl;
+#endif
+	
 	cout << "Connection string: " << qsConfig.ConnectionString() << endl;
 	cout << "BrokerId: " << qsConfig.BrokerId() << endl;
 	cout << "Username: " << qsConfig.Username() << endl;
@@ -207,7 +224,11 @@ void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer)
 	cout << "Test subscribeQuoteProc done." << endl;
 }
 
+#ifndef USE_FEMAS_API
 void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField)
+#else
+void OnQuotePush(CUstpFtdcDepthMarketDataField* mktDataField)
+#endif
 {
 	cout << "[Parent process] OnQuotePush : " << mktDataField->InstrumentID << ", "
 		<< mktDataField->LastPrice << ", "
