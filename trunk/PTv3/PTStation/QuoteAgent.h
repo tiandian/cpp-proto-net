@@ -27,7 +27,12 @@ public:
 	bool IsDisconnected(){ return !m_bIsConnected; }
 
 private:
+#ifndef USE_FEMAS_API
 	void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField, longlong timestamp);
+#else
+	void OnQuotePush(CUstpFtdcDepthMarketDataField* mktDataField, longlong timestamp);
+#endif
+	
 	void LaunchChildProc(string cmd);
 
 	CQuoteAgentCallback* m_pCallback;

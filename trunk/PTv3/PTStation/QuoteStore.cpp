@@ -30,7 +30,11 @@ CQuoteStore::~CQuoteStore(void)
 		% m_symbol));
 }
 
-void CQuoteStore::Set( CThostFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp )
+#ifndef USE_FEMAS_API
+void CQuoteStore::Set(CThostFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp)
+#else
+void CQuoteStore::Set(CUstpFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp)
+#endif
 {
 	// as struct is value type, this should be correct
 	boost::unique_lock<boost::mutex> lock(m_quoteMutex);
@@ -88,8 +92,7 @@ void CQuoteStore::GetQuote( entity::Quote* outQuote )
 {
 	outQuote->set_symbol(m_cachedQuoteData.InstrumentID);
 	outQuote->set_trading_day(m_cachedQuoteData.TradingDay);
-	outQuote->set_exchange_id(m_cachedQuoteData.ExchangeID);
-	outQuote->set_exchange_symbol_id(m_cachedQuoteData.ExchangeInstID);
+
 	outQuote->set_last(m_cachedQuoteData.LastPrice);
 	outQuote->set_prev_settlement_price(m_cachedQuoteData.PreSettlementPrice);
 	outQuote->set_prev_close(m_cachedQuoteData.PreClosePrice);
@@ -149,7 +152,12 @@ void CQuoteStore::GetQuote( entity::Quote* outQuote )
 	outQuote->set_ask_5(m_cachedQuoteData.AskPrice5);
 	outQuote->set_ask_size_5(m_cachedQuoteData.AskVolume5);
 	*/
+#ifndef USE_FEMAS_API
+	outQuote->set_exchange_id(m_cachedQuoteData.ExchangeID);
+	outQuote->set_exchange_symbol_id(m_cachedQuoteData.ExchangeInstID);
 	outQuote->set_average_price(m_cachedQuoteData.AveragePrice);
+#endif
+	
 }
 
 void CQuoteStore::EndIfOnlyOneLeft()

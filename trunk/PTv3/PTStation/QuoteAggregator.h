@@ -1,7 +1,12 @@
 #pragma once
 #include "ShmQuoteSubscribe.h"
 #include "ShmQuoteFeed.h"
+
+#ifndef USE_FEMAS_API
 #include "ThostTraderApi/ThostFtdcMdApi.h"
+#else
+#include "FemasAPI/USTPFtdcMduserApi.h"
+#endif
 
 #include <boost/unordered_map.hpp>
 #include <boost/bind.hpp>
@@ -34,7 +39,12 @@ public:
 	~CQuoteAggregator(void);
 
 	bool Initialize(const string& brokerId, const string& userId);
+
+#ifndef USE_FEMAS_API
 	void OnQuoteReceived(const string& connectIP, CThostFtdcDepthMarketDataField *pDepthMarketData);
+#else
+	void OnQuoteReceived(const string& connectIP, CUstpFtdcDepthMarketDataField *pDepthMarketData);
+#endif
 
 private:
 	void SubscribeMarketData(char** symbolArr, int symCount);

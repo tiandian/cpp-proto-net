@@ -73,7 +73,11 @@ void CQuoteAggregator::OnTerminateNotified()
 		m_quotingEndFunc();
 }
 
+#ifndef USE_FEMAS_API
 void CQuoteAggregator::OnQuoteReceived( const string& connectIP, CThostFtdcDepthMarketDataField *pDepthMarketData )
+#else
+void CQuoteAggregator::OnQuoteReceived(const string& connectIP, CUstpFtdcDepthMarketDataField *pDepthMarketData)
+#endif
 {
 	boost::mutex::scoped_lock l(m_mutex);
 	long delay = 0;
