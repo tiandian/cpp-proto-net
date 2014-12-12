@@ -23,6 +23,7 @@ namespace PortfolioTrading.Modules.Account
     public class AccountVM : NotificationObject
     {
         private ObservableCollection<PortfolioVM> _acctPortfolios = new ObservableCollection<PortfolioVM>();
+        private RefDatItemsSource<PTEntity.HedgeFlagType, string> _hedgeFlagItemsSource = new RefDatItemsSource<PTEntity.HedgeFlagType,string>();
 
         private Client _client;
         private ClientHandlerImpl _clientHandler;
@@ -64,6 +65,13 @@ namespace PortfolioTrading.Modules.Account
             _client.OnQuoteReceived += new Action<entity.Quote>(_client_OnQuoteReceived);
             _client.OnPositionDetialReturn += new Action<trade.PositionDetailInfo>(_client_OnPositionDetialReturn);
             */
+
+            _hedgeFlagItemsSource.Add(new RefDataItem<PTEntity.HedgeFlagType, string> 
+                { Value = PTEntity.HedgeFlagType.SPECULATION, DisplayText = "投机" });
+            _hedgeFlagItemsSource.Add(new RefDataItem<PTEntity.HedgeFlagType, string> 
+                { Value = PTEntity.HedgeFlagType.ARBITRAGE, DisplayText = "套利" });
+            _hedgeFlagItemsSource.Add(new RefDataItem<PTEntity.HedgeFlagType, string> 
+                { Value = PTEntity.HedgeFlagType.HEDGE, DisplayText = "套保" });
         }
 
         void _clientHandler_OnConnectionClosed()
@@ -175,6 +183,23 @@ namespace PortfolioTrading.Modules.Account
             }
         }
         #endregion
+
+        #region HedgeFlag
+        private PTEntity.HedgeFlagType _hedgeFlag = PTEntity.HedgeFlagType.SPECULATION;
+
+        public PTEntity.HedgeFlagType HedgeFlag
+        {
+            get { return _hedgeFlag; }
+            set
+            {
+                if (_hedgeFlag != value)
+                {
+                    _hedgeFlag = value;
+                    RaisePropertyChanged("HedgeFlag");
+                }
+            }
+        }
+        #endregion
         
         #region HostPort
         private int _hostPort;
@@ -213,6 +238,10 @@ namespace PortfolioTrading.Modules.Account
 
         #endregion
 
+        public RefDatItemsSource<PTEntity.HedgeFlagType, string> HedgeFlagItemsSource
+        {
+            get { return _hedgeFlagItemsSource; }
+        }
 
         public IEnumerable<PortfolioVM> Portfolios
         {
@@ -350,6 +379,7 @@ namespace PortfolioTrading.Modules.Account
             bool? res = dlg.ShowDialog();
             if (res ?? false)
             {
+                dlg.Portfolio.HedgeFlag = HedgeFlag;
                 PTEntity.PortfolioItem portfolioItem = dlg.Portfolio.GetEntity();
                 AddPorfolio(portf);
                 if(_client.IsConnected)
@@ -583,6 +613,10 @@ namespace PortfolioTrading.Modules.Account
             if (attrMaxCancel != null)
                 acct.MaxCancel = int.Parse(attrMaxCancel.Value);
 
+            XAttribute attrHedgeFlag = xmlElement.Attribute("hedgeFlag");
+            if (attrHedgeFlag != null)
+                acct.HedgeFlag = (PTEntity.HedgeFlagType)Enum.Parse(typeof(PTEntity.HedgeFlagType), attrHedgeFlag.Value);
+
             foreach(var portfElem in xmlElement.Element("portfolios").Elements("portfolio"))
             {
                 PortfolioVM porfVm = PortfolioVM.Load(acct, portfElem);
@@ -600,6 +634,7 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("password", _password));
             elem.Add(new XAttribute("maxSubmit", _maxSubmit));
             elem.Add(new XAttribute("maxCancel", _maxCancel));
+            elem.Add(new XAttribute("hedgeFlag", _hedgeFlag));
 
             XElement elemPortfs = new XElement("portfolios");
             lock (_acctPortfolios)

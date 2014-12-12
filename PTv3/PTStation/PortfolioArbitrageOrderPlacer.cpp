@@ -45,7 +45,7 @@ void CPortfolioArbitrageOrderPlacer::BuildTemplateOrder()
 		order->set_orderref("");
 		order->set_orderpricetype(trade::LIMIT_PRICE);
 
-		static char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION) };
+		static char CombHedgeFlag[] = { static_cast<char>(m_pPortf->HedgeFlag()) };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		int qty = pMultiLegOrder->quantity() * leg->Ratio();

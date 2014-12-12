@@ -20,7 +20,7 @@
             <StackPanel.Resources>
                 <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                     <Setter Property="Width" Value="100" />
-                    <Setter Property="Margin" Value="4, 8" />
+                    <Setter Property="Margin" Value="4, 6" />
                 </Style>
                 <Style TargetType="TextBlock">
                     <Setter Property="Width" Value="60" />
@@ -47,6 +47,17 @@
             <DockPanel>
                 <TextBlock>最多撤单</TextBlock>
                 <TextBox Text="{Binding MaxCancel, Mode=TwoWay}"></TextBox>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock>投机套保</TextBlock>
+                <ComboBox Width="100" Margin="4, 6" SelectedValue="{Binding HedgeFlag}" SelectedValuePath="Value"
+                          ItemsSource="{Binding HedgeFlagItemsSource}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding DisplayText}"></TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
             </DockPanel>
         </StackPanel>
     </DockPanel>

@@ -54,7 +54,7 @@ void CPortfolioTrendOrderPlacer::BuildTemplateOrder()
 
 		order->set_comboffsetflag(CombOffset);
 
-		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
+		char CombHedgeFlag[] = { static_cast<char>(m_pPortf->HedgeFlag()), 0 };
 		order->set_combhedgeflag(CombHedgeFlag);
 
 		int qty = pMultiLegOrder->quantity() * leg->Ratio();

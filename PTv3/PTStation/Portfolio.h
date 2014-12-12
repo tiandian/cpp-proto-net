@@ -53,6 +53,7 @@ public:
 	CPortfolioOrderPlacer* OrderPlacer() { return m_orderPlacer.get(); }
 
 	entity::StrategyType StrategyType(){ return m_strategyType; }
+	trade::HedgeFlagType HedgeFlag(){ return m_hedgeFlag; }
 	CStrategy* Strategy(){ return m_strategy.get(); }
 	const entity::PortfolioUpdateItem& GetUpdated(){ return m_portfolioUpdate; }
 
@@ -126,6 +127,9 @@ private:
 	int m_maxOpenPerStart;
 	int m_maxCancel;
 	int m_totalOpenLimit;
+
+	// HedgeFlag
+	trade::HedgeFlagType m_hedgeFlag;
 
 	// end time points
 	vector<string> m_endTimePoints;

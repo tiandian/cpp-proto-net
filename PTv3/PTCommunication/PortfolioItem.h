@@ -196,6 +196,18 @@ public:
 		}
 	}
 
+	property HedgeFlagType HedgeFlag
+	{
+		HedgeFlagType get()
+		{
+			return _hedgeFlag;
+		}
+		void set(HedgeFlagType val)
+		{
+			_hedgeFlag = val;
+		}
+	}
+
 	void To(entity::PortfolioItem* pNativePortfolio);
 
 private:
@@ -207,6 +219,7 @@ private:
 	int _totalOpenLimit;
 	List<String^>^ _endTimePoints;
 	StrategyItem ^_strategy;
+	HedgeFlagType _hedgeFlag;
 };
 
 }
