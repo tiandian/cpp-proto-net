@@ -70,7 +70,7 @@ trade::MultiLegOrder* BuildOpenPosiOrder(CPortfolio* portfolio, entity::PosiDire
 
 		order->set_comboffsetflag(CombOffset);
 
-		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
+		char CombHedgeFlag[] = { static_cast<char>(portfolio->HedgeFlag()), 0 };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		// 	order->set_limitprice(0);
@@ -192,7 +192,7 @@ trade::MultiLegOrder* BuildClosePosiOrder(CPortfolio* portfolio, entity::PosiDir
 
 		order->set_comboffsetflag(CombOffset);
 
-		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
+		char CombHedgeFlag[] = { static_cast<char>(portfolio->HedgeFlag()), 0 };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		int qty = pMultiLegOrder->quantity() * leg->Ratio();
@@ -284,7 +284,7 @@ trade::MultiLegOrder* BuildChangePosiOrder(CPortfolio* portfolio,
 		
 		order->set_comboffsetflag(CombOffset);
 
-		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
+		char CombHedgeFlag[] = { static_cast<char>(portfolio->HedgeFlag()), 0 };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		// 	order->set_limitprice(0);
@@ -453,7 +453,7 @@ trade::MultiLegOrder* BuildScalperOrder( CPortfolio* portfolio, trade::PosiDirec
 
 		order->set_comboffsetflag(CombOffset);
 
-		char CombHedgeFlag[] = { static_cast<char>(trade::SPECULATION), 0 };
+		char CombHedgeFlag[] = { static_cast<char>(portfolio->HedgeFlag()), 0 };
 		order->set_combhedgeflag(std::string(CombHedgeFlag));
 
 		// 	order->set_limitprice(0);

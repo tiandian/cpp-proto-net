@@ -455,6 +455,23 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region HedgeFlag
+        private PTEntity.HedgeFlagType _hedgeFlag = PTEntity.HedgeFlagType.SPECULATION;
+
+        public PTEntity.HedgeFlagType HedgeFlag
+        {
+            get { return _hedgeFlag; }
+            set
+            {
+                if (_hedgeFlag != value)
+                {
+                    _hedgeFlag = value;
+                    RaisePropertyChanged("HedgeFlag");
+                }
+            }
+        }
+        #endregion
+
         #region EndTimePointsExpr
         private string _endTimePointsExpr = string.Empty;
 
@@ -1019,6 +1036,10 @@ namespace PortfolioTrading.Modules.Account
             {
                 portf.EndTimePointsExpr = attr.Value;
             }
+            XAttribute attrHedgeFlag = xmlElement.Attribute("hedgeFlag");
+            if (attrHedgeFlag != null)
+                portf.HedgeFlag = (PTEntity.HedgeFlagType)Enum.Parse(typeof(PTEntity.HedgeFlagType), attrHedgeFlag.Value);
+
 
             foreach (var legElem in xmlElement.Element("legs").Elements("leg"))
             {
@@ -1051,6 +1072,7 @@ namespace PortfolioTrading.Modules.Account
             elem.Add(new XAttribute("maxCancel", _maxCancel));
             elem.Add(new XAttribute("totalOpenLimit", _totalOpenLimit));
             elem.Add(new XAttribute("endTimePointsExpr", _endTimePointsExpr));
+            elem.Add(new XAttribute("hedgeFlag", _hedgeFlag));
 
             XElement elemLegs = new XElement("legs");
             foreach (var l in _legs)
@@ -1075,6 +1097,7 @@ namespace PortfolioTrading.Modules.Account
             portfolioItem.MaxOpenPerStart = MaxOpenPerStart;
             portfolioItem.MaxCancel = MaxCancel;
             portfolioItem.TotalOpenLimit = TotalOpenLimit;
+            portfolioItem.HedgeFlag = HedgeFlag;
             
             foreach (var legVm in _legs)
             {

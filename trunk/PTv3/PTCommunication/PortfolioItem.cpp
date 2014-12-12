@@ -13,6 +13,7 @@ void PTEntity::PortfolioItem::To( entity::PortfolioItem* pNativePortfolio )
 		pNativePortfolio->set_maxcancel(_maxCancel);
 		pNativePortfolio->set_maxopenperstart(_maxOpenPerStart);
 		pNativePortfolio->set_totalopenlimit(_totalOpenLimit);
+		pNativePortfolio->set_hedgeflag(static_cast<trade::HedgeFlagType>(_hedgeFlag));
 
 		for each(LegItem ^l in _legs)
 		{

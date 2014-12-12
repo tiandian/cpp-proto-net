@@ -85,6 +85,7 @@ CPortfolio::CPortfolio(CAvatarClient* client, const entity::PortfolioItem& srcPo
 	, m_maxOpenPerStart(100)
 	, m_maxCancel(450)
 	, m_totalOpenLimit(450)
+	, m_hedgeFlag(trade::SPECULATION)
 {
 	// Backup created portfolio item
 	m_portfolioItem.CopyFrom(srcPortfolioItem);
@@ -349,6 +350,7 @@ void CPortfolio::InitOpenCancelLimit( const entity::PortfolioItem &srcPortfolioI
 	m_maxOpenPerStart = srcPortfolioItem.maxopenperstart();
 	m_maxCancel = srcPortfolioItem.maxcancel();
 	m_totalOpenLimit = srcPortfolioItem.totalopenlimit();
+	m_hedgeFlag = srcPortfolioItem.hedgeflag();
 }
 
 void CPortfolio::CheckOpenCancelLimit()
