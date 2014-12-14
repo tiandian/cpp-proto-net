@@ -40,7 +40,10 @@ namespace PTEntity {
 		WMA_TREND = 4,
 		LINER_REGRESSION = 5,
 		ASC_TREND = 6,
-		RANGE_TREND = 7
+		RANGE_TREND = 7,
+		MANUAL = 8,
+		QUICK_SCORE = 9,
+		TREND_REVERT = 10
 	};
 
 	public enum class DirectionDepends : int

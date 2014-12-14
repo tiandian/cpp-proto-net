@@ -2929,6 +2929,13 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline ::entity::StrategyItem* release_strategy();
   inline void set_allocated_strategy(::entity::StrategyItem* strategy);
 
+  // required .trade.HedgeFlagType HedgeFlag = 9;
+  inline bool has_hedgeflag() const;
+  inline void clear_hedgeflag();
+  static const int kHedgeFlagFieldNumber = 9;
+  inline ::trade::HedgeFlagType hedgeflag() const;
+  inline void set_hedgeflag(::trade::HedgeFlagType value);
+
   // @@protoc_insertion_point(class_scope:entity.PortfolioItem)
  private:
   inline void set_has_id();
@@ -2943,6 +2950,8 @@ class PortfolioItem : public ::google::protobuf::Message {
   inline void clear_has_totalopenlimit();
   inline void set_has_strategy();
   inline void clear_has_strategy();
+  inline void set_has_hedgeflag();
+  inline void clear_has_hedgeflag();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -2954,9 +2963,10 @@ class PortfolioItem : public ::google::protobuf::Message {
   ::google::protobuf::int32 totalopenlimit_;
   ::google::protobuf::RepeatedPtrField< ::std::string> endtimepoints_;
   ::entity::StrategyItem* strategy_;
+  int hedgeflag_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(8 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(9 + 31) / 32];
 
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -9837,6 +9847,29 @@ inline void PortfolioItem::set_allocated_strategy(::entity::StrategyItem* strate
   } else {
     clear_has_strategy();
   }
+}
+
+// required .trade.HedgeFlagType HedgeFlag = 9;
+inline bool PortfolioItem::has_hedgeflag() const {
+  return (_has_bits_[0] & 0x00000100u) != 0;
+}
+inline void PortfolioItem::set_has_hedgeflag() {
+  _has_bits_[0] |= 0x00000100u;
+}
+inline void PortfolioItem::clear_has_hedgeflag() {
+  _has_bits_[0] &= ~0x00000100u;
+}
+inline void PortfolioItem::clear_hedgeflag() {
+  hedgeflag_ = 49;
+  clear_has_hedgeflag();
+}
+inline ::trade::HedgeFlagType PortfolioItem::hedgeflag() const {
+  return static_cast< ::trade::HedgeFlagType >(hedgeflag_);
+}
+inline void PortfolioItem::set_hedgeflag(::trade::HedgeFlagType value) {
+  assert(::trade::HedgeFlagType_IsValid(value));
+  set_has_hedgeflag();
+  hedgeflag_ = value;
 }
 
 // -------------------------------------------------------------------

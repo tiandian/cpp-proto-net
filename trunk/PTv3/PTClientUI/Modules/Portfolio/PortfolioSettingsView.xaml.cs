@@ -57,6 +57,10 @@ namespace PortfolioTrading.Modules.Portfolio
             {
                 viewModel = ServiceLocator.Current.GetInstance<ScalperSettingVM>();
             }
+            else if (portfVm.StrategySetting.Name == StrategySetting.ManualStrategyName)
+            {
+                viewModel = ServiceLocator.Current.GetInstance<ManualStrategySettingVM>();
+            }
             else if (portfVm.StrategySetting.Name == StrategySetting.MACDHistSlopeStrategyName)
             {
                 viewModel = ServiceLocator.Current.GetInstance<MACDHistSlopeSettingsVM>();

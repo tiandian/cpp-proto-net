@@ -202,6 +202,8 @@
     <Compile Include="Modules\Portfolio\Strategy\ChangePositionSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\LinerRegSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\LinerRegStrategySettings.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ManualStrategySetting.cs" />
+    <Compile Include="Modules\Portfolio\Strategy\ManualStrategySettingVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\RangeTrendSettingsVM.cs" />
     <Compile Include="Modules\Portfolio\Strategy\RangeTrendStrategySettings.cs" />
     <Compile Include="Modules\Portfolio\Strategy\WMATrendSettingsVM.cs" />
