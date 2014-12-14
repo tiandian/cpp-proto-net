@@ -6,7 +6,7 @@
         xmlns:igWindows="http://infragistics.com/Windows"
         xmlns:igEditor="http://infragistics.com/Editors"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="新建组合" Width="300" SizeToContent="Height"
+        Title="新建组合" Width="355.2" SizeToContent="Height"
         WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
     <Window.Resources>
         <utils:SideBindingSource x:Key="sideSource" />
@@ -85,7 +85,7 @@
                 正在获取合约信息...
             </TextBlock>
         </Grid>
-        <igWindows:XamTabControl x:Name="tabControl" Margin="4, 2" MinHeight="160">
+        <igWindows:XamTabControl x:Name="tabControl" Margin="4, 2" MinHeight="160" Width="345">
             <igWindows:TabItemEx Header="套利" Name="tabArbitrage" Width="60" Tag="ArbitrageStrategy">
                 <StackPanel Margin="4">
                     <StackPanel.Resources>
@@ -176,6 +176,58 @@
             </StackPanel>-->
                 </StackPanel>
             </igWindows:TabItemEx>
+            <igWindows:TabItemEx Header="高频" Name="tabScalper" Width="60" Tag="Scalper">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">最小变动价位</TextBlock>
+                            <Button DockPanel.Dock="Right" Margin="4, 2" Name="btnQuerySymbol" Click="btnQuerySymbol_Click">查询</Button>
+                            <xctk:DecimalUpDown Value="{Binding PriceTick, Mode=TwoWay}" ShowButtonSpinner="False"/>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">开仓价差</TextBlock>
+                            <xctk:DecimalUpDown Value="{Binding Threshold, Mode=TwoWay}" Increment="{Binding PriceTick}"/>
+                        </DockPanel>
+                    </DockPanel>
+                </StackPanel>
+            </igWindows:TabItemEx>
+            <igWindows:TabItemEx Header="手动" Name="tabManual" Width="60" Tag="Manual">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
+                        </DockPanel>
+                    </DockPanel>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">追价次数</TextBlock>
+                            <xctk:DecimalUpDown Width="100" HorizontalAlignment="Left" 
+                                                Value="{Binding RetryTimes, Mode=TwoWay}" Margin="0, 0, 4, 0"/>
+                        </DockPanel>
+                    </DockPanel>
+                </StackPanel>
+            </igWindows:TabItemEx>
             <igWindows:TabItemEx Header="移仓" Name="tabSwitchPosition" Width="60" Tag="ChangePosition">
                 <StackPanel Margin="4">
                     <StackPanel.Resources>
@@ -225,6 +277,22 @@
                             <TextBlock>品种</TextBlock>
                             <TextBox Text="{Binding Symbol2}" Margin="0, 0, 4, 0"></TextBox>
 
+                        </DockPanel>
+                    </DockPanel>
+                </StackPanel>
+            </igWindows:TabItemEx>
+            <igWindows:TabItemEx Header="QScore" Name="tabQuickScore" Width="60" Tag="QuickScore">
+                <StackPanel Margin="4">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="2"/>
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <DockPanel Margin="10, 4, 10, 8">
+                        <DockPanel>
+                            <TextBlock Width="80">品种</TextBlock>
+                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
                         </DockPanel>
                     </DockPanel>
                 </StackPanel>
@@ -280,36 +348,6 @@
                         </Grid>
                     </StackPanel>
                     
-                </StackPanel>
-            </igWindows:TabItemEx>
-            
-            <igWindows:TabItemEx Header="高频" Name="tabScalper" Width="60" Tag="Scalper">
-                <StackPanel Margin="4">
-                    <StackPanel.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Margin" Value="2"/>
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </StackPanel.Resources>
-                    <DockPanel Margin="10, 4, 10, 8">
-                        <DockPanel>
-                            <TextBlock Width="80">品种</TextBlock>
-                            <TextBox Text="{Binding Symbol1}" Margin="0, 0, 4, 0"></TextBox>
-                        </DockPanel>
-                    </DockPanel>
-                    <DockPanel Margin="10, 4, 10, 8">
-                        <DockPanel>
-                            <TextBlock Width="80">最小变动价位</TextBlock>
-                            <Button DockPanel.Dock="Right" Margin="4, 2" Name="btnQuerySymbol" Click="btnQuerySymbol_Click">查询</Button>
-                            <xctk:DecimalUpDown Value="{Binding PriceTick, Mode=TwoWay}" ShowButtonSpinner="False"/>
-                        </DockPanel>
-                    </DockPanel>
-                    <DockPanel Margin="10, 4, 10, 8">
-                        <DockPanel>
-                            <TextBlock Width="80">开仓价差</TextBlock>
-                            <xctk:DecimalUpDown Value="{Binding Threshold, Mode=TwoWay}" Increment="{Binding PriceTick}"/>
-                        </DockPanel>
-                    </DockPanel>
                 </StackPanel>
             </igWindows:TabItemEx>
             <igWindows:TabItemEx Header="WMA" Name="tabWMATrend" Width="60" Tag="WMATrend">

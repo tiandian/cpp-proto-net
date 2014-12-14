@@ -489,6 +489,24 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region RetryTimes
+        private int _retryTimes = 8;
+
+        public int RetryTimes
+        {
+            get { return _retryTimes; }
+            set 
+            {
+
+                if (_retryTimes != value)
+                {
+                    _retryTimes = value;
+                    RaisePropertyChanged("RetryTimes");
+                }
+            }
+        }
+        #endregion
+
 #region MACD Hist Slope strategy updating fields
 
         #region FastAngle

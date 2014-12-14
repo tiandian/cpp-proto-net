@@ -17,6 +17,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public const string LinerRegressionStrategyName = "LinerRegression";
         public const string ASCTrendStrategyName = "ASCTrend";
         public const string RangeTrendStrategyName = "RangeTrend";
+        public const string ManualStrategyName = "Manual";
+        public const string QuickScoreStrategyName = "QuickScore";
 
         public abstract string Name { get; }
 
@@ -48,6 +50,10 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     return "ASCTrend";
                 case RangeTrendStrategyName:
                     return "RangeTrend";
+                case ManualStrategyName:
+                    return "Manual";
+                case QuickScoreStrategyName:
+                    return "QuickScore";
             }
             return "未知";
         }
@@ -87,6 +93,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                     break;
                 case RangeTrendStrategyName:
                     setting = new RangeTrendStrategySettings();
+                    break;
+                case ManualStrategyName:
+                    setting = new ManualStrategySetting();
                     break;
                 default:
                     throw new ArgumentException(string.Format("Unexpected strategy setting ({0})", name));

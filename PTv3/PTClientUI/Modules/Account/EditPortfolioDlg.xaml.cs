@@ -276,6 +276,14 @@ namespace PortfolioTrading.Modules.Account
                     setting.TrendFactor = RT_TrendFactor;
                 }
             }
+            else if (StrategyName == StrategySetting.ManualStrategyName)
+            {
+                if (!string.IsNullOrEmpty(Symbol1))
+                {
+                    ManualStrategySetting setting = (ManualStrategySetting)portf.StrategySetting;
+                    setting.RetryTimes = RetryTimes;
+                }
+            }
         }
 
         #region StrategyName
@@ -596,6 +604,23 @@ namespace PortfolioTrading.Modules.Account
                 {
                     _tick = value;
                     RaisePropertyChanged("PriceTick");
+                }
+            }
+        }
+        #endregion
+
+        #region RetryTimes
+        private int _retryTimes = 8;
+
+        public int RetryTimes
+        {
+            get { return _retryTimes; }
+            set
+            {
+                if (_retryTimes != value)
+                {
+                    _retryTimes = value;
+                    RaisePropertyChanged("RetryTimes");
                 }
             }
         }
