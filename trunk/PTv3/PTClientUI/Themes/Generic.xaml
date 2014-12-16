@@ -195,7 +195,54 @@
             </Grid>
         </Grid>
     </DataTemplate>
-    
+
+    <DataTemplate x:Key="manualTemplate">
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="38"/>
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="36"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" BorderThickness="0, 0, 1, 1">
+                    <TextBlock Margin="4" VerticalAlignment="Center">止盈</TextBlock>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Margin="4" VerticalAlignment="Center">止损</TextBlock>
+                </Border>
+
+                <!--止损-->
+                <Border Grid.Column="1" Grid.Row="0" BorderThickness="0, 0, 0, 1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Width="54" Margin="4"  TextAlignment="Center" 
+                               Text="{Binding StrategySetting.StopGainCondition, Converter={StaticResource condDisplayConverter}}" />
+                        <TextBlock Width="40" Margin="4"  Text="{Binding StrategySetting.StopGainThreshold}" />
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoStopGain, Mode=TwoWay}" Margin="4, 0">自动</CheckBox>
+                    </StackPanel>
+                </Border>
+                <!--止损-->
+                <Border Grid.Column="1" Grid.Row="1">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock Width="54" Margin="4"  TextAlignment="Center" 
+                               Text="{Binding StrategySetting.StopLossCondition, Converter={StaticResource condDisplayConverter}}" />
+                        <TextBlock Width="40" Margin="4"  Text="{Binding StrategySetting.StopLossThreshold}" />
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding AutoStopLoss, Mode=TwoWay}" Margin="4, 0">自动</CheckBox>
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
     <DataTemplate x:Key="changePositionTemplate">
         <Grid>
             <Grid.Resources>
@@ -458,6 +505,17 @@
         </Grid>
     </DataTemplate>
 
+    <DataTemplate x:Key="quickScoreTemplate">
+        <Grid>
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+        </Grid>
+    </DataTemplate>
+
     <local:PortfMonTemplateSelector x:Key="portfMonSelector"
                                     ArbitrageTemplate="{StaticResource arbitrageTemplate}"
                                     ChangePositionTemplate="{StaticResource changePositionTemplate}"
@@ -466,7 +524,10 @@
                                     WMATrendTemplate="{StaticResource wmaTrendTemplate}"
                                     LinerRegressionTemplate="{StaticResource linerRegTemplate}"
                                     ASCTrendTemplate="{StaticResource ascTrendTemplate}"
-                                    RangeTrendTemplate="{StaticResource rangeTrendTemplate}"/>
+                                    RangeTrendTemplate="{StaticResource rangeTrendTemplate}"
+                                    ManualTemplate="{StaticResource manualTemplate}"
+                                    QuickScoreTemplate="{StaticResource quickScoreTemplate}"
+                                    />
     
     <Style TargetType="{x:Type local:PortfMonitorPanel}">
         <Setter Property="Template">
@@ -530,6 +591,71 @@
                     </DockPanel>
                 </Border>
             </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="manualWatchTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border Grid.Column="0" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Margin="4" HorizontalAlignment="Center">盈利</TextBlock>
+                </Border>
+                <Border Grid.Column="0" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <TextBlock Text="{Binding Profit}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center"/>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 1, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">近高</TextBlock>
+                        <TextBlock Text="{Binding NearHigh}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="1" Grid.Row="1" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">近低</TextBlock>
+                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                               Text="{Binding NearLow}"/>
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="0" BorderBrush="Blue" BorderThickness="0, 0, 0, 1">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">回落</TextBlock>
+                        <TextBlock Text="{Binding Fallback}" Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                    </DockPanel>
+                </Border>
+                <Border Grid.Column="2" Grid.Row="1" BorderBrush="Blue">
+                    <DockPanel>
+                        <TextBlock Margin="4, 2">反弹</TextBlock>
+                        <TextBlock Margin="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" 
+                                               Text="{Binding Bounce}"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="quickScoreWatchTemplate">
+        <Grid VerticalAlignment="Stretch">
+            <Grid.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Blue"/>
+                </Style>
+            </Grid.Resources>
+            <Border BorderThickness="0, 1, 1, 1"/>
         </Grid>
     </DataTemplate>
 

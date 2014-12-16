@@ -19,6 +19,8 @@ namespace PortfolioTrading.Controls
         public DataTemplate LinerRegressionTemplate { get; set; }
         public DataTemplate ASCTrendTemplate { get; set; }
         public DataTemplate RangeTrendTemplate { get; set; }
+        public DataTemplate ManualTemplate { get; set; }
+        public DataTemplate QuickScoreTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -41,6 +43,10 @@ namespace PortfolioTrading.Controls
                     return ASCTrendTemplate;
                 else if (portfVm.StrategySetting.Name == StrategySetting.RangeTrendStrategyName)
                     return RangeTrendTemplate;
+                else if (portfVm.StrategySetting.Name == StrategySetting.ManualStrategyName)
+                    return ManualTemplate;
+                else if (portfVm.StrategySetting.Name == StrategySetting.QuickScoreStrategyName)
+                    return QuickScoreTemplate;
             }
 
             return null;
