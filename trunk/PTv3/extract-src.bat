@@ -1,7 +1,7 @@
 @echo off
-set SRC=E:\Workspace\cpp-proto-net\PTv3
+set SRC=D:\Workspace\cpp-proto-net\PTv3
 set PT_SRC=%SRC%\PTStation
-set DEST=E:\Workspace\cpp-proto-net\PTv3\pt-station-linux\
+set DEST=D:\Workspace\cpp-proto-net\PTv3\pt-station-linux\
 set DEST_SRC=%DEST%\src
 
 echo 1. Copy proto files 
