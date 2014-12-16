@@ -433,11 +433,15 @@ void protobuf_AssignDesc_message_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(HistSourceCfg));
   StrategyItem_descriptor_ = file->message_type(16);
-  static const int StrategyItem_offsets_[44] = {
+  static const int StrategyItem_offsets_[48] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, retrytimes_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, opentimeout_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, triggers_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, stopgaincondition_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, stopgainthreshold_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, stoplosscondition_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, stoplossthreshold_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, ar_bollperiod_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, ar_stddevmultiplier_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StrategyItem, cp_closeleg_),
@@ -1201,10 +1205,14 @@ void protobuf_AddDesc_message_2eproto() {
     "atus\022\014\n\004Last\030\003 \002(\001\022\013\n\003Ask\030\004 \002(\001\022\017\n\007AskSi"
     "ze\030\005 \002(\005\022\013\n\003Bid\030\006 \002(\001\022\017\n\007BidSize\030\007 \002(\005\"2"
     "\n\rHistSourceCfg\022\016\n\006Symbol\030\001 \002(\t\022\021\n\tPreci"
-    "sion\030\002 \002(\005\"\215\n\n\014StrategyItem\022\"\n\004Type\030\001 \002("
+    "sion\030\002 \002(\005\"\255\013\n\014StrategyItem\022\"\n\004Type\030\001 \002("
     "\0162\024.entity.StrategyType\022\022\n\nRetryTimes\030\002 "
     "\002(\005\022\023\n\013OpenTimeout\030\003 \002(\005\022%\n\010Triggers\030\004 \003"
-    "(\0132\023.entity.TriggerItem\022\025\n\rAR_BollPeriod"
+    "(\0132\023.entity.TriggerItem\0223\n\021StopGainCondi"
+    "tion\030\005 \001(\0162\030.entity.CompareCondition\022\031\n\021"
+    "StopGainThreshold\030\006 \001(\001\0223\n\021StopLossCondi"
+    "tion\030\007 \001(\0162\030.entity.CompareCondition\022\031\n\021"
+    "StopLossThreshold\030\010 \001(\001\022\025\n\rAR_BollPeriod"
     "\030e \001(\001\022\033\n\023AR_StdDevMultiplier\030f \001(\001\022\024\n\013C"
     "P_CloseLeg\030\311\001 \001(\t\0223\n\017CP_CloseLegSide\030\312\001 "
     "\001(\0162\031.entity.PosiDirectionType\022\025\n\014SC_Pri"
@@ -1342,17 +1350,18 @@ void protobuf_AddDesc_message_2eproto() {
     "\002(\005\022\021\n\tPriceTick\030\006 \002(\001*,\n\nServerType\022\016\n\n"
     "SERV_QUOTE\020\000\022\016\n\nSERV_TRADE\020\001*>\n\023Portfoli"
     "oSwitchType\022\023\n\017STRATEGY_SWITCH\020\000\022\022\n\016TRIG"
-    "GER_SWITCH\020\001*\224\001\n\014StrategyType\022\r\n\tARBITRA"
+    "GER_SWITCH\020\001*\303\001\n\014StrategyType\022\r\n\tARBITRA"
     "GE\020\000\022\023\n\017CHANGE_POSITION\020\001\022\013\n\007SCALPER\020\002\022\016"
     "\n\nHIST_SLOPE\020\003\022\r\n\tWMA_TREND\020\004\022\024\n\020LINER_R"
     "EGRESSION\020\005\022\r\n\tASC_TREND\020\006\022\017\n\013RANGE_TREN"
-    "D\020\007*@\n\016SlopeDirection\022\020\n\014NO_DIRECTION\020\000\022"
-    "\014\n\010GOING_UP\020\001\022\016\n\nGOING_DOWN\020\002*o\n\020Directi"
-    "onDepends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_SMALL_S"
-    "IZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMALL_CHANG"
-    "E\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLossCloseM"
-    "ethods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030\n\024BASED"
-    "_ON_INPUT_LIMIT\020\001", 7457);
+    "D\020\007\022\n\n\006MANUAL\020\010\022\017\n\013QUICK_SCORE\020\t\022\020\n\014TREN"
+    "D_REVERT\020\n*@\n\016SlopeDirection\022\020\n\014NO_DIREC"
+    "TION\020\000\022\014\n\010GOING_UP\020\001\022\016\n\nGOING_DOWN\020\002*o\n\020"
+    "DirectionDepends\022\017\n\013IGNORE_THIS\020\000\022\021\n\rON_"
+    "SMALL_SIZE\020\001\022\017\n\013ON_BIG_SIZE\020\002\022\023\n\017ON_SMAL"
+    "L_CHANGE\020\003\022\021\n\rON_BIG_CHANGE\020\004*I\n\024StopLos"
+    "sCloseMethods\022\027\n\023BASED_ON_NEXT_QUOTE\020\000\022\030"
+    "\n\024BASED_ON_INPUT_LIMIT\020\001", 7664);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "message.proto", &protobuf_RegisterTypes);
   LoginPuzzleResponse::default_instance_ = new LoginPuzzleResponse();
@@ -1488,6 +1497,9 @@ bool StrategyType_IsValid(int value) {
     case 5:
     case 6:
     case 7:
+    case 8:
+    case 9:
+    case 10:
       return true;
     default:
       return false;
@@ -6605,6 +6617,10 @@ const int StrategyItem::kTypeFieldNumber;
 const int StrategyItem::kRetryTimesFieldNumber;
 const int StrategyItem::kOpenTimeoutFieldNumber;
 const int StrategyItem::kTriggersFieldNumber;
+const int StrategyItem::kStopGainConditionFieldNumber;
+const int StrategyItem::kStopGainThresholdFieldNumber;
+const int StrategyItem::kStopLossConditionFieldNumber;
+const int StrategyItem::kStopLossThresholdFieldNumber;
 const int StrategyItem::kARBollPeriodFieldNumber;
 const int StrategyItem::kARStdDevMultiplierFieldNumber;
 const int StrategyItem::kCPCloseLegFieldNumber;
@@ -6666,6 +6682,10 @@ void StrategyItem::SharedCtor() {
   type_ = 0;
   retrytimes_ = 0;
   opentimeout_ = 0;
+  stopgaincondition_ = 0;
+  stopgainthreshold_ = 0;
+  stoplosscondition_ = 0;
+  stoplossthreshold_ = 0;
   ar_bollperiod_ = 0;
   ar_stddevmultiplier_ = 0;
   cp_closeleg_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
@@ -6746,6 +6766,12 @@ void StrategyItem::Clear() {
     type_ = 0;
     retrytimes_ = 0;
     opentimeout_ = 0;
+    stopgaincondition_ = 0;
+    stopgainthreshold_ = 0;
+    stoplosscondition_ = 0;
+    stoplossthreshold_ = 0;
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     ar_bollperiod_ = 0;
     ar_stddevmultiplier_ = 0;
     if (has_cp_closeleg()) {
@@ -6754,47 +6780,45 @@ void StrategyItem::Clear() {
       }
     }
     cp_closelegside_ = 49;
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     sc_pricetick_ = 0;
     sc_casele2tick_ = 0;
     sc_casele3tick_ = 0;
     sc_casege4tick_ = 0;
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     sc_casenochange_ = 0;
     sc_stoplossstrategy_ = 0;
     hs_short_ = 0;
-  }
-  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     hs_long_ = 0;
     hs_m_ = 0;
     hs_faststddiff_ = 0;
     hs_slowstddiff_ = 0;
+  }
+  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     hs_fastperiod_ = 0;
     hs_slowperiod_ = 0;
     hs_fastshortemaseed_ = 0;
     hs_fastlongemaseed_ = 0;
-  }
-  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     hs_fastsignalemaseed_ = 0;
     hs_slowshortemaseed_ = 0;
     hs_slowlongemaseed_ = 0;
     hs_slowsignalemaseed_ = 0;
+  }
+  if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
     wt_wmaparam_ = 0;
     wt_man_ = 0;
     wt_period_ = 0;
     lr_period_ = 0;
-  }
-  if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
     lr_number_ = 0;
     lr_openthreshold_ = 0;
     lr_closethreshold_ = 0;
     as_risk_ = 0;
+  }
+  if (_has_bits_[40 / 32] & (0xffu << (40 % 32))) {
     as_avergateperiod_ = 0;
     as_breakoutlength_ = 0;
     as_period_ = 0;
     rt_timeframe_ = 0;
-  }
-  if (_has_bits_[40 / 32] & (0xffu << (40 % 32))) {
     rt_openperiod_ = 0;
     rt_closeperiod_ = 0;
     rt_stoplossfactor_ = 0;
@@ -6875,6 +6899,80 @@ bool StrategyItem::MergePartialFromCodedStream(
           goto handle_uninterpreted;
         }
         if (input->ExpectTag(34)) goto parse_Triggers;
+        if (input->ExpectTag(40)) goto parse_StopGainCondition;
+        break;
+      }
+
+      // optional .entity.CompareCondition StopGainCondition = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_StopGainCondition:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::entity::CompareCondition_IsValid(value)) {
+            set_stopgaincondition(static_cast< ::entity::CompareCondition >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(5, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(49)) goto parse_StopGainThreshold;
+        break;
+      }
+
+      // optional double StopGainThreshold = 6;
+      case 6: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_StopGainThreshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &stopgainthreshold_)));
+          set_has_stopgainthreshold();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(56)) goto parse_StopLossCondition;
+        break;
+      }
+
+      // optional .entity.CompareCondition StopLossCondition = 7;
+      case 7: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_StopLossCondition:
+          int value;
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   int, ::google::protobuf::internal::WireFormatLite::TYPE_ENUM>(
+                 input, &value)));
+          if (::entity::CompareCondition_IsValid(value)) {
+            set_stoplosscondition(static_cast< ::entity::CompareCondition >(value));
+          } else {
+            mutable_unknown_fields()->AddVarint(7, value);
+          }
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(65)) goto parse_StopLossThreshold;
+        break;
+      }
+
+      // optional double StopLossThreshold = 8;
+      case 8: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_FIXED64) {
+         parse_StopLossThreshold:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
+                 input, &stoplossthreshold_)));
+          set_has_stoplossthreshold();
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectTag(809)) goto parse_AR_BollPeriod;
         break;
       }
@@ -7589,6 +7687,28 @@ void StrategyItem::SerializeWithCachedSizes(
       4, this->triggers(i), output);
   }
 
+  // optional .entity.CompareCondition StopGainCondition = 5;
+  if (has_stopgaincondition()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      5, this->stopgaincondition(), output);
+  }
+
+  // optional double StopGainThreshold = 6;
+  if (has_stopgainthreshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->stopgainthreshold(), output);
+  }
+
+  // optional .entity.CompareCondition StopLossCondition = 7;
+  if (has_stoplosscondition()) {
+    ::google::protobuf::internal::WireFormatLite::WriteEnum(
+      7, this->stoplosscondition(), output);
+  }
+
+  // optional double StopLossThreshold = 8;
+  if (has_stoplossthreshold()) {
+    ::google::protobuf::internal::WireFormatLite::WriteDouble(8, this->stoplossthreshold(), output);
+  }
+
   // optional double AR_BollPeriod = 101;
   if (has_ar_bollperiod()) {
     ::google::protobuf::internal::WireFormatLite::WriteDouble(101, this->ar_bollperiod(), output);
@@ -7829,6 +7949,28 @@ void StrategyItem::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::
       WriteMessageNoVirtualToArray(
         4, this->triggers(i), target);
+  }
+
+  // optional .entity.CompareCondition StopGainCondition = 5;
+  if (has_stopgaincondition()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      5, this->stopgaincondition(), target);
+  }
+
+  // optional double StopGainThreshold = 6;
+  if (has_stopgainthreshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->stopgainthreshold(), target);
+  }
+
+  // optional .entity.CompareCondition StopLossCondition = 7;
+  if (has_stoplosscondition()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteEnumToArray(
+      7, this->stoplosscondition(), target);
+  }
+
+  // optional double StopLossThreshold = 8;
+  if (has_stoplossthreshold()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(8, this->stoplossthreshold(), target);
   }
 
   // optional double AR_BollPeriod = 101;
@@ -8075,6 +8217,30 @@ int StrategyItem::ByteSize() const {
           this->opentimeout());
     }
 
+    // optional .entity.CompareCondition StopGainCondition = 5;
+    if (has_stopgaincondition()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->stopgaincondition());
+    }
+
+    // optional double StopGainThreshold = 6;
+    if (has_stopgainthreshold()) {
+      total_size += 1 + 8;
+    }
+
+    // optional .entity.CompareCondition StopLossCondition = 7;
+    if (has_stoplosscondition()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::EnumSize(this->stoplosscondition());
+    }
+
+    // optional double StopLossThreshold = 8;
+    if (has_stoplossthreshold()) {
+      total_size += 1 + 8;
+    }
+
+  }
+  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     // optional double AR_BollPeriod = 101;
     if (has_ar_bollperiod()) {
       total_size += 2 + 8;
@@ -8098,8 +8264,6 @@ int StrategyItem::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->cp_closelegside());
     }
 
-  }
-  if (_has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     // optional double SC_PriceTick = 301;
     if (has_sc_pricetick()) {
       total_size += 2 + 8;
@@ -8123,6 +8287,8 @@ int StrategyItem::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->sc_casege4tick());
     }
 
+  }
+  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     // optional .entity.DirectionDepends SC_CaseNoChange = 305;
     if (has_sc_casenochange()) {
       total_size += 2 +
@@ -8142,8 +8308,6 @@ int StrategyItem::ByteSize() const {
           this->hs_short());
     }
 
-  }
-  if (_has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     // optional int32 HS_Long = 502;
     if (has_hs_long()) {
       total_size += 2 +
@@ -8168,6 +8332,8 @@ int StrategyItem::ByteSize() const {
       total_size += 2 + 8;
     }
 
+  }
+  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     // optional int32 HS_FastPeriod = 506;
     if (has_hs_fastperiod()) {
       total_size += 2 +
@@ -8192,8 +8358,6 @@ int StrategyItem::ByteSize() const {
       total_size += 2 + 8;
     }
 
-  }
-  if (_has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     // optional double HS_FastSignalEMASeed = 510;
     if (has_hs_fastsignalemaseed()) {
       total_size += 2 + 8;
@@ -8214,6 +8378,8 @@ int StrategyItem::ByteSize() const {
       total_size += 2 + 8;
     }
 
+  }
+  if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
     // optional int32 WT_WmaParam = 521;
     if (has_wt_wmaparam()) {
       total_size += 2 +
@@ -8242,8 +8408,6 @@ int StrategyItem::ByteSize() const {
           this->lr_period());
     }
 
-  }
-  if (_has_bits_[32 / 32] & (0xffu << (32 % 32))) {
     // optional int32 LR_Number = 532;
     if (has_lr_number()) {
       total_size += 2 +
@@ -8268,6 +8432,8 @@ int StrategyItem::ByteSize() const {
           this->as_risk());
     }
 
+  }
+  if (_has_bits_[40 / 32] & (0xffu << (40 % 32))) {
     // optional int32 AS_AvergatePeriod = 542;
     if (has_as_avergateperiod()) {
       total_size += 2 +
@@ -8296,8 +8462,6 @@ int StrategyItem::ByteSize() const {
           this->rt_timeframe());
     }
 
-  }
-  if (_has_bits_[40 / 32] & (0xffu << (40 % 32))) {
     // optional int32 RT_OpenPeriod = 552;
     if (has_rt_openperiod()) {
       total_size += 2 +
@@ -8376,6 +8540,20 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_opentimeout()) {
       set_opentimeout(from.opentimeout());
     }
+    if (from.has_stopgaincondition()) {
+      set_stopgaincondition(from.stopgaincondition());
+    }
+    if (from.has_stopgainthreshold()) {
+      set_stopgainthreshold(from.stopgainthreshold());
+    }
+    if (from.has_stoplosscondition()) {
+      set_stoplosscondition(from.stoplosscondition());
+    }
+    if (from.has_stoplossthreshold()) {
+      set_stoplossthreshold(from.stoplossthreshold());
+    }
+  }
+  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_ar_bollperiod()) {
       set_ar_bollperiod(from.ar_bollperiod());
     }
@@ -8388,8 +8566,6 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_cp_closelegside()) {
       set_cp_closelegside(from.cp_closelegside());
     }
-  }
-  if (from._has_bits_[8 / 32] & (0xffu << (8 % 32))) {
     if (from.has_sc_pricetick()) {
       set_sc_pricetick(from.sc_pricetick());
     }
@@ -8402,6 +8578,8 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_sc_casege4tick()) {
       set_sc_casege4tick(from.sc_casege4tick());
     }
+  }
+  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     if (from.has_sc_casenochange()) {
       set_sc_casenochange(from.sc_casenochange());
     }
@@ -8411,8 +8589,6 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_hs_short()) {
       set_hs_short(from.hs_short());
     }
-  }
-  if (from._has_bits_[16 / 32] & (0xffu << (16 % 32))) {
     if (from.has_hs_long()) {
       set_hs_long(from.hs_long());
     }
@@ -8425,6 +8601,8 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_hs_slowstddiff()) {
       set_hs_slowstddiff(from.hs_slowstddiff());
     }
+  }
+  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     if (from.has_hs_fastperiod()) {
       set_hs_fastperiod(from.hs_fastperiod());
     }
@@ -8437,8 +8615,6 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_hs_fastlongemaseed()) {
       set_hs_fastlongemaseed(from.hs_fastlongemaseed());
     }
-  }
-  if (from._has_bits_[24 / 32] & (0xffu << (24 % 32))) {
     if (from.has_hs_fastsignalemaseed()) {
       set_hs_fastsignalemaseed(from.hs_fastsignalemaseed());
     }
@@ -8451,6 +8627,8 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_hs_slowsignalemaseed()) {
       set_hs_slowsignalemaseed(from.hs_slowsignalemaseed());
     }
+  }
+  if (from._has_bits_[32 / 32] & (0xffu << (32 % 32))) {
     if (from.has_wt_wmaparam()) {
       set_wt_wmaparam(from.wt_wmaparam());
     }
@@ -8463,8 +8641,6 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_lr_period()) {
       set_lr_period(from.lr_period());
     }
-  }
-  if (from._has_bits_[32 / 32] & (0xffu << (32 % 32))) {
     if (from.has_lr_number()) {
       set_lr_number(from.lr_number());
     }
@@ -8477,6 +8653,8 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_as_risk()) {
       set_as_risk(from.as_risk());
     }
+  }
+  if (from._has_bits_[40 / 32] & (0xffu << (40 % 32))) {
     if (from.has_as_avergateperiod()) {
       set_as_avergateperiod(from.as_avergateperiod());
     }
@@ -8489,8 +8667,6 @@ void StrategyItem::MergeFrom(const StrategyItem& from) {
     if (from.has_rt_timeframe()) {
       set_rt_timeframe(from.rt_timeframe());
     }
-  }
-  if (from._has_bits_[40 / 32] & (0xffu << (40 % 32))) {
     if (from.has_rt_openperiod()) {
       set_rt_openperiod(from.rt_openperiod());
     }
@@ -8537,6 +8713,10 @@ void StrategyItem::Swap(StrategyItem* other) {
     std::swap(retrytimes_, other->retrytimes_);
     std::swap(opentimeout_, other->opentimeout_);
     triggers_.Swap(&other->triggers_);
+    std::swap(stopgaincondition_, other->stopgaincondition_);
+    std::swap(stopgainthreshold_, other->stopgainthreshold_);
+    std::swap(stoplosscondition_, other->stoplosscondition_);
+    std::swap(stoplossthreshold_, other->stoplossthreshold_);
     std::swap(ar_bollperiod_, other->ar_bollperiod_);
     std::swap(ar_stddevmultiplier_, other->ar_stddevmultiplier_);
     std::swap(cp_closeleg_, other->cp_closeleg_);

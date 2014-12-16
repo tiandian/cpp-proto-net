@@ -142,13 +142,81 @@ private:
 public ref class ChangePositionStrategyItem : StrategyItem
 {
 public:
-	ChangePositionStrategyItem(){}
+	ChangePositionStrategyItem()
+	{
+		_type = StrategyType::CHANGE_POSITION;
+	}
 
 	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
 
 private:
 	String ^_closeLeg;
 	PosiDirectionType _closeLegSide;
+};
+
+public ref class ManualStrategyItem : StrategyItem
+{
+public:
+	ManualStrategyItem()
+	{
+		_type = StrategyType::MANUAL;
+	}
+
+	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
+
+	property CompareCondition StopGainCondition
+	{
+		CompareCondition get()
+		{
+			return _stopGainCondition;
+		}
+		void set(CompareCondition val)
+		{
+			_stopGainCondition = val;
+		}
+	}
+
+	property double StopGainThreshold
+	{
+		double get()
+		{
+			return _stopGainThreshold;
+		}
+		void set(double val)
+		{
+			_stopGainThreshold = val;
+		}
+	}
+
+	property CompareCondition StopLossCondition
+	{
+		CompareCondition get()
+		{
+			return _stopLossCondition;
+		}
+		void set(CompareCondition val)
+		{
+			_stopLossCondition = val;
+		}
+	}
+
+	property double StopLossThreshold
+	{
+		double get()
+		{
+			return _stopLossThreshold;
+		}
+		void set(double val)
+		{
+			_stopLossThreshold = val;
+		}
+	}
+
+private:
+	CompareCondition _stopGainCondition;
+	double _stopGainThreshold;
+	CompareCondition _stopLossCondition;
+	double _stopLossThreshold;
 };
 
 public ref class ScalperStrategyItem : StrategyItem

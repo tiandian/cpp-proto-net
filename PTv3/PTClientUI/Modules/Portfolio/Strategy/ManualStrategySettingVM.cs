@@ -11,7 +11,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
     {
         protected override StrategySetting CreateSettings()
         {
-            return new RangeTrendStrategySettings();
+            return new ManualStrategySetting();
         }
     }
 }
