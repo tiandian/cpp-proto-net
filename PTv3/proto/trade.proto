@@ -451,6 +451,8 @@ enum OrderStatusType
 	NO_TRADE_NOT_QUEUEING = 52;
 	///撤单
 	ORDER_CANCELED = 53;
+	///订单已报入交易所未应答
+	ACCEPTED_NO_REPLY = 54;
 	///未知
 	STATUS_UNKNOWN = 97;
 	///尚未触发

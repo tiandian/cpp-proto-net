@@ -135,6 +135,9 @@ enum StrategyType
 	LINER_REGRESSION = 5;
 	ASC_TREND = 6;
 	RANGE_TREND = 7;
+	MANUAL = 8;
+	QUICK_SCORE = 9;
+	TREND_REVERT = 10; 
 }
 
 message HistSourceCfg
@@ -149,7 +152,12 @@ message StrategyItem
 	required int32 RetryTimes = 2;
 	required int32 OpenTimeout = 3;
 	repeated TriggerItem Triggers = 4;
-
+	// MANUAL
+	optional CompareCondition StopGainCondition = 5;
+	optional double StopGainThreshold = 6;
+	optional CompareCondition StopLossCondition = 7;
+	optional double StopLossThreshold = 8;
+	
 	// Arbitrage
 	optional double AR_BollPeriod = 101;
 	optional double AR_StdDevMultiplier = 102;
@@ -253,6 +261,7 @@ message PortfolioItem
 	required int32 TotalOpenLimit = 6;
 	repeated string EndTimePoints = 7;
 	required StrategyItem Strategy = 8;
+	required trade.HedgeFlagType HedgeFlag = 9;
 }
 
 enum SlopeDirection
