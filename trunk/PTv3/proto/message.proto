@@ -157,6 +157,7 @@ message StrategyItem
 	optional double StopGainThreshold = 6;
 	optional CompareCondition StopLossCondition = 7;
 	optional double StopLossThreshold = 8;
+	optional PosiDirectionType PositionDirection = 9;
 	
 	// Arbitrage
 	optional double AR_BollPeriod = 101;
@@ -298,6 +299,12 @@ message PortfolioUpdateItem
 	optional double AR_BollBottom = 107;
 	// Scalper
 	optional double SC_Diff = 201;
+	// Manual
+	optional double MU_Profit = 211;
+	optional double MU_NearHigh = 212;
+	optional double MU_NearLow = 213;
+	optional double MU_Fallback = 214;
+	optional double MU_Bounce = 215;
 	// HistSlope
 	optional double HS_FastAngle = 301;
 	optional double HS_SlowAngle = 302;
