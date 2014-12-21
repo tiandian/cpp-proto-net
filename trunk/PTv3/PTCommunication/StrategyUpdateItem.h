@@ -192,6 +192,75 @@ public:
 	}
 };
 
+public ref class ManualStrategyUpdateItem : StrategyUpdateItem
+{
+public:
+	ManualStrategyUpdateItem(double profit, double nearHigh, double nearLow, double fallback, double bounce)
+	{
+		_profit = profit;
+		_nearHigh = nearHigh;
+		_nearLow = nearLow;
+		_fallback = fallback;
+		_bounce = bounce;
+	}
+
+	property StrategyType Kind
+	{
+		virtual StrategyType get() override
+		{
+			return StrategyType::MANUAL;
+		}
+	}
+
+	property double Profit
+	{
+		double get()
+		{
+			return _profit;
+		}
+	}
+
+	property double NearHigh
+	{
+		double get()
+		{
+			return _nearHigh;
+		}
+	}
+
+	property double NearLow
+	{
+		double get()
+		{
+			return _nearLow;
+		}
+	}
+
+	property double Fallback
+	{
+		double get()
+		{
+			return _fallback;
+		}
+	}
+
+	property double Bounce
+	{
+		double get()
+		{
+			return _bounce;
+		}
+	}
+
+protected:
+	double _profit;
+	double _nearHigh;
+	double _nearLow;
+	double _fallback;
+	double _bounce;
+	
+};
+
 public ref class ScalperStrategyUpdateItem : StrategyUpdateItem
 {
 public:

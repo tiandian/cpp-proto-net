@@ -71,6 +71,7 @@ void ChangePositionStrategyItem::To( entity::StrategyItem* pNativeStrategyItem )
 
 void ManualStrategyItem::To(entity::StrategyItem* pNativeStrategyItem)
 {
+	pNativeStrategyItem->set_positiondirection(static_cast<entity::PosiDirectionType>(_direction));
 	pNativeStrategyItem->set_stopgaincondition(static_cast<entity::CompareCondition>(_stopGainCondition));
 	pNativeStrategyItem->set_stopgainthreshold(_stopGainThreshold);
 	pNativeStrategyItem->set_stoplosscondition(static_cast<entity::CompareCondition>(_stopLossCondition));

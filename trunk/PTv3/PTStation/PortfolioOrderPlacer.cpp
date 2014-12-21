@@ -33,6 +33,8 @@ using namespace msm::front;
 string PendingTimeUpEventName("struct evtPendingTimeUp");
 string NextQuoteInEventName("struct evtNextQuoteIn");
 
+#define CLEANUP_TIMEOUT 15
+
 namespace // Concrete FSM implementation
 {
 	struct OrderPlacer_ : public msm::front::state_machine_def<OrderPlacer_>
@@ -942,7 +944,7 @@ void CPortfolioOrderPlacer::CleanupProc()
 	{
 		boost::this_thread::sleep_for(boost::chrono::seconds(1));
 		++retryTimes;
-		if(retryTimes > 3)
+		if (retryTimes > CLEANUP_TIMEOUT)
 			boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtErrorFound("Force terminate due to already wait 3 seconds"));
 	}
 

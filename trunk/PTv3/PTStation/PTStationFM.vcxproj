@@ -126,6 +126,7 @@ copy /y FemasAPI\*.dll $(OutDir)</Command>
     <ClInclude Include="InputOrder_FM.h" />
     <ClInclude Include="LinerRegressionDataSet.h" />
     <ClInclude Include="LinerRegressionStrategy.h" />
+    <ClInclude Include="ManualStrategy.h" />
     <ClInclude Include="PortfolioArbitrageOrderPlacer.h" />
     <ClInclude Include="RangeTrendStrategy.h" />
     <ClInclude Include="RtnOrderWrapper_FM.h" />
@@ -236,6 +237,7 @@ copy /y FemasAPI\*.dll $(OutDir)</Command>
     <ClCompile Include="InputOrder_FM.cpp" />
     <ClCompile Include="LinerRegressionDataSet.cpp" />
     <ClCompile Include="LinerRegressionStrategy.cpp" />
+    <ClCompile Include="ManualStrategy.cpp" />
     <ClCompile Include="PortfolioArbitrageOrderPlacer.cpp" />
     <ClCompile Include="RangeTrendStrategy.cpp" />
     <ClCompile Include="RtnOrderWrapper_FM.cpp" />

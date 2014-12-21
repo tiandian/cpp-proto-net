@@ -25,6 +25,8 @@ namespace PTCommunication {
 		CNatvieClient *_nativeClient;
 		Timer ^_heartTimer;
 
+		Object^ _pHeartbeatSync = gcnew Object();
+
 	public:
 		ClientBase(IClientRequestHandler ^requestHandler)
 		{
@@ -120,5 +122,6 @@ namespace PTCommunication {
 
 	private:
 		void SendHeartbeat(Object ^obj);
+
 	};
 }
