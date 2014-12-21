@@ -30,6 +30,23 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region Direction
+        private PTEntity.PosiDirectionType _direction;
+
+        public PTEntity.PosiDirectionType Direction
+        {
+            get { return _direction; }
+            set
+            {
+                if (_direction != value)
+                {
+                    _direction = value;
+                    RaisePropertyChanged("Direction");
+                }
+            }
+        }
+        #endregion
+
         #region StopGainCondition
         private PTEntity.CompareCondition _stopGainCond;
 
@@ -100,6 +117,9 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
 
         public ManualStrategySetting()
         {
+            RetryTimes = 8;
+            Direction = PTEntity.PosiDirectionType.LONG;
+
             StopGainCondition = PTEntity.CompareCondition.GREATER_THAN;
             StopGainThreshold = 10;
             StopLossCondition = PTEntity.CompareCondition.GREATER_THAN;
@@ -109,7 +129,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         public override string Persist()
         {
             XElement elem = new XElement("manualSetting",
-                new XAttribute("retryTimes", RetryTimes));
+                new XAttribute("retryTimes", RetryTimes),
+                new XAttribute("direction", Direction));
             XElement elemStopGain = new XElement("stopGain",
                 new XAttribute("condition", StopGainCondition),
                 new XAttribute("threshold", StopGainThreshold));
@@ -130,29 +151,40 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             {
                 RetryTimes = int.Parse(attr.Value);
             }
+            attr = elem.Attribute("direction");
+            if (attr != null)
+            {
+                Direction = (PTEntity.PosiDirectionType)Enum.Parse(typeof(PTEntity.PosiDirectionType), attr.Value);
+            }
 
             XElement elemStopGain = elem.Element("stopGain");
-            attr = elemStopGain.Attribute("condition");
-            if (attr != null)
+            if (elemStopGain != null)
             {
-                StopGainCondition = (PTEntity.CompareCondition)Enum.Parse(typeof(PTEntity.CompareCondition), attr.Value);
+                attr = elemStopGain.Attribute("condition");
+                if (attr != null)
+                {
+                    StopGainCondition = (PTEntity.CompareCondition)Enum.Parse(typeof(PTEntity.CompareCondition), attr.Value);
+                }
+            
+                attr = elemStopGain.Attribute("threshold");
+                if (attr != null)
+                {
+                    StopGainThreshold = double.Parse(attr.Value);
+                }
             }
-            attr = elemStopGain.Attribute("threshold");
-            if (attr != null)
-            {
-                StopGainThreshold = double.Parse(attr.Value);
-            }
-
             XElement elemStopLoss = elem.Element("stopLoss");
-            attr = elemStopLoss.Attribute("condition");
-            if (attr != null)
+            if (elemStopLoss != null)
             {
-                StopLossCondition = (PTEntity.CompareCondition)Enum.Parse(typeof(PTEntity.CompareCondition), attr.Value);
-            }
-            attr = elemStopLoss.Attribute("threshold");
-            if (attr != null)
-            {
-                StopLossThreshold = double.Parse(attr.Value);
+                attr = elemStopLoss.Attribute("condition");
+                if (attr != null)
+                {
+                    StopLossCondition = (PTEntity.CompareCondition)Enum.Parse(typeof(PTEntity.CompareCondition), attr.Value);
+                }
+                attr = elemStopLoss.Attribute("threshold");
+                if (attr != null)
+                {
+                    StopLossThreshold = double.Parse(attr.Value);
+                }
             }
         }
 
@@ -160,7 +192,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             PTEntity.ManualStrategyItem manualStrategy = new PTEntity.ManualStrategyItem();
             manualStrategy.RetryTimes = RetryTimes;
-
+            manualStrategy.Direction = Direction;
             manualStrategy.StopGainCondition = StopGainCondition;
             manualStrategy.StopGainThreshold = StopGainThreshold;
             manualStrategy.StopLossCondition = StopLossCondition;

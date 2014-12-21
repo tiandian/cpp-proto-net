@@ -31,6 +31,9 @@ namespace PortfolioTrading.Modules.Account
             ModifyQtyCommand = new DelegateCommand(OnModifyQuantity);
             StartCommand = new DelegateCommand(OnStart);
             StopCommand = new DelegateCommand(OnStop);
+
+            LongOpenCommand = new DelegateCommand(OnLongOpen);
+            ShortOpenCommand = new DelegateCommand(OnShortOpen);
         }
 
         public AccountVM Account { get { return _accountVm; } }
@@ -901,6 +904,95 @@ namespace PortfolioTrading.Modules.Account
 
 #endregion
 
+#region Manual strategy updateing fields
+        
+        #region MU_Profit
+        private decimal _mu_profit;
+
+        public decimal MU_Profit
+        {
+            get { return _mu_profit; }
+            set
+            {
+                if (_mu_profit != value)
+                {
+                    _mu_profit = value;
+                    RaisePropertyChanged("MU_Profit");
+                }
+            }
+        }
+        #endregion
+
+        #region MU_NearHigh
+        private decimal _mu_nearHigh;
+
+        public decimal MU_NearHigh
+        {
+            get { return _mu_nearHigh; }
+            set
+            {
+                if (_mu_nearHigh != value)
+                {
+                    _mu_nearHigh = value;
+                    RaisePropertyChanged("MU_NearHigh");
+                }
+            }
+        }
+        #endregion
+
+        #region MU_NearLow
+        private decimal _mu_nearLow;
+
+        public decimal MU_NearLow
+        {
+            get { return _mu_nearLow; }
+            set
+            {
+                if (_mu_nearLow != value)
+                {
+                    _mu_nearLow = value;
+                    RaisePropertyChanged("MU_NearLow");
+                }
+            }
+        }
+        #endregion
+
+        #region MU_Fallback
+        private decimal _mu_fallback;
+
+        public decimal MU_Fallback
+        {
+            get { return _mu_fallback; }
+            set
+            {
+                if (_mu_fallback != value)
+                {
+                    _mu_fallback = value;
+                    RaisePropertyChanged("MU_Fallback");
+                }
+            }
+        }
+        #endregion
+
+        #region MU_Bounce
+        private decimal _mu_bounce;
+
+        public decimal MU_Bounce
+        {
+            get { return _mu_bounce; }
+            set
+            {
+                if (_mu_bounce != value)
+                {
+                    _mu_bounce = value;
+                    RaisePropertyChanged("MU_Bounce");
+                }
+            }
+        }
+        #endregion
+
+#endregion
+
         public StrategySetting StrategySetting { get; set; }
 
         public string DisplayText
@@ -930,6 +1022,8 @@ namespace PortfolioTrading.Modules.Account
         public ICommand ClosePositionCommand { get; private set; }
         public ICommand CloseQtyPositionCommand { get; private set; }
         public ICommand ModifyQtyCommand { get; private set; }
+        public ICommand LongOpenCommand { get; private set; }
+        public ICommand ShortOpenCommand { get; private set; }
 
         public ICommand StartCommand { get; private set; }
         public ICommand StopCommand { get; private set; }
@@ -1209,6 +1303,16 @@ namespace PortfolioTrading.Modules.Account
                 RT_LastCostPx = ToDecimal(strategyUpdate.LastCostPx);
                 RT_RecentStopLossPx = ToDecimal(strategyUpdate.RecentStopLossPx);
             }
+            else if (item.StrategyUpdate.Kind == PTEntity.StrategyType.MANUAL)
+            {
+                PTEntity.ManualStrategyUpdateItem strategyUpdate = item.StrategyUpdate as PTEntity.ManualStrategyUpdateItem;
+
+                MU_Profit = ToDecimal(strategyUpdate.Profit);
+                MU_NearHigh = ToDecimal(strategyUpdate.NearHigh);
+                MU_NearLow = ToDecimal(strategyUpdate.NearLow);
+                MU_Fallback = ToDecimal(strategyUpdate.Fallback);
+                MU_Bounce = ToDecimal(strategyUpdate.Bounce);
+            }
 
             OpenTimes = item.TotalOpenTimes;
             DoneTimes = item.TotalCloseTimes;
@@ -1237,6 +1341,24 @@ namespace PortfolioTrading.Modules.Account
         {
             return val >= (double)decimal.MaxValue || val <= (double)decimal.MinValue ? 
                 0 : (decimal)Math.Round(val, 2);
+        }
+
+        private void OnLongOpen()
+        {
+            if(StrategySetting is ManualStrategySetting)
+            {
+                ((ManualStrategySetting)StrategySetting).Direction = PTEntity.PosiDirectionType.LONG;
+                OnOpenPosition();
+            }
+        }
+
+        private void OnShortOpen()
+        {
+            if (StrategySetting is ManualStrategySetting)
+            {
+                ((ManualStrategySetting)StrategySetting).Direction = PTEntity.PosiDirectionType.SHORT;
+                OnOpenPosition();
+            }
         }
 
         private void OnOpenPosition()

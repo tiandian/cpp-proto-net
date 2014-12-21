@@ -84,6 +84,16 @@ StrategyUpdateItem^ CreateStrategyUpdate(StrategyType straType, entity::Portfoli
 			pEntity->rt_recentstoplosspx()
 		);
 		break;
+	case StrategyType::MANUAL:
+		retStrategyUpdate = gcnew ManualStrategyUpdateItem
+		(
+			pEntity->mu_profit(),
+			pEntity->mu_nearhigh(),
+			pEntity->mu_nearlow(),
+			pEntity->mu_fallback(),
+			pEntity->mu_bounce()
+		);
+		break;
 	default:
 		return nullptr;
 	}

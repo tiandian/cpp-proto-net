@@ -164,6 +164,18 @@ public:
 
 	virtual void To(entity::StrategyItem* pNativeStrategyItem) override;
 
+	property PosiDirectionType Direction
+	{
+		PosiDirectionType get()
+		{
+			return _direction;
+		}
+		void set(PosiDirectionType val)
+		{
+			_direction = val;
+		}
+	}
+
 	property CompareCondition StopGainCondition
 	{
 		CompareCondition get()
@@ -213,6 +225,7 @@ public:
 	}
 
 private:
+	PosiDirectionType _direction;
 	CompareCondition _stopGainCondition;
 	double _stopGainThreshold;
 	CompareCondition _stopLossCondition;

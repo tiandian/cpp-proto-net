@@ -88,6 +88,9 @@ void ClientBase::Disconnect()
 void ClientBase::SendHeartbeat(Object ^obj)
 {
 	IntPtr tsPtr;
+	if (!Monitor::TryEnter(_pHeartbeatSync, 10000))
+		return;
+
 	try
 	{
 		String ^tsClient = System::DateTime::Now.ToString();
@@ -97,6 +100,7 @@ void ClientBase::SendHeartbeat(Object ^obj)
 	finally
 	{
 		Marshal::FreeHGlobal(tsPtr);
+		Monitor::Exit(_pHeartbeatSync);
 	}
 }
 

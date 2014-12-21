@@ -107,6 +107,13 @@ void CQuoteAggregator::OnQuoteReceived(const string& connectIP, CUstpFtdcDepthMa
 		}
 	}
 
+	if (delay == 0)
+	{
+		pLogger->Info(boost::str(boost::format("Quote(%s): %s\t%d\t%.1f\t%.1f\t%.1f\t%.1f")
+			% symbol % pDepthMarketData->UpdateTime % pDepthMarketData->UpdateMillisec 
+			% pDepthMarketData->OpenPrice % pDepthMarketData->HighestPrice % pDepthMarketData->LowestPrice % pDepthMarketData->LastPrice));
+	}
+
 	pLogger->Info(boost::str(boost::format("%-15s\t%s\t%s\t%d\t%d")
 		% connectIP % symbol % pDepthMarketData->UpdateTime % pDepthMarketData->UpdateMillisec % delay));
 }

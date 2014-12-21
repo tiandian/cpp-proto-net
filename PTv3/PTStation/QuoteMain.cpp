@@ -174,8 +174,8 @@ int launchChildTest(int argc, char* argv[])
 {
 	cout << "This is a testing host, which will launch a child for test" << endl;
 	stringstream sCmd;
-	assert(argc == 11);
-	for (int i = 0; i < 9; ++i)
+	//assert(argc == 11);
+	for (int i = 0; i < 11; ++i)
 	{
 		if(i > 0)
 			sCmd << " ";
@@ -183,11 +183,11 @@ int launchChildTest(int argc, char* argv[])
 	}
 	sCmd << ends;
 
-	string shmName = "SubscribeQuote-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+	string shmName = SHM_SUBSCRIBE_NAME + qsConfig.BrokerId() + "-" + qsConfig.Username();
 	CShmQuoteSubscribeProducer producer(shmName);
 	producer.Init();
 
-	string quoteFeedName = "QuoteFeed-" + qsConfig.BrokerId() + "-" + qsConfig.Username();
+	string quoteFeedName = SHM_QUOTE_FEED_NAME + qsConfig.BrokerId() + "-" + qsConfig.Username();
 	CShmQuoteFeedConsumer feedee(quoteFeedName, boost::bind(&OnQuotePush, _1));
 	feedee.Init();
 	feedee.Start();
@@ -205,8 +205,8 @@ int launchChildTest(int argc, char* argv[])
 void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer)
 {
 	vector<string> symbols;
-	symbols.push_back("IF1305");
-	symbols.push_back("IF1306");
+	symbols.push_back("IF1501");
+	//symbols.push_back("IF1306");
 
 	for(int i = 0; i < 5; ++i)
 	{

@@ -66,7 +66,7 @@
                             <DockPanel>
                                 <TextBlock VerticalAlignment="Center" Margin="4">套利方向</TextBlock>
                                 <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
-                                  SelectedValuePath="Direction" SelectedValue="{Binding PositionDirection, Mode=TwoWay}"
+                                  SelectedValuePath="Direction" SelectedValue="{Binding Settings.Direction, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}" Name="combArbitrageDirection">
                                 </ComboBox>
                             </DockPanel>
@@ -78,13 +78,13 @@
                                     <DockPanel >
                                         <TextBlock VerticalAlignment="Center" Margin="4, 2">价差</TextBlock>
                                         <ComboBox Margin="4, 2" Width="80" Name="combOpenCond" ItemsSource="{Binding OpenCondItemsSource}"
-                                  SelectedValuePath="Condition" SelectedValue="{Binding OpenCondition, Mode=TwoWay}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding Settings.OpenCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
                                         </ComboBox>
                                     </DockPanel>
                                     <DockPanel Margin="4, 2">
                                         <TextBlock DockPanel.Dock="Right" Margin="4, 2">点</TextBlock>
-                                        <igEditor:XamTextEditor Value="{Binding OpenThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                        <igEditor:XamTextEditor Value="{Binding Settings.OpenThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
                                     </DockPanel>
                                 </DockPanel>
                             </DockPanel>
@@ -103,13 +103,13 @@
                                     <DockPanel>
                                         <TextBlock VerticalAlignment="Center" Margin="4, 2" >盈利</TextBlock>
                                         <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding StopGainCondItemsSource}"
-                                  SelectedValuePath="Condition" SelectedValue="{Binding StopGainCondition, Mode=TwoWay}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding Settings.StopGainCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
                                         </ComboBox>
                                     </DockPanel>
                                     <DockPanel Margin="4, 2">
                                         <TextBlock DockPanel.Dock="Right" Margin="4, 2">点</TextBlock>
-                                        <igEditor:XamTextEditor Value="{Binding StopGainThreshold, FallbackValue=20, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                        <igEditor:XamTextEditor Value="{Binding Settings.StopGainThreshold, FallbackValue=20, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
                                     </DockPanel>
                                 </DockPanel>
                             </DockPanel>
@@ -129,20 +129,82 @@
                                     <DockPanel>
                                         <TextBlock VerticalAlignment="Center" Margin="4, 2">亏损</TextBlock>
                                         <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding StopLossCondItemsSource}"
-                                  SelectedValuePath="Condition" SelectedValue="{Binding StopLossCondition, Mode=TwoWay}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding Settings.StopLossCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
                                         </ComboBox>
                                     </DockPanel>
                                     <DockPanel Margin="4, 2">
                                         <TextBlock DockPanel.Dock="Right" Margin="4, 2">点</TextBlock>
-                                        <igEditor:XamTextEditor Value="{Binding StopLossThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                        <igEditor:XamTextEditor Value="{Binding Settings.StopLossThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
                                     </DockPanel>
                                 </DockPanel>
                             </DockPanel>
                         </Border>
                     </StackPanel>
                 </DataTemplate>
-                
+
+                <DataTemplate x:Key="manualSettingTemplate">
+                    <StackPanel>
+                        <StackPanel.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Margin" Value="2"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="2"/>
+                                <Setter Property="BorderBrush" Value="Green" />
+                                <Setter Property="CornerRadius" Value="2"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Border>
+                            <DockPanel>
+                                <TextBlock VerticalAlignment="Center" Margin="4">开仓方向</TextBlock>
+                                <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
+                                  SelectedValuePath="Direction" SelectedValue="{Binding Settings.Direction, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource combItemTemplate}" Name="combOpenDirection">
+                                </ComboBox>
+                            </DockPanel>
+                        </Border>
+                        <Border>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">止盈条件</TextBlock>
+                                
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <DockPanel>
+                                        <TextBlock VerticalAlignment="Center" Margin="4, 2" >盈利</TextBlock>
+                                        <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding StopGainCondItemsSource}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding Settings.StopGainCondition, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource combItemTemplate}">
+                                        </ComboBox>
+                                    </DockPanel>
+                                    <DockPanel Margin="4, 2">
+                                        <TextBlock DockPanel.Dock="Right" Margin="4, 2">点</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding Settings.StopGainThreshold, FallbackValue=20, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <Border>
+                            <DockPanel>
+                                <TextBlock DockPanel.Dock="Top" Margin="6, 2" FontWeight="Bold">止损条件</TextBlock>
+
+                                <DockPanel Margin="12, 0, 6, 2">
+                                    <DockPanel>
+                                        <TextBlock VerticalAlignment="Center" Margin="4, 2">亏损</TextBlock>
+                                        <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding StopLossCondItemsSource}"
+                                  SelectedValuePath="Condition" SelectedValue="{Binding Settings.StopLossCondition, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource combItemTemplate}">
+                                        </ComboBox>
+                                    </DockPanel>
+                                    <DockPanel Margin="4, 2">
+                                        <TextBlock DockPanel.Dock="Right" Margin="4, 2">点</TextBlock>
+                                        <igEditor:XamTextEditor Value="{Binding Settings.StopLossThreshold, FallbackValue=100, Mode=TwoWay}" ValueType="{x:Type sys:Double}"/>
+                                    </DockPanel>
+                                </DockPanel>
+                            </DockPanel>
+                        </Border>
+                    </StackPanel>
+                </DataTemplate>
+
                 <DataTemplate x:Key="changePositionSettingTemplate">
                     <StackPanel>
                         <StackPanel.Resources>
@@ -601,6 +663,7 @@
                                     LinerRegressionTemplate="{StaticResource linerRegAngleSettingTemplate}"
                                     ASCTrendTremplate="{StaticResource ascTrendSettingTemplate}"
                                     RangeTrendTemplate="{StaticResource rangeTrendSettingTemplate}"
+                                    ManualTemplate="{StaticResource manualSettingTemplate}"
                                     />
             </Grid.Resources>
 
