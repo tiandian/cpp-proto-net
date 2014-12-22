@@ -205,12 +205,16 @@ int launchChildTest(int argc, char* argv[])
 void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer)
 {
 	vector<string> symbols;
+#ifndef USE_FEMAS_API
 	symbols.push_back("IF1501");
-	//symbols.push_back("IF1306");
+#else
+	symbols.push_back("IF1210");
+	symbols.push_back("IF1303");
+#endif
+	boost::this_thread::sleep_for(boost::chrono::seconds(5));
 
 	for(int i = 0; i < 5; ++i)
 	{
-		boost::this_thread::sleep_for(boost::chrono::seconds(15));
 		if(i < 4)
 		{
 			if(i % 2 == 0)
@@ -220,6 +224,9 @@ void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer)
 		}
 		else
 			producer->NotifyTerminate();
+
+		boost::this_thread::sleep_for(boost::chrono::seconds(30));
+
 	}
 	cout << "Test subscribeQuoteProc done." << endl;
 }

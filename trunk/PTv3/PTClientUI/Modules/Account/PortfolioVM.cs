@@ -1348,7 +1348,9 @@ namespace PortfolioTrading.Modules.Account
             if(StrategySetting is ManualStrategySetting)
             {
                 ((ManualStrategySetting)StrategySetting).Direction = PTEntity.PosiDirectionType.LONG;
+                _accountVm.Host.PortfApplyStrategySettings(this.Id, StrategySetting.GetEntity());
                 OnOpenPosition();
+                NotifyManualOpenDirectionChange();
             }
         }
 
@@ -1357,8 +1359,16 @@ namespace PortfolioTrading.Modules.Account
             if (StrategySetting is ManualStrategySetting)
             {
                 ((ManualStrategySetting)StrategySetting).Direction = PTEntity.PosiDirectionType.SHORT;
+                _accountVm.Host.PortfApplyStrategySettings(this.Id, StrategySetting.GetEntity());
                 OnOpenPosition();
+                NotifyManualOpenDirectionChange();
             }
+        }
+
+        private void NotifyManualOpenDirectionChange()
+        {
+            IEventAggregator eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+            eventAggregator.GetEvent<ManualOpenDirectionChangeEvent>().Publish(this);
         }
 
         private void OnOpenPosition()
