@@ -84,22 +84,20 @@ void CMdSpi::OnRspUserLogin(CUstpFtdcRspUserLoginField *pRspUserLogin, CUstpFtdc
 
 void CMdSpi::OnRspSubMarketData(CUstpFtdcSpecificInstrumentField *pSpecificInstrument, CUstpFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "OnRspSubMarketData - " << pSpecificInstrument->InstrumentID << 
-		(pRspInfo->ErrorID == 0 ? " Succeeded" : " Failed") << endl;
+	cout << "OnRspSubMarketData - " << (pSpecificInstrument != NULL ? pSpecificInstrument->InstrumentID : "(null)") << endl;
 }
 
 void CMdSpi::OnRspUnSubMarketData(CUstpFtdcSpecificInstrumentField *pSpecificInstrument, CUstpFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	cout << "OnRspUnSubMarketData - " << pSpecificInstrument->InstrumentID <<
-		(pRspInfo->ErrorID == 0 ? " Succeeded" : " Failed") << endl;
+	cout << "OnRspUnSubMarketData - " << (pSpecificInstrument != NULL ? pSpecificInstrument->InstrumentID : "(null)") << endl;
 }
 
 void CMdSpi::OnRtnDepthMarketData(CUstpFtdcDepthMarketDataField *pDepthMarketData)
 {
-	//cout << "CMdSpi::OnRtnDepthMarketData : " << pDepthMarketData->InstrumentID << ", "
-	//	<< pDepthMarketData->LastPrice << ", "
-	//	<< pDepthMarketData->UpdateTime << ", "
-	//	<< pDepthMarketData->UpdateMillisec << endl;
+	cout << "CMdSpi::OnRtnDepthMarketData : " << pDepthMarketData->InstrumentID << ", "
+		<< pDepthMarketData->LastPrice << ", "
+		<< pDepthMarketData->UpdateTime << ", "
+		<< pDepthMarketData->UpdateMillisec << endl;
 	m_pQuoteProxy->OnQuoteReceived(pDepthMarketData);
 }
 

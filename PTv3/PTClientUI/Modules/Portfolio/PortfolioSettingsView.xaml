@@ -159,7 +159,7 @@
                                 <TextBlock VerticalAlignment="Center" Margin="4">开仓方向</TextBlock>
                                 <ComboBox Margin="4, 0" ItemsSource="{Binding DirectionItemsSource}"
                                   SelectedValuePath="Direction" SelectedValue="{Binding Settings.Direction, Mode=TwoWay}"
-                                  ItemTemplate="{StaticResource combItemTemplate}" Name="combOpenDirection">
+                                  ItemTemplate="{StaticResource combItemTemplate}">
                                 </ComboBox>
                             </DockPanel>
                         </Border>
@@ -170,7 +170,7 @@
                                 <DockPanel Margin="12, 0, 6, 2">
                                     <DockPanel>
                                         <TextBlock VerticalAlignment="Center" Margin="4, 2" >盈利</TextBlock>
-                                        <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding StopGainCondItemsSource}"
+                                        <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding GreaterItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding Settings.StopGainCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
                                         </ComboBox>
@@ -190,7 +190,7 @@
                                 <DockPanel Margin="12, 0, 6, 2">
                                     <DockPanel>
                                         <TextBlock VerticalAlignment="Center" Margin="4, 2">亏损</TextBlock>
-                                        <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding StopLossCondItemsSource}"
+                                        <ComboBox Margin="4, 2" Width="80" ItemsSource="{Binding GreaterItemsSource}"
                                   SelectedValuePath="Condition" SelectedValue="{Binding Settings.StopLossCondition, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource combItemTemplate}">
                                         </ComboBox>

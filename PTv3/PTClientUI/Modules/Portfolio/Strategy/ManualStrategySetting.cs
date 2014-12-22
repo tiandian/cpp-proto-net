@@ -205,6 +205,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         {
             ManualStrategySetting strategySetting = (ManualStrategySetting)settings;
             RetryTimes = strategySetting.RetryTimes;
+            Direction = strategySetting.Direction;
+            StopGainCondition = strategySetting.StopGainCondition;
+            StopGainThreshold = strategySetting.StopGainThreshold;
+            StopLossCondition = strategySetting.StopLossCondition;
+            StopLossThreshold = strategySetting.StopLossThreshold;
         }
     }
 }
