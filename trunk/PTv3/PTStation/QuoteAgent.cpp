@@ -57,7 +57,11 @@ boost::tuple<bool, string> CQuoteAgent::Login( const string& frontAddr, const st
 	m_quoteFeedee->Start();
 
 	stringstream sCmd;
+#ifndef USE_FEMAS_API
 	sCmd << "QuoteStation";
+#else
+	sCmd << "QuoteStationFM";
+#endif
 	sCmd << " -c " << frontAddr; //tcp://ctpsim-front01.gfqh.cn:43213
 	sCmd << " -b " << m_brokerID;
 	sCmd << " -u " << m_userID;

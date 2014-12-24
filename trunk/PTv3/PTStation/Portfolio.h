@@ -81,6 +81,7 @@ public:
 	int NewOrderId(string& newId);
 	void AddPosition(const trade::MultiLegOrder& openOrder, int actualTradedVol);
 	void RemovePosition(const trade::MultiLegOrder& closeOrder, int actualTradedVol);
+	void NotifyLegFilled(int sendingIdx, const string& symbol, trade::OffsetFlagType offset, trade::TradeDirectionType direction, double price, int volume);
 	
 	int IncrementalCancelTimes(int amount){ m_cancelTimes += amount; return m_cancelTimes; }
 	void UpdatePosition();

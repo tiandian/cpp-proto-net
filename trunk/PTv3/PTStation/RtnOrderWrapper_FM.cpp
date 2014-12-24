@@ -139,3 +139,8 @@ void CRtnOrderWrapper::ToEntity( trade::Order* pOrd )
 	///相关报单
 	pOrd->set_relativeordersysid("");
 }
+
+trade::OffsetFlagType CRtnOrderWrapper::Offset()
+{
+	return static_cast<trade::OffsetFlagType>(m_orderField.OffsetFlag);
+}

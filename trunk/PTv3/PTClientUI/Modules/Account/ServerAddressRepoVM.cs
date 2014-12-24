@@ -90,6 +90,11 @@ namespace PortfolioTrading.Modules.Account
             _mkt_servers.Add(new ServerAddress { Name = "模拟行情", Address = "tcp://ctpsim-front01.gfqh.cn:43213" });
             _td_servers.Add(new ServerAddress { Name = "模拟交易", Address = "tcp://ctpsim-front01.gfqh.cn:43205" });
 
+            _mkt_servers.Add(new ServerAddress { Name = "飞马仿真", Address = "tcp://117.184.207.110:17101" });
+            _td_servers.Add(new ServerAddress { Name = "华泰仿真", Address = "tcp://117.184.207.110:17061" });
+            _td_servers.Add(new ServerAddress { Name = "国泰仿真", Address = "tcp://117.184.207.110:17131" });
+
+
             if (File.Exists(BrokersXmlPath))
             {
                 XElement rootElem = XElement.Load(BrokersXmlPath);

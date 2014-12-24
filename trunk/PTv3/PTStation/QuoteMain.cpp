@@ -208,8 +208,8 @@ void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer)
 #ifndef USE_FEMAS_API
 	symbols.push_back("IF1501");
 #else
-	symbols.push_back("IF1210");
-	symbols.push_back("IF1303");
+	symbols.push_back("IF1501");
+	//symbols.push_back("IF1303");
 #endif
 	boost::this_thread::sleep_for(boost::chrono::seconds(5));
 

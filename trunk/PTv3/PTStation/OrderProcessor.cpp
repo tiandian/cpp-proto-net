@@ -10,9 +10,11 @@
 #ifndef USE_FEMAS_API
 #include "InputOrder.h"
 #include "TradeAgent.h"
+#define ORDER_REF_FORMAT "%12d"
 #else
 #include "InputOrder_FM.h"
 #include "TradeAgent_FM.h"
+#define ORDER_REF_FORMAT "%012d"
 #endif // !USE_FEMAS_API
 
 #include <boost/date_time.hpp>
@@ -185,7 +187,7 @@ bool COrderProcessor::SubmitAndUnlock(CInputOrder* pInputOrder)
 
 int COrderProcessor::GenerateOrderRef( string& outOrdRef )
 {
-	sprintf_s(m_orderRefBuf, "%12d", m_maxOrderRef);
+	sprintf_s(m_orderRefBuf, ORDER_REF_FORMAT, m_maxOrderRef);
 	outOrdRef = m_orderRefBuf;
 	int currOrdRef = m_maxOrderRef++;
 	return currOrdRef;

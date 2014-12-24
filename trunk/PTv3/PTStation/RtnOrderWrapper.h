@@ -28,6 +28,9 @@ public:
 	int VolumeTraded() { return m_orderField.VolumeTraded; }
 	int VolumeTotalOriginal() {return m_orderField.VolumeTotalOriginal; }
 	const char* Symbol() { return m_orderField.InstrumentID; }
+	double Price() { return m_orderField.LimitPrice; }
+	trade::TradeDirectionType Direction() { return static_cast<trade::TradeDirectionType>(m_orderField.Direction); }
+	trade::OffsetFlagType Offset();
 	
 	void SetVolumeTotalOriginal(int vol){ m_orderField.VolumeTotalOriginal = vol; }
 	void SetVolumeTraded(int vol){ m_orderField.VolumeTraded = vol; }

@@ -120,3 +120,8 @@ void CPortfolioTrendOrderPlacer::OnAddingLegOrderPlacer( CLegOrderPlacer* pLegOr
 		pLegOrderPlacer->ModifyPriceWay(BASED_ON_OPPOSITE);
 	}
 }
+
+void CPortfolioTrendOrderPlacer::OnLegOrderFilled(int sendingIdx, const string& symbol, trade::OffsetFlagType offset, trade::TradeDirectionType direction, double price, int volume)
+{
+	m_pPortf->NotifyLegFilled(sendingIdx, symbol, offset, direction, price, volume);
+}
