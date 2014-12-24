@@ -66,7 +66,7 @@ CTradeAgent::CTradeAgent(void)
 	, m_isLogged(false)
 	, m_isConfirmed(false)
 	, m_isWorking(false)
-	, m_maxOrderRef(0)
+	, m_maxOrderRef(1)
 	, m_iRequestID(0)
 	, m_orderProcessor(NULL)
 {
@@ -186,6 +186,7 @@ void CTradeAgent::Login()
 		strcpy_s(req.BrokerID, m_brokerId.c_str());
 		strcpy_s(req.UserID, m_investorId.c_str());
 		strcpy_s(req.Password, m_password.c_str());
+		strcpy_s(req.UserProductInfo, "TradeStationFM 4.2");
 		if(m_pUserApi != NULL)
 		{
 			int requestId = RequestIDIncrement();
@@ -280,7 +281,10 @@ void CTradeAgent::OnRspUserLogin(CUstpFtdcRspUserLoginField *pRspUserLogin, CUst
 #ifdef FAKE_DEAL
 		m_fakeDealer.SetSessionParams(FRONT_ID, SESSION_ID);
 #endif
-		m_maxOrderRef = atoi(pRspUserLogin->MaxOrderLocalID);
+		if (pRspUserLogin->MaxOrderLocalID == NULL || strcmp(pRspUserLogin->MaxOrderLocalID, "") == 0)
+			m_maxOrderRef = 1;
+		else 
+			m_maxOrderRef = atoi(pRspUserLogin->MaxOrderLocalID);
 
 		string ds(pRspUserLogin->TradingDay);
 		m_tradingDay = boost::gregorian::from_undelimited_string(ds);

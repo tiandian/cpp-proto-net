@@ -17,6 +17,7 @@ protected:
 	virtual void BuildTemplateOrder();
 	virtual void OnAddingLegOrderPlacer(CLegOrderPlacer* pLegOrderPlacer);
 	virtual void OnLegOrderSent(int orderPlacerIdx);
+	virtual void OnLegOrderFilled(int sendingIdx, const string& symbol, trade::OffsetFlagType offset, trade::TradeDirectionType direction, double price, int volume);
 	virtual void OnPortfolioDone();
 
 private:

@@ -632,6 +632,8 @@ void CPortfolioOrderPlacer::OnFilled(const RtnOrderWrapperPtr& pRtnOrder )
 		// All leg order done
 		boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtAllFilled());
 	}
+
+	RaiseLegOrderFilledEvent(sendingIdx - 1, pRtnOrder);
 }
 
 void CPortfolioOrderPlacer::OnPartiallyFilled(const RtnOrderWrapperPtr& pRtnOrder )
@@ -874,6 +876,17 @@ void CPortfolioOrderPlacer::OnOrderReturned( RtnOrderWrapperPtr& rtnOrder )
 		logger.Warning(boost::str(boost::format("Cannot identify status of order (ref: %s, sysId: %s)") 
 			% rtnOrder->OrderRef() % rtnOrder->OrderSysId()));
 	}
+}
+
+void CPortfolioOrderPlacer::RaiseLegOrderFilledEvent(int sendingIdx, const RtnOrderWrapperPtr& pRtnOrder)
+{
+	string symbol = pRtnOrder->Symbol();
+	double price = pRtnOrder->Price();
+	int volume = pRtnOrder->VolumeTraded();
+	trade::OffsetFlagType offset = pRtnOrder->Offset();
+	trade::TradeDirectionType direction = pRtnOrder->Direction();
+
+	OnLegOrderFilled(sendingIdx, symbol, offset, direction, price, volume);
 }
 
 void CPortfolioOrderPlacer::UpdateLegOrder(const RtnOrderWrapperPtr& pRtnOrder )

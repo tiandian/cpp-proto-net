@@ -32,6 +32,8 @@ CManualStrategy::~CManualStrategy()
 
 void CManualStrategy::Apply(const entity::StrategyItem& strategyItem, bool withTriggers)
 {
+	boost::mutex::scoped_lock l(m_mut);
+
 	m_retryTimes = strategyItem.retrytimes();
 	m_positionDirection = strategyItem.positiondirection();
 	m_stopGainCondition = strategyItem.stopgaincondition();
@@ -52,7 +54,8 @@ void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost:
 	CalcUpdates(pQuote);
 
 	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
-	if (pOrderPlacer->IsWorking())
+	
+	if (pOrderPlacer->IsClosing())
 	{
 		LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Check for modifying closing order") % pPortfolio->InvestorId()));
 		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
@@ -67,22 +70,22 @@ void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost:
 		OpenPosition(m_positionDirection, pOrderPlacer, pQuote, timestamp, forceOpening);
 		return;
 	}
+
+	
+	bool forceClosing = IsForceClosing();
+	if (forceClosing && pOrderPlacer->IsOpened())
+	{
+		LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Manually Close Position at %s")
+			% pPortfolio->InvestorId() % pPortfolio->ID() % pQuote->update_time()));
+		ClosePosition(pOrderPlacer, pQuote, "手动平仓");
+		return;
+	}
 	
 	if (!IsRunning())
 		return;
 
 	if (pOrderPlacer->IsOpened())
 	{
-		bool meetCloseCondition = false;
-		bool forceClosing = IsForceClosing();
-		if (forceClosing)
-		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Manually Close Position at %s")
-				% pPortfolio->InvestorId() % pPortfolio->ID() % pQuote->update_time()));
-			ClosePosition(pOrderPlacer, pQuote, "手动平仓");
-			return;
-		}
-		
 		// Test for Stop Gain
 		bool stopGain = MeetCondition(m_profit, m_stopGainCondition, m_stopGainThreshold);
 		if (stopGain)
@@ -242,7 +245,16 @@ bool CManualStrategy::MeetCondition(double profit, entity::CompareCondition cond
 
 int CManualStrategy::OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol)
 {
-	return 0;
+	int qty = openOrder.quantity();
+
+	double ord_profit = CStrategy::CalcOrderProfit(openOrder);
+	AddProfit(pPortfolio, ord_profit);
+	int totalOpenTimes = IncrementOpenTimes(pPortfolio, qty);
+	IncrementCloseTimes(pPortfolio, qty);
+
+	ResetUpdates();
+
+	return totalOpenTimes;
 }
 
 void CManualStrategy::ResetUpdates()
@@ -252,4 +264,15 @@ void CManualStrategy::ResetUpdates()
 	m_nearLow = 0;
 	m_fallback = 0;
 	m_bounce = 0;
+}
+
+void CManualStrategy::OnLegFilled(int sendingIdx, const string& symbol, trade::OffsetFlagType offset, trade::TradeDirectionType direction, double price, int volume)
+{
+	// double confirm
+	if (sendingIdx == 0 && offset == trade::OF_OPEN)
+	{
+		m_cost = price;
+	}
+	else
+		m_cost = 0; // reset m_cost
 }

@@ -640,4 +640,9 @@ void CPortfolio::PrintLegsQuote()
 	}
 }
 
+void CPortfolio::NotifyLegFilled(int sendingIdx, const string& symbol, trade::OffsetFlagType offset, trade::TradeDirectionType direction, double price, int volume)
+{
+	m_strategy->OnLegFilled(sendingIdx, symbol, offset, direction, price, volume);
+}
+
 

@@ -140,3 +140,11 @@ void CRtnOrderWrapper::ToEntity( trade::Order* pOrd )
 	///相关报单
 	pOrd->set_relativeordersysid(m_orderField.RelativeOrderSysID);
 }
+
+trade::OffsetFlagType CRtnOrderWrapper::Offset()
+{
+	if (strlen(m_orderField.CombOffsetFlag) > 0)
+		return static_cast<trade::OffsetFlagType>(m_orderField.CombOffsetFlag[0]);
+
+	return trade::OF_OPEN;
+}
