@@ -51,7 +51,7 @@ private:
 	void UnderlyingPushPacket(OutgoingPacket* pPacket)
 	{
 		if(!IsInactive())
-			PushPacket(pPacket);
+			TryPushPacket(pPacket);
 	}
 
 	string				m_sessionId;
