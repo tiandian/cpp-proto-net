@@ -20,14 +20,20 @@ void ServerLoginService::handle( LogicalConnection* pClient, IncomingPacket* pRe
 	if(svrType == entity::SERV_TRADE)
 	{
 		boost::tuple<bool, string> result = avatarClient->TradeLogin(pSvrLoginRequest->getData().address(), 
-			pSvrLoginRequest->getData().brokerid(), pSvrLoginRequest->getData().userid(), pSvrLoginRequest->getData().password());
+			pSvrLoginRequest->getData().brokerid(),
+			pSvrLoginRequest->getData().investorid(),
+			pSvrLoginRequest->getData().userid(), 
+			pSvrLoginRequest->getData().password());
 		response.getData().set_success(boost::get<0>(result));
 		response.getData().set_errormessage(boost::get<1>(result));
 	}
 	else if(svrType == entity::SERV_QUOTE)
 	{
 		boost::tuple<bool, string> result = avatarClient->QuoteLogin(pSvrLoginRequest->getData().address(), 
-			pSvrLoginRequest->getData().brokerid(), pSvrLoginRequest->getData().userid(), pSvrLoginRequest->getData().password());
+			pSvrLoginRequest->getData().brokerid(), 
+			pSvrLoginRequest->getData().investorid(),
+			pSvrLoginRequest->getData().userid(), 
+			pSvrLoginRequest->getData().password());
 		response.getData().set_success(boost::get<0>(result));
 		response.getData().set_errormessage(boost::get<1>(result));
 	}
@@ -40,6 +46,7 @@ void ServerLoginService::handle( LogicalConnection* pClient, IncomingPacket* pRe
 	response.getData().set_type(pSvrLoginRequest->getData().type());
 	response.getData().set_address(pSvrLoginRequest->getData().address());
 	response.getData().set_brokerid(pSvrLoginRequest->getData().brokerid());
+	response.getData().set_investorid(pSvrLoginRequest->getData().investorid());
 	response.getData().set_userid(pSvrLoginRequest->getData().userid());
 	
 	pClient->PushPacket(&response);

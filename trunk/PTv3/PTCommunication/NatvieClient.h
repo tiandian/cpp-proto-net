@@ -17,7 +17,7 @@ public:
 	CNatvieClient(PTCommunication::IClientRequestHandler ^reqHandler);
 	~CNatvieClient(void);
 
-	bool ServerLogin(entity::ServerType svrType, const char* address, const char* brokerId, const char* investorId, const char* password);
+	bool ServerLogin(entity::ServerType svrType, const char* address, const char* brokerId, const char* investorId, const char* userId, const char* password);
 	void ServerLogout(entity::ServerType svrType);
 
 	void OnLoginResponse(entity::LoginResponse& resp);

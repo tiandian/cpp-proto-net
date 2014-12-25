@@ -59,7 +59,7 @@ namespace PTCommunication {
 
 		bool Connect(String ^host, int port);
 
-		void ServerLogin(ServerType svrType, String ^address, String ^brokerId, String ^investorId, String ^password);
+		void ServerLogin(ServerType svrType, String ^address, String ^brokerId, String ^investorId, String ^userId, String ^password);
 
 		void ServerLogout(ServerType svrType);
 

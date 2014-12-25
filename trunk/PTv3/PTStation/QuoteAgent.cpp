@@ -32,14 +32,20 @@ void CQuoteAgent::LaunchChildProc(string cmd)
 	m_bIsConnected.store(false, boost::memory_order_release);
 }
 
-boost::tuple<bool, string> CQuoteAgent::Login( const string& frontAddr, const string& brokerId, const string& userId, const string& password )
+boost::tuple<bool, string> CQuoteAgent::Login(const string& frontAddr, const string& brokerId, const string& investorId, const string& userId, const string& password)
 {
+#ifndef USE_FEMAS_API
+	string logonId = investorId;
+#else
+	string logonId = userId;
+#endif
+	
 	string traceInfo = boost::str(boost::format("Log in quote (%s, %s, %s)") 
-		% brokerId.c_str() % userId % password);
+		% brokerId.c_str() % logonId % password);
 	logger.Trace(traceInfo);
 
 	m_brokerID = brokerId;
-	m_userID = userId;
+	m_userID = logonId;
 
 	string shmName = SHM_SUBSCRIBE_NAME + m_brokerID + "-" + m_userID;
 	m_quoteSubscriber = boost::shared_ptr<CShmQuoteSubscribeProducer>( new CShmQuoteSubscribeProducer(shmName) );

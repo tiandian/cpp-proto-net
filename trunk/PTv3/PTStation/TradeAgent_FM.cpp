@@ -96,7 +96,7 @@ void CTradeAgent::RunTradingFunc(string address)
 	m_isWorking = false;
 }
 
-boost::tuple<bool, string> CTradeAgent::Login( const string& frontAddr, const string& brokerId, const string& userId, const string& password )
+boost::tuple<bool, string> CTradeAgent::Login(const string& frontAddr, const string& brokerId, const string& InvestorId, const string& userId, const string& password)
 {
 	try{
 		string streamFolder = userId + "/Td/";
@@ -107,7 +107,8 @@ boost::tuple<bool, string> CTradeAgent::Login( const string& frontAddr, const st
 		}
 
 		m_brokerId = brokerId;
-		m_investorId = userId;
+		m_investorId = InvestorId;
+		m_userId = userId;
 		m_password = password;
 
 		// ´´½¨UserApi
@@ -175,7 +176,7 @@ boost::tuple<bool, string> CTradeAgent::Login( const string& frontAddr, const st
 void CTradeAgent::Login()
 {
 	string traceInfo = boost::str(boost::format("Log in trade (%s, %s, %s)") 
-		% m_brokerId % m_investorId % m_password);
+		% m_brokerId % m_userId % m_password);
 	logger.Trace(traceInfo);
 
 	bool reqSucc = false;
@@ -184,7 +185,7 @@ void CTradeAgent::Login()
 		CUstpFtdcReqUserLoginField req;
 		memset(&req, 0, sizeof(req));
 		strcpy_s(req.BrokerID, m_brokerId.c_str());
-		strcpy_s(req.UserID, m_investorId.c_str());
+		strcpy_s(req.UserID, m_userId.c_str());
 		strcpy_s(req.Password, m_password.c_str());
 		strcpy_s(req.UserProductInfo, "TradeStationFM 4.2");
 		if(m_pUserApi != NULL)

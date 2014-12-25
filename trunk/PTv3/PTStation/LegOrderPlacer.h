@@ -54,7 +54,7 @@ public:
 	MODIFY_PRICE_WAY ModifyPriceWay(){ return m_modifyPriceWay; }
 	void ModifyPriceWay(MODIFY_PRICE_WAY way){ m_modifyPriceWay = way; }
 
-	void StartPending(const RtnOrderWrapperPtr& pendingOrder);
+	virtual void StartPending(const RtnOrderWrapperPtr& pendingOrder);
 
 	virtual bool IsOpen();
 	void Reset(bool afterCancel = false);
@@ -73,6 +73,8 @@ public:
 	// OrderEntity status would be set after operation Reset because of Filled Order incoming after Reset 
 	// So do this after portfolio completely done for ensuring correct status
 	void ResetOrderEntityStatus(){ m_bOrderReady = false; }
+
+	virtual bool IsLegPlacerEligibleRetry();
 
 protected:
 
@@ -116,6 +118,20 @@ public:
 	~CArbitrageLegOrderPlacer(void){}
 
 	bool IsOpen();
+};
+
+class CManualLegOrderPlacer : public CLegOrderPlacer
+{
+public:
+	CManualLegOrderPlacer(CPortfolioOrderPlacer* portfOrdPlacer, int openTimeout, int maxRetry)
+		: CLegOrderPlacer(portfOrdPlacer, openTimeout, maxRetry)
+	{
+		m_modifyPriceWay = BASED_ON_OPPOSITE;
+	}
+	~CManualLegOrderPlacer(void){}
+
+	virtual bool IsLegPlacerEligibleRetry();
+	virtual void StartPending(const RtnOrderWrapperPtr& pendingOrder);
 };
 
 typedef boost::shared_ptr<CLegOrderPlacer> LegOrderPlacerPtr;

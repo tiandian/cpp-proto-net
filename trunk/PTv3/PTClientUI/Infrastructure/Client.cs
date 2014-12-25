@@ -37,9 +37,9 @@ namespace PortfolioTrading.Infrastructure
             ServerDisconnect("TradeDisconnect");
         }
 
-        public void QuoteLogin(string address, string brokerId, string userId, string password)
+        public void QuoteLogin(string address, string brokerId, string investorId, string userId, string password)
         {
-            ServerLogin(PTEntity.ServerType.SERV_QUOTE, address, brokerId, userId, password);
+            ServerLogin(PTEntity.ServerType.SERV_QUOTE, address, brokerId, investorId, userId, password);
         }
 
         public void QuoteLogout()
@@ -47,9 +47,9 @@ namespace PortfolioTrading.Infrastructure
             ServerLogout(PTEntity.ServerType.SERV_QUOTE);
         }
 
-        public void TradeLogin(string address, string brokerId, string userId, string password)
+        public void TradeLogin(string address, string brokerId, string investorId, string userId, string password)
         {
-            ServerLogin(PTEntity.ServerType.SERV_TRADE, address, brokerId, userId, password);
+            ServerLogin(PTEntity.ServerType.SERV_TRADE, address, brokerId, investorId, userId, password);
         }
 
         public void TradeLogout()

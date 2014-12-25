@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ManualStrategy.h"
 #include "Portfolio.h"
-#include "PortfolioTrendOrderPlacer.h"
+#include "ManualOrderPlacer.h"
 #include "globalmembers.h"
 #include "DoubleCompare.h"
 #include "TechAnalyStrategy.h"
@@ -53,7 +53,7 @@ void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost:
 	//pQuote->set_update_time("09:15:00");
 	CalcUpdates(pQuote);
 
-	CPortfolioTrendOrderPlacer* pOrderPlacer = dynamic_cast<CPortfolioTrendOrderPlacer*>(pPortfolio->OrderPlacer());
+	CManualOrderPlacer* pOrderPlacer = dynamic_cast<CManualOrderPlacer*>(pPortfolio->OrderPlacer());
 	
 	if (pOrderPlacer->IsClosing())
 	{
@@ -92,7 +92,7 @@ void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost:
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Stop Gain since Profit(%.2f) > Threshold(%.2f)")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % m_profit % m_stopGainThreshold));
-			ClosePosition(pOrderPlacer, pQuote, boost::str(boost::format("最新价%.2f, 盈利达到%d, 止盈平仓") % m_profit).c_str());
+			ClosePosition(pOrderPlacer, pQuote, boost::str(boost::format("最新价%.2f, 盈利达到%d, 止盈平仓") % pQuote->last() % m_profit).c_str());
 			return;
 		}
 
@@ -102,7 +102,7 @@ void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost:
 		{
 			LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Stop LOSS since Loss(%.2f) > Threshold(%.2f)")
 				% pPortfolio->InvestorId() % pPortfolio->ID() % -m_profit % m_stopLossThreshold));
-			ClosePosition(pOrderPlacer, pQuote, boost::str(boost::format("最新价%.2f, 亏损达到%d, 止损平仓") % m_profit).c_str());
+			ClosePosition(pOrderPlacer, pQuote, boost::str(boost::format("最新价%.2f, 亏损达到%d, 止损平仓") % pQuote->last() % m_profit).c_str());
 			return;
 		}
 	}
@@ -120,7 +120,7 @@ void CManualStrategy::GetStrategyUpdate(entity::PortfolioUpdateItem* pPortfUpdat
 	pPortfUpdateItem->set_mu_bounce(m_bounce);
 }
 
-void CManualStrategy::OpenPosition(entity::PosiDirectionType direction, CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening)
+void CManualStrategy::OpenPosition(entity::PosiDirectionType direction, CManualOrderPlacer* pOrderPlacer, entity::Quote* pQuote, boost::chrono::steady_clock::time_point& timestamp, bool forceOpening)
 {
 	if (direction > entity::NET)
 	{
@@ -147,7 +147,7 @@ void CManualStrategy::OpenPosition(entity::PosiDirectionType direction, CPortfol
 	}
 }
 
-void CManualStrategy::ClosePosition(CPortfolioTrendOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText)
+void CManualStrategy::ClosePosition(CManualOrderPlacer* pOrderPlacer, entity::Quote* pQuote, const char* noteText)
 {
 	if (pOrderPlacer != NULL)
 	{

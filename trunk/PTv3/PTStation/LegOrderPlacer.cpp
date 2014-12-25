@@ -225,7 +225,25 @@ trade::Order& CLegOrderPlacer::OrderEntity()
 	return m_legOrder;
 }
 
+bool CLegOrderPlacer::IsLegPlacerEligibleRetry()
+{
+	return !(IsOpen()) && CanRetry();
+}
+
 bool CArbitrageLegOrderPlacer::IsOpen()
 {
 	return m_sequenceNo == 0;
+}
+
+bool CManualLegOrderPlacer::IsLegPlacerEligibleRetry()
+{
+	return CanRetry();
+}
+
+void CManualLegOrderPlacer::StartPending(const RtnOrderWrapperPtr& pendingOrder)
+{
+	m_exchId = pendingOrder->ExchangeId();
+	m_ordSysId = pendingOrder->OrderSysId();
+	m_userId = pendingOrder->UserId();
+	m_isPending = true;
 }

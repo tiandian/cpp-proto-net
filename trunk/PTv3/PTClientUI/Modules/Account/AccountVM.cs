@@ -100,7 +100,7 @@ namespace PortfolioTrading.Modules.Account
         }
 
         #region BrokerId
-        private string _brokerId;
+        private string _brokerId = string.Empty;
 
         public string BrokerId
         {
@@ -117,7 +117,7 @@ namespace PortfolioTrading.Modules.Account
         #endregion
 
         #region InvestorId
-        private string _investorId;
+        private string _investorId = string.Empty;
 
         public string InvestorId
         {
@@ -133,8 +133,26 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region UserId
+        private string _userId = string.Empty;
+
+        public string UserId
+        {
+            get { return _userId; }
+            set
+            {
+                if (_userId != value)
+                {
+                    _userId = value;
+                    RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        #endregion
+        
+
         #region Password
-        private string _password;
+        private string _password = string.Empty;
 
         public string Password
         {
@@ -527,6 +545,7 @@ namespace PortfolioTrading.Modules.Account
                         QuoteAddress = AddressRepo.EffectiveMarket.Address,
                         BrokerId = acct.BrokerId,
                         InvestorId = acct.InvestorId,
+                        UserId = acct.UserId,
                         Password = acct.Password
                     }
                 );
@@ -601,6 +620,10 @@ namespace PortfolioTrading.Modules.Account
             if (attrInvestorId != null)
                 acct.InvestorId = attrInvestorId.Value;
 
+            XAttribute attrUserId = xmlElement.Attribute("userId");
+            if (attrUserId != null)
+                acct.UserId = attrUserId.Value;
+
             XAttribute attrPwd = xmlElement.Attribute("password");
             if (attrPwd != null)
                 acct.Password = attrPwd.Value;
@@ -631,6 +654,7 @@ namespace PortfolioTrading.Modules.Account
             XElement elem = new XElement("account");
             elem.Add(new XAttribute("brokerId", _brokerId));
             elem.Add(new XAttribute("investorId", _investorId));
+            elem.Add(new XAttribute("userId", _userId));
             elem.Add(new XAttribute("password", _password));
             elem.Add(new XAttribute("maxSubmit", _maxSubmit));
             elem.Add(new XAttribute("maxCancel", _maxCancel));
