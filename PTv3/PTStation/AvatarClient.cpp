@@ -26,12 +26,13 @@ CAvatarClient::~CAvatarClient(void)
 	m_destroyed = true;
 }
 
-boost::tuple<bool, string> CAvatarClient::TradeLogin( const string& address, const string& brokerId, const string& investorId, const string& password )
+boost::tuple<bool, string> CAvatarClient::TradeLogin(const string& address, const string& brokerId, const string& investorId, const string& userId, const string& password)
 {
 	if(m_tradeLogged)
 		return boost::make_tuple(false, "Trade already Logged in");
 	m_investorId = investorId;
-	return m_tradeAgent.Login(address, brokerId, investorId, password);
+	m_userId = userId;
+	return m_tradeAgent.Login(address, brokerId, investorId, userId, password);
 }
 
 void CAvatarClient::TradeLogout()
@@ -39,12 +40,12 @@ void CAvatarClient::TradeLogout()
 	m_tradeAgent.Logout();
 }
 
-boost::tuple<bool, string> CAvatarClient::QuoteLogin( const string& address, const string& brokerId, const string& investorId, const string& password )
+boost::tuple<bool, string> CAvatarClient::QuoteLogin(const string& address, const string& brokerId, const string& investorId, const string& userId, const string& password)
 {
 	if(m_quoteLogged)
 		return boost::make_tuple(false, "Quote already Logged in");
 
-	return m_quoteAgent.Login(address, brokerId, investorId, password);
+	return m_quoteAgent.Login(address, brokerId, investorId, userId, password);
 }
 
 void CAvatarClient::QuoteLogout()

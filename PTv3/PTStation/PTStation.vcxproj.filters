@@ -350,6 +350,9 @@
     <ClInclude Include="ManualStrategy.h">
       <Filter>Header Files\strategy</Filter>
     </ClInclude>
+    <ClInclude Include="ManualOrderPlacer.h">
+      <Filter>Header Files\trade</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -606,6 +609,9 @@
     </ClCompile>
     <ClCompile Include="ManualStrategy.cpp">
       <Filter>Source Files\strategy</Filter>
+    </ClCompile>
+    <ClCompile Include="ManualOrderPlacer.cpp">
+      <Filter>Source Files\trade</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,7 @@
 #include "PortfolioScalperOrderPlacer.h"
 #include "PortfolioTrendOrderPlacer.h"
 #include "PortfolioArbitrageOrderPlacer.h"
+#include "ManualOrderPlacer.h"
 #include "charsetconvert.h"
 #include "SymbolTimeUtil.h"
 
@@ -215,7 +216,7 @@ StrategyPtr CPortfolio::CreateStrategy( const entity::StrategyItem& strategyItem
 		break;
 	case entity::MANUAL:
 		created = StrategyPtr(new CManualStrategy(strategyItem));
-		m_orderPlacer = OrderPlacerPtr(new CPortfolioTrendOrderPlacer);
+		m_orderPlacer = OrderPlacerPtr(new CManualOrderPlacer);
 		break;
   }
 	

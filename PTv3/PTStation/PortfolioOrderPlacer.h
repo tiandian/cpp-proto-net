@@ -33,9 +33,9 @@ public:
 	}
 
 	// Prepare multileg order template and input orders for sending
-	void Prepare();
+	virtual void Prepare();
 
-	void Cleanup();
+	virtual void Cleanup();
 
 	// Truly submit order to trade agent
 	void Run(entity::PosiDirectionType posiDirection, double* pLmtPxArr, int iPxSize);
@@ -79,7 +79,7 @@ public:
 	void OnOrderPlaceFailed(const string& errMsg);
 	void OnOrderCancelFailed(int errorId, const string& errMsg);
 
-	bool IfPortfolioCanceled();
+	virtual bool IfPortfolioCanceled();
 
 	entity::PosiDirectionType PosiDirection(){ return m_posiDirection; }
 	void OutputStatus(const string& statusMsg);

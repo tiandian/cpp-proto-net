@@ -756,7 +756,7 @@ void CPortfolioOrderPlacer::OnQuoteReceived( boost::chrono::steady_clock::time_p
 		return; // in case other symbol's quote coming
 
 	// if order placer is closing order and retry times available
-	if(!(m_activeOrdPlacer->IsOpen()) && m_activeOrdPlacer->CanRetry())
+	if (m_activeOrdPlacer->IsLegPlacerEligibleRetry())
 	{
 		bool needCancel = m_activeOrdPlacer->ModifyPrice(pQuote);
 		if(needCancel)

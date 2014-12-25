@@ -27,9 +27,9 @@ public:
 	const string& Pseudo() const { return m_investorId; }
 	void Pseudo(const string& val) { m_investorId = val; }
 
-	boost::tuple<bool, string> TradeLogin(const string& address, const string& brokerId, const string& investorId, const string& password);
+	boost::tuple<bool, string> TradeLogin(const string& address, const string& brokerId, const string& investorId, const string& userId, const string& password);
 	void TradeLogout();
-	boost::tuple<bool, string> QuoteLogin(const string& address, const string& brokerId, const string& investorId, const string& password);
+	boost::tuple<bool, string> QuoteLogin(const string& address, const string& brokerId, const string& investorId, const string& userId, const string& password);
 	void QuoteLogout();
 
 	CPortfolioManager& PortfolioManager(){ return m_portfolioMgr; }
@@ -56,6 +56,7 @@ private:
 
 	string				m_sessionId;
 	string				m_investorId;
+	string				m_userId;
 
 	CTechDataRepo		m_dataRepo;
 	CTradeAgent			m_tradeAgent;

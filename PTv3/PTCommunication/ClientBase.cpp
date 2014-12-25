@@ -41,14 +41,15 @@ void ClientBase::SetPseudo( String ^pseudo )
 	}
 }
 
-void ClientBase::ServerLogin( ServerType svrType, String ^address, String ^brokerId, String ^investorId, String ^password )
+void ClientBase::ServerLogin(ServerType svrType, String ^address, String ^brokerId, String ^investorId, String ^userId, String ^password)
 {
-	IntPtr pAddress, pBrokerId, pInvestorId, pPassword;
+	IntPtr pAddress, pBrokerId, pInvestorId, pUserId, pPassword;
 	try
 	{
 		pAddress = (IntPtr)Marshal::StringToHGlobalAnsi(address);
 		pBrokerId = (IntPtr)Marshal::StringToHGlobalAnsi(brokerId);
 		pInvestorId = (IntPtr)Marshal::StringToHGlobalAnsi(investorId);
+		pUserId = (IntPtr)Marshal::StringToHGlobalAnsi(userId);
 		pPassword = (IntPtr)Marshal::StringToHGlobalAnsi(password);
 
 		entity::ServerType eSvrType = static_cast<entity::ServerType>(svrType);
@@ -57,6 +58,7 @@ void ClientBase::ServerLogin( ServerType svrType, String ^address, String ^broke
 									(char*)pAddress.ToPointer(),
 									(char*)pBrokerId.ToPointer(),
 									(char*)pInvestorId.ToPointer(),
+									(char*)pUserId.ToPointer(),
 									(char*)pPassword.ToPointer());
 	}
 	finally

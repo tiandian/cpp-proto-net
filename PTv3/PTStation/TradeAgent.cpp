@@ -99,7 +99,7 @@ void CTradeAgent::RunTradingFunc(string address)
 	m_isWorking = false;
 }
 
-boost::tuple<bool, string> CTradeAgent::Login( const string& frontAddr, const string& brokerId, const string& userId, const string& password )
+boost::tuple<bool, string> CTradeAgent::Login(const string& frontAddr, const string& brokerId, const string& InvestorId, const string& userId, const string& password)
 {
 	try{
 		string streamFolder = userId + "/Td/";
@@ -110,7 +110,8 @@ boost::tuple<bool, string> CTradeAgent::Login( const string& frontAddr, const st
 		}
 
 		m_brokerId = brokerId;
-		m_investorId = userId;
+		m_investorId = InvestorId;
+		m_userId = userId;
 		m_password = password;
 
 		// ´´½¨UserApi

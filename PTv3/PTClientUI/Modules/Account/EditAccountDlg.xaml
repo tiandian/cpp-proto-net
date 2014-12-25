@@ -1,7 +1,7 @@
 ﻿<Window x:Class="PortfolioTrading.Modules.Account.EditAccountDlg"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="EditAccountDlg" Height="300" Width="300" 
+        Title="EditAccountDlg" Width="300" SizeToContent="Height"
         ShowInTaskbar="False" WindowStartupLocation="CenterOwner"
         Loaded="Window_Loaded">
     <DockPanel>
@@ -33,8 +33,12 @@
                 <TextBox Text="{Binding BrokerId, Mode=TwoWay}"></TextBox>
             </DockPanel>
             <DockPanel>
-                <TextBlock>客户帐号</TextBlock>
+                <TextBlock>投资者帐号</TextBlock>
                 <TextBox Text="{Binding InvestorId, Mode=TwoWay}"></TextBox>
+            </DockPanel>
+            <DockPanel>
+                <TextBlock>用户号</TextBlock>
+                <TextBox Text="{Binding UserId, Mode=TwoWay}"></TextBox>
             </DockPanel>
             <DockPanel>
                 <TextBlock>密码</TextBlock>

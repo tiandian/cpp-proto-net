@@ -802,10 +802,22 @@ class ServerLoginRequest : public ::google::protobuf::Message {
   inline ::std::string* release_brokerid();
   inline void set_allocated_brokerid(::std::string* brokerid);
 
-  // required string UserId = 4;
+  // required string InvestorId = 4;
+  inline bool has_investorid() const;
+  inline void clear_investorid();
+  static const int kInvestorIdFieldNumber = 4;
+  inline const ::std::string& investorid() const;
+  inline void set_investorid(const ::std::string& value);
+  inline void set_investorid(const char* value);
+  inline void set_investorid(const char* value, size_t size);
+  inline ::std::string* mutable_investorid();
+  inline ::std::string* release_investorid();
+  inline void set_allocated_investorid(::std::string* investorid);
+
+  // required string UserId = 5;
   inline bool has_userid() const;
   inline void clear_userid();
-  static const int kUserIdFieldNumber = 4;
+  static const int kUserIdFieldNumber = 5;
   inline const ::std::string& userid() const;
   inline void set_userid(const ::std::string& value);
   inline void set_userid(const char* value);
@@ -814,10 +826,10 @@ class ServerLoginRequest : public ::google::protobuf::Message {
   inline ::std::string* release_userid();
   inline void set_allocated_userid(::std::string* userid);
 
-  // required string Password = 5;
+  // required string Password = 6;
   inline bool has_password() const;
   inline void clear_password();
-  static const int kPasswordFieldNumber = 5;
+  static const int kPasswordFieldNumber = 6;
   inline const ::std::string& password() const;
   inline void set_password(const ::std::string& value);
   inline void set_password(const char* value);
@@ -834,6 +846,8 @@ class ServerLoginRequest : public ::google::protobuf::Message {
   inline void clear_has_address();
   inline void set_has_brokerid();
   inline void clear_has_brokerid();
+  inline void set_has_investorid();
+  inline void clear_has_investorid();
   inline void set_has_userid();
   inline void clear_has_userid();
   inline void set_has_password();
@@ -843,12 +857,13 @@ class ServerLoginRequest : public ::google::protobuf::Message {
 
   ::std::string* address_;
   ::std::string* brokerid_;
+  ::std::string* investorid_;
   ::std::string* userid_;
   ::std::string* password_;
   int type_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(5 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
 
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -963,10 +978,22 @@ class ServerLoginResponse : public ::google::protobuf::Message {
   inline ::std::string* release_brokerid();
   inline void set_allocated_brokerid(::std::string* brokerid);
 
-  // required string UserId = 6;
+  // required string InvestorId = 6;
+  inline bool has_investorid() const;
+  inline void clear_investorid();
+  static const int kInvestorIdFieldNumber = 6;
+  inline const ::std::string& investorid() const;
+  inline void set_investorid(const ::std::string& value);
+  inline void set_investorid(const char* value);
+  inline void set_investorid(const char* value, size_t size);
+  inline ::std::string* mutable_investorid();
+  inline ::std::string* release_investorid();
+  inline void set_allocated_investorid(::std::string* investorid);
+
+  // required string UserId = 7;
   inline bool has_userid() const;
   inline void clear_userid();
-  static const int kUserIdFieldNumber = 6;
+  static const int kUserIdFieldNumber = 7;
   inline const ::std::string& userid() const;
   inline void set_userid(const ::std::string& value);
   inline void set_userid(const char* value);
@@ -987,6 +1014,8 @@ class ServerLoginResponse : public ::google::protobuf::Message {
   inline void clear_has_address();
   inline void set_has_brokerid();
   inline void clear_has_brokerid();
+  inline void set_has_investorid();
+  inline void clear_has_investorid();
   inline void set_has_userid();
   inline void clear_has_userid();
 
@@ -997,10 +1026,11 @@ class ServerLoginResponse : public ::google::protobuf::Message {
   int type_;
   ::std::string* address_;
   ::std::string* brokerid_;
+  ::std::string* investorid_;
   ::std::string* userid_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
 
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -6778,15 +6808,85 @@ inline void ServerLoginRequest::set_allocated_brokerid(::std::string* brokerid) 
   }
 }
 
-// required string UserId = 4;
-inline bool ServerLoginRequest::has_userid() const {
+// required string InvestorId = 4;
+inline bool ServerLoginRequest::has_investorid() const {
   return (_has_bits_[0] & 0x00000008u) != 0;
 }
-inline void ServerLoginRequest::set_has_userid() {
+inline void ServerLoginRequest::set_has_investorid() {
   _has_bits_[0] |= 0x00000008u;
 }
-inline void ServerLoginRequest::clear_has_userid() {
+inline void ServerLoginRequest::clear_has_investorid() {
   _has_bits_[0] &= ~0x00000008u;
+}
+inline void ServerLoginRequest::clear_investorid() {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    investorid_->clear();
+  }
+  clear_has_investorid();
+}
+inline const ::std::string& ServerLoginRequest::investorid() const {
+  return *investorid_;
+}
+inline void ServerLoginRequest::set_investorid(const ::std::string& value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void ServerLoginRequest::set_investorid(const char* value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void ServerLoginRequest::set_investorid(const char* value, size_t size) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ServerLoginRequest::mutable_investorid() {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  return investorid_;
+}
+inline ::std::string* ServerLoginRequest::release_investorid() {
+  clear_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = investorid_;
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void ServerLoginRequest::set_allocated_investorid(::std::string* investorid) {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    delete investorid_;
+  }
+  if (investorid) {
+    set_has_investorid();
+    investorid_ = investorid;
+  } else {
+    clear_has_investorid();
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// required string UserId = 5;
+inline bool ServerLoginRequest::has_userid() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void ServerLoginRequest::set_has_userid() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void ServerLoginRequest::clear_has_userid() {
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline void ServerLoginRequest::clear_userid() {
   if (userid_ != &::google::protobuf::internal::kEmptyString) {
@@ -6848,15 +6948,15 @@ inline void ServerLoginRequest::set_allocated_userid(::std::string* userid) {
   }
 }
 
-// required string Password = 5;
+// required string Password = 6;
 inline bool ServerLoginRequest::has_password() const {
-  return (_has_bits_[0] & 0x00000010u) != 0;
+  return (_has_bits_[0] & 0x00000020u) != 0;
 }
 inline void ServerLoginRequest::set_has_password() {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
 }
 inline void ServerLoginRequest::clear_has_password() {
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline void ServerLoginRequest::clear_password() {
   if (password_ != &::google::protobuf::internal::kEmptyString) {
@@ -7177,15 +7277,85 @@ inline void ServerLoginResponse::set_allocated_brokerid(::std::string* brokerid)
   }
 }
 
-// required string UserId = 6;
-inline bool ServerLoginResponse::has_userid() const {
+// required string InvestorId = 6;
+inline bool ServerLoginResponse::has_investorid() const {
   return (_has_bits_[0] & 0x00000020u) != 0;
 }
-inline void ServerLoginResponse::set_has_userid() {
+inline void ServerLoginResponse::set_has_investorid() {
   _has_bits_[0] |= 0x00000020u;
 }
-inline void ServerLoginResponse::clear_has_userid() {
+inline void ServerLoginResponse::clear_has_investorid() {
   _has_bits_[0] &= ~0x00000020u;
+}
+inline void ServerLoginResponse::clear_investorid() {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    investorid_->clear();
+  }
+  clear_has_investorid();
+}
+inline const ::std::string& ServerLoginResponse::investorid() const {
+  return *investorid_;
+}
+inline void ServerLoginResponse::set_investorid(const ::std::string& value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void ServerLoginResponse::set_investorid(const char* value) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(value);
+}
+inline void ServerLoginResponse::set_investorid(const char* value, size_t size) {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  investorid_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* ServerLoginResponse::mutable_investorid() {
+  set_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    investorid_ = new ::std::string;
+  }
+  return investorid_;
+}
+inline ::std::string* ServerLoginResponse::release_investorid() {
+  clear_has_investorid();
+  if (investorid_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = investorid_;
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void ServerLoginResponse::set_allocated_investorid(::std::string* investorid) {
+  if (investorid_ != &::google::protobuf::internal::kEmptyString) {
+    delete investorid_;
+  }
+  if (investorid) {
+    set_has_investorid();
+    investorid_ = investorid;
+  } else {
+    clear_has_investorid();
+    investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// required string UserId = 7;
+inline bool ServerLoginResponse::has_userid() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void ServerLoginResponse::set_has_userid() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void ServerLoginResponse::clear_has_userid() {
+  _has_bits_[0] &= ~0x00000040u;
 }
 inline void ServerLoginResponse::clear_userid() {
   if (userid_ != &::google::protobuf::internal::kEmptyString) {

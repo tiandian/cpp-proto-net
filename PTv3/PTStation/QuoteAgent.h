@@ -15,7 +15,7 @@ public:
 	CQuoteAgent(void);
 	~CQuoteAgent(void);
 
-	boost::tuple<bool, string> Login(const string& frontAddr, const string& brokerId, const string& userId, const string& password);
+	boost::tuple<bool, string> Login(const string& frontAddr, const string& brokerId, const string& investorId, const string& userId, const string& password);
 	void Logout();
 
 	bool SubscribesQuotes( vector<string>& subscribeArr );

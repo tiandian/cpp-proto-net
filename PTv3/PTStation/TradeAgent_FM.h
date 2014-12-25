@@ -20,7 +20,7 @@ public:
 	CTradeAgent(void);
 	~CTradeAgent(void);
 
-	boost::tuple<bool, string> Login(const string& frontAddr, const string& brokerId, const string& userId, const string& password);
+	boost::tuple<bool, string> Login(const string& frontAddr, const string& brokerId, const string& InvestorId, const string& userId, const string& password);
 	void Logout();
 
 	void SetCallbackHanlder(CTradeAgentCallback* pCallback);
@@ -41,6 +41,7 @@ public:
 
 	const string& BrokerId(){ return m_brokerId; }
 	const string& InvestorId(){ return m_investorId; }
+	const string& UserId() { return m_userId; }
 	const boost::gregorian::date& TradingDay(){ return m_tradingDay; }
 
 	//////////////////////////////////////////////////////////////////////////
@@ -103,6 +104,7 @@ private:
 
 	string m_brokerId;
 	string m_investorId;
+	string m_userId;
 	string m_password;
 
 	// «Î«Û±‡∫≈

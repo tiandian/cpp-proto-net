@@ -103,13 +103,14 @@ void CNatvieClient::Logout()
 	disconnect(true);
 }
 
-bool CNatvieClient::ServerLogin( entity::ServerType svrType, const char* address, const char* brokerId, const char* investorId, const char* password )
+bool CNatvieClient::ServerLogin(entity::ServerType svrType, const char* address, const char* brokerId, const char* investorId, const char* userId, const char* password)
 {
 	ProtobufPacket<entity::ServerLoginRequest> request(ServerLoginRequestID);
 	request.getData().set_type(svrType);
 	request.getData().set_address(address);
 	request.getData().set_brokerid(brokerId);
-	request.getData().set_userid(investorId);
+	request.getData().set_investorid(investorId);
+	request.getData().set_userid(userId);
 	request.getData().set_password(password);
 
 	return sendRequest(&request) > 0;
