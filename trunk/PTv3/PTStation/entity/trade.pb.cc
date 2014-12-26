@@ -619,7 +619,7 @@ void protobuf_AddDesc_trade_2eproto() {
     "\022\n\nTradingDay\030\033 \002(\t\022\024\n\014SettlementID\030\034 \002("
     "\005\022\026\n\016BrokerOrderSeq\030\035 \002(\005\"\274\002\n\020InputOrder"
     "Action\022\020\n\010BrokerID\030\001 \002(\t\022\022\n\nInvestorID\030\002"
-    " \002(\t\022\026\n\016OrderActionRef\030\003 \002(\005\022\020\n\010OrderRef"
+    " \002(\t\022\026\n\016OrderActionRef\030\003 \002(\t\022\020\n\010OrderRef"
     "\030\004 \002(\t\022\021\n\tRequestID\030\005 \002(\005\022\017\n\007FrontID\030\006 \002"
     "(\005\022\021\n\tSessionID\030\007 \002(\005\022\022\n\nExchangeID\030\010 \002("
     "\t\022\022\n\nOrderSysID\030\t \002(\t\022)\n\nActionFlag\030\n \002("
@@ -11616,7 +11616,7 @@ void InputOrderAction::SharedCtor() {
   _cached_size_ = 0;
   brokerid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   investorid_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  orderactionref_ = 0;
+  orderactionref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   orderref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   requestid_ = 0;
   frontid_ = 0;
@@ -11641,6 +11641,9 @@ void InputOrderAction::SharedDtor() {
   }
   if (investorid_ != &::google::protobuf::internal::kEmptyString) {
     delete investorid_;
+  }
+  if (orderactionref_ != &::google::protobuf::internal::kEmptyString) {
+    delete orderactionref_;
   }
   if (orderref_ != &::google::protobuf::internal::kEmptyString) {
     delete orderref_;
@@ -11694,7 +11697,11 @@ void InputOrderAction::Clear() {
         investorid_->clear();
       }
     }
-    orderactionref_ = 0;
+    if (has_orderactionref()) {
+      if (orderactionref_ != &::google::protobuf::internal::kEmptyString) {
+        orderactionref_->clear();
+      }
+    }
     if (has_orderref()) {
       if (orderref_ != &::google::protobuf::internal::kEmptyString) {
         orderref_->clear();
@@ -11768,19 +11775,20 @@ bool InputOrderAction::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
-        if (input->ExpectTag(24)) goto parse_OrderActionRef;
+        if (input->ExpectTag(26)) goto parse_OrderActionRef;
         break;
       }
 
-      // required int32 OrderActionRef = 3;
+      // required string OrderActionRef = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
-            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_OrderActionRef:
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
-                 input, &orderactionref_)));
-          set_has_orderactionref();
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_orderactionref()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->orderactionref().data(), this->orderactionref().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
         } else {
           goto handle_uninterpreted;
         }
@@ -12010,9 +12018,13 @@ void InputOrderAction::SerializeWithCachedSizes(
       2, this->investorid(), output);
   }
 
-  // required int32 OrderActionRef = 3;
+  // required string OrderActionRef = 3;
   if (has_orderactionref()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->orderactionref(), output);
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->orderactionref().data(), this->orderactionref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      3, this->orderactionref(), output);
   }
 
   // required string OrderRef = 4;
@@ -12119,9 +12131,14 @@ void InputOrderAction::SerializeWithCachedSizes(
         2, this->investorid(), target);
   }
 
-  // required int32 OrderActionRef = 3;
+  // required string OrderActionRef = 3;
   if (has_orderactionref()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->orderactionref(), target);
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->orderactionref().data(), this->orderactionref().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        3, this->orderactionref(), target);
   }
 
   // required string OrderRef = 4;
@@ -12230,10 +12247,10 @@ int InputOrderAction::ByteSize() const {
           this->investorid());
     }
 
-    // required int32 OrderActionRef = 3;
+    // required string OrderActionRef = 3;
     if (has_orderactionref()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int32Size(
+        ::google::protobuf::internal::WireFormatLite::StringSize(
           this->orderactionref());
     }
 

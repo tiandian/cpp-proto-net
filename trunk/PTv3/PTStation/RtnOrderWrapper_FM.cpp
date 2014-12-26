@@ -9,6 +9,11 @@ CRtnOrderWrapper::CRtnOrderWrapper(CUstpFtdcOrderField* pOrder)
 	m_orderTimestamp = boost::chrono::steady_clock::now();
 }
 
+CRtnOrderWrapper::CRtnOrderWrapper()
+{
+	memset(&m_orderField, 0, sizeof(m_orderField));
+	m_orderTimestamp = boost::chrono::steady_clock::now();
+}
 
 CRtnOrderWrapper::~CRtnOrderWrapper(void)
 {
@@ -143,4 +148,31 @@ void CRtnOrderWrapper::ToEntity( trade::Order* pOrd )
 trade::OffsetFlagType CRtnOrderWrapper::Offset()
 {
 	return static_cast<trade::OffsetFlagType>(m_orderField.OffsetFlag);
+}
+
+CRtnOrderWrapper* CRtnOrderWrapper::MakeFakeSubmitOrder(CUstpFtdcInputOrderField& inputOrder)
+{
+	CRtnOrderWrapper* pRtnOrderWrapper = new CRtnOrderWrapper();
+
+	strcpy_s(pRtnOrderWrapper->m_orderField.ExchangeID, "CFFEX");
+	strcpy_s(pRtnOrderWrapper->m_orderField.InsertTime, inputOrder.InvestorID);
+	strcpy_s(pRtnOrderWrapper->m_orderField.UserOrderLocalID, inputOrder.UserOrderLocalID);
+	strcpy_s(pRtnOrderWrapper->m_orderField.InstrumentID, inputOrder.InstrumentID);
+	
+	pRtnOrderWrapper->m_orderField.OrderPriceType = inputOrder.OrderPriceType;
+	pRtnOrderWrapper->m_orderField.Direction = inputOrder.Direction;
+	pRtnOrderWrapper->m_orderField.OffsetFlag = inputOrder.OffsetFlag;
+	pRtnOrderWrapper->m_orderField.HedgeFlag = inputOrder.HedgeFlag;
+	pRtnOrderWrapper->m_orderField.LimitPrice = inputOrder.LimitPrice;
+	pRtnOrderWrapper->m_orderField.Volume = inputOrder.Volume;
+	pRtnOrderWrapper->m_orderField.TimeCondition = inputOrder.TimeCondition;
+	pRtnOrderWrapper->m_orderField.VolumeCondition = inputOrder.VolumeCondition;
+	pRtnOrderWrapper->m_orderField.MinVolume = inputOrder.MinVolume;
+	pRtnOrderWrapper->m_orderField.StopPrice = inputOrder.StopPrice;
+	pRtnOrderWrapper->m_orderField.ForceCloseReason = inputOrder.ForceCloseReason;
+	pRtnOrderWrapper->m_orderField.IsAutoSuspend = inputOrder.IsAutoSuspend;
+
+	pRtnOrderWrapper->m_orderField.OrderStatus = USTP_FTDC_OS_AcceptedNoReply;
+	
+	return pRtnOrderWrapper;
 }

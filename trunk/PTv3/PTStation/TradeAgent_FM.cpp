@@ -336,6 +336,8 @@ bool CTradeAgent::SubmitOrder( trade::InputOrder* pInputOrder )
 	strcpy_s(req.InstrumentID, pInputOrder->instrumentid().c_str());
 	///报单引用
 	strcpy_s(req.UserOrderLocalID, pInputOrder->orderref().c_str());
+	strcpy_s(req.ExchangeID, "CFFEX");
+	strcpy_s(req.UserID, m_userId.c_str());
 	///用户代码
 	//	TThostFtdcUserIDType	UserID;
 	///报单价格条件: 限价
@@ -379,7 +381,8 @@ bool CTradeAgent::SubmitOrder( trade::InputOrder* pInputOrder )
 bool CTradeAgent::SubmitOrder( CUstpFtdcInputOrderField& inputOrderField )
 {
 	int iRequestID = RequestIDIncrement();
-
+	strcpy_s(inputOrderField.ExchangeID, "CFFEX");
+	strcpy_s(inputOrderField.UserID, m_userId.c_str());
 #ifdef FAKE_DEAL
 	int iResult = m_fakeDealer.ReqOrderInsert(&inputOrderField, iRequestID);
 #else
@@ -505,14 +508,16 @@ bool CTradeAgent::SubmitOrderAction( trade::InputOrderAction* pInputOrderAction 
 	///经纪公司代码
 	strcpy_s(req.BrokerID, m_brokerId.c_str());
 	///用户代码
-	strcpy_s(req.UserID, m_investorId.c_str());
+	strcpy_s(req.UserID, m_userId.c_str());
 	///报单编号
 	strcpy_s(req.OrderSysID, pInputOrderAction->ordersysid().c_str());
 	///投资者编号
 	strcpy_s(req.InvestorID, m_investorId.c_str());
 	req.ActionFlag = USTP_FTDC_AF_Delete;
 	
-	strcpy_s(req.UserOrderActionLocalID, pInputOrderAction->orderref().c_str());
+	strcpy_s(req.UserOrderActionLocalID, pInputOrderAction->orderactionref().c_str());
+	strcpy_s(req.UserOrderLocalID, "");
+
 	///请求编号
 	int iRequestID = RequestIDIncrement();
 	

@@ -3380,12 +3380,17 @@ class InputOrderAction : public ::google::protobuf::Message {
   inline ::std::string* release_investorid();
   inline void set_allocated_investorid(::std::string* investorid);
 
-  // required int32 OrderActionRef = 3;
+  // required string OrderActionRef = 3;
   inline bool has_orderactionref() const;
   inline void clear_orderactionref();
   static const int kOrderActionRefFieldNumber = 3;
-  inline ::google::protobuf::int32 orderactionref() const;
-  inline void set_orderactionref(::google::protobuf::int32 value);
+  inline const ::std::string& orderactionref() const;
+  inline void set_orderactionref(const ::std::string& value);
+  inline void set_orderactionref(const char* value);
+  inline void set_orderactionref(const char* value, size_t size);
+  inline ::std::string* mutable_orderactionref();
+  inline ::std::string* release_orderactionref();
+  inline void set_allocated_orderactionref(::std::string* orderactionref);
 
   // required string OrderRef = 4;
   inline bool has_orderref() const;
@@ -3524,18 +3529,18 @@ class InputOrderAction : public ::google::protobuf::Message {
 
   ::std::string* brokerid_;
   ::std::string* investorid_;
+  ::std::string* orderactionref_;
   ::std::string* orderref_;
-  ::google::protobuf::int32 orderactionref_;
   ::google::protobuf::int32 requestid_;
   ::google::protobuf::int32 frontid_;
-  ::google::protobuf::int32 sessionid_;
   ::std::string* exchangeid_;
+  ::google::protobuf::int32 sessionid_;
+  int actionflag_;
   ::std::string* ordersysid_;
   double limitprice_;
-  int actionflag_;
-  ::google::protobuf::int32 volumechange_;
   ::std::string* userid_;
   ::std::string* instrumentid_;
+  ::google::protobuf::int32 volumechange_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(14 + 31) / 32];
@@ -11867,7 +11872,7 @@ inline void InputOrderAction::set_allocated_investorid(::std::string* investorid
   }
 }
 
-// required int32 OrderActionRef = 3;
+// required string OrderActionRef = 3;
 inline bool InputOrderAction::has_orderactionref() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
@@ -11878,15 +11883,63 @@ inline void InputOrderAction::clear_has_orderactionref() {
   _has_bits_[0] &= ~0x00000004u;
 }
 inline void InputOrderAction::clear_orderactionref() {
-  orderactionref_ = 0;
+  if (orderactionref_ != &::google::protobuf::internal::kEmptyString) {
+    orderactionref_->clear();
+  }
   clear_has_orderactionref();
 }
-inline ::google::protobuf::int32 InputOrderAction::orderactionref() const {
+inline const ::std::string& InputOrderAction::orderactionref() const {
+  return *orderactionref_;
+}
+inline void InputOrderAction::set_orderactionref(const ::std::string& value) {
+  set_has_orderactionref();
+  if (orderactionref_ == &::google::protobuf::internal::kEmptyString) {
+    orderactionref_ = new ::std::string;
+  }
+  orderactionref_->assign(value);
+}
+inline void InputOrderAction::set_orderactionref(const char* value) {
+  set_has_orderactionref();
+  if (orderactionref_ == &::google::protobuf::internal::kEmptyString) {
+    orderactionref_ = new ::std::string;
+  }
+  orderactionref_->assign(value);
+}
+inline void InputOrderAction::set_orderactionref(const char* value, size_t size) {
+  set_has_orderactionref();
+  if (orderactionref_ == &::google::protobuf::internal::kEmptyString) {
+    orderactionref_ = new ::std::string;
+  }
+  orderactionref_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* InputOrderAction::mutable_orderactionref() {
+  set_has_orderactionref();
+  if (orderactionref_ == &::google::protobuf::internal::kEmptyString) {
+    orderactionref_ = new ::std::string;
+  }
   return orderactionref_;
 }
-inline void InputOrderAction::set_orderactionref(::google::protobuf::int32 value) {
-  set_has_orderactionref();
-  orderactionref_ = value;
+inline ::std::string* InputOrderAction::release_orderactionref() {
+  clear_has_orderactionref();
+  if (orderactionref_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = orderactionref_;
+    orderactionref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void InputOrderAction::set_allocated_orderactionref(::std::string* orderactionref) {
+  if (orderactionref_ != &::google::protobuf::internal::kEmptyString) {
+    delete orderactionref_;
+  }
+  if (orderactionref) {
+    set_has_orderactionref();
+    orderactionref_ = orderactionref;
+  } else {
+    clear_has_orderactionref();
+    orderactionref_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
 // required string OrderRef = 4;
