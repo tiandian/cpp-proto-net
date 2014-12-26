@@ -52,6 +52,7 @@ public:
 	boost::chrono::steady_clock::time_point& TrigTimestamp(){ return m_triggingTimestamp; }
 
 	bool IsWorking(){ return m_isWorking.load(boost::memory_order_consume); }
+	bool IsOnPending();
 
 	// For Fsm to begin sending leg order
 	void Send(const char* openOrderId = NULL);
@@ -123,6 +124,10 @@ protected:
 	bool SendNextOnFilled(){ return m_sendNextOnFilled; }
 	void SendNextOnFilled(bool val){ m_sendNextOnFilled = val; }
 	void GoStart(const char* openOrderId); // Just start FSM for PortfolioArbitrageOrderPlacer
+#ifdef USE_FEMAS_API
+	void GotoSentState();
+#endif 
+	
 
 	struct NextQuote
 	{

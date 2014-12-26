@@ -208,7 +208,6 @@ namespace PortfolioTrading.Modules.Portfolio
             PortfolioId = mlOrder.PortfolioId;
             Quantity = mlOrder.Quantity;
             
-            IsOpenOrder = mlOrder.Offset == PTEntity.MlOrderOffset.ML_OF_OPEN;
             IsPortfolio = mlOrder.Offset < PTEntity.MlOrderOffset.ML_OF_OTHER;
 
             bool allFinished = false;
@@ -224,8 +223,12 @@ namespace PortfolioTrading.Modules.Portfolio
 
             IsAllFinished = allFinished;
 
-            IsCanceled = CheckMlOrderCanceled(_orders);
-            
+            IsCanceled = ("高频" == Reason ? CheckMlOrderCanceled(_orders) : string.Empty);
+            if (IsPortfolio)
+                IsOpenOrder = mlOrder.Offset == PTEntity.MlOrderOffset.ML_OF_OPEN;
+            else
+                IsOpenOrder = !IsAllFinished; // For non-portoflio, display
+
             if (!string.IsNullOrEmpty(mlOrder.StatusMsg))
             {
                 EventLogger.Write("组合下单({0}) - {1}", mlOrder.OrderId, mlOrder.StatusMsg);
@@ -275,7 +278,7 @@ namespace PortfolioTrading.Modules.Portfolio
                     allFinished = oVm.IsFinished;
                 }
                 IsAllFinished = allFinished;
-                IsCanceled = CheckMlOrderCanceled(_orders);
+                IsCanceled =  ("高频" == Reason ? CheckMlOrderCanceled(_orders) : String.Empty);
             }
         }
 

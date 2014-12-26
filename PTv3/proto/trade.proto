@@ -740,7 +740,7 @@ message InputOrderAction
 	///投资者代码
 	required string	InvestorID = 2;
 	///报单操作引用
-	required int32	OrderActionRef = 3;
+	required string	OrderActionRef = 3;
 	///报单引用
 	required string	OrderRef = 4;
 	///请求编号

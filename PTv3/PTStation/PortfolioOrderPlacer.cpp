@@ -520,6 +520,10 @@ void CPortfolioOrderPlacer::Send(const char* openOrderId)
 	LOG_DEBUG(logger, boost::str(boost::format("Sending Active Order placer's Id:%d ") 
 		% m_activeOrdPlacer->SequenceNo()));
 #endif
+
+#ifdef USE_FEMAS_API
+	GotoSentState();
+#endif // USE_FEMAS_API
 	
 	// lock and generate order ref
 	string sendingOrderRef;
@@ -584,9 +588,19 @@ void CPortfolioOrderPlacer::Send(const char* openOrderId)
 	OnLegOrderSent( m_activeOrdPlacer->SequenceNo());
 }
 
+#ifdef USE_FEMAS_API
+void CPortfolioOrderPlacer::GotoSentState()
+{
+	RtnOrderWrapperPtr pRtnOrder(CRtnOrderWrapper::MakeFakeSubmitOrder((m_activeOrdPlacer->InputOrder()).InnerOrder()));
+	boost::static_pointer_cast<OrderPlacerFsm>(m_fsm)->process_event(evtSubmit(pRtnOrder));
+}
+#endif
+
 void CPortfolioOrderPlacer::OnAccept(const RtnOrderWrapperPtr& pRtnOrder)
 {
+#ifdef USE_FEMAS_API
 	UpdateLegOrder(pRtnOrder);
+#endif
 }
 
 void CPortfolioOrderPlacer::OnPending(const RtnOrderWrapperPtr& pRtnOrder )
@@ -1105,6 +1119,14 @@ void CPortfolioOrderPlacer::PushIndividualLegOrder( const string& portfId, const
 	}
 
 	m_pOrderProcessor->PublishOrderUpdate(portfId, mlOrderId, legOrd);
+}
+
+bool CPortfolioOrderPlacer::IsOnPending()
+{
+	if (m_activeOrdPlacer != NULL)
+		return m_activeOrdPlacer->IsPending();
+
+	return false;
 }
 
 

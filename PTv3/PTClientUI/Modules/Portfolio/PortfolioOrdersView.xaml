@@ -40,9 +40,13 @@
                                         <Style TargetType="Border">
                                             <Setter Property="Background" Value="Green"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsOpenOrder}" Value="False">
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsPortfolio}" Value="True"/>
+                                                        <Condition Binding="{Binding IsOpenOrder}" Value="False"/>
+                                                    </MultiDataTrigger.Conditions>
                                                     <Setter Property="Background" Value="Red"/>
-                                                </DataTrigger>
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </Border.Style>
@@ -53,9 +57,13 @@
                                                 <Style TargetType="TextBlock">
                                                     <Setter Property="Visibility" Value="Hidden"/>
                                                     <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding IsOpenOrder}" Value="False">
+                                                        <MultiDataTrigger>
+                                                            <MultiDataTrigger.Conditions>
+                                                                <Condition Binding="{Binding IsPortfolio}" Value="True"/>
+                                                                <Condition Binding="{Binding IsOpenOrder}" Value="False"/>
+                                                            </MultiDataTrigger.Conditions>
                                                             <Setter Property="Visibility" Value="Visible"/>
-                                                        </DataTrigger>
+                                                        </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </TextBlock.Style>
@@ -213,6 +221,9 @@
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding IsOpenOrder}" Value="False">
                                                         <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding IsAllFinished}" Value="True">
+                                                        <Setter Property="IsEnabled" Value="False"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>  
                                             </Style>

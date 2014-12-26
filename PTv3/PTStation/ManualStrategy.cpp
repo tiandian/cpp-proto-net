@@ -55,7 +55,7 @@ void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost:
 
 	CManualOrderPlacer* pOrderPlacer = dynamic_cast<CManualOrderPlacer*>(pPortfolio->OrderPlacer());
 	
-	if (pOrderPlacer->IsClosing())
+	if (pOrderPlacer->IsOnPending())
 	{
 		LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Check for modifying closing order") % pPortfolio->InvestorId()));
 		pOrderPlacer->OnQuoteReceived(timestamp, pQuote);
@@ -63,22 +63,35 @@ void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost:
 	}
 
 	bool forceOpening = IsForceOpening();
-	if (forceOpening && !pOrderPlacer->IsWorking())
+	if (forceOpening)
 	{
-		LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Opening position at %s")
-			% pPortfolio->InvestorId() % pPortfolio->ID() % pQuote->update_time()));
-		OpenPosition(m_positionDirection, pOrderPlacer, pQuote, timestamp, forceOpening);
-		return;
+		if (!pOrderPlacer->IsWorking())
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Opening position at %s")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % pQuote->update_time()));
+			OpenPosition(m_positionDirection, pOrderPlacer, pQuote, timestamp, forceOpening);
+			return;
+		}
+		else
+		{
+			ResetForceOpen();	// ignore and reset unexpected force opening
+		}
 	}
-
 	
 	bool forceClosing = IsForceClosing();
-	if (forceClosing && pOrderPlacer->IsOpened())
+	if (forceClosing)
 	{
-		LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Manually Close Position at %s")
-			% pPortfolio->InvestorId() % pPortfolio->ID() % pQuote->update_time()));
-		ClosePosition(pOrderPlacer, pQuote, "手动平仓");
-		return;
+		if (pOrderPlacer->IsOpened())
+		{
+			LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Manually Close Position at %s")
+				% pPortfolio->InvestorId() % pPortfolio->ID() % pQuote->update_time()));
+			ClosePosition(pOrderPlacer, pQuote, "手动平仓");
+			return;
+		}
+		else
+		{
+			ResetForceClose();	// ignore and reset unexpected force closing
+		}
 	}
 	
 	if (!IsRunning())

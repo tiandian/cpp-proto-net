@@ -8,6 +8,7 @@ class CRtnOrderWrapper
 {
 public:
 	CRtnOrderWrapper(CUstpFtdcOrderField* pOrder);
+	CRtnOrderWrapper();
 	~CRtnOrderWrapper(void);
 
 	void ToEntity(trade::Order* pOrd);
@@ -46,6 +47,8 @@ public:
 	void ClearStatusMsg(){ /*memset(&m_orderField.StatusMsg, 0, sizeof(TThostFtdcErrorMsgType));*/ }
 
 	boost::chrono::steady_clock::time_point& Timestamp(){ return m_orderTimestamp; }
+
+	static CRtnOrderWrapper* MakeFakeSubmitOrder(CUstpFtdcInputOrderField& inputOrder);
 
 private:
 	CUstpFtdcOrderField m_orderField;
