@@ -76,6 +76,7 @@ void ManualStrategyItem::To(entity::StrategyItem* pNativeStrategyItem)
 	pNativeStrategyItem->set_stopgainthreshold(_stopGainThreshold);
 	pNativeStrategyItem->set_stoplosscondition(static_cast<entity::CompareCondition>(_stopLossCondition));
 	pNativeStrategyItem->set_stoplossthreshold(_stopLossThreshold);
+	pNativeStrategyItem->set_stoplosstype(static_cast<entity::StopPriceType>(_stopLossType));
 
 	StrategyItem::To(pNativeStrategyItem);
 }

@@ -26,12 +26,14 @@ private:
 	void CalcUpdates(entity::Quote* pQuote);
 	void ResetUpdates();
 	bool MeetCondition(double profit, entity::CompareCondition condition, double target);
+	double GetStopLossTestValue();
 
 	entity::CompareCondition m_stopGainCondition;
 	double m_stopGainThreshold;
 	entity::CompareCondition m_stopLossCondition;
 	double m_stopLossThreshold;
 	entity::PosiDirectionType m_positionDirection;
+	entity::StopPriceType m_stopLossType;
 
 	double m_profit;
 	double m_nearHigh;
