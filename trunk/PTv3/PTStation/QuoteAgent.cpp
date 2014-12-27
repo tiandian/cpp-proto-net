@@ -72,7 +72,7 @@ boost::tuple<bool, string> CQuoteAgent::Login(const string& frontAddr, const str
 	sCmd << " -b " << m_brokerID;
 	sCmd << " -u " << m_userID;
 	sCmd << " -p " << password;
-	sCmd << " -q true";
+	//sCmd << " -q true";
 	string cmd = sCmd.str();
 
 	logger.Info(boost::str(boost::format("Launch Child with %s") % cmd));

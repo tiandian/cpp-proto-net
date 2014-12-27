@@ -6,8 +6,10 @@ set DEST_SRC=%DEST%\src
 
 echo 1. Copy proto files 
 copy /y %SRC%\proto\*.proto %DEST%\proto
-echo 2. Copy ThostTraderApi
+echo 2.1 Copy ThostTraderApi
 copy /y %PT_SRC%\ThostTraderApi\*.h %DEST_SRC%\ThostTraderApi\
+echo 2.2 Copy FemasApi
+copy /y %PT_SRC%\FemasAPI\*.h %DEST_SRC%\FemasAPI\
 echo 3. Copy Fast trade station .h .cpp files
 copy /y %PT_SRC%\*.h %DEST_SRC%\*.h
 copy /y %PT_SRC%\*.cpp %DEST_SRC%\*.cpp
