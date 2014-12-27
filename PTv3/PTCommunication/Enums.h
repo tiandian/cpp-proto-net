@@ -55,6 +55,12 @@ namespace PTEntity {
 		ON_BIG_CHANGE = 4
 	};
 
+	public enum class StopPriceType : int
+	{
+		LOSS_STOP = 0,
+		TRAILING_STOP = 1
+	};
+
 	public enum class StopLossCloseMethods : int
 	{
 		BASED_ON_NEXT_QUOTE = 0,

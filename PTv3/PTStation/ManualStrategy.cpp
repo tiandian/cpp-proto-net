@@ -12,6 +12,7 @@ CManualStrategy::CManualStrategy(const entity::StrategyItem& strategyItem)
 	, m_stopLossCondition(entity::GREATER_THAN)
 	, m_stopGainThreshold(10)
 	, m_stopLossThreshold(6)
+	, m_stopLossType(entity::LOSS_STOP)
 	, m_profit(0)
 	, m_nearHigh(0)
 	, m_nearLow(0)
@@ -40,6 +41,7 @@ void CManualStrategy::Apply(const entity::StrategyItem& strategyItem, bool withT
 	m_stopGainThreshold = strategyItem.stopgainthreshold();
 	m_stopLossCondition = strategyItem.stoplosscondition();
 	m_stopLossThreshold = strategyItem.stoplossthreshold();
+	m_stopLossType = strategyItem.stoplosstype();
 }
 
 void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost::chrono::steady_clock::time_point& timestamp)
@@ -110,12 +112,24 @@ void CManualStrategy::Test(entity::Quote* pQuote, CPortfolio* pPortfolio, boost:
 		}
 
 		// Test for Stop Loss
-		bool stopLoss = MeetCondition(-m_profit, m_stopLossCondition, m_stopLossThreshold);
+		double stopLossTestVal = GetStopLossTestValue();
+		bool stopLoss = MeetCondition(stopLossTestVal, m_stopLossCondition, m_stopLossThreshold);
 		if (stopLoss)
 		{
-			LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Stop LOSS since Loss(%.2f) > Threshold(%.2f)")
-				% pPortfolio->InvestorId() % pPortfolio->ID() % -m_profit % m_stopLossThreshold));
-			ClosePosition(pOrderPlacer, pQuote, boost::str(boost::format("最新价%.2f, 亏损达到%d, 止损平仓") % pQuote->last() % m_profit).c_str());
+			string closeComment;
+			if (m_stopLossType == entity::TRAILING_STOP)
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Trailing Stop since Fallback(%.2f) > Threshold(%.2f)")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % stopLossTestVal % m_stopLossThreshold));
+				closeComment = boost::str(boost::format("最新价%.2f, 回撤达到%d, 平仓") % pQuote->last() % stopLossTestVal);
+			}
+			else
+			{
+				LOG_DEBUG(logger, boost::str(boost::format("[%s] Manual - Portfolio(%s) Stop LOSS since Loss(%.2f) > Threshold(%.2f)")
+					% pPortfolio->InvestorId() % pPortfolio->ID() % stopLossTestVal % m_stopLossThreshold));
+				closeComment = boost::str(boost::format("最新价%.2f, 亏损达到%d, 止损平仓") % pQuote->last() % stopLossTestVal);
+			}
+			ClosePosition(pOrderPlacer, pQuote, closeComment.c_str());
 			return;
 		}
 	}
@@ -288,4 +302,17 @@ void CManualStrategy::OnLegFilled(int sendingIdx, const string& symbol, trade::O
 	}
 	else
 		m_cost = 0; // reset m_cost
+}
+
+double CManualStrategy::GetStopLossTestValue()
+{
+	if (m_stopLossType == entity::TRAILING_STOP)
+	{
+		if (m_positionDirection == entity::LONG)
+			return m_fallback;
+		else if (m_positionDirection == entity::SHORT)
+			return m_bounce;
+	}
+
+	return -m_profit;
 }

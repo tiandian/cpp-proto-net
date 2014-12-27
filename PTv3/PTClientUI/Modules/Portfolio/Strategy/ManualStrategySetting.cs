@@ -115,15 +115,35 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
         }
         #endregion
 
+        #region StopLossType
+        private PTEntity.StopPriceType _stopLossType;
+
+        public PTEntity.StopPriceType StopLossType
+        {
+            get { return _stopLossType; }
+            set
+            {
+                if (_stopLossType != value)
+                {
+                    _stopLossType = value;
+                    RaisePropertyChanged("StopLossType");
+                }
+            }
+        }
+        #endregion
+
+
         public ManualStrategySetting()
         {
             RetryTimes = 8;
             Direction = PTEntity.PosiDirectionType.LONG;
-
+            
             StopGainCondition = PTEntity.CompareCondition.GREATER_THAN;
             StopGainThreshold = 10;
             StopLossCondition = PTEntity.CompareCondition.GREATER_THAN;
             StopLossThreshold = 6;
+            StopLossType = PTEntity.StopPriceType.LOSS_STOP;
+
         }
 
         public override string Persist()
@@ -137,7 +157,8 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             elem.Add(elemStopGain);
             XElement elemStopLoss = new XElement("stopLoss",
                 new XAttribute("condition", StopLossCondition),
-                new XAttribute("threshold", StopLossThreshold));
+                new XAttribute("threshold", StopLossThreshold),
+                new XAttribute("stopLossType", StopLossType));
             elem.Add(elemStopLoss);
             return elem.ToString();
         }
@@ -185,6 +206,11 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
                 {
                     StopLossThreshold = double.Parse(attr.Value);
                 }
+                attr = elemStopLoss.Attribute("stopLossType");
+                if (attr != null)
+                {
+                    StopLossType = (PTEntity.StopPriceType)Enum.Parse(typeof(PTEntity.StopPriceType), attr.Value);
+                }
             }
         }
 
@@ -197,6 +223,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             manualStrategy.StopGainThreshold = StopGainThreshold;
             manualStrategy.StopLossCondition = StopLossCondition;
             manualStrategy.StopLossThreshold = StopLossThreshold;
+            manualStrategy.StopLossType = StopLossType;
             
             return manualStrategy;
         }
@@ -210,6 +237,7 @@ namespace PortfolioTrading.Modules.Portfolio.Strategy
             StopGainThreshold = strategySetting.StopGainThreshold;
             StopLossCondition = strategySetting.StopLossCondition;
             StopLossThreshold = strategySetting.StopLossThreshold;
+            StopLossType = strategySetting.StopLossType;
         }
     }
 }

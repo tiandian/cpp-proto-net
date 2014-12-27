@@ -224,12 +224,25 @@ public:
 		}
 	}
 
+	property StopPriceType StopLossType
+	{
+		StopPriceType get()
+		{
+			return _stopLossType;
+		}
+		void set(StopPriceType val)
+		{
+			_stopLossType = val;
+		}
+	}
+
 private:
 	PosiDirectionType _direction;
 	CompareCondition _stopGainCondition;
 	double _stopGainThreshold;
 	CompareCondition _stopLossCondition;
 	double _stopLossThreshold;
+	StopPriceType _stopLossType;
 };
 
 public ref class ScalperStrategyItem : StrategyItem
