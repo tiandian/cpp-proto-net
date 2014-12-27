@@ -2,6 +2,10 @@
 #include "RtnOrderWrapper_FM.h"
 #include "charsetconvert.h"
 
+#ifndef WIN32
+#define strcpy_s strcpy
+#define _strdup strdup
+#endif
 
 CRtnOrderWrapper::CRtnOrderWrapper(CUstpFtdcOrderField* pOrder)
 {

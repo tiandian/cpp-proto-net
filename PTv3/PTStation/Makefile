@@ -1,14 +1,20 @@
 CC = g++
 INC_DIR=-I../dev/pushframework-2.2.1/include
 CFLAGS=$(INC_DIR) -DUSE_NET_LIBS -O3 -DLOG_FOR_TECH_CALC
+FM_FLAGS=-DUSE_FEMAS_API
 # -DFAKE_DEAL -DLOG_FOR_TECH_CALC
 PROTO_DIR = ./proto
 SRC = ./src
 ENTITY_DIR = ./src/entity
 OBJ_DIR = ./obj
+FS_FM_OBJ_DIR = $(OBJ_DIR)/fs_fm
 QS_OBJ_DIR = $(OBJ_DIR)/qs
-LIBS = -lPushFramework -lboost_thread -lboost_program_options -lboost_filesystem -lboost_chrono \
- -lboost_date_time -lprotobuf -llog4cpp -lta_lib -lthostmduserapi -lthosttraderapi
+QS_FM_OBJ_DIR = $(OBJ_DIR)/qs_fm
+LIBS = -lPushFramework -lboost_thread -lboost_program_options -lboost_filesystem -lboost_chrono -lboost_date_time -lprotobuf -llog4cpp -lta_lib
+CTP_TD_LIBS = -lthosttraderapi
+CTP_MD_LIBS = -lthostmduserapi
+FM_TD_LIBS = -lUSTPtraderapi
+FM_MD_LIBS = -lUSTPmduserapi
 
 _ENTITY_FILES = packet enum quote trade message  
 ENTITY_FILES = $(patsubst %, $(ENTITY_DIR)/%.pb.cc, $(_ENTITY_FILES))
@@ -23,15 +29,16 @@ _FS_OBJS = stdafx \
 		ShmQuoteSubscribe \
 		\
 		ArbitrageStrategy ArbitrageTrigger ASCTrendStrategy ASCTrendTrigger ChangePositionStrategy \
-		ChangePositionTrigger HistSlopeStrategy HistSlopeTrigger LinerRegressionStrategy RangeTrendStrategy \
-		ScalperStrategy ScalperTrigger StrategyOrderCommand TrailingStopTrigger WMATrendStrategy WMATrendTrigger \
+		ChangePositionTrigger HistSlopeStrategy HistSlopeTrigger LinerRegressionStrategy ManualStrategy \
+		RangeTrendStrategy ScalperStrategy ScalperTrigger StrategyOrderCommand TrailingStopTrigger \
+		WMATrendStrategy WMATrendTrigger \
 		\
 		ATRDataSet BollDataSet DiffRecordSet DonchianDataSet HistDataReader HistDataWriter LinerRegressionDataSet \
 		MACDDataSet OHLCRecordSet PriceBarDataProxy PriceBarDataSource PriceBarGen TaIndicatorSet \
 		TechAnalyStrategy TechDataRepo WATRStopDataSet WillRDataSet WMATrendDataSet \
 		\
-		InputOrder LegOrderPlacer OrderProcessor PortfolioArbitrageOrderPlacer PortfolioOrderHelper PortfolioOrderPlacer \
-		PortfolioScalperOrderPlacer PortfolioTrendOrderPlacer RtnOrderWrapper TradeAgent \
+		LegOrderPlacer ManualOrderPlacer OrderProcessor PortfolioArbitrageOrderPlacer \
+		PortfolioOrderHelper PortfolioOrderPlacer PortfolioScalperOrderPlacer PortfolioTrendOrderPlacer \
 		\
 		AsyncOrderPendingTimer charsetconvert Configuration DoubleCompare FakeDealer \
 		FileOperations LogManager orderhelper SettingChangeTrace SymbolInfo \
@@ -39,30 +46,56 @@ _FS_OBJS = stdafx \
 		\
 		Leg Portfolio PortfolioManager Strategy TradeStation Trigger
 
-FS_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
+_FS_CTP_OBJS = InputOrder RtnOrderWrapper TradeAgent 
+
+_FS_FM_OBJS = InputOrder_FM RtnOrderWrapper_FM TradeAgent_FM 
+
+FS_COM_CTP_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_OBJS))
+FS_COM_FM_OBJS = $(patsubst %, $(FS_FM_OBJ_DIR)/%.o, $(_FS_OBJS))
+FS_CTP_OBJS = $(patsubst %, $(OBJ_DIR)/%.o, $(_FS_CTP_OBJS))
+FS_FM_OBJS = $(patsubst %, $(FS_FM_OBJ_DIR)/%.o, $(_FS_FM_OBJS))
 
 _QS_OBJS = stdafx \
 		FileOperations MarketLoginWaiter MdSpi QS_Configuration QS_LogManager \
 		QuoteAggregator QuoteMain QuoteProxy ShmQuoteFeed ShmQuoteSubscribe
-QS_OBJS = $(patsubst %, $(QS_OBJ_DIR)/%.o, $(_QS_OBJS))
+_QS_FM_OBJS = stdafx \
+		FileOperations MarketLoginWaiter MdSpi_FM QS_Configuration QS_LogManager \
+		QuoteAggregator QuoteMain QuoteProxy_FM ShmQuoteFeed ShmQuoteSubscribe
 
-pt-station: $(ENTITY_OBJS) $(FS_OBJS)
-	$(CC) -o PTStation $^ $(LIBS) -Wall
+QS_OBJS = $(patsubst %, $(QS_OBJ_DIR)/%.o, $(_QS_OBJS))
+QS_FM_OBJS = $(patsubst %, $(QS_FM_OBJ_DIR)/%.o, $(_QS_FM_OBJS))
+
+pt-station: $(ENTITY_OBJS) $(FS_COM_CTP_OBJS) $(FS_CTP_OBJS)
+	$(CC) -o PTStation $^ $(LIBS) $(CTP_TD_LIBS) -Wall
+
+pt-station-fm: $(ENTITY_OBJS) $(FS_COM_FM_OBJS) $(FS_FM_OBJS)
+	$(CC) -o PTStationFM $^ $(LIBS) $(FM_TD_LIBS) -Wall
 
 quote-station: $(QS_OBJS)
-	$(CC) -o QuoteStation $^ $(LIBS) -Wall
+	$(CC) -o QuoteStation $^ $(LIBS) $(CTP_MD_LIBS) -Wall
+
+quote-station-fm: $(QS_FM_OBJS)
+	$(CC) -o QuoteStationFM $^ $(LIBS) $(FM_MD_LIBS) -Wall
 
 # Compile entity
 $(OBJ_DIR)/%.pb.o: $(ENTITY_DIR)/%.pb.cc
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-# Compile pt station main cpp
+# Compile pt station CTP main cpp
 $(OBJ_DIR)/%.o: $(SRC)/%.cpp
 	$(CC) -c -o $@ $< $(CFLAGS) 
 
-# Compile quote station cpp
+# Compile pt station Femas main cpp
+$(FS_FM_OBJ_DIR)/%.o: $(SRC)/%.cpp
+	$(CC) -c -o $@ $< $(CFLAGS) $(FM_FLAGS)
+
+# Compile quote station CTP cpp
 $(QS_OBJ_DIR)/%.o: $(SRC)/%.cpp
 	$(CC) -c -o $@ $< -O3
+
+# Compile quote station Femas cpp
+$(QS_FM_OBJ_DIR)/%.o: $(SRC)/%.cpp
+	$(CC) -c -o $@ $< -O3 $(FM_FLAGS)
 
 # Generate proto .h and .cc
 $(ENTITY_DIR)/packet.pb.cc: $(PROTO_DIR)/packet.proto
