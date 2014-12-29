@@ -598,7 +598,7 @@ void CPortfolioOrderPlacer::GotoSentState()
 
 void CPortfolioOrderPlacer::OnAccept(const RtnOrderWrapperPtr& pRtnOrder)
 {
-#ifdef USE_FEMAS_API
+#ifndef USE_FEMAS_API
 	UpdateLegOrder(pRtnOrder);
 #endif
 }

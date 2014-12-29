@@ -633,11 +633,11 @@ bool CTradeAgent::SubmitOrderAction( trade::InputOrderAction* pInputOrderAction 
 
 void CTradeAgent::OnRspOrderAction( CThostFtdcInputOrderActionField *pInputOrderAction, CThostFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast )
 {
-	bool insertSucess = IsErrorRspInfo(pRspInfo);
+	bool cancelSucc = !IsErrorRspInfo(pRspInfo);
 	string orderRef = pInputOrderAction->OrderRef;
 	string errorMsg = pRspInfo->ErrorMsg;
 
-	m_orderProcessor->OnRspOrderAction(insertSucess, orderRef, pRspInfo->ErrorID, errorMsg);
+	m_orderProcessor->OnRspOrderAction(cancelSucc, orderRef, pRspInfo->ErrorID, errorMsg);
 }
 
 void CTradeAgent::QueryAccount()
