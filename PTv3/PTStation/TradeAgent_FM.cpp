@@ -17,7 +17,7 @@
 
 enum {
 	DISCONNECT_TIMEOUT_SECOND = 1,
-	CONNECT_TIMEOUT_SECONDS = 3,
+	CONNECT_TIMEOUT_SECONDS = 30,
 	QUERY_QUOTE_RETRY_TIMES = 5
 };
 
@@ -285,7 +285,7 @@ void CTradeAgent::OnRspUserLogin(CUstpFtdcRspUserLoginField *pRspUserLogin, CUst
 		if (pRspUserLogin->MaxOrderLocalID == NULL || strcmp(pRspUserLogin->MaxOrderLocalID, "") == 0)
 			m_maxOrderRef = 1;
 		else 
-			m_maxOrderRef = atoi(pRspUserLogin->MaxOrderLocalID);
+			m_maxOrderRef = atoi(pRspUserLogin->MaxOrderLocalID) + 1;
 
 		string ds(pRspUserLogin->TradingDay);
 		m_tradingDay = boost::gregorian::from_undelimited_string(ds);
@@ -399,6 +399,23 @@ void CTradeAgent::OnRspOrderInsert(CUstpFtdcInputOrderField *pInputOrder, CUstpF
 	oss << "--->>> " << m_investorId <<" OnRspOrderInsert for order ( OrderRef: " << pInputOrder->UserOrderLocalID << " ) with RequestID: " << nRequestID <<  endl;
 	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
 	if (bResult)
+	{
+		oss << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
+		logger.Info(oss.str());
+
+		string ordRef = pInputOrder->UserOrderLocalID;
+		string errorMsg = pRspInfo->ErrorMsg;
+		m_orderProcessor->OnRspOrderInsert(false, ordRef, errorMsg);
+	}
+}
+
+void CTradeAgent::OnErrRtnOrderInsert(CUstpFtdcInputOrderField *pInputOrder, CUstpFtdcRspInfoField *pRspInfo)
+{
+	/*
+	ostringstream oss;
+	oss << "--->>> " << m_investorId << " OnRspOrderInsert for order ( OrderRef: " << pInputOrder->UserOrderLocalID << endl;
+	bool bResult = ((pRspInfo) && (pRspInfo->ErrorID != 0));
+	if (bResult)
 		oss << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
 
 	logger.Info(oss.str());
@@ -406,7 +423,9 @@ void CTradeAgent::OnRspOrderInsert(CUstpFtdcInputOrderField *pInputOrder, CUstpF
 	string ordRef = pInputOrder->UserOrderLocalID;
 	string errorMsg = pRspInfo->ErrorMsg;
 	m_orderProcessor->OnRspOrderInsert(false, ordRef, errorMsg);
+	*/
 }
+
 
 void CTradeAgent::OnRtnOrder(CUstpFtdcOrderField *pOrder)
 {
@@ -516,7 +535,7 @@ bool CTradeAgent::SubmitOrderAction( trade::InputOrderAction* pInputOrderAction 
 	req.ActionFlag = USTP_FTDC_AF_Delete;
 	
 	strcpy_s(req.UserOrderActionLocalID, pInputOrderAction->orderactionref().c_str());
-	strcpy_s(req.UserOrderLocalID, "");
+	strcpy_s(req.UserOrderLocalID, pInputOrderAction->orderref().c_str());
 
 	///ÇëÇó±àºÅ
 	int iRequestID = RequestIDIncrement();
@@ -536,11 +555,14 @@ bool CTradeAgent::SubmitOrderAction( trade::InputOrderAction* pInputOrderAction 
 
 void CTradeAgent::OnRspOrderAction(CUstpFtdcOrderActionField *pOrderAction, CUstpFtdcRspInfoField *pRspInfo, int nRequestID, bool bIsLast)
 {
-	bool insertSucess = IsErrorRspInfo(pRspInfo);
-	string orderRef = pOrderAction->UserOrderLocalID ;
-	string errorMsg = pRspInfo->ErrorMsg;
+	bool cancelError = IsErrorRspInfo(pRspInfo);
+	if (cancelError)
+	{
+		string orderRef = pOrderAction->UserOrderLocalID;
+		string errorMsg = pRspInfo->ErrorMsg;
 
-	m_orderProcessor->OnRspOrderAction(insertSucess, orderRef, pRspInfo->ErrorID, errorMsg);
+		m_orderProcessor->OnRspOrderAction(false, orderRef, pRspInfo->ErrorID, errorMsg);
+	}
 }
 
 void CTradeAgent::QueryAccount()

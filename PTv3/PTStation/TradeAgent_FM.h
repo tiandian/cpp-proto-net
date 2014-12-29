@@ -84,7 +84,7 @@ public:
 	virtual void OnRtnOrder(CUstpFtdcOrderField *pOrder);
 
 	///报单录入错误回报
-	virtual void OnErrRtnOrderInsert(CUstpFtdcInputOrderField *pInputOrder, CUstpFtdcRspInfoField *pRspInfo) {};
+	virtual void OnErrRtnOrderInsert(CUstpFtdcInputOrderField *pInputOrder, CUstpFtdcRspInfoField *pRspInfo);;
 
 	///报单操作错误回报
 	virtual void OnErrRtnOrderAction(CUstpFtdcOrderActionField *pOrderAction, CUstpFtdcRspInfoField *pRspInfo) {};
