@@ -99,10 +99,10 @@ void CTradeAgent::RunTradingFunc(string address)
 	m_isWorking = false;
 }
 
-boost::tuple<bool, string> CTradeAgent::Login(const string& frontAddr, const string& brokerId, const string& InvestorId, const string& userId, const string& password)
+boost::tuple<bool, string> CTradeAgent::Login(const string& frontAddr, const string& brokerId, const string& investorId, const string& userId, const string& password)
 {
 	try{
-		string streamFolder = userId + "/Td/";
+		string streamFolder = investorId + "/Td/";
 		if(!CreateFolderIfNotExists(streamFolder))
 		{
 			m_loginErr = boost::str(boost::format("Cannot create stream folder (%s) for trading") % streamFolder);
@@ -110,7 +110,7 @@ boost::tuple<bool, string> CTradeAgent::Login(const string& frontAddr, const str
 		}
 
 		m_brokerId = brokerId;
-		m_investorId = InvestorId;
+		m_investorId = investorId;
 		m_userId = userId;
 		m_password = password;
 
