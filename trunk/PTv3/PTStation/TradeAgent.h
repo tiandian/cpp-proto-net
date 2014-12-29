@@ -20,7 +20,7 @@ public:
 	CTradeAgent(void);
 	~CTradeAgent(void);
 
-	boost::tuple<bool, string> Login(const string& frontAddr, const string& brokerId, const string& InvestorId, const string& userId, const string& password);
+	boost::tuple<bool, string> Login(const string& frontAddr, const string& brokerId, const string& investorId, const string& userId, const string& password);
 	void Logout();
 
 	void SetCallbackHanlder(CTradeAgentCallback* pCallback);
