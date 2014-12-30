@@ -65,6 +65,17 @@
           <item>192.168.217.5:41213</item>
         </MarketData>
       </Server>
+      <Server>
+        <Name>¹úÌ©·ÉÂí</Name>
+        <Trading>
+          <item>10.13.2.202:27001</item>
+          <item>10.13.1.202:27001</item>
+        </Trading>
+        <MarketData>
+          <item>10.13.2.202:27101</item>
+          <item>10.13.1.202:27101</item>
+        </MarketData>
+      </Server>
 		</Servers>
 	</broker>
 </root>

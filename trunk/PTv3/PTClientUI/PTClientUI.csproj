@@ -358,6 +358,7 @@
   <ItemGroup>
     <None Include="brokers.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
