@@ -90,11 +90,6 @@ namespace PortfolioTrading.Modules.Account
             _mkt_servers.Add(new ServerAddress { Name = "模拟行情", Address = "tcp://ctpsim-front01.gfqh.cn:43213" });
             _td_servers.Add(new ServerAddress { Name = "模拟交易", Address = "tcp://ctpsim-front01.gfqh.cn:43205" });
 
-            _mkt_servers.Add(new ServerAddress { Name = "飞马仿真", Address = "tcp://117.184.207.110:17101" });
-            _td_servers.Add(new ServerAddress { Name = "华泰仿真", Address = "tcp://117.184.207.110:17061" });
-            _td_servers.Add(new ServerAddress { Name = "国泰仿真", Address = "tcp://117.184.207.110:17131" });
-
-
             if (File.Exists(BrokersXmlPath))
             {
                 XElement rootElem = XElement.Load(BrokersXmlPath);
@@ -114,6 +109,7 @@ namespace PortfolioTrading.Modules.Account
             _trade_stations.Add(new ServerAddress { Name = "交易服务42", Address = ConfigurationHelper.GetAppSettingValue("42", "180.166.182.12:62248") });
             _trade_stations.Add(new ServerAddress { Name = "交易服务47", Address = ConfigurationHelper.GetAppSettingValue("47", "180.166.182.12:62249") });
             _trade_stations.Add(new ServerAddress { Name = "交易服务61(万兆)", Address = ConfigurationHelper.GetAppSettingValue("61", "180.166.182.12:62263") });
+            _trade_stations.Add(new ServerAddress { Name = "国泰君安张江", Address = ConfigurationHelper.GetAppSettingValue("gtja", "180.166.9.91:20205") });
 
             string localHostIP = NativeHost.GetLocalIP();
             string localPort = "16181";
