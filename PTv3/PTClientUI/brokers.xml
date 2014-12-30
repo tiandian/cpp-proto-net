@@ -1,33 +1,33 @@
-<?xml version="1.0" encoding="GB2312" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <root>
-	<broker BrokerID="9000" BrokerName="�㷢�ڻ�" BrokerEName="gfqh" Hide="1" TitleBarText="�㷢�ڻ�CTP���ڽ����ն�">
-		<FloatProfitAlgorithm>��ӯ����������</FloatProfitAlgorithm>		
+	<broker BrokerID="9000" BrokerName="广发期货" BrokerEName="gfqh" Hide="1" TitleBarText="广发期货CTP快期交易终端">
+		<FloatProfitAlgorithm>浮盈浮亏都计算</FloatProfitAlgorithm>		
 		<!--
-			"��ӯ����������";
-			"��ӯ���ƣ�������";
-			"��ӯ�ƣ���������";
-			"��ӯ������������";
+			"浮盈浮亏都计算";
+			"浮盈不计，浮亏计";
+			"浮盈计，浮亏不计";
+			"浮盈浮亏都不计算";
 		-->
-		<MarginAlgorithm>�����ּۼ���</MarginAlgorithm>
+		<MarginAlgorithm>按开仓价计算</MarginAlgorithm>
 		<!--
-			"��ǰ�������";
-			"�����¼ۼ���";
-			"���а����¼ۼ���, �̺󰴽���ۼ���";
-			"�����¾��ۼ���";
-			"�����ּۼ���";
+			"按前结算计算";
+			"按最新价计算";
+			"盘中按最新价计算, 盘后按结算价计算";
+			"按最新均价计算";
+			"按开仓价计算";
 		-->		
 		<IsDiscountCZCE>1</IsDiscountCZCE>
 		<!--
-			֣����ϵڶ����Ƿ����ձ�֤��
+			郑州组合第二腿是否免收保证金
 		-->
 		<IsOldRiskAlg>1</IsOldRiskAlg>
 		<!--
-			�Ƿ�ʹ���ϵķ��ն��㷨
+			是否使用老的风险度算法
 		-->
 
 		<Servers>
 			<Server>
-				<Name>1000����ϵͳ</Name>
+				<Name>1000场内系统</Name>
 				<Trading>
 					<item>172.18.5.2:41205</item>
 					</Trading>
@@ -36,7 +36,7 @@
 				</MarketData>
 			</Server>
 			<Server>
-				<Name>2000����ϵͳ</Name>
+				<Name>2000场内系统</Name>
 				<Trading>
 					<item>172.21.5.12:41205</item>
 					</Trading>
@@ -45,7 +45,7 @@
 				</MarketData>
 			</Server>
 			<Server>
-				<Name>2000����UDP����</Name>
+				<Name>2000场内UDP行情</Name>
 				<Trading>
 					<item>172.21.5.12:41205</item>
 					</Trading>
@@ -55,7 +55,7 @@
 				</MarketData>
 			</Server>
       <Server>
-        <Name>2002����ϵͳ</Name>
+        <Name>2002万兆系统</Name>
         <Trading>
           <item>192.168.217.4:41205</item>
           <item>192.168.217.5:41205</item>
@@ -66,7 +66,7 @@
         </MarketData>
       </Server>
       <Server>
-        <Name>��̩����</Name>
+        <Name>国泰飞马</Name>
         <Trading>
           <item>10.13.2.202:27001</item>
           <item>10.13.1.202:27001</item>
@@ -74,6 +74,15 @@
         <MarketData>
           <item>10.13.2.202:27101</item>
           <item>10.13.1.202:27101</item>
+        </MarketData>
+      </Server>
+      <Server>
+        <Name>广发飞马</Name>
+        <Trading>
+          <item>172.28.69.1:7001</item>
+        </Trading>
+        <MarketData>
+          <item>172.28.69.1:7101</item>
         </MarketData>
       </Server>
 		</Servers>
