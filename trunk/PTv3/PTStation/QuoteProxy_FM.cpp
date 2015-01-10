@@ -29,6 +29,7 @@ CQuoteProxy::CQuoteProxy(CQuoteAggregator* pQuoteAggregator, const string& connA
 	, m_passwd(passwd)
 	, m_isReady(false)
 	, m_isRunning(false)
+	, m_isUdp(false)
 {
 }
 
@@ -53,7 +54,7 @@ bool CQuoteProxy::Begin()
 		}
 		flowFolder += "/";
 
-		bool isUdp = boost::istarts_with(m_connAddr, "udp");
+		m_isUdp = boost::istarts_with(m_connAddr, "udp");
 
 		// ´´½¨UserApi
 		m_pUserApi = CUstpFtdcMduserApi::CreateFtdcMduserApi(flowFolder.c_str());
@@ -64,7 +65,7 @@ bool CQuoteProxy::Begin()
 		m_pUserApi->SubscribeMarketDataTopic(TOPIC, USTP_TERT_QUICK);
 
 		string connAddress;
-		if(isUdp)
+		if (m_isUdp)
 		{
 			// Populate udp address with prefix tcp://
 			connAddress = boost::ireplace_first_copy(m_connAddr, "udp", "tcp");
@@ -75,6 +76,14 @@ bool CQuoteProxy::Begin()
 		}
 
 		m_thQuoting = boost::thread(boost::bind(&RunQuoteProc, m_pUserApi, connAddress));
+
+		if (m_isUdp)
+		{
+			m_udpListener = UdpQuoteListenerPtr(
+				new CUdpQuoteListener(41115,
+				boost::bind(&CQuoteProxy::OnUdpDataReceived, this, _1, _2)));
+		}
+
 		m_isRunning = true;
 		return true;
 	}
@@ -141,5 +150,12 @@ void CQuoteProxy::UnsubscribeMarketData( char** symbolArr, int symCount )
 
 void CQuoteProxy::OnQuoteReceived( CUstpFtdcDepthMarketDataField *pDepthMarketData )
 {
+	if(!m_isUdp)
+		m_quoteAggregator->OnQuoteReceived(m_connectingIP, pDepthMarketData);
+}
+
+void CQuoteProxy::OnUdpDataReceived(char* pData, std::size_t nSize)
+{
+	CUstpFtdcDepthMarketDataField *pDepthMarketData = reinterpret_cast<CUstpFtdcDepthMarketDataField*>(pData);
 	m_quoteAggregator->OnQuoteReceived(m_connectingIP, pDepthMarketData);
 }

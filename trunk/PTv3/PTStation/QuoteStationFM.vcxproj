@@ -101,6 +101,7 @@ copy /y qs-log4cpp.property $(OutDir)</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="UdpQuoteListener.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileOperations.h" />
@@ -115,6 +116,7 @@ copy /y qs-log4cpp.property $(OutDir)</Command>
     <ClInclude Include="ShmQuoteSubscribe.h" />
     <ClInclude Include="shm_remover.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="UdpQuoteListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QuoteStation.rc" />

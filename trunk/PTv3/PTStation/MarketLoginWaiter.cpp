@@ -1,6 +1,11 @@
 #include "StdAfx.h"
 #include "MarketLoginWaiter.h"
+
+#ifndef USE_FEMAS_API
 #include "QuoteProxy.h"
+#else
+#include "QuoteProxy_FM.h"
+#endif
 
 #include <iostream>
 
