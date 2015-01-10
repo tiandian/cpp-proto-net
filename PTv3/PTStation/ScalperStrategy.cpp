@@ -14,6 +14,7 @@ CScalperStrategy::CScalperStrategy(const entity::StrategyItem& strategyItem)
 	, m_prevAsk(0), m_prevBid(0)
 	, m_ask(0), m_askSize(0)
 	, m_bid(0), m_bidSize(0)
+	, m_pendingStop(false)
 {
 	Apply(strategyItem, false);
 	CreateTriggers(strategyItem);
@@ -65,29 +66,37 @@ void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boos
 		CPortfolioOrderPlacer* pOrderPlacer = pPortfolio->OrderPlacer();
 		if(!(pOrderPlacer->IsWorking()))
 		{
-			if(m_triggers[0]->Test(m_diff))
+			if (m_pendingStop)
 			{
-				// open position
-				entity::PosiDirectionType direction = GetTradeDirection();
-#ifdef LOG_FOR_TRADE
-				logger.Info(boost::str(boost::format("[%s] Ask: %.2f => %.2f, Bid: %.2f => %.2f, Ask size VS Bid size: %d vs %d")
-					% (direction > trade::NET ? (direction == trade::LONG ? "LONG" : "SHORT") : "IGNORE") 
-					% m_prevAsk % m_ask % m_prevBid % m_bid % m_askSize % m_bidSize));
-#endif
-				if(direction > entity::NET)
+				m_pendingStop = false;
+				CStrategy::Stop();
+			}
+			else
+			{
+				if (m_triggers[0]->Test(m_diff))
 				{
-					double lmtPrice[2];
-					if(direction == entity::LONG)
+					// open position
+					entity::PosiDirectionType direction = GetTradeDirection();
+#ifdef LOG_FOR_TRADE
+					logger.Info(boost::str(boost::format("[%s] Ask: %.2f => %.2f, Bid: %.2f => %.2f, Ask size VS Bid size: %d vs %d")
+						% (direction > trade::NET ? (direction == trade::LONG ? "LONG" : "SHORT") : "IGNORE")
+						% m_prevAsk % m_ask % m_prevBid % m_bid % m_askSize % m_bidSize));
+#endif
+					if (direction > entity::NET)
 					{
-						lmtPrice[0] = m_bid + m_priceTick;
-						lmtPrice[1] = m_ask - m_priceTick;
+						double lmtPrice[2];
+						if (direction == entity::LONG)
+						{
+							lmtPrice[0] = m_bid + m_priceTick;
+							lmtPrice[1] = m_ask - m_priceTick;
+						}
+						else // Sell
+						{
+							lmtPrice[0] = m_ask - m_priceTick;
+							lmtPrice[1] = m_bid + m_priceTick;
+						}
+						pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 					}
-					else // Sell
-					{
-						lmtPrice[0] = m_ask - m_priceTick;
-						lmtPrice[1] = m_bid + m_priceTick;
-					}
-					pOrderPlacer->Run(direction, lmtPrice, 2, timestamp);
 				}
 			}
 		}
@@ -180,4 +189,15 @@ entity::PosiDirectionType CScalperStrategy::CalcTradeDirection(int askSize, int 
 	}
 
 	return entity::NET;
+}
+
+void CScalperStrategy::Stop()
+{
+	m_pendingStop = true;
+}
+
+void CScalperStrategy::Start()
+{
+	m_pendingStop = false;
+	CStrategy::Start();
 }

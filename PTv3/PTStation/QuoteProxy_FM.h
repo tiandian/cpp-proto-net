@@ -1,5 +1,6 @@
 #pragma once
 
+#include "UdpQuoteListener.h"
 #include "FemasAPI/USTPFtdcMduserApi.h"
 #include <boost/thread.hpp>
 
@@ -25,7 +26,7 @@ public:
 	void GetReady();
 	bool IsReady(){ return m_isReady; }
 	void OnQuoteReceived(CUstpFtdcDepthMarketDataField *pDepthMarketData);
-
+	void OnUdpDataReceived(char* pData, std::size_t nSize);
 private:
 	string m_connAddr;
 	string m_brokerId;
@@ -40,6 +41,9 @@ private:
 	boost::thread m_thQuoting;
 	CUstpFtdcMduserApi* m_pUserApi;
 	CQuoteAggregator* m_quoteAggregator;
+
+	UdpQuoteListenerPtr m_udpListener;
+	bool m_isUdp;
 };
 
 typedef boost::shared_ptr<CQuoteProxy> QuoteProxyPtr;

@@ -33,7 +33,7 @@ using namespace msm::front;
 string PendingTimeUpEventName("struct evtPendingTimeUp");
 string NextQuoteInEventName("struct evtNextQuoteIn");
 
-#define CLEANUP_TIMEOUT 15
+#define CLEANUP_TIMEOUT 3
 
 namespace // Concrete FSM implementation
 {

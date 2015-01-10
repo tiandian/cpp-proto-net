@@ -3,10 +3,16 @@
 #include "QS_LogManager.h"
 #include "ShmQuoteSubscribe.h"
 #include "ShmQuoteFeed.h"
-#include "MdSpi.h"
 #include "FileOperations.h"
-#include "QuoteProxy.h"
 #include "QuoteAggregator.h"
+
+#ifndef USE_FEMAS_API
+#include "MdSpi.h"
+#include "QuoteProxy.h"
+#else
+#include "MdSpi_FM.h"
+#include "QuoteProxy_FM.h"
+#endif
 
 #include <iostream>
 #include <sstream>
@@ -121,15 +127,17 @@ int main(int argc, char* argv[])
 	for(set<string>::iterator iter = mktDataSources.begin(); iter != mktDataSources.end(); ++iter)
 #endif
 	{
-		QuoteProxyPtr quoteProxyMain(QuoteProxyPtr(new CQuoteProxy(&quoteAggregator,
-			*iter, qsConfig.BrokerId(), qsConfig.Username(), qsConfig.Password())));
+		QuoteProxyPtr quoteProxyMain(new CQuoteProxy(&quoteAggregator,
+			*iter, qsConfig.BrokerId(), qsConfig.Username(), qsConfig.Password()));
 		if(!quoteProxyMain->Begin())
 			return BEGIN_QUOTE_PROXY_ERROR;
 		quoteProxyVec.push_back(quoteProxyMain);
 	}
 
-	if(!quoteAggregator.Initialize(qsConfig.BrokerId(), qsConfig.Username()))
+	if (!quoteAggregator.Initialize(qsConfig.BrokerId(), qsConfig.Username()))
+	{
 		return QUOTE_AGGREGATOR_INITIALIZATION_ERROR;
+	}
 
 	int proxyExitCode = 0;
 	// Wait until all quote proxy end successfully
