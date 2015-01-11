@@ -35,7 +35,7 @@ private:
 		if (!error || error == boost::asio::error::message_size)
 		{
 			// handle received quote
-			on_data_recv_(recv_buffer_.data(), bytes_transferred);
+			on_data_recv_(recv_buffer_.c_array(), bytes_transferred);
 
 			start_receive();
 		}
