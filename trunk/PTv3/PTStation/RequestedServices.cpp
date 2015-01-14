@@ -112,6 +112,11 @@ void PortfolioSwitchService::handle( LogicalConnection* pClient, IncomingPacket*
 		{
 			pPortf->EnableTrigger(switchPortfReq.triggerindex(), switchPortfReq.enabletrigger());
 		}
+		else if (switchPortfReq.switchtype() == entity::ARBITRAGE_SWITCH
+			&& switchPortfReq.has_isarbitrage())
+		{
+			pPortf->SetHedgeFlag(switchPortfReq.isarbitrage() ? trade::ARBITRAGE : trade::SPECULATION);
+		}
 	}
 }
 

@@ -1,9 +1,9 @@
 #pragma once
 
 #ifndef USE_FEMAS_API
-#define APP_VERSION "4.3.0"
+#define APP_VERSION "4.3.1"
 #else
-#define APP_VERSION "4.3.0 for Femas"
+#define APP_VERSION "4.3.1 for Femas"
 #endif
 
 class CConfiguration

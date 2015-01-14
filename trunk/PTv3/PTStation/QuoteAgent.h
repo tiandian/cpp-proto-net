@@ -35,6 +35,8 @@ private:
 	
 	void LaunchChildProc(string cmd);
 
+	void PushFakeQuote();
+
 	CQuoteAgentCallback* m_pCallback;
 
 	boost::atomic<bool> m_bIsConnected;
@@ -47,5 +49,10 @@ private:
 
 	boost::shared_ptr<CShmQuoteSubscribeProducer> m_quoteSubscriber;
 	boost::shared_ptr<CShmQuoteFeedConsumer> m_quoteFeedee;
+
+#ifdef FAKE_QUOTE
+	boost::thread m_thFakeQuote;
+	bool m_pushingFakeQuote;
+#endif
 };
 

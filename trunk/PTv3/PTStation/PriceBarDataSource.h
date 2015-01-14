@@ -62,7 +62,7 @@ public:
 		: CPriceBarDataSource(id, tradingDay)
 	{}
 
-	~CHistoryPriceBarDataSource(){}
+	~CHistoryPriceBarDataSource();
 
 protected:
 	virtual OHLCRecordSetPtr OnCreateOHLCRecordSet(const string& symbol, int precision);

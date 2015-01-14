@@ -10,6 +10,9 @@ CQuoteAgent::CQuoteAgent(void)
 	: m_pCallback(NULL)
 	, m_bIsConnected(false)
 	, m_retChild(-1)
+#ifdef FAKE_QUOTE
+	, m_pushingFakeQuote(false)
+#endif
 {
 }
 
@@ -22,6 +25,9 @@ CQuoteAgent::~CQuoteAgent(void)
 		Logout();
 		m_thLaunch.join();
 	}
+#ifdef FAKE_QUOTE
+	m_pushingFakeQuote = false;
+#endif
 }
 
 void CQuoteAgent::LaunchChildProc(string cmd)
@@ -92,6 +98,10 @@ void CQuoteAgent::Logout()
 
 bool CQuoteAgent::SubscribesQuotes( vector<string>& subscribeArr )
 {
+#ifdef FAKE_QUOTE
+	m_pushingFakeQuote = true;
+	m_thFakeQuote = boost::thread(boost::bind(&CQuoteAgent::PushFakeQuote, this));
+#endif
 	if(!m_bIsConnected.load(boost::memory_order_consume))
 		return false;
 
@@ -147,6 +157,42 @@ void CQuoteAgent::OnQuotePush(CUstpFtdcDepthMarketDataField* mktDataField, longl
 	if(m_pCallback != NULL)
 	{
 		m_pCallback->OnQuoteReceived(mktDataField, timestamp);
+	}
+}
+
+void CQuoteAgent::PushFakeQuote()
+{
+	if (m_pCallback != NULL)
+	{
+		ostringstream timeStream;
+		boost::posix_time::time_facet* const timeFormat = new boost::posix_time::time_facet("%H:%M:%S");
+		timeStream.imbue(std::locale(timeStream.getloc(), timeFormat));
+
+		while (true)
+		{
+			boost::this_thread::sleep(boost::posix_time::seconds(1));
+#ifndef USE_FEMAS_API
+			CThostFtdcDepthMarketDataField mktDataField;
+#else
+			CUstpFtdcDepthMarketDataField mktDataField;
+#endif
+			memset(&mktDataField, 0, sizeof(mktDataField));
+
+			strcpy(mktDataField.InstrumentID, "IF1501");
+			mktDataField.LastPrice = 3200;
+			mktDataField.AskPrice1 = 3201;
+			mktDataField.BidPrice1 = 3200;
+
+			const boost::posix_time::ptime now = boost::posix_time::second_clock::local_time();
+			timeStream << now;
+			string timeText = timeStream.str();
+			strcpy_s(mktDataField.UpdateTime, timeText.c_str());
+			timeStream.str("");
+			timeStream.clear();
+
+			longlong timestamp = boost::chrono::steady_clock::now().time_since_epoch().count();
+			m_pCallback->OnQuoteReceived(&mktDataField, timestamp);
+		}
 	}
 }
 

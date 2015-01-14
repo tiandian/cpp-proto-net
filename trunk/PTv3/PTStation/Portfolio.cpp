@@ -646,4 +646,9 @@ void CPortfolio::NotifyLegFilled(int sendingIdx, const string& symbol, trade::Of
 	m_strategy->OnLegFilled(sendingIdx, symbol, offset, direction, price, volume);
 }
 
+void CPortfolio::SetHedgeFlag(trade::HedgeFlagType hedgeType)
+{
+	m_hedgeFlag = hedgeType;
+}
+
 
