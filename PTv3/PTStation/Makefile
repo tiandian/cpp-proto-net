@@ -60,7 +60,8 @@ _QS_OBJS = stdafx \
 		QuoteAggregator QuoteMain QuoteProxy ShmQuoteFeed ShmQuoteSubscribe
 _QS_FM_OBJS = stdafx \
 		FileOperations MarketLoginWaiter MdSpi_FM QS_Configuration QS_LogManager \
-		QuoteAggregator QuoteMain QuoteProxy_FM ShmQuoteFeed ShmQuoteSubscribe
+		QuoteAggregator QuoteMain QuoteProxy_FM ShmQuoteFeed ShmQuoteSubscribe \
+		UdpQuoteListener
 
 QS_OBJS = $(patsubst %, $(QS_OBJ_DIR)/%.o, $(_QS_OBJS))
 QS_FM_OBJS = $(patsubst %, $(QS_FM_OBJ_DIR)/%.o, $(_QS_FM_OBJS))

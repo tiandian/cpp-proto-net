@@ -99,11 +99,12 @@ inline bool ServerType_Parse(
 }
 enum PortfolioSwitchType {
   STRATEGY_SWITCH = 0,
-  TRIGGER_SWITCH = 1
+  TRIGGER_SWITCH = 1,
+  ARBITRAGE_SWITCH = 2
 };
 bool PortfolioSwitchType_IsValid(int value);
 const PortfolioSwitchType PortfolioSwitchType_MIN = STRATEGY_SWITCH;
-const PortfolioSwitchType PortfolioSwitchType_MAX = TRIGGER_SWITCH;
+const PortfolioSwitchType PortfolioSwitchType_MAX = ARBITRAGE_SWITCH;
 const int PortfolioSwitchType_ARRAYSIZE = PortfolioSwitchType_MAX + 1;
 
 const ::google::protobuf::EnumDescriptor* PortfolioSwitchType_descriptor();
@@ -1328,6 +1329,13 @@ class SwitchPortfolioRequest : public ::google::protobuf::Message {
   inline bool enabletrigger() const;
   inline void set_enabletrigger(bool value);
 
+  // optional bool IsArbitrage = 31;
+  inline bool has_isarbitrage() const;
+  inline void clear_isarbitrage();
+  static const int kIsArbitrageFieldNumber = 31;
+  inline bool isarbitrage() const;
+  inline void set_isarbitrage(bool value);
+
   // @@protoc_insertion_point(class_scope:entity.SwitchPortfolioRequest)
  private:
   inline void set_has_pid();
@@ -1342,18 +1350,21 @@ class SwitchPortfolioRequest : public ::google::protobuf::Message {
   inline void clear_has_triggerindex();
   inline void set_has_enabletrigger();
   inline void clear_has_enabletrigger();
+  inline void set_has_isarbitrage();
+  inline void clear_has_isarbitrage();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
   ::std::string* pid_;
   int switchtype_;
   ::google::protobuf::int32 lastorderid_;
+  ::google::protobuf::int32 triggerindex_;
   bool startstrategy_;
   bool enabletrigger_;
-  ::google::protobuf::int32 triggerindex_;
+  bool isarbitrage_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(7 + 31) / 32];
 
   friend void  protobuf_AddDesc_message_2eproto();
   friend void protobuf_AssignDesc_message_2eproto();
@@ -7685,6 +7696,28 @@ inline bool SwitchPortfolioRequest::enabletrigger() const {
 inline void SwitchPortfolioRequest::set_enabletrigger(bool value) {
   set_has_enabletrigger();
   enabletrigger_ = value;
+}
+
+// optional bool IsArbitrage = 31;
+inline bool SwitchPortfolioRequest::has_isarbitrage() const {
+  return (_has_bits_[0] & 0x00000040u) != 0;
+}
+inline void SwitchPortfolioRequest::set_has_isarbitrage() {
+  _has_bits_[0] |= 0x00000040u;
+}
+inline void SwitchPortfolioRequest::clear_has_isarbitrage() {
+  _has_bits_[0] &= ~0x00000040u;
+}
+inline void SwitchPortfolioRequest::clear_isarbitrage() {
+  isarbitrage_ = false;
+  clear_has_isarbitrage();
+}
+inline bool SwitchPortfolioRequest::isarbitrage() const {
+  return isarbitrage_;
+}
+inline void SwitchPortfolioRequest::set_isarbitrage(bool value) {
+  set_has_isarbitrage();
+  isarbitrage_ = value;
 }
 
 // -------------------------------------------------------------------

@@ -54,6 +54,7 @@ public:
 
 	entity::StrategyType StrategyType(){ return m_strategyType; }
 	trade::HedgeFlagType HedgeFlag(){ return m_hedgeFlag; }
+	void SetHedgeFlag(trade::HedgeFlagType hedgeType);
 	CStrategy* Strategy(){ return m_strategy.get(); }
 	const entity::PortfolioUpdateItem& GetUpdated(){ return m_portfolioUpdate; }
 

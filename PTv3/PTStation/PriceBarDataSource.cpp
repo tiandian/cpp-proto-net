@@ -95,6 +95,14 @@ OHLCRecordSetPtr CPriceBarDataSource::OnCreateOHLCRecordSet( const string& symbo
 std::set<string> histDataWriterSet;
 boost::mutex mutHistDataSet;
 
+
+CHistoryPriceBarDataSource::~CHistoryPriceBarDataSource()
+{
+	boost::lock_guard<boost::mutex> l(mutHistDataSet);
+	const string& histDataWriterName = m_histDataWriter.Name();
+	histDataWriterSet.erase(histDataWriterName);
+}
+
 void CHistoryPriceBarDataSource::OnInit()
 {
 	boost::lock_guard<boost::mutex> l(mutHistDataSet);
@@ -129,3 +137,4 @@ OHLCRecordSetPtr CHistoryPriceBarDataSource::OnCreateOHLCRecordSet( const string
 {
 	return OHLCRecordSetPtr(new COHLCRecordSet(symbol, precision, ONE_DAY));
 }
+
