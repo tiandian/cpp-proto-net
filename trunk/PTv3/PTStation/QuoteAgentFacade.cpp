@@ -1,4 +1,4 @@
-#include "stdafx.h"
+#include "StdAfx.h"
 #include "QuoteAgentFacade.h"
 
 #include <boost/algorithm/string.hpp>
