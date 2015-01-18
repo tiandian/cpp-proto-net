@@ -17,8 +17,6 @@ public:
 
 	virtual int OnPortfolioAddPosition(CPortfolio* pPortfolio, const trade::MultiLegOrder& openOrder, int actualTradedVol);
 
-	virtual void Start();
-	virtual void Stop();
 private:
 	void CreateTriggers(const entity::StrategyItem& strategyItem);
 

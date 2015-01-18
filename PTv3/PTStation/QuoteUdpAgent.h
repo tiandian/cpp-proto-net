@@ -21,8 +21,7 @@ private:
 	void OnUdpDataReceived(char* pData, std::size_t nSize);
 
 	UdpQuoteListenerPtr m_udpListener;
-	bool m_isUdpRunning;
-
+	
 	set<string> m_symbols;
 	boost::mutex m_mutSymbol;
 };

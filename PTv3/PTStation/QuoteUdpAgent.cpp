@@ -6,7 +6,6 @@
 
 CQuoteUdpAgent::CQuoteUdpAgent(CQuoteAgentCallback* pCallback)
 	: CQuoteAgentBase(pCallback)
-	, m_isUdpRunning(false)
 {
 }
 
@@ -20,7 +19,7 @@ int GetQuoteBroadcastPort(const string& frontAddr)
 	int nPort = -1;
 	if (isUdp)
 	{
-		string portStr = frontAddr.substr(21);
+		string portStr = frontAddr.substr(22);
 		try
 		{
 			nPort = boost::lexical_cast<int>(portStr);
@@ -44,7 +43,7 @@ boost::tuple<bool, string> CQuoteUdpAgent::Login(const string& frontAddr, const 
 			new CUdpQuoteListener(nPort,
 			boost::bind(&CQuoteUdpAgent::OnUdpDataReceived, this, _1, _2)));
 
-		m_isUdpRunning = true;
+		m_bIsConnected = true;
 		return boost::make_tuple(true, "");
 	}
 	else
@@ -55,9 +54,9 @@ boost::tuple<bool, string> CQuoteUdpAgent::Login(const string& frontAddr, const 
 
 void CQuoteUdpAgent::Logout()
 {
-	if (m_isUdpRunning)
+	if (m_bIsConnected)
 	{
-		m_isUdpRunning = false;
+		m_bIsConnected = false;
 		m_udpListener.reset();
 	}
 }
