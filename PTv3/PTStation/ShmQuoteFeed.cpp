@@ -100,24 +100,15 @@ bool CShmQuoteFeedProducer::Init()
 	}
 }
 
-#ifndef USE_FEMAS_API
 void CShmQuoteFeedProducer::Put( CThostFtdcDepthMarketDataField* quoteData )
-#else
-void CShmQuoteFeedProducer::Put(CUstpFtdcDepthMarketDataField* quoteData)
-#endif
 {
 	assert(m_pData != NULL);
 
 	scoped_lock<interprocess_mutex> lock(m_pData->mutex);
 	if(m_pData->running)
 	{
-		memcpy(&(m_pData->mktDataField), quoteData, 
-#ifndef USE_FEMAS_API
-			sizeof(CThostFtdcDepthMarketDataField)
-#else
-			sizeof(CUstpFtdcDepthMarketDataField)
-#endif
-			);
+		memcpy(&(m_pData->mktDataField), quoteData, sizeof(CThostFtdcDepthMarketDataField));
+
 		m_pData->timestamp = boost::chrono::steady_clock::now().time_since_epoch().count();
 		m_pData->ready = true;
 		m_pData->cond_ready.notify_one();

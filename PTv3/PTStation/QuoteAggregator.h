@@ -2,9 +2,8 @@
 #include "ShmQuoteSubscribe.h"
 #include "ShmQuoteFeed.h"
 
-#ifndef USE_FEMAS_API
 #include "ThostTraderApi/ThostFtdcMdApi.h"
-#else
+#ifdef USE_FEMAS_API
 #include "FemasAPI/USTPFtdcMduserApi.h"
 #endif
 
@@ -43,7 +42,7 @@ public:
 #ifndef USE_FEMAS_API
 	void OnQuoteReceived(const string& connectIP, CThostFtdcDepthMarketDataField *pDepthMarketData);
 #else
-	void OnQuoteReceived(const string& connectIP, CUstpFtdcDepthMarketDataField *pDepthMarketData);
+	void OnQuoteReceived(const string& connectIP, CUstpFtdcDepthMarketDataField *pUstpDepthMarketData);
 #endif
 
 private:
@@ -60,5 +59,9 @@ private:
 
 	QuoteTimestampMap m_lastQuoteTimestamp;
 	boost::mutex m_mutex;
+
+#ifdef USE_FEMAS_API
+	CThostFtdcDepthMarketDataField IntermediateMarketData;
+#endif
 };
 

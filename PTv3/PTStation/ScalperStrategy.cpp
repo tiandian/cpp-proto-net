@@ -79,7 +79,7 @@ void CScalperStrategy::Test( entity::Quote* pQuote, CPortfolio* pPortfolio, boos
 					entity::PosiDirectionType direction = GetTradeDirection();
 #ifdef LOG_FOR_TRADE
 					logger.Info(boost::str(boost::format("[%s] Ask: %.2f => %.2f, Bid: %.2f => %.2f, Ask size VS Bid size: %d vs %d")
-						% (direction > trade::NET ? (direction == trade::LONG ? "LONG" : "SHORT") : "IGNORE")
+						% (direction > entity::NET ? (direction == entity::LONG ? "LONG" : "SHORT") : "IGNORE")
 						% m_prevAsk % m_ask % m_prevBid % m_bid % m_askSize % m_bidSize));
 #endif
 					if (direction > entity::NET)

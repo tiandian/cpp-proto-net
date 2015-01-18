@@ -42,16 +42,21 @@ void PrintInputOrder(CInputOrder* order)
 			% order->Symbol() % order->LimitPrice()));
 	}
 }
+void PrintOrderAction(trade::InputOrderAction* orderAction)
+{
+	if (orderAction != NULL)
+	{
+		LOG_INFO(logger, boost::str(boost::format("Cancel Action(actionRef=%s) Order (ref=%s, sysid=%s, symbol=%s)")
+			% orderAction->orderactionref() % orderAction->orderref() 
+			% orderAction->ordersysid() % orderAction->instrumentid()));
+	}
+}
 
 COrderProcessor::COrderProcessor(void):
 m_pTradeAgent(NULL),
 m_pClientAgent(NULL),
 m_maxOrderRef(0),
-m_bIsSubmitting(false),
-m_totalOpenTimes(0),
-m_totalCancelTimes(0),
-m_maxTotalOpenTimes(450),
-m_maxTotalCancelTimes(900)
+m_bIsSubmitting(false)
 {
 	memset(&m_orderRefBuf, 0, sizeof(m_orderRefBuf));
 }
@@ -126,26 +131,29 @@ void COrderProcessor::PrintOrderStatus( trade::Order* order )
 		% order->orderref().c_str() % GetSumbitStatusText(submitStatus) % GetStatusText(status)));
 }
 
-void COrderProcessor::CancelOrder( const std::string& ordRef, const std::string& exchId, const std::string& ordSysId, const std::string& userId, const std::string& symbol )
+void COrderProcessor::CancelOrder(const std::string& ordRef, const std::string& exchId, const std::string& ordSysId, const std::string& userId, const std::string& symbol)
 {
 	boost::shared_ptr<trade::InputOrderAction> orderAction(new trade::InputOrderAction);
 #ifdef USE_FEMAS_API
-	boost::unique_lock<boost::mutex> lock(m_mutOrdRefIncr);
+	string ordActionRef;
 
-	string outOrdRef;
-	if (m_condSubmit.timed_wait(lock, boost::posix_time::seconds(3),
-		boost::bind(&COrderProcessor::IsReadyForSubmit, this)))
 	{
-		int iOrderRef = GenerateOrderRef(outOrdRef);
-		m_bIsSubmitting = true;
-	}
-	else
-	{
-		logger.Warning("LOCK for submit cancel order TIME OUT!");
-		return;
+		boost::unique_lock<boost::mutex> lock(m_mutOrdRefIncr);
+
+		if (m_condSubmit.timed_wait(lock, boost::posix_time::seconds(3),
+			boost::bind(&COrderProcessor::IsReadyForSubmit, this)))
+		{
+			int iOrderRef = GenerateOrderRef(ordActionRef);
+			m_bIsSubmitting = true;
+		}
+		else
+		{
+			logger.Warning("LOCK for submit cancel order TIME OUT!");
+			return;
+		}
 	}
 
-	orderAction->set_orderactionref(outOrdRef);
+	orderAction->set_orderactionref(ordActionRef);
 #endif
 
 	orderAction->set_orderref(ordRef);
@@ -162,18 +170,17 @@ void COrderProcessor::CancelOrder( const std::string& ordRef, const std::string&
 
 	orderAction->set_instrumentid(symbol);
 
-	if(m_pTradeAgent != NULL)
-	{
-		if(!ReachCancelTimesLimit())
-		{
-			m_pTradeAgent->SubmitOrderAction(orderAction.get());
-			AddCancelTimes();
-		}
-	}
+#ifdef LOG_FOR_TRADE
+	PrintOrderAction(orderAction.get());
+#endif
+	bool cancelSucc = m_pTradeAgent->SubmitOrderAction(orderAction.get());
 
 #ifdef USE_FEMAS_API
-	m_bIsSubmitting = false;
-	m_condSubmit.notify_one();
+	{
+		boost::unique_lock<boost::mutex> lock(m_mutOrdRefIncr);
+		m_bIsSubmitting = false;
+		m_condSubmit.notify_one();
+	}
 #endif
 }
 
@@ -200,8 +207,6 @@ bool COrderProcessor::SubmitAndUnlock(CInputOrder* pInputOrder)
 	PrintInputOrder(pInputOrder);
 #endif
 	bool succ = m_pTradeAgent->SubmitOrder(pInputOrder->InnerOrder());
-	if(succ)
-		AddOpenTimes();
 	
 	m_bIsSubmitting = false;
 	m_condSubmit.notify_one();

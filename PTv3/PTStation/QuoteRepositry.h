@@ -4,7 +4,7 @@
 #include "QuoteFetcher.h"
 #include "QuoteStore.h"
 
-class CQuoteAgent;
+class CQuoteAgentFacade;
 
 class CQuoteRepositry : public CQuoteAgentCallback
 {
@@ -15,15 +15,11 @@ public:
 	// CQuoteAgentCallback override virtual functions
 	virtual void OnSubscribeCompleted(){}
 	virtual void OnUnsubscribeCompleted(){}
-#ifndef USE_FEMAS_API
 	virtual void OnQuoteReceived(CThostFtdcDepthMarketDataField* marketData, longlong timestamp);
-#else
-	virtual void OnQuoteReceived(CUstpFtdcDepthMarketDataField* marketData, longlong timestamp);
-#endif
 	
 	virtual void OnConnected(bool reconnected);
 
-	void Init(CQuoteAgent* pQuoteAgent){ m_pQuoteAgent = pQuoteAgent; }
+	void Init(CQuoteAgentFacade* pQuoteAgent){ m_pQuoteAgent = pQuoteAgent; }
 	CQuoteFetcher* CreateFetcher(const string& symbol);
 	void DestoryFetcher(CQuoteFetcher* pFetcher);
 
@@ -38,7 +34,7 @@ private:
 	QuoteStoreMap m_quoteStoreMap;
 	boost::mutex m_storeMapMutex;
 
-	CQuoteAgent* m_pQuoteAgent;
+	CQuoteAgentFacade* m_pQuoteAgent;
 	
 };
 

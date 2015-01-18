@@ -1,6 +1,6 @@
 #pragma once
 
-#include "QuoteAgent.h"
+#include "QuoteAgentFacade.h"
 #include "PortfolioManager.h"
 #include "QuoteRepositry.h"
 #include "OrderProcessor.h"
@@ -61,7 +61,7 @@ private:
 	CTechDataRepo		m_dataRepo;
 	CTradeAgent			m_tradeAgent;
 	CQuoteRepositry		m_quoteRepositry;
-	CQuoteAgent			m_quoteAgent;
+	CQuoteAgentFacade	m_quoteAgent;
 	CPortfolioManager	m_portfolioMgr;
 	COrderProcessor		m_orderProcessor;
 	

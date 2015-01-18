@@ -48,7 +48,8 @@
                             </Border>
                             <Border Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" BorderBrush="Blue" BorderThickness="0, 0, 1, 0">
                                 <DockPanel>
-                                    <TextBlock DockPanel.Dock="Top" Margin="4">策略</TextBlock>
+                                    <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" DockPanel.Dock="Top" IsChecked="{Binding IsArbitrage}">套利</CheckBox>
+                                    
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />

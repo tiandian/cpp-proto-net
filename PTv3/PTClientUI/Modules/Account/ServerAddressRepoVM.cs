@@ -88,7 +88,9 @@ namespace PortfolioTrading.Modules.Account
         public void LoadServerList()
         {
             _mkt_servers.Add(new ServerAddress { Name = "模拟行情", Address = "tcp://ctpsim-front01.gfqh.cn:43213" });
+            _mkt_servers.Add(new ServerAddress { Name = "国泰模拟", Address = "tcp://mn101.ctp.gtja-futures.com:41213" });
             _td_servers.Add(new ServerAddress { Name = "模拟交易", Address = "tcp://ctpsim-front01.gfqh.cn:43205" });
+            _td_servers.Add(new ServerAddress { Name = "国泰模拟", Address = "tcp://mn101.ctp.gtja-futures.com:41205" });
 
             if (File.Exists(BrokersXmlPath))
             {

@@ -68,12 +68,13 @@
       <Server>
         <Name>国泰飞马</Name>
         <Trading>
-          <item>10.13.2.202:27001</item>
           <item>10.13.1.202:27001</item>
+          <item>10.13.2.202:27001</item>
         </Trading>
         <MarketData>
-          <item>10.13.2.202:27101</item>
           <item>10.13.1.202:27101</item>
+          <item>10.13.2.202:27101</item>
+          <item>udp://10.13.2.202:27101</item>
         </MarketData>
       </Server>
       <Server>
@@ -83,6 +84,15 @@
         </Trading>
         <MarketData>
           <item>172.28.69.1:7101</item>
+        </MarketData>
+      </Server>
+      <Server>
+        <Name>国泰仿真</Name>
+        <Trading>
+          <item>117.184.207.110:17131</item>
+        </Trading>
+        <MarketData>
+          <item>117.184.207.110:17101</item>
         </MarketData>
       </Server>
 		</Servers>

@@ -8,6 +8,7 @@
 #endif
 
 CRtnOrderWrapper::CRtnOrderWrapper(CUstpFtdcOrderField* pOrder)
+	:m_submitStatus(trade::NOT_SUBMITTED)
 {
 	memcpy(&m_orderField, pOrder, sizeof(m_orderField));
 	m_orderTimestamp = boost::chrono::steady_clock::now();
@@ -138,7 +139,17 @@ void CRtnOrderWrapper::ToEntity( trade::Order* pOrd )
 	///用户端产品信息
 	pOrd->set_userproductinfo("");
 	///状态信息
-	pOrd->set_statusmsg("");
+	if (!m_errorMsg.empty())
+	{
+		string ordStatusMsg;
+		GB2312ToUTF_8(ordStatusMsg, m_errorMsg.c_str());
+		pOrd->set_statusmsg(ordStatusMsg);
+	}
+	else
+	{
+		pOrd->set_statusmsg("");
+	}
+	
 	///用户强评标志
 	pOrd->set_userforceclose(false);
 	///操作用户代码
@@ -159,7 +170,7 @@ CRtnOrderWrapper* CRtnOrderWrapper::MakeFakeSubmitOrder(CUstpFtdcInputOrderField
 	CRtnOrderWrapper* pRtnOrderWrapper = new CRtnOrderWrapper();
 
 	strcpy_s(pRtnOrderWrapper->m_orderField.ExchangeID, "CFFEX");
-	strcpy_s(pRtnOrderWrapper->m_orderField.InsertTime, inputOrder.InvestorID);
+	strcpy_s(pRtnOrderWrapper->m_orderField.InvestorID, inputOrder.InvestorID);
 	strcpy_s(pRtnOrderWrapper->m_orderField.UserOrderLocalID, inputOrder.UserOrderLocalID);
 	strcpy_s(pRtnOrderWrapper->m_orderField.InstrumentID, inputOrder.InstrumentID);
 	
@@ -177,6 +188,15 @@ CRtnOrderWrapper* CRtnOrderWrapper::MakeFakeSubmitOrder(CUstpFtdcInputOrderField
 	pRtnOrderWrapper->m_orderField.IsAutoSuspend = inputOrder.IsAutoSuspend;
 
 	pRtnOrderWrapper->m_orderField.OrderStatus = USTP_FTDC_OS_AcceptedNoReply;
+	
+	return pRtnOrderWrapper;
+}
+
+CRtnOrderWrapper* CRtnOrderWrapper::MakeFakeRejectOrder(CUstpFtdcInputOrderField& inputOrder, const char* errorMsg)
+{
+	CRtnOrderWrapper* pRtnOrderWrapper = MakeFakeSubmitOrder(inputOrder);
+	pRtnOrderWrapper->m_errorMsg = errorMsg;
+	pRtnOrderWrapper->m_submitStatus = trade::INSERT_REJECTED;
 	
 	return pRtnOrderWrapper;
 }

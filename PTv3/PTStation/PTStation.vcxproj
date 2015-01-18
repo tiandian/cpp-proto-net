@@ -52,7 +52,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;LOG_FOR_TRADE;LOG_FOR_TECH_CALC;QUOTE_TIME_EMU;BOOST_ASIO_DISABLE_STD_CHRONO;FAKE_DEAL;FAKE_QUOTE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;USE_NET_LIBS;LOG_FOR_TRADE;LOG_FOR_TECH_CALC;QUOTE_TIME_EMU;BOOST_ASIO_DISABLE_STD_CHRONO;FAKE_DEAL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>D:\Dev\boost_1_56_0;D:\Dev\log4cpp\include;D:\Dev\protobuf-2.5.0\src;D:\Dev\PushFramework_2.2.1\include;D:\Dev\ta-lib\ta-lib\c\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -92,6 +92,12 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\proto\enum.proto" />
+    <None Include="..\proto\message.proto" />
+    <None Include="..\proto\packet.proto" />
+    <None Include="..\proto\proto_gen.bat" />
+    <None Include="..\proto\quote.proto" />
+    <None Include="..\proto\trade.proto" />
     <None Include="log4cpp.property" />
     <None Include="Makefile" />
     <None Include="ReadMe.txt" />
@@ -126,8 +132,12 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClInclude Include="ManualOrderPlacer.h" />
     <ClInclude Include="ManualStrategy.h" />
     <ClInclude Include="PortfolioArbitrageOrderPlacer.h" />
+    <ClInclude Include="QuoteAgentBase.h" />
+    <ClInclude Include="QuoteAgentFacade.h" />
+    <ClInclude Include="QuoteUdpAgent.h" />
     <ClInclude Include="RangeTrendStrategy.h" />
     <ClInclude Include="StrategyOrderCommand.h" />
+    <ClInclude Include="UdpQuoteListener.h" />
     <ClInclude Include="WATRStopDataSet.h" />
     <ClInclude Include="WillRDataSet.h" />
     <ClInclude Include="WMATrendDataSet.h" />
@@ -238,8 +248,11 @@ copy /y ThostTraderApi\*.dll $(OutDir)</Command>
     <ClCompile Include="ManualOrderPlacer.cpp" />
     <ClCompile Include="ManualStrategy.cpp" />
     <ClCompile Include="PortfolioArbitrageOrderPlacer.cpp" />
+    <ClCompile Include="QuoteAgentFacade.cpp" />
+    <ClCompile Include="QuoteUdpAgent.cpp" />
     <ClCompile Include="RangeTrendStrategy.cpp" />
     <ClCompile Include="StrategyOrderCommand.cpp" />
+    <ClCompile Include="UdpQuoteListener.cpp" />
     <ClCompile Include="WATRStopDataSet.cpp" />
     <ClCompile Include="WillRDataSet.cpp" />
     <ClCompile Include="WMATrendDataSet.cpp" />

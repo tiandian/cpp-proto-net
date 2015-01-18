@@ -164,6 +164,23 @@ void ClientBase::PortfTurnSwitches( String ^portfId, int triggerIndex, bool enab
 	}
 }
 
+void ClientBase::PortfChangeArbitrage(String ^portfId, bool isArbitrage)
+{
+	if (!this->IsConnected)
+		return;
+
+	IntPtr pPortfIdAddress;
+	try
+	{
+		pPortfIdAddress = (IntPtr)Marshal::StringToHGlobalAnsi(portfId);
+		_nativeClient->PortfChangeArbitrage((char*)pPortfIdAddress.ToPointer(), isArbitrage);
+	}
+	finally
+	{
+		Marshal::FreeHGlobal(pPortfIdAddress);
+	}
+}
+
 void ClientBase::PortfApplyStrategySettings( String ^portfId, StrategyItem ^strategyItem )
 {
 	if(!this->IsConnected)
@@ -260,5 +277,6 @@ void ClientBase::PortfSetPreferredLeg(String ^portfId, String ^legName)
 		Marshal::FreeHGlobal(pLegNameAddress);
 	}
 }
+
 
 }

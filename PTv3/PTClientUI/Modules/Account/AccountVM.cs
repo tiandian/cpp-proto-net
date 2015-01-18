@@ -397,7 +397,7 @@ namespace PortfolioTrading.Modules.Account
             bool? res = dlg.ShowDialog();
             if (res ?? false)
             {
-                dlg.Portfolio.HedgeFlag = HedgeFlag;
+                portf.SetHedgeFlag(HedgeFlag);
                 PTEntity.PortfolioItem portfolioItem = dlg.Portfolio.GetEntity();
                 AddPorfolio(portf);
                 if(_client.IsConnected)
