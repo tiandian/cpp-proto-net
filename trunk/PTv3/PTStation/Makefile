@@ -1,8 +1,8 @@
 CC = g++
 INC_DIR=-I../dev/pushframework-2.2.1/include
-CFLAGS=$(INC_DIR) -DUSE_NET_LIBS -O3 -DLOG_FOR_TECH_CALC
+CFLAGS=$(INC_DIR) -DUSE_NET_LIBS -O3
 FM_FLAGS=-DUSE_FEMAS_API
-# -DFAKE_DEAL -DLOG_FOR_TECH_CALC
+# -DFAKE_DEAL  -DLOG_FOR_TRADE -DLOG_FOR_TECH_CALC
 PROTO_DIR = ./proto
 SRC = ./src
 ENTITY_DIR = ./src/entity
@@ -25,8 +25,8 @@ _FS_OBJS = stdafx \
 		AvatarClient AvatarFactory ClientProtocol ProtobufPacket ProtobufProtocol \
 		RequestedServices TradingServer TradingServerProtocol \
 		\
-		QuoteAgent QuoteFetcher QuoteRepositry QuoteStore ShmQuoteFeed \
-		ShmQuoteSubscribe \
+		QuoteAgent QuoteAgentFacade QuoteFetcher QuoteRepositry QuoteStore \
+		QuoteUdpAgent ShmQuoteFeed ShmQuoteSubscribe UdpQuoteListener \
 		\
 		ArbitrageStrategy ArbitrageTrigger ASCTrendStrategy ASCTrendTrigger ChangePositionStrategy \
 		ChangePositionTrigger HistSlopeStrategy HistSlopeTrigger LinerRegressionStrategy ManualStrategy \
