@@ -53,11 +53,7 @@ int launchChildTest(int argc, char* argv[]);
 void signalHandler( int signum );
 void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer);
 
-#ifndef USE_FEMAS_API
 void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField);
-#else
-void OnQuotePush(CUstpFtdcDepthMarketDataField* mktDataField);
-#endif
 
 void OnSubscribeMarketData(char** symbolArr, int symCount);
 void OnUnsubscribeMarketData(char** symbolArr, int symCount);
@@ -83,7 +79,7 @@ int main(int argc, char* argv[])
 		qsLogger.Init();
 	}
 
-	cout << "Startup QuoteStation v4.0.0";
+	cout << "Startup QuoteStation v4.4.2";
 #ifndef USE_FEMAS_API
 	cout << endl;
 #else
@@ -240,11 +236,7 @@ void subscribeQuoteProc(CShmQuoteSubscribeProducer * producer)
 	cout << "Test subscribeQuoteProc done." << endl;
 }
 
-#ifndef USE_FEMAS_API
 void OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField)
-#else
-void OnQuotePush(CUstpFtdcDepthMarketDataField* mktDataField)
-#endif
 {
 	cout << "[Parent process] OnQuotePush : " << mktDataField->InstrumentID << ", "
 		<< mktDataField->LastPrice << ", "

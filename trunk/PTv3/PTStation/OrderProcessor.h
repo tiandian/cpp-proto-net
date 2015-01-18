@@ -93,14 +93,6 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 
 	bool IsReadyForSubmit(){ return !m_bIsSubmitting; }
-	int TotalOpenTimes(){ return m_totalOpenTimes; }
-	int TotalCancelTimes(){ return m_totalCancelTimes; }
-
-	bool ReachOpenTimesLimit(){ return m_totalOpenTimes >= m_maxTotalOpenTimes; }
-	bool ReachCancelTimesLimit() { return m_totalCancelTimes >= m_maxTotalCancelTimes; }
-
-	void SetMaxOpenTimes(int maxOpenTimes){ m_maxTotalOpenTimes = maxOpenTimes; }
-	void SetMaxCancelTimes(int maxCancelTimes){ m_maxTotalCancelTimes = maxCancelTimes; }
 
 	const string& BrokerId();
 	const string& InvestorId();
@@ -112,8 +104,6 @@ private:
 	void DispatchRtnOrder(RtnOrderWrapperPtr& orderWrapper);
 
 	trade::InputOrder* BuildCloseOrder(const string& symbol, trade::TradeDirectionType direction, const string& openDate, PlaceOrderContext* placeOrderCtx);
-	void AddOpenTimes() { ++m_totalOpenTimes; }
-	void AddCancelTimes() { ++m_totalCancelTimes; }
 
 	boost::unordered_map<string, CPortfolioOrderPlacer*> m_workingOrderPlacers;
 	boost::recursive_mutex m_ordPlacersMapMutex;
@@ -130,10 +120,5 @@ private:
 	boost::condition_variable m_condQryAcct;
 	boost::mutex m_mutQryAcct;
 	string m_serializedQryAcctInfo;
-
-	int m_totalOpenTimes;
-	int m_totalCancelTimes;
-	int m_maxTotalOpenTimes;
-	int m_maxTotalCancelTimes;
 };
 

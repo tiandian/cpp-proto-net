@@ -55,11 +55,32 @@
     <Filter Include="Source Files\tech">
       <UniqueIdentifier>{deebf15d-372c-4a25-9cf5-a51c10b07483}</UniqueIdentifier>
     </Filter>
+    <Filter Include="proto">
+      <UniqueIdentifier>{cac62b77-fdf6-4601-8a55-87e86fff37ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
     <None Include="log4cpp.property" />
     <None Include="Makefile" />
+    <None Include="..\proto\proto_gen.bat">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\proto\trade.proto">
+      <Filter>proto</Filter>
+    </None>
+    <None Include="..\proto\quote.proto">
+      <Filter>proto</Filter>
+    </None>
+    <None Include="..\proto\packet.proto">
+      <Filter>proto</Filter>
+    </None>
+    <None Include="..\proto\message.proto">
+      <Filter>proto</Filter>
+    </None>
+    <None Include="..\proto\enum.proto">
+      <Filter>proto</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -353,6 +374,18 @@
     <ClInclude Include="ManualOrderPlacer.h">
       <Filter>Header Files\trade</Filter>
     </ClInclude>
+    <ClInclude Include="UdpQuoteListener.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteAgentFacade.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteAgentBase.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
+    <ClInclude Include="QuoteUdpAgent.h">
+      <Filter>Header Files\quote</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -612,6 +645,15 @@
     </ClCompile>
     <ClCompile Include="ManualOrderPlacer.cpp">
       <Filter>Source Files\trade</Filter>
+    </ClCompile>
+    <ClCompile Include="UdpQuoteListener.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteAgentFacade.cpp">
+      <Filter>Source Files\quote</Filter>
+    </ClCompile>
+    <ClCompile Include="QuoteUdpAgent.cpp">
+      <Filter>Source Files\quote</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

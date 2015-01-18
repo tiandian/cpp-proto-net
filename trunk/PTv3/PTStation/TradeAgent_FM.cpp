@@ -403,9 +403,15 @@ void CTradeAgent::OnRspOrderInsert(CUstpFtdcInputOrderField *pInputOrder, CUstpF
 		oss << "--->>> ErrorID=" << pRspInfo->ErrorID << ", ErrorMsg=" << pRspInfo->ErrorMsg << endl;
 		logger.Info(oss.str());
 
-		string ordRef = pInputOrder->UserOrderLocalID;
+		/*	Don't publish error insert order any longer, instead return a fake reject order built from inputOrder
 		string errorMsg = pRspInfo->ErrorMsg;
+		string ordRef = pInputOrder->UserOrderLocalID;
 		m_orderProcessor->OnRspOrderInsert(false, ordRef, errorMsg);
+		*/
+
+		RtnOrderWrapperPtr orderWrapper(CRtnOrderWrapper::MakeFakeRejectOrder(*pInputOrder, pRspInfo->ErrorMsg));
+		// Order will be actually managed by underlying evtOrder
+		m_orderProcessor->OnRtnOrder(orderWrapper);
 	}
 }
 

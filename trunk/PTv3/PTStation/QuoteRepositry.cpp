@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "QuoteRepositry.h"
 #include "globalmembers.h"
-#include "QuoteAgent.h"
+#include "QuoteAgentFacade.h"
 
 #include <boost/chrono.hpp>
 
@@ -63,11 +63,7 @@ void CQuoteRepositry::DestoryFetcher( CQuoteFetcher* pFetcher )
 	}
 }
 
-#ifndef USE_FEMAS_API
 void CQuoteRepositry::OnQuoteReceived( CThostFtdcDepthMarketDataField* marketData, longlong timestamp )
-#else
-void CQuoteRepositry::OnQuoteReceived( CUstpFtdcDepthMarketDataField* marketData, longlong timestamp )
-#endif
 {
 	boost::unique_lock<boost::mutex> lock(m_storeMapMutex);
 

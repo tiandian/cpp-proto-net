@@ -75,6 +75,7 @@ enum PortfolioSwitchType
 {
 	STRATEGY_SWITCH = 0;
 	TRIGGER_SWITCH = 1;
+	ARBITRAGE_SWITCH = 2;
 }
 
 message SwitchPortfolioRequest
@@ -88,6 +89,8 @@ message SwitchPortfolioRequest
 	// Trigger
 	optional int32 TriggerIndex = 21;
 	optional bool EnableTrigger = 22;
+	// Arbitrage
+	optional bool IsArbitrage = 31;
 }
 
 message ApplyStrategySettingsRequest

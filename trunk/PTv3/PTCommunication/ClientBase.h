@@ -94,6 +94,8 @@ namespace PTCommunication {
 
 		void PortfTurnSwitches(String ^portfId, int triggerIndex, bool enabled);
 
+		void PortfChangeArbitrage(String ^portfId, bool isArbitrage);
+
 		void PortfApplyStrategySettings(String ^portfId, StrategyItem ^strategyItem);
 
 		AccountInfo^ QueryAccountInfo()

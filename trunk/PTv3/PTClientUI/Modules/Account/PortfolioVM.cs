@@ -288,6 +288,26 @@ namespace PortfolioTrading.Modules.Account
         }
         #endregion
 
+        #region IsArbitrage
+        private bool _isArbitrage;
+
+        public bool IsArbitrage
+        {
+            get { return _isArbitrage; }
+            set
+            {
+                if (_isArbitrage != value)
+                {
+                    _isArbitrage = value;
+                    HedgeFlag = _isArbitrage ? PTEntity.HedgeFlagType.ARBITRAGE : PTEntity.HedgeFlagType.SPECULATION;
+                    RaisePropertyChanged("IsArbitrage");
+                    OnIsArbitrageChanged();
+                }
+            }
+        }
+        #endregion
+
+
         #region OpenTimes
         private int _openTimes;
 
@@ -469,6 +489,7 @@ namespace PortfolioTrading.Modules.Account
                 if (_hedgeFlag != value)
                 {
                     _hedgeFlag = value;
+                    IsArbitrage = _hedgeFlag == PTEntity.HedgeFlagType.ARBITRAGE;
                     RaisePropertyChanged("HedgeFlag");
                 }
             }
@@ -1048,6 +1069,12 @@ namespace PortfolioTrading.Modules.Account
             _accountVm.PublishChanged();
         }
 
+        public void SetHedgeFlag(PTEntity.HedgeFlagType hedgeType)
+        {
+            _hedgeFlag = hedgeType;
+            _isArbitrage = hedgeType == PTEntity.HedgeFlagType.ARBITRAGE;
+        }
+
         public int LegCount
         {
             get
@@ -1504,6 +1531,17 @@ namespace PortfolioTrading.Modules.Account
                 OnStart();
             else
                 OnStop();
+        }
+
+        private void OnIsArbitrageChanged()
+        {
+            if (_accountVm.IsConnected)
+            {
+                _accountVm.Host.PortfChangeArbitrage(this.Id, IsArbitrage);
+            }
+
+            if (!IsLoading)
+                _accountVm.PublishChanged();
         }
 
         private void OnSwitchChanged()

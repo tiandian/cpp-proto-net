@@ -15,6 +15,9 @@ public:
 	const char* OrderRef(){ return m_orderField.UserOrderLocalID; }
 	trade::OrderSubmitStatusType OrderSubmitStatus()
 	{
+		if (m_submitStatus == trade::INSERT_REJECTED)
+			return m_submitStatus;
+
 		trade::OrderStatusType os = OrderStatus();
 		// always return accepted as long as order status is not ACCEPTED_NO_REPLY due to no submit status any more in Femas
 		return os == trade::ACCEPTED_NO_REPLY ? trade::INSERT_SUBMITTED : trade::ACCEPTED;
@@ -26,7 +29,7 @@ public:
 	const char* OrderSysId() { return m_orderField.OrderSysID; }
 	const char* ExchangeId() { return m_orderField.ExchangeID; }
 	const char* UserId() { return m_orderField.UserID; }
-	const char* StatusMsg() { return ""; }	// no status msg any longer
+	const char* StatusMsg() { return m_errorMsg.c_str(); }	// no status msg any longer
 	int VolumeTotal() { return m_orderField.VolumeRemain; }
 	int VolumeTraded() { return m_orderField.VolumeTraded; }
 	int VolumeTotalOriginal() {return m_orderField.Volume; }
@@ -49,8 +52,12 @@ public:
 	boost::chrono::steady_clock::time_point& Timestamp(){ return m_orderTimestamp; }
 
 	static CRtnOrderWrapper* MakeFakeSubmitOrder(CUstpFtdcInputOrderField& inputOrder);
+	static CRtnOrderWrapper* MakeFakeRejectOrder(CUstpFtdcInputOrderField& inputOrder, const char* errorMsg);
 
 private:
+	string m_errorMsg;
+	trade::OrderSubmitStatusType m_submitStatus;
+
 	CUstpFtdcOrderField m_orderField;
 	boost::chrono::steady_clock::time_point m_orderTimestamp;
 };

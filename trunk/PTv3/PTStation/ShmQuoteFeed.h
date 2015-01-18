@@ -1,11 +1,7 @@
 #pragma once
 
 #include "shm_remover.h"
-#ifndef USE_FEMAS_API
 #include "ThostTraderApi/ThostFtdcUserApiStruct.h"
-#else
-#include "FemasAPI/USTPFtdcUserApiStruct.h"
-#endif
 
 
 #include <string>
@@ -51,11 +47,7 @@ struct MarketDataObj
 	bool	ready;
 	bool	running;
 
-#ifndef USE_FEMAS_API
 	CThostFtdcDepthMarketDataField mktDataField;
-#else
-	CUstpFtdcDepthMarketDataField mktDataField;
-#endif
 	
 	longlong timestamp;
 };  
@@ -68,11 +60,7 @@ public:
 	~CShmQuoteFeedProducer(){}
 
 	bool Init();
-#ifndef USE_FEMAS_API
 	void Put(CThostFtdcDepthMarketDataField* quoteData);
-#else
-	void Put(CUstpFtdcDepthMarketDataField* quoteData);
-#endif
 	
 
 private:
@@ -83,12 +71,7 @@ private:
 	MarketDataObj* m_pData;
 };
 
-#ifndef USE_FEMAS_API
 typedef boost::function<void(CThostFtdcDepthMarketDataField*, longlong)> PushQuoteFunc;
-#else
-typedef boost::function<void(CUstpFtdcDepthMarketDataField*, longlong)> PushQuoteFunc;
-#endif
-
 
 class CShmQuoteFeedConsumer
 {

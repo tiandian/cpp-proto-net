@@ -169,6 +169,18 @@ void CNatvieClient::PortfTurnSwitches( const char* portfId, int triggerIndex, bo
 	sendRequest(&request);
 }
 
+
+void CNatvieClient::PortfChangeArbitrage(const char* portfId, bool isArbitrage)
+{
+	ProtobufPacket<entity::SwitchPortfolioRequest> request(PortfolioSwitchRequestID);
+	request.getData().set_pid(portfId);
+	request.getData().set_switchtype(entity::ARBITRAGE_SWITCH);
+
+	request.getData().set_isarbitrage(isArbitrage);
+	
+	sendRequest(&request);
+}
+
 void CNatvieClient::ApplyStrategySettings( const char* portfId, PTEntity::StrategyItem ^strategyItem )
 {
 	ProtobufPacket<entity::ApplyStrategySettingsRequest> request(ApplyStrategySetttingRequestID);

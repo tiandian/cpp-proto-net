@@ -34,6 +34,7 @@ public:
 	void AddPortfolios(array<PTEntity::PortfolioItem^> ^portfolioItems);
 	void PortfEnableStrategy(const char* portfId, bool isEnabled, int lastOrderId);
 	void PortfTurnSwitches(const char* portfId, int triggerIndex, bool enabled);
+	void PortfChangeArbitrage(const char* portfId, bool isArbitrage);
 	void ApplyStrategySettings(const char* portfId, PTEntity::StrategyItem ^strategyItem);
 	void PortfModifyQuantity(const char* portfId, int perOpenQty, int perStartQty, int totalOpenLimit, int maxCancelQty,
 		vector<string>& endTimePointsVec);

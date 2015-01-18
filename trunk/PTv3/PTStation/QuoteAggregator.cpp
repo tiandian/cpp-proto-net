@@ -5,6 +5,10 @@
 #include <exception>
 #include <boost/chrono.hpp>
 
+#ifndef WIN32
+#define strcpy_s strcpy
+#endif
+
 extern CQSLogManager* pLogger;
 
 CQuoteAggregator::CQuoteAggregator(OnSubscribeQuoteFunc subscribeFunc, OnSubscribeQuoteFunc unsubFunc, OnQuotingEndFunc quoteEndFunc)
@@ -12,6 +16,9 @@ CQuoteAggregator::CQuoteAggregator(OnSubscribeQuoteFunc subscribeFunc, OnSubscri
 	, m_unsubscribeFunc(unsubFunc)
 	, m_quotingEndFunc(quoteEndFunc)
 {
+#ifdef USE_FEMAS_API
+	memset(&IntermediateMarketData, 0, sizeof(IntermediateMarketData));
+#endif
 }
 
 CQuoteAggregator::~CQuoteAggregator(void)
@@ -73,13 +80,52 @@ void CQuoteAggregator::OnTerminateNotified()
 		m_quotingEndFunc();
 }
 
+#ifdef USE_FEMAS_API
+void CopyMarketData(CThostFtdcDepthMarketDataField *pDepthMarketData, CUstpFtdcDepthMarketDataField *pUstpDepthMarketData)
+{
+	strcpy_s(pDepthMarketData->InstrumentID, pUstpDepthMarketData->InstrumentID);
+	strcpy_s(pDepthMarketData->TradingDay, pUstpDepthMarketData->TradingDay);
+	strcpy_s(pDepthMarketData->UpdateTime, pUstpDepthMarketData->UpdateTime);
+
+	pDepthMarketData->LastPrice = pUstpDepthMarketData->LastPrice;
+	pDepthMarketData->BidPrice1 = pUstpDepthMarketData->BidPrice1;
+	pDepthMarketData->BidVolume1 = pUstpDepthMarketData->BidVolume1;
+	pDepthMarketData->AskPrice1 = pUstpDepthMarketData->AskPrice1;
+	pDepthMarketData->AskVolume1 = pUstpDepthMarketData->AskVolume1;
+
+	pDepthMarketData->UpdateMillisec = pUstpDepthMarketData->UpdateMillisec;
+
+	pDepthMarketData->PreSettlementPrice = pUstpDepthMarketData->PreSettlementPrice;
+	pDepthMarketData->PreClosePrice = pUstpDepthMarketData->PreClosePrice;
+	pDepthMarketData->PreOpenInterest = pUstpDepthMarketData->PreOpenInterest;
+	pDepthMarketData->OpenPrice = pUstpDepthMarketData->OpenPrice;
+	pDepthMarketData->HighestPrice = pUstpDepthMarketData->HighestPrice;
+	pDepthMarketData->LowestPrice = pUstpDepthMarketData->LowestPrice;
+	pDepthMarketData->Volume = pUstpDepthMarketData->Volume;
+	pDepthMarketData->Turnover = pUstpDepthMarketData->Turnover;;
+	pDepthMarketData->OpenInterest = pUstpDepthMarketData->OpenInterest;
+	pDepthMarketData->ClosePrice = pUstpDepthMarketData->ClosePrice;
+	pDepthMarketData->SettlementPrice = pUstpDepthMarketData->SettlementPrice;
+	pDepthMarketData->UpperLimitPrice = pUstpDepthMarketData->UpperLimitPrice;
+	pDepthMarketData->LowerLimitPrice = pUstpDepthMarketData->LowerLimitPrice;
+	pDepthMarketData->PreDelta = pUstpDepthMarketData->PreDelta;
+	pDepthMarketData->CurrDelta = pUstpDepthMarketData->CurrDelta;
+}
+#endif
+
 #ifndef USE_FEMAS_API
 void CQuoteAggregator::OnQuoteReceived( const string& connectIP, CThostFtdcDepthMarketDataField *pDepthMarketData )
 #else
-void CQuoteAggregator::OnQuoteReceived(const string& connectIP, CUstpFtdcDepthMarketDataField *pDepthMarketData)
+void CQuoteAggregator::OnQuoteReceived(const string& connectIP, CUstpFtdcDepthMarketDataField *pUstpDepthMarketData)
 #endif
 {
 	boost::mutex::scoped_lock l(m_mutex);
+
+#ifdef USE_FEMAS_API
+	CopyMarketData(&IntermediateMarketData, pUstpDepthMarketData);
+	CThostFtdcDepthMarketDataField *pDepthMarketData = &IntermediateMarketData;
+#endif
+
 	long delay = 0;
 	string symbol = pDepthMarketData->InstrumentID;
 	QuoteTimestampMapIter iter = m_lastQuoteTimestamp.find(symbol);

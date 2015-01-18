@@ -30,11 +30,7 @@ CQuoteStore::~CQuoteStore(void)
 		% m_symbol));
 }
 
-#ifndef USE_FEMAS_API
 void CQuoteStore::Set(CThostFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp)
-#else
-void CQuoteStore::Set(CUstpFtdcDepthMarketDataField* pQuoteData, boost::chrono::steady_clock::time_point& tpTimestamp)
-#endif
 {
 	// as struct is value type, this should be correct
 	boost::unique_lock<boost::mutex> lock(m_quoteMutex);

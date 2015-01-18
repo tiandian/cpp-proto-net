@@ -6,16 +6,18 @@
 #include <boost/algorithm/string.hpp>
 #include <sstream>
 
-CQuoteAgent::CQuoteAgent(void)
-	: m_pCallback(NULL)
-	, m_bIsConnected(false)
+#ifndef WIN32
+#define strcpy_s strcpy
+#endif
+
+CQuoteAgent::CQuoteAgent(CQuoteAgentCallback* pCallback)
+	: CQuoteAgentBase(pCallback)
 	, m_retChild(-1)
 #ifdef FAKE_QUOTE
 	, m_pushingFakeQuote(false)
 #endif
 {
 }
-
 
 CQuoteAgent::~CQuoteAgent(void)
 {
@@ -148,11 +150,7 @@ bool CQuoteAgent::UnSubscribesQuotes( vector<string>& unSubscribeArr )
 	return retVal;
 }
 
-#ifndef USE_FEMAS_API
 void CQuoteAgent::OnQuotePush(CThostFtdcDepthMarketDataField* mktDataField, longlong timestamp)
-#else
-void CQuoteAgent::OnQuotePush(CUstpFtdcDepthMarketDataField* mktDataField, longlong timestamp)
-#endif
 {
 	if(m_pCallback != NULL)
 	{
@@ -171,11 +169,7 @@ void CQuoteAgent::PushFakeQuote()
 		while (true)
 		{
 			boost::this_thread::sleep(boost::posix_time::seconds(1));
-#ifndef USE_FEMAS_API
 			CThostFtdcDepthMarketDataField mktDataField;
-#else
-			CUstpFtdcDepthMarketDataField mktDataField;
-#endif
 			memset(&mktDataField, 0, sizeof(mktDataField));
 
 			strcpy(mktDataField.InstrumentID, "IF1501");
